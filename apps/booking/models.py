@@ -91,6 +91,9 @@ class Hotel(MetaName, MetaGeo):
     def fulladdress(self):
         return u"%s, %s" % (self.city.name, self.address)
 
+    def in_city(self):
+        return Hotel.objects.filter(city=self.city).count()
+
     def stars(self):
         return range(0,self.starcount)
 
