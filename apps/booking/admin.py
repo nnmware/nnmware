@@ -50,12 +50,27 @@ class RoomOptionAdmin(admin.ModelAdmin):
 
 
 class RoomOptionCategoryAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('name','name_en','enabled','slug')
     search_fields = ('name',)
+    fieldsets = (
+        (_("Room Option Category"), {"fields": [("name",'slug'),
+            ('description',)]}),
+        (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',),
+        ]}),
+        (_("English"), {"classes": ("collapse closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
+
 
 class HotelOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('name',)
+    fieldsets = (
+        (_("Hotel Option Category"), {"fields": [("name",'slug'),
+            ('description',)]}),
+        (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',),
+        ]}),
+        (_("English"), {"classes": ("collapse closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
 
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('user','from_date','to_date','room','amount','currency','status','date')

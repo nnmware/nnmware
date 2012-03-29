@@ -26,7 +26,7 @@ class Country(Address):
 
 
 class Region(Address):
-    country = models.ForeignKey(Country)
+    country = models.ForeignKey(Country, null=True, blank=True)
 
     class Meta:
         unique_together = (('name', 'country'),)
