@@ -1,0 +1,42 @@
+
+Django-based Content Management Framework
+contains base for:
+
+[Core]
+    Follows
+    Actions
+    Tags
+    Docs
+    Images
+    User Notices
+    User Messages
+    Thread Comments 
+    ThreadCategories
+
+[Address]
+    Country
+    Region
+    City
+
+[Money]
+    Transaction
+    Currency
+    Exchange Rate
+
+[..other]
+    Profiles
+    Topics
+    Boards
+    Articles
+    Social Authorization
+    OEmbed Video Parsing and Storage
+
+[Booking]
+    Booking application base 
+
+Licensed under GPL3 
+
+nnmware@gmail.com
+
+required django-current
+This file was modified by PyCharm 2.0.2 for binding GitHub repository

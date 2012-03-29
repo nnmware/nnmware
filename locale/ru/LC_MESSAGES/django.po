@@ -1,0 +1,3443 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-03-29 15:01+1100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Thecore <thelinuxcore@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/account/admin.py:11 apps/video/admin.py:11 core/admin.py:37
+#: core/admin.py:56
+msgid "Main"
+msgstr "Основная"
+
+#: apps/account/admin.py:13 apps/booking/admin.py:29 apps/booking/admin.py:46
+#: apps/video/admin.py:13
+msgid "Addons"
+msgstr "Дополнения"
+
+#: apps/account/forms.py:34
+msgid "E-mail is required."
+msgstr "Email обязателен"
+
+#: apps/account/forms.py:38 apps/account/forms.py:231
+msgid "That e-mail is already used."
+msgstr "Адрес уже используется"
+
+#: apps/account/forms.py:42
+msgid "That e-mail is already being confirmed."
+msgstr "Данный адрес эл.почты уже используется."
+
+#: apps/account/forms.py:55
+msgid "The passwords inserted are different."
+msgstr "Введенные пароли не соответствуют."
+
+#: apps/account/forms.py:73
+msgid "E-MAIL IS REQUIRED"
+msgstr "ТРЕБУЕТСЯ АДРЕС ЭЛ.ПОЧТЫ"
+
+#: apps/account/forms.py:77
+msgid "THAT E-MAIL IS ALREADY USED"
+msgstr "ЭТОТ АДРЕС УЖЕ ИСПОЛЬЗУЕТСЯ"
+
+#: apps/account/forms.py:81
+msgid "THAT E-MAIL IS ALREADY CONFIRMED"
+msgstr "ЭТОТ АДРЕС УЖЕ ПОДТВЕРЖДЕН"
+
+#: apps/account/forms.py:88
+msgid "USERNAME IS REQUIRED"
+msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ ОБЯЗАТЕЛЬНО"
+
+#: apps/account/forms.py:91
+msgid "THAT USERNAME IS ALREADY USED"
+msgstr "ЭТО ИМЯ ПОЛЬЗОВАТЕЛЯ УЖЕ ПОДТВЕРЖДЕНО"
+
+#: apps/account/forms.py:98 apps/account/forms.py:104
+msgid "PASSWORD IS REQUIRED"
+msgstr "ПАРОЛЬ ТРЕБУЕТСЯ"
+
+#: apps/account/forms.py:106
+msgid "PASSWORDS ARE MISMATCH"
+msgstr "ПАРОЛИ НЕ СООТВЕТСТВУЮТ"
+
+#: apps/account/forms.py:123
+msgid "The user is disabled."
+msgstr "Пользователь заблокирован."
+
+#: apps/account/forms.py:126
+msgid "Incorrect login."
+msgstr "Неверное имя"
+
+#: apps/account/forms.py:142
+msgid "THE USER IS DISABLED"
+msgstr "ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН"
+
+#: apps/account/forms.py:152
+msgid "THIS PASSWORD IS INCORRECT"
+msgstr "НЕВЕРНЫЙ ПАРОЛЬ"
+
+#: apps/account/forms.py:156
+msgid "Old password"
+msgstr "Старый пароль"
+
+#: apps/account/forms.py:157
+msgid "New password"
+msgstr "Новый пароль"
+
+#: apps/account/forms.py:158
+msgid "New password confirmation"
+msgstr "Подтверждение нового пароля"
+
+#: apps/account/forms.py:166
+msgid "Old password is wrong."
+msgstr "Старый пароль не соответствует"
+
+#: apps/account/forms.py:174
+msgid "Passwords mismatch."
+msgstr "Пароли не соответствуют"
+
+#: apps/account/forms.py:179
+msgid "Old and new passwords are equal."
+msgstr "Старый и новый пароли одинаковы."
+
+#: apps/account/forms.py:193
+msgid "You must enter one of the options"
+msgstr "Вы должны ввести одну из опций"
+
+#: apps/account/forms.py:214
+#, fuzzy
+msgid "You must select a portion of the image with a minimum of 4x4 pixels."
+msgstr ""
+"Вам необходимо выбрать часть изображения с размером минимум 96x96 пикселей."
+
+#: apps/account/forms.py:246
+msgid "That e-mail isn't registered."
+msgstr "Данный адрес эл.почты не зарегистрирован"
+
+#: apps/account/forms.py:250
+msgid "First name"
+msgstr "Имя"
+
+#: apps/account/forms.py:251
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: apps/account/forms.py:252
+msgid "Site-only email"
+msgstr "Приватная почта для регистрационных данных"
+
+#: apps/account/forms.py:287
+msgid "Old Password"
+msgstr "Старый пароль"
+
+#: apps/account/forms.py:288
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: apps/account/models.py:28
+msgid "Female"
+msgstr "Женский"
+
+#: apps/account/models.py:28
+msgid "Male"
+msgstr "Мужской"
+
+#: apps/account/models.py:63
+msgid "Full Name"
+msgstr "Полное имя"
+
+#: apps/account/models.py:64
+msgid "Date birth"
+msgstr "Дата рождения"
+
+#: apps/account/models.py:65
+msgid "Gender"
+msgstr "Пол"
+
+#: apps/account/models.py:66
+msgid "About"
+msgstr "Информация"
+
+#: apps/account/models.py:66
+msgid "Little words about you"
+msgstr "Несколько слов о Вас"
+
+#: apps/account/models.py:68 apps/booking/models.py:71
+msgid "Website"
+msgstr "Вебсайт"
+
+#: apps/account/models.py:69
+msgid "Facebook"
+msgstr ""
+
+#: apps/account/models.py:70
+msgid "Google+"
+msgstr ""
+
+#: apps/account/models.py:71
+msgid "Twitter"
+msgstr ""
+
+#: apps/account/models.py:72
+msgid "Location"
+msgstr "Местоположение"
+
+#: apps/account/models.py:73 apps/board/models.py:27
+msgid "ICQ"
+msgstr "Аська"
+
+#: apps/account/models.py:74
+msgid "skype"
+msgstr "скайп"
+
+#: apps/account/models.py:75
+msgid "jabber"
+msgstr "джаббер"
+
+#: apps/account/models.py:76
+msgid "mobile phone"
+msgstr "мобильный телефон"
+
+#: apps/account/models.py:77
+msgid "work phone"
+msgstr "рабочий телефон"
+
+#: apps/account/models.py:78
+msgid "Public email"
+msgstr "Публичный email"
+
+#: apps/account/models.py:79
+msgid "Signature"
+msgstr "Подпись"
+
+#: apps/account/models.py:80
+msgid "Time zone"
+msgstr "Временная зона"
+
+#: apps/account/models.py:82
+msgid "Show signatures"
+msgstr "Показывать подписи"
+
+#: apps/account/models.py:83
+msgid "Post count"
+msgstr "Количество постов"
+
+#: apps/account/models.py:84
+msgid "Subscribe for news and updates"
+msgstr "Подписаться на новости и обновления"
+
+#: apps/account/models.py:86
+msgid "Avatar is set"
+msgstr "Аватар установлен"
+
+#: apps/account/models.py:91 core/models.py:619
+msgid "Profile"
+msgstr "Профиль"
+
+#: apps/account/models.py:92
+msgid "Profiles"
+msgstr "Профили"
+
+#: apps/account/models.py:103
+#, python-format
+msgid "%s's account"
+msgstr "%s профиль"
+
+#: apps/account/models.py:217
+msgid "Email Validation"
+msgstr "Почтовое подтверждение"
+
+#: apps/account/models.py:218
+msgid "Email Validations"
+msgstr "Почтовые подтверждения"
+
+#: apps/account/models.py:221
+#, python-format
+msgid "Email validation process for %(user)s"
+msgstr "Адрес эл.почты в процессе проверки для %(user)s"
+
+#: apps/account/views.py:269 apps/account/views.py:286
+msgid "YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL"
+msgstr ""
+
+#: apps/account/views.py:315
+msgid "YOU SUCCESSFULLY SIGN IN"
+msgstr "ВЫ УСПЕШНО ЗАРЕГИСТРИРОВАНЫ"
+
+#: apps/address/admin.py:10 apps/address/models.py:42
+#: apps/booking/models.py:65
+msgid "City"
+msgstr "Город"
+
+#: apps/address/admin.py:15 apps/address/admin.py:27 apps/address/admin.py:39
+#: apps/booking/admin.py:19 apps/booking/admin.py:31 apps/booking/admin.py:48
+msgid "English"
+msgstr "Английский"
+
+#: apps/address/admin.py:23 apps/address/models.py:33
+msgid "Region"
+msgstr "Регион"
+
+#: apps/address/admin.py:35 apps/address/models.py:21 apps/money/models.py:14
+msgid "Country"
+msgstr "Страна"
+
+#: apps/address/models.py:22
+msgid "Countries"
+msgstr "Страны"
+
+#: apps/address/models.py:34
+msgid "Regions"
+msgstr "Регионы"
+
+#: apps/address/models.py:43
+msgid "Cities"
+msgstr "Города"
+
+#: apps/ajax/views.py:54
+msgid "liked the video"
+msgstr "нравится видео"
+
+#: apps/ajax/views.py:58
+msgid "also now liked"
+msgstr "тоже теперь нравится"
+
+#: apps/ajax/views.py:60
+msgid "now liked"
+msgstr "теперь нравится"
+
+#: apps/ajax/views.py:76
+msgid "disliked the video"
+msgstr "не нравится видео"
+
+#: apps/ajax/views.py:79
+msgid "now disliked"
+msgstr "теперь не нравится"
+
+#: apps/ajax/views.py:96
+msgid "follow the tag"
+msgstr "следует за тегом"
+
+#: apps/ajax/views.py:100 apps/ajax/views.py:141
+msgid "also now follow"
+msgstr "тоже теперь следует"
+
+#: apps/ajax/views.py:102 apps/ajax/views.py:121 apps/ajax/views.py:143
+msgid "now follow"
+msgstr "теперь следует"
+
+#: apps/ajax/views.py:118
+msgid "unfollow the tag"
+msgstr "не следует за тегом"
+
+#: apps/ajax/views.py:137
+msgid "follow the user"
+msgstr "следует за пользователем"
+
+#: apps/ajax/views.py:159
+msgid "unfollow the user"
+msgstr "Полное имя пользователя"
+
+#: apps/ajax/views.py:162
+msgid "now unfollow"
+msgstr "теперь не следует"
+
+#: apps/article/models.py:12
+msgid "ArticleCategory"
+msgstr "Категория статьи"
+
+#: apps/article/models.py:13
+msgid "ArticleCategories"
+msgstr "Категории статей"
+
+#: apps/article/models.py:17 apps/board/models.py:17 apps/topic/models.py:20
+msgid "Category"
+msgstr "Категория"
+
+#: apps/article/models.py:18 core/admin.py:13
+msgid "Content"
+msgstr "Содержание"
+
+#: apps/article/models.py:21
+msgid "Article"
+msgstr "Статья"
+
+#: apps/article/models.py:22
+msgid "Articles"
+msgstr "Статьи"
+
+#: apps/article/views.py:30 apps/article/views.py:80 apps/article/views.py:89
+#, python-format
+msgid "Found %(len)s articles"
+msgstr "Найдено %(len)s статей "
+
+#: apps/article/views.py:62
+#, python-format
+msgid "You have %(len)s active articles"
+msgstr "Количество Ваших активных статей - %(len)s"
+
+#: apps/article/views.py:71
+#, python-format
+msgid "You have %(len)s locked articles"
+msgstr "Количество Ваших заблокированных статей - %(len)s"
+
+#: apps/article/views.py:98
+#, python-format
+msgid "Found %(len)s articles on moderation"
+msgstr "Найдено %(len)s статей на модерации "
+
+#: apps/article/views.py:107
+#, python-format
+msgid "Found %(len)s deleted articles"
+msgstr "Найдено %(len)s удаленных статей "
+
+#: apps/article/views.py:118
+#, python-format
+msgid "For this author found- %(len)s results "
+msgstr "Для данного автора найдено- %(len)s результатов "
+
+#: apps/article/views.py:128
+#, python-format
+msgid "It this category found- %(len)s results "
+msgstr "В этой категории найдено- %(len)s результатов "
+
+#: apps/article/views.py:138
+#, python-format
+msgid "On search in articles found- %(len)s results "
+msgstr "При поиске в статьях найдено- %(len)s результатов "
+
+#: apps/board/models.py:12
+msgid "BoardCategory"
+msgstr "Категория объявлений"
+
+#: apps/board/models.py:13
+msgid "BoardCategories"
+msgstr "Категории объявлений"
+
+#: apps/board/models.py:21
+msgid "Board"
+msgstr "Объявление"
+
+#: apps/board/models.py:22
+msgid "Boards"
+msgstr "Объявления"
+
+#: apps/board/models.py:26 apps/booking/models.py:66
+msgid "Email"
+msgstr "Адрес эл.почты:"
+
+#: apps/board/models.py:29 apps/booking/models.py:69
+msgid "Phone"
+msgstr "Телефон"
+
+#: apps/board/models.py:31
+msgid "Contact"
+msgstr "Контактное лицо"
+
+#: apps/board/models.py:33
+msgid "Site-only contact"
+msgstr "Контакт только через сайт"
+
+#: apps/board/models.py:52
+msgid "view"
+msgstr "просмотр"
+
+#: apps/booking/admin.py:10 apps/booking/models.py:56
+#: apps/booking/models.py:83 apps/booking/models.py:132
+#: apps/booking/models.py:159
+msgid "Hotel"
+msgstr "Отель"
+
+#: apps/booking/admin.py:14
+msgid "Contacts"
+msgstr "Контакты"
+
+#: apps/booking/admin.py:16
+#, fuzzy
+msgid "Hotel options and admins"
+msgstr "Опции отеля"
+
+#: apps/booking/admin.py:27 apps/booking/models.py:26
+msgid "Hotel Option"
+msgstr "Опция отеля"
+
+#: apps/booking/admin.py:44 apps/booking/models.py:113
+msgid "Room Option"
+msgstr "Опция номера"
+
+#: apps/booking/admin.py:64
+msgid "Booking Event"
+msgstr "Событие бронирования"
+
+#: apps/booking/admin.py:81 apps/booking/models.py:211
+msgid "Place Price"
+msgstr "Стоимость места"
+
+#: apps/booking/models.py:16
+msgid "Hotel Option Category"
+msgstr "Категория опций отеля"
+
+#: apps/booking/models.py:17
+msgid "Hotel Option Categories"
+msgstr "Категории опций отеля"
+
+#: apps/booking/models.py:21
+msgid "Category option"
+msgstr "Категория опции"
+
+#: apps/booking/models.py:22 apps/booking/models.py:110
+msgid "In search form?"
+msgstr "В форме поиска?"
+
+#: apps/booking/models.py:23
+msgid "Sticky in search form?"
+msgstr "Закреплено в форме поиска?"
+
+#: apps/booking/models.py:27 apps/booking/models.py:75
+msgid "Hotel Options"
+msgstr "Опции отеля"
+
+#: apps/booking/models.py:30 apps/booking/models.py:117
+#, python-format
+msgid "%(name)s :: %(category)s"
+msgstr ""
+
+#: apps/booking/models.py:40 apps/booking/models.py:55
+#: apps/booking/models.py:148 apps/money/models.py:50 core/models.py:614
+#: core/models.py:689
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: apps/booking/models.py:41
+msgid "One star"
+msgstr "Одна звезда"
+
+#: apps/booking/models.py:42
+msgid "Two star"
+msgstr "Две звезды"
+
+#: apps/booking/models.py:43
+msgid "Three star"
+msgstr "Три звезды"
+
+#: apps/booking/models.py:44
+msgid "Four star"
+msgstr "Четыре звезды"
+
+#: apps/booking/models.py:45
+msgid "Five star"
+msgstr "Пять звезд"
+
+#: apps/booking/models.py:57
+msgid "Cottage"
+msgstr "Коттедж"
+
+#: apps/booking/models.py:58
+msgid "Home"
+msgstr "Домой"
+
+#: apps/booking/models.py:59
+msgid "Flat"
+msgstr "Квартира"
+
+#: apps/booking/models.py:64
+msgid "Register from"
+msgstr "Регистрация с"
+
+#: apps/booking/models.py:67
+msgid "Address"
+msgstr "Адрес"
+
+#: apps/booking/models.py:68
+msgid "Address(English)"
+msgstr "Адрес(Англ)"
+
+#: apps/booking/models.py:70
+msgid "Fax"
+msgstr "Факс"
+
+#: apps/booking/models.py:72
+msgid "Contact Email"
+msgstr "Контактный емейл"
+
+#: apps/booking/models.py:73
+msgid "Contact Name"
+msgstr "Контактное лицо"
+
+#: apps/booking/models.py:74
+msgid "Count of Rooms"
+msgstr "Количество номеров"
+
+#: apps/booking/models.py:76
+msgid "Count of Stars"
+msgstr "Количество звезд"
+
+#: apps/booking/models.py:77
+msgid "Type of Hotel"
+msgstr "Тип отеля"
+
+#: apps/booking/models.py:78
+msgid "Hotel Admins"
+msgstr "Администраторы отеля"
+
+#: apps/booking/models.py:79
+msgid "Point of hotel"
+msgstr ""
+
+#: apps/booking/models.py:84
+msgid "Hotels"
+msgstr "Отели"
+
+#: apps/booking/models.py:105
+msgid "Room Option Category"
+msgstr "Категория опций номера"
+
+#: apps/booking/models.py:106
+msgid "Room Option Categories"
+msgstr "Категории опций номера"
+
+#: apps/booking/models.py:114
+msgid "Room Options"
+msgstr "Опции номера"
+
+#: apps/booking/models.py:121 apps/booking/models.py:226
+msgid "Count of places"
+msgstr "Количество мест"
+
+#: apps/booking/models.py:124 apps/booking/models.py:133
+msgid "Place Count"
+msgstr "Количество мест"
+
+#: apps/booking/models.py:125
+msgid "Places Count"
+msgstr "Количества мест"
+
+#: apps/booking/models.py:131
+msgid "Availability options"
+msgstr "Доступные опции"
+
+#: apps/booking/models.py:136 apps/booking/models.py:158
+msgid "Room"
+msgstr "Номер"
+
+#: apps/booking/models.py:137
+msgid "Rooms"
+msgstr "Номера"
+
+#: apps/booking/models.py:140
+#, python-format
+msgid "%(room)s :: %(places)s :: %(hotel)s"
+msgstr ""
+
+#: apps/booking/models.py:149 apps/money/models.py:51
+msgid "Accepted"
+msgstr "Принято"
+
+#: apps/booking/models.py:150 apps/money/models.py:53
+msgid "Cancelled"
+msgstr "Аннулировано"
+
+#: apps/booking/models.py:154 apps/money/models.py:61
+msgid "User"
+msgstr "Пользователь"
+
+#: apps/booking/models.py:155
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: apps/booking/models.py:156
+msgid "From"
+msgstr "С"
+
+#: apps/booking/models.py:157
+msgid "To"
+msgstr "До"
+
+#: apps/booking/models.py:160
+msgid "Booking status"
+msgstr "Статус бронирования"
+
+#: apps/booking/models.py:164
+msgid "Booking"
+msgstr "Бронирование"
+
+#: apps/booking/models.py:165
+msgid "Bookings"
+msgstr "Бронирования"
+
+#: apps/booking/models.py:172 apps/booking/models.py:208
+#: apps/booking/models.py:225
+msgid "From date"
+msgstr "С даты"
+
+#: apps/booking/models.py:173
+msgid "Percent"
+msgstr "Процент"
+
+#: apps/booking/models.py:176
+msgid "Agent Percent"
+msgstr "Агентский процент"
+
+#: apps/booking/models.py:177
+msgid "Agent Percents"
+msgstr "Агентские проценты"
+
+#: apps/booking/models.py:180
+#, python-format
+msgid "For %(hotel)s on date %(date)s percent is %(percent)s"
+msgstr "Для %(hotel)s на дату %(date)s процент - %(percent)s"
+
+#: apps/booking/models.py:188
+msgid "Published by"
+msgstr "Опубликовано"
+
+#: apps/booking/models.py:189
+msgid "Review"
+msgstr "Отзыв"
+
+#: apps/booking/models.py:190
+msgid "Food"
+msgstr "Питание"
+
+#: apps/booking/models.py:191
+msgid "Service"
+msgstr "Сервис"
+
+#: apps/booking/models.py:192
+msgid "Purity"
+msgstr "Чистота"
+
+#: apps/booking/models.py:193
+msgid "Transport"
+msgstr "Транспорт"
+
+#: apps/booking/models.py:194
+msgid "Prices"
+msgstr "Цены"
+
+#: apps/booking/models.py:197
+msgid "Client review"
+msgstr "Отзыв клиента"
+
+#: apps/booking/models.py:198
+msgid "Client reviews"
+msgstr "Отзывы клиентов"
+
+#: apps/booking/models.py:201
+#, python-format
+msgid "Review client %(client)s for hotel %(hotel)s is -> %(review)s"
+msgstr "Отзыв клиента %(client)s для отеля %(hotel)s -> %(review)s"
+
+#: apps/booking/models.py:212
+msgid "Places Prices"
+msgstr "Стоимости мест"
+
+#: apps/booking/models.py:215
+#, python-format
+msgid ""
+"Price place %(place)s in hotel %(hotel)s on date %(date)s is -> %(price)s "
+"%(currency)s"
+msgstr ""
+"Стоимость места %(place)s в отеле %(hotel)s на дату %(date)s -> %(price)s"
+"%(currency)s"
+
+#: apps/booking/models.py:229
+msgid "Availability"
+msgstr "Наличие"
+
+#: apps/booking/models.py:230
+msgid "Availabilities"
+msgstr "Наличия"
+
+#: apps/booking/models.py:233
+#, python-format
+msgid ""
+"Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> "
+"%(count)s"
+msgstr ""
+"Наличие мест %(place)s для отеля %(hotel)s на дату %(date)s -> %(count)s"
+
+#: apps/booking/views.py:45
+msgid "list of hotels"
+msgstr "список отелей"
+
+#: apps/captcha/fields.py:48
+msgid "Captcha"
+msgstr "Антибот"
+
+#: apps/captcha/fields.py:49
+msgid "Please, enter symbols, which you see on the image"
+msgstr "Пожалуйста введите увиденные символы."
+
+#: apps/captcha/fields.py:59
+msgid "Wrong answer"
+msgstr "Неверный ответ"
+
+#: apps/money/admin.py:12 apps/money/models.py:73
+msgid "Transaction"
+msgstr "Транзакция"
+
+#: apps/money/models.py:13
+msgid "Currency code"
+msgstr "Код валюты"
+
+#: apps/money/models.py:15 core/models.py:255 core/models.py:289
+msgid "Name"
+msgstr "Имя"
+
+#: apps/money/models.py:16 core/models.py:290
+msgid "Name(English"
+msgstr "Название(Английский)"
+
+#: apps/money/models.py:20 apps/money/models.py:27 apps/money/models.py:39
+msgid "Currency"
+msgstr "Валюта"
+
+#: apps/money/models.py:21
+msgid "Currencies"
+msgstr "Валюты"
+
+#: apps/money/models.py:28
+msgid "On date"
+msgstr "На дату"
+
+#: apps/money/models.py:29
+msgid "Rate"
+msgstr "Курс"
+
+#: apps/money/models.py:33
+msgid "Exchange Rate"
+msgstr "Курс обмена валют"
+
+#: apps/money/models.py:34
+msgid "Exchange Rates"
+msgstr "Курсы обмена валют"
+
+#: apps/money/models.py:38
+msgid "Amount"
+msgstr "Сумма"
+
+#: apps/money/models.py:52
+msgid "Completed"
+msgstr "Завершено"
+
+#: apps/money/models.py:63
+msgid "Content Type"
+msgstr "Тип контента"
+
+#: apps/money/models.py:64
+msgid "ID of object"
+msgstr "ID объекта"
+
+#: apps/money/models.py:66
+msgid "Date"
+msgstr "Дата"
+
+#: apps/money/models.py:67
+msgid "Transaction status"
+msgstr "Статус транзакции"
+
+#: apps/money/models.py:74
+msgid "Transactions"
+msgstr "Транзакции"
+
+#: apps/money/models.py:80
+#, python-format
+msgid ""
+"User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s "
+"%(currency)s"
+msgstr ""
+"Пользователь: %(user)s :: Дата: %(date)s :: Объект: %(actor)s :: Сумма: "
+"%(amount)s %(currency)s"
+
+#: apps/topic/models.py:15
+msgid "TopicCategory"
+msgstr "Категория топика"
+
+#: apps/topic/models.py:16
+msgid "TopicCategories"
+msgstr "Категории топиков"
+
+#: apps/topic/models.py:24
+msgid "Topic"
+msgstr "Топик"
+
+#: apps/topic/models.py:25
+msgid "Topics"
+msgstr "Топики"
+
+#: apps/topic/views.py:31 apps/topic/views.py:41 apps/topic/views.py:51
+#, python-format
+msgid "Found %(len)s results "
+msgstr "Найдено %(len)s результатов "
+
+#: apps/topic/views.py:83
+#, python-format
+msgid "In this category found- %(len)s results "
+msgstr "В этой категории найдено- %(len)s результатов "
+
+#: apps/topic/views.py:194
+#, python-format
+msgid "On search \"%(q)s\" found- %(len)s "
+msgstr "По поиску \"%(q)s\" найдено- %(len)s "
+
+#: apps/topic/views.py:205
+#, python-format
+msgid "You have %(len)s locked topics"
+msgstr "Количество заблокированных топиков - %(len)s"
+
+#: apps/topic/views.py:215
+#, python-format
+msgid "Found %(len)s topics on moderation"
+msgstr "Найдено %(len)s статей на модерации "
+
+#: apps/topic/views.py:225
+#, python-format
+msgid "Found %(len)s deleted topics"
+msgstr "Найдено %(len)s удаленных топиков "
+
+#: apps/video/models.py:14
+msgid "Project Name"
+msgstr "Имя проекта"
+
+#: apps/video/models.py:15
+msgid "Project URL"
+msgstr "URL проекта"
+
+#: apps/video/models.py:16
+msgid "Video URL"
+msgstr "URL Видео"
+
+#: apps/video/models.py:17
+msgid "Video Provider"
+msgstr "Видеопровайдер"
+
+#: apps/video/models.py:18 core/admin.py:39 core/admin.py:57 core/models.py:56
+#: core/models.py:292 core/models.py:389
+msgid "Description"
+msgstr "Описание"
+
+#: apps/video/models.py:19
+msgid "Publish date"
+msgstr "Дата публикации"
+
+#: apps/video/models.py:21 core/models.py:61
+msgid "Login required"
+msgstr "Требуется регистрация"
+
+#: apps/video/models.py:21 core/models.py:61
+msgid "Enable this if users must login before access with this objects."
+msgstr ""
+"Включите это, если пользователи должны зарегистрироваться для доступа к "
+"данному объекту"
+
+#: apps/video/models.py:22
+msgid "Slug"
+msgstr "Краткий линк"
+
+#: apps/video/models.py:26
+msgid "Embed code"
+msgstr "Код внедрения"
+
+#: apps/video/models.py:27 core/models.py:44
+msgid "Published"
+msgstr "Опубликовано"
+
+#: apps/video/models.py:33 core/models.py:616
+msgid "Video"
+msgstr "Видео"
+
+#: apps/video/models.py:34
+msgid "Videos"
+msgstr "Видео"
+
+#: apps/video/models.py:38
+#, python-format
+msgid "%s"
+msgstr ""
+
+#: core/admin.py:12 core/admin.py:86 core/admin.py:96 core/admin.py:108
+msgid "nnmware"
+msgstr "Web-движок"
+
+#: core/admin.py:14 core/admin.py:88 core/admin.py:98
+msgid "Meta"
+msgstr "Мета"
+
+#: core/admin.py:87 core/models.py:404
+msgid "Doc"
+msgstr "Документ"
+
+#: core/admin.py:97 core/models.py:445
+msgid "Pic"
+msgstr "Изображение"
+
+#: core/admin.py:133 core/models.py:646
+msgid "Recipient"
+msgstr "Получатель"
+
+#: core/admin.py:135
+msgid "group"
+msgstr "группа"
+
+#: core/admin.py:136
+msgid "Creates the message optionally for all users or a group of users."
+msgstr "Создает опционально сообщение для всех пользователей данной группы."
+
+#: core/admin.py:143
+msgid "All users"
+msgstr "Все пользователи"
+
+#: core/admin.py:158 core/models.py:681
+msgid "Message"
+msgstr "Сообщение"
+
+#: core/admin.py:165
+msgid "Date/time"
+msgstr "Дата/время"
+
+#: core/ajax.py:88
+#, python-format
+msgid "File %s successfully uploaded"
+msgstr "Файл %s успешно загружен "
+
+#: core/ajax.py:122
+#, python-format
+msgid "Image %s successfully uploaded"
+msgstr "Изображение %s успешно загружено "
+
+#: core/ajax.py:158
+#, python-format
+msgid "Avatar %s successfully uploaded"
+msgstr "Аватар %s успешно загружен "
+
+#: core/ajax.py:231
+msgid "Validation failed."
+msgstr "Проверка неуспешна."
+
+#: core/forms.py:19 core/models.py:263
+msgid "Tags"
+msgstr "Тэги"
+
+#: core/forms.py:28
+#, python-format
+msgid "Max number or tags - %s."
+msgstr "Максимальное количество тегов - %s."
+
+#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:538
+msgid "comment"
+msgstr "Комментарий"
+
+#: core/forms.py:96
+msgid "Rotate 90"
+msgstr "Вращать на 90 градусов"
+
+#: core/forms.py:96
+msgid "Rotate 270"
+msgstr "Вращать на 270 градусов"
+
+#: core/forms.py:97
+msgid "Resize"
+msgstr "Изменить размер"
+
+#: core/forms.py:127
+#, python-format
+msgid ""
+"%(ext)s is an invalid file extension. Authorized extensions are : "
+"%(valid_exts_list)s"
+msgstr ""
+
+#: core/forms.py:133
+#, python-format
+msgid ""
+"Your file is too big (%(size)s), the maximum allowed size is "
+"%(max_valid_size)s"
+msgstr ""
+
+#: core/forms.py:140
+#, python-format
+msgid ""
+"You already have %(nb_pic)d image, and the maximum allowed is %(nb_max_pic)d."
+msgstr ""
+
+#: core/models.py:42
+msgid "Deleted"
+msgstr "Удалено"
+
+#: core/models.py:43
+msgid "Locked"
+msgstr "Заблокировано"
+
+#: core/models.py:45
+msgid "Sticky"
+msgstr "Приклеено"
+
+#: core/models.py:46
+msgid "Moderation"
+msgstr "Модерирование"
+
+#: core/models.py:54
+msgid "Title"
+msgstr "Заголовок"
+
+#: core/models.py:55 core/models.py:256
+msgid "URL"
+msgstr "URL"
+
+#: core/models.py:57 core/models.py:540
+msgid "Status"
+msgstr "Статус"
+
+#: core/models.py:58 core/models.py:388
+msgid "Author"
+msgstr "Автор"
+
+#: core/models.py:59 core/models.py:387
+msgid "Published from"
+msgstr "Опубликовано от"
+
+#: core/models.py:59
+msgid "With published checked, won't be shown until this time"
+msgstr "С датой публикации не будет показываться до этого времени"
+
+#: core/models.py:60
+msgid "Updated date"
+msgstr "Дата обновления"
+
+#: core/models.py:62
+msgid "allow comments"
+msgstr "разрешить комментарии"
+
+#: core/models.py:63
+msgid "allow pics"
+msgstr "разрешить картинки"
+
+#: core/models.py:64
+msgid "allow docs"
+msgstr "разрешить документы"
+
+#: core/models.py:70
+msgid "MetaData"
+msgstr "Метаданное"
+
+#: core/models.py:71
+msgid "MetaDatas"
+msgstr "Метаданные"
+
+#: core/models.py:143 core/models.py:336
+msgid "View on site"
+msgstr "Смотреть на сайте"
+
+#: core/models.py:153
+msgid "Parent"
+msgstr "Родитель"
+
+#: core/models.py:154 core/models.py:391
+msgid "Ordering"
+msgstr "Упорядочить"
+
+#: core/models.py:154
+msgid "Override alphabetical order in tree display"
+msgstr "Заменять сортировку по алфавиту в просмотре дерева"
+
+#: core/models.py:155
+msgid "Root node"
+msgstr "Корневой узел"
+
+#: core/models.py:159
+msgid "Tree"
+msgstr "Дерево"
+
+#: core/models.py:160
+msgid "Trees"
+msgstr "Деревья"
+
+#: core/models.py:192
+msgid "Tree parents"
+msgstr "Родитель дерева"
+
+#: core/models.py:213 core/models.py:216
+msgid "You must not save a category in itself!"
+msgstr "Вы не можете сохранить категорию в саму себя!"
+
+#: core/models.py:262 core/models.py:617
+msgid "Tag"
+msgstr "Теги"
+
+#: core/models.py:291
+msgid "Enabled in system"
+msgstr "Включено в системе"
+
+#: core/models.py:293
+msgid "Description(English)"
+msgstr "Описание(Английский)"
+
+#: core/models.py:294
+msgid "URL-identifier"
+msgstr "URL-идентификатор"
+
+#: core/models.py:295
+msgid "Order in list"
+msgstr "Очередность в списке"
+
+#: core/models.py:314
+msgid "object ID"
+msgstr "ID объекта"
+
+#: core/models.py:316
+msgid "Is primary"
+msgstr "Основной"
+
+#: core/models.py:352
+msgid "Longitude"
+msgstr "Долгота"
+
+#: core/models.py:353
+msgid "Latitude"
+msgstr "Широта"
+
+#: core/models.py:381 core/models.py:400
+msgid "File"
+msgstr "Файл"
+
+#: core/models.py:382 core/models.py:438
+msgid "Image"
+msgstr "Изображение"
+
+#: core/models.py:391
+msgid "Override alphabetical order in list display"
+msgstr "Заменять сортировку по алфавиту в просмотре списка"
+
+#: core/models.py:392
+msgid "Is locked"
+msgstr "Блокировано"
+
+#: core/models.py:399
+msgid "Doc type"
+msgstr "Тип документа"
+
+#: core/models.py:405
+msgid "Docs"
+msgstr "Документы"
+
+#: core/models.py:439
+msgid "Source"
+msgstr "Источник"
+
+#: core/models.py:446
+msgid "Pics"
+msgstr "Изображения"
+
+#: core/models.py:449
+#, python-format
+msgid "Pic for %(type)s: %(obj)s"
+msgstr "Изображение для %(type)s: %(obj)s"
+
+#: core/models.py:535
+msgid "date/time published"
+msgstr "дата/время публикации"
+
+#: core/models.py:536
+msgid "date/time updated"
+msgstr "дата/время обновления"
+
+#: core/models.py:542
+msgid "IP address"
+msgstr "IP адрес"
+
+#: core/models.py:581
+msgid "Threaded Comment"
+msgstr "Древовидный комментарий"
+
+#: core/models.py:582
+msgid "Threaded Comments"
+msgstr "Древовидные комментарии"
+
+#: core/models.py:600
+msgid "Follow"
+msgstr "Следование"
+
+#: core/models.py:601
+msgid "Follows"
+msgstr "Следования"
+
+#: core/models.py:615 core/models.py:690
+msgid "System"
+msgstr "Система"
+
+#: core/models.py:618
+msgid "Account"
+msgstr "Аккаунт"
+
+#: core/models.py:628
+msgid "Notice Type"
+msgstr "Тип уведомления"
+
+#: core/models.py:636
+msgid "Notice"
+msgstr "Уведомление"
+
+#: core/models.py:637
+msgid "Notices"
+msgstr "Уведомления"
+
+#: core/models.py:643
+msgid "Subject"
+msgstr "Тема"
+
+#: core/models.py:644
+msgid "Body"
+msgstr "Содержание"
+
+#: core/models.py:645
+msgid "Sender"
+msgstr "Отправитель"
+
+#: core/models.py:647
+msgid "Parent message"
+msgstr "Родительское сообщениe"
+
+#: core/models.py:648
+msgid "sent at"
+msgstr "отослано в"
+
+#: core/models.py:649
+msgid "read at"
+msgstr "прочитано в"
+
+#: core/models.py:650
+msgid "replied at"
+msgstr "отвечено в"
+
+#: core/models.py:651
+msgid "Sender deleted at"
+msgstr "Отправитель удален в"
+
+#: core/models.py:652
+msgid "Recipient deleted at"
+msgstr "Получатель удален в"
+
+#: core/models.py:682
+msgid "Messages"
+msgstr "Сообщения"
+
+#: core/models.py:698
+msgid "Action Type"
+msgstr "Тип действия"
+
+#: core/models.py:705
+msgid "Action"
+msgstr "Действие"
+
+#: core/models.py:706
+msgid "Actions"
+msgstr "Действия"
+
+#: core/views.py:366
+msgid "Successfully uploaded a new image."
+msgstr "Новая картинка успешно загружена"
+
+#: core/widgets.py:37 core/widgets.py:67
+msgid "Change:"
+msgstr "Изменить:"
+
+#: core/widgets.py:39 core/widgets.py:67
+msgid "Delete"
+msgstr "Удалить"
+
+#: core/templatetags/jmail_tags.py:38
+msgid "<me>"
+msgstr ""
+
+#: core/templatetags/thumbnail.py:139
+msgid ""
+"You have to provide only the size as             an integer (both sides will "
+"be equal) and optionally, the             username."
+msgstr ""
+"Вам необходимо указать только размер целым числом (обе стороны будут "
+"одинаковы) и, необязательно, имя пользователя."
+
+#~ msgid "ago"
+#~ msgstr "назад"
+
+#~ msgid "Comment:"
+#~ msgstr "Комментарий:"
+
+#~ msgid "Submit Comment"
+#~ msgstr "Прокомментировать"
+
+#~ msgid "Reply to original"
+#~ msgstr "Ответить на топик"
+
+#~ msgid "Reply"
+#~ msgstr "Ответить"
+
+#~ msgid "View account of"
+#~ msgstr "Просмотр аккаунта "
+
+#~ msgid "You may view, reply or delete this messages"
+#~ msgstr "Вы можете просмотреть, ответить или удалить данные сообщения"
+
+#~ msgid "Message:"
+#~ msgstr "Сообщение:"
+
+#~ msgid "New Message"
+#~ msgstr "Новое сообщение"
+
+#~ msgid "Cloud of Tags"
+#~ msgstr "Облаго тегов"
+
+#~ msgid "Thanks for spending some quality time with the Web site today."
+#~ msgstr "Спасибо за потраченное сегодня время на нашем сайте"
+
+#~ msgid "Login data"
+#~ msgstr "Данные входа"
+
+#~ msgid "You Loved Video"
+#~ msgstr "Ваше любимое видео"
+
+#~ msgid "Send message"
+#~ msgstr "Послать сообщение"
+
+#~ msgid "You Profile"
+#~ msgstr "Ваш Профиль"
+
+#~ msgid "Avatar:"
+#~ msgstr "Аватар:"
+
+#~ msgid "Crop &amp; resize the area you want"
+#~ msgstr "Обрежьте &amp; измените размер области которую Вы хотите"
+
+#~ msgid "Crop"
+#~ msgstr "Обрезать"
+
+#~ msgid "Profile:"
+#~ msgstr "Профиль:"
+
+#~ msgid "Password:"
+#~ msgstr "Пароль:"
+
+#~ msgid "Done"
+#~ msgstr "Далее"
+
+#~ msgid "Select File"
+#~ msgstr "Выберите файл"
+
+#~ msgid "Upload"
+#~ msgstr "Загрузить"
+
+#~ msgid "Cancel"
+#~ msgstr "Отмена"
+
+#~ msgid "USER:"
+#~ msgstr "ПОЛЬЗОВАТЕЛЬ:"
+
+#~ msgid "Added"
+#~ msgstr "Добавлено"
+
+#~ msgid "Loved"
+#~ msgstr "Любимые"
+
+#~ msgid "Followers"
+#~ msgstr "Следуют"
+
+#~ msgid "Activity"
+#~ msgstr "Активность"
+
+#~ msgid "Add&nbsp;Video"
+#~ msgstr "Добавить&nbsp;видео"
+
+#~ msgid "Users"
+#~ msgstr "Пользователи"
+
+#~ msgid "Forum"
+#~ msgstr "Форум"
+
+#~ msgid "Images"
+#~ msgstr "Картинки"
+
+#~ msgid "Files"
+#~ msgstr "Файлы"
+
+#~ msgid "Logout"
+#~ msgstr "Выйти"
+
+#~ msgid "Registration"
+#~ msgstr "Регистрация"
+
+#~ msgid "Login"
+#~ msgstr "Войти"
+
+#~ msgid "Site messages"
+#~ msgstr "Сообщения сайта"
+
+#~ msgid "Powered by "
+#~ msgstr "Поверед бай "
+
+#~ msgid "site engine v 0.001"
+#~ msgstr "просто движок сайта 0.0001"
+
+#~ msgid "Big Tux"
+#~ msgstr "Большой Пингвин"
+
+#~ msgid "previous"
+#~ msgstr "назад"
+
+#~ msgid "next"
+#~ msgstr "далее"
+
+#~ msgid "Smiles"
+#~ msgstr "Смайлы"
+
+#~ msgid "Hide Smiles"
+#~ msgstr "Скрыть смайлы"
+
+#~ msgid "Profile editing"
+#~ msgstr "Редактирование профиля"
+
+#~ msgid "Submit"
+#~ msgstr "Ок"
+
+#~ msgid "search of user..."
+#~ msgstr "поиск пользователя..."
+
+#~ msgid "E-mail change"
+#~ msgstr "Смена адреса эл.почты"
+
+#~ msgid "Add e-mail"
+#~ msgstr "Добавить адрес эл.почты"
+
+#~ msgid "Attention! This e-mail used only for site services. It's no public."
+#~ msgstr ""
+#~ "Внимание! Адрес эл.почты, введенный здесь, используется только для "
+#~ "сервисов сайта. Он не доступен для просмотра другим пользователям."
+
+#~ msgid "Send confirmation"
+#~ msgstr "Послать подтверждение"
+
+#~ msgid "E-mail address validated successfully"
+#~ msgstr "Адрес эл.почты проверен успешно"
+
+#~ msgid ""
+#~ "The key you received via e-mail is no longer valid. Please try the e-mail "
+#~ "validation process again"
+#~ msgstr ""
+#~ "Ключ, полученный Вами по эл.почте больше недействителен. Пожалуйста "
+#~ "попробуйте проверку адреса эл.почты снова"
+
+#~ msgid "E-mail change processed"
+#~ msgstr "Замена адреса эл.почты в процессе"
+
+#~ msgid ""
+#~ "An e-mail has been sent to the new e-mail address to verify and activate "
+#~ "it. Please access to your e-mail and complete this process following the "
+#~ "instructions specified in the e-mail body"
+#~ msgstr ""
+#~ "На новый адрес эл.почты отослано новое сообщение для проверки и его "
+#~ "активации. Пожалуйста проверьте ящик и закончите процесс, в соответствии "
+#~ "с инструкциями, указанными в теле сообщения"
+
+#~ msgid "We've e-mailed you the e-mail validation link"
+#~ msgstr "Мы отправили Вам на почту ссылку для проверки"
+
+#~ msgid "Your e-mail was already validated"
+#~ msgstr "Ваш адрес эл.почты уже проверен"
+
+#~ msgid "Password reset"
+#~ msgstr "Сброс пароля"
+
+#~ msgid "Attention! Password reset"
+#~ msgstr "Внимание! Сброс пароля"
+
+#~ msgid "Reset my password"
+#~ msgstr "Сбросить мой пароль"
+
+#~ msgid "Your password has been set.  You may go ahead and log in now."
+#~ msgstr "Ваш пароль установлен. Вы можете сейчас вернуться и войти."
+
+#~ msgid "Attention!"
+#~ msgstr "Внимание!"
+
+#~ msgid "Change"
+#~ msgstr "Изменить"
+
+#~ msgid "Password reset unsuccessful"
+#~ msgstr "Сброс пароля неуспешен"
+
+#~ msgid ""
+#~ "The password reset link was invalid, possibly because it has already been "
+#~ "used.  Please request a new password reset."
+#~ msgstr ""
+#~ "Ссылка сброса пароля неверна, возможно потому что она уже была "
+#~ "использована. Пожалуйста запросите новый сброс пароля."
+
+#~ msgid "Password reset successful"
+#~ msgstr "Сброс пароля успешен"
+
+#~ msgid ""
+#~ "We've e-mailed you the instructions to obtain a new password. You should "
+#~ "be receiving it shortly"
+#~ msgstr ""
+#~ "Вы отправили Вам инструкцию для получения нового пароля. Вы должны "
+#~ "получить его в ближайшее время"
+
+#~ msgid "Registration complete"
+#~ msgstr "Регистрация окончена"
+
+#~ msgid "An email with activation instructions was sent to you"
+#~ msgstr "Инструкция по активации аккаунта отослана Вам на почту."
+
+#~ msgid "You're receiving this e-mail because you requested a password reset"
+#~ msgstr ""
+#~ "Вы получили это сообщение, потому что Вами был запрошен сброс пароля"
+
+#~ msgid "for your user account at %(site_name)s"
+#~ msgstr "для пользовательского аккаунта на %(site_name)s"
+
+#~ msgid "Please go to the following page and choose a new password:"
+#~ msgstr "Пожалуйста войдите на следующую страницу и выберите новый пароль:"
+
+#~ msgid "Your username, in case you've forgotten:"
+#~ msgstr "Ваше имя пользователя, если Вы забыли:"
+
+#~ msgid "Thanks for using our site!"
+#~ msgstr "Спасибо за использование нашего сайта!"
+
+#~ msgid "The %(site_name)s team"
+#~ msgstr "Команда %(site_name)s"
+
+#, fuzzy
+#~ msgid ""
+#~ "You're receiving this e-mail because you requested an e-mail validation "
+#~ "at %(site_name)s"
+#~ msgstr ""
+#~ "Вы получили это сообщение, потому что Вами был запрошен сброс пароля"
+
+#, fuzzy
+#~ msgid "Email validation for %(site_name)s"
+#~ msgstr "Адрес эл.почты в процессе проверки для %(user)s"
+
+#~ msgid "Change avatar"
+#~ msgstr "Изменить аватар"
+
+#~ msgid "Add avatar"
+#~ msgstr "Добавить аватар"
+
+#~ msgid "Edit your Nickname"
+#~ msgstr "Редактировать ник"
+
+#~ msgid "Attention! First Name+Last Name=You Site Nickname."
+#~ msgstr "Внимание! Имя+Фамилия=Ник на сайте."
+
+#~ msgid "%(user)s's Dashboard"
+#~ msgstr "%(user)s's Панель"
+
+#~ msgid "Your secure information has been updated successfully"
+#~ msgstr "Информация Вашего профиля успешно обновлена"
+
+#~ msgid "Accept"
+#~ msgstr "Принято"
+
+#~ msgid "Reject"
+#~ msgstr "Отвергнуто"
+
+#~ msgid "Read this article"
+#~ msgstr "Прочитать эту статью"
+
+#~ msgid "Posted on"
+#~ msgstr "Отправлено в"
+
+#~ msgid "by"
+#~ msgstr "by"
+
+#~ msgid "View articles posted by"
+#~ msgstr "Просмотр статей отправленных в"
+
+#~ msgid "Read other articles by this author"
+#~ msgstr "Читать другие статьи этого автора"
+
+#~ msgid "Comments"
+#~ msgstr "Комментарии"
+
+#~ msgid "Word Count"
+#~ msgstr "Количество слов"
+
+#~ msgid "Next"
+#~ msgstr "Далее"
+
+#~ msgid "Previous"
+#~ msgstr "Ранее"
+
+#~ msgid "Pictures"
+#~ msgstr "Картинки"
+
+#~ msgid "Information"
+#~ msgstr "Информация"
+
+#~ msgid "Next Articles"
+#~ msgstr "Следующая статья"
+
+#~ msgid "Previous Articles"
+#~ msgstr "Предыдущая статья"
+
+#~ msgid "Add image"
+#~ msgstr "Добавить картинку"
+
+#~ msgid "Add document"
+#~ msgstr "Добавить документ"
+
+#~ msgid "Info summary about article:"
+#~ msgstr "Общая информация о статье:"
+
+#~ msgid "Words count"
+#~ msgstr "Количество слов"
+
+#~ msgid "Continue Reading"
+#~ msgstr "Читать далее"
+
+#~ msgid "Add article"
+#~ msgstr "Добавить статью"
+
+#~ msgid "Administrator"
+#~ msgstr "Администратор"
+
+#~ msgid "Edit article"
+#~ msgstr "Редактировать статью"
+
+#~ msgid "Edit"
+#~ msgstr "Редактировать"
+
+#~ msgid "Status of article"
+#~ msgstr "Статус статьи"
+
+#~ msgid "Editor"
+#~ msgstr "Редактор"
+
+#~ msgid "Articles Tagged"
+#~ msgstr "Тегированные статьи"
+
+#~ msgid "page"
+#~ msgstr "страница"
+
+#~ msgid "Other info"
+#~ msgstr "Другая информация"
+
+#~ msgid "Status information"
+#~ msgstr "Статусная информация"
+
+#~ msgid "Attachments"
+#~ msgstr "Приложения"
+
+#~ msgid "search in articles..."
+#~ msgstr "поиск в статьях..."
+
+#~ msgid "Dates"
+#~ msgstr "Даты"
+
+#~ msgid "Sections"
+#~ msgstr "Разделы"
+
+#~ msgid "My"
+#~ msgstr "Мои"
+
+#~ msgid "New"
+#~ msgstr "Новые"
+
+#~ msgid "Updated"
+#~ msgstr "Обновленные"
+
+#~ msgid "Popular"
+#~ msgstr "Популярные"
+
+#~ msgid "Moderated"
+#~ msgstr "Модерирование"
+
+#~ msgid "Reply count"
+#~ msgstr "Ответов"
+
+#~ msgid "View articles written by"
+#~ msgstr "Смотреть статьи написанные"
+
+#~ msgid "Add"
+#~ msgstr "Добавить"
+
+#~ msgid "change"
+#~ msgstr "изменить"
+
+#~ msgid "delete"
+#~ msgstr "удалить"
+
+#~ msgid "Add board"
+#~ msgstr "Добавить объявление"
+
+#~ msgid "search in boards..."
+#~ msgstr "искать в объявлениях"
+
+#~ msgid "Created"
+#~ msgstr "Создано"
+
+#~ msgid "E-mail"
+#~ msgstr "Адрес эл.почты:"
+
+#~ msgid "E-Mail"
+#~ msgstr "Адрес эл.почты:"
+
+#~ msgid "Lock"
+#~ msgstr "Заблокировать"
+
+#~ msgid "Unlock"
+#~ msgstr "Разблокировать"
+
+#~ msgid "Click to see day archive"
+#~ msgstr "Дневной архив"
+
+#~ msgid "Click to see month archive"
+#~ msgstr "Месячный архив"
+
+#~ msgid "Click to see year archive"
+#~ msgstr "Годовой архив"
+
+#~ msgid "Management:"
+#~ msgstr "Менеджмент:"
+
+#~ msgid "Add comment"
+#~ msgstr "Добавить комментарий"
+
+#~ msgid "Comment this"
+#~ msgstr "Прокомментировать"
+
+#~ msgid "Edit comment"
+#~ msgstr "Редактировать комментарий"
+
+#~ msgid "Status of comment"
+#~ msgstr "Статус комментария"
+
+#~ msgid "Inbox"
+#~ msgstr "Входящие"
+
+#~ msgid "Sent"
+#~ msgstr "Отослано"
+
+#~ msgid "Sent Messages"
+#~ msgstr "Отосланные"
+
+#~ msgid "Trash"
+#~ msgstr "Корзина"
+
+#~ msgid "Add message"
+#~ msgstr "Добавить сообщение"
+
+#~ msgid "Site mail"
+#~ msgstr "Сообщения сайта"
+
+#~ msgid "search in messages..."
+#~ msgstr "поиск в собщениях..."
+
+#, fuzzy
+#~ msgid ""
+#~ "Hello %(recipient)s,\n"
+#~ "\n"
+#~ "    you received a private message from %(sender)s with\n"
+#~ "    the following contents:"
+#~ msgstr ""
+#~ "Здравствуйте %(recipient)s,\n"
+#~ "\n"
+#~ "Вы получили личное сообщение от %(sender)s со\n"
+#~ "следующим содержанием:"
+
+#~ msgid "Sent from %(site_url)s"
+#~ msgstr "Отослано с %(site_url)s"
+
+#~ msgid "Recover"
+#~ msgstr "Восстановить"
+
+#~ msgid "Deleted Messages"
+#~ msgstr "Удаленные сообщения"
+
+#~ msgid ""
+#~ "Deleted Messages are removed from the trash at unregular intervals, don't "
+#~ "rely on this feature for long-time storage."
+#~ msgstr ""
+#~ "Удаленные сообщения удаляются из корзины с нерегулярными интервалами,не "
+#~ "используйте эту возможность для длительного хранения."
+
+#~ msgid "View Message"
+#~ msgstr "Смотреть сообщение"
+
+#, fuzzy
+#~ msgid "You have deleted the message '%(message)s'."
+#~ msgstr "вы удалили сообщение"
+
+#, fuzzy
+#~ msgid ""
+#~ "You have deleted the message <a\n"
+#~ "        href=\"%(message_url)s\">%(message)s</a>."
+#~ msgstr "Вы удалили сообщение <a href=\"%(message_url)s\">%(message)s</a>."
+
+#, fuzzy
+#~ msgid ""
+#~ "%(message_sender)s has sent you a message:\n"
+#~ "\n"
+#~ "%(message)s\n"
+#~ "\n"
+#~ "%(message_body)s\n"
+#~ "\n"
+#~ "http://%(current_site)s%(message_url)s"
+#~ msgstr "%(message_sender)s послал Вам ответ на %(message_parent_msg)s."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have received the message\n"
+#~ "    <a href=\"%(message_url)s\">%(message)s</a> from %(message_sender)s."
+#~ msgstr ""
+#~ "Вы получили сообщение <a href=\"%(message_url)s\">%(message)s</a> от "
+#~ "%(message_sender)s."
+
+#, fuzzy
+#~ msgid "You have recovered the message '%(message)s'."
+#~ msgstr ""
+#~ "Вы восстановили сообщение <a href=\"%(message_url)s\">%(message)s</a>."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have recovered the message <a\n"
+#~ "        href=\"%(message_url)s\">%(message)s</a>."
+#~ msgstr ""
+#~ "Вы восстановили сообщение <a href=\"%(message_url)s\">%(message)s</a>."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have replied to '%(message_parent_msg)s' from %(message_recipient)s."
+#~ msgstr ""
+#~ "Вы ответили на <a href=\"%(message_url)s\">%(message_parent_msg)s</a> от "
+#~ "%(message_recipient)s."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have replied to\n"
+#~ "    <a href=\"%(message_url)s\">%(message_parent_msg)s</a> from "
+#~ "%(message_recipient)s."
+#~ msgstr ""
+#~ "Вы ответили на <a href=\"%(message_url)s\">%(message_parent_msg)s</a> от "
+#~ "%(message_recipient)s."
+
+#~ msgid "%(message_sender)s has sent you a reply to %(message_parent_msg)s."
+#~ msgstr "%(message_sender)s послал Вам ответ на %(message_parent_msg)s."
+
+#, fuzzy
+#~ msgid "You have sent the message '%(message)s' to %(message_recipient)s."
+#~ msgstr ""
+#~ "Вы послали сообщение <a href=\"%(message_url)s\">%(message)s</a> для "
+#~ "%(message_recipient)s."
+
+#, fuzzy
+#~ msgid ""
+#~ "You have sent the message\n"
+#~ "    <a href=\"%(message_url)s\">%(message)s</a> to %(message_recipient)s."
+#~ msgstr ""
+#~ "Вы послали сообщение <a href=\"%(message_url)s\">%(message)s</a> для "
+#~ "%(message_recipient)s."
+
+#~ msgid "Password change successful"
+#~ msgstr "Смена пароля успешна"
+
+#~ msgid "Your password was changed."
+#~ msgstr "Ваш пароль изменен"
+
+#~ msgid "Password change"
+#~ msgstr "Смена пароля"
+
+#~ msgid ""
+#~ "Please enter your old password, for security's sake, and then enter your "
+#~ "new password twice so we can verify you typed it in correctly."
+#~ msgstr ""
+#~ "Пожалуйста введите Ваш старый пароль, для безопасности, и затем введите "
+#~ "Ваш новый пароль дважды, чтобы мы могли проверить корректность его ввода."
+
+#~ msgid "Change my password"
+#~ msgstr "Изменить мой пароль"
+
+#~ msgid "Password reset complete"
+#~ msgstr "Сброс пароля окончен"
+
+#~ msgid "Log in"
+#~ msgstr "Войти"
+
+#~ msgid "Enter new password"
+#~ msgstr "Введите новый пароль"
+
+#~ msgid ""
+#~ "Please enter your new password twice so we can verify you typed it in "
+#~ "correctly."
+#~ msgstr ""
+#~ "Пожалуйста введите Ваш новый пароль дважды, чтобы мы могли проверить "
+#~ "корректность его ввода."
+
+#~ msgid ""
+#~ "We've e-mailed you instructions for setting your password to the e-mail "
+#~ "address you submitted. You should be receiving it shortly."
+#~ msgstr ""
+#~ "Мы отправили Вам инструкцию для установки нового пароля на адрес эл.почты "
+#~ "который Вы ввели. Вы должны получить ее в ближайшее время."
+
+#~ msgid ""
+#~ "Forgotten your password? Enter your e-mail address below, and we'll e-"
+#~ "mail instructions for setting a new one."
+#~ msgstr ""
+#~ "Забыли Ваш пароль? Введите ниже адрес эл.почты, и мы отправим на него "
+#~ "инструкцию для установки нового."
+
+#~ msgid "Add topic"
+#~ msgstr "Добавить топик"
+
+#~ msgid "Edit topic"
+#~ msgstr "Изменить топик"
+
+#~ msgid "Status of topic"
+#~ msgstr "Статус топика"
+
+#~ msgid "Are you sure that you would like to delete this comment?"
+#~ msgstr "Вы действительно уверены что хотите удалить данный комментарий?"
+
+#~ msgid "Yes"
+#~ msgstr "Да"
+
+#~ msgid "No"
+#~ msgstr "Нет"
+
+#~ msgid "Stop Replying"
+#~ msgstr "Отменить ответ"
+
+#~ msgid "Main info"
+#~ msgstr "Основная информация"
+
+#~ msgid "Content of topic"
+#~ msgstr "Содержимое топика"
+
+#~ msgid "Add topic:"
+#~ msgstr "Добавить топик:"
+
+#~ msgid "search on topics..."
+#~ msgstr "поиск в топиках..."
+
+#~ msgid "Read this topic"
+#~ msgstr "Прочитать этот топик"
+
+#~ msgid "search in files..."
+#~ msgstr "поиск в файлах..."
+
+#~ msgid "All available files:"
+#~ msgstr "Все доступные файлы:"
+
+#~ msgid "Edit file"
+#~ msgstr "Редактировать файл"
+
+#~ msgid "Delete file"
+#~ msgstr "Удалить файл"
+
+#~ msgid "Summary size of attached files:"
+#~ msgstr "Общий размер прикрепленных файлов:"
+
+#~ msgid "Back to parent object"
+#~ msgstr "Назад к родительскому объекту"
+
+#~ msgid "search in images..."
+#~ msgstr "поиск в картинках..."
+
+#~ msgid "All available images:"
+#~ msgstr "Все доступные изображения"
+
+#~ msgid "View image"
+#~ msgstr "Смотреть картинку"
+
+#~ msgid "Edit image"
+#~ msgstr "Редактировать картинку"
+
+#~ msgid "Delete image"
+#~ msgstr "Удалить изображение"
+
+#~ msgid "Summary size of attached images:"
+#~ msgstr "Общий размер прикрепленных изображений:"
+
+#~ msgid "Avatar selection page"
+#~ msgstr "Страница выбора аватара"
+
+#~ msgid ""
+#~ "You have several options to select the image you want as avatar on your "
+#~ "account"
+#~ msgstr ""
+#~ "Вы имеете несколько опций для выбора изображения, которое хотите "
+#~ "использовать как аватар в Вашем профиле"
+
+#~ msgid "Avatar selection finished"
+#~ msgstr "Выбор аватара окончен"
+
+#~ msgid "Your new avatar has been saved successfully"
+#~ msgstr "Ваш новый аватар успешно сохранен"
+
+#~ msgid "Change password"
+#~ msgstr "Изменить пароль"
+
+#~ msgid "Edit personal information"
+#~ msgstr "Редактировать персональную информацию"
+
+#~ msgid "Edit personal"
+#~ msgstr "Персональные"
+
+#~ msgid "Edit avatar"
+#~ msgstr "Аватар"
+
+#~ msgid "search on usernames..."
+#~ msgstr "поиск пользователя..."
+
+#~ msgid "Men"
+#~ msgstr "Мужчины"
+
+#~ msgid "Women"
+#~ msgstr "Женщины"
+
+#~ msgid "Log in again"
+#~ msgstr "Войти снова"
+
+#~ msgid "Contact info"
+#~ msgstr "Контактная информация"
+
+#~ msgid "Contact info2"
+#~ msgstr "Контактная информация2"
+
+#~ msgid "The password has been changed successfully"
+#~ msgstr "Пароль успешно изменен"
+
+#~ msgid "User registration"
+#~ msgstr "Регистрация пользователя"
+
+#~ msgid "Password"
+#~ msgstr "Пароль"
+
+#~ msgid "Antibot"
+#~ msgstr "Антиспам"
+
+#~ msgid "Full name of the user"
+#~ msgstr "Полное имя пользователя"
+
+#~ msgid "User homepage"
+#~ msgstr "Домашняя страница пользователя"
+
+#~ msgid "Homepage"
+#~ msgstr "Домашняя страница"
+
+#~ msgid "Birthday of User"
+#~ msgstr "Дата рождения пользователя"
+
+#~ msgid "Birthday"
+#~ msgstr "Дата рождения"
+
+#~ msgid "Email of User"
+#~ msgstr "Электронная почта пользователя"
+
+#~ msgid "Contact info for User"
+#~ msgstr "Контактная информация для пользователя"
+
+#~ msgid "ICQ of user"
+#~ msgstr "ICQ пользователя"
+
+#~ msgid "Jabber"
+#~ msgstr "Джаббер"
+
+#~ msgid "Skype"
+#~ msgstr "Скайп"
+
+#~ msgid "Mobile phone"
+#~ msgstr "Мобильный телефон"
+
+#~ msgid "Work phone"
+#~ msgstr "Рабочий телефон"
+
+#~ msgid "User added info"
+#~ msgstr "Добавленная пользователем информация"
+
+#~ msgid "Site statistics for this user"
+#~ msgstr "Стастистика сайта для данного пользователя"
+
+#~ msgid "Date of registration"
+#~ msgstr "Дата регистрации пользователя"
+
+#~ msgid "Time of last login"
+#~ msgstr "Время последнего входа"
+
+#~ msgid "Date of last login"
+#~ msgstr "Дата последнего входа"
+
+#~ msgid "Total articles"
+#~ msgstr "Всего статей"
+
+#~ msgid "Total boards"
+#~ msgstr "Всего объявлений"
+
+#~ msgid "Total topics"
+#~ msgstr "Всего топиков"
+
+#~ msgid "Total comments"
+#~ msgstr "Всего комментариев"
+
+#~ msgid "Total files"
+#~ msgstr "Всего файлов"
+
+#~ msgid "Total images"
+#~ msgstr "Всего изображений"
+
+#~ msgid "Site users"
+#~ msgstr "Пользователи сайта"
+
+#~ msgid "Comfort"
+#~ msgstr "Комфорт"
+
+#~ msgid "Price"
+#~ msgstr "Стоимость"
+
+#~ msgid "Found %(len)s users"
+#~ msgstr "Найдено %(len)s пользователей "
+
+#~ msgid "Found %(len)s tags"
+#~ msgstr "Найдено %(len)s тегов "
+
+#~ msgid "UNFOLLOW"
+#~ msgstr "НЕ СЛЕДОВАТЬ"
+
+#~ msgid "FOLLOW"
+#~ msgstr "СЛЕДОВАТЬ"
+
+#~ msgid "View my actions"
+#~ msgstr "Просмотр моих действий"
+
+#~ msgid "You homepage"
+#~ msgstr "Ваша домашняя страница"
+
+#~ msgid "Automatically subscribe"
+#~ msgstr "Автоматически подписываться"
+
+#~ msgid "Automatically subscribe to topics that you answer"
+#~ msgstr "Автоматически подписываться на топики, на которые вы отвечали"
+
+#~ msgid "Avatars"
+#~ msgstr "Аватары"
+
+#~ msgid "%s's Avatar"
+#~ msgstr "%s's аватара"
+
+#~ msgid "The following usernames are incorrect: %(users)s"
+#~ msgstr "Следующие имена пользователей неверны: %(users)s"
+
+#~ msgid "New Message: %(title)s"
+#~ msgstr "Новое сообщение: %(title)s"
+
+#~ msgid "Message successfully sent."
+#~ msgstr "Сообщение успешно отослано."
+
+#~ msgid "The board you have requested does not exist. %s "
+#~ msgstr "Запрошенное Вами объявление не существует. %s "
+
+#~ msgid "Tagged item"
+#~ msgstr "Тегированый объект"
+
+#~ msgid "Tagged items"
+#~ msgstr "Тегированные объекты"
+
+#~ msgid "Please, secure you password!"
+#~ msgstr "Пожалуйста, не теряйте пароль!"
+
+#~ msgid "Repeat you password"
+#~ msgstr "Повторите пароль"
+
+#~ msgid "You must type the same password each time"
+#~ msgstr "Необходимо вводить пароль каждый раз"
+
+#~ msgid "Please login to site!"
+#~ msgstr "Пожалуйста войдите на сайт!"
+
+#~ msgid "Username or password are incorrect!"
+#~ msgstr "Имя пользователя или пароль неверны!"
+
+#~ msgid "Attention! Username- is NOT you nickname on site"
+#~ msgstr ""
+#~ "Внимание! Имя пользователя- это НЕ ник на сайте. Используется для входа и "
+#~ "ссылки на профиль."
+
+#~ msgid "Authorization"
+#~ msgstr "Авторизация"
+
+#~ msgid "User login"
+#~ msgstr "Вход пользователя"
+
+#~ msgid "Attention! It's private area"
+#~ msgstr "Внимание! Это закрытая область."
+
+#~ msgid "Save"
+#~ msgstr "Сохранить"
+
+#~ msgid "Birthdate"
+#~ msgstr "Дата рождения"
+
+#~ msgid "ForumCategory"
+#~ msgstr "Категория форума"
+
+#~ msgid "ForumCategories"
+#~ msgstr "Категории форума"
+
+#~ msgid "On moderation"
+#~ msgstr "на модерировании"
+
+#~ msgid "Panel"
+#~ msgstr "Панель"
+
+#~ msgid "Picture"
+#~ msgstr "Изображение"
+
+#~ msgid "Optional caption"
+#~ msgstr "Опциональная подпись"
+
+#~ msgid "Sort Order"
+#~ msgstr "Порядок сортировки"
+
+#~ msgid "Board Image"
+#~ msgstr "Изображение объявления"
+
+#~ msgid "Board Images"
+#~ msgstr "Изображения объявления"
+
+#~ msgid "Data edit mode %s."
+#~ msgstr "Режим редактирования данных %s."
+
+#~ msgid "Board %s sucessfully changed "
+#~ msgstr "Объявление %s успешно изменено "
+
+#~ msgid "Add file"
+#~ msgstr "Добавить файл"
+
+#~ msgid "Is main"
+#~ msgstr "Основной"
+
+#~ msgid "Enter"
+#~ msgstr "Вход"
+
+#~ msgid "Password change for"
+#~ msgstr "Изменение пароля для"
+
+#~ msgid "Attention! Please secure you password"
+#~ msgstr "Пожалуйста, сохраняйте Ваш пароль в безопасности!"
+
+#~ msgid "Choose the location of your avatar"
+#~ msgstr "Выберите расположение вашей аватары"
+
+#~ msgid "Select an image from disk"
+#~ msgstr "Выберите файл с диска"
+
+#~ msgid "Nickname"
+#~ msgstr "Ник"
+
+#~ msgid "Board %(board)s sucessfully unlock. %(date)s"
+#~ msgstr "Объявление %(board)s успешно разблокировано. %(date)s "
+
+#~ msgid "Board %(board)s sucessfully lock. %(date)s"
+#~ msgstr "Объявление %(board)s успешно заблокировано. %(date)s "
+
+#~ msgid "Board %(board)s sucessfully deleted. %(date)s"
+#~ msgstr "Объявление %(board)s успешно удалено. %(date)s "
+
+#~ msgid "You dont have access for this operation. %(date)s "
+#~ msgstr "Вы не имеете доступа для выполнения данной операции. %(date)s "
+
+#~ msgid "Single line text"
+#~ msgstr "Текст в одну линию"
+
+#~ msgid "Multi line text"
+#~ msgstr "Текст в несколько линий"
+
+#~ msgid "Check box"
+#~ msgstr "Переключатель"
+
+#~ msgid "Check boxes"
+#~ msgstr "Переключатели"
+
+#~ msgid "Drop down"
+#~ msgstr "Сдвинуть вниз"
+
+#~ msgid "Multi select"
+#~ msgstr "Множественный выбор"
+
+#~ msgid "Radio buttons"
+#~ msgstr "Радиокнопки"
+
+#~ msgid "File upload"
+#~ msgstr "Загрузка файла"
+
+#~ msgid "Hidden"
+#~ msgstr "Скрытый"
+
+#, fuzzy
+#~ msgid "Message Rejected"
+#~ msgstr "Сообщение удалено"
+
+#, fuzzy
+#~ msgid "Your message has been rejected"
+#~ msgstr "Ваше сообщение успешно отправлено. %s"
+
+#~ msgid "Message Received"
+#~ msgstr "Сообщение получено"
+
+#, fuzzy
+#~ msgid "You have received a message"
+#~ msgstr "вы получили сообщение"
+
+#~ msgid "Reply Received"
+#~ msgstr "Ответ получен"
+
+#, fuzzy
+#~ msgid "You have received a reply"
+#~ msgstr "вы получили сообщение"
+
+#~ msgid "Start"
+#~ msgstr "Пуск"
+
+#~ msgid "Authorization with name and password"
+#~ msgstr "Авторизация с именем и паролем"
+
+#~ msgid "Signin"
+#~ msgstr "Подписаться"
+
+#~ msgid "Forgot password?"
+#~ msgstr "Забыли пароль?"
+
+#~ msgid "Articles By Author"
+#~ msgstr "Статьи по автору"
+
+#~ msgid "Articles By"
+#~ msgstr "Статьи по"
+
+#~ msgid "Search"
+#~ msgstr "Найти"
+
+#~ msgid "Articles From"
+#~ msgstr "Статьи из"
+
+#~ msgid "Uncategorized Articles"
+#~ msgstr "Статьи без категорий"
+
+#~ msgid "Subjects on sections:"
+#~ msgstr "Темы по разделам:"
+
+#~ msgid "An error occurred"
+#~ msgstr "Возникла ошибка"
+
+#~ msgid "Menu"
+#~ msgstr "Меню"
+
+#~ msgid "Your message has been posted successfully. %s"
+#~ msgstr "Ваше сообщение успешно отправлено. %s"
+
+#~ msgid "Modified"
+#~ msgstr "Изменено"
+
+#~ msgid "Is_nouser"
+#~ msgstr "Онанимно"
+
+#~ msgid "Please add topic"
+#~ msgstr "Пожалуйста добавьте топик"
+
+#~ msgid "Written by"
+#~ msgstr "Написано "
+
+#~ msgid ""
+#~ "%(sender)s wrote:\n"
+#~ "%(body)s"
+#~ msgstr ""
+#~ "%(sender)s написал:\n"
+#~ "%(body)s"
+
+#~ msgid "Re: %(subject)s"
+#~ msgstr "Ответ: %(subject)s"
+
+#~ msgid "Message successfully deleted."
+#~ msgstr "Сообщение успешно удалено."
+
+#~ msgid "Message successfully recovered."
+#~ msgstr "Сообщение успешно восстановлено."
+
+#~ msgid "Order"
+#~ msgstr "Порядок"
+
+#~ msgid "This address already belongs to other user"
+#~ msgstr "Этот адрес уже используется другим пользователем."
+
+#~ msgid "The user you have requested does not exist. %s "
+#~ msgstr "Запрошенный Вами пользователь не существует. %s "
+
+#~ msgid "Changes to account saved. %s "
+#~ msgstr "Изменения профиля успешно сохранены %s "
+
+#~ msgid "Save and Add Another"
+#~ msgstr "Сохранить и добавить другое"
+
+#~ msgid "Board with number %s."
+#~ msgstr "Объявление номер %s."
+
+#~ msgid "The board %s, you have requested does not exist."
+#~ msgstr "Объявление %s, запрошенное Вами, не существует."
+
+#~ msgid "The board you have requested does not exist."
+#~ msgstr "Запрошенное Вами объявление не существует."
+
+#~ msgid "Board sucessfully saved %s "
+#~ msgstr "Объявление успешно сохранено %s "
+
+#~ msgid "Please add the board. %s"
+#~ msgstr "Пожалуйста добавьте объявление. %s"
+
+#~ msgid "Sender and Recipient cannot be both undefined."
+#~ msgstr "Отправитель и Получатель не могут быть оба неопределены"
+
+#~ msgid "Visitor's email is in excess."
+#~ msgstr "Ящик пользователя превышен"
+
+#~ msgid "Visitor's email is missing."
+#~ msgstr "Почта посетителя отсутствует"
+
+#~ msgid "Reading date must be later to sending date."
+#~ msgstr "Дата прочтения должна быть позже даты отправки"
+
+#~ msgid "Deletion date by sender must be later to sending date."
+#~ msgstr "Дата удаления отправителем должна быть позже даты отправки."
+
+#~ msgid "Deletion date by recipient must be later to sending date."
+#~ msgstr "Дата удаления получателем должна быть позже даты отправки."
+
+#~ msgid "Response date must be later to sending date."
+#~ msgstr "Дата ответа должна быть позже даты отправки."
+
+#~ msgid "The message cannot be replied without having been read."
+#~ msgstr "Сообщение не может быть отвечено без прочтения"
+
+#~ msgid "Response date must be later to reading date."
+#~ msgstr "Дата ответа должна быть позже даты прочтения."
+
+#~ msgid "Response date cannot be set without at least one reply."
+#~ msgstr ""
+#~ "Дата ответа не может быть установлена как минимум без одного ответа."
+
+#~ msgid "The message cannot be replied without being in a conversation."
+#~ msgstr "Сообщение не может быть отвечено без преобразования"
+
+#~ msgid "Some usernames are unknown or no more active: {users}."
+#~ msgstr ""
+#~ "Некоторые имена пользователей неизвестны или больше неактивны: {users}. "
+
+#~ msgid ""
+#~ "Ensure this value has at most {limit_value} distinct items (it has "
+#~ "{show_value})."
+#~ msgstr ""
+#~ "Убедитесь что это это значение {limit_value} не превышает количество (it "
+#~ "has {show_value})."
+
+#~ msgid "Some usernames are rejected: {users}."
+#~ msgstr "Следующие имена пользователей отвергнуты: %(users)s"
+
+#~ msgid "{user.username}"
+#~ msgstr "{user.username}"
+
+#~ msgid "{user.username} ({reason})"
+#~ msgstr "{user.username} ({reason})"
+
+#~ msgid "Writing to some users is not possible: {users}."
+#~ msgstr "Написание некоторым пользователям невозможно: {users}."
+
+#~ msgid "Recipients"
+#~ msgstr "Получатели"
+
+#~ msgid "Undefined recipient."
+#~ msgstr "Не указан получатель."
+
+#~ msgid "Additional recipients"
+#~ msgstr "Дополнительные получатели"
+
+#~ msgid "Additional recipient"
+#~ msgstr "Дополнительный получатель"
+
+#~ msgid "Pending"
+#~ msgstr "В процессе"
+
+#~ msgid "Rejected"
+#~ msgstr "Отвергнуто"
+
+#~ msgid "subject"
+#~ msgstr "тема"
+
+#~ msgid "body"
+#~ msgstr "содержание"
+
+#~ msgid "sender"
+#~ msgstr "отправитель"
+
+#~ msgid "recipient"
+#~ msgstr "получатель"
+
+#~ msgid "visitor"
+#~ msgstr "посетитель"
+
+#~ msgid "parent message"
+#~ msgstr "родительское сообщениe"
+
+#~ msgid "root message"
+#~ msgstr "корневое сообщениe"
+
+#~ msgid "archived by sender"
+#~ msgstr "архивировано отправителем"
+
+#~ msgid "archived by recipient"
+#~ msgstr "архивировано получателем"
+
+#~ msgid "deleted by sender at"
+#~ msgstr "удалено отправителем в"
+
+#~ msgid "deleted by recipient at"
+#~ msgstr "удалено получателем в"
+
+#~ msgid "status"
+#~ msgstr "статус"
+
+#~ msgid "rejection reason"
+#~ msgstr "причина отвержения"
+
+#~ msgid "messages"
+#~ msgstr "сообщения"
+
+#~ msgid "Undefined sender."
+#~ msgstr "Неопределен отправитель."
+
+#~ msgid "pending messages"
+#~ msgstr "сообщения в процессе"
+
+#~ msgid "> "
+#~ msgstr "> "
+
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "{sender} wrote:\n"
+#~ "{body}\n"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "{sender} написал:\n"
+#~ "{body}\n"
+
+#~ msgid "Re: {subject}"
+#~ msgstr "Ответ: %(subject)s"
+
+#~ msgid "Message rejected for at least one recipient."
+#~ msgstr "Сообщение отвергнуто как минимум одним получателем."
+
+#~ msgid "Select at least one object."
+#~ msgstr "Выберите как минимум один объект."
+
+#~ msgid "Messages or conversations successfully archived."
+#~ msgstr "Сообщение или преобразование успешно заархивировано."
+
+#~ msgid "Messages or conversations successfully deleted."
+#~ msgstr "Сообщение или преобразование успешно удалено."
+
+#~ msgid "Messages or conversations successfully recovered."
+#~ msgstr "Сообщение или преобразование успешно восстановлено."
+
+#~ msgid "Keyword"
+#~ msgstr "Ключевое слово"
+
+#~ msgid "Keywords"
+#~ msgstr "Ключевые слова"
+
+#~ msgid "Value"
+#~ msgstr "Значение"
+
+#~ msgid "Rating"
+#~ msgstr "Рейтинг"
+
+#~ msgid "Ratings"
+#~ msgstr "Рейтинги"
+
+#~ msgid "MetaText"
+#~ msgstr "МетаТекст"
+
+#~ msgid "MetaTexts"
+#~ msgstr "МетаТексты"
+
+#~ msgid "Permission denied"
+#~ msgstr "Доступ запрещен"
+
+#~ msgid "Change your e-mail address"
+#~ msgstr "Изменить Ваш адрес эл.почты"
+
+#~ msgid "Archived Messages"
+#~ msgstr "Архивные сообщения"
+
+#~ msgid "Messaging"
+#~ msgstr "Сообщения"
+
+#~ msgid "Write"
+#~ msgstr "Написать"
+
+#~ msgid "Archives"
+#~ msgstr "Архивы"
+
+#~ msgid "Sorry, this page number is invalid."
+#~ msgstr "Извините, номер этой страницы неверен"
+
+#, fuzzy
+#~ msgid "by conversation"
+#~ msgstr "Послать подтверждение"
+
+#~ msgid "by message"
+#~ msgstr "по сообщению"
+
+#~ msgid "Archive"
+#~ msgstr "Архив"
+
+#~ msgid "Undelete"
+#~ msgstr "Восстановить"
+
+#~ msgid "No messages."
+#~ msgstr "Нет сообщений."
+
+#~ msgid "Send"
+#~ msgstr "Отправить"
+
+#~ msgid "Dear user,"
+#~ msgstr "Уважаемый пользователь, "
+
+#~ msgid "Your message has been rejected by the moderator"
+#~ msgstr "Ваше сообщение было отвергнуто модератором"
+
+#~ msgid ", for the following reason:"
+#~ msgstr ", по следующей причине:"
+
+#, fuzzy
+#~ msgid "You have received a message from the user '%(sender)s'."
+#~ msgstr "вы получили сообщение"
+
+#~ msgid "Dear visitor,"
+#~ msgstr "Уважаемые посетители,"
+
+#~ msgid "Received Messages"
+#~ msgstr "Полученые сообщения"
+
+#~ msgid "Received"
+#~ msgstr "Получено"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid "Back"
+#~ msgstr "Назад"
+
+#~ msgid "Applications"
+#~ msgstr "Приложения"
+
+#~ msgid "first name"
+#~ msgstr "Имя"
+
+#~ msgid "second name or initial"
+#~ msgstr "отчество"
+
+#~ msgid "last name"
+#~ msgstr "фамилия"
+
+#~ msgid "Signature HTML Version"
+#~ msgstr "Подпись в HTML"
+
+#~ msgid "Language"
+#~ msgstr "Язык"
+
+#~ msgid "The topic you have requested does not exist. %s"
+#~ msgstr "Запрошенный Вами топик не существует. %s "
+
+#~ msgid "You dont have access for this section. %s"
+#~ msgstr "Вы не имеете доступа к данному разделу. %s "
+
+#~ msgid "The topic you have requested does not exist. %s "
+#~ msgstr "Запрошенный Вами топик не существует. %s "
+
+#~ msgid "Please add the topic. %s "
+#~ msgstr "Пожалуйста добавьте топик. %s "
+
+#~ msgid "Topic sucessfully saved %s "
+#~ msgstr "Топик успешно сохранен %s "
+
+#~ msgid "Topic with number %s."
+#~ msgstr "Топик номер %s."
+
+#~ msgid "The topic %s you have requested does not exist."
+#~ msgstr "Запрошенный Вами топик %s не существует."
+
+#~ msgid "date/time modified"
+#~ msgstr "дата/время модификации"
+
+#~ msgid "date/time approved"
+#~ msgstr "дата/время подтверждения"
+
+#~ msgid "is public"
+#~ msgstr "общий"
+
+#~ msgid "is approved"
+#~ msgstr "разрешенный"
+
+#~ msgid "is nouser"
+#~ msgstr "онанимно"
+
+#~ msgid "Branch"
+#~ msgstr "Офис"
+
+#~ msgid "Branches"
+#~ msgstr "Офисы"
+
+#~ msgid "Name of department"
+#~ msgstr "Наименование дирекции"
+
+#~ msgid "Department"
+#~ msgstr "Дирекция"
+
+#~ msgid "Departments"
+#~ msgstr "Дирекции"
+
+#~ msgid "Name of car"
+#~ msgstr "Марка автомобиля"
+
+#~ msgid "Registration number"
+#~ msgstr "Регистрационный номер"
+
+#~ msgid "Name of driver"
+#~ msgstr "ФИО водителя"
+
+#~ msgid "Phone of driver"
+#~ msgstr "Телефон водителя"
+
+#~ msgid "Note"
+#~ msgstr "Заметка"
+
+#~ msgid "is taxi"
+#~ msgstr "это такси?"
+
+#~ msgid "Cars"
+#~ msgstr "Автомобили"
+
+#~ msgid "Draft"
+#~ msgstr "Черновик"
+
+#~ msgid "Execution"
+#~ msgstr "Выполняется"
+
+#~ msgid "Closed"
+#~ msgstr "закрыто"
+
+#~ msgid "Overdue"
+#~ msgstr "Просрочено"
+
+#~ msgid "date/time start tour"
+#~ msgstr "Начало поездки"
+
+#~ msgid "date/time end tour"
+#~ msgstr "Конец поездки"
+
+#~ msgid "date/time start tour in fact"
+#~ msgstr "Начало поездки фактически"
+
+#~ msgid "date/time end tour in fact"
+#~ msgstr "Конец поездки фактически"
+
+#~ msgid "Owner of info this tour"
+#~ msgstr "Владелец информации о данной поездке"
+
+#~ msgid "Direction"
+#~ msgstr "Направление"
+
+#~ msgid "Operator Description"
+#~ msgstr "Комментарий оператора"
+
+#~ msgid "Carquery"
+#~ msgstr "Автозапрос"
+
+#~ msgid "Car with ID %s."
+#~ msgstr "Автомобиль с ID %s."
+
+#~ msgid "The car %s, you have requested does not exist."
+#~ msgstr "Автомобиль %s, запрошенный Вами, не существует."
+
+#, fuzzy
+#~ msgid "The cars you have requested does not exist."
+#~ msgstr "Запрошенный Вами автомобиль не существует."
+
+#, fuzzy
+#~ msgid "Carquery sucessfully saved %s "
+#~ msgstr "Объявление успешно сохранено %s "
+
+#, fuzzy
+#~ msgid "Please add the carquery. %s"
+#~ msgstr "Пожалуйста добавьте объявление. %s"
+
+#~ msgid "CDR"
+#~ msgstr "CDR"
+
+#~ msgid "CDRs"
+#~ msgstr "CDR"
+
+#~ msgid "DashboardCategory"
+#~ msgstr "Категория панели"
+
+#~ msgid "DashboardCategories"
+#~ msgstr "Категории панели"
+
+#~ msgid "Description of Loopback"
+#~ msgstr "Описание лупбэка"
+
+#~ msgid "Loopback"
+#~ msgstr "Лупбэк"
+
+#~ msgid "Loopbacks"
+#~ msgstr "Лупбэки"
+
+#~ msgid "Description of Vlan"
+#~ msgstr "Описание ВЛАНа"
+
+#~ msgid "VLAN"
+#~ msgstr "ВЛАН"
+
+#~ msgid "VLAN's"
+#~ msgstr "ВЛАНы"
+
+#~ msgid "Description of Ip"
+#~ msgstr "Описание IP-адреса"
+
+#~ msgid "IP-adress"
+#~ msgstr "IP-адрес"
+
+#~ msgid "IP-adresses"
+#~ msgstr "IP-адреса"
+
+#~ msgid "Element Name"
+#~ msgstr "Название элемента"
+
+#~ msgid "Device contains"
+#~ msgstr "Устройство содержит"
+
+#~ msgid "Slug Name"
+#~ msgstr "Имя пути"
+
+#~ msgid "Dashboard categories"
+#~ msgstr "Категории Панели"
+
+#~ msgid "VLAN's "
+#~ msgstr "ВЛАНы"
+
+#~ msgid "Description of infra"
+#~ msgstr "Описание инфраструктурного элемента"
+
+#~ msgid "Infrastructure Element"
+#~ msgstr "Инфраструктурный элемент"
+
+#~ msgid "Infrastructure"
+#~ msgstr "Инфраструктура"
+
+#, fuzzy
+#~ msgid "Infra with number %s."
+#~ msgstr "Объявление номер %s."
+
+#, fuzzy
+#~ msgid "The infra %s, you have requested does not exist."
+#~ msgstr "Объявление %s, запрошенное Вами, не существует."
+
+#, fuzzy
+#~ msgid "Infra %(infra)s sucessfully unlock. %(date)s"
+#~ msgstr "Объявление %(board)s успешно разблокировано. %(date)s "
+
+#, fuzzy
+#~ msgid "Infra %(infra)s sucessfully lock. %(date)s"
+#~ msgstr "Объявление %(board)s успешно заблокировано. %(date)s "
+
+#, fuzzy
+#~ msgid "Infra %(infra)s sucessfully deleted. %(date)s"
+#~ msgstr "Объявление %(board)s успешно удалено. %(date)s "
+
+#, fuzzy
+#~ msgid "The infra you have requested does not exist."
+#~ msgstr "Запрошенное Вами объявление не существует."
+
+#, fuzzy
+#~ msgid "Infra sucessfully saved %s "
+#~ msgstr "Объявление успешно сохранено %s "
+
+#, fuzzy
+#~ msgid "Please add the infra. %s"
+#~ msgstr "Пожалуйста добавьте объявление. %s"
+
+#, fuzzy
+#~ msgid "Infra %s sucessfully changed "
+#~ msgstr "Объявление %s успешно изменено "
+
+#, fuzzy
+#~ msgid "The infra you have requested does not exist. %s "
+#~ msgstr "Запрошенный Вами пользователь не существует. %s "
+
+#, fuzzy
+#~ msgid "The dashboard you have requested does not exist."
+#~ msgstr "Запрошенное Вами объявление не существует."
+
+#, fuzzy
+#~ msgid "State name"
+#~ msgstr "Название автомобиля"
+
+#~ msgid "BlogCategory"
+#~ msgstr "Категория блога"
+
+#~ msgid "title"
+#~ msgstr "название"
+
+#~ msgid "slug"
+#~ msgstr "Краткий линк"
+
+#~ msgid "tease"
+#~ msgstr "тизер"
+
+#~ msgid "publish"
+#~ msgstr "публиковать"
+
+#~ msgid "Render method"
+#~ msgstr "Метод рендеринга"
+
+#~ msgid "post"
+#~ msgstr "постинг"
+
+#~ msgid "posts"
+#~ msgstr "постинги"
+
+#~ msgid "%(name)s"
+#~ msgstr "%(name)s"
+
+#~ msgid "Django site admin"
+#~ msgstr "Администрирование сайта джанго"
+
+#~ msgid "Django administration"
+#~ msgstr "Администрирование nnmware"
+
+#~ msgid "Multilinux Site Engine administration"
+#~ msgstr "Администрирование nnmware"
+
+#~ msgid "Car name"
+#~ msgstr "Название автомобиля"
+
+#~ msgid "Beeline"
+#~ msgstr "Билайн"
+
+#, fuzzy
+#~ msgid "Add carquery"
+#~ msgstr "Автозапрос"
+
+#~ msgid "Attention! Please type correct data."
+#~ msgstr "Внимание! Пожалуйства введите корректные данные."
+
+#~ msgid "Driver name"
+#~ msgstr "ФИО водителя"
+
+#~ msgid "Driver phone"
+#~ msgstr "Телефон водителя"
+
+#~ msgid "Dashboard"
+#~ msgstr "Панель"
+
+#~ msgid "Add dashboard"
+#~ msgstr "Добавить блок"
+
+#~ msgid "Comment form for &laquo;%(object)s&raquo;"
+#~ msgstr "Форма комментария для &laquo;%(object)s&raquo;"
+
+#~ msgid "Comment"
+#~ msgstr "Комментарий"
+
+#~ msgid "Posts year archive"
+#~ msgstr "Годовой архив сообщений"
+
+#~ msgid "Archive for"
+#~ msgstr "Архив для"
+
+#~ msgid "News"
+#~ msgstr "Новости"
+
+#~ msgid "No comments for this post"
+#~ msgstr "Нет коментариев данного постинга"
+
+#~ msgid "comment, comments, comments"
+#~ msgstr "комментарий, комментарии, комментариев"
+
+#~ msgid "continue&nbsp;reading"
+#~ msgstr "продолжить&nbsp;чтение"
+
+#~ msgid "Previous month"
+#~ msgstr "Предыдущий месяц"
+
+#~ msgid "Next month"
+#~ msgstr "Следующий месяц"
+
+#~ msgid "Previous day"
+#~ msgstr "Предыдущий день"
+
+#~ msgid "Next day"
+#~ msgstr "Следующий день"
+
+#~ msgid "Older posts"
+#~ msgstr "Старые постинги"
+
+#~ msgid "Newer posts"
+#~ msgstr "Новые постинги"
+
+#~ msgid "Pingbacks"
+#~ msgstr "Пингбеки"
+
+#~ msgid "reply"
+#~ msgstr "ответ"
+
+#~ msgid "edit"
+#~ msgstr "изменить"
+
+#~ msgid "cancel"
+#~ msgstr "отмена"
+
+#~ msgid "Blog"
+#~ msgstr "Блог"
+
+#~ msgid "Compose Message"
+#~ msgstr "Создать сообщение"
+
+#~ msgid "Overview of your account"
+#~ msgstr "Общая информация Вашего профиля"
+
+#~ msgid "Your account information has been updated successfully"
+#~ msgstr "Информация Вашего профиля успешно обновлена"
+
+#~ msgid "Board would act as active"
+#~ msgstr "Объявление активно"
+
+#~ msgid "Board would act as blocked"
+#~ msgstr "Объявление заблокировано"
+
+#~ msgid "Thread"
+#~ msgstr "Топик"
+
+#~ msgid "Threads"
+#~ msgstr "Топики"
+
+#, fuzzy
+#~ msgid "Leave blank if the content of object does not expire."
+#~ msgstr "Оставьте пустым, если статья не истекает по заданному времени"
+
+#~ msgid "is active"
+#~ msgstr "активно"
+
+#~ msgid "is deleted"
+#~ msgstr "удалено"
+
+#~ msgid "Used for URLs, auto-generated from name if blank"
+#~ msgstr "Используется для URLов, генерируется автоматически из имени"
+
+#~ msgid "Log out"
+#~ msgstr "Выйти"
+
+#~ msgid "Applied To"
+#~ msgstr "Применено в"
+
+#~ msgid "Mark select articles as active"
+#~ msgstr "Пометить выбранные статьи как активные"
+
+#~ msgid "Mark select articles as inactive"
+#~ msgstr "Пометить выбранные статьи как неактивные"
+
+#~ msgid "Apply tag \"%s\" to selected articles"
+#~ msgstr "Применить тэг \"%s\" к выбранным статьям"
+
+#~ msgid "Apply Tag: %s"
+#~ msgstr "Применить тэг: %s"
+
+#~ msgid "Words that describe this article"
+#~ msgstr "Слова которые описывают данную статью"
+
+#~ msgid ""
+#~ "Select the type of markup you are using in this article.\n"
+#~ "<ul>\n"
+#~ "<li><a href=\"http://daringfireball.net/projects/markdown/basics\" target="
+#~ "\"_blank\">Markdown Guide</a></li>\n"
+#~ "<li><a href=\"http://docutils.sourceforge.net/docs/user/rst/quickref.html"
+#~ "\" target=\"_blank\">ReStructured Text Guide</a></li>\n"
+#~ "<li><a href=\"http://thresholdstate.com/articles/4312/the-textile-"
+#~ "reference-manual\" target=\"_blank\">Textile Guide</a></li>\n"
+#~ "</ul>"
+#~ msgstr ""
+#~ "Выберите тип разметки, который ходите использовать в данной статье.\n"
+#~ "<ul>\n"
+#~ "<li><a href=\"http://daringfireball.net/projects/markdown/basics\" target="
+#~ "\"_blank\">Руководство по Markdown</a></li>\n"
+#~ "<li><a href=\"http://docutils.sourceforge.net/docs/user/rst/quickref.html"
+#~ "\" target=\"_blank\">Руководство по ReStructured Text</a></li>\n"
+#~ "<li><a href=\"http://thresholdstate.com/articles/4312/the-textile-"
+#~ "reference-manual\" target=\"_blank\">Руководство по Textile</a></li>\n"
+#~ "</ul>"
+
+#~ msgid "teaser"
+#~ msgstr "краткое содержание"
+
+#~ msgid ""
+#~ "If omitted, the teaser will be determined by the first bit of the "
+#~ "article's content."
+#~ msgstr "Если помечено, краткое содержание будет получено из начала статьи"
+
+#~ msgid "Tags that describe this article"
+#~ msgstr "Теги которые описывают данную статью"
+
+#~ msgid ""
+#~ "Check this if you want to automatically assign any existing tags to this "
+#~ "article based on its content."
+#~ msgstr ""
+#~ "Пометьте это, если Вы ходите автоматически назначить существующие теги в "
+#~ "данной статье основанные на ее содержании"
+
+#~ msgid "If omitted, the keywords will be the same as the article tags."
+#~ msgstr "Если помечено, ключевые слова будут такие же как теги статьи"
+
+#~ msgid "The date and time this article shall appear online."
+#~ msgstr "Дата и время, когда статья будет доступна онлайн"
+
+#~ msgid "Attachment"
+#~ msgstr "Приложение"
+
+#~ msgid "Article Archives"
+#~ msgstr "Архивы статей"
+
+#~ msgid "Message Sent"
+#~ msgstr "Сообщение отослано"
+
+#~ msgid "you have sent a message"
+#~ msgstr "вы послали сообщение"
+
+#~ msgid "Message Replied"
+#~ msgstr "Сообщение отвечено"
+
+#~ msgid "you have replied to a message"
+#~ msgstr "вы ответили на сообщение"
+
+#~ msgid "you have received a reply to a message"
+#~ msgstr "вы получили ответ на сообщение"
+
+#~ msgid "Message Recovered"
+#~ msgstr "Сообщение восстановлено"
+
+#~ msgid "you have undelete a message"
+#~ msgstr "вы восстановили сообщение"
+
+#~ msgid "UserCategory"
+#~ msgstr "Категория пользователя"
+
+#~ msgid "UserCategories"
+#~ msgstr "Категории пользователей"
+
+#~ msgid "Name of vendor"
+#~ msgstr "Название производителя"
+
+#~ msgid "Description of Vendor"
+#~ msgstr "Описание производителя"
+
+#~ msgid "Vendor"
+#~ msgstr "Производитель"
+
+#~ msgid "Vendors"
+#~ msgstr "Производители"
+
+#~ msgid "Name of firmware"
+#~ msgstr "Название фирмваре"
+
+#~ msgid "Description of Firmware"
+#~ msgstr "Описание фирмваре"
+
+#~ msgid "Firmware"
+#~ msgstr "Фирмваре"
+
+#~ msgid "Netmask"
+#~ msgstr "Сетевая маска"
+
+#~ msgid "Netmasks"
+#~ msgstr "Сетевые маски"
+
+#~ msgid "Short component name"
+#~ msgstr "Краткое наименование компонента"
+
+#~ msgid "Full component name"
+#~ msgstr "Полное наименование компонента"
+
+#~ msgid "Description of component"
+#~ msgstr "Описание компонента"
+
+#~ msgid "Part Number"
+#~ msgstr "Номер партии"
+
+#~ msgid "Components"
+#~ msgstr "Компоненты"
+
+#~ msgid "Short device name"
+#~ msgstr "Краткое наименование устройства"
+
+#~ msgid "Full device name"
+#~ msgstr "Полное наименование устройства"
+
+#~ msgid "Description of device"
+#~ msgstr "Описание устройства"
+
+#~ msgid "Inventory Number"
+#~ msgstr "Инвентарный номер"
+
+#~ msgid "Serial Number"
+#~ msgstr "Серийный номер"
+
+#~ msgid "Devices"
+#~ msgstr "Устройства"
+
+#~ msgid "Picture of component"
+#~ msgstr "Картинка компонента"
+
+#~ msgid "Component Image"
+#~ msgstr "Картинка компонента"
+
+#~ msgid "Component Images"
+#~ msgstr "Картинки компонента"
+
+#~ msgid "Sakhalin"
+#~ msgstr "Сахалин"
+
+#~ msgid "Sakhalins"
+#~ msgstr "Сахалины"
+
+#~ msgid "Carman"
+#~ msgstr "Автоменеджер"
+
+#~ msgid "Car-man"
+#~ msgstr "Тачки"
+
+#~ msgid "Beeline - Server of Yuzhno-Sakhalinsk"
+#~ msgstr "Beeline- Сервак Южно-Сахалинска"
+
+#~ msgid "Welcome,"
+#~ msgstr "Добро пожаловать,"
+
+#~ msgid "Documentation"
+#~ msgstr "Документация"
+
+#~ msgid "Modules"
+#~ msgstr "Модули"
+
+#~ msgid "Please enter a name for the bookmark"
+#~ msgstr "Пожалуйста введите название закладки"
+
+#~ msgid "Cars Images"
+#~ msgstr "Изображения автомобилей"
+
+#~ msgid "PABX"
+#~ msgstr "АТС"
+
+#~ msgid "SiteUsers"
+#~ msgstr "Тусовка"
+
+#~ msgid "My Page"
+#~ msgstr "Моя страница"
+
+#~ msgid "created:"
+#~ msgstr "создано:"
+
+#~ msgid "modified:"
+#~ msgstr "изменено:"
+
+#~ msgid "Device model"
+#~ msgstr "Модель устройства"
+
+#~ msgid "Containers"
+#~ msgstr "Контейнеры"
+
+#~ msgid "Network"
+#~ msgstr "Сеть"
+
+#~ msgid "Networks"
+#~ msgstr "Сети"
+
+#~ msgid "Is device active?"
+#~ msgstr "устройство активно?"
+
+#~ msgid "In works?"
+#~ msgstr "В работе?"
+
+#~ msgid "Netdevice"
+#~ msgstr "Сетевое устройство"
+
+#~ msgid "Unit"
+#~ msgstr "Юнит"
+
+#~ msgid "Jobs"
+#~ msgstr "Работа"
+
+#~ msgid "Phones"
+#~ msgstr "Телефоны"
+
+#~ msgid "Computers"
+#~ msgstr "Компьютеры"
+
+#~ msgid "Auto"
+#~ msgstr "Авто"
+
+#~ msgid "Realty"
+#~ msgstr "Недвижимость"
+
+#~ msgid "Photos"
+#~ msgstr "Фотографии"
+
+#~ msgid "Weather"
+#~ msgstr "Погода"
+
+#~ msgid "Khabarovsk"
+#~ msgstr "Хабаровск"
+
+#~ msgid "Komsomolsk"
+#~ msgstr "Комсомольск"
+
+#~ msgid "Vladivostok"
+#~ msgstr "Владивосток"
+
+#~ msgid "Horoscopes"
+#~ msgstr "Гороскопы"
+
+#~ msgid "Anketa"
+#~ msgstr "Анкета"
+
+#~ msgid "Subscribe"
+#~ msgstr "Подписка"
+
+#~ msgid "Date of registration:"
+#~ msgstr "Дата регистрации:"
+
+#~ msgid "created"
+#~ msgstr "создано"
+
+#~ msgid "modified"
+#~ msgstr "изменено"
+
+#~ msgid "Почтовые подтверждения"
+#~ msgstr "Процес проверки адреса эл.почты"
