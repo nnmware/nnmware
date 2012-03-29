@@ -8,6 +8,7 @@ class TransactionAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('user','date')
     ordering = [('user'),]
+    readonly_fields = ('content_type','object_id')
     fieldsets = (
         (_("Transaction"), {"fields": [("user","date"),
             ('amount','currency','status'),

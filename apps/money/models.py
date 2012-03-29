@@ -60,8 +60,8 @@ class Transaction(MoneyBase):
     """
     user = models.ForeignKey(User, verbose_name=_("User"))
 
-    content_type = models.ForeignKey(ContentType, verbose_name=_("Content Type"))
-    object_id = models.CharField(max_length=255, verbose_name=_("ID of object"))
+    content_type = models.ForeignKey(ContentType, verbose_name=_("Content Type"), null=True, blank=True)
+    object_id = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
     actor = GenericForeignKey()
     date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)

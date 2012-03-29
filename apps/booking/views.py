@@ -29,7 +29,7 @@ class HotelList(ListView):
                 result = Hotel.objects.order_by('starcount')
                 tab = 'amount'
             elif order == 'review':
-                result = Hotel.objects.order_by('register_date')
+                result = Hotel.objects.order_by('point')
                 tab = 'review'
             else:
                 pass

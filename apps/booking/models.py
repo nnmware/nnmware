@@ -77,7 +77,11 @@ class Hotel(MetaName, MetaGeo):
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=3, max_digits=6)
-
+    food_point = models.DecimalField(verbose_name=_('Food average'), default=0, decimal_places=3, max_digits=6)
+    service_point = models.DecimalField(verbose_name=_('Service average'), default=0, decimal_places=3, max_digits=6)
+    purity_point = models.DecimalField(verbose_name=_('Purity average'), default=0, decimal_places=3, max_digits=6)
+    transport_point = models.DecimalField(verbose_name=_('Transport average'), default=0, decimal_places=3, max_digits=6)
+    prices_point = models.DecimalField(verbose_name=_('Prices average'), default=0, decimal_places=3, max_digits=6)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -190,11 +194,11 @@ class Review(models.Model):
     hotel = models.ForeignKey(Hotel)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
     review = models.TextField(verbose_name=_("Review"),blank=True)
-    food = models.FloatField(verbose_name=_('Food'), default=0.0)
-    service = models.FloatField(verbose_name=_('Service'), default=0.0)
-    purity = models.FloatField(verbose_name=_('Purity'), default=0.0)
-    transport = models.FloatField(verbose_name=_('Transport'), default=0.0)
-    prices = models.FloatField(verbose_name=_('Prices'), default=0.0)
+    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=3, max_digits=6)
+    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=3, max_digits=6)
+    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=3, max_digits=6)
+    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=3, max_digits=6)
+    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=3, max_digits=6)
 
     class Meta:
         verbose_name = _("Client review")
