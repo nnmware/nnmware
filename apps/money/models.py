@@ -11,7 +11,7 @@ from nnmware.core.managers import TransactionManager
 
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
-    country = models.ForeignKey(Country, verbose_name=_('Country'))
+    country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True)
 
@@ -24,7 +24,7 @@ class Currency(models.Model):
         return u"%s :: %s" % (self.code, self.name)
 
 class ExchangeRate(models.Model):
-    currency = models.ForeignKey(Currency, verbose_name=_('Currency'))
+    currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(verbose_name=_('On date'))
     rate = models.DecimalField(verbose_name=_('Rate'), default=0.0, max_digits=10, decimal_places=3)
 
@@ -36,7 +36,7 @@ class ExchangeRate(models.Model):
 
 class MoneyBase(models.Model):
     amount = models.DecimalField(verbose_name=_('Amount'), default=0.0, max_digits=20, decimal_places=3)
-    currency = models.ForeignKey(Currency, verbose_name=_('Currency'))
+    currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
         abstract = True
@@ -60,7 +60,7 @@ class Transaction(MoneyBase):
     """
     user = models.ForeignKey(User, verbose_name=_("User"))
 
-    content_type = models.ForeignKey(ContentType, verbose_name=_("Content Type"), null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, verbose_name=_("Content Type"), null=True, blank=True, on_delete=models.SET_NULL)
     object_id = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
     actor = GenericForeignKey()
     date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())

@@ -18,7 +18,7 @@ class HotelOptionCategory(MetaName):
         ordering = ['order_in_list',]
 
 class HotelOption(MetaName):
-    category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'))
+    category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'), null=True, blank=True, on_delete=models.SET_NULL)
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
     sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False)
 
@@ -62,7 +62,7 @@ HOTEL_CHOICES = (
 
 class Hotel(MetaName, MetaGeo):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
-    city = models.ForeignKey(City, verbose_name=_('City'))
+    city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True, on_delete=models.SET_NULL)
     email = models.EmailField(verbose_name=_("Email"), blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
     address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
@@ -113,7 +113,7 @@ class RoomOptionCategory(MetaName):
         verbose_name_plural = _("Room Option Categories")
 
 class RoomOption(MetaName):
-    category = models.ForeignKey(RoomOptionCategory)
+    category = models.ForeignKey(RoomOptionCategory, null=True, blank=True, on_delete=models.SET_NULL)
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
 
     class Meta:
@@ -136,8 +136,8 @@ class PlaceCount(models.Model):
 
 class Room(MetaName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
-    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
-    places = models.ForeignKey(PlaceCount, verbose_name=_('Place Count'), default=1)
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
+    places = models.ForeignKey(PlaceCount, verbose_name=_('Place Count'), default=1, on_delete=models.SET_DEFAULT)
 
     class Meta:
         verbose_name = _("Room")
@@ -162,8 +162,8 @@ class Booking(MoneyBase):
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
-    room = models.ForeignKey(Room, verbose_name=_('Room'))
-    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
+    room = models.ForeignKey(Room, verbose_name=_('Room'), blank=True, null=True, on_delete=models.SET_NULL)
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
 
     class Meta:
@@ -175,7 +175,7 @@ class Booking(MoneyBase):
          return u"Booking - %s" % self.pk
 
 class AgentPercent(models.Model):
-    hotel = models.ForeignKey(Hotel)
+    hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
     percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=3, max_digits=6, default=0.0)
 
@@ -191,7 +191,7 @@ class AgentPercent(models.Model):
 
 class Review(models.Model):
     user = models.ForeignKey(User)
-    hotel = models.ForeignKey(Hotel)
+    hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
     review = models.TextField(verbose_name=_("Review"),blank=True)
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=3, max_digits=6)
@@ -211,7 +211,7 @@ class Review(models.Model):
                  'review': self.review }
 
 class PlacePrice(MoneyBase):
-    room = models.ForeignKey(Room)
+    room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
 
     class Meta:
@@ -228,7 +228,7 @@ class PlacePrice(MoneyBase):
 
 
 class Availability(models.Model):
-    room = models.ForeignKey(Room)
+    room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
     roomcount = models.IntegerField(verbose_name=_('Count of places'))
 

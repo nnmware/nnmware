@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class HotelAdmin(admin.ModelAdmin):
-    list_display = ('name','register_date','city','address','contact_email','contact_name','room_count')
+    list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','point')
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
