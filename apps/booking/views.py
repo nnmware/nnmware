@@ -212,3 +212,9 @@ class RequestAddHotelView(CreateView):
 
     def get_success_url(self):
         return reverse('hotel_list')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(RequestAddHotelView, self).get_context_data(**kwargs)
+        context['hotel_count'] = Hotel.objects.count()
+        return context
