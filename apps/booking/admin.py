@@ -80,6 +80,16 @@ class BookingAdmin(admin.ModelAdmin):
             ('from_date','to_date','status'),
             ('amount','currency','date')]}),)
 
+class RequestAddHotelAdmin(admin.ModelAdmin):
+    list_display = ('name','register_date','city','address','phone','fax','contact_email','website')
+    search_fields = ('date','name')
+    fieldsets = (
+        (_("Request for add Hotel"), {"fields": [("name",'register_date'),
+            ('city','address'),
+            ('phone','fax'),
+            ('email','contact_email'),
+            ('website','rooms_count')]}),)
+
 
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
@@ -117,5 +127,6 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(Availability, AvailabilityAdmin)
 admin.site.register(PlacePrice, PlacePriceAdmin)
 admin.site.register(PlaceCount, PlaceCountAdmin)
+admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
 
 

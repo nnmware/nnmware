@@ -242,3 +242,19 @@ class Availability(models.Model):
                  'hotel': self.room.hotel.name,
                  'date': self.date,
                  'count': self.roomcount }
+
+class RequestAddHotel(models.Model):
+    register_date = models.DateTimeField(_("Register date"), default=datetime.now())
+    city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
+    address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=100, null=True, blank=True)
+    email = models.CharField(verbose_name=_("Email"), max_length=100, null=True, blank=True)
+    phone = models.CharField(verbose_name=_("Phone"), max_length=100, null=True, blank=True)
+    fax = models.CharField(verbose_name=_("Fax"), max_length=100, null=True, blank=True)
+    contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, null=True, blank=True)
+    website = models.CharField(verbose_name=_("Website"), max_length=100, null=True, blank=True)
+    rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
+
+    class Meta:
+        verbose_name = _("Request for add Hotel")
+        verbose_name_plural = _("Requests for add Hotels")

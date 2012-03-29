@@ -11,6 +11,8 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.core.views import AttachedImagesMixin
+from nnmware.apps.booking.models import RequestAddHotel
+from nnmware.apps.booking.forms import RequestAddHotelForm
 
 class HotelList(ListView):
     model = Hotel
@@ -202,3 +204,11 @@ class CabinetBills(DetailView):
         context['tab'] = 'bills'
         context['hotel'] = self.object
         return context
+
+class RequestAddHotelView(CreateView):
+    model = RequestAddHotel
+    form_class = RequestAddHotelForm
+    template_name = "requests/add.html"
+
+    def get_success_url(self):
+        return reverse('hotel_list')
