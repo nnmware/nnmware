@@ -3,6 +3,7 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
@@ -87,6 +88,14 @@ class Hotel(MetaName, MetaGeo):
         verbose_name = _("Hotel")
         verbose_name_plural = _("Hotels")
 
+    def get_address(self):
+        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+            if self.address_en:
+                return self.address_en
+        return self.name
+
+
+
     def is_admin(self):
         if get_request().user in self.admins:
             return True
@@ -137,7 +146,7 @@ class PlaceCount(models.Model):
 class Room(MetaName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
-    places = models.ForeignKey(PlaceCount, verbose_name=_('Place Count'), default=1, on_delete=models.SET_DEFAULT)
+    places = models.ForeignKey(PlaceCount, verbose_name=_('Place Count'), null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _("Room")

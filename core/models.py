@@ -301,6 +301,18 @@ class MetaName(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_name(self):
+        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+            if self.name_en:
+                return self.name_en
+        return self.name
+
+    def get_description(self):
+        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+            if self.description_en:
+                return self.description_en
+        return self.description
+
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.id:
