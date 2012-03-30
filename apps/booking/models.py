@@ -94,7 +94,13 @@ class Hotel(MetaName, MetaGeo):
                 return self.address_en
         return self.name
 
-
+    def get_count_stars_hotels(self):
+        two = Hotel.objects.filter(city=self.city, starcount=TWO_STAR).count()
+        three = Hotel.objects.filter(city=self.city, starcount=THREE_STAR).count()
+        four = Hotel.objects.filter(city=self.city, starcount=FOUR_STAR).count()
+        five = Hotel.objects.filter(city=self.city, starcount=FIVE_STAR).count()
+        return [two,three,four,five]
+#        return five
 
     def is_admin(self):
         if get_request().user in self.admins:
