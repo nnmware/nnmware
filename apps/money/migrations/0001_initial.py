@@ -26,7 +26,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
-            ('rate', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=10, decimal_places=3)),
+            ('rate', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=10, decimal_places=3)),
         ))
         db.send_create_signal('money', ['ExchangeRate'])
 
@@ -36,7 +36,7 @@ class Migration(SchemaMigration):
         # Adding model 'Transaction'
         db.create_table('money_transaction', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
+            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=20, decimal_places=3)),
             ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('actor_ctype', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='transaction_object', null=True, to=orm['contenttypes.ContentType'])),
@@ -54,10 +54,11 @@ class Migration(SchemaMigration):
         # Adding model 'Account'
         db.create_table('money_account', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
+            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=20, decimal_places=3)),
             ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True)),
             ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
+            ('date_billed', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
             ('status', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('target_ctype', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='target_account_ctype', null=True, to=orm['contenttypes.ContentType'])),
             ('target_oid', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
@@ -144,9 +145,10 @@ class Migration(SchemaMigration):
         },
         'money.account': {
             'Meta': {'unique_together': "(('user', 'target_ctype', 'target_oid', 'date', 'amount', 'currency'),)", 'object_name': 'Account'},
-            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
+            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '20', 'decimal_places': '3'}),
             'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
+            'date_billed': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'target_ctype': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'target_account_ctype'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
@@ -166,13 +168,13 @@ class Migration(SchemaMigration):
             'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'rate': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '10', 'decimal_places': '3'})
+            'rate': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '10', 'decimal_places': '3'})
         },
         'money.transaction': {
             'Meta': {'unique_together': "(('user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency'),)", 'object_name': 'Transaction'},
             'actor_ctype': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'transaction_object'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
             'actor_oid': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
-            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
+            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '20', 'decimal_places': '3'}),
             'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

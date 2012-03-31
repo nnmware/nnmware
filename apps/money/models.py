@@ -107,6 +107,7 @@ class Account(MoneyBase):
     """
     user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
+    date_billed = models.DateTimeField(verbose_name=_("Billed date"), default=datetime.now())
     status = models.IntegerField(_("Account status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)

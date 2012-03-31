@@ -13,6 +13,7 @@ from nnmware.apps.booking.forms import *
 from nnmware.core.views import AttachedImagesMixin
 from nnmware.apps.booking.models import RequestAddHotel
 from nnmware.apps.booking.forms import RequestAddHotelForm
+from nnmware.apps.money.models import Account
 
 class HotelList(ListView):
     model = Hotel
@@ -203,6 +204,7 @@ class CabinetBills(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'bills'
         context['hotel'] = self.object
+        context['accounts'] = Account.objects.for_object(self.object)
         return context
 
 class RequestAddHotelView(CreateView):
