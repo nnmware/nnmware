@@ -25,15 +25,17 @@ class TransactionAdmin(admin.ModelAdmin):
 
 
 class AccountAdmin(admin.ModelAdmin):
-    list_display = ('user','date','target','status','amount','currency')
+    list_display = ('user','date_billed','target','status','amount','currency')
     search_fields = ('name',)
-    list_filter = ('user','date')
+    list_filter = ('user','date_billed')
     ordering = [('user'),]
     #readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
-        (_("Account"), {"fields": [("user","date"),
-            ('amount','currency','status'),
-            ('target_ctype','target_oid')]}),)
+        (_("Account"), {"fields": [("user","date_billed"),
+            ('amount','currency'),
+            ('target_ctype','target_oid'),
+            ('description',),
+             ('status','date')]}),)
 
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ('code',)

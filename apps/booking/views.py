@@ -220,3 +220,24 @@ class RequestAddHotelView(CreateView):
         context = super(RequestAddHotelView, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.count()
         return context
+
+class BookingsList(ListView):
+    model = Booking
+    template_name = "sysadm/bookings.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(BookingsList, self).get_context_data(**kwargs)
+        context['tab'] = 'bookings'
+        return context
+
+class RequestsList(ListView):
+    model = RequestAddHotel
+    template_name = "sysadm/requests.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(RequestsList, self).get_context_data(**kwargs)
+        context['tab'] = 'requests'
+        return context
+

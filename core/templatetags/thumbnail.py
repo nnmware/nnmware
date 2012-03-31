@@ -6,7 +6,7 @@
 ## DEPENDENCIES ##
 
 from django.conf import settings
-from nnmware.apps.account.models import Profile
+from nnmware.apps.userprofile.models import Profile
 from nnmware.core.imgutil import make_thumbnail, get_image_size
 import os
 import time

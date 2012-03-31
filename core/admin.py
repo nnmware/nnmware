@@ -82,6 +82,7 @@ class DocAdmin(admin.ModelAdmin):
     """
      Admin class for Doc.
      """
+#    readonly_fields = ('file',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
         (_('Doc'), {'fields': [('file', 'publish_date', 'ordering')]}),
@@ -92,6 +93,7 @@ class DocAdmin(admin.ModelAdmin):
 
 
 class PicAdmin(admin.ModelAdmin):
+    readonly_fields = ('pic',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
         (_('Pic'), {'fields': [('pic', 'publish_date')]}),

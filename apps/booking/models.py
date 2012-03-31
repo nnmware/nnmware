@@ -122,6 +122,8 @@ class Hotel(MetaName, MetaGeo):
     def get_absolute_url(self):
         return "hotel_detail", (), {'slug': self.slug}
 
+    def get_current_percent(self):
+        return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
 
 class RoomOptionCategory(MetaName):
 
@@ -197,7 +199,7 @@ class Booking(MoneyBase):
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
-    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=3, max_digits=6, default=0)
+    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0)
 
     class Meta:
         verbose_name = _("Agent Percent")
@@ -260,7 +262,14 @@ class RequestAddHotel(models.Model):
     contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, null=True, blank=True)
     website = models.CharField(verbose_name=_("Website"), max_length=100, null=True, blank=True)
     rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
+    ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
+    user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
 
     class Meta:
         verbose_name = _("Request for add hotel")
         verbose_name_plural = _("Requests for add hotels")
+
+    def save(self, *args, **kwargs):
+        self.ip = get_request().META['REMOTE_ADDR']
+        self.user_agent = get_request().META['HTTP_USER_AGENT']
+        super(RequestAddHotel, self).save(*args, **kwargs)

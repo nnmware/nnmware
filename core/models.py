@@ -287,12 +287,12 @@ class Tag(models.Model):
 
 class MetaName(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True)
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True)
-    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True)
-    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True)
-    order_in_list = models.IntegerField(_('Order in list'), blank=True, default=0)
+    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
+    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
 
     class Meta:
         ordering = ['name', ]
@@ -419,15 +419,18 @@ class Doc(MetaLink, MetaFile):
     objects = MetaLinkManager()
 
     def save(self, *args, **kwargs):
-        docs = Doc.objects.metalinks_for_object(self.content_object)
-        if self.pk:
-            docs = docs.exclude(pk=self.pk)
-        if settings.DOC_MAX_PER_OBJECT > 1:
-            if self.primary:
-                docs = docs.filter(primary=True)
-                docs.update(primary=False)
-        else:
-            docs.delete()
+        try:
+            docs = Doc.objects.metalinks_for_object(self.content_object)
+            if self.pk:
+                docs = docs.exclude(pk=self.pk)
+            if settings.DOC_MAX_PER_OBJECT > 1:
+                if self.primary:
+                    docs = docs.filter(primary=True)
+                    docs.update(primary=False)
+            else:
+                docs.delete()
+        except :
+            pass
         fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
         self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)

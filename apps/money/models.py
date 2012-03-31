@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from nnmware.apps.address.models import Country
 from nnmware.core.managers import FinancialManager
+from nnmware.core.models import Doc
 
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
@@ -113,6 +114,7 @@ class Account(MoneyBase):
         related_name='target_account_ctype', on_delete=models.SET_NULL)
     target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
     target = GenericForeignKey('target_ctype', 'target_oid')
+    description = models.TextField(_("Description"), blank=True)
 
     objects = FinancialManager()
 
@@ -128,3 +130,6 @@ class Account(MoneyBase):
                  'target': self.target,
                  'amount': self.amount,
                  'currency': self.currency}
+
+    def docs(self):
+        return Doc.objects.metalinks_for_object(self)

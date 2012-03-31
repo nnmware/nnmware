@@ -14,7 +14,7 @@ class CabinetInfoForm(forms.ModelForm):
 
 class CabinetAddRoomForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
+    description = forms.CharField(required=False,widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
 
     class Meta:
         model = Room
