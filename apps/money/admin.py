@@ -29,7 +29,7 @@ class AccountAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('user','date')
     ordering = [('user'),]
-    readonly_fields = ('target_ctype','target_oid')
+    #readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
         (_("Account"), {"fields": [("user","date"),
             ('amount','currency','status'),

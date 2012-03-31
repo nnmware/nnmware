@@ -10,6 +10,7 @@ from nnmware.apps.address.models import City
 from nnmware.core.middleware import get_request
 from nnmware.core.models import MetaName, MetaGeo
 from nnmware.apps.money.models import MoneyBase
+from nnmware.apps.address.models import Tourism
 
 class HotelOptionCategory(MetaName):
 
@@ -83,6 +84,8 @@ class Hotel(MetaName, MetaGeo):
     purity_point = models.DecimalField(verbose_name=_('Purity average'), default=0, decimal_places=1, max_digits=4)
     transport_point = models.DecimalField(verbose_name=_('Transport average'), default=0, decimal_places=1, max_digits=4)
     prices_point = models.DecimalField(verbose_name=_('Prices average'), default=0, decimal_places=1, max_digits=4)
+    tourism = models.ManyToManyField(Tourism, verbose_name=_('Tourism places'), null=True, blank=True)
+
 
     class Meta:
         verbose_name = _("Hotel")
@@ -164,11 +167,13 @@ class Room(MetaName):
 
 STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1
-STATUS_CANCELED = 2
+STATUS_PAID = 2
+STATUS_CANCELED = 3
 
 STATUS_CHOICES = (
     (STATUS_UNKNOWN, _("Unknown")),
     (STATUS_ACCEPTED, _("Accepted")),
+    (STATUS_PAID, _("Paid")),
     (STATUS_CANCELED, _("Cancelled")),
     )
 

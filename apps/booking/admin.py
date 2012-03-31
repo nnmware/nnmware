@@ -14,7 +14,8 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
         (_("Hotel options and admins"), {"classes": ("collapse closed",), "fields": [
-            ('option','admins')
+            ('option','admins'), ('tourism')
+
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en","address_en"),("description_en",) ]}),)

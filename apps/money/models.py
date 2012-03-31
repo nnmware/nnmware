@@ -122,7 +122,7 @@ class Account(MoneyBase):
 
     def __unicode__(self):
         return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\
-               { 'user': self.user.username,
+               { 'user': self.user,
                  'date': self.date,
                  'target': self.target,
                  'amount': self.amount,
