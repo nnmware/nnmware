@@ -57,15 +57,19 @@ class City(Address, MetaGeo):
 class TourismCategory(MetaName):
 
     class Meta:
-        verbose_name = _("Tourism Category")
-        verbose_name_plural = _("Tourism Categories")
+        verbose_name = _("Tourism Place Category")
+        verbose_name_plural = _("Tourism Places Categories")
         ordering = ['order_in_list',]
 
 
 class Tourism(Address, MetaGeo):
-    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), blank=True, null=True)
-    region = models.ForeignKey(Region, blank=True, null=True, verbose_name=_('Region'))
-    country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'))
+    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), blank=True, null=True,
+        on_delete=models.SET_NULL)
+    city = models.ForeignKey(City, blank=True, null=True, verbose_name=_('City'), on_delete=models.SET_NULL)
+    region = models.ForeignKey(Region, blank=True, null=True, verbose_name=_('Region'), on_delete=models.SET_NULL)
+    country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
+    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
+    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
         unique_together = (('name', 'region'),)
@@ -74,3 +78,6 @@ class Tourism(Address, MetaGeo):
 
     def __unicode__(self):
         return u"%s :: %s" % (self.name, self.country)
+
+    def fulladdress(self):
+        return u"%s, %s" % (self.city, self.address)
