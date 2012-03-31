@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-31 12:40+1100\n"
+"POT-Creation-Date: 2012-03-31 12:51+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: apps/address/admin.py:11 apps/address/models.py:51
-#: apps/booking/models.py:66 apps/booking/models.py:249
+#: apps/address/models.py:68 apps/booking/models.py:66
+#: apps/booking/models.py:249
 msgid "City"
 msgstr "Город"
 
@@ -29,7 +30,6 @@ msgid "English"
 msgstr "Английский"
 
 #: apps/address/admin.py:24 apps/address/models.py:42
-#: apps/address/models.py:68
 msgid "Region"
 msgstr "Регион"
 
@@ -72,7 +72,16 @@ msgstr "Категории мест туризма"
 msgid "Tourism category"
 msgstr "Категория мест туризма"
 
-#: apps/address/models.py:73 apps/address/models.py:74
+#: apps/address/models.py:70 apps/booking/models.py:68
+#: apps/booking/models.py:250
+msgid "Address"
+msgstr "Адрес"
+
+#: apps/address/models.py:71 apps/booking/models.py:69
+msgid "Address(English)"
+msgstr "Адрес(Англ)"
+
+#: apps/address/models.py:75 apps/address/models.py:76
 msgid "Tourism"
 msgstr "Туризм"
 
@@ -264,7 +273,7 @@ msgstr "Категория опций отеля"
 msgid "Booking Event"
 msgstr "Событие бронирования"
 
-#: apps/booking/admin.py:87 apps/booking/models.py:260
+#: apps/booking/admin.py:87
 msgid "Request for add Hotel"
 msgstr "Заявка на добавление Отеля"
 
@@ -343,14 +352,6 @@ msgstr "Квартира"
 #: apps/booking/models.py:65
 msgid "Register from"
 msgstr "Регистрация с"
-
-#: apps/booking/models.py:68 apps/booking/models.py:250
-msgid "Address"
-msgstr "Адрес"
-
-#: apps/booking/models.py:69
-msgid "Address(English)"
-msgstr "Адрес(Англ)"
 
 #: apps/booking/models.py:71 apps/booking/models.py:254
 msgid "Fax"
@@ -583,9 +584,13 @@ msgstr "Контактный емейл"
 msgid "Count of rooms"
 msgstr "Количество номеров"
 
+#: apps/booking/models.py:260
+msgid "Request for add hotel"
+msgstr "Заявка на добавление отеля"
+
 #: apps/booking/models.py:261
-msgid "Requests for add Hotels"
-msgstr "Заявки на добавление Отелей"
+msgid "Requests for add hotels"
+msgstr "Заявки на добавление отелей"
 
 #: apps/booking/views.py:47
 msgid "list of hotels"
@@ -690,28 +695,26 @@ msgstr ""
 
 #: apps/money/models.py:98
 msgid "Billed"
-msgstr ""
+msgstr "Выставлено"
 
 #: apps/money/models.py:99
 msgid "Paid"
-msgstr ""
+msgstr "Оплачено"
 
 #: apps/money/models.py:110
-#, fuzzy
 msgid "Account status"
-msgstr "Счета"
+msgstr "Статус счета"
 
 #: apps/money/models.py:121
 msgid "Accounts"
 msgstr "Счета"
 
 #: apps/money/models.py:124
-#, fuzzy, python-format
 msgid ""
 "User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s "
 "%(currency)s"
 msgstr ""
-"Пользователь: %(user)s :: Дата: %(date)s :: Объект: %(actor)s :: Сумма: "
+"Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(actor)s :: Сумма: "
 "%(amount)s %(currency)s"
 
 #: apps/topic/models.py:15

@@ -257,5 +257,5 @@ class RequestAddHotel(models.Model):
     rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
 
     class Meta:
-        verbose_name = _("Request for add Hotel")
-        verbose_name_plural = _("Requests for add Hotels")
+        verbose_name = _("Request for add hotel")
+        verbose_name_plural = _("Requests for add hotels")

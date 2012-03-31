@@ -66,13 +66,12 @@ class Tourism(Address, MetaGeo):
     category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), blank=True, null=True,
         on_delete=models.SET_NULL)
     city = models.ForeignKey(City, blank=True, null=True, verbose_name=_('City'), on_delete=models.SET_NULL)
-    region = models.ForeignKey(Region, blank=True, null=True, verbose_name=_('Region'), on_delete=models.SET_NULL)
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
     address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
     address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
-        unique_together = (('name', 'region'),)
+        unique_together = (('name', 'country'),)
         verbose_name = _("Tourism")
         verbose_name_plural = _("Tourism")
 

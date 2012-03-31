@@ -55,9 +55,9 @@ class TourismAdmin(admin.ModelAdmin):
     list_display = ('name', 'country')
     search_fields = ('name',)
     fieldsets = (
-        (_("Tourism place category"), {"fields": [("name",),
+        (_("Tourism place category"), {"fields": [("name",'address'),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled','country','region'),
+        (_("Addons"), {"fields": [( 'enabled','country','city'),
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
