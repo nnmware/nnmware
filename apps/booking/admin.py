@@ -110,12 +110,6 @@ class AvailabilityAdmin(admin.ModelAdmin):
             ('amount','currency','roomcount')]}),)
 
 
-
-
-class PlaceCountAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
-    search_fields = ('count',)
-
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(HotelOption, HotelOptionAdmin)
 admin.site.register(Room, RoomAdmin)
@@ -126,7 +120,6 @@ admin.site.register(Booking, BookingAdmin)
 admin.site.register(AgentPercent, AgentPercentAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Availability, AvailabilityAdmin)
-admin.site.register(PlaceCount, PlaceCountAdmin)
 admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
 
 

@@ -138,16 +138,6 @@ class RoomOption(MetaName):
         return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
 
 
-class PlaceCount(models.Model):
-    count = models.IntegerField(verbose_name=_('Count of places'))
-
-    class Meta:
-        verbose_name = _("Place Count")
-        verbose_name_plural = _("Places Count")
-
-    def __unicode__(self):
-        return '%s' % self.count
-
 PLACES_UNKNOWN = 0
 PLACES_ONE = 1
 PLACES_TWO = 2
@@ -202,7 +192,7 @@ class Booking(MoneyBase):
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
-    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=3, max_digits=6, default=0.0)
+    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=3, max_digits=6, default=0)
 
     class Meta:
         verbose_name = _("Agent Percent")

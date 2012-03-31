@@ -17,7 +17,7 @@ class TransactionAdmin(admin.ModelAdmin):
             ('target_ctype','target_oid')]}),)
 
     _readonly_fields = [] # Default fields that are readonly for everyone.
-    def get_readonly_fields(self, request, obj):
+    def get_readonly_fields(self, request, obj=None):
         readonly = list(self._readonly_fields)
         if request.user.is_staff and not request.user.is_superuser:
             readonly.extend(['user','date','actor_ctype','actor_oid','target_ctype','target_oid', 'amount', 'currency', 'status'])
