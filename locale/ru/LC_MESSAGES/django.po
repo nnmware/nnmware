@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-31 10:54+1100\n"
+"POT-Creation-Date: 2012-03-31 11:34+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr "Английский"
 msgid "Region"
 msgstr "Регион"
 
-#: apps/address/admin.py:35 apps/address/models.py:30 apps/money/models.py:14
+#: apps/address/admin.py:35 apps/address/models.py:30 apps/money/models.py:13
 msgid "Country"
 msgstr "Страна"
 
@@ -280,7 +280,8 @@ msgstr ""
 
 #: apps/booking/models.py:41 apps/booking/models.py:56
 #: apps/booking/models.py:156 apps/booking/models.py:180
-#: apps/money/models.py:50 core/models.py:626 core/models.py:701
+#: apps/money/models.py:49 apps/money/models.py:97 core/models.py:626
+#: core/models.py:701
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -435,15 +436,15 @@ msgstr "Номера"
 msgid "%(room)s :: %(places)s :: %(hotel)s"
 msgstr ""
 
-#: apps/booking/models.py:181 apps/money/models.py:51
+#: apps/booking/models.py:181 apps/money/models.py:50 apps/money/models.py:98
 msgid "Accepted"
 msgstr "Принято"
 
-#: apps/booking/models.py:182 apps/money/models.py:53
+#: apps/booking/models.py:182 apps/money/models.py:52 apps/money/models.py:100
 msgid "Cancelled"
 msgstr "Аннулировано"
 
-#: apps/booking/models.py:186 apps/money/models.py:61
+#: apps/booking/models.py:186 apps/money/models.py:60 apps/money/models.py:108
 msgid "User"
 msgstr "Пользователь"
 
@@ -550,7 +551,7 @@ msgstr ""
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:261 apps/money/models.py:15 core/models.py:255
+#: apps/booking/models.py:261 apps/money/models.py:14 core/models.py:255
 #: core/models.py:289
 msgid "Name"
 msgstr "Имя"
@@ -583,82 +584,99 @@ msgstr "Пожалуйста введите увиденные символы."
 msgid "Wrong answer"
 msgstr "Неверный ответ"
 
-#: apps/money/admin.py:13 apps/money/models.py:78
+#: apps/money/admin.py:14 apps/money/models.py:77
 msgid "Transaction"
 msgstr "Транзакция"
 
-#: apps/money/models.py:13
+#: apps/money/admin.py:26 apps/money/models.py:120 core/models.py:630
+msgid "Account"
+msgstr "Счет"
+
+#: apps/money/models.py:12
 msgid "Currency code"
 msgstr "Код валюты"
 
-#: apps/money/models.py:16 core/models.py:290
+#: apps/money/models.py:15 core/models.py:290
 msgid "Name(English"
 msgstr "Название(Английский)"
 
-#: apps/money/models.py:20 apps/money/models.py:27 apps/money/models.py:39
+#: apps/money/models.py:19 apps/money/models.py:26 apps/money/models.py:38
 msgid "Currency"
 msgstr "Валюта"
 
-#: apps/money/models.py:21
+#: apps/money/models.py:20
 msgid "Currencies"
 msgstr "Валюты"
 
-#: apps/money/models.py:28
+#: apps/money/models.py:27
 msgid "On date"
 msgstr "На дату"
 
-#: apps/money/models.py:29
+#: apps/money/models.py:28
 msgid "Rate"
 msgstr "Курс"
 
-#: apps/money/models.py:33
+#: apps/money/models.py:32
 msgid "Exchange Rate"
 msgstr "Курс обмена валют"
 
-#: apps/money/models.py:34
+#: apps/money/models.py:33
 msgid "Exchange Rates"
 msgstr "Курсы обмена валют"
 
-#: apps/money/models.py:38
+#: apps/money/models.py:37
 msgid "Amount"
 msgstr "Сумма"
 
-#: apps/money/models.py:52
+#: apps/money/models.py:51 apps/money/models.py:99
 msgid "Completed"
 msgstr "Завершено"
 
-#: apps/money/models.py:63
+#: apps/money/models.py:62
 msgid "Object Content Type"
 msgstr "Тип контента объекта"
 
-#: apps/money/models.py:65
+#: apps/money/models.py:64
 msgid "ID of object"
 msgstr "ID объекта"
 
-#: apps/money/models.py:67
+#: apps/money/models.py:66 apps/money/models.py:109
 msgid "Date"
 msgstr "Дата"
 
-#: apps/money/models.py:68
+#: apps/money/models.py:67 apps/money/models.py:110
 msgid "Transaction status"
 msgstr "Статус транзакции"
 
-#: apps/money/models.py:69
+#: apps/money/models.py:68 apps/money/models.py:111
 msgid "Target Content Type"
 msgstr "Тип контента назначения"
 
-#: apps/money/models.py:71
+#: apps/money/models.py:70 apps/money/models.py:113
 msgid "ID of target"
 msgstr "ID объекта назначения"
 
-#: apps/money/models.py:79
+#: apps/money/models.py:78
 msgid "Transactions"
 msgstr "Транзакции"
 
-#: apps/money/models.py:85
+#: apps/money/models.py:84
 #, python-format
 msgid ""
 "User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s "
+"%(currency)s"
+msgstr ""
+"Пользователь: %(user)s :: Дата: %(date)s :: Объект: %(actor)s :: Сумма: "
+"%(amount)s %(currency)s"
+
+#: apps/money/models.py:121
+msgid "Accounts"
+msgstr "Счета"
+
+#: apps/money/models.py:124
+#, fuzzy, python-format
+msgid ""
+"User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s "
 "%(currency)s"
 msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Объект: %(actor)s :: Сумма: "
@@ -1323,10 +1341,6 @@ msgstr "Следования"
 #: core/models.py:627 core/models.py:702
 msgid "System"
 msgstr "Система"
-
-#: core/models.py:630
-msgid "Account"
-msgstr "Аккаунт"
 
 #: core/models.py:631
 msgid "Profile"

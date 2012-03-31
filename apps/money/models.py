@@ -1,4 +1,3 @@
-#__author__ = 'root'
 from datetime import datetime
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -90,14 +89,14 @@ class Transaction(MoneyBase):
                      'currency': self.currency}
 
 ACCOUNT_UNKNOWN = 0
-ACCOUNT_ACCEPTED = 1
-ACCOUNT_COMPLETED = 2
+ACCOUNT_BILLED = 1
+ACCOUNT_PAID = 2
 ACCOUNT_CANCELED = 3
 
 ACCOUNT_STATUS = (
     (ACCOUNT_UNKNOWN, _("Unknown")),
-    (ACCOUNT_ACCEPTED, _("Accepted")),
-    (ACCOUNT_COMPLETED, _("Completed")),
+    (ACCOUNT_BILLED, _("Billed")),
+    (ACCOUNT_PAID, _("Paid")),
     (ACCOUNT_CANCELED, _("Cancelled")),
     )
 
@@ -108,9 +107,9 @@ class Account(MoneyBase):
     """
     user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
-    status = models.IntegerField(_("Transaction status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
+    status = models.IntegerField(_("Account status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
-        related_name='account_target', on_delete=models.SET_NULL)
+        related_name='target_account_ctype', on_delete=models.SET_NULL)
     target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
     target = GenericForeignKey('target_ctype', 'target_oid')
 

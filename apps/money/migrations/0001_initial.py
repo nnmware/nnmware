@@ -51,7 +51,26 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'Transaction', fields ['user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency']
         db.create_unique('money_transaction', ['user_id', 'actor_ctype_id', 'actor_oid', 'date', 'amount', 'currency_id'])
 
+        # Adding model 'Account'
+        db.create_table('money_account', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'], null=True, blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('target_ctype', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='target_account_ctype', null=True, to=orm['contenttypes.ContentType'])),
+            ('target_oid', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+        ))
+        db.send_create_signal('money', ['Account'])
+
+        # Adding unique constraint on 'Account', fields ['user', 'target_ctype', 'target_oid', 'date', 'amount', 'currency']
+        db.create_unique('money_account', ['user_id', 'target_ctype_id', 'target_oid', 'date', 'amount', 'currency_id'])
+
     def backwards(self, orm):
+        # Removing unique constraint on 'Account', fields ['user', 'target_ctype', 'target_oid', 'date', 'amount', 'currency']
+        db.delete_unique('money_account', ['user_id', 'target_ctype_id', 'target_oid', 'date', 'amount', 'currency_id'])
+
         # Removing unique constraint on 'Transaction', fields ['user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency']
         db.delete_unique('money_transaction', ['user_id', 'actor_ctype_id', 'actor_oid', 'date', 'amount', 'currency_id'])
 
@@ -69,6 +88,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Transaction'
         db.delete_table('money_transaction')
+
+        # Deleting model 'Account'
+        db.delete_table('money_account')
 
     models = {
         'address.country': {
@@ -119,6 +141,17 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        'money.account': {
+            'Meta': {'unique_together': "(('user', 'target_ctype', 'target_oid', 'date', 'amount', 'currency'),)", 'object_name': 'Account'},
+            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'target_ctype': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'target_account_ctype'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'target_oid': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'})
         },
         'money.currency': {
             'Meta': {'unique_together': "(('code',),)", 'object_name': 'Currency'},

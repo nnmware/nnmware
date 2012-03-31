@@ -1,5 +1,5 @@
 from django.contrib import admin
-from nnmware.apps.address.models import City, Region, Country
+from nnmware.apps.address.models import *
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -39,7 +39,20 @@ class CountryAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en","name_add_en"),("description_en",) ]}),)
 
+class TourismCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en')
+    search_fields = ('name',)
+    fieldsets = (
+        (_("Tourism category"), {"fields": [("name",),
+            ('description',)]}),
+        (_("Addons"), {"fields": [( 'enabled'),
+        ]}),
+        (_("English"), {"classes": ("collapse closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
+
+
 
 admin.site.register(City, CityAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(Country, CountryAdmin)
+admin.site.register(TourismCategory, TourismCategoryAdmin)
