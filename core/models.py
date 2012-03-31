@@ -302,15 +302,21 @@ class MetaName(models.Model):
         return self.name
 
     def get_name(self):
-        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
-            if self.name_en:
-                return self.name_en
+        try:
+            if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+                if self.name_en:
+                    return self.name_en
+        except :
+            pass
         return self.name
 
     def get_description(self):
-        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
-            if self.description_en:
-                return self.description_en
+        try:
+            if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+                if self.description_en:
+                    return self.description_en
+        except :
+            pass
         return self.description
 
     def save(self, *args, **kwargs):
@@ -429,10 +435,10 @@ class Doc(MetaLink, MetaFile):
                     docs.update(primary=False)
             else:
                 docs.delete()
-            fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
-            self.size = os.path.getsize(fullpath)
         except :
             pass
+        fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
+        self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)
 
     @permalink

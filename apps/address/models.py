@@ -18,9 +18,12 @@ class Address(MetaName):
             return self.name
 
     def get_name_add(self):
-        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
-            if self.name_add_en:
-                return self.name_add_en
+        try:
+            if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+                if self.name_add_en:
+                    return self.name_add_en
+        except :
+            pass
         return self.name_add
 
 
