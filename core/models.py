@@ -429,10 +429,10 @@ class Doc(MetaLink, MetaFile):
                     docs.update(primary=False)
             else:
                 docs.delete()
+            fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
+            self.size = os.path.getsize(fullpath)
         except :
             pass
-        fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
-        self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)
 
     @permalink

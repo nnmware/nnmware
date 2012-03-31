@@ -93,7 +93,7 @@ class DocAdmin(admin.ModelAdmin):
 
 
 class PicAdmin(admin.ModelAdmin):
-    readonly_fields = ('pic',)
+ #   readonly_fields = ('pic',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
         (_('Pic'), {'fields': [('pic', 'publish_date')]}),

@@ -164,7 +164,7 @@ class Room(MetaName):
         verbose_name_plural = _("Rooms")
 
     def __unicode__(self):
-        return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.name, 'places':self.places, 'hotel':self.hotel.name }
+        return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name(), 'places':self.places, 'hotel':self.hotel.get_name() }
 
 
 STATUS_UNKNOWN = 0
