@@ -38,7 +38,7 @@ class GithubBackend(OAuthBackend):
     ]
 
     def get_user_details(self, response):
-        """Return user details from Github account"""
+        """Return user details from Github userprofile"""
         return {USERNAME: response.get('login'),
                 'email': response.get('email') or '',
                 'first_name': response.get('name')}

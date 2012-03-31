@@ -32,7 +32,7 @@ class DropboxBackend(OAuthBackend):
     ]
 
     def get_user_details(self, response):
-        """Return user details from Dropbox account"""
+        """Return user details from Dropbox userprofile"""
         return {USERNAME: response.get('uid'),
                 'email': response.get('email'),
                 'first_name': response.get('display_name')}
@@ -55,7 +55,7 @@ class DropboxAuth(ConsumerBasedOAuth):
 
     def user_data(self, access_token):
         """Loads user data from service"""
-        url = 'https://' + DROPBOX_API + '/1/account/info'
+        url = 'https://' + DROPBOX_API + '/1/userprofile/info'
         request = self.oauth_request(access_token, url)
         response = self.fetch_response(request)
         try:

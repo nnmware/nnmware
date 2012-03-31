@@ -31,7 +31,7 @@ class Migration(SchemaMigration):
             ('description_en', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('slug', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
             ('order_in_list', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.HotelOptionCategory'])),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.HotelOptionCategory'], null=True, blank=True)),
             ('in_search', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('sticky_in_search', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
@@ -49,8 +49,8 @@ class Migration(SchemaMigration):
             ('order_in_list', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
             ('longitude', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
             ('latitude', self.gf('django.db.models.fields.FloatField')(null=True, blank=True)),
-            ('register_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 30, 0, 0))),
-            ('city', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['address.City'])),
+            ('register_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
+            ('city', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['address.City'], null=True, blank=True)),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
             ('address', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
             ('address_en', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
@@ -62,12 +62,12 @@ class Migration(SchemaMigration):
             ('room_count', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
             ('starcount', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('choice', self.gf('django.db.models.fields.IntegerField')(default=1)),
-            ('point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=6, decimal_places=3)),
-            ('food_point', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('service_point', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('purity_point', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('transport_point', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('prices_point', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
+            ('point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('food_point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('service_point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('purity_point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('transport_point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('prices_point', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
         ))
         db.send_create_signal('booking', ['Hotel'])
 
@@ -110,7 +110,7 @@ class Migration(SchemaMigration):
             ('description_en', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('slug', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
             ('order_in_list', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
-            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.RoomOptionCategory'])),
+            ('category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.RoomOptionCategory'], null=True, blank=True)),
             ('in_search', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
         db.send_create_signal('booking', ['RoomOption'])
@@ -132,8 +132,8 @@ class Migration(SchemaMigration):
             ('description_en', self.gf('django.db.models.fields.TextField')(blank=True)),
             ('slug', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
             ('order_in_list', self.gf('django.db.models.fields.IntegerField')(default=0, blank=True)),
-            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'])),
-            ('places', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['booking.PlaceCount'])),
+            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'], null=True, blank=True)),
+            ('places', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal('booking', ['Room'])
 
@@ -149,13 +149,13 @@ class Migration(SchemaMigration):
         db.create_table('booking_booking', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'])),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 30, 0, 0))),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
             ('from_date', self.gf('django.db.models.fields.DateField')()),
             ('to_date', self.gf('django.db.models.fields.DateField')()),
-            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Room'])),
-            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'])),
+            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Room'], null=True, blank=True)),
+            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'], null=True, blank=True)),
             ('status', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal('booking', ['Booking'])
@@ -163,7 +163,7 @@ class Migration(SchemaMigration):
         # Adding model 'AgentPercent'
         db.create_table('booking_agentpercent', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'])),
+            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'], null=True, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
             ('percent', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3, blank=True)),
         ))
@@ -173,35 +173,43 @@ class Migration(SchemaMigration):
         db.create_table('booking_review', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'])),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 30, 0, 0))),
+            ('hotel', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Hotel'], null=True, blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
             ('review', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('food', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('service', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('purity', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('transport', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
-            ('prices', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=6, decimal_places=3)),
+            ('food', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('service', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('purity', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('transport', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
+            ('prices', self.gf('django.db.models.fields.DecimalField')(default=0, max_digits=4, decimal_places=1)),
         ))
         db.send_create_signal('booking', ['Review'])
-
-        # Adding model 'PlacePrice'
-        db.create_table('booking_placeprice', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'])),
-            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Room'])),
-            ('date', self.gf('django.db.models.fields.DateField')()),
-        ))
-        db.send_create_signal('booking', ['PlacePrice'])
 
         # Adding model 'Availability'
         db.create_table('booking_availability', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Room'])),
+            ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
+            ('room', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['booking.Room'], null=True, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
-            ('roomcount', self.gf('django.db.models.fields.IntegerField')()),
+            ('roomcount', self.gf('django.db.models.fields.IntegerField')(default=0)),
         ))
         db.send_create_signal('booking', ['Availability'])
+
+        # Adding model 'RequestAddHotel'
+        db.create_table('booking_requestaddhotel', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('register_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('address', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('email', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('fax', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('contact_email', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('website', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('rooms_count', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+        ))
+        db.send_create_signal('booking', ['RequestAddHotel'])
 
     def backwards(self, orm):
         # Deleting model 'HotelOptionCategory'
@@ -243,11 +251,11 @@ class Migration(SchemaMigration):
         # Deleting model 'Review'
         db.delete_table('booking_review')
 
-        # Deleting model 'PlacePrice'
-        db.delete_table('booking_placeprice')
-
         # Deleting model 'Availability'
         db.delete_table('booking_availability')
+
+        # Deleting model 'RequestAddHotel'
+        db.delete_table('booking_requestaddhotel')
 
     models = {
         'address.city': {
@@ -326,26 +334,28 @@ class Migration(SchemaMigration):
         'booking.agentpercent': {
             'Meta': {'object_name': 'AgentPercent'},
             'date': ('django.db.models.fields.DateField', [], {}),
-            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']"}),
+            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'percent': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3', 'blank': 'True'})
         },
         'booking.availability': {
             'Meta': {'object_name': 'Availability'},
+            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Room']"}),
-            'roomcount': ('django.db.models.fields.IntegerField', [], {})
+            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Room']", 'null': 'True', 'blank': 'True'}),
+            'roomcount': ('django.db.models.fields.IntegerField', [], {'default': '0'})
         },
         'booking.booking': {
             'Meta': {'ordering': "('-date',)", 'object_name': 'Booking'},
             'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']"}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 30, 0, 0)'}),
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
             'from_date': ('django.db.models.fields.DateField', [], {}),
-            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']"}),
+            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Room']"}),
+            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Room']", 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'to_date': ('django.db.models.fields.DateField', [], {}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
@@ -356,7 +366,7 @@ class Migration(SchemaMigration):
             'address_en': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'admins': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['auth.User']", 'null': 'True', 'blank': 'True'}),
             'choice': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
-            'city': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.City']"}),
+            'city': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.City']", 'null': 'True', 'blank': 'True'}),
             'contact_email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'contact_name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -364,7 +374,7 @@ class Migration(SchemaMigration):
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'food_point': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
+            'food_point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'latitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
             'longitude': ('django.db.models.fields.FloatField', [], {'null': 'True', 'blank': 'True'}),
@@ -373,20 +383,20 @@ class Migration(SchemaMigration):
             'option': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['booking.HotelOption']", 'null': 'True', 'blank': 'True'}),
             'order_in_list': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '6', 'decimal_places': '3'}),
-            'prices_point': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
-            'purity_point': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
-            'register_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 30, 0, 0)'}),
+            'point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'prices_point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'purity_point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'register_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
             'room_count': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
-            'service_point': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
+            'service_point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'starcount': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'transport_point': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
+            'transport_point': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '150', 'blank': 'True'})
         },
         'booking.hoteloption': {
             'Meta': {'object_name': 'HotelOption'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.HotelOptionCategory']"}),
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.HotelOptionCategory']", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'description_en': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -414,25 +424,31 @@ class Migration(SchemaMigration):
             'count': ('django.db.models.fields.IntegerField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
-        'booking.placeprice': {
-            'Meta': {'object_name': 'PlacePrice'},
-            'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']"}),
-            'date': ('django.db.models.fields.DateField', [], {}),
+        'booking.requestaddhotel': {
+            'Meta': {'object_name': 'RequestAddHotel'},
+            'address': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'city': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'contact_email': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'email': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'fax': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'room': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Room']"})
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'phone': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'register_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
+            'rooms_count': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'website': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
         },
         'booking.review': {
             'Meta': {'object_name': 'Review'},
-            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 30, 0, 0)'}),
-            'food': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
-            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']"}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
+            'food': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'prices': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
-            'purity': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
+            'prices': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'purity': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
             'review': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'service': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
-            'transport': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '6', 'decimal_places': '3'}),
+            'service': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
+            'transport': ('django.db.models.fields.DecimalField', [], {'default': '0', 'max_digits': '4', 'decimal_places': '1'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         },
         'booking.room': {
@@ -440,18 +456,18 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'description_en': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']"}),
+            'hotel': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.Hotel']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name_en': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'option': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': "orm['booking.RoomOption']", 'null': 'True', 'blank': 'True'}),
             'order_in_list': ('django.db.models.fields.IntegerField', [], {'default': '0', 'blank': 'True'}),
-            'places': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'to': "orm['booking.PlaceCount']"}),
+            'places': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})
         },
         'booking.roomoption': {
             'Meta': {'object_name': 'RoomOption'},
-            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.RoomOptionCategory']"}),
+            'category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['booking.RoomOptionCategory']", 'null': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'description_en': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'enabled': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -483,7 +499,7 @@ class Migration(SchemaMigration):
         'money.currency': {
             'Meta': {'unique_together': "(('code',),)", 'object_name': 'Currency'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.Country']"}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.Country']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name_en': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})

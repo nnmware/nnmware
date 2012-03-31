@@ -18,7 +18,7 @@ class FoursquareBackend(OAuthBackend):
         return response['response']['user']['id']
 
     def get_user_details(self, response):
-        """Return user details from Foursquare account"""
+        """Return user details from Foursquare userprofile"""
         firstName = response['response']['user']['firstName']
         lastName = response['response']['user'].get('lastName', '')
         email = response['response']['user']['contact']['email']

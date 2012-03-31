@@ -33,7 +33,7 @@ class FlickrBackend(OAuthBackend):
     ]
 
     def get_user_details(self, response):
-        """Return user details from Flickr account"""
+        """Return user details from Flickr userprofile"""
         return {USERNAME: response.get('id'),
                 'email': '',
                 'first_name': response.get('fullname')}

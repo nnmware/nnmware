@@ -32,7 +32,7 @@ class FitbitBackend(OAuthBackend):
                   ('expires', EXPIRES_NAME)]
 
     def get_user_details(self, response):
-        """Return user details from Fitbit account"""
+        """Return user details from Fitbit userprofile"""
         return {USERNAME: response.get('id'),
                 'email': '',
                 'first_name': response.get('fullname')}

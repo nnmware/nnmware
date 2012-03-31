@@ -52,7 +52,7 @@ class GoogleOAuthBackend(OAuthBackend):
         return details['email']
 
     def get_user_details(self, response):
-        """Return user details from Orkut account"""
+        """Return user details from Orkut userprofile"""
         email = response['email']
         return {USERNAME: email.split('@', 1)[0],
                 'email': email,

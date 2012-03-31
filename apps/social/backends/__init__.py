@@ -111,7 +111,7 @@ class SocialAuthBackend(ModelBackend):
         social_user = out.get('social_user')
         if social_user:
             # define user.social_user attribute to track current social
-            # account
+            # userprofile
             user = social_user.user
             user.social_user = social_user
             user.is_new = out.get('is_new')

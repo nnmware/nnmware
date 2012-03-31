@@ -58,7 +58,7 @@ class Nonce(models.Model):
 
 
 class Association(models.Model):
-    """OpenId account association"""
+    """OpenId userprofile association"""
     server_url = models.CharField(max_length=255)
     handle = models.CharField(max_length=255)
     secret = models.CharField(max_length=255)  # Stored base64 encoded

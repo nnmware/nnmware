@@ -18,7 +18,7 @@ class InstagramBackend(OAuthBackend):
         return response['user']['id']
 
     def get_user_details(self, response):
-        """Return user details from Instagram account"""
+        """Return user details from Instagram userprofile"""
         username = response['user']['username']
         fullname = response['user'].get('fullname', '')
         email = response['user'].get('email', '')

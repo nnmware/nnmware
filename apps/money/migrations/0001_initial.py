@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('money_currency', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('code', self.gf('django.db.models.fields.CharField')(max_length=3)),
-            ('country', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['address.Country'])),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['address.Country'], null=True, blank=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('name_en', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
         ))
@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
         # Adding model 'ExchangeRate'
         db.create_table('money_exchangerate', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'])),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('date', self.gf('django.db.models.fields.DateField')()),
             ('rate', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=10, decimal_places=3)),
         ))
@@ -37,21 +37,23 @@ class Migration(SchemaMigration):
         db.create_table('money_transaction', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('amount', self.gf('django.db.models.fields.DecimalField')(default=0.0, max_digits=20, decimal_places=3)),
-            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'])),
+            ('currency', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['money.Currency'], null=True, blank=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 29, 0, 0))),
+            ('actor_ctype', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='transaction_object', null=True, to=orm['contenttypes.ContentType'])),
+            ('actor_oid', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime(2012, 3, 31, 0, 0))),
             ('status', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('target_ctype', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='transaction_target', null=True, to=orm['contenttypes.ContentType'])),
+            ('target_oid', self.gf('django.db.models.fields.CharField')(max_length=255, null=True, blank=True)),
         ))
         db.send_create_signal('money', ['Transaction'])
 
-        # Adding unique constraint on 'Transaction', fields ['user', 'content_type', 'object_id', 'date', 'amount', 'currency']
-        db.create_unique('money_transaction', ['user_id', 'content_type_id', 'object_id', 'date', 'amount', 'currency_id'])
+        # Adding unique constraint on 'Transaction', fields ['user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency']
+        db.create_unique('money_transaction', ['user_id', 'actor_ctype_id', 'actor_oid', 'date', 'amount', 'currency_id'])
 
     def backwards(self, orm):
-        # Removing unique constraint on 'Transaction', fields ['user', 'content_type', 'object_id', 'date', 'amount', 'currency']
-        db.delete_unique('money_transaction', ['user_id', 'content_type_id', 'object_id', 'date', 'amount', 'currency_id'])
+        # Removing unique constraint on 'Transaction', fields ['user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency']
+        db.delete_unique('money_transaction', ['user_id', 'actor_ctype_id', 'actor_oid', 'date', 'amount', 'currency_id'])
 
         # Removing unique constraint on 'ExchangeRate', fields ['currency', 'date', 'rate']
         db.delete_unique('money_exchangerate', ['currency_id', 'date', 'rate'])
@@ -121,27 +123,29 @@ class Migration(SchemaMigration):
         'money.currency': {
             'Meta': {'unique_together': "(('code',),)", 'object_name': 'Currency'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.Country']"}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['address.Country']", 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name_en': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})
         },
         'money.exchangerate': {
             'Meta': {'unique_together': "(('currency', 'date', 'rate'),)", 'object_name': 'ExchangeRate'},
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']"}),
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
             'date': ('django.db.models.fields.DateField', [], {}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'rate': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '10', 'decimal_places': '3'})
         },
         'money.transaction': {
-            'Meta': {'unique_together': "(('user', 'content_type', 'object_id', 'date', 'amount', 'currency'),)", 'object_name': 'Transaction'},
+            'Meta': {'unique_together': "(('user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency'),)", 'object_name': 'Transaction'},
+            'actor_ctype': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'transaction_object'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'actor_oid': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'amount': ('django.db.models.fields.DecimalField', [], {'default': '0.0', 'max_digits': '20', 'decimal_places': '3'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']"}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 29, 0, 0)'}),
+            'currency': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['money.Currency']", 'null': 'True', 'blank': 'True'}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime(2012, 3, 31, 0, 0)'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'object_id': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'target_ctype': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'transaction_target'", 'null': 'True', 'to': "orm['contenttypes.ContentType']"}),
+            'target_oid': ('django.db.models.fields.CharField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         }
     }

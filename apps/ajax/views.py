@@ -8,7 +8,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
 from django.http import HttpResponse
-from nnmware.apps.account.models import Profile
+from nnmware.apps.userprofile.models import Profile
 from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader

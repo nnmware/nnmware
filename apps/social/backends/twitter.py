@@ -23,7 +23,7 @@ TWITTER_ACCESS_TOKEN_URL = 'https://%s/oauth/access_token' % TWITTER_SERVER
 # Note: oauth/authorize forces the user to authorize every time.
 #       oauth/authenticate uses their previous selection, barring revocation.
 TWITTER_AUTHORIZATION_URL = 'http://%s/oauth/authenticate' % TWITTER_SERVER
-TWITTER_CHECK_AUTH = 'https://twitter.com/account/verify_credentials.json'
+TWITTER_CHECK_AUTH = 'https://twitter.com/userprofile/verify_credentials.json'
 
 
 class TwitterBackend(OAuthBackend):
@@ -32,7 +32,7 @@ class TwitterBackend(OAuthBackend):
     EXTRA_DATA = [('id', 'id')]
 
     def get_user_details(self, response):
-        """Return user details from Twitter account"""
+        """Return user details from Twitter userprofile"""
         try:
             first_name, last_name = response['name'].split(' ', 1)
         except:

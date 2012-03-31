@@ -34,7 +34,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
 
 
 class RoomAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('name','places','hotel')
     search_fields = ('name',)
 
 class RoomOptionAdmin(admin.ModelAdmin):
@@ -94,22 +94,23 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('date',)
+    fieldsets = (
+        (_("Agent Percent"), {"fields": [("hotel",'date','percent'),]}),)
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('date',)
 
-class PlacePriceAdmin(admin.ModelAdmin):
-    list_display = ('room','date','amount','currency')
+
+class AvailabilityAdmin(admin.ModelAdmin):
+    list_display = ('room','date','amount','currency','roomcount')
     search_fields = ('date',)
     fieldsets = (
         (_("Place Price"), {"fields": [("room",'date'),
-            ('amount','currency')]}),)
+            ('amount','currency','roomcount')]}),)
 
 
-class AvailabilityAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
-    search_fields = ('date',)
+
 
 class PlaceCountAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
@@ -125,7 +126,6 @@ admin.site.register(Booking, BookingAdmin)
 admin.site.register(AgentPercent, AgentPercentAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Availability, AvailabilityAdmin)
-admin.site.register(PlacePrice, PlacePriceAdmin)
 admin.site.register(PlaceCount, PlaceCountAdmin)
 admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
 

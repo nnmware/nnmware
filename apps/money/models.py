@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from nnmware.apps.address.models import Country
-from nnmware.core.managers import TransactionManager
+from nnmware.core.managers import FinancialManager
 
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
@@ -60,21 +60,26 @@ class Transaction(MoneyBase):
     """
     user = models.ForeignKey(User, verbose_name=_("User"))
 
-    content_type = models.ForeignKey(ContentType, verbose_name=_("Content Type"), null=True, blank=True, on_delete=models.SET_NULL)
-    object_id = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
-    actor = GenericForeignKey()
+    actor_ctype = models.ForeignKey(ContentType, verbose_name=_("Object Content Type"), null=True, blank=True,
+        related_name='transaction_object', on_delete=models.SET_NULL)
+    actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
+    actor = GenericForeignKey('actor_ctype', 'actor_oid')
     date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
+    target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
+        related_name='transaction_target', on_delete=models.SET_NULL)
+    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
+    target = GenericForeignKey('target_ctype', 'target_oid')
 
-    objects = TransactionManager()
+    objects = FinancialManager()
 
     class Meta:
-        unique_together = ('user', 'content_type', 'object_id', 'date', 'amount','currency')
+        unique_together = ('user', 'actor_ctype', 'actor_oid', 'date', 'amount','currency')
         verbose_name = _("Transaction")
         verbose_name_plural = _("Transactions")
 
-    def __unicode__(self):
-        return u'%s -> %s' % (self.user, self.actor)
+#    def __unicode__(self):
+#        return u'%s -> %s' % (self.user, self.date)
 
     def __unicode__(self):
         return _("User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s %(currency)s") %\
@@ -82,4 +87,44 @@ class Transaction(MoneyBase):
                      'date': self.date,
                      'actor': self.actor,
                      'amount': self.amount,
-                     'currency': self.currency.code}
+                     'currency': self.currency}
+
+ACCOUNT_UNKNOWN = 0
+ACCOUNT_ACCEPTED = 1
+ACCOUNT_COMPLETED = 2
+ACCOUNT_CANCELED = 3
+
+ACCOUNT_STATUS = (
+    (ACCOUNT_UNKNOWN, _("Unknown")),
+    (ACCOUNT_ACCEPTED, _("Accepted")),
+    (ACCOUNT_COMPLETED, _("Completed")),
+    (ACCOUNT_CANCELED, _("Cancelled")),
+    )
+
+
+class Account(MoneyBase):
+    """
+    Financial account
+    """
+    user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
+    date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
+    status = models.IntegerField(_("Transaction status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
+    target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
+        related_name='account_target', on_delete=models.SET_NULL)
+    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
+    target = GenericForeignKey('target_ctype', 'target_oid')
+
+    objects = FinancialManager()
+
+    class Meta:
+        unique_together = ('user', 'target_ctype', 'target_oid', 'date', 'amount','currency')
+        verbose_name = _("Account")
+        verbose_name_plural = _("Accounts")
+
+    def __unicode__(self):
+        return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\
+               { 'user': self.user.username,
+                 'date': self.date,
+                 'target': self.target,
+                 'amount': self.amount,
+                 'currency': self.currency}

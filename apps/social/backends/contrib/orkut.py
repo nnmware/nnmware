@@ -32,7 +32,7 @@ class OrkutBackend(OAuthBackend):
     name = 'orkut'
 
     def get_user_details(self, response):
-        """Return user details from Orkut account"""
+        """Return user details from Orkut userprofile"""
         try:
             emails = response['emails'][0]['value']
         except (KeyError, IndexError):

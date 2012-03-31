@@ -77,12 +77,12 @@ class Hotel(MetaName, MetaGeo):
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
-    point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=3, max_digits=6)
-    food_point = models.DecimalField(verbose_name=_('Food average'), default=0, decimal_places=3, max_digits=6)
-    service_point = models.DecimalField(verbose_name=_('Service average'), default=0, decimal_places=3, max_digits=6)
-    purity_point = models.DecimalField(verbose_name=_('Purity average'), default=0, decimal_places=3, max_digits=6)
-    transport_point = models.DecimalField(verbose_name=_('Transport average'), default=0, decimal_places=3, max_digits=6)
-    prices_point = models.DecimalField(verbose_name=_('Prices average'), default=0, decimal_places=3, max_digits=6)
+    point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
+    food_point = models.DecimalField(verbose_name=_('Food average'), default=0, decimal_places=1, max_digits=4)
+    service_point = models.DecimalField(verbose_name=_('Service average'), default=0, decimal_places=1, max_digits=4)
+    purity_point = models.DecimalField(verbose_name=_('Purity average'), default=0, decimal_places=1, max_digits=4)
+    transport_point = models.DecimalField(verbose_name=_('Transport average'), default=0, decimal_places=1, max_digits=4)
+    prices_point = models.DecimalField(verbose_name=_('Prices average'), default=0, decimal_places=1, max_digits=4)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -148,10 +148,21 @@ class PlaceCount(models.Model):
     def __unicode__(self):
         return '%s' % self.count
 
+PLACES_UNKNOWN = 0
+PLACES_ONE = 1
+PLACES_TWO = 2
+
+PLACES_CHOICES = (
+    (PLACES_UNKNOWN, _("Unknown")),
+    (PLACES_ONE, _("One")),
+    (PLACES_TWO, _("Two")),
+    )
+
+
 class Room(MetaName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
-    places = models.ForeignKey(PlaceCount, verbose_name=_('Place Count'), null=True, blank=True, on_delete=models.SET_NULL)
+    places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
 
     class Meta:
         verbose_name = _("Room")
@@ -208,11 +219,11 @@ class Review(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
     review = models.TextField(verbose_name=_("Review"),blank=True)
-    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=3, max_digits=6)
-    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=3, max_digits=6)
-    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=3, max_digits=6)
-    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=3, max_digits=6)
-    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=3, max_digits=6)
+    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
+    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4)
+    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=1, max_digits=4)
+    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=1, max_digits=4)
+    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4)
 
     class Meta:
         verbose_name = _("Client review")
@@ -224,38 +235,24 @@ class Review(models.Model):
                  'hotel': self.hotel.name,
                  'review': self.review }
 
-class PlacePrice(MoneyBase):
-    room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.SET_NULL)
+class Availability(MoneyBase):
+    room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("From date"))
+    roomcount = models.IntegerField(verbose_name=_('Count of places'), default=0)
 
     class Meta:
-        verbose_name = _("Place Price")
-        verbose_name_plural = _("Places Prices")
+        verbose_name = _("Availability & Price")
+        verbose_name_plural = _("Availabilities & Prices")
 
     def __unicode__(self):
-        return _("Price place %(place)s in hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s") % \
-               {'place': self.room.name,
-                'hotel': self.room.hotel.name,
-                'date': self.date,
-                'price': self.amount,
-                'currency': self.currency.code}
-
-
-class Availability(models.Model):
-    room = models.ForeignKey(Room, null=True, blank=True, on_delete=models.SET_NULL)
-    date = models.DateField(verbose_name=_("From date"))
-    roomcount = models.IntegerField(verbose_name=_('Count of places'))
-
-    class Meta:
-        verbose_name = _("Availability")
-        verbose_name_plural = _("Availabilities")
-
-    def __unicode__(self):
-        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s") % \
-               { 'place': self.room.name,
+        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s MONEY %(price)s %(currency)s")  % \
+                { 'place': self.room.name,
                  'hotel': self.room.hotel.name,
                  'date': self.date,
-                 'count': self.roomcount }
+                 'count': self.roomcount,
+                 'price': self.amount,
+                 'currency': self.currency.code
+               }
 
 class RequestAddHotel(models.Model):
     register_date = models.DateTimeField(_("Register date"), default=datetime.now())

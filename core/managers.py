@@ -189,7 +189,7 @@ class FollowManager(Manager):
         content_type = ContentType.objects.get_for_model(User).pk
         return self.filter(content_type=content_type, user=get_request().user)
 
-class TransactionManager(Manager):
+class FinancialManager(Manager):
     """
     Manager for Transaction model.
     """
@@ -199,7 +199,7 @@ class TransactionManager(Manager):
         Filter to a specific instance.
         """
         content_type = ContentType.objects.get_for_model(instance).pk
-        return self.filter(content_type=content_type, object_id=instance.pk)
+        return self.filter(target_ctype=content_type, target_oid=instance.pk)
 
 class MessageManager(Manager):
 
