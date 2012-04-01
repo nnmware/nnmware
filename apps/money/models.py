@@ -26,7 +26,8 @@ class Currency(models.Model):
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(verbose_name=_('On date'))
-    rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=3)
+    official_rate = models.DecimalField(verbose_name=_('Official Rate'), default=0, max_digits=10, decimal_places=4)
+    rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4)
 
     class Meta:
         unique_together = ('currency','date','rate')

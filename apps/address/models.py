@@ -23,8 +23,7 @@ class Address(MetaName):
                 if self.name_add_en:
                     return self.name_add_en
         except :
-            pass
-        return self.name_add
+            return self.name_add
 
 
 class Country(Address):
