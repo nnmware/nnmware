@@ -34,9 +34,13 @@ class ExchangeRate(models.Model):
 
 
     class Meta:
+        ordering = ("-date",'currency__code')
         unique_together = ('currency','date','rate')
         verbose_name = _("Exchange Rate")
         verbose_name_plural = _("Exchange Rates")
+
+    def __unicode__(self):
+        return u"%s :: %s :: %s :: %s" % (self.currency, self.date, self.official_rate, self.rate)
 
 
 #---------------------------------------------------------------------------

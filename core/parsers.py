@@ -38,9 +38,9 @@ def parse_currency(on_date=None):
     rate_date = datetime.date(y, m, d)
     lstCurrency=ParseXMLCurrency(CurrencyXMLInput(sDate))
     from nnmware.apps.money.models import ExchangeRate, Currency
+    currencies = Currency.objects.all().values_list('code',flat=True)
     for currency in lstCurrency:
         charcode = currency['CharCode']
-        currencies = Currency.objects.all().values_list('code',flat=True)
         if charcode in currencies and charcode <> settings.DEFAULT_CURRENCY:
             curr = Currency.objects.get(code=charcode)
             try:
