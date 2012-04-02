@@ -38,9 +38,6 @@ class ExchangeRate(models.Model):
         verbose_name = _("Exchange Rate")
         verbose_name_plural = _("Exchange Rates")
 
-#    def save(self, *args, **kwargs):
-#        f = parse_currency()
-#        super(ExchangeRate, self).save(*args, **kwargs)
 
 #---------------------------------------------------------------------------
 class MoneyBase(models.Model):
