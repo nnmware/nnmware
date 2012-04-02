@@ -9,6 +9,7 @@ from nnmware.apps.address.models import Country
 from nnmware.core.managers import FinancialManager
 from nnmware.core.models import Doc
 
+#---------------------------------------------------------------------------
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
     country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
@@ -23,18 +24,25 @@ class Currency(models.Model):
     def __unicode__(self):
         return u"%s :: %s" % (self.code, self.name)
 
+#---------------------------------------------------------------------------
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(verbose_name=_('On date'))
+    nominal = models.SmallIntegerField(verbose_name=_('Nominal'), default=1)
     official_rate = models.DecimalField(verbose_name=_('Official Rate'), default=0, max_digits=10, decimal_places=4)
     rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4)
+
 
     class Meta:
         unique_together = ('currency','date','rate')
         verbose_name = _("Exchange Rate")
         verbose_name_plural = _("Exchange Rates")
 
+#    def save(self, *args, **kwargs):
+#        f = parse_currency()
+#        super(ExchangeRate, self).save(*args, **kwargs)
 
+#---------------------------------------------------------------------------
 class MoneyBase(models.Model):
     amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=20, decimal_places=3)
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, blank=True, null=True)
@@ -54,7 +62,7 @@ TRANSACTION_STATUS = (
     (TRANSACTION_CANCELED, _("Cancelled")),
     )
 
-
+#---------------------------------------------------------------------------
 class Transaction(MoneyBase):
     """
     Transaction(no more words)
@@ -90,6 +98,7 @@ class Transaction(MoneyBase):
                      'amount': self.amount,
                      'currency': self.currency}
 
+#---------------------------------------------------------------------------
 ACCOUNT_UNKNOWN = 0
 ACCOUNT_BILLED = 1
 ACCOUNT_PAID = 2
@@ -108,8 +117,8 @@ class Account(MoneyBase):
     Financial account
     """
     user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now())
-    date_billed = models.DateTimeField(verbose_name=_("Billed date"), default=datetime.now())
+    date = models.DateField(verbose_name=_("Date"), default=datetime.now())
+    date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.now())
     status = models.IntegerField(_("Account status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)
@@ -120,7 +129,6 @@ class Account(MoneyBase):
     objects = FinancialManager()
 
     class Meta:
-        unique_together = ('user', 'target_ctype', 'target_oid', 'date', 'amount','currency')
         verbose_name = _("Account")
         verbose_name_plural = _("Accounts")
 

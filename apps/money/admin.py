@@ -42,8 +42,14 @@ class CurrencyAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 class ExchangeRateAdmin(admin.ModelAdmin):
-    list_display = ('currency','date','rate')
+    list_display = ('currency','date','nominal','official_rate','rate')
     search_fields = ('currency',)
+    fieldsets = (
+        (_("Exchange Rate"), {"fields": [("currency","date"),
+            ('nominal','official_rate','rate'),
+            ]}),)
+
+
 
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Currency, CurrencyAdmin)
