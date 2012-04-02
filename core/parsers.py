@@ -2,7 +2,6 @@
 import datetime
 from decimal import Decimal
 from time import localtime, strftime
-import urllib
 import urllib2
 import xml.dom.minidom
 
@@ -32,9 +31,9 @@ def ParseXMLCurrency(xmlDoc):
     return lstDicXMLNodes
 
 #---------------------------------------------------------------------------
-def parse_currency():
+def parse_currency(on_date=None):
     f = lambda x: Decimal(x.replace(',','.'))
-    sDate=strftime("%d.%m.%Y", localtime())
+    sDate= on_date or strftime("%d.%m.%Y", localtime())
     d, m, y = map(lambda x: int(x), sDate.split('.'))
     rate_date = datetime.date(y, m, d)
     lstCurrency=ParseXMLCurrency(CurrencyXMLInput(sDate))
@@ -52,6 +51,8 @@ def parse_currency():
                 rate.currency=curr
             rate.nominal = currency['Nominal']
             rate.official_rate = f(currency['Value'])
+            if not rate.rate:
+                rate.rate = f(currency['Value'])
             rate.save()
     return None
 
