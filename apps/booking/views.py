@@ -192,6 +192,7 @@ class CabinetBookings(DetailView):
         context['tab'] = 'booking'
         context['hotel'] = self.object
         context['bookings'] = Booking.objects.filter(room__hotel=self.object)
+        context['title_line'] = _('bookings')
         return context
 
 class CabinetBills(DetailView):
@@ -205,6 +206,7 @@ class CabinetBills(DetailView):
         context['tab'] = 'bills'
         context['hotel'] = self.object
         context['accounts'] = Account.objects.for_object(self.object)
+        context['title_line'] = _('bills')
         return context
 
 class RequestAddHotelView(CreateView):
@@ -219,6 +221,7 @@ class RequestAddHotelView(CreateView):
         # Call the base implementation first to get a context
         context = super(RequestAddHotelView, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.count()
+        context['title_line'] = _('request for add hotel')
         return context
 
 class BookingsList(ListView):
@@ -229,6 +232,7 @@ class BookingsList(ListView):
         # Call the base implementation first to get a context
         context = super(BookingsList, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
+        context['title_line'] = _('booking list')
         return context
 
 class RequestsList(ListView):
@@ -239,5 +243,6 @@ class RequestsList(ListView):
         # Call the base implementation first to get a context
         context = super(RequestsList, self).get_context_data(**kwargs)
         context['tab'] = 'requests'
+        context['title_line'] = _('request for add')
         return context
 

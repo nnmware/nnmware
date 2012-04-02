@@ -1,6 +1,6 @@
 from django.contrib import messages
-from nnmware.core.utils import get_message_dict
 from django.utils import simplejson
+from nnmware.core.utils import get_message_dict
 
 from threading import local
 
