@@ -31,7 +31,7 @@ from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
 from nnmware.core.models import Tag, Follow, Action
 from nnmware.core.views import AjaxFormMixin
 
-from nnmware.apps.userprofile.models import Profile
+from nnmware.apps.userprofile.models import Profile, EmailValidation
 from nnmware.apps.userprofile.forms import *
 from nnmware.core.imgutil import fit
 
