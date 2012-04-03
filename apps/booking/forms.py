@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room
 from nnmware.apps.booking.models import RequestAddHotel
+from nnmware.core.fields import ReCaptchaField
+from nnmware.core.middleware import get_request
+
 
 class CabinetInfoForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
@@ -42,3 +46,10 @@ class RequestAddHotelForm(forms.ModelForm):
     class Meta:
         model = RequestAddHotel
         fields = ('city', 'address', 'name','email','phone','fax','contact_email','website','rooms_count')
+
+    def __init__(self, *args, **kwargs):
+        super(RequestAddHotelForm, self).__init__(*args, **kwargs)
+        if not get_request().user.is_authenticated():
+            self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
+                                                                       'invalid' : _('Answer is wrong') })
+

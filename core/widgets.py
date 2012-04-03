@@ -5,11 +5,23 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
-from django.forms import HiddenInput
+from django import forms
 from django.utils import simplejson
-from django.forms import TextInput, Textarea, FileInput
+from django.forms import TextInput, Textarea, FileInput, HiddenInput
 
 from nnmware.core.imgutil import make_admin_thumbnail
+from nnmware.core.captcha import displayhtml
+
+class ReCaptchaWidget(forms.widgets.Widget):
+    recaptcha_challenge_name = 'recaptcha_challenge_field'
+    recaptcha_response_name = 'recaptcha_response_field'
+
+    def render(self, name, value, attrs=None):
+        return mark_safe(u'%s' % displayhtml(settings.RECAPTCHA_PUBLIC_KEY))
+
+    def value_from_datadict(self, data, files, name):
+        return [data.get(self.recaptcha_challenge_name, None), data.get(self.recaptcha_response_name, None)]
+
 
 
 class CommentSmileWidget(Textarea):
