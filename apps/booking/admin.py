@@ -2,10 +2,11 @@ from django.contrib import admin
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
-
 class HotelAdmin(admin.ModelAdmin):
-    list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','point')
+    list_display = ('name','enabled','register_date','city','address','contact_email','contact_name','room_count','starcount','point')
+    list_filter = ('starcount','name')
     search_fields = ('name',)
+    filter_horizontal = ['option','admins','tourism']
     fieldsets = (
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
@@ -13,13 +14,13 @@ class HotelAdmin(admin.ModelAdmin):
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
-        (_("Hotel options and admins"), {"classes": ("collapse closed",), "fields": [
-            ('option','admins'), ('tourism')
-
-        ]}),
+        (_("Hotel admins"), {"classes": ("collapse closed",), "fields": [
+            ('admins')]}),
+        (_("Hotel options and tourism"), {"classes": ("collapse closed",), "fields": [
+            ('option'),('tourism') ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en","address_en"),("description_en",) ]}),)
-
+    ordering = ('register_date','name')
 
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name','category','in_search','sticky_in_search')
