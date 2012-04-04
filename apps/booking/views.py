@@ -14,6 +14,7 @@ from nnmware.core.views import AttachedImagesMixin
 from nnmware.apps.booking.models import RequestAddHotel
 from nnmware.apps.booking.forms import RequestAddHotelForm
 from nnmware.apps.money.models import Account
+from nnmware.apps.booking.models import SettlementVariant
 
 class HotelList(ListView):
     model = Hotel
@@ -115,6 +116,15 @@ class CabinetRooms(CreateView):
         hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
         self.object.hotel = hotel
         self.object.save()
+        variants = self.request.POST.getlist('settlement')
+        for variant in variants:
+            try:
+                settlement = SettlementVariant.objects.get(room=self.object, settlement =variant)
+                if not settlement.enabled:
+                    settlement.enabled = True
+                    settlement.save()
+            except :
+                SettlementVariant(room=self.object,settlement=variant).save()
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -146,6 +156,17 @@ class CabinetEditRoom(AttachedImagesMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('cabinet_rooms', args=[self.object.hotel.pk])
+
+    def form_valid(self, form):
+        variants = self.request.POST.getlist('settlement')
+        settlements = SettlementVariant.objects.filter(room=self.object)
+        for settlement in settlements:
+            if settlement.settlement in variants:
+                settlement.enabled = True
+            else:
+                settlement.enabled = False
+            settlement.save()
+        return super(CabinetEditRoom, self).form_valid(form)
 
 
 class CabinetRates(DetailView):

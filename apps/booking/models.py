@@ -98,10 +98,11 @@ class Hotel(MetaName, MetaGeo):
         return self.name
 
     def get_count_stars_hotels(self):
-        two = Hotel.objects.filter(city=self.city, starcount=TWO_STAR).count()
-        three = Hotel.objects.filter(city=self.city, starcount=THREE_STAR).count()
-        four = Hotel.objects.filter(city=self.city, starcount=FOUR_STAR).count()
-        five = Hotel.objects.filter(city=self.city, starcount=FIVE_STAR).count()
+        qs = Hotel.objects.filter(city=self.city)
+        two = qs(starcount=TWO_STAR).count()
+        three = qs(starcount=THREE_STAR).count()
+        four = qs(starcount=FOUR_STAR).count()
+        five = qs(starcount=FIVE_STAR).count()
         return [two,three,four,five]
 
     def is_admin(self):
@@ -169,6 +170,7 @@ class Room(MetaName):
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
+    enabled = models.BooleanField(verbose_name=_('Enabled'), default=True)
 
     class Meta:
         verbose_name = _("Settlement Variant")
@@ -271,8 +273,8 @@ class PlacePrice(MoneyBase):
         verbose_name_plural = _("Places Prices")
 
     def __unicode__(self):
-        return _("Price place %(place)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s")  %\
-               { 'place': self.settlement.room.name,
+        return _("Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s")  %\
+               { 'settlement': self.settlement.settlement,
                  'hotel': self.settlement.room.hotel.name,
                  'date': self.date,
                  'price': self.amount,

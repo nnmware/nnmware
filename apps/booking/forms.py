@@ -2,7 +2,7 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.booking.models import Hotel, HotelOption, Room
+from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES
 from nnmware.apps.booking.models import RequestAddHotel
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.middleware import get_request
@@ -24,13 +24,14 @@ class CabinetAddRoomForm(forms.ModelForm):
         model = Room
         fields = ('name', 'description', 'option','places')
 
+
 class CabinetEditRoomForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
 
     class Meta:
         model = Room
-        fields = ('name', 'description', 'option')
+        fields = ('name', 'description', 'option', 'places')
 
 class RequestAddHotelForm(forms.ModelForm):
     city = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
