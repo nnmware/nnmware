@@ -124,7 +124,7 @@ class CabinetRooms(CreateView):
                     settlement.enabled = True
                     settlement.save()
             except :
-                SettlementVariant(room=self.object,settlement=variant).save()
+                SettlementVariant(room=self.object,settlement=variant,enabled=True).save()
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -159,13 +159,15 @@ class CabinetEditRoom(AttachedImagesMixin, UpdateView):
 
     def form_valid(self, form):
         variants = self.request.POST.getlist('settlement')
-        settlements = SettlementVariant.objects.filter(room=self.object)
-        for settlement in settlements:
-            if settlement.settlement in variants:
-                settlement.enabled = True
-            else:
-                settlement.enabled = False
-            settlement.save()
+        SettlementVariant.objects.filter(room=self.object).update(enabled=False)
+        for variant in variants:
+            try:
+                settlement = SettlementVariant.objects.get(room=self.object, settlement =variant)
+                if not settlement.enabled:
+                    settlement.enabled = True
+                    settlement.save()
+            except :
+                SettlementVariant(room=self.object,settlement=variant, enabled=True).save()
         return super(CabinetEditRoom, self).form_valid(form)
 
 
