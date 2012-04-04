@@ -166,6 +166,19 @@ class Room(MetaName):
     def __unicode__(self):
         return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name(), 'places':self.places, 'hotel':self.hotel.get_name() }
 
+class SettlementVariant(models.Model):
+    room = models.ForeignKey(Room, verbose_name=_('Room'))
+    settlement = models.PositiveSmallIntegerField(_("Settlement"))
+
+    class Meta:
+        verbose_name = _("Settlement Variant")
+        verbose_name_plural = _("Settlements Variants")
+
+    def __unicode__(self):
+        return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+            'settlement': self.settlement, 'room': self.room.get_name(), 'places':self.room.places,
+            'hotel':self.room.hotel.get_name() }
+
 
 STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1
@@ -180,11 +193,11 @@ STATUS_CHOICES = (
     )
 
 class Booking(MoneyBase):
-    user = models.ForeignKey(User, verbose_name=_('User'))
+    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
-    room = models.ForeignKey(Room, verbose_name=_('Room'), blank=True, null=True, on_delete=models.SET_NULL)
+    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
 
@@ -232,24 +245,40 @@ class Review(models.Model):
                  'hotel': self.hotel.name,
                  'review': self.review }
 
-class Availability(MoneyBase):
+class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.SET_NULL)
-    date = models.DateField(verbose_name=_("From date"))
-    roomcount = models.IntegerField(verbose_name=_('Count of places'), default=0)
+    date = models.DateField(verbose_name=_("On date"))
+    placecount = models.IntegerField(verbose_name=_('Count of places'), default=0)
 
     class Meta:
-        verbose_name = _("Availability & Price")
-        verbose_name_plural = _("Availabilities & Prices")
+        verbose_name = _("Availability Place")
+        verbose_name_plural = _("Availabilities Places")
 
     def __unicode__(self):
-        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s MONEY %(price)s %(currency)s")  % \
+        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s")  % \
                 { 'place': self.room.name,
                  'hotel': self.room.hotel.name,
                  'date': self.date,
-                 'count': self.roomcount,
+                 'count': self.placecount
+               }
+
+class PlacePrice(MoneyBase):
+    date = models.DateField(verbose_name=_("On date"))
+    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
+
+    class Meta:
+        verbose_name = _("Place Price")
+        verbose_name_plural = _("Places Prices")
+
+    def __unicode__(self):
+        return _("Price place %(place)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s")  %\
+               { 'place': self.settlement.room.name,
+                 'hotel': self.settlement.room.hotel.name,
+                 'date': self.date,
                  'price': self.amount,
                  'currency': self.currency.code
                }
+
 
 class RequestAddHotel(models.Model):
     register_date = models.DateTimeField(_("Register date"), default=datetime.now())

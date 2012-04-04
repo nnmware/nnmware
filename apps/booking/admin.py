@@ -1,6 +1,7 @@
 from django.contrib import admin
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.booking.models import SettlementVariant
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','enabled','register_date','city','address','contact_email','contact_name','room_count','starcount','point')
@@ -16,8 +17,10 @@ class HotelAdmin(admin.ModelAdmin):
         ]}),
         (_("Hotel admins"), {"classes": ("collapse closed",), "fields": [
             ('admins')]}),
-        (_("Hotel options and tourism"), {"classes": ("collapse closed",), "fields": [
-            ('option'),('tourism') ]}),
+        (_("Hotel options"), {"classes": ("collapse closed",), "fields": [
+            ('option')]}),
+        (_("Tourism"), {"classes": ("collapse closed",), "fields": [
+            ('tourism') ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en","address_en"),("description_en",) ]}),)
     ordering = ('register_date','name')
@@ -75,10 +78,10 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user','from_date','to_date','room','amount','currency','status','date')
+    list_display = ('user','from_date','to_date','settlement','amount','currency','status','date')
     search_fields = ('from_date',)
     fieldsets = (
-        (_("Booking Event"), {"fields": [("user",'room','hotel'),
+        (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
             ('amount','currency','date')]}),)
 
@@ -103,13 +106,24 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('date',)
 
-
-class AvailabilityAdmin(admin.ModelAdmin):
-    list_display = ('room','date','amount','currency','roomcount')
+class SettlementVariantAdmin(admin.ModelAdmin):
+    list_display = ('room','settlement')
     search_fields = ('date',)
     fieldsets = (
-        (_("Place Price"), {"fields": [("room",'date'),
-            ('amount','currency','roomcount')]}),)
+        (_("Settlement Variant"), {"fields": [("room",'settlement'),]}),)
+
+class AvailabilityAdmin(admin.ModelAdmin):
+    list_display = ('room','date','placecount')
+    search_fields = ('date',)
+    fieldsets = (
+        (_("Availability"), {"fields": [("room",'date','placecount')]}),)
+
+class PlacePriceAdmin(admin.ModelAdmin):
+    list_display = ('settlement','date','amount','currency')
+    search_fields = ('date',)
+    fieldsets = (
+        (_("Place Price"), {"fields": [("settlement",'date'),
+            ('amount','currency')]}),)
 
 
 admin.site.register(Hotel, HotelAdmin)
@@ -123,5 +137,7 @@ admin.site.register(AgentPercent, AgentPercentAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(Availability, AvailabilityAdmin)
 admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
+admin.site.register(SettlementVariant, SettlementVariantAdmin)
+admin.site.register(PlacePrice, PlacePriceAdmin)
 
 
