@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -15,6 +15,8 @@ from nnmware.apps.booking.models import RequestAddHotel
 from nnmware.apps.booking.forms import RequestAddHotelForm
 from nnmware.apps.money.models import Account
 from nnmware.apps.booking.models import SettlementVariant
+import time
+from nnmware.core.utils import date_range
 
 class HotelList(ListView):
     model = Hotel
@@ -188,14 +190,17 @@ class CabinetRates(DetailView):
         else:
             context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
         try:
-            from_date = self.request.GET.get('from')
-            to_date = self.request.GET.get('to')
-            context['date_range'] = range(from_date, to_date)
+            f_date = self.request.GET.get('from')
+            from_date = datetime.fromtimestamp(time.mktime(time.strptime(f_date, "%d.%m.%Y")))
+            t_date = self.request.GET.get('to')
+            to_date = datetime.fromtimestamp(time.mktime(time.strptime(t_date, "%d.%m.%Y")))
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            context['dates'] = date_range(from_date, to_date)
         except :
-            base = datetime.today()
-            dateList = [ base + timedelta(days=x) for x in range(0,31) ]
-            context['date_range'] = dateList
+            context['dates'] = [datetime.today()]
         return context
+
 
 class CabinetBookings(DetailView):
     model = Hotel

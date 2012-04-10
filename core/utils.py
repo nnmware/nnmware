@@ -6,7 +6,8 @@ import os
 import random
 import sys
 import types
-from datetime import datetime
+from datetime import datetime, date, timedelta
+
 from django.db import models
 from django.utils.encoding import smart_unicode
 from nnmware.core import oembed
@@ -290,3 +291,13 @@ def get_message_dict(message):
         'tags': message.tags,
         }
     return message_dict
+
+def date_range(from_date, to_date):
+    result = [from_date]
+    d = from_date
+    while d < to_date:
+        d = d+timedelta(days=1)
+        result.append(d)
+    return result
+
+
