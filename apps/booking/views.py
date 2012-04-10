@@ -10,6 +10,7 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
+from nnmware.apps.userprofile.models import Profile
 from nnmware.core.views import AttachedImagesMixin
 from nnmware.apps.money.models import Account
 import time
@@ -265,8 +266,8 @@ class RequestsList(ListView):
         return context
 
 class UserCabinet(UpdateView):
-    model = User
-    form_class = CabinetInfoForm
+    model = Profile
+    form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
     def get_context_data(self, **kwargs):

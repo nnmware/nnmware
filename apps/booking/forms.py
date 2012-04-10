@@ -4,6 +4,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES
 from nnmware.apps.booking.models import RequestAddHotel
+from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.middleware import get_request
 
@@ -54,3 +55,10 @@ class RequestAddHotelForm(forms.ModelForm):
             self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
                                                                        'invalid' : _('Answer is wrong') })
 
+class UserCabinetInfoForm(forms.ModelForm):
+    password = forms.CharField(label=_(u'New Password'), max_length=30, required=False)
+
+    class Meta:
+        model = Profile
+        fields = (
+            'fullname', 'publicmail', 'password', 'subscribe')
