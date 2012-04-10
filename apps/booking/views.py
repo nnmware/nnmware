@@ -264,3 +264,17 @@ class RequestsList(ListView):
         context['title_line'] = _('request for add')
         return context
 
+class UserCabinet(UpdateView):
+    model = User
+    form_class = CabinetInfoForm
+    template_name = "usercabinet/info.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(UserCabinet, self).get_context_data(**kwargs)
+        context['tab'] = 'info'
+        context['title_line'] = _('private cabinet')
+        return context
+
+    def get_success_url(self):
+        return reverse('user_cabinet', args=[self.object.pk])
