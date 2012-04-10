@@ -76,7 +76,7 @@ class MetaData(models.Model):
     search_fields = {"title": 5}
     slug_detail = 'metadata_detail'
 
-    def delete(self):
+    def delete(self, *args, **kwargs):
         self.status = STATUS_DELETE
         self.save()
 

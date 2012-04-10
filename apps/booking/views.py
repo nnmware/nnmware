@@ -101,6 +101,7 @@ class CabinetInfo(AttachedImagesMixin, UpdateView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['options_list'] = HotelOption.objects.order_by('category')
         context['tab'] = 'common'
+        context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
@@ -181,23 +182,11 @@ class CabinetRates(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'rates'
         context['hotel'] = self.object
+        context['title_line'] = _('private cabinet')
         if 'room' in self.kwargs.keys():
             context['room_id'] = int(self.kwargs['room'])
         else:
             context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
-        return context
-
-
-class CabinetRoomRates(DetailView):
-    model = Room
-    template_name = "cabinet/room_rates.html"
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(CabinetRoomRates, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        context['tab'] = 'rates'
-        context['hotel'] = self.object.hotel
         try:
             from_date = self.request.GET.get('from')
             to_date = self.request.GET.get('to')
