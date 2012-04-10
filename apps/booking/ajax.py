@@ -7,9 +7,8 @@ from nnmware.apps.money.models import Currency
 from nnmware.core.http import LazyEncoder
 import time
 
-currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
-
 def room_rate(request):
+    currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
     try:
         value = request.REQUEST['value']
         on_date = request.REQUEST['on_date'][1:]
@@ -35,6 +34,19 @@ def room_rate(request):
             placeprice.currency = currency
             placeprice.save()
         payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
+def room_variants(request):
+    try:
+        room_id = request.REQUEST['room_id']
+        room = Room.objects.get(id=room_id)
+        settlements = SettlementVariant.objects.filter(room=room).order_by('settlement')
+        results = []
+        for s in settlements:
+            results.append(s.settlement)
+        payload = {'success': True, 'settlements':results}
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')

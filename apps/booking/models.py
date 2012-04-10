@@ -148,11 +148,23 @@ class RoomOption(MetaName):
 PLACES_UNKNOWN = 0
 PLACES_ONE = 1
 PLACES_TWO = 2
+PLACES_THREE = 3
+PLACES_FOUR = 4
+PLACES_FIVE = 5
+PLACES_SIX = 6
+PLACES_SEVEN = 7
+PLACES_EIGHT = 8
 
 PLACES_CHOICES = (
     (PLACES_UNKNOWN, _("Unknown")),
     (PLACES_ONE, _("One")),
     (PLACES_TWO, _("Two")),
+    (PLACES_THREE, _("Three")),
+    (PLACES_FOUR, _("Four")),
+    (PLACES_FIVE, _("Five")),
+    (PLACES_SIX, _("Six")),
+    (PLACES_SEVEN, _("Seven")),
+    (PLACES_EIGHT, _("Eight")),
     )
 
 

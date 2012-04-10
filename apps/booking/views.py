@@ -11,10 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.core.views import AttachedImagesMixin
-from nnmware.apps.booking.models import RequestAddHotel
-from nnmware.apps.booking.forms import RequestAddHotelForm
 from nnmware.apps.money.models import Account
-from nnmware.apps.booking.models import SettlementVariant
 import time
 from nnmware.core.utils import date_range
 
