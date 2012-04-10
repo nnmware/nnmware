@@ -11,6 +11,7 @@ from nnmware.core.middleware import get_request
 from nnmware.core.models import MetaName, MetaGeo
 from nnmware.apps.money.models import MoneyBase
 from nnmware.apps.address.models import Tourism
+from nnmware.apps.booking.managers import SettlementVariantManager
 
 class HotelOptionCategory(MetaName):
 
@@ -175,6 +176,8 @@ class SettlementVariant(models.Model):
     class Meta:
         verbose_name = _("Settlement Variant")
         verbose_name_plural = _("Settlements Variants")
+
+    objects = SettlementVariantManager()
 
     def __unicode__(self):
         return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {

@@ -181,6 +181,10 @@ class CabinetRates(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'rates'
         context['hotel'] = self.object
+        if 'room' in self.kwargs.keys():
+            context['room_id'] = int(self.kwargs['room'])
+        else:
+            context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
         return context
 
 
@@ -214,7 +218,7 @@ class CabinetBookings(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'booking'
         context['hotel'] = self.object
-        context['bookings'] = Booking.objects.filter(room__hotel=self.object)
+        context['bookings'] = Booking.objects.filter(hotel=self.object)
         context['title_line'] = _('bookings')
         return context
 
