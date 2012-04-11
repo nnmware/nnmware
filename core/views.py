@@ -452,6 +452,17 @@ class AttachedImagesMixin(object):
         context['pics_size'] = pics_size
         return context
 
+class AttachedFilesMixin(object):
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(AttachedFilesMixin, self).get_context_data(**kwargs)
+        # Add in a QuerySet of all the docs and files
+        docs = Doc.objects.metalinks_for_object(self.object)
+        docs_size = docs.aggregate(Sum('size'))['size__sum']
+        context['docs'] = list(docs)
+        context['docs_size'] = docs_size
+        return context
+
 
 class TagDetail(DetailView):
     model = Tag

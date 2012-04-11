@@ -15,7 +15,7 @@ from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUpl
 from nnmware.core.http import LazyEncoder
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file
-from nnmware.core.models import Tag, Follow, Notice, Message, Pic
+from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.signals import action, notice
@@ -299,6 +299,16 @@ def pic_delete(request, object_id):
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
         pic.delete()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
+def doc_delete(request, object_id):
+    # Link used for User press Delete for Image
+    doc = get_object_or_404(Doc, id=int(object_id))
+    try:
+        doc.delete()
         payload = {'success': True}
     except :
         payload = {'success': False}

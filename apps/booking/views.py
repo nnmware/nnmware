@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.apps.userprofile.models import Profile
-from nnmware.core.views import AttachedImagesMixin
+from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin
 from nnmware.apps.money.models import Account
 import time
 from nnmware.core.utils import date_range
@@ -48,6 +48,22 @@ class HotelList(ListView):
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = self.tab_title
+        context['api_key'] = settings.YANDEX_MAPS_API_KEY
+        return context
+
+class HotelAdminList(ListView):
+    model = Hotel
+    template_name = "hotels/list.html"
+
+    def get_queryset(self):
+        result = Hotel.objects.all() #filter(self.request.user__in=admins)
+        return result
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(HotelAdminList, self).get_context_data(**kwargs)
+        context['title_line'] = _('list of hotels')
+        context['tab'] = _('admin of hotels')
         context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
 
@@ -199,6 +215,21 @@ class CabinetRates(DetailView):
             context['dates'] = [datetime.today()]
         return context
 
+class CabinetBillEdit(AttachedFilesMixin, UpdateView):
+    model = Account
+    form_class = CabinetEditBillForm
+    template_name = "cabinet/bill_edit.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CabinetBillEdit, self).get_context_data(**kwargs)
+        context['hotel_count'] = Hotel.objects.filter(city=self.object.target.city).count()
+        context['tab'] = 'bills'
+        context['hotel'] = self.object.target
+        return context
+
+    def get_success_url(self):
+        return reverse('cabinet_bills', args=[self.object.target.pk])
 
 class CabinetBookings(DetailView):
     model = Hotel
@@ -278,4 +309,4 @@ class UserCabinet(UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('user_cabinet', args=[self.object.pk])
+        return reverse('user_profile', args=[self.object.pk])

@@ -347,12 +347,14 @@ class ActivateView(View):
     def get(self, request, *args, **kwargs):
         key = self.kwargs['activation_key']
         e = EmailValidation.objects.get(key=key)
-        user = User(username=e.username,email=e.email)
-        user.set_password(e.password)
-        user.is_active = True
-        user.save()
+        u = User(username=e.username,email=e.email)
+        u.set_password(e.password)
+        u.is_active = True
+        u.save()
+        e.delete()
+        user = authenticate(username=e.username, password=e.password)
         login(self.request, user)
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
 
 @login_required
 def avatardelete(request, avatar_id=False):
