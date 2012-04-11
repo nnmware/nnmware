@@ -37,6 +37,7 @@ class CabinetEditRoomForm(forms.ModelForm):
 
 
 class CabinetEditBillForm(forms.ModelForm):
+    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}))
 
     class Meta:
         model = Account

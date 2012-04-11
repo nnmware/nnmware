@@ -50,3 +50,12 @@ def room_variants(request):
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
+def room_delete(request, pk):
+    try:
+        room = Room.objects.get(id=pk)
+        room.delete()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
