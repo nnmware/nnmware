@@ -18,7 +18,7 @@ class ProfileAdmin(admin.ModelAdmin):
 
 class EmailValidationAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
-    search_fields = ('user__username', 'user__first_name', 'user__last_name')
+    search_fields = ('username', 'email')
 
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(EmailValidation, EmailValidationAdmin)

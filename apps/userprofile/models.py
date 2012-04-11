@@ -206,22 +206,23 @@ class EmailValidation(models.Model):
     """
     Email Validation model
     """
-    user = models.ForeignKey(User, unique=True)
-    email = models.EmailField(blank=True)
+    username = models.CharField(max_length=30, unique=True)
+    email = models.EmailField(verbose_name=_('E-mail'))
+    password = models.CharField(max_length=30)
     key = models.CharField(max_length=70, unique=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     objects = EmailValidationManager()
 
     class Meta:
-        ordering = ['user', 'created']
+        ordering = ['username', 'created']
         verbose_name = _("Email Validation")
         verbose_name_plural = _("Email Validations")
 
     def __unicode__(self):
-        return _("Email validation process for %(user)s") % {'user': self.user}
+        return _("Email validation process for %(user)s") % {'user': self.username}
 
     def is_expired(self):
-        return (datetime.datetime.today() - self.created).days > 0
+        return (datetime.datetime.today() - self.created).days > 7
 
     def resend(self):
         """

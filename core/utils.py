@@ -1,3 +1,4 @@
+import hashlib
 import re
 import unicodedata
 from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
@@ -13,6 +14,14 @@ from django.utils.encoding import smart_unicode
 from nnmware.core import oembed
 import unidecode
 from BeautifulSoup import BeautifulSoup
+
+
+def make_key(name):
+    salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+    if isinstance(name, unicode):
+        name = name.encode('utf-8')
+    activation_key = hashlib.sha1(salt+name).hexdigest()
+    return activation_key
 
 def get_date_directory():
     return datetime.now().strftime("%Y/%m/%d/%H/%M/%S")

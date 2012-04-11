@@ -341,18 +341,18 @@ class LogoutView(TemplateView):
         logout(self.request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
+class ActivateView(View):
+    template_name = 'user/logged_out.html'
 
-#@render_to("profile/userprofile/email_validation_done.html")
-def email_validation_process(request, key):
-    """
-     Verify key and change email
-     """
-    if EmailValidation.objects.verify(key=key):
-        successful = True
-    else:
-        successful = False
-    return {'successful': successful}
-
+    def get(self, request, *args, **kwargs):
+        key = self.kwargs['activation_key']
+        e = EmailValidation.objects.get(key=key)
+        user = User(username=e.username,email=e.email)
+        user.set_password(e.password)
+        user.is_active = True
+        user.save()
+        login(self.request, user)
+        return HttpResponseRedirect('/')
 
 @login_required
 def avatardelete(request, avatar_id=False):
