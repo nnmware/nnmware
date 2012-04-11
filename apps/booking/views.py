@@ -56,7 +56,7 @@ class HotelAdminList(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
-        result = Hotel.objects.all() #filter(self.request.user__in=admins)
+        result = Hotel.objects.all() #filter(admins__user = self.request.user)
         return result
 
     def get_context_data(self, **kwargs):
