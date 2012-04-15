@@ -180,6 +180,18 @@ class Room(MetaName):
     def __unicode__(self):
         return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name(), 'places':self.places, 'hotel':self.hotel.get_name() }
 
+    def min_current_amount(self):
+        settlements = SettlementVariant.objects.filter(room=self)
+        result = None
+        for s in settlements:
+            s_min_price = s.current_amount()
+            if not result:
+                result = s_min_price
+            else:
+                if result > s_min_price:
+                    result = s_min_price
+        return result
+
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
@@ -196,6 +208,13 @@ class SettlementVariant(models.Model):
             'settlement': self.settlement, 'room': self.room.get_name(), 'places':self.room.places,
             'hotel':self.room.hotel.get_name() }
 
+    def current_amount(self):
+        result = PlacePrice.objects.filter(settlement=self,
+            date__lte=datetime.now()).order_by('-date')
+        if result:
+            return result[0].amount
+        else:
+            return 0
 
 STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1
