@@ -236,6 +236,12 @@ class Booking(MoneyBase):
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
+    first_name = models.CharField(verbose_name=_("First name"), max_length=100)
+    middle_name = models.CharField(verbose_name=_("Middle name"), max_length=100, blank=True)
+    last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
+    phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
+    email = models.EmailField(_('E-mail'), blank=True)
+
 
     class Meta:
         ordering = ("-date",)

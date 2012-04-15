@@ -310,3 +310,18 @@ class UserCabinet(UpdateView):
 
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.pk])
+
+class ClientBooking(DetailView):
+    model = Hotel
+    template_name = "booking/anonymous.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ClientBooking, self).get_context_data(**kwargs)
+        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+        context['tab'] = 'rates'
+        context['hotel'] = self.object
+        context['title_line'] = _('booking')
+        if 'room' in self.kwargs.keys():
+            context['room_id'] = int(self.kwargs['room'])
+        return context
