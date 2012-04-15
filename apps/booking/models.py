@@ -233,7 +233,7 @@ class Booking(MoneyBase):
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
-    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
+    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), on_delete=models.SET_NULL)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
     first_name = models.CharField(verbose_name=_("First name"), max_length=100)
