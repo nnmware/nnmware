@@ -8,6 +8,7 @@ from nnmware.apps.money.models import Account
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.middleware import get_request
+from nnmware.core.utils import convert_to_date
 
 
 class CabinetInfoForm(forms.ModelForm):
@@ -78,3 +79,15 @@ class BookingAddForm(forms.ModelForm):
         model = Booking
         fields = (
             'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email')
+
+    def clean_from_date(self):
+        d = self.cleaned_data.get('from_date')
+        if not d:
+            raise forms.ValidationError(_("From date is required"))
+        return convert_to_date(d)
+
+    def clean_to_date(self):
+        d = self.cleaned_data.get('to_date')
+        if not d:
+            raise forms.ValidationError(_("To date is required"))
+        return convert_to_date(d)

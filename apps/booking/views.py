@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.apps.userprofile.models import Profile
-from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin
+from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin
 from nnmware.apps.money.models import Account
 import time
 from nnmware.core.utils import date_range, convert_to_date
@@ -358,7 +358,7 @@ class ClientBooking(DetailView):
             pass
         return context
 
-class ClientAddBooking(CreateView):
+class ClientAddBooking(AjaxFormMixin, CreateView):
     model = Booking
     form_class = BookingAddForm
 
