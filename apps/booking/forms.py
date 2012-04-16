@@ -2,7 +2,7 @@
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES
+from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
 from nnmware.apps.booking.models import RequestAddHotel
 from nnmware.apps.money.models import Account
 from nnmware.apps.userprofile.models import Profile
@@ -71,3 +71,10 @@ class UserCabinetInfoForm(forms.ModelForm):
         model = Profile
         fields = (
             'fullname', 'publicmail', 'password', 'subscribe')
+
+class BookingAddForm(forms.ModelForm):
+
+    class Meta:
+        model = Booking
+        fields = (
+            'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email')

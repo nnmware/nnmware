@@ -328,7 +328,7 @@ class UserCabinet(UpdateView):
 
 class ClientBooking(DetailView):
     model = Hotel
-    template_name = "booking/anonymous.html"
+    template_name = "booking/add.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -339,7 +339,10 @@ class ClientBooking(DetailView):
         context['title_line'] = _('booking')
         if 'room' in self.kwargs.keys():
             context['room_id'] = int(self.kwargs['room'])
-            context['room'] = Room.objects.get(id=int(self.kwargs['room']))
+            room = Room.objects.get(id=int(self.kwargs['room']))
+            context['room'] = room
+            context['settlements'] = \
+                SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -353,5 +356,12 @@ class ClientBooking(DetailView):
             context['placecount'] = place_need
         except :
             pass
-
         return context
+
+class ClientAddBooking(CreateView):
+    model = Booking
+    form_class = BookingAddForm
+
+    def get_success_url(self):
+        return reverse('hotel_list')
+
