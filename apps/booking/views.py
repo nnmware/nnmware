@@ -339,4 +339,19 @@ class ClientBooking(DetailView):
         context['title_line'] = _('booking')
         if 'room' in self.kwargs.keys():
             context['room_id'] = int(self.kwargs['room'])
+            context['room'] = Room.objects.get(id=int(self.kwargs['room']))
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            place_need = self.request.GET.get('placecount')
+            context['from'] = f_date
+            context['to'] = t_date
+            context['placecount'] = place_need
+        except :
+            pass
+
         return context
