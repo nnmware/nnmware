@@ -12,6 +12,7 @@ from datetime import datetime, date, timedelta
 from django.db import models
 from django.utils.encoding import smart_unicode
 from nnmware.core import oembed
+import time
 import unidecode
 from BeautifulSoup import BeautifulSoup
 
@@ -22,6 +23,9 @@ def make_key(name):
         name = name.encode('utf-8')
     activation_key = hashlib.sha1(salt+name).hexdigest()
     return activation_key
+
+def convert_to_date(d):
+    return datetime.fromtimestamp(time.mktime(time.strptime(d, "%d.%m.%Y")))
 
 def get_date_directory():
     return datetime.now().strftime("%Y/%m/%d/%H/%M/%S")

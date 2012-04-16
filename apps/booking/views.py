@@ -14,7 +14,7 @@ from nnmware.apps.userprofile.models import Profile
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin
 from nnmware.apps.money.models import Account
 import time
-from nnmware.core.utils import date_range
+from nnmware.core.utils import date_range, convert_to_date
 
 class HotelList(ListView):
     model = Hotel
@@ -78,6 +78,17 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'description'
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            delta = to_date-from_date
+            context['date_interval'] = delta.days
+        except :
+            pass
         return context
 
 class HotelLocation(DetailView):
