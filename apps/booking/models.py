@@ -127,6 +127,17 @@ class Hotel(MetaName, MetaGeo):
     def get_current_percent(self):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
 
+    def free_room(self, from_date, to_date, roomcount, with_child=None):
+        d = to_date-from_date
+        delta = d.days+1
+        result = []
+        for room in self.room_set.all():
+            avail = Availability.objects.filter(room=room, placecount__gte=roomcount,
+                date__range=(from_date,to_date)).count()
+            if avail == delta:
+                result.append(room)
+        return result
+
 class RoomOptionCategory(MetaName):
 
     class Meta:

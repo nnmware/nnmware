@@ -78,17 +78,19 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'description'
-        try:
+        if 1>0:
+#        try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
             t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            delta = to_date-from_date
-            context['date_interval'] = delta.days
-        except :
-            pass
+            place_need = self.request.GET.get('placecount')
+            #            delta = to_date-from_date
+            context['free_room'] = self.object.free_room(from_date,to_date,place_need)
+#        except :
+#            pass
         return context
 
 class HotelLocation(DetailView):
