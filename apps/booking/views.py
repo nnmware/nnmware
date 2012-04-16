@@ -88,6 +88,9 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             place_need = self.request.GET.get('placecount')
             context['free_room'] = self.object.free_room(from_date,to_date,place_need)
             context['search'] = 1
+            context['from'] = f_date
+            context['to'] = t_date
+            context['placecount'] = place_need
         except :
             pass
         return context
