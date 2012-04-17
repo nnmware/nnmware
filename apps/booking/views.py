@@ -375,5 +375,6 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.settlement = settlement
         self.object.hotel = settlement.room.hotel
         self.object.status = STATUS_ACCEPTED
+        self.object.date = datetime.now()
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
