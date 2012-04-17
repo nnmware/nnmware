@@ -365,3 +365,15 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
     def get_success_url(self):
         return reverse('hotel_list')
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        if self.request.user:
+            self.object.user = self.request.user
+        room = Room.objects.get(id=form.cleaned_data.get('room_id'))
+        settlement = SettlementVariant.objects.get(room=room,
+            settlement=form.cleaned_data.get('settlement'))
+        self.object.settlement = settlement
+        self.object.hotel = settlement.room.hotel
+        self.object.status = STATUS_ACCEPTED
+        self.object.save()
+        return super(ClientAddBooking, self).form_valid(form)

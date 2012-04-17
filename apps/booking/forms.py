@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
 from nnmware.apps.booking.models import RequestAddHotel
@@ -74,20 +75,11 @@ class UserCabinetInfoForm(forms.ModelForm):
             'fullname', 'publicmail', 'password', 'subscribe')
 
 class BookingAddForm(forms.ModelForm):
+    room_id = forms.CharField(max_length=30, required=False)
+    settlement = forms.CharField(max_length=30, required=False)
 
     class Meta:
         model = Booking
         fields = (
             'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email')
 
-    def clean_from_date(self):
-        d = self.cleaned_data.get('from_date')
-        if not d:
-            raise forms.ValidationError(_("From date is required"))
-        return convert_to_date(d)
-
-    def clean_to_date(self):
-        d = self.cleaned_data.get('to_date')
-        if not d:
-            raise forms.ValidationError(_("To date is required"))
-        return convert_to_date(d)
