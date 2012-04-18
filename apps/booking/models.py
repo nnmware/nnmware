@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
@@ -131,7 +131,8 @@ class Hotel(MetaName, MetaGeo):
 
     def free_room(self, from_date, to_date, roomcount, with_child=None):
         d = to_date-from_date
-        delta = d.days+1
+        to_date = to_date-timedelta(days=1)
+        delta = d.days
         result = []
         for room in self.room_set.all():
             avail = Availability.objects.filter(room=room, placecount__gte=roomcount,
