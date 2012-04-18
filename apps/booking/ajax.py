@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils import simplejson
@@ -6,6 +6,7 @@ from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Ava
 from nnmware.apps.money.models import Currency
 from nnmware.core.http import LazyEncoder
 import time
+from nnmware.core.utils import convert_to_date
 
 def room_rate(request):
     currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
@@ -61,15 +62,30 @@ def room_delete(request, pk):
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def get_booking_amount(request):
-    try:
+    if 1>0:
         room_id = request.REQUEST['room_id']
         s = request.REQUEST['settlements']
-        from_date = request.REQUEST['from_date']
-        to_date = request.REQUEST['to_date']
+        from_date = convert_to_date(request.REQUEST['from_date'])
+        to_date = convert_to_date(request.REQUEST['to_date'])
         room = Room.objects.get(id=room_id)
-#        settlements = SettlementVariant.objects.filter(room=room).order_by('settlement')
+        settlement = SettlementVariant.objects.filter(room=room, settlement=s)
         results = []
-        payload = {'success': True, 'dayscount':'3', 'amount':'145 RUB'}
-    except :
-        payload = {'success': False}
+        delta = to_date-from_date
+        all_amount = 0
+        on_date = from_date
+        while on_date < to_date:
+            price = PlacePrice.objects.get(settlement=settlement, date = on_date)
+            all_amount +=int(price.amount)
+            on_date = on_date+timedelta(days=1)
+        payload = {'success': True, 'dayscount':delta.days, 'amount':all_amount}
+#    except :
+#        payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
+
+
+
+
+
+
+
