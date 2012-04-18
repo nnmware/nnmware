@@ -334,6 +334,7 @@ class PlacePrice(MoneyBase):
 
 
 class RequestAddHotel(MetaIP):
+    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
     register_date = models.DateTimeField(_("Register date"), default=datetime.now())
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
@@ -349,7 +350,3 @@ class RequestAddHotel(MetaIP):
         verbose_name = _("Request for add hotel")
         verbose_name_plural = _("Requests for add hotels")
 
-    def save(self, *args, **kwargs):
-        self.ip = get_request().META['REMOTE_ADDR']
-        self.user_agent = get_request().META['HTTP_USER_AGENT']
-        super(RequestAddHotel, self).save(*args, **kwargs)

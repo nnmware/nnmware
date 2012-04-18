@@ -289,6 +289,17 @@ class RequestAddHotelView(CreateView):
         context['title_line'] = _('request for add hotel')
         return context
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        if self.request.user.is_authenticated():
+            self.object.user = self.request.user
+        self.object.ip = self.request.META['REMOTE_ADDR']
+        self.object.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.save()
+        return super(RequestAddHotelView, self).form_valid(form)
+
+
+
 class BookingsList(ListView):
     model = Booking
     template_name = "sysadm/bookings.html"
@@ -386,5 +397,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             on_date = on_date+timedelta(days=1)
         self.object.amount = all_amount
         self.object.currency = price.currency
+        self.ip = self.request.META['REMOTE_ADDR']
+        self.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
