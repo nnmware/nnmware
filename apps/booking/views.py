@@ -393,6 +393,9 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         while on_date < to_date:
             price = PlacePrice.objects.get(settlement=settlement, date = on_date)
             all_amount +=int(price.amount)
+            avail = Availability.objects.get(room=room, date = on_date)
+            avail.placecount -= 1
+            avail.save()
             on_date = on_date+timedelta(days=1)
         self.object.amount = all_amount
         self.object.currency = price.currency
