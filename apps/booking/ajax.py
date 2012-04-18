@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils import simplejson
-from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability
+from nnmware.apps.address.models import City
+from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel
 from nnmware.apps.money.models import Currency
 from nnmware.core.http import LazyEncoder
 import time
@@ -62,14 +64,13 @@ def room_delete(request, pk):
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def get_booking_amount(request):
-    if 1>0:
+    try:
         room_id = request.REQUEST['room_id']
         s = request.REQUEST['settlements']
         from_date = convert_to_date(request.REQUEST['from_date'])
         to_date = convert_to_date(request.REQUEST['to_date'])
         room = Room.objects.get(id=room_id)
         settlement = SettlementVariant.objects.filter(room=room, settlement=s)
-        results = []
         delta = to_date-from_date
         all_amount = 0
         on_date = from_date
@@ -79,10 +80,37 @@ def get_booking_amount(request):
             on_date = on_date+timedelta(days=1)
         all_amount = str(all_amount)+price.currency.code
         payload = {'success': True, 'dayscount':delta.days, 'amount':all_amount}
-#    except :
-#        payload = {'success': False}
+    except :
+        payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
+def hotel_add(request):
+    request_id = request.REQUEST['request_id']
+    name = request.REQUEST['name']
+    c = request.REQUEST['city']
+    address = request.REQUEST['address']
+    email = request.REQUEST['email']
+    phone = request.REQUEST['phone']
+    fax = request.REQUEST['fax']
+    contact_email = request.REQUEST['contact_email']
+    website = request.REQUEST['website']
+    rooms_count = request.REQUEST['rooms_count']
+    city, created = City.objects.get_or_create(name=c)
+    hotel = Hotel()
+    hotel.name = name
+    hotel.city = city
+    hotel.address = address
+    hotel.email = email
+    hotel.phone = phone
+    hotel.fax = fax
+    hotel.contact_email = contact_email
+    hotel.website = website
+    hotel.room_count = rooms_count
+    hotel.save()
+    location = reverse('cabinet_info', args=[hotel.pk])
+    RequestAddHotel.objects.get(id=request_id).delete()
+    payload = {'success': True, 'location':location}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
 

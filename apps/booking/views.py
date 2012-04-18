@@ -3,7 +3,7 @@ from datetime import date, timedelta, datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
 from django.views.generic.list import ListView
@@ -400,3 +400,14 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
+
+class RequestAdminAdd(TemplateView):
+    template_name = 'sysadm/request.html'
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(RequestAdminAdd, self).get_context_data(**kwargs)
+        context['tab'] = 'requests'
+        context['title_line'] = _('request for add')
+        context['request_hotel'] = RequestAddHotel.objects.get(id=self.kwargs['pk'])
+        return context
