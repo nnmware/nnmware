@@ -412,6 +412,13 @@ class MetaFile(models.Model):
     class Meta:
         abstract = True
 
+class MetaIP(models.Model):
+    ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
+    user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
+
+    class Meta:
+        abstract = True
+
 
 class Doc(MetaLink, MetaFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)

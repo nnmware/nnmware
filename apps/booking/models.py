@@ -12,6 +12,7 @@ from nnmware.core.models import MetaName, MetaGeo
 from nnmware.apps.money.models import MoneyBase
 from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
+from nnmware.core.models import MetaIP
 
 class HotelOptionCategory(MetaName):
 
@@ -239,7 +240,7 @@ STATUS_CHOICES = (
     (STATUS_CANCELED, _("Cancelled")),
     )
 
-class Booking(MoneyBase):
+class Booking(MoneyBase, MetaIP):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
     from_date = models.DateField(_("From"))
@@ -252,7 +253,6 @@ class Booking(MoneyBase):
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.EmailField(_('E-mail'), blank=True)
-
 
     class Meta:
         ordering = ("-date",)
@@ -277,7 +277,7 @@ class AgentPercent(models.Model):
                  'date':self.date,
                  'percent':self.percent }
 
-class Review(models.Model):
+class Review(MetaIP):
     user = models.ForeignKey(User)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
@@ -333,7 +333,7 @@ class PlacePrice(MoneyBase):
                }
 
 
-class RequestAddHotel(models.Model):
+class RequestAddHotel(MetaIP):
     register_date = models.DateTimeField(_("Register date"), default=datetime.now())
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
@@ -344,8 +344,6 @@ class RequestAddHotel(models.Model):
     contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, null=True, blank=True)
     website = models.CharField(verbose_name=_("Website"), max_length=100, null=True, blank=True)
     rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
-    ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
-    user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
 
     class Meta:
         verbose_name = _("Request for add hotel")
