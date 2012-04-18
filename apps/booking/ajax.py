@@ -11,7 +11,7 @@ from nnmware.core.utils import convert_to_date
 def room_rate(request):
     currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
     try:
-        value = request.REQUEST['value']
+        value = int(request.REQUEST['value'])
         on_date = request.REQUEST['on_date'][1:]
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(on_date, "%d%m%Y")))
         row_id = request.REQUEST['row']
