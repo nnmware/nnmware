@@ -77,6 +77,7 @@ def get_booking_amount(request):
             price = PlacePrice.objects.get(settlement=settlement, date = on_date)
             all_amount +=int(price.amount)
             on_date = on_date+timedelta(days=1)
+        all_amount = str(all_amount)+price.currency.code
         payload = {'success': True, 'dayscount':delta.days, 'amount':all_amount}
 #    except :
 #        payload = {'success': False}

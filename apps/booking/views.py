@@ -367,7 +367,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if self.request.user:
+        if self.request.user.is_authenticated():
             self.object.user = self.request.user
         room = Room.objects.get(id=form.cleaned_data.get('room_id'))
         settlement = SettlementVariant.objects.get(room=room,
@@ -376,5 +376,15 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.hotel = settlement.room.hotel
         self.object.status = STATUS_ACCEPTED
         self.object.date = datetime.now()
+        from_date = self.object.from_date
+        to_date = self.object.to_date
+        all_amount = 0
+        on_date = from_date
+        while on_date < to_date:
+            price = PlacePrice.objects.get(settlement=settlement, date = on_date)
+            all_amount +=int(price.amount)
+            on_date = on_date+timedelta(days=1)
+        self.object.amount = all_amount
+        self.object.currency = price.currency
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
