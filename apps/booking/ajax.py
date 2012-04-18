@@ -59,3 +59,17 @@ def room_delete(request, pk):
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
+def get_booking_amount(request):
+    try:
+        room_id = request.REQUEST['room_id']
+        s = request.REQUEST['settlements']
+        from_date = request.REQUEST['from_date']
+        to_date = request.REQUEST['to_date']
+        room = Room.objects.get(id=room_id)
+#        settlements = SettlementVariant.objects.filter(room=room).order_by('settlement')
+        results = []
+        payload = {'success': True, 'dayscount':'3', 'amount':'145 RUB'}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
