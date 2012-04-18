@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.db.models import permalink
+from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.core.middleware import get_request
@@ -204,6 +205,9 @@ class Room(MetaName):
                     result = s_min_price
         return result
 
+    def active_settlements(self):
+        return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
+
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
@@ -212,8 +216,6 @@ class SettlementVariant(models.Model):
     class Meta:
         verbose_name = _("Settlement Variant")
         verbose_name_plural = _("Settlements Variants")
-
-    objects = SettlementVariantManager()
 
     def __unicode__(self):
         return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
@@ -227,6 +229,8 @@ class SettlementVariant(models.Model):
             return result[0].amount
         else:
             return 0
+
+
 
 STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1

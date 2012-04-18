@@ -43,7 +43,7 @@ def room_variants(request):
     try:
         room_id = request.REQUEST['room_id']
         room = Room.objects.get(id=room_id)
-        settlements = SettlementVariant.objects.filter(room=room).order_by('settlement')
+        settlements = SettlementVariant.objects.filter(room=room,enabled=True).order_by('settlement')
         results = []
         for s in settlements:
             results.append(s.settlement)

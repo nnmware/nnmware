@@ -194,10 +194,9 @@ class CabinetEditRoom(AttachedImagesMixin, UpdateView):
         SettlementVariant.objects.filter(room=self.object).update(enabled=False)
         for variant in variants:
             try:
-                settlement = SettlementVariant.objects.get(room=self.object, settlement =variant)
-                if not settlement.enabled:
-                    settlement.enabled = True
-                    settlement.save()
+                settlement = SettlementVariant.objects.get(room=self.object, settlement=variant)
+                settlement.enabled = True
+                settlement.save()
             except :
                 SettlementVariant(room=self.object,settlement=variant, enabled=True).save()
         return super(CabinetEditRoom, self).form_valid(form)
