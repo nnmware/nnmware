@@ -141,6 +141,19 @@ class Hotel(MetaName, MetaGeo):
                 result.append(room)
         return result
 
+    def min_current_amount(self):
+        rooms = Room.objects.filter(hotel=self)
+        result = None
+        for r in rooms:
+            min_price = r.min_current_amount()
+            if not result:
+                result = min_price
+            else:
+                if result > min_price:
+                    result = min_price
+        return result
+
+
 class RoomOptionCategory(MetaName):
 
     class Meta:
@@ -195,7 +208,7 @@ class Room(MetaName):
         return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name(), 'places':self.places, 'hotel':self.hotel.get_name() }
 
     def min_current_amount(self):
-        settlements = SettlementVariant.objects.filter(room=self)
+        settlements = SettlementVariant.objects.filter(room=self, enabled=True)
         result = None
         for s in settlements:
             s_min_price = s.current_amount()
