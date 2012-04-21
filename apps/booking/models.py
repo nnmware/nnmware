@@ -212,7 +212,7 @@ class Room(MetaName):
         verbose_name_plural = _("Rooms")
 
     def __unicode__(self):
-        return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name(), 'places':self.places, 'hotel':self.hotel.get_name() }
+        return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
 
     def min_current_amount(self):
         settlements = SettlementVariant.objects.filter(room=self, enabled=True)
@@ -240,8 +240,8 @@ class SettlementVariant(models.Model):
 
     def __unicode__(self):
         return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-            'settlement': self.settlement, 'room': self.room.get_name(), 'places':self.room.places,
-            'hotel':self.room.hotel.get_name() }
+            'settlement': self.settlement, 'room': self.room.get_name, 'places':self.room.places,
+            'hotel':self.room.hotel.get_name }
 
     def current_amount(self):
         result = PlacePrice.objects.filter(settlement=self,
