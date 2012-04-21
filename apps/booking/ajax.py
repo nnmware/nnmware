@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.utils import simplejson
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel
+from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review
 from nnmware.apps.money.models import Currency
 from nnmware.core.http import LazyEncoder
 import time
@@ -112,6 +112,31 @@ def hotel_add(request):
     payload = {'success': True, 'location':location}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
+def client_review(request, pk):
+    # TODO Make cheked of user and non-doubled review
+    try:
+        hotel = Hotel.objects.get(id=pk)
+        food = request.REQUEST['point_food']
+        service = request.REQUEST['point_service']
+        purity = request.REQUEST['point_purity']
+        transport = request.REQUEST['point_transport']
+        prices = request.REQUEST['point_prices']
+        review = request.REQUEST['review']
+        user = request.user
+        r = Review()
+        r.user = user
+        r.hotel = hotel
+        r.food = food
+        r.service = service
+        r.purity = purity
+        r.transport = transport
+        r.prices = prices
+        r.review = review
+        r.save()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
 

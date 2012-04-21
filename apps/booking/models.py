@@ -307,6 +307,7 @@ class Review(MetaIP):
     prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4)
 
     class Meta:
+        ordering = ['-date', ]
         verbose_name = _("Client review")
         verbose_name_plural = _("Client reviews")
 
