@@ -15,15 +15,21 @@ class Address(MetaName):
         abstract = True
 
     def __unicode__(self):
-            return self.name
+        return self.name
 
+    @property
     def get_name_add(self):
         try:
             if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
                 if self.name_add_en:
                     return self.name_add_en
+                if self.name_add:
+                    return self.name_add
+            return self.get_name
         except :
-            return self.name_add
+            if self.name_add:
+                return self.name_add
+        return self.get_name
 
 
 class Country(Address):

@@ -301,14 +301,15 @@ class MetaName(models.Model):
     def __unicode__(self):
         return self.name
 
+    @property
     def get_name(self):
         try:
             if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
                 if self.name_en:
                     return self.name_en
+            return self.name
         except :
-            pass
-        return self.name
+            return self.name
 
     def get_description(self):
         try:
