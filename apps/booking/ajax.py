@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from decimal import Decimal
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
@@ -136,11 +137,13 @@ def client_review(request, pk):
         r.save()
         all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
             Avg('purity'), Avg('transport'), Avg('prices'))
-        hotel.food = all_points['food__avg']
-        hotel.service = all_points['service__avg']
-        hotel.purity = all_points['purity__avg']
-        hotel.transport = all_points['transport__avg']
-        hotel.prices = all_points['prices__avg']
+        hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
+        hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
+        hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
+        hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
+        hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
+        h_point = (hotel.food+hotel.service+hotel.purity+hotel.transport+hotel.prices)/5
+        hotel.point = h_point
         hotel.save()
         payload = {'success': True}
 #    except :
