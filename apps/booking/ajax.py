@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.db.models.aggregates import Avg
 from django.http import HttpResponse
 from django.utils import simplejson
 from nnmware.apps.address.models import City
@@ -114,7 +115,7 @@ def hotel_add(request):
 
 def client_review(request, pk):
     # TODO Make cheked of user and non-doubled review
-    try:
+    if 1>0:
         hotel = Hotel.objects.get(id=pk)
         food = request.REQUEST['point_food']
         service = request.REQUEST['point_service']
@@ -133,9 +134,17 @@ def client_review(request, pk):
         r.prices = prices
         r.review = review
         r.save()
+        all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
+            Avg('purity'), Avg('transport'), Avg('prices'))
+        hotel.food = all_points['food__avg']
+        hotel.service = all_points['service__avg']
+        hotel.purity = all_points['purity__avg']
+        hotel.transport = all_points['transport__avg']
+        hotel.prices = all_points['prices__avg']
+        hotel.save()
         payload = {'success': True}
-    except :
-        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
