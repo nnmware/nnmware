@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
+from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
-from django.db.models import permalink
+from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
@@ -370,4 +371,22 @@ class RequestAddHotel(MetaIP):
     class Meta:
         verbose_name = _("Request for add hotel")
         verbose_name_plural = _("Requests for add hotels")
+
+
+def update_hotel_point(sender, instance, **kwargs):
+    hotel = instance.hotel
+    all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
+        Avg('purity'), Avg('transport'), Avg('prices'))
+    hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
+    hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
+    hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
+    hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
+    hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
+    h_point = (hotel.food+hotel.service+hotel.purity+hotel.transport+hotel.prices)/5
+    hotel.point = h_point
+    hotel.save()
+
+signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
+signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
+
 

@@ -135,16 +135,6 @@ def client_review(request, pk):
         r.prices = prices
         r.review = review
         r.save()
-        all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
-            Avg('purity'), Avg('transport'), Avg('prices'))
-        hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
-        hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
-        hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
-        hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
-        hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
-        h_point = (hotel.food+hotel.service+hotel.purity+hotel.transport+hotel.prices)/5
-        hotel.point = h_point
-        hotel.save()
         payload = {'success': True}
 #    except :
 #        payload = {'success': False}
