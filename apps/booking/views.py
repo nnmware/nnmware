@@ -118,6 +118,7 @@ class HotelReviews(DetailView):
         context = super(HotelReviews, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reviews'
+        context['reviews'] = self.object.review_set.all()
         return context
 
 

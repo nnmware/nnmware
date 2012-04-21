@@ -15,6 +15,17 @@ from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
 from nnmware.core.models import MetaIP
 
+class HotelPoints(models.Model):
+    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
+    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4)
+    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=1, max_digits=4)
+    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=1, max_digits=4)
+    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4)
+
+    class Meta:
+        abstract = True
+
+
 class HotelOptionCategory(MetaName):
 
     class Meta:
@@ -65,7 +76,7 @@ HOTEL_CHOICES = (
     )
 
 
-class Hotel(MetaName, MetaGeo):
+class Hotel(MetaName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
     city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True, on_delete=models.SET_NULL)
     email = models.EmailField(verbose_name=_("Email"), blank=True)
@@ -295,16 +306,12 @@ class AgentPercent(models.Model):
                  'date':self.date,
                  'percent':self.percent }
 
-class Review(MetaIP):
+
+class Review(MetaIP, HotelPoints):
     user = models.ForeignKey(User)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
     review = models.TextField(verbose_name=_("Review"),blank=True)
-    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
-    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4)
-    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=1, max_digits=4)
-    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=1, max_digits=4)
-    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4)
 
     class Meta:
         ordering = ['-date', ]

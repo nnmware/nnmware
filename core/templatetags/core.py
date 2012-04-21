@@ -29,6 +29,9 @@ def do_get_tree_path(parser, token):
         result += '<a href="%s">%s</a>' % name, link
     return result
 
+@register.filter
+def multiply(value, times):
+    return value*times
 
 @register.filter("inline_truncate")
 def inline_truncate(value, size):
