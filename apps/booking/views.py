@@ -96,6 +96,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'description'
+        context['title_line'] = self.object.get_name
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -123,6 +124,7 @@ class HotelLocation(DetailView):
         context = super(HotelLocation, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tourism_list'] = self.object.tourism.all
+        context['title_line'] = self.object.get_name
         context['tab'] = 'location'
         context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
@@ -137,6 +139,7 @@ class HotelReviews(DetailView):
         context = super(HotelReviews, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reviews'
+        context['title_line'] = self.object.get_name
         context['reviews'] = self.object.review_set.all()
         return context
 

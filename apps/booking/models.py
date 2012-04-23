@@ -133,6 +133,9 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     def in_city(self):
         return Hotel.objects.filter(city=self.city).count()
 
+    def in_system(self):
+        return Hotel.objects.all().count()
+
     def stars(self):
         return range(0,self.starcount)
 
