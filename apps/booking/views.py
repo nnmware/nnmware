@@ -57,8 +57,11 @@ class HotelInCity(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
-        city = City.objects.get(slug=self.kwargs['slug'])
-        return Hotel.objects.filter(city=city)
+        try:
+            city = City.objects.get(slug=self.kwargs['slug'])
+            return Hotel.objects.filter(city=city)
+        except :
+            return Hotel.objects.all()
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
