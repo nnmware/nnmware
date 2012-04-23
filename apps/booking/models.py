@@ -9,12 +9,14 @@ from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
+from nnmware.core.config import CURRENCY
 from nnmware.core.middleware import get_request
 from nnmware.core.models import MetaName, MetaGeo
-from nnmware.apps.money.models import MoneyBase
+from nnmware.apps.money.models import MoneyBase, Currency, ExchangeRate
 from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
 from nnmware.core.models import MetaIP
+from nnmware.apps.money.models import ExchangeMixin
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
@@ -81,7 +83,7 @@ HOTEL_CHOICES = (
     )
 
 
-class Hotel(MetaName, MetaGeo, HotelPoints):
+class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
     city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True, on_delete=models.SET_NULL)
     email = models.EmailField(verbose_name=_("Email"), blank=True)
@@ -153,18 +155,18 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
                 result.append(room)
         return result
 
+    @property
     def min_current_amount(self):
         rooms = Room.objects.filter(hotel=self)
         result = None
         for r in rooms:
-            min_price = r.min_current_amount()
+            min_price = r.min_current_amount
             if not result:
                 result = min_price
             else:
                 if result > min_price:
                     result = min_price
         return result
-
 
 class RoomOptionCategory(MetaName):
 
@@ -207,7 +209,7 @@ PLACES_CHOICES = (
     )
 
 
-class Room(MetaName):
+class Room(MetaName, ExchangeMixin):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
@@ -219,6 +221,7 @@ class Room(MetaName):
     def __unicode__(self):
         return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
 
+    @property
     def min_current_amount(self):
         settlements = SettlementVariant.objects.filter(room=self, enabled=True)
         result = None
@@ -234,7 +237,7 @@ class Room(MetaName):
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
 
-class SettlementVariant(models.Model):
+class SettlementVariant(models.Model, ExchangeMixin):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=True)
@@ -256,6 +259,9 @@ class SettlementVariant(models.Model):
         else:
             return 0
 
+    @property
+    def min_current_amount(self):
+        return self.current_amount()
 
 
 STATUS_UNKNOWN = 0

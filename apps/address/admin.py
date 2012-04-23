@@ -52,10 +52,10 @@ class TourismCategoryAdmin(admin.ModelAdmin):
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class TourismAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country')
+    list_display = ('name', 'country','city','address')
     search_fields = ('name',)
     fieldsets = (
-        (_("Tourism place category"), {"fields": [("name",'address'),
+        (_("Tourism place category"), {"fields": [("name",'address'),('category',),
             ('description',)]}),
         (_("Addons"), {"fields": [( 'enabled','country','city'),
         ]}),

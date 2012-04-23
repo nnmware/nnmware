@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from datetime import datetime
 from decimal import Decimal
 from django.contrib.auth.models import User
@@ -6,7 +8,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from nnmware.apps.address.models import Country
+from nnmware.core.config import CURRENCY, OFFICIAL_RATE
 from nnmware.core.managers import FinancialManager
+from nnmware.core.middleware import get_request
 from nnmware.core.models import Doc
 
 #---------------------------------------------------------------------------
@@ -143,3 +147,34 @@ class Account(MoneyBase):
 
     def docs(self):
         return Doc.objects.metalinks_for_object(self)
+
+class ExchangeMixin(object):
+
+    def min_amount_currency(self):
+        try:
+            currency = Currency.objects.get(code=get_request().COOKIES['currency'])
+            rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+            if OFFICIAL_RATE:
+                exchange = rate.official_rate
+            else:
+                exchange = rate.rate
+            result = (self.min_current_amount*rate.nominal)/exchange
+        except :
+            result = self.min_current_amount
+        return result
+
+    def client_currency(self):
+        try:
+            currency = get_request().COOKIES['currency']
+        except :
+            currency = CURRENCY
+        if currency == 'USD':
+            return '$'
+        elif currency == 'EUR':
+            return '€'
+        elif currency == 'JPY':
+            return '¥'
+        elif currency == 'GBP':
+            return '£'
+        else:
+            return _('Rub')
