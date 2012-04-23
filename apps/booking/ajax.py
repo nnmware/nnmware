@@ -97,7 +97,17 @@ def hotel_add(request):
     contact_email = request.REQUEST['contact_email']
     website = request.REQUEST['website']
     rooms_count = request.REQUEST['rooms_count']
-    city, created = City.objects.get_or_create(name=c)
+    try:
+        city = City.objects.get(name=c)
+    except :
+        city = City()
+        city.name = c
+        city.save()
+#    city, created = City.objects.get_or_create(name=c)
+#    if created:
+#        city.save()
+#        city.slug = city.pk
+#        city.save()
     hotel = Hotel()
     hotel.name = name
     hotel.city = city

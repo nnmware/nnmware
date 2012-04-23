@@ -33,7 +33,7 @@ class HotelList(ListView):
                 result = Hotel.objects.order_by('starcount')
                 tab = 'amount'
             elif order == 'review':
-                result = Hotel.objects.order_by('point')
+                result = Hotel.objects.order_by('-point')
                 tab = 'review'
             else:
                 pass
@@ -50,6 +50,23 @@ class HotelList(ListView):
         context['tab'] = self.tab_title
         context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
+
+class HotelInCity(ListView):
+    model = Hotel
+    template_name = "hotels/list.html"
+
+    def get_queryset(self):
+        city = City.objects.get(slug=self.kwargs['slug'])
+        return Hotel.objects.filter(city=city)
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(HotelInCity, self).get_context_data(**kwargs)
+        context['title_line'] = _('list of hotels')
+        context['tab'] = 'name'
+        context['api_key'] = settings.YANDEX_MAPS_API_KEY
+        return context
+
 
 class HotelAdminList(ListView):
     model = Hotel
@@ -415,3 +432,7 @@ class RequestAdminAdd(TemplateView):
         context['title_line'] = _('request for add')
         context['request_hotel'] = RequestAddHotel.objects.get(id=self.kwargs['pk'])
         return context
+
+class HotelMainPage(TemplateView):
+    template_name = 'hotels/intro.html'
+    

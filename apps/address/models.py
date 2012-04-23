@@ -62,6 +62,10 @@ class City(Address, MetaGeo):
     def fulladdress(self):
         return u"%s" % (self.name)
 
+    def get_absolute_url(self):
+        return 'city_detail', [self.slug]
+
+
 class TourismCategory(MetaName):
 
     class Meta:

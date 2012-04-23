@@ -11,7 +11,7 @@ class HotelAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
-            ('room_count','starcount')
+            ('room_count','starcount'),('best_offer','in_top10')
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),

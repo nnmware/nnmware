@@ -44,7 +44,11 @@ class HotelOption(MetaName):
         verbose_name_plural = _("Hotel Options")
 
     def __unicode__(self):
-        return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+        if self.category:
+            return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+        else:
+            return _("%(name)s") % { 'name': self.name}
+
 
 UNKNOWN_STAR = 0
 ONE_STAR = 1
@@ -95,7 +99,8 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
     tourism = models.ManyToManyField(Tourism, verbose_name=_('Tourism places'), null=True, blank=True)
-
+    best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
+    in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
 
     class Meta:
         verbose_name = _("Hotel")
