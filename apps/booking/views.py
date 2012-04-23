@@ -47,6 +47,7 @@ class HotelList(ListView):
     # Call the base implementation first to get a context
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
+        context['tourism_list'] = context['object_list'][0].tourism.all
         context['tab'] = self.tab_title
         context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
@@ -121,6 +122,7 @@ class HotelLocation(DetailView):
     # Call the base implementation first to get a context
         context = super(HotelLocation, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+        context['tourism_list'] = self.object.tourism.all
         context['tab'] = 'location'
         context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context

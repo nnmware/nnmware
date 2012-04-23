@@ -150,7 +150,19 @@ def client_review(request, pk):
 #        payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
-
+def tourism_places(request):
+    try:
+        h = request.REQUEST['hotel']
+        hotel = Hotel.objects.get(pk=h)
+        results = []
+        for tourism in hotel.tourism.all():
+            answer = {'name':tourism.get_name, 'latitude':tourism.latitude,
+                      'longitude':tourism.longitude}
+            results.append(answer)
+        payload = {'success': True, 'tourism':results}
+    except :
+        payload = {'success': False}
+    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
 
