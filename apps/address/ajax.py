@@ -9,9 +9,9 @@ def autocomplete_city(request):
     search_qs = City.objects.filter(
         Q(name__icontains=request.REQUEST['q']) |
         Q(name_en__icontains=request.REQUEST['q'])).order_by('name')
-
     results = []
     for r in search_qs:
-        results.append(r.name)
-    payload = {'q': results}
+        userstring = {'name': r.get_name, 'slug': r.slug }
+        results.append(userstring)
+    payload = {'city': results}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
