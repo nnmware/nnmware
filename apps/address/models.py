@@ -91,4 +91,4 @@ class Tourism(Address, MetaGeo):
         return u"%s :: %s" % (self.name, self.country)
 
     def fulladdress(self):
-        return u"%s, %s" % (self.city, self.address)
+        return u"%s, %s" % (self.address, self.city)

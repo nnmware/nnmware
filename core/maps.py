@@ -1,14 +1,36 @@
 # coding: utf-8
 
 """
-Yandex.Maps API wrapper
+Yandex.Maps  and OSM API wrapper
 """
 from __future__ import with_statement
 import xml.dom.minidom
 import urllib
+import urllib2
 from contextlib import closing
 import httplib
+from django.utils import simplejson
 
+class Geocoder(object):
+    base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
+
+    def geocode(self, q):
+
+        params = { 'q': q.encode('utf-8') }
+
+        url = self.base_url % urllib.urlencode(params)
+        data = urllib2.urlopen(url)
+        response = data.read()
+        
+        return self.parse_json(response)
+
+
+    def parse_json(self, data):
+        try:
+            data = simplejson.loads(data)
+        except:
+            data = []
+        return data
 
 STATIC_MAPS_URL = 'http://static-maps.yandex.ru/1.x/?'
 GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'

@@ -128,7 +128,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         return False
 
     def fulladdress(self):
-        return u"%s, %s" % (self.city.name, self.address)
+        return u"%s, %s" % (self.address, self.city.name)
 
     def in_city(self):
         return Hotel.objects.filter(city=self.city).count()

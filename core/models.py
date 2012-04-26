@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 """
 Base model library.
@@ -24,7 +24,7 @@ from django.template.loader import render_to_string
 
 from nnmware.core.managers import MetaDataManager, MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
-from nnmware.core.maps import get_map_url, geocode
+from nnmware.core.maps import get_map_url, geocode, Geocoder
 from nnmware.core.middleware import get_request
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 
@@ -357,15 +357,6 @@ class MetaLink(models.Model):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
-def get_static_map_url(longitude, latitude, width=None, height=None, detail_level=14):
-    """
-    Return static map URL
-    """
-    w = int(width) if width else settings.YANDEX_MAPS_W
-    h = int(height) if height else settings.YANDEX_MAPS_H
-    detail_level = int(detail_level)
-    return get_map_url(YANDEX_KEY, longitude, latitude, detail_level, w, h)
-
 
 class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), null=True, blank=True, editable=False)
@@ -374,23 +365,25 @@ class MetaGeo(models.Model):
     class Meta:
         abstract = True
 
-    def get_detail_level(self):
-        return 5
+    def geoaddress(self):
+        result = self.address
+        addr = result.split(',')
+        try:
+            r = int(addr[1])
+            result = "%s %s" % addr[1], addr[0]
+        except :
+            pass
+        return u"%s, %s" % (result, self.city)
 
-    def get_map_url(self, width=None, height=None, detail_level = 5):
-        if YANDEX_KEY is None:
-            return ""
-        return get_static_map_url(self.longitude, self.latitude, width, height, detail_level)
-
-    def fill_geocode_data(self):
-        if YANDEX_KEY is not None:
-            self.longitude, self.latitude = geocode(settings.YANDEX_MAPS_API_KEY, self.fulladdress())
+    def fill_osm_data(self):
+        client = Geocoder()
+        response = client.geocode(self.geoaddress())[0]
+        self.longitude = response['lon']
+        self.latitude = response['lat']
 
     def save(self, *args, **kwargs):
-        self.fill_geocode_data()
+        self.fill_osm_data()
         super(MetaGeo, self).save(*args, **kwargs)
-
-
 
 
 DOC_FILE = 0
