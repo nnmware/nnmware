@@ -58,8 +58,20 @@ class HotelInCity(ListView):
 
     def get_queryset(self):
         try:
+            result = []
             city = City.objects.get(slug=self.kwargs['slug'])
-            return Hotel.objects.filter(city=city)
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            rooms_need = self.request.GET.get('rooms')
+            hotels = Hotel.objects.filter(city=city)
+            for hotel in hotels:
+                if hotel.free_room(from_date,to_date,rooms_need):
+                    result.append(hotel)
+            return result
         except :
             return Hotel.objects.all()
 

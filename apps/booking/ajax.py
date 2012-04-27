@@ -103,11 +103,6 @@ def hotel_add(request):
         city = City()
         city.name = c
         city.save()
-#    city, created = City.objects.get_or_create(name=c)
-#    if created:
-#        city.save()
-#        city.slug = city.pk
-#        city.save()
     hotel = Hotel()
     hotel.name = name
     hotel.city = city
