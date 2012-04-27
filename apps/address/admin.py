@@ -46,7 +46,7 @@ class TourismCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Tourism place category"), {"fields": [("name",),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled'),
+        (_("Addons"), {"fields": [( 'enabled'),( 'icon'),
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)

@@ -67,6 +67,7 @@ class City(Address, MetaGeo):
 
 
 class TourismCategory(MetaName):
+    icon = models.ImageField(upload_to="ico/", blank=True, null=True)
 
     class Meta:
         verbose_name = _("Tourism Place Category")

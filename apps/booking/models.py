@@ -30,6 +30,7 @@ class HotelPoints(models.Model):
 
 
 class HotelOptionCategory(MetaName):
+    icon = models.ImageField(upload_to="ico/", blank=True, null=True)
 
     class Meta:
         verbose_name = _("Hotel Option Category")

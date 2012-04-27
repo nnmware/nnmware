@@ -72,7 +72,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Hotel Option Category"), {"fields": [("name",'slug'),
             ('description',)]}),
-        (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',),
+        (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',), ( 'icon',),
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
