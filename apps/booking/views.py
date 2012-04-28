@@ -378,12 +378,34 @@ class UserBookings(DetailView):
     model = Profile
     template_name = "usercabinet/bookings.html"
 
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserBookings, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
-        context['bookings'] = Booking.objects.filter(user=self.object.user)
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = datetime.fromtimestamp(time.mktime(time.strptime(f_date, "%d.%m.%Y")))
+            t_date = self.request.GET.get('to')
+            to_date = datetime.fromtimestamp(time.mktime(time.strptime(t_date, "%d.%m.%Y")))
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            context['bookings'] = Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
+        except :
+            context['bookings'] = Booking.objects.filter(user=self.object.user)
         context['title_line'] = _('bookings')
+        return context
+
+class UserBookingDetail(DetailView):
+    model = Booking
+    slug_field = 'uuid'
+    template_name = "usercabinet/booking.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserBookingDetail, self).get_context_data(**kwargs)
+        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['tab'] = 'bookings'
         return context
 
 

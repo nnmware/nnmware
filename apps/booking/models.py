@@ -310,6 +310,13 @@ class Booking(MoneyBase, MetaIP):
     def __unicode__(self):
          return u"Booking - %s" % self.pk
 
+#    @property
+#    def get_slug(self):
+#        if not self.slug:
+#            self.slug = str(uuid4())
+#            self.save()
+#        return str(self.slug)
+
     @permalink
     def get_absolute_url(self):
         if not self.uuid:
