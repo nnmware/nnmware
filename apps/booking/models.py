@@ -294,8 +294,9 @@ class Booking(MoneyBase, MetaIP):
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.EmailField(_('E-mail'), blank=True)
-    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True)
+    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, default=str(uuid4()))
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
+    hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
 
 
     class Meta:
@@ -306,19 +307,16 @@ class Booking(MoneyBase, MetaIP):
     def __unicode__(self):
          return u"Booking - %s" % self.pk
 
-    def save(self, *args, **kwargs):
-        if not self.uuid:
-            if not self.id:
-                super(Booking, self).save(*args, **kwargs)
-            self.uuid = str(uuid4())
-        super(Booking, self).save(*args, **kwargs)
-
     @permalink
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
         return ('booking_hotel_detail', (), { 'slug': self.uuid})
 
+    @property
+    def days(self):
+        delta = self.to_date-self.from_date
+        return delta.days
 
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
