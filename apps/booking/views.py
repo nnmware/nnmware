@@ -495,10 +495,9 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
-
         self.object.currency = price.currency
-        self.ip = self.request.META['REMOTE_ADDR']
-        self.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.ip = self.request.META['REMOTE_ADDR']
+        self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
 
@@ -528,4 +527,16 @@ class BookingHotelDetail(DetailView):
         context['hotel'] = self.object.hotel
         context['title_line'] = _('Booking ID')+' '+self.object.uuid
         context['tab'] = 'booking'
+        return context
+
+class BookingAdminDetail(DetailView):
+    model = Booking
+    slug_field = 'uuid'
+    template_name = "sysadm/booking.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(BookingAdminDetail, self).get_context_data(**kwargs)
+        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['tab'] = 'bookings'
         return context
