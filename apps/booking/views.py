@@ -293,7 +293,16 @@ class CabinetBookings(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'booking'
         context['hotel'] = self.object
-        context['bookings'] = Booking.objects.filter(hotel=self.object)
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            context['bookings'] = Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
+        except :
+            context['bookings'] = Booking.objects.filter(hotel=self.object)
         context['title_line'] = _('bookings')
         return context
 
@@ -346,6 +355,16 @@ class BookingsList(ListView):
         context = super(BookingsList, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
         context['title_line'] = _('booking list')
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            context['bookings'] = Booking.objects.filter(date__range=(from_date, to_date))
+        except :
+            context['bookings'] = Booking.objects.all()
         return context
 
 class RequestsList(ListView):
@@ -385,9 +404,9 @@ class UserBookings(DetailView):
         context['tab'] = 'bookings'
         try:
             f_date = self.request.GET.get('from')
-            from_date = datetime.fromtimestamp(time.mktime(time.strptime(f_date, "%d.%m.%Y")))
+            from_date = convert_to_date(f_date)
             t_date = self.request.GET.get('to')
-            to_date = datetime.fromtimestamp(time.mktime(time.strptime(t_date, "%d.%m.%Y")))
+            to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
             context['bookings'] = Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
