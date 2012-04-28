@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
 from nnmware.apps.booking.models import RequestAddHotel
-from nnmware.apps.money.models import Account
+from nnmware.apps.money.models import Bill
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.middleware import get_request
@@ -42,7 +42,7 @@ class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}))
 
     class Meta:
-        model = Account
+        model = Bill
         fields = ('date_billed', 'status', 'description','amount','currency')
 
 class RequestAddHotelForm(forms.ModelForm):

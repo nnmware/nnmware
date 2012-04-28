@@ -12,7 +12,7 @@ from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin
-from nnmware.apps.money.models import Account
+from nnmware.apps.money.models import Bill
 import time
 from nnmware.core.utils import date_range, convert_to_date
 
@@ -268,7 +268,7 @@ class CabinetRates(DetailView):
         return context
 
 class CabinetBillEdit(AttachedFilesMixin, UpdateView):
-    model = Account
+    model = Bill
     form_class = CabinetEditBillForm
     template_name = "cabinet/bill_edit.html"
 
@@ -307,7 +307,7 @@ class CabinetBills(DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'bills'
         context['hotel'] = self.object
-        context['accounts'] = Account.objects.for_object(self.object)
+        context['accounts'] = Bill.objects.for_object(self.object)
         context['title_line'] = _('bills')
         return context
 

@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta
 from decimal import Decimal
+from uuid import uuid4
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
@@ -293,6 +294,9 @@ class Booking(MoneyBase, MetaIP):
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.EmailField(_('E-mail'), blank=True)
+    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True)
+    commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
+
 
     class Meta:
         ordering = ("-date",)
@@ -301,6 +305,24 @@ class Booking(MoneyBase, MetaIP):
 
     def __unicode__(self):
          return u"Booking - %s" % self.pk
+
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            if not self.id:
+                super(Booking, self).save(*args, **kwargs)
+            self.uuid = str(uuid4())
+        super(Booking, self).save(*args, **kwargs)
+
+    @permalink
+    def get_absolute_url(self):
+        if not self.uuid:
+            self.save()
+        return ('booking_hotel_detail', (), {
+            'year': self.date.year,
+            'month': self.date.strftime('%b').lower(),
+            'day': self.date.day,
+            'slug': self.uuid})
+
 
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)

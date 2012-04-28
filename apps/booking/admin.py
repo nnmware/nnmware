@@ -78,7 +78,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user','from_date','to_date','settlement','amount','currency','status','date')
+    list_display = ('user','from_date','to_date','settlement','amount','currency','status','date','uuid')
     search_fields = ('from_date',)
     fieldsets = (
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),

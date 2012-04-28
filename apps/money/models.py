@@ -104,27 +104,27 @@ class Transaction(MoneyBase):
                      'currency': self.currency}
 
 #---------------------------------------------------------------------------
-ACCOUNT_UNKNOWN = 0
-ACCOUNT_BILLED = 1
-ACCOUNT_PAID = 2
-ACCOUNT_CANCELED = 3
+BILL_UNKNOWN = 0
+BILL_BILLED = 1
+BILL_PAID = 2
+BILL_CANCELED = 3
 
-ACCOUNT_STATUS = (
-    (ACCOUNT_UNKNOWN, _("Unknown")),
-    (ACCOUNT_BILLED, _("Billed")),
-    (ACCOUNT_PAID, _("Paid")),
-    (ACCOUNT_CANCELED, _("Cancelled")),
+BILL_STATUS = (
+    (BILL_UNKNOWN, _("Unknown")),
+    (BILL_BILLED, _("Billed")),
+    (BILL_PAID, _("Paid")),
+    (BILL_CANCELED, _("Cancelled")),
     )
 
 
-class Account(MoneyBase):
+class Bill(MoneyBase):
     """
     Financial account
     """
     user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
     date = models.DateField(verbose_name=_("Date"), default=datetime.now())
     date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.now())
-    status = models.IntegerField(_("Account status"), choices=ACCOUNT_STATUS, default=ACCOUNT_UNKNOWN)
+    status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)
     target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
@@ -134,8 +134,8 @@ class Account(MoneyBase):
     objects = FinancialManager()
 
     class Meta:
-        verbose_name = _("Account")
-        verbose_name_plural = _("Accounts")
+        verbose_name = _("Bill")
+        verbose_name_plural = _("Bills")
 
     def __unicode__(self):
         return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\

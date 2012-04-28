@@ -1,7 +1,6 @@
 from django.contrib import admin
 from nnmware.apps.money.models import *
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.money.models import Account
 
 
 class TransactionAdmin(admin.ModelAdmin):
@@ -24,14 +23,14 @@ class TransactionAdmin(admin.ModelAdmin):
         return readonly
 
 
-class AccountAdmin(admin.ModelAdmin):
+class BillAdmin(admin.ModelAdmin):
     list_display = ('user','date_billed','target','status','amount','currency')
     search_fields = ('name',)
     list_filter = ('user','date_billed')
     ordering = [('user'),]
     #readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
-        (_("Account"), {"fields": [("user","date_billed"),
+        (_("Bill"), {"fields": [("user","date_billed"),
             ('amount','currency'),
             ('target_ctype','target_oid'),
             ('description',),
@@ -54,4 +53,4 @@ class ExchangeRateAdmin(admin.ModelAdmin):
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(ExchangeRate, ExchangeRateAdmin)
-admin.site.register(Account, AccountAdmin)
+admin.site.register(Bill, BillAdmin)
