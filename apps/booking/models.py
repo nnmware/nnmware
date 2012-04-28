@@ -317,11 +317,7 @@ class Booking(MoneyBase, MetaIP):
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
-        return ('booking_hotel_detail', (), {
-            'year': self.date.year,
-            'month': self.date.strftime('%b').lower(),
-            'day': self.date.day,
-            'slug': self.uuid})
+        return ('booking_hotel_detail', (), { 'slug': self.uuid})
 
 
 class AgentPercent(models.Model):

@@ -455,4 +455,17 @@ class RequestAdminAdd(TemplateView):
 
 class HotelMainPage(TemplateView):
     template_name = 'hotels/intro.html'
-    
+
+class BookingHotelDetail(DetailView):
+    model = Booking
+    slug_field = 'uuid'
+    template_name = "cabinet/booking.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(BookingHotelDetail, self).get_context_data(**kwargs)
+#        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+#        context['tourism_list'] = self.object.tourism.all
+        context['title_line'] = self.object.uuid
+        context['tab'] = 'location'
+        return context
