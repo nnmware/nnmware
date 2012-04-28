@@ -374,6 +374,19 @@ class UserCabinet(UpdateView):
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.pk])
 
+class UserBookings(DetailView):
+    model = Profile
+    template_name = "usercabinet/bookings.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(UserBookings, self).get_context_data(**kwargs)
+        context['tab'] = 'bookings'
+        context['bookings'] = Booking.objects.filter(user=self.object.user)
+        context['title_line'] = _('bookings')
+        return context
+
+
 class ClientBooking(DetailView):
     model = Hotel
     template_name = "booking/add.html"
@@ -426,16 +439,22 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.date = datetime.now()
         from_date = self.object.from_date
         to_date = self.object.to_date
-        all_amount = 0
+        all_amount = Decimal(0)
+        commission = Decimal(0)
         on_date = from_date
         while on_date < to_date:
             price = PlacePrice.objects.get(settlement=settlement, date = on_date)
-            all_amount +=int(price.amount)
+            percent = self.object.hotel.get_percent_on_date(on_date)
+            commission += (price.amount*percent)/100
+            all_amount += price.amount
             avail = Availability.objects.get(room=room, date = on_date)
             avail.placecount -= 1
             avail.save()
             on_date = on_date+timedelta(days=1)
         self.object.amount = all_amount
+        self.object.hotel_sum = all_amount - commission
+        self.object.commission = commission
+
         self.object.currency = price.currency
         self.ip = self.request.META['REMOTE_ADDR']
         self.user_agent = self.request.META['HTTP_USER_AGENT']
@@ -465,7 +484,6 @@ class BookingHotelDetail(DetailView):
     # Call the base implementation first to get a context
         context = super(BookingHotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-#        context['tourism_list'] = self.object.tourism.all
         context['hotel'] = self.object.hotel
         context['title_line'] = _('Booking ID')+' '+self.object.uuid
         context['tab'] = 'booking'

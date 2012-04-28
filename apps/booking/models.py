@@ -148,6 +148,9 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     def get_current_percent(self):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
 
+    def get_percent_on_date(self, date):
+        return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
+
     def free_room(self, from_date, to_date, roomcount, with_child=None):
         d = to_date-from_date
         to_date = to_date-timedelta(days=1)
@@ -294,7 +297,7 @@ class Booking(MoneyBase, MetaIP):
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.EmailField(_('E-mail'), blank=True)
-    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, default=str(uuid4()))
+    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, default=uuid4)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
 
