@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.core.config import CURRENCY
 from nnmware.core.middleware import get_request
-from nnmware.core.models import MetaName, MetaGeo
+from nnmware.core.models import MetaName, MetaGeo, Pic
 from nnmware.apps.money.models import MoneyBase, Currency, ExchangeRate
 from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
@@ -176,6 +176,15 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
                     result = min_price
         return result
 
+    @property
+    def main_image(self):
+        try:
+            pics = Pic.objects.metalinks_for_object(self)
+            return pics[0].pic.url
+        except :
+            return None
+
+
 class RoomOptionCategory(MetaName):
 
     class Meta:
@@ -244,6 +253,14 @@ class Room(MetaName, ExchangeMixin):
 
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
+
+    @property
+    def main_image(self):
+        try:
+            pics = Pic.objects.metalinks_for_object(self)
+            return pics[0].pic.url
+        except :
+            return None
 
 class SettlementVariant(models.Model, ExchangeMixin):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
