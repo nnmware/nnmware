@@ -322,3 +322,7 @@ def aspect_ratio(image, w, h):
     box = (0, topCrop, imageWidth, bottomCrop)
     image = image.crop(box)
     return image
+
+def get_thumbnail_path(url,size):
+    url_t = make_thumbnail(url, width=size)
+    return _get_path_from_url(url_t)
