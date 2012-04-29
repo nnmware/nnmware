@@ -184,14 +184,6 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         except :
             return None
 
-#    @property
-#    def pdf_image(self):
-#        try:
-#            pics = Pic.objects.metalinks_for_object(self)
-#            return pics[0].pic #.path
-#        except :
-#            return None
-
 
 class RoomOptionCategory(MetaName):
 
