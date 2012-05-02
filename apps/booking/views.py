@@ -202,12 +202,14 @@ class HotelReviews(DetailView):
         return context
 
 
-class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
+class CabinetInfo(AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
+        if not self.request.user in self.object.admins.all() and not self.request.user.is_superuser:
+            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -219,7 +221,7 @@ class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.pk])
 
-class CabinetRooms(CurrentUserRoomAdmin, CreateView):
+class CabinetRooms(CreateView):
     model = Room
     form_class = CabinetAddRoomForm
     template_name = "cabinet/rooms.html"
@@ -241,9 +243,11 @@ class CabinetRooms(CurrentUserRoomAdmin, CreateView):
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
+        hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
+        if not self.request.user in hotel.admins.all() and not self.request.user.is_superuser:
+            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
-        hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
         context['options_list'] = RoomOption.objects.order_by('category')
         context['tab'] = 'rooms'
