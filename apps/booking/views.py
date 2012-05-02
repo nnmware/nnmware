@@ -23,7 +23,7 @@ class CurrentUserHotelAdmin(object):
     def dispatch(self, *args, **kwargs):
         response = super(CurrentUserHotelAdmin, self).dispatch(*args, **kwargs)
         obj = self.get_object()
-        if not self.request.user in obj.admins and not self.request.user.is_superuser:
+        if not self.request.user in obj.admins.all() and not self.request.user.is_superuser:
             raise Http404
         return response
 
@@ -33,7 +33,7 @@ class CurrentUserRoomAdmin(object):
     def dispatch(self, *args, **kwargs):
         response = super(CurrentUserRoomAdmin, self).dispatch(*args, **kwargs)
         obj = self.get_object()
-        if not self.request.user in obj.hotel.admins and not self.request.user.is_superuser:
+        if not self.request.user in obj.hotel.admins.all() and not self.request.user.is_superuser:
             raise Http404
         return response
 
@@ -43,7 +43,7 @@ class CurrentUserHotelBillAccess(object):
     def dispatch(self, *args, **kwargs):
         response = super(CurrentUserHotelBillAccess, self).dispatch(*args, **kwargs)
         obj = self.get_object()
-        if not self.request.user in obj.target.admins and not self.request.user.is_superuser:
+        if not self.request.user in obj.target.admins.all() and not self.request.user.is_superuser:
             raise Http404
         return response
 
@@ -53,7 +53,7 @@ class CurrentUserHotelBookingAccess(object):
     def dispatch(self, *args, **kwargs):
         response = super(CurrentUserHotelBookingAccess, self).dispatch(*args, **kwargs)
         obj = self.get_object()
-        if not self.request.user in obj.hotel.admins and not self.request.user.is_superuser:
+        if not self.request.user in obj.hotel.admins.all() and not self.request.user.is_superuser:
             raise Http404
         return response
 
@@ -139,7 +139,7 @@ class HotelAdminList(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
-        result = Hotel.objects.all() #filter(admins__user = self.request.user)
+        result = Hotel.objects.filter(admins = self.request.user)
         return result
 
     def get_context_data(self, **kwargs):

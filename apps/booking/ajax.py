@@ -19,7 +19,7 @@ class UserNotAllowed(Exception):
 def room_rate(request):
     try:
         room = Room.objects.get(id=request.REQUEST['room_id'])
-        if request.user not in room.hotel.admins and not request.user.is_superuser:
+        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
         value = int(request.REQUEST['value'])
@@ -53,7 +53,7 @@ def room_rate(request):
 def room_variants(request):
     try:
         room = Room.objects.get(id=request.REQUEST['room_id'])
-        if request.user not in room.hotel.admins and not request.user.is_superuser:
+        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         settlements = SettlementVariant.objects.filter(room=room,enabled=True).order_by('settlement')
         results = []
@@ -69,7 +69,7 @@ def room_variants(request):
 def room_delete(request, pk):
     try:
         room = Room.objects.get(id=pk)
-        if request.user not in room.hotel.admins and not request.user.is_superuser:
+        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         room.delete()
         payload = {'success': True}
@@ -142,7 +142,7 @@ def client_review(request, pk):
     try:
         hotel = Hotel.objects.get(id=pk)
         guests = Booking.objects.filter(hotel=hotel,to_date__gte=datetime.now()).values_list('user', flat=True)
-        if request.user.pk not in guests or request.user.is_anonymous():
+        if request.user.pk not in guests or not request.user.is_authenticated():
             raise UserNotAllowed
         if Review.objects.filter(hotel=hotel,user=request.user).count():
             raise UserNotAllowed
