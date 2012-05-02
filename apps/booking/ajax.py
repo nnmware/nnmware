@@ -1,27 +1,32 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
 from django.http import HttpResponse
 from django.utils import simplejson
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review
+from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking
 from nnmware.apps.money.models import Currency
 from nnmware.core.http import LazyEncoder
 import time
 from nnmware.core.utils import convert_to_date
 
+class UserNotAllowed(Exception):
+    pass
+
 def room_rate(request):
-    currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
     try:
+        room = Room.objects.get(id=request.REQUEST['room_id'])
+        if request.user not in room.hotel.admins and not request.user.is_superuser:
+            raise UserNotAllowed
+        currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
         value = int(request.REQUEST['value'])
         on_date = request.REQUEST['on_date'][1:]
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(on_date, "%d%m%Y")))
         row_id = request.REQUEST['row']
-        room_id = request.REQUEST['room_id']
         if row_id == 'placecount':
-            room = Room.objects.get(id=room_id)
             try:
                 availability = Availability.objects.get(date=on_date, room=room)
             except :
@@ -39,19 +44,24 @@ def room_rate(request):
             placeprice.currency = currency
             placeprice.save()
         payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg':_('You are not allowed change room rates.')}
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def room_variants(request):
     try:
-        room_id = request.REQUEST['room_id']
-        room = Room.objects.get(id=room_id)
+        room = Room.objects.get(id=request.REQUEST['room_id'])
+        if request.user not in room.hotel.admins and not request.user.is_superuser:
+            raise UserNotAllowed
         settlements = SettlementVariant.objects.filter(room=room,enabled=True).order_by('settlement')
         results = []
         for s in settlements:
             results.append(s.settlement)
         payload = {'success': True, 'settlements':results}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg':_('You are not allowed change room variants.')}
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
@@ -59,8 +69,12 @@ def room_variants(request):
 def room_delete(request, pk):
     try:
         room = Room.objects.get(id=pk)
+        if request.user not in room.hotel.admins and not request.user.is_superuser:
+            raise UserNotAllowed
         room.delete()
         payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg':_('You are not allowed change room variants.')}
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
@@ -87,51 +101,59 @@ def get_booking_amount(request):
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def hotel_add(request):
-    request_id = request.REQUEST['request_id']
-    name = request.REQUEST['name']
-    c = request.REQUEST['city']
-    address = request.REQUEST['address']
-    email = request.REQUEST['email']
-    phone = request.REQUEST['phone']
-    fax = request.REQUEST['fax']
-    contact_email = request.REQUEST['contact_email']
-    website = request.REQUEST['website']
-    rooms_count = request.REQUEST['rooms_count']
     try:
-        city = City.objects.get(name=c)
-    except :
-        city = City()
-        city.name = c
-        city.save()
-    hotel = Hotel()
-    hotel.name = name
-    hotel.city = city
-    hotel.address = address
-    hotel.email = email
-    hotel.phone = phone
-    hotel.fax = fax
-    hotel.contact_email = contact_email
-    hotel.website = website
-    hotel.room_count = rooms_count
-    hotel.save()
-    location = reverse('cabinet_info', args=[hotel.pk])
-    RequestAddHotel.objects.get(id=request_id).delete()
-    payload = {'success': True, 'location':location}
+        if not request.user.is_superuser:
+            raise UserNotAllowed
+        request_id = request.REQUEST['request_id']
+        name = request.REQUEST['name']
+        c = request.REQUEST['city']
+        address = request.REQUEST['address']
+        email = request.REQUEST['email']
+        phone = request.REQUEST['phone']
+        fax = request.REQUEST['fax']
+        contact_email = request.REQUEST['contact_email']
+        website = request.REQUEST['website']
+        rooms_count = request.REQUEST['rooms_count']
+        try:
+            city = City.objects.get(name=c)
+        except ObjectDoesNotExist:
+            city = City()
+            city.name = c
+            city.save()
+        hotel = Hotel()
+        hotel.name = name
+        hotel.city = city
+        hotel.address = address
+        hotel.email = email
+        hotel.phone = phone
+        hotel.fax = fax
+        hotel.contact_email = contact_email
+        hotel.website = website
+        hotel.room_count = rooms_count
+        hotel.save()
+        location = reverse('cabinet_info', args=[hotel.pk])
+        RequestAddHotel.objects.get(id=request_id).delete()
+        payload = {'success': True, 'location':location}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg':_('You are not allowed add hotel.')}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def client_review(request, pk):
-    # TODO Make cheked of user and non-doubled review
-    if 1>0:
+    try:
         hotel = Hotel.objects.get(id=pk)
+        guests = Booking.objects.filter(hotel=hotel,to_date__gte=datetime.now()).values_list('user', flat=True)
+        if request.user.pk not in guests or request.user.is_anonymous():
+            raise UserNotAllowed
+        if Review.objects.filter(hotel=hotel,user=request.user).count():
+            raise UserNotAllowed
         food = request.REQUEST['point_food']
         service = request.REQUEST['point_service']
         purity = request.REQUEST['point_purity']
         transport = request.REQUEST['point_transport']
         prices = request.REQUEST['point_prices']
         review = request.REQUEST['review']
-        user = request.user
         r = Review()
-        r.user = user
+        r.user = request.user
         r.hotel = hotel
         r.food = food
         r.service = service
@@ -141,8 +163,8 @@ def client_review(request, pk):
         r.review = review
         r.save()
         payload = {'success': True}
-#    except :
-#        payload = {'success': False}
+    except UserNotAllowed:
+        payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 def tourism_places(request):
@@ -162,7 +184,4 @@ def tourism_places(request):
     except :
         payload = {'success': False}
     return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
-
-
-
 
