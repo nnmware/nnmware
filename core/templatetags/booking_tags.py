@@ -29,6 +29,11 @@ def five_star_count(city=None):
     result = Hotel.objects.filter(starcount=FIVE_STAR).count()
     return result
 
+@register.simple_tag
+def hotels_in_city(city=None):
+    result = Hotel.objects.filter(city=city).count()
+    return result
+
 @register.assignment_tag
 def search_sticky_options():
     return HotelOption.objects.filter(sticky_in_search=True).order_by('order_in_list')

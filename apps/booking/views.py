@@ -135,6 +135,7 @@ class HotelInCity(ListView):
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = 'name'
+        context['city'] = City.objects.get(slug=self.kwargs['slug'])
         return context
 
 
