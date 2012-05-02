@@ -41,6 +41,15 @@ class Country(Address):
     def __unicode__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(Country, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if Country.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(Country, self).save(*args, **kwargs)
 
 class Region(Address):
     country = models.ForeignKey(Country, null=True, blank=True)
@@ -49,6 +58,18 @@ class Region(Address):
         unique_together = (('name', 'country'),)
         verbose_name = _("Region")
         verbose_name_plural = _("Regions")
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(Region, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if Region.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(Region, self).save(*args, **kwargs)
+
 
 class City(Address, MetaGeo):
     region = models.ForeignKey(Region, blank=True, null=True)
@@ -67,6 +88,17 @@ class City(Address, MetaGeo):
 
     def geoaddress(self):
         return self.fulladdress()
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(City, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(City, self).save(*args, **kwargs)
+
 
 class TourismCategory(MetaName):
     icon = models.ImageField(upload_to="ico/", blank=True, null=True)
@@ -95,3 +127,13 @@ class Tourism(Address, MetaGeo):
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(Tourism, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if Tourism.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(Tourism, self).save(*args, **kwargs)

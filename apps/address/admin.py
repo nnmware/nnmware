@@ -5,7 +5,7 @@ from nnmware.apps.address.models import TourismCategory
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('name','region','country')
+    list_display = ('name','region','country','slug')
     search_fields = ('name',)
     fieldsets = (
         (_("City"), {"fields": [("name","slug"),

@@ -189,6 +189,17 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         except :
             return None
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.id:
+                super(Hotel, self).save(*args, **kwargs)
+            self.slug = self.id
+        else:
+            if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
+                self.slug = self.id
+        super(Hotel, self).save(*args, **kwargs)
+
+
 
 class RoomOptionCategory(MetaName):
 
