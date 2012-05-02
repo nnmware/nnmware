@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.apps.userprofile.models import Profile
-from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin
+from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
 from nnmware.apps.money.models import Bill
 import time
 from nnmware.core.utils import date_range, convert_to_date
@@ -24,6 +24,45 @@ class CurrentUserHotelAdmin(object):
         response = super(CurrentUserHotelAdmin, self).dispatch(*args, **kwargs)
         obj = self.get_object()
         if not self.request.user in obj.admins and not self.request.user.is_superuser:
+            raise Http404
+        return response
+
+class CurrentUserRoomAdmin(object):
+    """ Generic update view that check request.user is author of object """
+
+    def dispatch(self, *args, **kwargs):
+        response = super(CurrentUserRoomAdmin, self).dispatch(*args, **kwargs)
+        obj = self.get_object()
+        if not self.request.user in obj.hotel.admins and not self.request.user.is_superuser:
+            raise Http404
+        return response
+
+class CurrentUserHotelBillAccess(object):
+    """ Generic update view that check request.user may view bills of hotel """
+
+    def dispatch(self, *args, **kwargs):
+        response = super(CurrentUserHotelBillAccess, self).dispatch(*args, **kwargs)
+        obj = self.get_object()
+        if not self.request.user in obj.target.admins and not self.request.user.is_superuser:
+            raise Http404
+        return response
+
+class CurrentUserHotelBookingAccess(object):
+    """ Generic update view that check request.user may view bookings of hotel """
+
+    def dispatch(self, *args, **kwargs):
+        response = super(CurrentUserHotelBookingAccess, self).dispatch(*args, **kwargs)
+        obj = self.get_object()
+        if not self.request.user in obj.hotel.admins and not self.request.user.is_superuser:
+            raise Http404
+        return response
+
+class CurrentUserCabinetAccess(object):
+
+    def dispatch(self, *args, **kwargs):
+        response = super(CurrentUserCabinetAccess, self).dispatch(*args, **kwargs)
+        obj = self.get_object()
+        if not (self.request.user == obj.user) and not self.request.user.is_superuser:
             raise Http404
         return response
 
@@ -185,15 +224,13 @@ class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.pk])
 
-class CabinetRooms(CreateView):
+class CabinetRooms(CurrentUserRoomAdmin, CreateView):
     model = Room
     form_class = CabinetAddRoomForm
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
         hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
-        if not self.request.user in hotel.admins and not self.request.user.is_superuser:
-            raise Http404
         self.object = form.save(commit=False)
         self.object.hotel = hotel
         self.object.save()
@@ -221,7 +258,7 @@ class CabinetRooms(CreateView):
     def get_success_url(self):
             return reverse('cabinet_rooms', args=[self.object.hotel.pk])
 
-class CabinetEditRoom(AttachedImagesMixin, UpdateView):
+class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
     form_class = CabinetEditRoomForm
     template_name = "cabinet/room.html"
@@ -239,6 +276,8 @@ class CabinetEditRoom(AttachedImagesMixin, UpdateView):
         return reverse('cabinet_rooms', args=[self.object.hotel.pk])
 
     def form_valid(self, form):
+#        if not self.request.user in self.object.hotel.admins and not self.request.user.is_superuser:
+#            raise Http404
         variants = self.request.POST.getlist('settlement')
         SettlementVariant.objects.filter(room=self.object).update(enabled=False)
         for variant in variants:
@@ -251,7 +290,7 @@ class CabinetEditRoom(AttachedImagesMixin, UpdateView):
         return super(CabinetEditRoom, self).form_valid(form)
 
 
-class CabinetRates(DetailView):
+class CabinetRates(CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/rates.html"
 
@@ -278,7 +317,7 @@ class CabinetRates(DetailView):
             context['dates'] = [datetime.today()]
         return context
 
-class CabinetBillEdit(AttachedFilesMixin, UpdateView):
+class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
     model = Bill
     form_class = CabinetEditBillForm
     template_name = "cabinet/bill_edit.html"
@@ -294,7 +333,7 @@ class CabinetBillEdit(AttachedFilesMixin, UpdateView):
     def get_success_url(self):
         return reverse('cabinet_bills', args=[self.object.target.pk])
 
-class CabinetBookings(DetailView):
+class CabinetBookings(CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/bookings.html"
 
@@ -317,7 +356,7 @@ class CabinetBookings(DetailView):
         context['title_line'] = _('bookings')
         return context
 
-class CabinetBills(DetailView):
+class CabinetBills(CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/bills.html"
 
@@ -357,7 +396,7 @@ class RequestAddHotelView(CreateView):
 
 
 
-class BookingsList(ListView):
+class BookingsList(CurrentUserSuperuser, ListView):
     model = Booking
     template_name = "sysadm/bookings.html"
 
@@ -378,7 +417,7 @@ class BookingsList(ListView):
             context['bookings'] = Booking.objects.all()
         return context
 
-class RequestsList(ListView):
+class RequestsList(CurrentUserSuperuser, ListView):
     model = RequestAddHotel
     template_name = "sysadm/requests.html"
 
@@ -389,7 +428,7 @@ class RequestsList(ListView):
         context['title_line'] = _('request for add')
         return context
 
-class UserCabinet(UpdateView):
+class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     model = Profile
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
@@ -404,7 +443,7 @@ class UserCabinet(UpdateView):
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.pk])
 
-class UserBookings(DetailView):
+class UserBookings(CurrentUserCabinetAccess, DetailView):
     model = Profile
     template_name = "usercabinet/bookings.html"
 
@@ -426,7 +465,7 @@ class UserBookings(DetailView):
         context['title_line'] = _('bookings')
         return context
 
-class UserBookingDetail(DetailView):
+class UserBookingDetail(CurrentUserCabinetAccess, DetailView):
     model = Booking
     slug_field = 'uuid'
     template_name = "usercabinet/booking.html"
@@ -512,7 +551,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.save()
         return super(ClientAddBooking, self).form_valid(form)
 
-class RequestAdminAdd(TemplateView):
+class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
     template_name = 'sysadm/request.html'
 
     def get_context_data(self, **kwargs):
@@ -526,7 +565,7 @@ class RequestAdminAdd(TemplateView):
 class HotelMainPage(TemplateView):
     template_name = 'hotels/intro.html'
 
-class BookingHotelDetail(DetailView):
+class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
     model = Booking
     slug_field = 'uuid'
     template_name = "cabinet/booking.html"
@@ -540,7 +579,7 @@ class BookingHotelDetail(DetailView):
         context['tab'] = 'booking'
         return context
 
-class BookingAdminDetail(DetailView):
+class BookingAdminDetail(CurrentUserSuperuser, DetailView):
     model = Booking
     slug_field = 'uuid'
     template_name = "sysadm/booking.html"
