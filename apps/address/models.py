@@ -23,12 +23,10 @@ class Address(MetaName):
             if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
                 if self.name_add_en:
                     return self.name_add_en
-                if self.name_add:
-                    return self.name_add
-            return self.get_name
         except :
-            if self.name_add:
-                return self.name_add
+            pass
+        if self.name_add:
+            return self.name_add
         return self.get_name
 
 
