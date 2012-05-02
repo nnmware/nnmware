@@ -134,7 +134,6 @@ class HotelInCity(ListView):
 
 
 class HotelAdminList(ListView):
-    # todo check then user in admins
     model = Hotel
     template_name = "hotels/list.html"
 
