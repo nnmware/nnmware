@@ -87,7 +87,7 @@ HOTEL_CHOICES = (
 
 class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
-    city = models.ForeignKey(City, verbose_name=_('City'), null=True, blank=True, on_delete=models.SET_NULL)
+    city = models.ForeignKey(City, verbose_name=_('City'))
     email = models.EmailField(verbose_name=_("Email"), blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
     address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
@@ -141,11 +141,11 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         return Hotel.objects.all().count()
 
     def stars(self):
-        return range(0,self.starcount)
+        return range(0,int(self.starcount))
 
     @permalink
     def get_absolute_url(self):
-        return "hotel_detail", (), {'slug': self.slug}
+        return "hotel_detail", (), {'city':self.city.slug ,'slug': self.slug}
 
     def get_current_percent(self):
         try:
@@ -330,7 +330,7 @@ class Booking(MoneyBase, MetaIP):
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.EmailField(_('E-mail'), blank=True)
-    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, default=uuid4)
+    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True, editable=False)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
 
@@ -353,6 +353,12 @@ class Booking(MoneyBase, MetaIP):
     def days(self):
         delta = self.to_date-self.from_date
         return delta.days
+
+    def save(self, *args, **kwargs):
+        if not self.uuid:
+            self.uuid = uuid4()
+        super(Booking, self).save(*args, **kwargs)
+
 
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)

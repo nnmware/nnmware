@@ -30,7 +30,7 @@ class RegionAdmin(admin.ModelAdmin):
 
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('__unicode__','slug')
     search_fields = ('name',)
     fieldsets = (
         (_("Country"), {"fields": [("name","slug"),
