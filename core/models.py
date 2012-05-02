@@ -376,10 +376,13 @@ class MetaGeo(models.Model):
         return u"%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        client = Geocoder()
-        response = client.geocode(self.geoaddress())[0]
-        self.longitude = response['lon']
-        self.latitude = response['lat']
+        try:
+            client = Geocoder()
+            response = client.geocode(self.geoaddress())[0]
+            self.longitude = response['lon']
+            self.latitude = response['lat']
+        except :
+            pass
 
     def save(self, *args, **kwargs):
         self.fill_osm_data()
