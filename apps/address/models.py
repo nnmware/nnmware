@@ -60,11 +60,13 @@ class City(Address, MetaGeo):
         verbose_name_plural = _("Cities")
 
     def fulladdress(self):
-        return u"%s" % (self.name)
+        return u"%s" % self.name
 
     def get_absolute_url(self):
         return 'city_detail', [self.slug]
 
+    def geoaddress(self):
+        return self.fulladdress()
 
 class TourismCategory(MetaName):
     icon = models.ImageField(upload_to="ico/", blank=True, null=True)

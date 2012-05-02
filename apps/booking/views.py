@@ -49,7 +49,6 @@ class HotelList(ListView):
         context['title_line'] = _('list of hotels')
         context['tourism_list'] = context['object_list'][0].tourism.all
         context['tab'] = self.tab_title
-        context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
 
 class HotelInCity(ListView):
@@ -80,7 +79,6 @@ class HotelInCity(ListView):
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = 'name'
-        context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
 
 
@@ -97,7 +95,6 @@ class HotelAdminList(ListView):
         context = super(HotelAdminList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = _('admin of hotels')
-        context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
 
 
@@ -141,7 +138,6 @@ class HotelLocation(DetailView):
         context['tourism_list'] = self.object.tourism.all
         context['title_line'] = self.object.get_name
         context['tab'] = 'location'
-        context['api_key'] = settings.YANDEX_MAPS_API_KEY
         return context
 
 class HotelReviews(DetailView):
