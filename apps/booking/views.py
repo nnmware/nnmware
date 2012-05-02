@@ -21,7 +21,7 @@ class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
+        obj = get_object_or_404(Hotel, pk=kwargs['pk'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
@@ -30,7 +30,7 @@ class CurrentUserRoomAdmin(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
+        obj = get_object_or_404(Room, pk=kwargs['pk'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserRoomAdmin, self).dispatch(request, *args, **kwargs)
@@ -40,7 +40,7 @@ class CurrentUserHotelBillAccess(object):
     """ Generic update view that check request.user may view bills of hotel """
 
     def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
+        obj = get_object_or_404(Bill, pk=kwargs['pk'])
         if not request.user in obj.target.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
@@ -49,16 +49,25 @@ class CurrentUserHotelBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
     def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
+        obj = get_object_or_404(Booking, uuid=kwargs['slug'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
 
+class CurrentUserBookingAccess(object):
+    """ Generic update view that check request.user may view bookings of hotel """
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = get_object_or_404(Booking, uuid=kwargs['slug'])
+        if (request.user <> obj.user) and not request.user.is_superuser:
+            raise Http404
+        return super(CurrentUserBookingAccess, self).dispatch(request, *args, **kwargs)
+
 class CurrentUserCabinetAccess(object):
 
     def dispatch(self, request, *args, **kwargs):
-        obj = self.get_object()
-        if not (request.user == obj.user) and not request.user.is_superuser:
+        obj = get_object_or_404(User, pk=kwargs['pk'])
+        if not (request.user == obj) and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
@@ -202,14 +211,14 @@ class HotelReviews(DetailView):
         return context
 
 
-class CabinetInfo(AttachedImagesMixin, UpdateView):
+class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
-        if not self.request.user in self.object.admins.all() and not self.request.user.is_superuser:
-            raise Http404
+#        if not self.request.user in self.object.admins.all() and not self.request.user.is_superuser:
+#            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -221,7 +230,7 @@ class CabinetInfo(AttachedImagesMixin, UpdateView):
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.pk])
 
-class CabinetRooms(CreateView):
+class CabinetRooms(CurrentUserHotelAdmin, CreateView):
     model = Room
     form_class = CabinetAddRoomForm
     template_name = "cabinet/rooms.html"
@@ -244,8 +253,8 @@ class CabinetRooms(CreateView):
 
     def get_context_data(self, **kwargs):
         hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
-        if not self.request.user in hotel.admins.all() and not self.request.user.is_superuser:
-            raise Http404
+#        if not self.request.user in hotel.admins.all() and not self.request.user.is_superuser:
+#            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
@@ -395,7 +404,6 @@ class RequestAddHotelView(CreateView):
         return super(RequestAddHotelView, self).form_valid(form)
 
 
-
 class BookingsList(CurrentUserSuperuser, ListView):
     model = Booking
     template_name = "sysadm/bookings.html"
@@ -465,7 +473,7 @@ class UserBookings(CurrentUserCabinetAccess, DetailView):
         context['title_line'] = _('bookings')
         return context
 
-class UserBookingDetail(CurrentUserCabinetAccess, DetailView):
+class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     model = Booking
     slug_field = 'uuid'
     template_name = "usercabinet/booking.html"
