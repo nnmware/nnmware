@@ -114,7 +114,9 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
             if self.address_en:
                 return self.address_en
-        return self.name
+            else:
+                return self.address
+        return self.address
 
     def get_count_stars_hotels(self):
         qs = Hotel.objects.filter(city=self.city)
@@ -146,7 +148,10 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         return "hotel_detail", (), {'slug': self.slug}
 
     def get_current_percent(self):
-        return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
+        try:
+            return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
+        except IndexError:
+            return None
 
     def get_percent_on_date(self, date):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
