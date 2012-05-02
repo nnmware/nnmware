@@ -304,7 +304,10 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
         if 'room' in self.kwargs.keys():
             context['room_id'] = int(self.kwargs['room'])
         else:
-            context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
+            try:
+                context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
+            except IndexError:
+                pass
         try:
             f_date = self.request.GET.get('from')
             from_date = datetime.fromtimestamp(time.mktime(time.strptime(f_date, "%d.%m.%Y")))
