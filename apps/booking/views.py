@@ -2,6 +2,7 @@
 from datetime import date, timedelta, datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
@@ -15,6 +16,17 @@ from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxForm
 from nnmware.apps.money.models import Bill
 import time
 from nnmware.core.utils import date_range, convert_to_date
+
+class CurrentUserHotelAdmin(object):
+    """ Generic update view that check request.user is author of object """
+
+    def dispatch(self, *args, **kwargs):
+        response = super(CurrentUserHotelAdmin, self).dispatch(*args, **kwargs)
+        obj = self.get_object()
+        if not self.request.user in obj.admins and not self.request.user.is_superuser:
+            raise Http404
+        return response
+
 
 class HotelList(ListView):
     model = Hotel
@@ -83,6 +95,7 @@ class HotelInCity(ListView):
 
 
 class HotelAdminList(ListView):
+    # todo check then user in admins
     model = Hotel
     template_name = "hotels/list.html"
 
@@ -155,7 +168,7 @@ class HotelReviews(DetailView):
         return context
 
 
-class CabinetInfo(AttachedImagesMixin, UpdateView):
+class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
@@ -178,8 +191,10 @@ class CabinetRooms(CreateView):
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
         hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
+        if not self.request.user in hotel.admins and not self.request.user.is_superuser:
+            raise Http404
+        self.object = form.save(commit=False)
         self.object.hotel = hotel
         self.object.save()
         variants = self.request.POST.getlist('settlement')

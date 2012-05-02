@@ -392,7 +392,7 @@ class CurrentUserAuthenticated(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, *args, **kwargs):
-        if not get_request().user.is_authenticated():
+        if not self.request.user.is_authenticated():
             raise Http404
         return super(CurrentUserAuthenticated, self).dispatch(*args, **kwargs)
 
@@ -401,7 +401,7 @@ class CurrentUserSuperuser(object):
     """ Generic object for view that check superuser rights for current user """
 
     def dispatch(self, *args, **kwargs):
-        if not get_request().user.is_superuser:
+        if not self.request.user.is_superuser:
             raise Http404
         return super(CurrentUserSuperuser, self).dispatch(*args, **kwargs)
 
@@ -410,7 +410,7 @@ class CurrentUserEditor(object):
     """ Generic update view that checks permissions for change object """
 
     def dispatch(self, *args, **kwargs):
-        if not get_request().user.has_perm('%s.change_%s' % (self.model._meta.app_label, self.model._meta.module_name)):
+        if not self.request.user.has_perm('%s.change_%s' % (self.model._meta.app_label, self.model._meta.module_name)):
             raise Http404
         return super(CurrentUserEditor, self).dispatch(*args, **kwargs)
 
@@ -419,7 +419,7 @@ class CurrentUserCreator(object):
     """ Generic create view that checks permissions """
 
     def dispatch(self, *args, **kwargs):
-        if not get_request().user.has_perm('%s.create_%s' % (self.model._meta.app_label, self.model._meta.module_name)):
+        if not self.request.user.has_perm('%s.create_%s' % (self.model._meta.app_label, self.model._meta.module_name)):
             raise Http404
         return super(CurrentUserCreator, self).dispatch(*args, **kwargs)
 
