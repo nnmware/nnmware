@@ -167,7 +167,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            place_need = self.request.GET.get('placecount')
+            place_need = self.request.GET.get('guests')
             context['free_room'] = self.object.free_room(from_date,to_date,place_need)
             context['search'] = 1
             context['from'] = f_date
@@ -275,8 +275,6 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         return reverse('cabinet_rooms', args=[self.object.hotel.pk])
 
     def form_valid(self, form):
-#        if not self.request.user in self.object.hotel.admins and not self.request.user.is_superuser:
-#            raise Http404
         variants = self.request.POST.getlist('settlement')
         SettlementVariant.objects.filter(room=self.object).update(enabled=False)
         for variant in variants:
