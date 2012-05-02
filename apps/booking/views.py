@@ -20,51 +20,47 @@ from nnmware.core.utils import date_range, convert_to_date
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserHotelAdmin, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not self.request.user in obj.admins.all() and not self.request.user.is_superuser:
+        if not request.user in obj.admins.all() and not request.user.is_superuser:
             raise Http404
-        return response
+        return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
 
 class CurrentUserRoomAdmin(object):
     """ Generic update view that check request.user is author of object """
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserRoomAdmin, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not self.request.user in obj.hotel.admins.all() and not self.request.user.is_superuser:
+        if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
-        return response
+        return super(CurrentUserRoomAdmin, self).dispatch(request, *args, **kwargs)
+
 
 class CurrentUserHotelBillAccess(object):
     """ Generic update view that check request.user may view bills of hotel """
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserHotelBillAccess, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not self.request.user in obj.target.admins.all() and not self.request.user.is_superuser:
+        if not request.user in obj.target.admins.all() and not request.user.is_superuser:
             raise Http404
-        return response
+        return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
 
 class CurrentUserHotelBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserHotelBookingAccess, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not self.request.user in obj.hotel.admins.all() and not self.request.user.is_superuser:
+        if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
-        return response
+        return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
 
 class CurrentUserCabinetAccess(object):
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserCabinetAccess, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not (self.request.user == obj.user) and not self.request.user.is_superuser:
+        if not (request.user == obj.user) and not request.user.is_superuser:
             raise Http404
-        return response
+        return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
 class HotelList(ListView):

@@ -391,19 +391,19 @@ class CurrentUserAuthor(object):
 class CurrentUserAuthenticated(object):
     """ Generic update view that check request.user is author of object """
 
-    def dispatch(self, *args, **kwargs):
-        if not self.request.user.is_authenticated():
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated():
             raise Http404
-        return super(CurrentUserAuthenticated, self).dispatch(*args, **kwargs)
+        return super(CurrentUserAuthenticated, self).dispatch(request, *args, **kwargs)
 
 
 class CurrentUserSuperuser(object):
     """ Generic object for view that check superuser rights for current user """
 
-    def dispatch(self, *args, **kwargs):
-        if not self.request.user.is_superuser:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
             raise Http404
-        return super(CurrentUserSuperuser, self).dispatch(*args, **kwargs)
+        return super(CurrentUserSuperuser, self).dispatch(request, *args, **kwargs)
 
 
 class CurrentUserEditor(object):
