@@ -78,7 +78,6 @@ class HotelList(ListView):
 
     def get_queryset(self):
         order = self.request.GET.get('order') or None
-        tab = 'name'
         if order:
             if order == 'name':
                 result = Hotel.objects.order_by('name')
@@ -93,10 +92,10 @@ class HotelList(ListView):
                 result = Hotel.objects.order_by('-point')
                 tab = 'review'
             else:
-                tab = 'name'
                 pass
         else:
             result = Hotel.objects.all()
+            tab = 'name'
         self.tab_title = tab
         return result
 
