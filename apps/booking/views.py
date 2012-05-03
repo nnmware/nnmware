@@ -136,8 +136,11 @@ class HotelInCity(ListView):
         context['title_line'] = _('list of hotels')
         context['tab'] = 'name'
 #        try:
-        context['city'] = City.objects.get(slug=self.kwargs['slug'])
-#        except :
+        city = City.objects.get(slug=self.kwargs['slug'])
+        context['city'] = city
+        context['hotels_in_city'] = Hotel.objects.filter(city=city).count()
+
+        #        except :
 #            pass
         return context
 
