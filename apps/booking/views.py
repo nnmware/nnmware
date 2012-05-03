@@ -112,9 +112,10 @@ class HotelInCity(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
+        city = City.objects.get(slug=self.kwargs['slug'])
+        hotels = Hotel.objects.filter(city=city)
         try:
             result = []
-            city = City.objects.get(slug=self.kwargs['slug'])
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
             t_date = self.request.GET.get('to')
@@ -122,23 +123,22 @@ class HotelInCity(ListView):
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
             rooms_need = self.request.GET.get('rooms')
-            hotels = Hotel.objects.filter(city=city)
             for hotel in hotels:
                 if hotel.free_room(from_date,to_date,rooms_need):
                     result.append(hotel)
             return result
         except :
-            return Hotel.objects.all()
+            return hotels
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = 'name'
-        try:
-            context['city'] = City.objects.get(slug=self.kwargs['slug'])
-        except :
-            pass
+#        try:
+        context['city'] = City.objects.get(slug=self.kwargs['slug'])
+#        except :
+#            pass
         return context
 
 
