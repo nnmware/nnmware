@@ -135,7 +135,10 @@ class HotelInCity(ListView):
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = 'name'
-        context['city'] = City.objects.get(slug=self.kwargs['slug'])
+        try:
+            context['city'] = City.objects.get(slug=self.kwargs['slug'])
+        except :
+            pass
         return context
 
 
@@ -386,7 +389,7 @@ class RequestAddHotelView(CreateView):
     template_name = "requests/add.html"
 
     def get_success_url(self):
-        return reverse('hotel_list')
+        return reverse('hotel_all_city')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

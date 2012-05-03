@@ -67,6 +67,11 @@ def hotels_city():
     result = City.objects.all()
     return result
 
+@register.simple_tag
+def hotels_count():
+    result = Hotel.objects.count()
+    return result
+
 @register.assignment_tag
 def hotels_best_offer():
     result = Hotel.objects.filter(best_offer=True)
