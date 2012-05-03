@@ -78,25 +78,47 @@ class HotelList(ListView):
 
     def get_queryset(self):
         order = self.request.GET.get('order') or None
+        sort = self.request.GET.get('sort') or None
+        self.tab = {'css_name':'asc','css_class':'asc','css_amount':'desc','css_review':'asc',
+                    'tab':'name'}
         if order:
             if order == 'name':
-                result = Hotel.objects.order_by('name')
-                tab = 'name'
+                self.tab['tab'] = 'name'
+                if sort == 'asc':
+                    result = Hotel.objects.order_by('-name')
+                    self.tab['css_name'] = 'desc'
+                else:
+                    result = Hotel.objects.order_by('name')
+                    self.tab['css_name'] = 'asc'
             elif order == 'class':
-                result = Hotel.objects.order_by('-starcount')
-                tab = 'class'
+                self.tab['tab'] = 'class'
+                if sort == 'asc':
+                    result = Hotel.objects.order_by('-starcount')
+                    self.tab['css_class'] = 'desc'
+                else:
+                    result = Hotel.objects.order_by('starcount')
+                    self.tab['css_class'] = 'asc'
             elif order == 'amount':
-                result = Hotel.objects.order_by('-current_amount')
-                tab = 'amount'
+                self.tab['tab'] = 'amount'
+                if sort == 'asc':
+                    result = Hotel.objects.order_by('-current_amount')
+                    self.tab['css_amount'] = 'desc'
+                else:
+                    result = Hotel.objects.order_by('current_amount')
+                    self.tab['css_amount'] = 'asc'
             elif order == 'review':
-                result = Hotel.objects.order_by('-point')
-                tab = 'review'
+                self.tab['tab'] = 'review'
+                if sort == 'asc':
+                    result = Hotel.objects.order_by('-point')
+                    self.tab['css_review'] = 'desc'
+                else:
+                    result = Hotel.objects.order_by('point')
+                    self.tab['css_review'] = 'asc'
             else:
                 pass
         else:
             result = Hotel.objects.all()
-            tab = 'name'
-        self.tab_title = tab
+#        self.tab_title = tab
         return result
 
     def get_context_data(self, **kwargs):
@@ -104,7 +126,7 @@ class HotelList(ListView):
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tourism_list'] = context['object_list'][0].tourism.all
-        context['tab'] = self.tab_title
+        context['tab'] = self.tab
         return context
 
 class HotelInCity(ListView):
