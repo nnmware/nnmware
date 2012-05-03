@@ -114,6 +114,7 @@ def hotel_add(request):
         contact_email = request.REQUEST['contact_email']
         website = request.REQUEST['website']
         rooms_count = request.REQUEST['rooms_count']
+        starcount = request.REQUEST['starcount']
         try:
             city = City.objects.get(name=c)
         except ObjectDoesNotExist:
@@ -130,6 +131,7 @@ def hotel_add(request):
         hotel.contact_email = contact_email
         hotel.website = website
         hotel.room_count = rooms_count
+        hotel.starcount = starcount
         hotel.save()
         location = reverse('cabinet_info', args=[hotel.pk])
         RequestAddHotel.objects.get(id=request_id).delete()
