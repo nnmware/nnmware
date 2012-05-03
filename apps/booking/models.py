@@ -227,7 +227,11 @@ class RoomOption(MetaName):
         verbose_name_plural = _("Room Options")
 
     def __unicode__(self):
-        return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+        if self.category:
+            return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+        else:
+            return _("%(name)s") % { 'name': self.name}
+
 
 
 PLACES_UNKNOWN = 0
