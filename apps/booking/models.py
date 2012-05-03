@@ -195,6 +195,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
                 super(Hotel, self).save(*args, **kwargs)
             self.slug = self.id
         else:
+            self.slug = self.slug.strip().replace(' ','-')
             if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
                 self.slug = self.id
         super(Hotel, self).save(*args, **kwargs)

@@ -325,6 +325,8 @@ class MetaName(models.Model):
             if not self.id:
                 super(MetaName, self).save(*args, **kwargs)
             self.slug = self.id
+        else:
+            self.slug = self.slug.strip().replace(' ','-')
         super(MetaName, self).save(*args, **kwargs)
 
 class MetaLink(models.Model):
