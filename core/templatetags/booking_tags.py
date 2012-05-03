@@ -4,7 +4,7 @@ import re
 from django.template import Library
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption
+from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
 
 
 register = Library()
@@ -55,6 +55,11 @@ def hotels_three_stars():
 @register.assignment_tag
 def hotels_two_stars():
     result = Hotel.objects.filter(starcount=TWO_STAR)
+    return result
+
+@register.assignment_tag
+def hotels_mini():
+    result = Hotel.objects.filter(starcount=MINI_HOTEL)
     return result
 
 @register.assignment_tag

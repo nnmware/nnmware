@@ -58,7 +58,8 @@ class RequestAddHotelForm(forms.ModelForm):
 
     class Meta:
         model = RequestAddHotel
-        fields = ('city', 'address', 'name','email','phone','fax','contact_email','website','rooms_count')
+        fields = ('city', 'address', 'name','email','phone','fax','contact_email',
+                  'website','rooms_count','starcount')
 
     def __init__(self, *args, **kwargs):
         super(RequestAddHotelForm, self).__init__(*args, **kwargs)

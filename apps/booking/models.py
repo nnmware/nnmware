@@ -54,7 +54,8 @@ class HotelOption(MetaName):
             return _("%(name)s") % { 'name': self.name}
 
 
-UNKNOWN_STAR = 0
+UNKNOWN_STAR = -1
+MINI_HOTEL = 0
 ONE_STAR = 1
 TWO_STAR = 2
 THREE_STAR = 3
@@ -63,6 +64,7 @@ FIVE_STAR = 5
 
 STAR_CHOICES = (
     (UNKNOWN_STAR, _("Unknown")),
+    (MINI_HOTEL, _("Mini-hotel")),
     (ONE_STAR, _("One star")),
     (TWO_STAR, _("Two star")),
     (THREE_STAR, _("Three star")),
@@ -141,7 +143,12 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         return Hotel.objects.all().count()
 
     def stars(self):
-        return range(0,int(self.starcount))
+        if self.starcount == -1:
+            return None
+        elif self.starcount == 0:
+            return 'mini'
+        else:
+            return range(0,int(self.starcount))
 
     @permalink
     def get_absolute_url(self):
@@ -441,6 +448,7 @@ class RequestAddHotel(MetaIP):
     contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, null=True, blank=True)
     website = models.CharField(verbose_name=_("Website"), max_length=100, null=True, blank=True)
     rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
+    starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
 
     class Meta:
         verbose_name = _("Request for add hotel")
