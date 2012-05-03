@@ -157,6 +157,7 @@ class HotelInCity(ListView):
             search_hotel = Hotel.objects.filter(pk__in=result)
             self.search = 1
         except :
+            self.search = 0
             search_hotel = hotels
         if order:
             if order == 'name':
@@ -202,8 +203,9 @@ class HotelInCity(ListView):
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = self.tab
-        context['search'] = self.search or None
-        context['on_date'] = self.on_date or None
+        if self.search:
+            context['search'] = self.search
+            context['on_date'] = self.on_date
         city = City.objects.get(slug=self.kwargs['slug'])
         context['city'] = city
         context['hotels_in_city'] = Hotel.objects.filter(city=city).count()
