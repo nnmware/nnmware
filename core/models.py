@@ -361,8 +361,8 @@ class MetaLink(models.Model):
 
 
 class MetaGeo(models.Model):
-    longitude = models.FloatField(_('Longitude'), default=0, editable=False)
-    latitude = models.FloatField(_('Latitude'), default=0, editable=False)
+    longitude = models.FloatField(_('Longitude'), default=0.0, editable=False)
+    latitude = models.FloatField(_('Latitude'), default=0.0, editable=False)
 
     class Meta:
         abstract = True

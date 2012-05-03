@@ -107,6 +107,8 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     tourism = models.ManyToManyField(Tourism, verbose_name=_('Tourism places'), null=True, blank=True)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
+    current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3)
+
 
     class Meta:
         verbose_name = _("Hotel")
@@ -470,7 +472,14 @@ def update_hotel_point(sender, instance, **kwargs):
     hotel.point = h_point
     hotel.save()
 
+def update_hotel_amount(sender, instance, **kwargs):
+    hotel = instance.settlement.room.hotel
+    hotel.current_amount = hotel.min_current_amount
+    hotel.save()
+
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
+signals.post_save.connect(update_hotel_amount, sender=PlacePrice, dispatch_uid="nnmware_id")
+signals.post_delete.connect(update_hotel_amount, sender=PlacePrice, dispatch_uid="nnmware_id")
 
 

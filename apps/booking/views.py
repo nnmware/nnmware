@@ -86,7 +86,7 @@ class HotelList(ListView):
                 result = Hotel.objects.order_by('-starcount')
                 tab = 'class'
             elif order == 'amount':
-                result = Hotel.objects.order_by('starcount')
+                result = Hotel.objects.order_by('-current_amount')
                 tab = 'amount'
             elif order == 'review':
                 result = Hotel.objects.order_by('-point')
