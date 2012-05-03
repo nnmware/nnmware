@@ -191,6 +191,19 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
                     result = min_price
         return result
 
+    def amount_on_date(self, date):
+        rooms = Room.objects.filter(hotel=self)
+        result = None
+        for r in rooms:
+            min_price = r.amount_on_date(date)
+            if not result:
+                result = min_price
+            else:
+                if result > min_price:
+                    result = min_price
+        return result
+
+
     @property
     def main_image(self):
         try:
@@ -282,6 +295,19 @@ class Room(MetaName, ExchangeMixin):
                     result = s_min_price
         return result
 
+    def amount_on_date(self, date):
+        settlements = SettlementVariant.objects.filter(room=self, enabled=True)
+        result = None
+        for s in settlements:
+            s_min_price = s.amount_on_date(date)
+            if not result:
+                result = s_min_price
+            else:
+                if result > s_min_price:
+                    result = s_min_price
+        return result
+
+
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
 
@@ -308,8 +334,14 @@ class SettlementVariant(models.Model, ExchangeMixin):
             'hotel':self.room.hotel.get_name }
 
     def current_amount(self):
-        result = PlacePrice.objects.filter(settlement=self,
-            date__lte=datetime.now()).order_by('-date')
+        result = PlacePrice.objects.filter(settlement=self, date__lte=datetime.now()).order_by('-date')
+        if result:
+            return result[0].amount
+        else:
+            return 0
+
+    def amount_on_date(self, date):
+        result = PlacePrice.objects.filter(settlement=self, date__lte=date).order_by('-date')
         if result:
             return result[0].amount
         else:

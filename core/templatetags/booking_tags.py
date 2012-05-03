@@ -1,10 +1,14 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import re
 
 from django.template import Library
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
+from nnmware.apps.money.models import ExchangeRate, Currency
+from nnmware.core.config import OFFICIAL_RATE
+from nnmware.core.utils import convert_to_date
 
 
 register = Library()
@@ -80,4 +84,36 @@ def hotels_best_offer():
 @register.assignment_tag
 def hotels_top10():
     result = Hotel.objects.filter(in_top10=True)
+    return result
+
+@register.simple_tag(takes_context = True)
+def search_url(context):
+    request = context['request']
+    url = request.get_full_path()
+    if url.count('&order'):
+        url = url.split('&order')[0]+'&'
+    elif url.count('?order'):
+        url = url.split('?order')[0]+'?'
+    else:
+        if url[-1] == '/':
+            url += '?'
+        else:
+            url += '&'
+    return url
+
+@register.simple_tag(takes_context = True)
+def minprice_hotel_date(context, hotel, on_date):
+    request = context['request']
+    date = convert_to_date(on_date)
+    hotel_price = hotel.amount_on_date(date)
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        result = (hotel_price*rate.nominal)/exchange
+    except :
+        result = hotel_price
     return result

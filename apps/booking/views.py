@@ -146,12 +146,16 @@ class HotelInCity(ListView):
             t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
+                self.on_date = t_date
                 from_date, to_date = to_date, from_date
+            else:
+                self.on_date = f_date
             rooms_need = self.request.GET.get('guests')
             for hotel in hotels:
                 if hotel.free_room(from_date,to_date,rooms_need):
                     result.append(hotel.pk)
             search_hotel = Hotel.objects.filter(pk__in=result)
+            self.search = 1
         except :
             search_hotel = hotels
         if order:
@@ -193,20 +197,16 @@ class HotelInCity(ListView):
             result = search_hotel
         return result
 
-
-
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = self.tab
-#        try:
+        context['search'] = self.search or None
+        context['on_date'] = self.on_date or None
         city = City.objects.get(slug=self.kwargs['slug'])
         context['city'] = city
         context['hotels_in_city'] = Hotel.objects.filter(city=city).count()
-
-        #        except :
-#            pass
         return context
 
 
