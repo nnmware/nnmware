@@ -118,7 +118,6 @@ class HotelList(ListView):
                 pass
         else:
             result = Hotel.objects.all()
-#        self.tab_title = tab
         return result
 
     def get_context_data(self, **kwargs):
