@@ -111,6 +111,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     class Meta:
         verbose_name = _("Hotel")
         verbose_name_plural = _("Hotels")
+        ordering = ("name",)
 
     def get_address(self):
         if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
@@ -453,6 +454,7 @@ class RequestAddHotel(MetaIP):
     class Meta:
         verbose_name = _("Request for add hotel")
         verbose_name_plural = _("Requests for add hotels")
+        ordering = ("-pk",)
 
 
 def update_hotel_point(sender, instance, **kwargs):
