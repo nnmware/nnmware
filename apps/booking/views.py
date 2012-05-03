@@ -133,6 +133,10 @@ class HotelInCity(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
+        order = self.request.GET.get('order') or None
+        sort = self.request.GET.get('sort') or None
+        self.tab = {'css_name':'asc','css_class':'asc','css_amount':'desc','css_review':'asc',
+                    'tab':'name'}
         city = City.objects.get(slug=self.kwargs['slug'])
         hotels = Hotel.objects.filter(city=city)
         try:
@@ -143,19 +147,59 @@ class HotelInCity(ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            rooms_need = self.request.GET.get('rooms')
+            rooms_need = self.request.GET.get('guests')
             for hotel in hotels:
                 if hotel.free_room(from_date,to_date,rooms_need):
-                    result.append(hotel)
-            return result
+                    result.append(hotel.pk)
+            search_hotel = Hotel.objects.filter(pk__in=result)
         except :
-            return hotels
+            search_hotel = hotels
+        if order:
+            if order == 'name':
+                self.tab['tab'] = 'name'
+                if sort == 'asc':
+                    result = search_hotel.order_by('-name')
+                    self.tab['css_name'] = 'desc'
+                else:
+                    result = search_hotel.order_by('name')
+                    self.tab['css_name'] = 'asc'
+            elif order == 'class':
+                self.tab['tab'] = 'class'
+                if sort == 'asc':
+                    result = search_hotel.order_by('-starcount')
+                    self.tab['css_class'] = 'desc'
+                else:
+                    result = search_hotel.order_by('starcount')
+                    self.tab['css_class'] = 'asc'
+            elif order == 'amount':
+                self.tab['tab'] = 'amount'
+                if sort == 'asc':
+                    result = search_hotel.order_by('-current_amount')
+                    self.tab['css_amount'] = 'desc'
+                else:
+                    result = search_hotel.order_by('current_amount')
+                    self.tab['css_amount'] = 'asc'
+            elif order == 'review':
+                self.tab['tab'] = 'review'
+                if sort == 'asc':
+                    result = search_hotel.order_by('-point')
+                    self.tab['css_review'] = 'desc'
+                else:
+                    result = search_hotel.order_by('point')
+                    self.tab['css_review'] = 'asc'
+            else:
+                pass
+        else:
+            result = search_hotel
+        return result
+
+
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelInCity, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
-        context['tab'] = 'name'
+        context['tab'] = self.tab
 #        try:
         city = City.objects.get(slug=self.kwargs['slug'])
         context['city'] = city
