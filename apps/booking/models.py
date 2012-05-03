@@ -39,7 +39,7 @@ class HotelOptionCategory(MetaName):
         ordering = ['order_in_list',]
 
 class HotelOption(MetaName):
-    category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'), null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
     sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False)
 
@@ -219,7 +219,7 @@ class RoomOptionCategory(MetaName):
         verbose_name_plural = _("Room Option Categories")
 
 class RoomOption(MetaName):
-    category = models.ForeignKey(RoomOptionCategory, null=True, blank=True, on_delete=models.SET_NULL)
+    category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
 
     class Meta:
