@@ -79,29 +79,49 @@ class HotelList(ListView):
     def get_queryset(self):
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
+        options = self.request.GET.getlist('options') or None
+        stars = self.request.GET.getlist('stars') or None
+        notknowndates = self.request.GET.get('notknowndates') or None
+        places_need = self.request.GET.get('guests') or None
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        try:
+            self.city = City.objects.get(slug=self.kwargs['slug'])
+            hotels = Hotel.objects.filter(city=self.city)
+        except :
+            self.city = None
+            hotels = Hotel.objects.all()
         self.tab = {'css_name':'asc','css_class':'asc','css_amount':'desc','css_review':'asc',
                     'tab':'name'}
-        hotels = Hotel.objects.all()
         try:
             result = []
-            f_date = self.request.GET.get('from')
-            from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
-            to_date = convert_to_date(t_date)
-            if from_date > to_date:
-                self.on_date = t_date
-                from_date, to_date = to_date, from_date
+            if notknowndates:
+                from_date = datetime.now()
+                to_date = from_date+timedelta(days=14)
             else:
-                self.on_date = f_date
-            rooms_need = self.request.GET.get('guests')
+                from_date = convert_to_date(f_date)
+                to_date = convert_to_date(t_date)
+                if from_date > to_date:
+                    self.on_date = t_date
+                    from_date, to_date = to_date, from_date
+                else:
+                    self.on_date = f_date
             for hotel in hotels:
-                if hotel.free_room(from_date,to_date,rooms_need):
+                if hotel.free_room(from_date,to_date,places_need):
                     result.append(hotel.pk)
             search_hotel = Hotel.objects.filter(pk__in=result)
             self.search = 1
         except :
             self.search = 0
             search_hotel = hotels
+        if options:
+            for option in options:
+                search_hotel = search_hotel.filter(option=option)
+        if stars:
+            search_hotel = search_hotel.filter(starcount__in=stars)
+
+
+
         if order:
             if order == 'name':
                 self.tab['tab'] = 'name'
@@ -145,96 +165,18 @@ class HotelList(ListView):
     # Call the base implementation first to get a context
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
-        context['tourism_list'] = context['object_list'][0].tourism.all
-        context['tab'] = self.tab
-        if self.search:
-            context['search'] = self.search
-            context['on_date'] = self.on_date
-        return context
-
-class HotelInCity(ListView):
-    model = Hotel
-    template_name = "hotels/list.html"
-
-    def get_queryset(self):
-        order = self.request.GET.get('order') or None
-        sort = self.request.GET.get('sort') or None
-        self.tab = {'css_name':'asc','css_class':'asc','css_amount':'desc','css_review':'asc',
-                    'tab':'name'}
-        city = City.objects.get(slug=self.kwargs['slug'])
-        hotels = Hotel.objects.filter(city=city)
         try:
-            result = []
-            f_date = self.request.GET.get('from')
-            from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
-            to_date = convert_to_date(t_date)
-            if from_date > to_date:
-                self.on_date = t_date
-                from_date, to_date = to_date, from_date
-            else:
-                self.on_date = f_date
-            rooms_need = self.request.GET.get('guests')
-            for hotel in hotels:
-                if hotel.free_room(from_date,to_date,rooms_need):
-                    result.append(hotel.pk)
-            search_hotel = Hotel.objects.filter(pk__in=result)
-            self.search = 1
+            context['tourism_list'] = context['object_list'][0].tourism.all
         except :
-            self.search = 0
-            search_hotel = hotels
-        if order:
-            if order == 'name':
-                self.tab['tab'] = 'name'
-                if sort == 'asc':
-                    result = search_hotel.order_by('-name')
-                    self.tab['css_name'] = 'desc'
-                else:
-                    result = search_hotel.order_by('name')
-                    self.tab['css_name'] = 'asc'
-            elif order == 'class':
-                self.tab['tab'] = 'class'
-                if sort == 'asc':
-                    result = search_hotel.order_by('-starcount')
-                    self.tab['css_class'] = 'desc'
-                else:
-                    result = search_hotel.order_by('starcount')
-                    self.tab['css_class'] = 'asc'
-            elif order == 'amount':
-                self.tab['tab'] = 'amount'
-                if sort == 'asc':
-                    result = search_hotel.order_by('-current_amount')
-                    self.tab['css_amount'] = 'desc'
-                else:
-                    result = search_hotel.order_by('current_amount')
-                    self.tab['css_amount'] = 'asc'
-            elif order == 'review':
-                self.tab['tab'] = 'review'
-                if sort == 'asc':
-                    result = search_hotel.order_by('-point')
-                    self.tab['css_review'] = 'desc'
-                else:
-                    result = search_hotel.order_by('point')
-                    self.tab['css_review'] = 'asc'
-            else:
-                pass
-        else:
-            result = search_hotel
-        return result
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(HotelInCity, self).get_context_data(**kwargs)
-        context['title_line'] = _('list of hotels')
+            pass
         context['tab'] = self.tab
         if self.search:
             context['search'] = self.search
             context['on_date'] = self.on_date
-        city = City.objects.get(slug=self.kwargs['slug'])
-        context['city'] = city
-        context['hotels_in_city'] = Hotel.objects.filter(city=city).count()
+        if self.city:
+            context['city'] = self.city
+            context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
         return context
-
 
 class HotelAdminList(ListView):
     model = Hotel
@@ -270,12 +212,13 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            place_need = self.request.GET.get('guests')
-            context['free_room'] = self.object.free_room(from_date,to_date,place_need)
+            places_need = self.request.GET.get('guests')
+            context['free_room'] = self.object.free_room(from_date,to_date,places_need)
             context['search'] = 1
+            context['on_date'] = f_date
             context['from'] = f_date
             context['to'] = t_date
-            context['placecount'] = place_need
+            context['placecount'] = places_need
         except :
             pass
         return context
@@ -315,8 +258,6 @@ class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
-#        if not self.request.user in self.object.admins.all() and not self.request.user.is_superuser:
-#            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()

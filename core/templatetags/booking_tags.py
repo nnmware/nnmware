@@ -117,3 +117,20 @@ def minprice_hotel_date(context, hotel, on_date):
     except :
         result = hotel_price
     return result
+
+@register.simple_tag(takes_context = True)
+def room_price_date(context, room, on_date):
+    request = context['request']
+    date = convert_to_date(on_date)
+    room_price = room.amount_on_date(date)
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        result = (room_price*rate.nominal)/exchange
+    except :
+        result = room_price
+    return result
