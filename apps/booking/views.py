@@ -119,9 +119,6 @@ class HotelList(ListView):
                 search_hotel = search_hotel.filter(option=option)
         if stars:
             search_hotel = search_hotel.filter(starcount__in=stars)
-
-
-
         if order:
             if order == 'name':
                 self.tab['tab'] = 'name'
