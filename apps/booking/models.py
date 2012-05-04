@@ -115,6 +115,8 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         verbose_name_plural = _("Hotels")
         ordering = ("name",)
 
+    objects = Manager()
+
     def get_address(self):
         if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
             if self.address_en:

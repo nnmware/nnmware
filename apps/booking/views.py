@@ -85,6 +85,8 @@ class HotelList(ListView):
         places_need = self.request.GET.get('guests') or None
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        amount_min = self.request.GET.get('amount_min') or None
+        amount_max = self.request.GET.get('amount_max') or None
         try:
             self.city = City.objects.get(slug=self.kwargs['slug'])
             hotels = Hotel.objects.filter(city=self.city)
@@ -97,6 +99,7 @@ class HotelList(ListView):
             result = []
             if notknowndates:
                 from_date = datetime.now()
+                self.on_date = from_date.strftime('%d.%m.%Y')
                 to_date = from_date+timedelta(days=14)
             else:
                 from_date = convert_to_date(f_date)
@@ -114,6 +117,16 @@ class HotelList(ListView):
         except :
             self.search = 0
             search_hotel = hotels
+        if amount_max and amount_min:
+            r = []
+            for h in search_hotel:
+                if f_date:
+                    amount = h.amount_on_date(from_date)
+                else:
+                    amount = h.min_current_amount
+                if int(amount_min) < amount < int(amount_max):
+                    r.append(h.pk)
+            search_hotel = Hotel.objects.filter(pk__in=r)
         if options:
             for option in options:
                 search_hotel = search_hotel.filter(option=option)
