@@ -216,6 +216,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
+        context['hotel_options'] = self.object.option.order_by('category')
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
