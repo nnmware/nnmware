@@ -212,8 +212,9 @@ class HotelDetail(AttachedImagesMixin, DetailView):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'description'
+        context['city'] = self.object.city
+        context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
         try:
             f_date = self.request.GET.get('from')
@@ -241,7 +242,8 @@ class HotelLocation(DetailView):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelLocation, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+        context['city'] = self.object.city
+        context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['tourism_list'] = self.object.tourism.all
         context['title_line'] = self.object.get_name
         context['tab'] = 'location'
@@ -255,7 +257,8 @@ class HotelReviews(DetailView):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(HotelReviews, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+        context['city'] = self.object.city
+        context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reviews'
         context['title_line'] = self.object.get_name
         context['reviews'] = self.object.review_set.all()
