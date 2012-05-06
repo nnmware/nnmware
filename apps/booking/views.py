@@ -265,6 +265,19 @@ class HotelReviews(DetailView):
         context['reviews'] = self.object.review_set.all()
         return context
 
+class RoomDetail(AttachedImagesMixin, DetailView):
+    model = Room
+    template_name = 'hotels/room.html'
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(RoomDetail, self).get_context_data(**kwargs)
+        context['city'] = self.object.hotel.city
+        context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
+        context['tab'] = 'description'
+        context['title_line'] = self.object.hotel.get_name
+        context['room_options'] = self.object.option.order_by('category')
+        return context
 
 class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
