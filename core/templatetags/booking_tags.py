@@ -116,7 +116,7 @@ def minprice_hotel_date(context, hotel, on_date):
         result = (hotel_price*rate.nominal)/exchange
     except :
         result = hotel_price
-    return result
+    return int(result)
 
 @register.simple_tag(takes_context = True)
 def room_price_date(context, room, on_date):
@@ -133,4 +133,4 @@ def room_price_date(context, room, on_date):
         result = (room_price*rate.nominal)/exchange
     except :
         result = room_price
-    return result
+    return int(result)
