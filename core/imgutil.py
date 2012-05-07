@@ -2,6 +2,7 @@ import os
 import fnmatch
 import shutil
 import urlparse
+import ImageOps
 from django.contrib import messages
 from nnmware.core.middleware import get_request
 
@@ -18,14 +19,15 @@ image_cache = get_cache('locmem:///')
 
 _FILE_CACHE_TIMEOUT = 60 * 60 * 60 * 24 * 31
 _THUMBNAIL_GLOB = '%s_t*%s'
+_THUMBNAIL_ASPECT = '%s_aspect*%s'
 
 
-def _get_thumbnail_path(path, width=None, height=None):
+def _get_thumbnail_path(path, width=None, height=None, aspect=None):
     """ create thumbnail path from path and required width and/or height.
-
         thumbnail file name is constructed like this:
             <basename>_t_[w<width>][_h<height>].<extension>
-    """
+        or if aspect - <basename>_aspect_[w<width>][_h<height>].<extension>
+     """
 
     # one of width/height is required
     assert (width is not None) or (height is not None)
@@ -34,7 +36,10 @@ def _get_thumbnail_path(path, width=None, height=None):
     base, ext = os.path.splitext(os.path.basename(path))
 
     # make thumbnail filename
-    th_name = base + '_t'
+    if aspect:
+        th_name = base + '_aspect'
+    else:
+        th_name = base + '_t'
     if (width is not None) and (height is not None):
         th_name += '_w%d_h%d' % (width, height)
     elif width is not None:
@@ -46,13 +51,8 @@ def _get_thumbnail_path(path, width=None, height=None):
     return urlparse.urljoin(basedir, th_name)
 
 
-def _get_path_from_url(url, root=settings.MEDIA_ROOT,
-                       url_root=settings.MEDIA_URL):
+def _get_path_from_url(url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ make filesystem path from url """
-
-    #    if url.startswith('/'):
-    #        return url
-
     if url.startswith(url_root):
         url = url[len(url_root):]  # strip media root url
 
@@ -70,15 +70,15 @@ def _get_url_from_path(path, root=settings.MEDIA_ROOT,
 
 
 def _has_thumbnail(photo_url, width=None, height=None,
-                   root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
+                   root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL, aspect=None):
     # one of width/height is required
     assert (width is not None) or (height is not None)
 
     return os.path.isfile(_get_path_from_url(_get_thumbnail_path(photo_url,
-        width, height), root, url_root))
+        width, height,aspect), root, url_root))
 
 
-def make_thumbnail(photo_url, width=None, height=None,
+def make_thumbnail(photo_url, width=None, height=None, aspect=None,
                    root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ create thumbnail """
 
@@ -88,11 +88,11 @@ def make_thumbnail(photo_url, width=None, height=None,
     if not photo_url:
         return None
 
-    th_url = _get_thumbnail_path(photo_url, width, height)
+    th_url = _get_thumbnail_path(photo_url, width, height, aspect)
     th_path = _get_path_from_url(th_url, root, url_root)
     photo_path = _get_path_from_url(photo_url, root, url_root)
 
-    if _has_thumbnail(photo_url, width, height, root, url_root):
+    if _has_thumbnail(photo_url, width, height, root, url_root, aspect):
         # thumbnail already exists
         if not (os.path.getmtime(photo_path) > os.path.getmtime(th_path)):
             # if photo mtime is newer than thumbnail recreate thumbnail
@@ -125,6 +125,8 @@ def make_thumbnail(photo_url, width=None, height=None,
 
     try:
         img = Image.open(photo_path).copy()
+        if aspect:
+            img = ImageOps.fit(img, size, Image.ANTIALIAS, (0.5, 0.5))
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(th_path, quality=settings.THUMBNAIL_QUALITY)
     except Exception, err:
@@ -141,18 +143,21 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
         return  # empty url
 
     file_name = _get_path_from_url(pic_url, root, url_root)
-    import fnmatch
-    import os
-
     base, ext = os.path.splitext(os.path.basename(file_name))
     basedir = os.path.dirname(file_name)
     for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_GLOB % (base, ext)):
         path = os.path.join(basedir, file)
-#        try:
-        os.remove(path)
-#        except OSError:
-            # no reason to crash due to bad paths.
-#            messages.error(get_request(), "Could not delete image thumbnail: %s", path)
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+    for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_ASPECT % (base, ext)):
+        path = os.path.join(basedir, file)
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+
 
 def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     file_name = _get_path_from_url(img_url, root, url_root)
