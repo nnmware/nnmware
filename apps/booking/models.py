@@ -226,7 +226,11 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
         super(Hotel, self).save(*args, **kwargs)
 
     def update_hotel_amount(self):
-        self.current_amount = self.min_current_amount
+        amount = self.min_current_amount
+        if amount:
+            self.current_amount = amount
+        else:
+            self.current_amount = 0
         self.save()
 
 
