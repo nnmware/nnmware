@@ -225,6 +225,9 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
                 self.slug = self.id
         super(Hotel, self).save(*args, **kwargs)
 
+    def update_hotel_amount(self):
+        self.current_amount = self.min_current_amount
+        self.save()
 
 
 class RoomOptionCategory(MetaName):
@@ -510,14 +513,8 @@ def update_hotel_point(sender, instance, **kwargs):
     hotel.point = h_point
     hotel.save()
 
-def update_hotel_amount(sender, instance, **kwargs):
-    hotel = instance.settlement.room.hotel
-    hotel.current_amount = hotel.min_current_amount
-    hotel.save()
 
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
-signals.post_save.connect(update_hotel_amount, sender=PlacePrice, dispatch_uid="nnmware_id")
-signals.post_delete.connect(update_hotel_amount, sender=PlacePrice, dispatch_uid="nnmware_id")
 
 
