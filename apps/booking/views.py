@@ -169,6 +169,10 @@ class HotelList(ListView):
                 pass
         else:
             result = search_hotel
+        try:
+            self.result_count = search_hotel.count()
+        except:
+            self.result_count = None
         return result
 
     def get_context_data(self, **kwargs):
@@ -182,6 +186,7 @@ class HotelList(ListView):
         context['tab'] = self.tab
         if self.search:
             context['search'] = self.search
+            context['search_count'] = self.result_count
             context['on_date'] = self.on_date
         if self.city:
             context['city'] = self.city

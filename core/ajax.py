@@ -1,21 +1,23 @@
 from datetime import datetime
 import os
 import Image
-
+import json
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.contenttypes.models import ContentType
 from django.middleware import http
 from django.shortcuts import get_object_or_404
-from django.utils import simplejson
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.views.generic.base import View
 from django.views.generic.edit import FormMixin
-
+from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
+
+def AjaxLazyAnswer(payload):
+    return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 class AjaxAbstractUploader(object):
     def __call__(self, request, **kwargs):
@@ -88,10 +90,10 @@ class AjaxFileUploader(AjaxAbstractUploader):
                 messages.success(request, _("File %s successfully uploaded") %
                                           new.description)
                 # let Ajax Upload know whether we saved it or not
-            ret_json = {'success': self.success, 'filename': self.filename}
+            payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
-                ret_json.update(self.extra_context)
-            return HttpResponse(simplejson.dumps(ret_json))
+                payload.update(self.extra_context)
+            return HttpResponse(json.dumps(payload))
 
 
 class AjaxImageUploader(AjaxAbstractUploader):
@@ -122,10 +124,10 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 messages.success(request, _("Image %s successfully uploaded") %
                             new.description)
                 # let Ajax Upload know whether we saved it or not
-            ret_json = {'success': self.success, 'filename': self.filename}
+            payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
-                ret_json.update(self.extra_context)
-            return HttpResponse(simplejson.dumps(ret_json))
+                payload.update(self.extra_context)
+            return HttpResponse(json.dumps(ret_json))
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
     def __init__(self, backend=None, **kwargs):
@@ -157,12 +159,10 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 resize_image(profile.avatar.url)
                 messages.success(request, _("Avatar %s successfully uploaded"))
                 # let Ajax Upload know whether we saved it or not
-            ret_json = {'success': self.success, 'filename': self.filename}
+            payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
-                ret_json.update(self.extra_context)
-            return HttpResponse(simplejson.dumps(ret_json))
-
-
+                payload.update(self.extra_context)
+            return HttpResponse(json.dumps(ret_json))
 
 
 def as_json(errors):
@@ -216,7 +216,7 @@ class JSONResponseMixin(object):
         # to do much more complex handling to ensure that arbitrary
         # objects -- such as Django model instances or querysets
         # -- can be serialized as JSON.
-        return simplejson.dumps(context)
+        return json.dumps(context)
 
 
 class JSONFormView(FormMixin, View, JSONResponseMixin):

@@ -1,12 +1,11 @@
 # -*- encoding: utf-8 -*-
 from datetime import datetime
-
+import json
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.utils import simplejson
 from django.http import HttpResponse
 from nnmware.apps.userprofile.models import Profile
 from nnmware.apps.video.models import Video
@@ -20,7 +19,7 @@ from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.signals import action, notice
 from nnmware.core.utils import get_oembed_end_point, update_video_size
-
+from nnmware.core.ajax import AjaxLazyAnswer
 
 def get_video(request):
     link = request.REQUEST['link']
@@ -42,7 +41,7 @@ def get_video(request):
         payload = {'success': True, 'data': result}
 #    except:
 #        payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def video_like(request, object_id):
     # Link used for User press Like on Video Detail Page
@@ -64,7 +63,7 @@ def video_like(request, object_id):
             payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def video_dislike(request, object_id):
     # Link used for User press Like on Video Detail Page
@@ -83,7 +82,7 @@ def video_dislike(request, object_id):
             payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 
 def follow_tag(request, object_id):
@@ -106,7 +105,7 @@ def follow_tag(request, object_id):
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def unfollow_tag(request, object_id):
     # Link used for User press Like on Video Detail Page
@@ -125,7 +124,7 @@ def unfollow_tag(request, object_id):
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def follow_user(request, object_id):
     # Link used for User press Follow on User Detail Page
@@ -147,7 +146,7 @@ def follow_user(request, object_id):
         payload = {'success': True, 'count': result, 'id': user.pk}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def unfollow_user(request, object_id):
     # Link used for User press Unfollow on User Detail Page
@@ -166,7 +165,7 @@ def unfollow_user(request, object_id):
         payload = {'success': True, 'count': result, 'id': user.pk}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 
 
@@ -176,10 +175,6 @@ def follow_object(request, content_type_id, object_id):
     actor defined by ``content_type_id``, ``object_id``.
     """
     ctype = get_object_or_404(ContentType, id=content_type_id)
-
-
-
-
     if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
         actor = ctype.get_object_for_this_type(id=object_id)
         follow(request.user, actor)
@@ -188,7 +183,7 @@ def follow_object(request, content_type_id, object_id):
         success = False
     count = Follow.objects.filter(content_type=ctype,object_id=object_id).count()
     payload = {'success': success, 'count': count}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def unfollow_object(request, content_type_id, object_id):
     """
@@ -204,7 +199,7 @@ def unfollow_object(request, content_type_id, object_id):
         success = False
     count = Follow.objects.filter(content_type=ctype,object_id=object_id).count()
     payload = {'success': success, 'count': count}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 
 def autocomplete_users(request):
@@ -224,7 +219,7 @@ def autocomplete_tags(request):
     for r in search_qs:
         results.append(r.name)
     payload = {'q': results}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 doc_uploader = AjaxFileUploader()
 pic_uploader = AjaxImageUploader()
@@ -240,7 +235,7 @@ def notice_delete(request, object_id):
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def avatar_delete(request):
     try:
@@ -252,7 +247,7 @@ def avatar_delete(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def message_add(request):
     """
@@ -275,7 +270,7 @@ def message_add(request):
         success = False
     location = reverse('user_messages')
     payload = {'success': success, 'location':location}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def message_user_add(request):
     user = get_object_or_404(User,username=request.REQUEST['user'])
@@ -291,7 +286,7 @@ def message_user_add(request):
     payload = {'success': True, 'data': result}
     #    except:
     #        payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 
 def pic_delete(request, object_id):
@@ -302,7 +297,7 @@ def pic_delete(request, object_id):
         payload = {'success': True}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def doc_delete(request, object_id):
     # Link used for User press Delete for Image
@@ -312,4 +307,4 @@ def doc_delete(request, object_id):
         payload = {'success': True}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
