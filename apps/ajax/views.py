@@ -13,7 +13,7 @@ from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
 from nnmware.core.http import LazyEncoder
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.imgutil import remove_thumbnails, remove_file
+from nnmware.core.imgutil import remove_thumbnails, remove_file, get_thumbnail_path
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
@@ -305,6 +305,15 @@ def doc_delete(request, object_id):
     try:
         doc.delete()
         payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def pic_getcrop(request, object_id):
+    # Link used for User want crop image
+    pic = get_object_or_404(Pic, id=int(object_id))
+    try:
+        payload = {'success': True, 'src': get_thumbnail_path(pic.pic.url,size=800)}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
