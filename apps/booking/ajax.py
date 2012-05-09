@@ -4,14 +4,12 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
-from django.http import HttpResponse
-from django.utils import simplejson
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking
 from nnmware.apps.money.models import Currency
-from nnmware.core.http import LazyEncoder
 import time
 from nnmware.core.utils import convert_to_date
+from nnmware.core.ajax import AjaxLazyAnswer
 
 class UserNotAllowed(Exception):
     pass
@@ -48,7 +46,7 @@ def room_rate(request):
         payload = {'success': False, 'error_msg':_('You are not allowed change room rates.')}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def room_variants(request):
     try:
@@ -64,7 +62,7 @@ def room_variants(request):
         payload = {'success': False, 'error_msg':_('You are not allowed change room variants.')}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def room_delete(request, pk):
     try:
@@ -77,7 +75,7 @@ def room_delete(request, pk):
         payload = {'success': False, 'error_msg':_('You are not allowed change room variants.')}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def get_booking_amount(request):
     try:
@@ -98,7 +96,7 @@ def get_booking_amount(request):
         payload = {'success': True, 'dayscount':delta.days, 'amount':all_amount}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def hotel_add(request):
     try:
@@ -138,7 +136,7 @@ def hotel_add(request):
         payload = {'success': True, 'location':location}
     except UserNotAllowed:
         payload = {'success': False, 'error_msg':_('You are not allowed add hotel.')}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def client_review(request, pk):
     try:
@@ -167,7 +165,7 @@ def client_review(request, pk):
         payload = {'success': True}
     except UserNotAllowed:
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 def tourism_places(request):
     try:
@@ -185,5 +183,5 @@ def tourism_places(request):
         payload = {'success': True, 'tourism':results}
     except :
         payload = {'success': False}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
