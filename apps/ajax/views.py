@@ -329,7 +329,7 @@ def ajax_image_crop(request):
     img = _get_path_from_url(pic.pic.url)
     im = Image.open(img)
     if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
-        aspect_c = im.size[0]/settings.MAX_IMAGE_CROP_WIDTH
+        aspect_c = float(im.size[0])/settings.MAX_IMAGE_CROP_WIDTH
         left = int(left*aspect_c)
         right = int(right*aspect_c)
         top = int(top*aspect_c)
