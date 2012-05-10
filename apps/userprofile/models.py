@@ -23,8 +23,6 @@ from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
 from nnmware.core.models import Follow, Tag
 
-AVATAR_SIZES = (128, 96, 64, 48, 32, 24, 16)
-
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)
 ACTION_RECORD_TYPES = (('A', 'Activation'),
                        ('R', 'Password reset'),
