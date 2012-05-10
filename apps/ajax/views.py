@@ -1,17 +1,14 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 from datetime import datetime
-import json
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
 from nnmware.apps.userprofile.models import Profile
 from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
-from nnmware.core.http import LazyEncoder
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file, get_thumbnail_path
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
@@ -209,8 +206,7 @@ def autocomplete_users(request):
         userstring = {'name': r.username, 'fullname': r.get_profile().fullname }
         results.append(userstring)
     payload = {'userlist': results}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder),
-        content_type='application/json')
+    return AjaxLazyAnswer(payload)
 
 
 def autocomplete_tags(request):

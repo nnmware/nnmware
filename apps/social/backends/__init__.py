@@ -23,7 +23,7 @@ from oauth2 import Consumer as OAuthConsumer, Token, Request as OAuthRequest, \
 from django.db import models
 from django.contrib.auth import authenticate
 from django.contrib.auth.backends import ModelBackend
-from django.utils import simplejson
+import json
 from django.utils.importlib import import_module
 
 from nnmware.apps.social.utils import setting, log, model_to_ctype, ctype_to_model, \
@@ -651,7 +651,7 @@ class BaseOAuth2(BaseOAuth):
                           headers=headers)
 
         try:
-            response = simplejson.loads(urlopen(request).read())
+            response = json.loads(urlopen(request).read())
         except (ValueError, KeyError):
             raise ValueError('Unknown OAuth2 response type')
 

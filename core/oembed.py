@@ -6,7 +6,7 @@
 import urllib
 import urllib2
 import re
-import json as simplejson
+import json
 import xml.etree.ElementTree as etree
 
 
@@ -63,7 +63,7 @@ class OEmbedResponse(object):
 
     @classmethod
     def newFromJSON(cls, raw):
-        data = simplejson.loads(raw)
+        data = json.loads(raw)
     
         return cls.createLoad(data)
         

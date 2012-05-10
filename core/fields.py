@@ -1,6 +1,7 @@
 from decimal import Decimal
 import logging
 import os
+import json
 from django import forms
 from django.conf import settings
 from django.db import models
@@ -10,7 +11,6 @@ from django.db.models.fields import TextField, CharField, \
 from django.db.models.fields.files import ImageField
 from django.core.exceptions import ValidationError
 from django.db.models.fields.subclassing import SubfieldBase
-from django.utils import simplejson
 from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import rename_by_field
@@ -155,7 +155,7 @@ class JSONField(TextField):
             return None
         if isinstance(value, basestring):
             try:
-                return simplejson.loads(value)
+                return json.loads(value)
             except Exception, e:
                 raise ValidationError(str(e))
         else:
@@ -167,14 +167,14 @@ class JSONField(TextField):
         if isinstance(value, basestring):
             super(JSONField, self).validate(value, model_instance)
             try:
-                simplejson.loads(value)
+                json.loads(value)
             except Exception, e:
                 raise ValidationError(str(e))
 
     def get_prep_value(self, value):
         """Convert value to JSON string before save"""
         try:
-            return simplejson.dumps(value)
+            return json.dumps(value)
         except Exception, e:
             raise ValidationError(str(e))
 

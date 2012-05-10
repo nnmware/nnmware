@@ -15,7 +15,7 @@ from urlparse import parse_qs
 from urllib import urlencode
 from urllib2 import urlopen
 
-from django.utils import simplejson
+import json
 from django.contrib.auth import authenticate
 
 from nnmware.apps.social.backends import BaseOAuth2, OAuthBackend, USERNAME
@@ -62,7 +62,7 @@ class FacebookAuth(BaseOAuth2):
         url = FACEBOOK_ME + urlencode({'access_token': access_token})
 
         try:
-            data = simplejson.load(urlopen(url))
+            data = json.load(urlopen(url))
         except ValueError:
             extra = {'access_token': sanitize_log_data(access_token)}
             log('error', 'Could not load user data from Facebook.',

@@ -5,7 +5,7 @@ from django.shortcuts import _get_queryset
 from django.http import Http404, HttpResponse
 from django.utils.functional import Promise
 from django.utils.encoding import force_unicode
-from django.utils import simplejson
+import json
 
 
 def response_mimetype(request):
@@ -15,7 +15,7 @@ def response_mimetype(request):
         return "text/plain"
 
 
-class LazyEncoder(simplejson.JSONEncoder):
+class LazyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Promise):
             return force_unicode(obj)
@@ -31,7 +31,7 @@ class JSONResponse(HttpResponse):
         if is_iterable:
             content = serialize('json', object)
         else:
-            content = simplejson.dumps(object, cls=LazyEncoder)
+            content = json.dumps(object, cls=LazyEncoder)
         super(JSONResponse, self).__init__(content,
             mimetype='application/json')
 

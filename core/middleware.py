@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.utils import simplejson
+import json
 from nnmware.core.utils import get_message_dict
 
 from threading import local
@@ -44,7 +44,7 @@ class AjaxMessagingMiddleware(object):
         if request.is_ajax():
             if response['Content-Type'] in ["application/javascript", "application/json"]:
                 try:
-                    content = simplejson.loads(response.content)
+                    content = json.loads(response.content)
                 except ValueError:
                     return response
                 django_messages = []
@@ -55,5 +55,5 @@ class AjaxMessagingMiddleware(object):
                         "extra_tags": message.tags,
                         })
                 content['core_messages'] = django_messages
-                response.content = simplejson.dumps(content)
+                response.content = json.dumps(content)
         return response

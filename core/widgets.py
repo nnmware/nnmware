@@ -1,12 +1,11 @@
-
+# -*- coding: utf-8 -*-
 from decimal import Decimal
-
+import json
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.core.urlresolvers import reverse, NoReverseMatch
 from django import forms
-from django.utils import simplejson
 from django.forms import TextInput, Textarea, FileInput, HiddenInput
 
 from nnmware.core.imgutil import make_admin_thumbnail
@@ -96,7 +95,7 @@ class AutocompleteWidget(TextInput):
     view.
 
     Widget support all jquery-autocomplete options that dumped to JavaScript
-    via django.utils.simplejson.
+    via json.
 
     **Note** You must init one of ``choices`` or ``choices_url`` attribute.
     Else widget raises TypeError when rendering.
@@ -114,7 +113,7 @@ class AutocompleteWidget(TextInput):
             url name.
 
             * ``options`` - jQuery autocomplete plugin options. Auto dumped
-            to JavaScript via SimpleJSON
+            to JavaScript via json
 
             * ``related_fields`` - Fields that relates to current (value
             of this field will sended to autocomplete view via POST)
@@ -146,7 +145,7 @@ class AutocompleteWidget(TextInput):
 
         if self.choices:
             self.set_current_choice(value)
-            choices = simplejson.dumps([unicode(v) for k, v in self.choices], ensure_ascii=False)
+            choices = json.dumps([unicode(v) for k, v in self.choices], ensure_ascii=False)
             html_code = HiddenInput().render(name, value=value)
             name += '_autocomplete'
         else:
@@ -154,9 +153,9 @@ class AutocompleteWidget(TextInput):
 
         if self.choices_url:
             try:
-                choices = simplejson.dumps(reverse(str(self.choices_url)))
+                choices = json.dumps(reverse(str(self.choices_url)))
             except NoReverseMatch:
-                choices = simplejson.dumps(self.choices_url)
+                choices = json.dumps(self.choices_url)
 
         if self.options or self.extra:
             if 'extraParams' in self.options:
@@ -164,11 +163,11 @@ class AutocompleteWidget(TextInput):
             else:
                 self.options['extraParams'] = self.extra
 
-            options = ', ' + simplejson.dumps(self.options, indent=4, sort_keys=True)
+            options = ', ' + json.dumps(self.options, indent=4, sort_keys=True)
             extra = []
 
             for k, v in self.extra.items():
-                options = options.replace(simplejson.dumps(v), v)
+                options = options.replace(json.dumps(v), v)
                 extra.append(u"function %s() { return $('#id_%s').val(); }\n" % (v, k))
 
             extra = u''.join(extra)

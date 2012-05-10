@@ -14,7 +14,7 @@ field, check OAuthBackend class for details on how to extend it.
 from urlparse import parse_qs
 import urllib
 
-from django.utils import simplejson
+import json
 from django.contrib.auth import authenticate
 
 from nnmware.apps.social.utils import setting
@@ -91,7 +91,7 @@ class GithubAuth(BaseOAuth):
         params = {'access_token': access_token}
         url = GITHUB_API_URL + '/user?' + urllib.urlencode(params)
         try:
-            return simplejson.load(urllib.urlopen(url))
+            return json.load(urllib.urlopen(url))
         except ValueError:
             return None
 

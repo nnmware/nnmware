@@ -1,6 +1,6 @@
 import urllib
 
-from django.utils import simplejson
+import json
 
 from nnmware.apps.social.backends import BaseOAuth2, OAuthBackend, USERNAME
 
@@ -43,7 +43,7 @@ class InstagramAuth(BaseOAuth2):
         params = {'access_token': access_token,}
         url = INSTAGRAM_CHECK_AUTH + '?' + urllib.urlencode(params)
         try:
-            return simplejson.load(urllib.urlopen(url))
+            return json.load(urllib.urlopen(url))
         except ValueError:
             return None
 

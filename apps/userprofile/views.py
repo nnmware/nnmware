@@ -1,5 +1,6 @@
 import os
 import Image
+import json
 from datetime import datetime
 
 from django.contrib.auth import authenticate, login, logout
@@ -15,7 +16,6 @@ from django.http import HttpResponse, HttpResponseRedirect, \
 from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from django.utils import simplejson
 from django.db.models import Q
 from django.views.generic.base import View, TemplateView
 from django.views.generic import FormView
@@ -361,8 +361,8 @@ def avatardelete(request, avatar_id=False):
     if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
         try:
             Avatar.objects.get(user=request.user, valid=True).delete()
-            return HttpResponse(simplejson.dumps({'success': True}))
+            return HttpResponse(json.dumps({'success': True}))
         except:
-            return HttpResponse(simplejson.dumps({'success': False}))
+            return HttpResponse(json.dumps({'success': False}))
     else:
         raise Http404()

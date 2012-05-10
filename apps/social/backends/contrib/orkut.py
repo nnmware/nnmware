@@ -12,7 +12,7 @@ to enable this service support.
 """
 import urllib
 
-from django.utils import simplejson
+import json
 
 from nnmware.apps.social.utils import setting
 from nnmware.apps.social.backends import OAuthBackend, USERNAME
@@ -66,7 +66,7 @@ class OrkutAuth(BaseGoogleOAuth):
         request = self.oauth_request(access_token, ORKUT_REST_ENDPOINT, params)
         response = urllib.urlopen(request.to_url()).read()
         try:
-            return simplejson.loads(response)['data']
+            return json.loads(response)['data']
         except (ValueError, KeyError):
             return None
 

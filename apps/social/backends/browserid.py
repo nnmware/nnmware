@@ -7,7 +7,7 @@ from urllib import urlencode
 from urllib2 import urlopen
 
 from django.contrib.auth import authenticate
-from django.utils import simplejson
+import json
 
 from nnmware.apps.social.backends import SocialAuthBackend, BaseAuth, USERNAME
 from nnmware.apps.social.utils import log, setting
@@ -68,7 +68,7 @@ class BrowserIDAuth(BaseAuth):
         })
 
         try:
-            response = simplejson.load(urlopen(BROWSER_ID_SERVER, data=data))
+            response = json.load(urlopen(BROWSER_ID_SERVER, data=data))
         except ValueError:
             log('error', 'Could not load user data from BrowserID.',
                 exc_info=True)

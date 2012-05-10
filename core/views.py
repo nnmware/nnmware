@@ -9,7 +9,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response, get_object_or_404
 from django.template.base import Template
 from django.template import RequestContext
-from django.utils import simplejson
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView
@@ -17,8 +16,8 @@ from django.views.generic.edit import CreateView, UpdateView, BaseFormView, Form
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.core.ajax import as_json
-from nnmware.core.http import redirect, LazyEncoder
+from nnmware.core.ajax import as_json, AjaxLazyAnswer
+from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails
 from nnmware.core.middleware import get_request
 from nnmware.core.models import JComment, DEFAULT_MAX_JCOMMENT_LENGTH, STATUS_DELETE, Doc, Pic, Follow, Notice, Message, Action
@@ -56,9 +55,7 @@ class AjaxFormMixin(object):
         if self.request.is_ajax():
             self.success = True
             payload = {'success': self.success, 'location': self.success_url}
-            return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder),
-                content_type='application/json',
-            )
+            return AjaxLazyAnswer(payload)
         else:
             return HttpResponseRedirect(self.success_url)
 
@@ -69,9 +66,7 @@ class AjaxFormMixin(object):
         payload = {'success': self.success, 'data': self.data}
 
         if self.request.is_ajax():
-            return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder),
-                content_type='application/json',
-            )
+            return AjaxLazyAnswer(payload)
         else:
             return super(AjaxFormMixin, self).form_invalid(
                 form, *args, **kwargs
@@ -368,13 +363,6 @@ class AddPicView(TemplateResponseMixin, BaseFormView):
             return self.ajax_form_valid(new_pic)
         else:
             return FormMixin.form_valid(self, form)
-
-#    def get_context_data(self, **kwargs):
-#        kwargs['jpic'] = self.jpic
-#        kwargs['jpics'] = self.jpics
-#        kwargs['upload_jpic_form'] = kwargs['form']
-#        kwargs['next'] = self.get_success_url()
-#        return kwargs
 
 
 class CurrentUserAuthor(object):

@@ -9,7 +9,7 @@ import urllib
 import urllib2
 from contextlib import closing
 import httplib
-from django.utils import simplejson
+import json
 
 class Geocoder(object):
     base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
@@ -27,7 +27,7 @@ class Geocoder(object):
 
     def parse_json(self, data):
         try:
-            data = simplejson.loads(data)
+            data = json.loads(data)
         except:
             data = []
         return data

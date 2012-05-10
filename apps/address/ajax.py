@@ -1,8 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.db.models.query_utils import Q
-from django.http import HttpResponse
-from django.utils import simplejson
 from nnmware.apps.address.models import City
-from nnmware.core.http import LazyEncoder
+from nnmware.core.ajax import AjaxLazyAnswer
 
 
 def autocomplete_city(request):
@@ -14,4 +13,4 @@ def autocomplete_city(request):
         userstring = {'name': r.get_name, 'slug': r.slug }
         results.append(userstring)
     payload = {'city': results}
-    return HttpResponse(simplejson.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    return AjaxLazyAnswer(payload)

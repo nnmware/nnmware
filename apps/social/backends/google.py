@@ -17,7 +17,7 @@ from urllib import urlencode
 from urllib2 import Request, urlopen
 
 from oauth2 import Request as OAuthRequest
-from django.utils import simplejson
+import json
 
 from nnmware.apps.social.utils import setting
 from nnmware.apps.social.backends import OpenIdAuth, ConsumerBasedOAuth, BaseOAuth2, \
@@ -193,7 +193,7 @@ def googleapis_email(url, params):
     """
     request = Request(url + '?' + params, headers={'Authorization': params})
     try:
-        return simplejson.loads(urlopen(request).read())['data']
+        return json.loads(urlopen(request).read())['data']
     except (ValueError, KeyError, IOError):
         return None
 
