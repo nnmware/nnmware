@@ -150,7 +150,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     def stars(self):
         if self.starcount == -1:
             return None
-        elif self.starcount == 0:
+        elif not self.starcount:
             return 'mini'
         else:
             return range(0,int(self.starcount))
@@ -403,7 +403,7 @@ class Booking(MoneyBase, MetaIP):
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
-        return ('booking_hotel_detail', (), { 'slug': self.uuid})
+        return 'booking_hotel_detail', (), { 'slug': self.uuid}
 
     @property
     def days(self):

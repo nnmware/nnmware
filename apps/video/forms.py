@@ -1,4 +1,4 @@
-from django.forms.models import ModelForm
+# -*- coding: utf-8 -*-
 from django import forms
 from nnmware.core.forms import TagsMixinForm
 from nnmware.apps.video.models import Video

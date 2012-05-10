@@ -55,7 +55,7 @@ def request(method, url, data=None, headers={}, timeout=None):
 
         connection.request(method, url, data, headers)
         response = connection.getresponse()
-        return (response.status, response.read())
+        return response.status, response.read()
 
 def get_map_url(api_key, longitude, latitude, zoom, width, height):
     ''' returns URL of static yandex map '''

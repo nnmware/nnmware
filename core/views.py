@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import Image
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -412,31 +413,14 @@ class CurrentUserCreator(object):
         return super(CurrentUserCreator, self).dispatch(*args, **kwargs)
 
 
-class AttachedFilesMixin(object):
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(AttachedFilesMixin, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the docs and files
-        if self.object.allow_docs:
-            docs = Doc.objects.metalinks_for_object(self.object)
-            docs_size = docs.aggregate(Sum('size'))['size__sum']
-            context['docs'] = list(docs)
-            context['docs_size'] = docs_size
-        if self.object.allow_pics:
-            pics = Pic.objects.metalinks_for_object(self.object)
-            pics_size = pics.aggregate(Sum('size'))['size__sum']
-            context['pics'] = list(pics)
-            context['pics_size'] = pics_size
-        return context
-
 class AttachedImagesMixin(object):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(AttachedImagesMixin, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the docs and files
+        # Add in a QuerySet of all the images
         pics = Pic.objects.metalinks_for_object(self.object)
         pics_size = pics.aggregate(Sum('size'))['size__sum']
-        context['pics'] = list(pics)
+        context['pics'] = pics
         context['pics_size'] = pics_size
         return context
 
@@ -447,10 +431,12 @@ class AttachedFilesMixin(object):
         # Add in a QuerySet of all the docs and files
         docs = Doc.objects.metalinks_for_object(self.object)
         docs_size = docs.aggregate(Sum('size'))['size__sum']
-        context['docs'] = list(docs)
+        context['docs'] = docs
         context['docs_size'] = docs_size
         return context
 
+class AttachedMixin(AttachedFilesMixin,AttachedImagesMixin):
+    pass
 
 class TagDetail(DetailView):
     model = Tag

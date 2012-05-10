@@ -372,7 +372,7 @@ class MetaGeo(models.Model):
         addr = result.split(',')
         try:
             r = int(addr[1])
-            result = "%s %s" % addr[1], addr[0]
+            result = "%s %s" % (addr[1], addr[0])
         except :
             pass
         return u"%s, %s" % (result, self.city)
@@ -531,7 +531,7 @@ class Pic(MetaLink, MetaFile):
         thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
 
     def get_del_url(self):
-        return ("pic_del", (), {'object_id': self.id})
+        return "pic_del", (), {'object_id': self.id}
         #return reverse("pic_del", self.id)
 
     def get_edit_url(self):

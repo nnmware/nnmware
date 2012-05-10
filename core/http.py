@@ -88,7 +88,7 @@ def handle_uploads(request, path, keys):
         if key in request.FILES:
             upload = request.FILES[key]
             while os.path.exists(os.path.join(upload_dir, upload.name)):
-                upload.name = '_' + upload.name
+                upload.name = '_%s' % upload.name
             dest = open(os.path.join(upload_dir, upload.name), 'wb')
             for chunk in upload.chunks():
                 dest.write(chunk)

@@ -21,7 +21,7 @@ from nnmware.core.ajax import AjaxLazyAnswer
 def get_video(request):
     link = request.REQUEST['link']
     if not link[:7] == 'http://':
-        link = 'http://'+link
+        link = 'http://%s' % link
     try:
         search_qs = Video.objects.filter(video_url=link)[0]
     except:

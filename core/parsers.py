@@ -9,7 +9,7 @@ import xml.dom.minidom
 from django.conf import settings
 
 def CurrencyXMLInput(sDate):
-    cURL="http://www.cbr.ru/scripts/XML_daily.asp?date_req=%s" % (sDate)
+    cURL="http://www.cbr.ru/scripts/XML_daily.asp?date_req=%s" % sDate
     u=urllib2.urlopen(cURL)
     return u.read()
 

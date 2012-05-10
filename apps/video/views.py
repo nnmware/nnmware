@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import timedelta
 from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
@@ -22,7 +23,7 @@ class VideoAdd(FormView):
     def form_valid(self, form):
         link = form.cleaned_data.get('video_url')
         if not link[:7] == 'http://':
-            link = 'http://'+link
+            link = 'http://%s' % link
         consumer = oembed.OEmbedConsumer()
         # TODO: more code security here - big chance to get fatal error
         endpoint = get_oembed_end_point(link)

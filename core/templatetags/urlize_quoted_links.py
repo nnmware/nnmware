@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Adds the custom filter 'urlize_quoted_links'
 
 This is identical to the built-in filter 'urlize' with the exception that
