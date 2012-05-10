@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import os
 import Image
 from django.conf import settings
 from django.contrib import messages
@@ -12,13 +13,14 @@ from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail, _get_path_from_url
+from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.signals import action, notice
 from nnmware.core.utils import get_oembed_end_point, update_video_size
 from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.file import get_path_from_url
 
 def get_video(request):
     link = request.REQUEST['link']
@@ -325,20 +327,18 @@ def ajax_image_crop(request):
     right = int(request.REQUEST['crop_x2'])
     top = int(request.REQUEST['crop_y1'])
     bottom = int(request.REQUEST['crop_y2'])
+    box = [left, top, right, bottom]
     pic = get_object_or_404(Pic, id=int(img_pk))
-    img = _get_path_from_url(pic.pic.url)
+    img = get_path_from_url(pic.pic.url)
     im = Image.open(img)
     if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
         aspect_c = float(im.size[0])/settings.MAX_IMAGE_CROP_WIDTH
-        left = int(left*aspect_c)
-        right = int(right*aspect_c)
-        top = int(top*aspect_c)
-        bottom = int(bottom*aspect_c)
-    box = [left, top, right, bottom]
+        box = map(lambda x: int(x*aspect_c), box)
     im = im.crop(box)
     if im.mode not in ('L', 'RGB'):
         im = im.convert('RGB')
     im.save(img)
+    pic.save()
     try:
         payload = {'success': True,
                    'id':pic.pk}

@@ -10,6 +10,7 @@ from django.db.models.fields.files import ImageField
 
 from nnmware.core.middleware import get_request
 from nnmware.core.txtutil import URLify
+from nnmware.core.file import get_path_from_url, get_url_from_path
 
 _THUMBNAIL_GLOB = '%s_t*%s'
 _THUMBNAIL_ASPECT = '%s_aspect*%s'
@@ -43,31 +44,12 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None):
 
     return urlparse.urljoin(basedir, th_name)
 
-
-def _get_path_from_url(url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
-    """ make filesystem path from url """
-    if url.startswith(url_root):
-        url = url[len(url_root):]  # strip media root url
-
-    return os.path.normpath(os.path.join(root, url))
-
-
-def _get_url_from_path(path, root=settings.MEDIA_ROOT,
-                       url_root=settings.MEDIA_URL):
-    """ make url from filesystem path """
-
-    if path.startswith(root):
-        path = path[len(root):]   # strip media root
-
-    return urlparse.urljoin(root, path.replace('\\', '/'))
-
-
 def _has_thumbnail(photo_url, width=None, height=None,
                    root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL, aspect=None):
     # one of width/height is required
     assert (width is not None) or (height is not None)
 
-    return os.path.isfile(_get_path_from_url(_get_thumbnail_path(photo_url,
+    return os.path.isfile(get_path_from_url(_get_thumbnail_path(photo_url,
         width, height,aspect), root, url_root))
 
 
@@ -82,8 +64,8 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
         return None
 
     th_url = _get_thumbnail_path(photo_url, width, height, aspect)
-    th_path = _get_path_from_url(th_url, root, url_root)
-    photo_path = _get_path_from_url(photo_url, root, url_root)
+    th_path = get_path_from_url(th_url, root, url_root)
+    photo_path = get_path_from_url(photo_url, root, url_root)
 
     if _has_thumbnail(photo_url, width, height, root, url_root, aspect):
         # thumbnail already exists
@@ -135,7 +117,7 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
     if not pic_url:
         return  # empty url
 
-    file_name = _get_path_from_url(pic_url, root, url_root)
+    file_name = get_path_from_url(pic_url, root, url_root)
     base, ext = os.path.splitext(os.path.basename(file_name))
     basedir = os.path.dirname(file_name)
     for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_GLOB % (base, ext)):
@@ -153,7 +135,7 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
 
 
 def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
-    file_name = _get_path_from_url(img_url, root, url_root)
+    file_name = get_path_from_url(img_url, root, url_root)
     im = Image.open(file_name)
     if im.size[0] > width or im.size[1] > height:
         im.thumbnail((width, height), Image.ANTIALIAS )
@@ -163,7 +145,7 @@ def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_r
 def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     if not f_url:
         return   # empty url
-    file_name = _get_path_from_url(f_url, root, url_root)
+    file_name = get_path_from_url(f_url, root, url_root)
     try:
         os.remove(file_name)
     except:
@@ -203,7 +185,7 @@ def _get_thumbnail_url(photo_url, width=None, height=None, root=settings.MEDIA_R
 def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ returns image size.
     """
-    path = _get_path_from_url(photo_url, root, url_root)
+    path = get_path_from_url(photo_url, root, url_root)
     try:
         size = Image.open(path).size
     except Exception, err:
@@ -278,4 +260,4 @@ def aspect_ratio(image, w, h):
 
 def get_thumbnail_path(url,size):
     url_t = make_thumbnail(url, width=size)
-    return _get_path_from_url(url_t)
+    return get_path_from_url(url_t)

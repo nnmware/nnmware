@@ -27,6 +27,7 @@ from nnmware.core.managers import MetaDataManager, MetaLinkManager, JCommentMana
 from nnmware.core.maps import get_map_url, geocode, Geocoder
 from nnmware.core.middleware import get_request
 from nnmware.core.imgutil import remove_thumbnails, remove_file
+from nnmware.core.file import get_path_from_url
 
 DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
 DEFAULT_MAX_JCOMMENT_DEPTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_DEPTH', 8)
@@ -491,7 +492,7 @@ class Pic(MetaLink, MetaFile):
             remove_thumbnails(self.pic.path)
         except:
             pass
-        fullpath = os.path.join(settings.MEDIA_ROOT, self.pic.field.upload_to, self.pic.path)
+        fullpath = get_path_from_url(self.pic.url)
         self.size = os.path.getsize(fullpath)
         super(Pic, self).save(*args, **kwargs)
 
