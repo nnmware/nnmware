@@ -387,9 +387,9 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
                 pass
         try:
             f_date = self.request.GET.get('from')
-            from_date = datetime.fromtimestamp(time.mktime(time.strptime(f_date, "%d.%m.%Y")))
+            from_date = convert_to_date(f_date)
             t_date = self.request.GET.get('to')
-            to_date = datetime.fromtimestamp(time.mktime(time.strptime(t_date, "%d.%m.%Y")))
+            to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
             context['dates'] = date_range(from_date, to_date)
