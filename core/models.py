@@ -30,7 +30,6 @@ from nnmware.core.imgutil import remove_thumbnails, remove_file
 
 DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
 DEFAULT_MAX_JCOMMENT_DEPTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_DEPTH', 8)
-YANDEX_KEY = getattr(settings, 'YANDEX_MAPS_API_KEY', None)
 
 STATUS_DELETE = 0
 STATUS_LOCKED = 1
