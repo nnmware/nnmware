@@ -222,6 +222,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.order_by('category')
+        context['search_url'] = self.object.get_absolute_url()
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -229,13 +230,13 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            places_need = self.request.GET.get('guests')
-            context['free_room'] = self.object.free_room(from_date,to_date,places_need)
+            guests = self.request.GET.get('guests')
+            context['free_room'] = self.object.free_room(from_date,to_date,guests)
             context['search'] = 1
             context['on_date'] = f_date
             context['from'] = f_date
             context['to'] = t_date
-            context['placecount'] = places_need
+            context['guests'] = int(guests)
         except :
             pass
         return context
@@ -282,6 +283,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         context['tab'] = 'description'
         context['title_line'] = self.object.hotel.get_name
         context['room_options'] = self.object.option.order_by('category')
+        context['search_url'] = self.object.hotel.get_absolute_url()
         return context
 
 class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
