@@ -320,6 +320,24 @@ def pic_getcrop(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def AjaxGetThumbnail(request):
+    img_pk = int(request.REQUEST['image_id'])
+    pic = get_object_or_404(Pic, id=int(img_pk))
+    width = request.REQUEST.get('width') or None
+    height = request.REQUEST.get('height') or None
+    if width:
+        width = int(width)
+    if height:
+        height = int(height)
+    try:
+        payload = {'success': True,
+                   'src': make_thumbnail(pic.pic.url,width=width,height=height),
+                   'id':pic.pk}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def ajax_image_crop(request):
     # Crop image
     img_pk = request.REQUEST['crop_id']
