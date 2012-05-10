@@ -16,6 +16,9 @@ from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
 
+def AjaxAnswer(payload):
+    return HttpResponse(json.dumps(payload), content_type='application/json')
+
 def AjaxLazyAnswer(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
@@ -93,7 +96,7 @@ class AjaxFileUploader(AjaxAbstractUploader):
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
-            return HttpResponse(json.dumps(payload))
+            return AjaxAnswer(payload)
 
 
 class AjaxImageUploader(AjaxAbstractUploader):
@@ -127,7 +130,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
-            return HttpResponse(json.dumps(ret_json))
+            return AjaxAnswer(payload)
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
     def __init__(self, backend=None, **kwargs):
@@ -162,7 +165,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
-            return HttpResponse(json.dumps(ret_json))
+            return AjaxAnswer(payload)
 
 
 def as_json(errors):
