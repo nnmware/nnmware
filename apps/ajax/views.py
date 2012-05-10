@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import Image
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -11,7 +12,7 @@ from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
+from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail, _get_path_from_url
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
@@ -311,7 +312,36 @@ def pic_getcrop(request, object_id):
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
         payload = {'success': True,
-                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH)}
+                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH),
+                   'id':pic.pk}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def ajax_image_crop(request):
+    # Crop image
+    img_pk = request.REQUEST['crop_id']
+    left = int(request.REQUEST['crop_x1'])
+    right = int(request.REQUEST['crop_x2'])
+    top = int(request.REQUEST['crop_y1'])
+    bottom = int(request.REQUEST['crop_y2'])
+    pic = get_object_or_404(Pic, id=int(img_pk))
+    img = _get_path_from_url(pic.pic.url)
+    im = Image.open(img)
+    if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
+        aspect_c = im.size[0]/settings.MAX_IMAGE_CROP_WIDTH
+        left = int(left*aspect_c)
+        right = int(right*aspect_c)
+        top = int(top*aspect_c)
+        bottom = int(bottom*aspect_c)
+    box = [left, top, right, bottom]
+    im = im.crop(box)
+    if im.mode not in ('L', 'RGB'):
+        im = im.convert('RGB')
+    im.save(img)
+    try:
+        payload = {'success': True,
+                   'id':pic.pk}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)

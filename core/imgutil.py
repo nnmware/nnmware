@@ -2,22 +2,15 @@ import os
 import fnmatch
 import shutil
 import urlparse
+import Image
 import ImageOps
 from django.contrib import messages
-from nnmware.core.middleware import get_request
-
-try:
-    import Image
-except ImportError:
-    import PIL as Image
 from django.conf import settings
-from django.core.cache import get_cache
 from django.db.models.fields.files import ImageField
+
+from nnmware.core.middleware import get_request
 from nnmware.core.txtutil import URLify
 
-image_cache = get_cache('locmem:///')
-
-_FILE_CACHE_TIMEOUT = 60 * 60 * 60 * 24 * 31
 _THUMBNAIL_GLOB = '%s_t*%s'
 _THUMBNAIL_ASPECT = '%s_aspect*%s'
 
@@ -198,7 +191,6 @@ def _get_thumbnail_url(photo_url, width=None, height=None, root=settings.MEDIA_R
 
         if thumbnail file do not exists returns original URL
     """
-
     # one of width/height is required
     assert (width is not None) or (height is not None)
 
@@ -208,61 +200,17 @@ def _get_thumbnail_url(photo_url, width=None, height=None, root=settings.MEDIA_R
         return photo_url
 
 
-def _set_cached_file(path, value):
-    """ Store file dependent data in cache.
-        Timeout is set to _FILE_CACHE_TIMEOUT (1month).
-    """
-
-    mtime = os.path.getmtime(path)
-    image_cache.set(path, (mtime, value,), _FILE_CACHE_TIMEOUT)
-
-
-def _get_cached_file(path, default=None):
-    """ Get file content from cache.
-        If modification time differ return None and delete
-        data from cache.
-    """
-
-    cached = image_cache.get(path, default)
-    if cached is None:
-        return None
-    mtime, value = cached
-
-    if (not os.path.isfile(path)) or (os.path.getmtime(path) != mtime):
-        # file is changed or deleted
-        image_cache.delete(path)  # delete from cache
-        # remove thumbnails if exists
-        base, ext = os.path.splitext(os.path.basename(path))
-        basedir = os.path.dirname(path)
-        for file in fnmatch.filter(os.listdir(basedir), _THUMBNAIL_GLOB % (base, ext)):
-            os.remove(os.path.join(basedir, file))
-        return None
-    else:
-        return value
-
-
 def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ returns image size.
-
-        image sizes are cached (using separate locmem:/// cache instance)
     """
-
     path = _get_path_from_url(photo_url, root, url_root)
-
-    size = _get_cached_file(path)
-    if size is None:
-        try:
-            size = Image.open(path).size
-        except Exception, err:
-            # this goes to webserver error log
-            import sys
-            print >> sys.stderr, '[GET IMAGE SIZE] error %s for file %r' % (err, photo_url)
-            return None, None
-        if size is not None:
-            _set_cached_file(path, size)
-        else:
-            return None, None
-
+    try:
+        size = Image.open(path).size
+    except Exception, err:
+        # this goes to webserver error log
+        import sys
+        print >> sys.stderr, '[GET IMAGE SIZE] error %s for file %r' % (err, photo_url)
+        return None, None
     return size
 
 
