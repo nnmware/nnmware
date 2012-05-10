@@ -22,6 +22,10 @@ from nnmware.core.utils import get_oembed_end_point, update_video_size
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.file import get_path_from_url
 
+class AccessError(Exception):
+    pass
+
+
 def get_video(request):
     link = request.REQUEST['link']
     if not link[:7] == 'http://':
@@ -340,26 +344,35 @@ def AjaxGetThumbnail(request):
 
 def ajax_image_crop(request):
     # Crop image
-    img_pk = request.REQUEST['crop_id']
-    left = int(request.REQUEST['crop_x1'])
-    right = int(request.REQUEST['crop_x2'])
-    top = int(request.REQUEST['crop_y1'])
-    bottom = int(request.REQUEST['crop_y2'])
-    box = [left, top, right, bottom]
-    pic = get_object_or_404(Pic, id=int(img_pk))
-    img = get_path_from_url(pic.pic.url)
-    im = Image.open(img)
-    if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
-        aspect_c = float(im.size[0])/settings.MAX_IMAGE_CROP_WIDTH
-        box = map(lambda x: int(x*aspect_c), box)
-    im = im.crop(box)
-    if im.mode not in ('L', 'RGB'):
-        im = im.convert('RGB')
-    im.save(img)
-    pic.save()
     try:
-        payload = {'success': True,
-                   'id':pic.pk}
+        img_pk = request.REQUEST['crop_id']
+        pic = get_object_or_404(Pic, id=int(img_pk))
+        if not request.user.is_superuser:
+            parent_object = pic.content_object.__class__.__name__
+            if parent_object == 'Room':
+                if not request.user in pic.content_object.hotel.admins.all():
+                    raise AccessError
+            elif parent_object == 'Hotel':
+                if not request.user in pic.content_object.admins.all():
+                    raise AccessError
+        left = int(request.REQUEST['crop_x1'])
+        right = int(request.REQUEST['crop_x2'])
+        top = int(request.REQUEST['crop_y1'])
+        bottom = int(request.REQUEST['crop_y2'])
+        box = [left, top, right, bottom]
+        img = get_path_from_url(pic.pic.url)
+        im = Image.open(img)
+        if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
+            aspect_c = float(im.size[0])/settings.MAX_IMAGE_CROP_WIDTH
+            box = map(lambda x: int(x*aspect_c), box)
+        im = im.crop(box)
+        if im.mode not in ('L', 'RGB'):
+            im = im.convert('RGB')
+        im.save(img)
+        pic.save()
+        payload = {'success': True, 'id':pic.pk}
+    except AccessError:
+        payload = {'success': False, 'error':_('You are not allowed change this image')}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
