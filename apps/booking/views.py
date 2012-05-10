@@ -223,7 +223,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.order_by('category')
         context['search_url'] = self.object.get_absolute_url()
-        if 1>0: #try:
+        try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
             t_date = self.request.GET.get('to')
@@ -237,8 +237,8 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             context['from'] = f_date
             context['to'] = t_date
             context['guests'] = guests
-#        except :
-#            pass
+        except :
+            pass
         return context
 
 class HotelLocation(DetailView):
