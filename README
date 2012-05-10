@@ -38,5 +38,5 @@ Licensed under GPL3
 
 support@nnmware.com
 
-required django-current
+required django(current), python-oauth2, south, unidecode
 

@@ -230,13 +230,13 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            guests = self.request.GET.get('guests')
+            guests = int(self.request.GET.get('guests'))
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
             context['search'] = 1
             context['on_date'] = f_date
             context['from'] = f_date
             context['to'] = t_date
-            context['guests'] = int(guests)
+            context['guests'] = guests
         except :
             pass
         return context
