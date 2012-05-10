@@ -394,7 +394,8 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
                 from_date, to_date = to_date, from_date
             context['dates'] = date_range(from_date, to_date)
         except :
-            context['dates'] = [datetime.today()]
+            from_date = datetime.now()
+            context['dates'] = date_range(from_date, from_date+timedelta(days=14))
         return context
 
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
