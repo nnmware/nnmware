@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -309,7 +310,8 @@ def pic_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
-        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=800)}
+        payload = {'success': True,
+                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH)}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
