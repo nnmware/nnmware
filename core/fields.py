@@ -121,7 +121,7 @@ class ImageWithThumbnailField(ImageField):
         image = getattr(instance, self.name)
         #raise `image`
         if image and self.auto_rename:
-            from nnmware.core.uuid import uuid4
+            from uuid import uuid4
 
             image = rename_by_field(image.path, '%s' % str(uuid4()))
             setattr(instance, self.attname, image)

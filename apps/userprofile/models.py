@@ -18,7 +18,7 @@ from django.core.urlresolvers import reverse
 from django.template import loader, Context
 from nnmware.apps.video.models import Video
 
-from nnmware.core import uuid
+from uuid import uuid4
 from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
 from nnmware.core.models import Follow, Tag
@@ -53,7 +53,7 @@ def get_file_path(instance, filename):
     can confuse browsers and fs
     """
     ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
+    filename = "%s.%s" % (uuid4(), ext)
     return os.path.join('pybb/avatar', filename)
 
 
