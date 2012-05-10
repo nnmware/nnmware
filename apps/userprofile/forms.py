@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from nnmware.core.fields import ReCaptchaField
 from nnmware.core.middleware import get_request
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
@@ -20,8 +22,8 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         if settings.CAPTCHA_ENABLED:
-            from nnmware.apps.captcha.fields import CaptchaField
-            self.base_fields['captcha'] = CaptchaField()
+            self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
+                                                                       'invalid' : _('Answer is wrong') })
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
     def clean_email(self):
