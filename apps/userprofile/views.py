@@ -25,7 +25,7 @@ from django.views.generic.list import ListView
 from django.views.generic import YearArchiveView, MonthArchiveView, \
     DayArchiveView
 from nnmware.apps.video.models import Video
-from nnmware.core.http import redirect, handle_uploads, LazyEncoder
+from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
 from nnmware.core.models import Tag, Follow, Action
 from nnmware.core.views import AjaxFormMixin
@@ -356,12 +356,18 @@ class ActivateView(View):
         return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
 
 @login_required
-def avatardelete(request, avatar_id=False):
-    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest':
+def avatardelete(request):
+    if request.is_ajax():
         try:
-            Avatar.objects.get(user=request.user, valid=True).delete()
-            return HttpResponse(json.dumps({'success': True}))
+            profile = request.user.get_profile()
+            remove_thumbnails(profile.avatar.path)
+            remove_file(profile.avatar.path)
+            profile.avatar_complete = False
+            profile.avatar = None
+            profile.save()
+            payload = {'success': True}
         except:
-            return HttpResponse(json.dumps({'success': False}))
+            payload = {'success': False}
+        return AjaxLazyAnswer(payload)
     else:
         raise Http404()
