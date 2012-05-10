@@ -26,7 +26,6 @@ from django.views.generic import YearArchiveView, MonthArchiveView, \
     DayArchiveView
 from nnmware.apps.video.models import Video
 from nnmware.core.http import redirect, handle_uploads, LazyEncoder
-from nnmware.core.ajax import as_json
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
 from nnmware.core.models import Tag, Follow, Action
 from nnmware.core.views import AjaxFormMixin
