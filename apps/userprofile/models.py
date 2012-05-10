@@ -1,8 +1,4 @@
 import datetime
-from decimal import Decimal
-import re
-import random
-import os
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -10,15 +6,12 @@ from django.db import models
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
-from django.contrib import admin
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template import loader, Context
 from nnmware.apps.video.models import Video
-
-from uuid import uuid4
 from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
 from nnmware.core.models import Follow, Tag
@@ -40,19 +33,6 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
     (9, '+09'), (9.5, '+09.5'), (10, '+10'), (10.5, '+10.5'), (11, '+11'),
     (11.5, '+11.5'), (12, '+12'), (13, '+13'), (14, '+14'),
     )]
-
-
-def get_file_path(instance, filename):
-    """
-    This function generate filename with uuid4
-    it's useful if:
-    - you don't want to allow others to see original uploaded filenames
-    - users can upload images with unicode in filenames wich
-    can confuse browsers and fs
-    """
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid4(), ext)
-    return os.path.join('pybb/avatar', filename)
 
 
 class Profile(models.Model):
