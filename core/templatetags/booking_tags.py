@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
 from nnmware.apps.money.models import ExchangeRate, Currency
-from nnmware.core.config import OFFICIAL_RATE
+from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.utils import convert_to_date
 
 
@@ -134,3 +134,21 @@ def room_price_date(context, room, on_date):
     except :
         result = room_price
     return int(result)
+
+@register.simple_tag(takes_context = True)
+def client_currency(context):
+    request = context['request']
+    try:
+        currency = request.COOKIES['currency']
+    except :
+        currency = CURRENCY
+    if currency == 'USD':
+        return '$'
+    elif currency == 'EUR':
+        return '€'
+    elif currency == 'JPY':
+        return '¥'
+    elif currency == 'GBP':
+        return '£'
+    else:
+        return _('rub')

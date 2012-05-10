@@ -162,19 +162,3 @@ class ExchangeMixin(object):
         except :
             result = self.min_current_amount
         return result
-
-    def client_currency(self):
-        try:
-            currency = get_request().COOKIES['currency']
-        except :
-            currency = CURRENCY
-        if currency == 'USD':
-            return '$'
-        elif currency == 'EUR':
-            return '€'
-        elif currency == 'JPY':
-            return '¥'
-        elif currency == 'GBP':
-            return '£'
-        else:
-            return _('Rub')
