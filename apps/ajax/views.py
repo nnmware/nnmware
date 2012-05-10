@@ -10,7 +10,7 @@ from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.imgutil import remove_thumbnails, remove_file, get_thumbnail_path
+from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
@@ -309,7 +309,7 @@ def pic_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
-        payload = {'success': True, 'src': get_thumbnail_path(pic.pic.url,size=800)}
+        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=800)}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
