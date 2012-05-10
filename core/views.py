@@ -415,7 +415,7 @@ class CurrentUserCreator(object):
 
 class AttachedImagesMixin(object):
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(AttachedImagesMixin, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
         pics = Pic.objects.metalinks_for_object(self.object)
@@ -426,7 +426,7 @@ class AttachedImagesMixin(object):
 
 class AttachedFilesMixin(object):
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(AttachedFilesMixin, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the docs and files
         docs = Doc.objects.metalinks_for_object(self.object)
