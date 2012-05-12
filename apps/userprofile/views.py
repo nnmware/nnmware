@@ -345,15 +345,36 @@ class ActivateView(View):
 
     def get(self, request, *args, **kwargs):
         key = self.kwargs['activation_key']
-        e = EmailValidation.objects.get(key=key)
-        u = User(username=e.username,email=e.email)
-        u.set_password(e.password)
-        u.is_active = True
-        u.save()
-        e.delete()
-        user = authenticate(username=e.username, password=e.password)
-        login(self.request, user)
+        try:
+            e = EmailValidation.objects.get(key=key)
+            u = User(username=e.username,email=e.email)
+            u.set_password(e.password)
+            u.is_active = True
+            u.save()
+            e.delete()
+            user = authenticate(username=e.username, password=e.password)
+            login(self.request, user)
+        except :
+            raise Http404
         return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
+
+class PassRecoveryView(View):
+    template_name = 'user/logged_out.html'
+
+    def get(self, request, *args, **kwargs):
+        key = self.kwargs['activation_key']
+        try:
+            e = EmailValidation.objects.get(key=key)
+            u = User.objects.get(username=e.username)
+            u.set_password(e.password)
+            u.save()
+            user = authenticate(username=u.username, password=e.password)
+            e.delete()
+            login(self.request, user)
+        except :
+            raise Http404
+        return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
+
 
 @login_required
 def avatardelete(request):
