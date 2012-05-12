@@ -18,6 +18,7 @@ from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
 from nnmware.core.models import MetaIP
 from nnmware.apps.money.models import ExchangeMixin
+from nnmware.core.maps import places_near_object
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
@@ -233,6 +234,13 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
             self.current_amount = 0
         self.save()
 
+    def tourism_places(self):
+        places = Tourism.objects.raw(places_near_object(self,settings.TOURISM_PLACES_RADIUS,
+            'address_tourism'))
+        all_places = []
+        for p in places:
+            all_places.append(p.id)
+        return Tourism.objects.filter(pk__in=all_places).order_by('category')
 
 class RoomOptionCategory(MetaName):
 

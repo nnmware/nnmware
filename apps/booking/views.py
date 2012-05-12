@@ -251,7 +251,7 @@ class HotelLocation(DetailView):
         context = super(HotelLocation, self).get_context_data(**kwargs)
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
-        context['tourism_list'] = self.object.tourism.all
+        context['tourism_list'] = self.object.tourism_places()
         context['title_line'] = self.object.get_name
         context['tab'] = 'location'
         return context

@@ -8,6 +8,7 @@ from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
+from nnmware.core.maps import distance_to_object
 from nnmware.core.utils import convert_to_date
 
 
@@ -152,3 +153,7 @@ def client_currency(context):
         return '£'
     else:
         return _('rub')
+
+@register.simple_tag
+def distance_for(origin, destiny):
+    return distance_to_object(origin,destiny)

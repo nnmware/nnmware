@@ -4,6 +4,7 @@
 Yandex.Maps  and OSM API wrapper
 """
 from __future__ import with_statement
+from math import *
 import xml.dom.minidom
 import urllib
 import urllib2
@@ -96,3 +97,42 @@ def _get_coords(response):
         return tuple(pos_data.split())
     except IndexError:
         return None, None
+
+
+RADIUS = 6371 #Earth's mean radius in km
+
+def distance(origin, destiny):
+    (latitude1, longitude1) = (origin[0], origin[1])
+    (latitude2, longitude2) = (destiny[0], destiny[1])
+
+    dLat = radians(latitude1 - latitude2)
+    dLong = radians(longitude1 - longitude2)
+
+    # matter of faith
+    a = sin(dLat/2)*sin(dLat/2)+cos(radians(latitude1))*cos(radians(latitude2))*sin(dLong/2)*sin(dLong/2)
+    c = 2*atan2(sqrt(a), sqrt(1-a))
+
+    return RADIUS*c
+
+def distance_to_object(origin, destiny):
+    (latitude1, longitude1) = (origin.latitude, origin.longitude)
+    (latitude2, longitude2) = (destiny.latitude, destiny.longitude)
+
+    dLat = radians(latitude1 - latitude2)
+    dLong = radians(longitude1 - longitude2)
+
+    # matter of faith
+    a = sin(dLat/2)*sin(dLat/2)+cos(radians(latitude1))*cos(radians(latitude2))*sin(dLong/2)*sin(dLong/2)
+    c = 2*atan2(sqrt(a), sqrt(1-a))
+
+    return RADIUS*c
+
+
+def places_near_object(origin, radius, model_db_name):
+    query= """SELECT id, 3956 * 2 * ASIN(SQRT(POWER(SIN((%s - latitude) *
+        0.0174532925 / 2), 2) + COS(%s * 0.0174532925) * COS(latitude * 0.0174532925) *
+        POWER(SIN((%s - longitude) * 0.0174532925 / 2), 2) )) as distance from %s
+        having distance < %s ORDER BY distance ASC """ % ( origin.latitude, origin.latitude,
+                    origin.longitude, model_db_name, radius)
+    return query
+
