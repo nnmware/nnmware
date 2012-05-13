@@ -173,12 +173,13 @@ def tourism_places(request):
         h = request.REQUEST['hotel']
         hotel = Hotel.objects.get(pk=h)
         results = []
-        for tourism in hotel.tourism_places():
+        for tourism in hotel.tourism_places().order_by('category'):
             if tourism.category.icon:
                 icon = tourism.category.icon.url
             else:
                 icon = ''
             answer = {'name':tourism.get_name, 'latitude':tourism.latitude,
+                      'category':tourism.category.name,'category_id':tourism.category.pk,
                       'longitude':tourism.longitude,'icon':icon }
             results.append(answer)
         payload = {'success': True, 'tourism':results}
