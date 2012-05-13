@@ -173,7 +173,7 @@ def tourism_places(request):
         h = request.REQUEST['hotel']
         hotel = Hotel.objects.get(pk=h)
         results = []
-        for tourism in hotel.tourism.all():
+        for tourism in hotel.tourism_places():
             if tourism.category.icon:
                 icon = tourism.category.icon.url
             else:

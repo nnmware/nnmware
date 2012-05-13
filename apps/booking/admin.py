@@ -1,7 +1,6 @@
 from django.contrib import admin
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.booking.models import SettlementVariant
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
@@ -19,8 +18,6 @@ class HotelAdmin(admin.ModelAdmin):
             ('admins')]}),
         (_("Hotel options"), {"classes": ("collapse closed",), "fields": [
             ('option')]}),
-        (_("Tourism"), {"classes": ("collapse closed",), "fields": [
-            ('tourism') ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en","address_en"),("description_en",) ]}),)
     ordering = ('register_date','name')

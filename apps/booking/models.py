@@ -105,7 +105,6 @@ class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
-    tourism = models.ManyToManyField(Tourism, verbose_name=_('Tourism places'), null=True, blank=True)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
     current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3)
