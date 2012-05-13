@@ -180,7 +180,7 @@ class HotelList(ListView):
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         try:
-            context['tourism_list'] = context['object_list'][0].tourism.all
+            context['tourism_list'] = context['object_list'][0].tourism_places()
         except :
             pass
         context['tab'] = self.tab

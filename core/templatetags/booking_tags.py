@@ -156,4 +156,5 @@ def client_currency(context):
 
 @register.simple_tag
 def distance_for(origin, destiny):
-    return distance_to_object(origin,destiny)
+    result = distance_to_object(origin,destiny)
+    return format(result, '.2f')
