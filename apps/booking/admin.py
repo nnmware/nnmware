@@ -6,7 +6,7 @@ class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
     list_filter = ('starcount','name')
     search_fields = ('name',)
-    filter_horizontal = ['option','admins','tourism']
+    filter_horizontal = ['option','admins']
     fieldsets = (
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
