@@ -187,3 +187,17 @@ def tourism_places(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def hotels_in_city(request):
+    try:
+        c = request.REQUEST['city']
+        city = City.objects.get(pk=c)
+        results = []
+        for hotel in Hotel.objects.filter(city=city).order_by('starcount'):
+            answer = {'name':hotel.get_name, 'latitude':hotel.latitude,
+                      'address':hotel.address,'id':hotel.pk,'starcount':hotel.starcount,
+                      'longitude':hotel.longitude}
+            results.append(answer)
+        payload = {'success': True, 'hotels':results}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
