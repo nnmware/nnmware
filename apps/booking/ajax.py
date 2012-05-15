@@ -9,6 +9,7 @@ from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking
 from nnmware.apps.money.models import Currency
 import time
+from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.utils import convert_to_date
 from nnmware.core.ajax import AjaxLazyAnswer
 
@@ -193,8 +194,9 @@ def hotels_in_city(request):
         city = City.objects.get(pk=c)
         results = []
         for hotel in Hotel.objects.filter(city=city).order_by('starcount'):
-            answer = {'name':hotel.get_name, 'latitude':hotel.latitude,
+            answer = {'name':hotel.get_name, 'latitude':hotel.latitude,'url':hotel.get_absolute_url(),
                       'address':hotel.address,'id':hotel.pk,'starcount':hotel.starcount,
+                      'img':make_thumbnail(hotel.main_image,width=113,height=75),
                       'longitude':hotel.longitude, 'starcount_name':hotel.get_starcount_display()}
             results.append(answer)
         payload = {'success': True, 'hotels':results}
