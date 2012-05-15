@@ -195,7 +195,7 @@ def hotels_in_city(request):
         for hotel in Hotel.objects.filter(city=city).order_by('starcount'):
             answer = {'name':hotel.get_name, 'latitude':hotel.latitude,
                       'address':hotel.address,'id':hotel.pk,'starcount':hotel.starcount,
-                      'longitude':hotel.longitude}
+                      'longitude':hotel.longitude, 'starcount_name':hotel.get_starcount_display()}
             results.append(answer)
         payload = {'success': True, 'hotels':results}
     except :
