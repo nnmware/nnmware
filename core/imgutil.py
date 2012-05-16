@@ -1,14 +1,12 @@
 import os
+import sys
 import fnmatch
 import shutil
 import urlparse
 import Image
 import ImageOps
-from django.contrib import messages
 from django.conf import settings
 from django.db.models.fields.files import ImageField
-
-from nnmware.core.middleware import get_request
 from nnmware.core.txtutil import URLify
 from nnmware.core.file import get_path_from_url, get_url_from_path
 
@@ -106,7 +104,6 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
         img.save(th_path, quality=settings.THUMBNAIL_QUALITY)
     except Exception, err:
         # this goes to webserver error log
-        import sys
         print >> sys.stderr, '[MAKE THUMBNAIL] error %s for file %r' % (err, photo_url)
         return photo_url
 
@@ -149,7 +146,7 @@ def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     try:
         os.remove(file_name)
     except:
-        messages.error(get_request(), "Could not delete file: %s", file_name)
+        print >> sys.stderr, "Could not delete file: %s" % file_name
 
 
 def make_admin_thumbnail(url):
