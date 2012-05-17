@@ -181,7 +181,7 @@ def tourism_places(request):
                 icon = ''
             answer = {'name':tourism.get_name, 'latitude':tourism.latitude,
                       'category':tourism.category.name,'category_id':tourism.category.pk,
-                      'longitude':tourism.longitude,'icon':icon }
+                      'longitude':tourism.longitude,'icon':icon, 'id':tourism.pk }
             results.append(answer)
         payload = {'success': True, 'tourism':results}
     except :
