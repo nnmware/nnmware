@@ -188,6 +188,8 @@ class HotelList(ListView):
             context['search'] = self.search
             context['search_count'] = self.result_count
             context['on_date'] = self.on_date
+        else:
+            context['country'] = 1
         if self.city:
             context['city'] = self.city
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()

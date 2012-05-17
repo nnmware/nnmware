@@ -203,3 +203,17 @@ def hotels_in_city(request):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def hotels_in_country(request):
+    try:
+        results = []
+        for hotel in Hotel.objects.all().order_by('starcount'):
+            answer = {'name':hotel.get_name, 'latitude':hotel.latitude,'url':hotel.get_absolute_url(),
+                      'address':hotel.address,'id':hotel.pk,'starcount':hotel.starcount,
+                      'img':make_thumbnail(hotel.main_image,width=113,height=75,aspect=1),
+                      'longitude':hotel.longitude, 'starcount_name':hotel.get_starcount_display()}
+            results.append(answer)
+        payload = {'success': True, 'hotels':results}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
