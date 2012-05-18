@@ -189,3 +189,15 @@ def rbtruncatechars(value, arg):
     while result[-1] == '.':
         result = result[:-1]
     return result+'...'
+
+@register.simple_tag
+def hotels_spb_count():
+    city = City.objects.get(slug='spb')
+    result = Hotel.objects.filter(city=city).count()
+    return result
+
+@register.simple_tag
+def hotels_moscow_count():
+    city = City.objects.get(slug='moscow')
+    result = Hotel.objects.filter(city=city).count()
+    return result
