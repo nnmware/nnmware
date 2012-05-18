@@ -387,7 +387,8 @@ class MetaGeo(models.Model):
             pass
 
     def save(self, *args, **kwargs):
-        self.fill_osm_data()
+        if not self.latitude and not self.longitude:
+            self.fill_osm_data()
         super(MetaGeo, self).save(*args, **kwargs)
 
 
