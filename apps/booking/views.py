@@ -93,7 +93,8 @@ class HotelList(ListView):
         except :
             self.city = None
             hotels = Hotel.objects.all()
-        self.tab = {'css_name':'asc','css_class':'asc','css_amount':'desc','css_review':'asc',
+        self.tab = {'css_name':'asc','css_class':'desc','css_amount':'desc','css_review':'desc',
+                    'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
         try:
             result = []
@@ -135,36 +136,44 @@ class HotelList(ListView):
         if order:
             if order == 'name':
                 self.tab['tab'] = 'name'
-                if sort == 'asc':
+                if sort == 'desc':
                     result = search_hotel.order_by('-name')
                     self.tab['css_name'] = 'desc'
+                    self.tab['order_name'] = 'asc'
                 else:
                     result = search_hotel.order_by('name')
                     self.tab['css_name'] = 'asc'
+                    self.tab['order_name'] = 'desc'
             elif order == 'class':
                 self.tab['tab'] = 'class'
                 if sort == 'asc':
-                    result = search_hotel.order_by('-starcount')
-                    self.tab['css_class'] = 'desc'
-                else:
                     result = search_hotel.order_by('starcount')
                     self.tab['css_class'] = 'asc'
+                    self.tab['order_class'] = 'desc'
+                else:
+                    result = search_hotel.order_by('-starcount')
+                    self.tab['css_class'] = 'desc'
+                    self.tab['order_class'] = 'asc'
             elif order == 'amount':
                 self.tab['tab'] = 'amount'
                 if sort == 'asc':
                     result = search_hotel.order_by('current_amount')
-                    self.tab['css_amount'] = 'desc'
+                    self.tab['css_amount'] = 'asc'
+                    self.tab['order_amount'] = 'desc'
                 else:
                     result = search_hotel.order_by('-current_amount')
-                    self.tab['css_amount'] = 'asc'
+                    self.tab['css_amount'] = 'desc'
+                    self.tab['order_amount'] = 'asc'
             elif order == 'review':
                 self.tab['tab'] = 'review'
                 if sort == 'asc':
-                    result = search_hotel.order_by('-point')
-                    self.tab['css_review'] = 'desc'
-                else:
                     result = search_hotel.order_by('point')
                     self.tab['css_review'] = 'asc'
+                    self.tab['order_review'] = 'desc'
+                else:
+                    result = search_hotel.order_by('-point')
+                    self.tab['css_review'] = 'desc'
+                    self.tab['order_review'] = 'asc'
             else:
                 pass
         else:
