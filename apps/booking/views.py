@@ -120,10 +120,7 @@ class HotelList(ListView):
         if amount_max and amount_min:
             r = []
             for h in search_hotel:
-                if f_date:
-                    amount = h.amount_on_date(from_date)
-                else:
-                    amount = h.min_current_amount
+                amount = h.min_current_amount
                 if int(amount_min) < amount < int(amount_max):
                     r.append(h.pk)
             search_hotel = Hotel.objects.filter(pk__in=r)
