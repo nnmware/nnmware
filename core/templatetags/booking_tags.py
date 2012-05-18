@@ -80,12 +80,13 @@ def hotels_count():
 
 @register.assignment_tag
 def hotels_best_offer():
-    result = Hotel.objects.filter(best_offer=True)
+    result = Hotel.objects.filter(best_offer=True).order_by('current_amount')
     return result
 
 @register.assignment_tag
 def hotels_top10():
-    result = Hotel.objects.filter(in_top10=True)
+    city = City.objects.get(slug='moscow')
+    result = Hotel.objects.filter(in_top10=True, city=city).order_by('current_amount')
     return result
 
 @register.simple_tag(takes_context = True)

@@ -83,7 +83,7 @@ class HotelList(ListView):
         options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         notknowndates = self.request.GET.get('notknowndates') or None
-        places_need = self.request.GET.get('guests') or None
+        guests = self.request.GET.get('guests') or None
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
@@ -98,9 +98,9 @@ class HotelList(ListView):
                     'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
 
-        if not notknowndates:
+        if (notknowndates <> None):
             result = []
-            try:
+            if 1>0: #try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
@@ -109,10 +109,10 @@ class HotelList(ListView):
                 else:
                     self.search_data = {'from_date':f_date, 'to_date':t_date}
                 for hotel in hotels:
-                    if hotel.free_room(from_date,to_date,places_need):
+                    if hotel.free_room(from_date,to_date,guests):
                         result.append(hotel.pk)
-            except :
-                pass
+#            except :
+#                pass
             search_hotel = Hotel.objects.filter(pk__in=result)
             self.search = 1
         else :
@@ -185,10 +185,6 @@ class HotelList(ListView):
     # Call the base implementation first to get a context
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
-        try:
-            context['tourism_list'] = context['object_list'][0].tourism_places()
-        except :
-            pass
         context['tab'] = self.tab
         if self.search:
             context['search'] = self.search
