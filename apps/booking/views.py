@@ -77,6 +77,7 @@ class HotelList(ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
+        self.search_data = dict()
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
         options = self.request.GET.getlist('options') or None
@@ -103,10 +104,10 @@ class HotelList(ListView):
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
-                    self.on_date = t_date
+                    self.search_data = {'from_date':t_date, 'to_date':f_date}
                     from_date, to_date = to_date, from_date
                 else:
-                    self.on_date = f_date
+                    self.search_data = {'from_date':f_date, 'to_date':t_date}
                 for hotel in hotels:
                     if hotel.free_room(from_date,to_date,places_need):
                         result.append(hotel.pk)
@@ -192,7 +193,7 @@ class HotelList(ListView):
         if self.search:
             context['search'] = self.search
             context['search_count'] = self.result_count
-            context['on_date'] = self.on_date
+            context['search_data'] = self.search_data
         else:
             context['country'] = 1
         if self.city:
