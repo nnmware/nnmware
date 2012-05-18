@@ -96,13 +96,10 @@ class HotelList(ListView):
         self.tab = {'css_name':'asc','css_class':'desc','css_amount':'desc','css_review':'desc',
                     'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
-        try:
+
+        if not notknowndates:
             result = []
-            if notknowndates:
-                from_date = datetime.now()
-                self.on_date = from_date.strftime('%d.%m.%Y')
-                to_date = from_date+timedelta(days=14)
-            else:
+            try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
@@ -110,12 +107,14 @@ class HotelList(ListView):
                     from_date, to_date = to_date, from_date
                 else:
                     self.on_date = f_date
-            for hotel in hotels:
-                if hotel.free_room(from_date,to_date,places_need):
-                    result.append(hotel.pk)
+                for hotel in hotels:
+                    if hotel.free_room(from_date,to_date,places_need):
+                        result.append(hotel.pk)
+            except :
+                pass
             search_hotel = Hotel.objects.filter(pk__in=result)
             self.search = 1
-        except :
+        else :
             self.search = 0
             search_hotel = hotels
         if amount_max and amount_min:

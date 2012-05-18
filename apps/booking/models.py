@@ -17,7 +17,6 @@ from nnmware.apps.money.models import MoneyBase, Currency, ExchangeRate
 from nnmware.apps.address.models import Tourism
 from nnmware.apps.booking.managers import SettlementVariantManager
 from nnmware.core.models import MetaIP
-from nnmware.apps.money.models import ExchangeMixin
 from nnmware.core.maps import places_near_object
 
 class HotelPoints(models.Model):
