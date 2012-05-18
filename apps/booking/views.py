@@ -152,10 +152,10 @@ class HotelList(ListView):
             elif order == 'amount':
                 self.tab['tab'] = 'amount'
                 if sort == 'asc':
-                    result = search_hotel.order_by('-current_amount')
+                    result = search_hotel.order_by('current_amount')
                     self.tab['css_amount'] = 'desc'
                 else:
-                    result = search_hotel.order_by('current_amount')
+                    result = search_hotel.order_by('-current_amount')
                     self.tab['css_amount'] = 'asc'
             elif order == 'review':
                 self.tab['tab'] = 'review'
