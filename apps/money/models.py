@@ -148,17 +148,3 @@ class Bill(MoneyBase):
     def docs(self):
         return Doc.objects.metalinks_for_object(self)
 
-class ExchangeMixin(object):
-
-    def min_amount_currency(self):
-        try:
-            currency = Currency.objects.get(code=get_request().COOKIES['currency'])
-            rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
-            if OFFICIAL_RATE:
-                exchange = rate.official_rate
-            else:
-                exchange = rate.rate
-            result = (self.min_current_amount*rate.nominal)/exchange
-        except :
-            result = self.min_current_amount
-        return result

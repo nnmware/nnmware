@@ -88,7 +88,7 @@ HOTEL_CHOICES = (
     )
 
 
-class Hotel(MetaName, MetaGeo, HotelPoints, ExchangeMixin):
+class Hotel(MetaName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
     city = models.ForeignKey(City, verbose_name=_('City'))
     email = models.EmailField(verbose_name=_("Email"), blank=True)
@@ -286,7 +286,7 @@ PLACES_CHOICES = (
     )
 
 
-class Room(MetaName, ExchangeMixin):
+class Room(MetaName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
@@ -335,7 +335,7 @@ class Room(MetaName, ExchangeMixin):
         except :
             return None
 
-class SettlementVariant(models.Model, ExchangeMixin):
+class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=True)
