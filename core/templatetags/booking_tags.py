@@ -155,6 +155,20 @@ def client_currency(context):
     else:
         return _('rub')
 
+@register.simple_tag(takes_context = True)
+def convert_to_client_currency(context, amount):
+    request = context['request']
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        return int((amount*rate.nominal)/exchange)
+    except :
+        return int(amount)
+
 @register.simple_tag
 def distance_for(origin, destiny):
     result = distance_to_object(origin,destiny)
