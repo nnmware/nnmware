@@ -98,9 +98,9 @@ class HotelList(ListView):
                     'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
 
-        if (notknowndates <> None):
+        if notknowndates <> None and self.city <> None:
             result = []
-            if 1>0: #try:
+            try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
@@ -111,8 +111,8 @@ class HotelList(ListView):
                 for hotel in hotels:
                     if hotel.free_room(from_date,to_date,guests):
                         result.append(hotel.pk)
-#            except :
-#                pass
+            except :
+                pass
             search_hotel = Hotel.objects.filter(pk__in=result)
             self.search = 1
         else :
