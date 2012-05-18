@@ -3,6 +3,7 @@ from datetime import datetime
 import re
 
 from django.template import Library
+from django.template.defaultfilters import stringfilter
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
@@ -158,3 +159,18 @@ def client_currency(context):
 def distance_for(origin, destiny):
     result = distance_to_object(origin,destiny)
     return format(result, '.2f')
+
+@register.filter(is_safe=True)
+@stringfilter
+def rbtruncatechars(value, arg):
+    """
+    Truncates a string after a certain number of characters and add "..."
+    """
+    try:
+        length = int(arg)
+    except ValueError: # Invalid literal for int().
+        return value # Fail silently.
+    result = value[:length]
+    while result[-1] == '.':
+        result = result[:-1]
+    return result+'...'
