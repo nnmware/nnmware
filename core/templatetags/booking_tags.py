@@ -10,27 +10,32 @@ from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, 
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
-from nnmware.core.utils import convert_to_date
+from nnmware.core.utils import convert_to_date, daterange
 
 
 register = Library()
 
-@register.simple_tag
+@register.assignment_tag
+def minihotel_count(city=None):
+    result = Hotel.objects.filter(starcount=MINI_HOTEL).count()
+    return result
+
+@register.assignment_tag
 def two_star_count(city=None):
     result = Hotel.objects.filter(starcount=TWO_STAR).count()
     return result
 
-@register.simple_tag
+@register.assignment_tag
 def three_star_count(city=None):
     result = Hotel.objects.filter(starcount=THREE_STAR).count()
     return result
 
-@register.simple_tag
+@register.assignment_tag
 def four_star_count(city=None):
     result = Hotel.objects.filter(starcount=FOUR_STAR).count()
     return result
 
-@register.simple_tag
+@register.assignment_tag
 def five_star_count(city=None):
     result = Hotel.objects.filter(starcount=FIVE_STAR).count()
     return result
@@ -136,6 +141,31 @@ def room_price_date(context, room, on_date):
         result = (room_price*rate.nominal)/exchange
     except :
         result = room_price
+    return int(result)
+
+@register.simple_tag(takes_context = True)
+def room_price_average(context, room):
+    request = context['request']
+    f_date = context['from']
+    t_date = context['to']
+    guests = context['guests']
+    from_date = convert_to_date(f_date)
+    to_date = convert_to_date(t_date)
+    delta = (to_date - from_date).days
+    room_all_amount = 0
+    for single_date in daterange(from_date, to_date):
+        room_all_amount += room.amount_on_date(single_date, guests)
+    result = room_all_amount/delta
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        result = (result*rate.nominal)/exchange
+    except :
+        pass
     return int(result)
 
 @register.simple_tag(takes_context = True)

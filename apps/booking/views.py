@@ -16,6 +16,7 @@ from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxForm
 from nnmware.apps.money.models import Bill
 import time
 from nnmware.core.utils import date_range, convert_to_date
+from nnmware.core.financial import convert_from_client_currency
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
@@ -88,6 +89,10 @@ class HotelList(ListView):
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
         amount_max = self.request.GET.get('amount_max') or None
+        if amount_min:
+            a_min = convert_from_client_currency(self.request, amount_min)
+        if amount_max:
+            a_max = convert_from_client_currency(self.request, amount_max)
         try:
             self.city = City.objects.get(slug=self.kwargs['slug'])
             hotels = Hotel.objects.filter(city=self.city)
@@ -98,7 +103,7 @@ class HotelList(ListView):
                     'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
 
-        if notknowndates <> None and self.city <> None:
+        if (notknowndates <> None and self.city <> None) or (f_date <> None and t_date<> None and self.city <> None):
             result = []
             try:
                 from_date = convert_to_date(f_date)
@@ -122,7 +127,7 @@ class HotelList(ListView):
             r = []
             for h in search_hotel:
                 amount = h.min_current_amount
-                if int(amount_min) < amount < int(amount_max):
+                if int(a_min) < amount < int(a_max):
                     r.append(h.pk)
             search_hotel = Hotel.objects.filter(pk__in=r)
         if options:
@@ -234,6 +239,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
+                f_date, t_date = t_date, f_date
             guests = int(self.request.GET.get('guests'))
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
             context['search'] = 1
@@ -241,6 +247,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             context['from'] = f_date
             context['to'] = t_date
             context['guests'] = guests
+            context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
         except :
             pass
         return context
@@ -279,6 +286,9 @@ class RoomDetail(AttachedImagesMixin, DetailView):
     model = Room
     template_name = 'hotels/room.html'
 
+#    def get_object(self, queryset=None):
+#        return get_object_or_404(Room, pk=self.kwargs['pk'])
+
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(RoomDetail, self).get_context_data(**kwargs)
@@ -288,6 +298,24 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.hotel.get_name
         context['room_options'] = self.object.option.order_by('category')
         context['search_url'] = self.object.hotel.get_absolute_url()
+        try:
+            f_date = self.request.GET.get('from')
+            from_date = convert_to_date(f_date)
+            t_date = self.request.GET.get('to')
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+                f_date, t_date = to_date, from_date
+            guests = int(self.request.GET.get('guests'))
+            context['search'] = 1
+            context['on_date'] = f_date
+            context['from'] = f_date
+            context['to'] = t_date
+            context['guests'] = guests
+            context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
+        except :
+            pass
+
         return context
 
 class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):

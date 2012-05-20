@@ -167,7 +167,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     def get_percent_on_date(self, date):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
 
-    def free_room(self, from_date, to_date, roomcount, with_child=None):
+    def free_room(self, from_date, to_date, roomcount):
         d = to_date-from_date
         to_date = to_date-timedelta(days=1)
         delta = d.days
@@ -310,8 +310,11 @@ class Room(MetaName):
                     result = s_min_price
         return result
 
-    def amount_on_date(self, date):
-        settlements = SettlementVariant.objects.filter(room=self, enabled=True)
+    def amount_on_date(self, date, guests=None):
+        if guests:
+            settlements = SettlementVariant.objects.filter(room=self, enabled=True, settlement=guests)
+        else:
+            settlements = SettlementVariant.objects.filter(room=self, enabled=True)
         result = None
         for s in settlements:
             s_min_price = s.amount_on_date(date)

@@ -313,4 +313,7 @@ def date_range(from_date, to_date):
         result.append(d)
     return result
 
+def daterange(start_date, end_date):
+    for n in range((end_date - start_date).days):
+        yield start_date + timedelta(n)
 
