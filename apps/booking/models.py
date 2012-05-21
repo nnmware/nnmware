@@ -325,6 +325,18 @@ class Room(MetaName):
                     result = s_min_price
         return result
 
+    def amount_on_date_guest_variant(self, date, guests):
+        # Find all settlement variants for room
+        try:
+            s = SettlementVariant.objects.filter(room=self, enabled=True, settlement=guests)[0]
+        except :
+            try:
+                s = SettlementVariant.objects.filter(room=self,
+                    enabled=True, settlement__gte=guests).order_by('settlement')[0]
+            except :
+                s = SettlementVariant.objects.filter(room=self,
+                    enabled=True, settlement__lte=guests).order_by('-settlement')[0]
+        return s.amount_on_date(date),s.settlement
 
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')

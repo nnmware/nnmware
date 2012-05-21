@@ -154,7 +154,7 @@ def room_price_average(context, room):
     delta = (to_date - from_date).days
     room_all_amount = 0
     for single_date in daterange(from_date, to_date):
-        room_all_amount += room.amount_on_date(single_date, guests)
+        room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
     result = room_all_amount/delta
     try:
         currency = Currency.objects.get(code=request.COOKIES['currency'])
@@ -167,6 +167,13 @@ def room_price_average(context, room):
     except :
         pass
     return int(result)
+
+@register.simple_tag(takes_context = True)
+def room_variant(context, room):
+    f_date = context['from']
+    guests = context['guests']
+    from_date = convert_to_date(f_date)
+    return room.amount_on_date_guest_variant(from_date, guests)[1]
 
 @register.simple_tag(takes_context = True)
 def client_currency(context):
