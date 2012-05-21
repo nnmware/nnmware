@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-11 03:36+1100\n"
+"POT-Creation-Date: 2012-05-21 18:43+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,34 +15,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: apps/address/admin.py:11 apps/address/models.py:78
-#: apps/address/models.py:113 apps/booking/models.py:92
-#: apps/booking/models.py:490
+#: apps/address/admin.py:10 apps/address/models.py:78
+#: apps/address/models.py:112 apps/booking/models.py:92
+#: apps/booking/models.py:518
 msgid "City"
 msgstr "Город"
 
-#: apps/address/admin.py:16 apps/address/admin.py:28 apps/address/admin.py:40
-#: apps/address/admin.py:51 apps/address/admin.py:62 apps/booking/admin.py:24
-#: apps/booking/admin.py:36 apps/booking/admin.py:53 apps/booking/admin.py:65
-#: apps/booking/admin.py:77
+#: apps/address/admin.py:15 apps/address/admin.py:27 apps/address/admin.py:39
+#: apps/address/admin.py:50 apps/address/admin.py:61 apps/booking/admin.py:34
+#: apps/booking/admin.py:46 apps/booking/admin.py:63 apps/booking/admin.py:75
+#: apps/booking/admin.py:87
 msgid "English"
 msgstr "Английский"
 
-#: apps/address/admin.py:24 apps/address/models.py:57
+#: apps/address/admin.py:23 apps/address/models.py:57
 msgid "Region"
 msgstr "Регион"
 
-#: apps/address/admin.py:36 apps/address/models.py:36
-#: apps/address/models.py:114 apps/money/models.py:19
+#: apps/address/admin.py:35 apps/address/models.py:36
+#: apps/address/models.py:113 apps/money/models.py:19
 msgid "Country"
 msgstr "Страна"
 
-#: apps/address/admin.py:47 apps/address/admin.py:58
+#: apps/address/admin.py:46 apps/address/admin.py:57
 msgid "Tourism place category"
 msgstr "Категория места туризма"
 
-#: apps/address/admin.py:49 apps/address/admin.py:60 apps/booking/admin.py:34
-#: apps/booking/admin.py:51 apps/booking/admin.py:63 apps/booking/admin.py:75
+#: apps/address/admin.py:48 apps/address/admin.py:59 apps/booking/admin.py:44
+#: apps/booking/admin.py:61 apps/booking/admin.py:73 apps/booking/admin.py:85
 #: apps/userprofile/admin.py:13 apps/video/admin.py:13
 msgid "Addons"
 msgstr "Дополнения"
@@ -71,17 +71,16 @@ msgstr "Категории мест туризма"
 msgid "Tourism category"
 msgstr "Категория мест туризма"
 
-#: apps/address/models.py:115 apps/booking/models.py:94
-#: apps/booking/models.py:491
+#: apps/address/models.py:114 apps/booking/models.py:94
+#: apps/booking/models.py:519
 msgid "Address"
 msgstr "Адрес"
 
-#: apps/address/models.py:116 apps/booking/models.py:95
+#: apps/address/models.py:115 apps/booking/models.py:95
 msgid "Address(English)"
 msgstr "Адрес(Англ)"
 
-#: apps/address/models.py:120 apps/address/models.py:121
-#: apps/booking/admin.py:22
+#: apps/address/models.py:119 apps/address/models.py:120
 msgid "Tourism"
 msgstr "Туризм"
 
@@ -146,7 +145,7 @@ msgid "ArticleCategories"
 msgstr "Категории статей"
 
 #: apps/article/models.py:17 apps/board/models.py:17
-#: apps/booking/models.py:244 apps/topic/models.py:20
+#: apps/booking/models.py:255 apps/topic/models.py:20
 msgid "Category"
 msgstr "Категория"
 
@@ -219,7 +218,7 @@ msgid "Boards"
 msgstr "Объявления"
 
 #: apps/board/models.py:26 apps/booking/models.py:93
-#: apps/booking/models.py:493
+#: apps/booking/models.py:521
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
@@ -228,7 +227,7 @@ msgid "ICQ"
 msgstr "Аська"
 
 #: apps/board/models.py:29 apps/booking/models.py:96
-#: apps/booking/models.py:387 apps/booking/models.py:494
+#: apps/booking/models.py:415 apps/booking/models.py:522
 msgid "Phone"
 msgstr "Телефон"
 
@@ -244,76 +243,84 @@ msgstr "Контакт только через сайт"
 msgid "view"
 msgstr "просмотр"
 
-#: apps/booking/admin.py:12 apps/booking/models.py:83
-#: apps/booking/models.py:114 apps/booking/models.py:284
-#: apps/booking/models.py:382
+#: apps/booking/admin.py:23 apps/booking/models.py:83
+#: apps/booking/models.py:113 apps/booking/models.py:295
+#: apps/booking/models.py:410
 msgid "Hotel"
 msgstr "Отель"
 
-#: apps/booking/admin.py:16
+#: apps/booking/admin.py:28
 msgid "Contacts"
 msgstr "Контакты"
 
-#: apps/booking/admin.py:18
+#: apps/booking/admin.py:30
 msgid "Hotel admins"
 msgstr "Администраторы отеля"
 
-#: apps/booking/admin.py:20
+#: apps/booking/admin.py:32
 msgid "Hotel options"
 msgstr "Опции отеля"
 
-#: apps/booking/admin.py:32 apps/booking/models.py:47
+#: apps/booking/admin.py:42 apps/booking/models.py:47
 msgid "Hotel Option"
 msgstr "Опция отеля"
 
-#: apps/booking/admin.py:49 apps/booking/models.py:248
+#: apps/booking/admin.py:59 apps/booking/models.py:259
 msgid "Room Option"
 msgstr "Опция номера"
 
-#: apps/booking/admin.py:61 apps/booking/models.py:240
+#: apps/booking/admin.py:71 apps/booking/models.py:251
 msgid "Room Option Category"
 msgstr "Категория опций номера"
 
-#: apps/booking/admin.py:73 apps/booking/models.py:37
+#: apps/booking/admin.py:83 apps/booking/models.py:37
 msgid "Hotel Option Category"
 msgstr "Категория опций отеля"
 
-#: apps/booking/admin.py:84
+#: apps/booking/admin.py:94
 msgid "Booking Event"
 msgstr "Событие бронирования"
 
-#: apps/booking/admin.py:92
+#: apps/booking/admin.py:102
 msgid "Request for add Hotel"
 msgstr "Заявка на добавление Отеля"
 
-#: apps/booking/admin.py:103 apps/booking/models.py:425
+#: apps/booking/admin.py:113 apps/booking/models.py:453
 msgid "Agent Percent"
 msgstr "Агентский процент"
 
-#: apps/booking/admin.py:113 apps/booking/models.py:337
-#: apps/booking/models.py:381 apps/booking/models.py:471
+#: apps/booking/admin.py:123 apps/booking/models.py:363
+#: apps/booking/models.py:409 apps/booking/models.py:499
 msgid "Settlement Variant"
 msgstr "Вариант поселения"
 
-#: apps/booking/admin.py:119
+#: apps/booking/admin.py:129
 msgid "Availability"
 msgstr "Наличие"
 
-#: apps/booking/admin.py:125 apps/booking/models.py:474
+#: apps/booking/admin.py:135 apps/booking/models.py:502
 msgid "Place Price"
 msgstr "Стоимость места"
 
-#: apps/booking/ajax.py:47
+#: apps/booking/ajax.py:49
 msgid "You are not allowed change room rates."
 msgstr "Вы не имеете прав изменять тарифы номера"
 
-#: apps/booking/ajax.py:63 apps/booking/ajax.py:76
+#: apps/booking/ajax.py:65 apps/booking/ajax.py:78
 msgid "You are not allowed change room variants."
 msgstr "Вы не имеете прав изменять варианты номера"
 
-#: apps/booking/ajax.py:139
+#: apps/booking/ajax.py:141
 msgid "You are not allowed add hotel."
 msgstr "Вы не имеете прав"
+
+#: apps/booking/ajax.py:149
+msgid "You are superuser and may add review."
+msgstr "Вы суперпользователь и можете добавлять отзыв"
+
+#: apps/booking/ajax.py:151
+msgid "Thanks for you review!"
+msgstr "Спасибо за Ваш отзыв!"
 
 #: apps/booking/forms.py:67 apps/userprofile/forms.py:25
 msgid "This field is required"
@@ -355,7 +362,7 @@ msgstr "Категории опций отеля"
 msgid "Category option"
 msgstr "Категория опции"
 
-#: apps/booking/models.py:43 apps/booking/models.py:245
+#: apps/booking/models.py:43 apps/booking/models.py:256
 msgid "In search form?"
 msgstr "В форме поиска?"
 
@@ -367,20 +374,20 @@ msgstr "Закреплено в форме поиска?"
 msgid "Hotel Options"
 msgstr "Опции отеля"
 
-#: apps/booking/models.py:52 apps/booking/models.py:253
+#: apps/booking/models.py:52 apps/booking/models.py:264
 #, python-format
 msgid "%(name)s :: %(category)s"
 msgstr ""
 
-#: apps/booking/models.py:54 apps/booking/models.py:255
+#: apps/booking/models.py:54 apps/booking/models.py:266
 #, python-format
 msgid "%(name)s"
 msgstr ""
 
 #: apps/booking/models.py:66 apps/booking/models.py:82
-#: apps/booking/models.py:270 apps/booking/models.py:370
-#: apps/money/models.py:64 apps/money/models.py:113 core/models.py:641
-#: core/models.py:716
+#: apps/booking/models.py:281 apps/booking/models.py:397
+#: apps/money/models.py:64 apps/money/models.py:113 core/models.py:642
+#: core/models.py:717
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -424,11 +431,11 @@ msgstr "Квартира"
 msgid "Register from"
 msgstr "Регистрация с"
 
-#: apps/booking/models.py:97 apps/booking/models.py:495
+#: apps/booking/models.py:97 apps/booking/models.py:523
 msgid "Fax"
 msgstr "Факс"
 
-#: apps/booking/models.py:98 apps/booking/models.py:497
+#: apps/booking/models.py:98 apps/booking/models.py:525
 #: apps/userprofile/models.py:46
 msgid "Website"
 msgstr "Вебсайт"
@@ -445,7 +452,7 @@ msgstr "Контактное лицо"
 msgid "Count of Rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:103 apps/booking/models.py:499
+#: apps/booking/models.py:103 apps/booking/models.py:527
 msgid "Count of Stars"
 msgstr "Количество звезд"
 
@@ -462,229 +469,229 @@ msgid "Point of hotel"
 msgstr "Балл отеля"
 
 #: apps/booking/models.py:107
-msgid "Tourism places"
-msgstr "Туристические места"
-
-#: apps/booking/models.py:108
 msgid "Best offer"
 msgstr "Лучшее предложение"
 
-#: apps/booking/models.py:109
+#: apps/booking/models.py:108
 msgid "In top 10"
 msgstr "В топ 10"
 
-#: apps/booking/models.py:110
+#: apps/booking/models.py:109
 msgid "Current amount"
 msgstr "Текущая стоимость"
 
-#: apps/booking/models.py:115
+#: apps/booking/models.py:114
 msgid "Hotels"
 msgstr "Отели"
 
-#: apps/booking/models.py:241
+#: apps/booking/models.py:252
 msgid "Room Option Categories"
 msgstr "Категории опций номера"
 
-#: apps/booking/models.py:249
+#: apps/booking/models.py:260
 msgid "Room Options"
 msgstr "Опции номера"
 
-#: apps/booking/models.py:271
+#: apps/booking/models.py:282
 msgid "One"
 msgstr "Одно"
 
-#: apps/booking/models.py:272
+#: apps/booking/models.py:283
 msgid "Two"
 msgstr "Два"
 
-#: apps/booking/models.py:273
+#: apps/booking/models.py:284
 msgid "Three"
 msgstr "Три"
 
-#: apps/booking/models.py:274
+#: apps/booking/models.py:285
 msgid "Four"
 msgstr "Четыре"
 
-#: apps/booking/models.py:275
+#: apps/booking/models.py:286
 msgid "Five"
 msgstr "Пять"
 
-#: apps/booking/models.py:276
+#: apps/booking/models.py:287
 msgid "Six"
 msgstr "Шесть"
 
-#: apps/booking/models.py:277
+#: apps/booking/models.py:288
 msgid "Seven"
 msgstr "Семь"
 
-#: apps/booking/models.py:278
+#: apps/booking/models.py:289
 msgid "Eight"
 msgstr "Восемь"
 
-#: apps/booking/models.py:283
+#: apps/booking/models.py:294
 msgid "Availability options"
 msgstr "Доступные опции"
 
-#: apps/booking/models.py:285
+#: apps/booking/models.py:296
 msgid "Place Count"
 msgstr "Количество мест"
 
-#: apps/booking/models.py:288 apps/booking/models.py:332
-#: apps/booking/models.py:453
+#: apps/booking/models.py:299 apps/booking/models.py:358
+#: apps/booking/models.py:481
 msgid "Room"
 msgstr "Номер"
 
-#: apps/booking/models.py:289
+#: apps/booking/models.py:300
 msgid "Rooms"
 msgstr "Номера"
 
-#: apps/booking/models.py:292
+#: apps/booking/models.py:303
 #, python-format
 msgid "%(room)s :: %(places)s :: %(hotel)s"
 msgstr ""
 
-#: apps/booking/models.py:333
+#: apps/booking/models.py:359
 msgid "Settlement"
 msgstr "Заселения"
 
-#: apps/booking/models.py:334
+#: apps/booking/models.py:360
 msgid "Enabled"
 msgstr "Включено"
 
-#: apps/booking/models.py:338
+#: apps/booking/models.py:364
 msgid "Settlements Variants"
 msgstr "Варианты заселения"
 
-#: apps/booking/models.py:341
+#: apps/booking/models.py:367
 #, python-format
 msgid "Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s"
 msgstr "Заселение -> %(settlement)s в %(room)s :: %(places)s :: %(hotel)s"
 
-#: apps/booking/models.py:371 apps/money/models.py:65
+#: apps/booking/models.py:398 apps/money/models.py:65
 msgid "Accepted"
 msgstr "Принято"
 
-#: apps/booking/models.py:372 apps/money/models.py:115
+#: apps/booking/models.py:399 apps/money/models.py:115
 msgid "Paid"
 msgstr "Оплачено"
 
-#: apps/booking/models.py:373 apps/money/models.py:67 apps/money/models.py:116
+#: apps/booking/models.py:400 apps/money/models.py:67 apps/money/models.py:116
 msgid "Cancelled"
 msgstr "Аннулировано"
 
-#: apps/booking/models.py:377 apps/booking/models.py:488
+#: apps/booking/models.py:401 apps/money/models.py:66
+msgid "Completed"
+msgstr "Завершено"
+
+#: apps/booking/models.py:405 apps/booking/models.py:516
 #: apps/money/models.py:75 apps/money/models.py:124
 msgid "User"
 msgstr "Пользователь"
 
-#: apps/booking/models.py:378
+#: apps/booking/models.py:406
 msgid "Creation date"
 msgstr "Дата создания"
 
-#: apps/booking/models.py:379
+#: apps/booking/models.py:407
 msgid "From"
 msgstr "С"
 
-#: apps/booking/models.py:380
+#: apps/booking/models.py:408
 msgid "To"
 msgstr "До"
 
-#: apps/booking/models.py:383
+#: apps/booking/models.py:411
 msgid "Booking status"
 msgstr "Статус бронирования"
 
-#: apps/booking/models.py:384 apps/userprofile/forms.py:252
+#: apps/booking/models.py:412 apps/userprofile/forms.py:252
 msgid "First name"
 msgstr "Имя"
 
-#: apps/booking/models.py:385
+#: apps/booking/models.py:413
 msgid "Middle name"
 msgstr "Отчество"
 
-#: apps/booking/models.py:386
+#: apps/booking/models.py:414
 msgid "Last name"
 msgstr "Фамилия"
 
-#: apps/booking/models.py:388 apps/userprofile/models.py:188
+#: apps/booking/models.py:416 apps/userprofile/models.py:188
 msgid "E-mail"
 msgstr "E-mail"
 
-#: apps/booking/models.py:389
+#: apps/booking/models.py:417
 msgid "Unique ID"
 msgstr ""
 
-#: apps/booking/models.py:390
+#: apps/booking/models.py:418
 msgid "Commission"
 msgstr "Комиссия"
 
-#: apps/booking/models.py:391
+#: apps/booking/models.py:419
 msgid "Hotel Sum"
 msgstr "Сумма отеля"
 
-#: apps/booking/models.py:396
+#: apps/booking/models.py:424
 msgid "Booking"
 msgstr "Бронирование"
 
-#: apps/booking/models.py:397
+#: apps/booking/models.py:425
 msgid "Bookings"
 msgstr "Бронирования"
 
-#: apps/booking/models.py:421
+#: apps/booking/models.py:449
 msgid "From date"
 msgstr "С даты"
 
-#: apps/booking/models.py:422
+#: apps/booking/models.py:450
 msgid "Percent"
 msgstr "Процент"
 
-#: apps/booking/models.py:426
+#: apps/booking/models.py:454
 msgid "Agent Percents"
 msgstr "Агентские проценты"
 
-#: apps/booking/models.py:429
+#: apps/booking/models.py:457
 #, python-format
 msgid "For %(hotel)s on date %(date)s percent is %(percent)s"
 msgstr "Для %(hotel)s на дату %(date)s процент - %(percent)s"
 
-#: apps/booking/models.py:438
+#: apps/booking/models.py:466
 msgid "Published by"
 msgstr "Опубликовано"
 
-#: apps/booking/models.py:439
+#: apps/booking/models.py:467
 msgid "Review"
 msgstr "Отзыв"
 
-#: apps/booking/models.py:443
+#: apps/booking/models.py:471
 msgid "Client review"
 msgstr "Отзыв клиента"
 
-#: apps/booking/models.py:444
+#: apps/booking/models.py:472
 msgid "Client reviews"
 msgstr "Отзывы клиентов"
 
-#: apps/booking/models.py:447
+#: apps/booking/models.py:475
 #, python-format
 msgid "Review client %(client)s for hotel %(hotel)s is -> %(review)s"
 msgstr "Отзыв клиента %(client)s для отеля %(hotel)s -> %(review)s"
 
-#: apps/booking/models.py:454 apps/booking/models.py:470
+#: apps/booking/models.py:482 apps/booking/models.py:498
 #: apps/money/models.py:34
 msgid "On date"
 msgstr "На дату"
 
-#: apps/booking/models.py:455
+#: apps/booking/models.py:483
 msgid "Count of places"
 msgstr "Количество мест"
 
-#: apps/booking/models.py:458
+#: apps/booking/models.py:486
 msgid "Availability Place"
 msgstr "Наличие места"
 
-#: apps/booking/models.py:459
+#: apps/booking/models.py:487
 msgid "Availabilities Places"
 msgstr "Наличия мест"
 
-#: apps/booking/models.py:462
+#: apps/booking/models.py:490
 #, python-format
 msgid ""
 "Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> "
@@ -692,11 +699,11 @@ msgid ""
 msgstr ""
 "Наличие мест %(place)s для отеля %(hotel)s на дату %(date)s ->  %(count)s"
 
-#: apps/booking/models.py:475
+#: apps/booking/models.py:503
 msgid "Places Prices"
 msgstr "Стоимости мест"
 
-#: apps/booking/models.py:478
+#: apps/booking/models.py:506
 #, python-format
 msgid ""
 "Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> "
@@ -705,70 +712,70 @@ msgstr ""
 "Стоимость заселения %(settlement)s для отеля %(hotel)s на дату %(date)s -> "
 "%(price)s%(currency)s"
 
-#: apps/booking/models.py:489
+#: apps/booking/models.py:517
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:492 apps/money/models.py:20 core/models.py:255
+#: apps/booking/models.py:520 apps/money/models.py:20 core/models.py:255
 #: core/models.py:289
 msgid "Name"
 msgstr "Имя"
 
-#: apps/booking/models.py:496
+#: apps/booking/models.py:524
 msgid "Contact email"
 msgstr "Контактный емейл"
 
-#: apps/booking/models.py:498
+#: apps/booking/models.py:526
 msgid "Count of rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:502
+#: apps/booking/models.py:530
 msgid "Request for add hotel"
 msgstr "Заявка на добавление отеля"
 
-#: apps/booking/models.py:503
+#: apps/booking/models.py:531
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
-#: apps/booking/views.py:181 apps/booking/views.py:207
+#: apps/booking/views.py:192 apps/booking/views.py:216
 msgid "list of hotels"
 msgstr "список отелей"
 
-#: apps/booking/views.py:208
+#: apps/booking/views.py:217
 msgid "admin of hotels"
 msgstr "администратор отелей"
 
-#: apps/booking/views.py:298 apps/booking/views.py:380
-#: apps/booking/views.py:519
+#: apps/booking/views.py:332 apps/booking/views.py:414
+#: apps/booking/views.py:554
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:436 apps/booking/views.py:544
+#: apps/booking/views.py:471 apps/booking/views.py:579
 msgid "bookings"
 msgstr "бронирования"
 
-#: apps/booking/views.py:450
+#: apps/booking/views.py:485
 msgid "bills"
 msgstr "счета"
 
-#: apps/booking/views.py:465
+#: apps/booking/views.py:500
 msgid "request for add hotel"
 msgstr "заявка на добавление отеля"
 
-#: apps/booking/views.py:486
+#: apps/booking/views.py:521
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:507 apps/booking/views.py:640
+#: apps/booking/views.py:542 apps/booking/views.py:675
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:555 apps/booking/views.py:657
-#: apps/booking/views.py:669
+#: apps/booking/views.py:590 apps/booking/views.py:692
+#: apps/booking/views.py:704
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:570
+#: apps/booking/views.py:605
 msgid "booking"
 msgstr "бронирование"
 
@@ -820,10 +827,6 @@ msgstr "Курсы обмена валют"
 msgid "Amount"
 msgstr "Сумма"
 
-#: apps/money/models.py:66
-msgid "Completed"
-msgstr "Завершено"
-
 #: apps/money/models.py:77
 msgid "Object Content Type"
 msgstr "Тип контента объекта"
@@ -874,7 +877,7 @@ msgid "Bill status"
 msgstr "Статус счета"
 
 #: apps/money/models.py:132 apps/video/models.py:18 core/admin.py:39
-#: core/admin.py:57 core/models.py:56 core/models.py:292 core/models.py:406
+#: core/admin.py:57 core/models.py:56 core/models.py:292 core/models.py:407
 msgid "Description"
 msgstr "Описание"
 
@@ -890,10 +893,6 @@ msgid ""
 msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(target)s :: Сумма: "
 "%(amount)s %(currency)s"
-
-#: apps/money/models.py:180
-msgid "Rub"
-msgstr "Руб"
 
 #: apps/topic/models.py:15
 msgid "TopicCategory"
@@ -1219,7 +1218,7 @@ msgstr "Код внедрения"
 msgid "Published"
 msgstr "Опубликовано"
 
-#: apps/video/models.py:33 core/models.py:643
+#: apps/video/models.py:33 core/models.py:644
 msgid "Video"
 msgstr "Видео"
 
@@ -1240,15 +1239,15 @@ msgstr "nnmware"
 msgid "Meta"
 msgstr "Мета"
 
-#: core/admin.py:88 core/models.py:428
+#: core/admin.py:88 core/models.py:429
 msgid "Doc"
 msgstr "Документ"
 
-#: core/admin.py:99 core/models.py:472
+#: core/admin.py:99 core/models.py:473
 msgid "Pic"
 msgstr "Изображение"
 
-#: core/admin.py:135 core/models.py:673
+#: core/admin.py:135 core/models.py:674
 msgid "Recipient"
 msgstr "Получатель"
 
@@ -1264,7 +1263,7 @@ msgstr "Создает опционально сообщение для всех
 msgid "All users"
 msgstr "Все пользователи"
 
-#: core/admin.py:160 core/models.py:708
+#: core/admin.py:160 core/models.py:709
 msgid "Message"
 msgstr "Сообщение"
 
@@ -1300,7 +1299,7 @@ msgstr "Тэги"
 msgid "Max number or tags - %s."
 msgstr "Максимальное количество тегов - %s."
 
-#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:565
+#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:566
 msgid "comment"
 msgstr "Комментарий"
 
@@ -1360,15 +1359,15 @@ msgstr "Заголовок"
 msgid "URL"
 msgstr "URL"
 
-#: core/models.py:57 core/models.py:567
+#: core/models.py:57 core/models.py:568
 msgid "Status"
 msgstr "Статус"
 
-#: core/models.py:58 core/models.py:405
+#: core/models.py:58 core/models.py:406
 msgid "Author"
 msgstr "Автор"
 
-#: core/models.py:59 core/models.py:404
+#: core/models.py:59 core/models.py:405
 msgid "Published from"
 msgstr "Опубликовано от"
 
@@ -1408,7 +1407,7 @@ msgstr "Смотреть на сайте"
 msgid "Parent"
 msgstr "Родитель"
 
-#: core/models.py:154 core/models.py:408
+#: core/models.py:154 core/models.py:409
 msgid "Ordering"
 msgstr "Упорядочить"
 
@@ -1436,7 +1435,7 @@ msgstr "Родитель дерева"
 msgid "You must not save a category in itself!"
 msgstr "Вы не можете сохранить категорию в саму себя!"
 
-#: core/models.py:262 core/models.py:644
+#: core/models.py:262 core/models.py:645
 msgid "Tag"
 msgstr "Теги"
 
@@ -1472,152 +1471,152 @@ msgstr "Долгота"
 msgid "Latitude"
 msgstr "Широта"
 
-#: core/models.py:398 core/models.py:424
+#: core/models.py:399 core/models.py:425
 msgid "File"
 msgstr "Файл"
 
-#: core/models.py:399 core/models.py:465
+#: core/models.py:400 core/models.py:466
 msgid "Image"
 msgstr "Изображение"
 
-#: core/models.py:408
+#: core/models.py:409
 msgid "Override alphabetical order in list display"
 msgstr "Заменять сортировку по алфавиту в просмотре списка"
 
-#: core/models.py:409
+#: core/models.py:410
 msgid "Is locked"
 msgstr "Блокировано"
 
-#: core/models.py:415
+#: core/models.py:416
 msgid "IP"
 msgstr ""
 
-#: core/models.py:416
+#: core/models.py:417
 msgid "User Agent"
 msgstr ""
 
-#: core/models.py:423
+#: core/models.py:424
 msgid "Doc type"
 msgstr "Тип документа"
 
-#: core/models.py:429
+#: core/models.py:430
 msgid "Docs"
 msgstr "Документы"
 
-#: core/models.py:466
+#: core/models.py:467
 msgid "Source"
 msgstr "Источник"
 
-#: core/models.py:473
+#: core/models.py:474
 msgid "Pics"
 msgstr "Изображения"
 
-#: core/models.py:476
+#: core/models.py:477
 #, python-format
 msgid "Pic for %(type)s: %(obj)s"
 msgstr "Изображение для %(type)s: %(obj)s"
 
-#: core/models.py:562
+#: core/models.py:563
 msgid "date/time published"
 msgstr "дата/время публикации"
 
-#: core/models.py:563
+#: core/models.py:564
 msgid "date/time updated"
 msgstr "дата/время обновления"
 
-#: core/models.py:569
+#: core/models.py:570
 msgid "IP address"
 msgstr "IP адрес"
 
-#: core/models.py:608
+#: core/models.py:609
 msgid "Threaded Comment"
 msgstr "Древовидный комментарий"
 
-#: core/models.py:609
+#: core/models.py:610
 msgid "Threaded Comments"
 msgstr "Древовидные комментарии"
 
-#: core/models.py:627
+#: core/models.py:628
 msgid "Follow"
 msgstr "Следование"
 
-#: core/models.py:628
+#: core/models.py:629
 msgid "Follows"
 msgstr "Следования"
 
-#: core/models.py:642 core/models.py:717
+#: core/models.py:643 core/models.py:718
 msgid "System"
 msgstr "Система"
 
-#: core/models.py:645
+#: core/models.py:646
 msgid "Account"
 msgstr "Счет"
 
-#: core/models.py:646
+#: core/models.py:647
 msgid "Profile"
 msgstr "Профиль"
 
-#: core/models.py:655
+#: core/models.py:656
 msgid "Notice Type"
 msgstr "Тип уведомления"
 
-#: core/models.py:663
+#: core/models.py:664
 msgid "Notice"
 msgstr "Уведомление"
 
-#: core/models.py:664
+#: core/models.py:665
 msgid "Notices"
 msgstr "Уведомления"
 
-#: core/models.py:670
+#: core/models.py:671
 msgid "Subject"
 msgstr "Тема"
 
-#: core/models.py:671
+#: core/models.py:672
 msgid "Body"
 msgstr "Содержание"
 
-#: core/models.py:672
+#: core/models.py:673
 msgid "Sender"
 msgstr "Отправитель"
 
-#: core/models.py:674
+#: core/models.py:675
 msgid "Parent message"
 msgstr "Родительское сообщениe"
 
-#: core/models.py:675
+#: core/models.py:676
 msgid "sent at"
 msgstr "отослано в"
 
-#: core/models.py:676
+#: core/models.py:677
 msgid "read at"
 msgstr "прочитано в"
 
-#: core/models.py:677
+#: core/models.py:678
 msgid "replied at"
 msgstr "отвечено в"
 
-#: core/models.py:678
+#: core/models.py:679
 msgid "Sender deleted at"
 msgstr "Отправитель удален в"
 
-#: core/models.py:679
+#: core/models.py:680
 msgid "Recipient deleted at"
 msgstr "Получатель удален в"
 
-#: core/models.py:709
+#: core/models.py:710
 msgid "Messages"
 msgstr "Сообщения"
 
-#: core/models.py:725
+#: core/models.py:726
 msgid "Action Type"
 msgstr "Тип действия"
 
-#: core/models.py:732
+#: core/models.py:733
 msgid "Action"
 msgstr "Действие"
 
-#: core/models.py:733
+#: core/models.py:734
 msgid "Actions"
 msgstr "Действия"
 
@@ -1633,7 +1632,7 @@ msgstr "Изменить:"
 msgid "Delete"
 msgstr "Удалить"
 
-#: core/templatetags/booking_tags.py:154
+#: core/templatetags/booking_tags.py:194
 msgid "rub"
 msgstr "руб"
 
@@ -1648,6 +1647,12 @@ msgid ""
 msgstr ""
 "Вам необходимо указать только размер целым числом (обе стороны будут "
 "одинаковы) и, необязательно, имя пользователя."
+
+#~ msgid "Tourism places"
+#~ msgstr "Туристические места"
+
+#~ msgid "Rub"
+#~ msgstr "Руб"
 
 #~ msgid "Captcha"
 #~ msgstr "Антибот"
