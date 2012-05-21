@@ -240,6 +240,11 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
             all_places.append(p.id)
         return Tourism.objects.filter(pk__in=all_places).order_by('category')
 
+    def complete_booking_users_id(self):
+        # TODO Check status of bookings
+        users_id = Booking.objects.filter(hotel=self).values_list('user',flat=True)
+        return users_id
+
 class RoomOptionCategory(MetaName):
 
     class Meta:
@@ -386,12 +391,14 @@ STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1
 STATUS_PAID = 2
 STATUS_CANCELED = 3
+STATUS_COMPLETED = 4
 
 STATUS_CHOICES = (
     (STATUS_UNKNOWN, _("Unknown")),
     (STATUS_ACCEPTED, _("Accepted")),
     (STATUS_PAID, _("Paid")),
     (STATUS_CANCELED, _("Cancelled")),
+    (STATUS_COMPLETED, _("Completed")),
     )
 
 class Booking(MoneyBase, MetaIP):

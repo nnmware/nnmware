@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
+from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking
 from nnmware.apps.money.models import Currency
@@ -143,8 +144,12 @@ def hotel_add(request):
 def client_review(request, pk):
     try:
         hotel = Hotel.objects.get(id=pk)
-        guests = Booking.objects.filter(hotel=hotel,to_date__gte=datetime.now()).values_list('user', flat=True)
-        if request.user.pk not in guests or not request.user.is_authenticated():
+#        guests = Booking.objects.filter(hotel=hotel,to_date__gte=datetime.now()).values_list('user', flat=True)
+        if request.user.is_superuser:
+            message = _('You are superuser and may add review.')
+        elif request.user.pk in hotel.complete_booking_users_id:
+            message = _('Thanks for you review!')
+        else:
             raise UserNotAllowed
         if Review.objects.filter(hotel=hotel,user=request.user).count():
             raise UserNotAllowed
@@ -164,7 +169,7 @@ def client_review(request, pk):
         r.prices = prices
         r.review = review
         r.save()
-        payload = {'success': True}
+        payload = {'success': True,'message':message}
     except UserNotAllowed:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)

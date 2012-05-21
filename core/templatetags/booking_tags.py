@@ -238,3 +238,4 @@ def hotels_moscow_count():
     city = City.objects.get(slug='moscow')
     result = Hotel.objects.filter(city=city).count()
     return result
+
