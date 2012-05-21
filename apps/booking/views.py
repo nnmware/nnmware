@@ -116,9 +116,9 @@ class HotelList(ListView):
                 for hotel in hotels:
                     if hotel.free_room(from_date,to_date,guests):
                         result.append(hotel.pk)
+                search_hotel = Hotel.objects.filter(pk__in=result)
             except :
-                pass
-            search_hotel = Hotel.objects.filter(pk__in=result)
+                search_hotel = hotels
             self.search = 1
         else :
             self.search = 0
