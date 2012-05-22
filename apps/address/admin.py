@@ -67,10 +67,11 @@ class StationMetroAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Station of metro"), {"fields": [("name",'address'),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled','country','city'),
-        ]}),
-        (_("English"), {"classes": ("collapse closed",),
-                        "fields": [("name_en",),("description_en",) , ]}),)
+#        (_("Addons"), {"fields": [( 'enabled','country','city'),
+#        ]}),
+#        (_("English"), {"classes": ("collapse closed",),
+#                        "fields": [("name_en",),("description_en",) , ]}),
+        )
 
 admin.site.register(City, CityAdmin)
 admin.site.register(Region, RegionAdmin)
