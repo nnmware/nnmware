@@ -84,7 +84,7 @@ class HotelList(ListView):
         options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         notknowndates = self.request.GET.get('notknowndates') or None
-        guests = self.request.GET.get('guests') or None
+        guests = int(self.request.GET.get('guests')) or None
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
@@ -109,10 +109,11 @@ class HotelList(ListView):
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
-                    self.search_data = {'from_date':t_date, 'to_date':f_date}
+                    self.search_data = {'from_date':t_date, 'to_date':f_date, 'guests':guests}
                     from_date, to_date = to_date, from_date
                 else:
-                    self.search_data = {'from_date':f_date, 'to_date':t_date}
+                    self.search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+                self.search_data['city'] = self.city
                 for hotel in hotels:
                     if hotel.free_room(from_date,to_date,guests):
                         result.append(hotel.pk)
@@ -242,11 +243,10 @@ class HotelDetail(AttachedImagesMixin, DetailView):
                 f_date, t_date = t_date, f_date
             guests = int(self.request.GET.get('guests'))
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
+            search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+            search_data['city'] = self.object.city
             context['search'] = 1
-            context['on_date'] = f_date
-            context['from'] = f_date
-            context['to'] = t_date
-            context['guests'] = guests
+            context['search_data'] = search_data
             context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
         except :
             pass

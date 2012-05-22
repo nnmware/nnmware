@@ -146,9 +146,10 @@ def room_price_date(context, room, on_date):
 @register.simple_tag(takes_context = True)
 def room_price_average(context, room):
     request = context['request']
-    f_date = context['from']
-    t_date = context['to']
-    guests = context['guests']
+    search_data = context['search_data']
+    f_date = search_data['from_date']
+    t_date = search_data['to_date']
+    guests = search_data['guests']
     from_date = convert_to_date(f_date)
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
@@ -170,8 +171,9 @@ def room_price_average(context, room):
 
 @register.simple_tag(takes_context = True)
 def room_variant(context, room):
-    f_date = context['from']
-    guests = context['guests']
+    search_data = context['search_data']
+    f_date = search_data['from_date']
+    guests = search_data['guests']
     from_date = convert_to_date(f_date)
     return room.amount_on_date_guest_variant(from_date, guests)[1]
 
