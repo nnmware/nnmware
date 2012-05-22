@@ -72,7 +72,6 @@ class StationMetroAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 
-
 admin.site.register(City, CityAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(Country, CountryAdmin)
