@@ -142,7 +142,7 @@ class StationMetro(Address, MetaGeo):
     address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
-        unique_together = (('name', 'city'),)
+#        unique_together = (('name', 'city'),)
         verbose_name = _("Station of metro")
         verbose_name_plural = _("Stations of metro")
 
