@@ -146,8 +146,8 @@ class StationMetro(Address, MetaGeo):
         verbose_name = _("Station of metro")
         verbose_name_plural = _("Stations of metro")
 
-    def __unicode__(self):
-        return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
+#    def __unicode__(self):
+#        return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
