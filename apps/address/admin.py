@@ -62,7 +62,7 @@ class TourismAdmin(admin.ModelAdmin):
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class StationMetroAdmin(admin.ModelAdmin):
-    list_display = ('name','country','city','address')
+    list_display = ('name',)
     search_fields = ('name',)
     fieldsets = (
         (_("Station of metro"), {"fields": [("name",'address'),
