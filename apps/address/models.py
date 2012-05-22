@@ -134,3 +134,20 @@ class Tourism(Address, MetaGeo):
             if Tourism.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         super(Tourism, self).save(*args, **kwargs)
+
+class StationMetro(Address, MetaGeo):
+    city = models.ForeignKey(City, verbose_name=_('City'))
+    country = models.ForeignKey(Country, verbose_name=_('Country'))
+    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
+    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
+
+    class Meta:
+        unique_together = (('name', 'city'),)
+        verbose_name = _("Station of metro")
+        verbose_name_plural = _("Stations of metro")
+
+    def __unicode__(self):
+        return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
+
+    def fulladdress(self):
+        return u"%s, %s" % (self.address, self.city)

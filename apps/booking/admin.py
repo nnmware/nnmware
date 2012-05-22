@@ -7,8 +7,8 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 #Flatpages
 class FlatPageAdmin(FlatPageAdmin):
     class Media:
-	js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js', 
-		'/static/grappelli/tinymce_setup/tinymce_setup.js',]
+        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+		    '/static/grappelli/tinymce_setup/tinymce_setup.js',]
 
 # We have to unregister it, and then reregister
 admin.site.unregister(FlatPage)

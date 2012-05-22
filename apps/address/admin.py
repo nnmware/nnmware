@@ -61,9 +61,21 @@ class TourismAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 
+class StationMetroAdmin(admin.ModelAdmin):
+    list_display = ('name','country','city','address')
+    search_fields = ('name',)
+    fieldsets = (
+        (_("Station of metro"), {"fields": [("name",'address'),
+            ('description',)]}),
+        (_("Addons"), {"fields": [( 'enabled','country','city'),
+        ]}),
+        (_("English"), {"classes": ("collapse closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
+
 
 admin.site.register(City, CityAdmin)
 admin.site.register(Region, RegionAdmin)
 admin.site.register(Country, CountryAdmin)
 admin.site.register(TourismCategory, TourismCategoryAdmin)
 admin.site.register(Tourism, TourismAdmin)
+admin.site.register(StationMetro, StationMetroAdmin)
