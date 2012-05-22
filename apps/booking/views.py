@@ -103,7 +103,7 @@ class HotelList(ListView):
                     'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
                     'tab':'name'}
 
-        if (notknowndates <> None and self.city <> None) or (f_date <> None and t_date<> None and self.city <> None):
+        if (notknowndates and self.city ) or (f_date and t_date and self.city):
             result = []
             try:
                 from_date = convert_to_date(f_date)

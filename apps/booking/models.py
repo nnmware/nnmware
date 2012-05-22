@@ -167,7 +167,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     def get_percent_on_date(self, date):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
 
-    def free_room(self, from_date, to_date, roomcount):
+    def free_room_old(self, from_date, to_date, roomcount):
         d = to_date-from_date
         to_date = to_date-timedelta(days=1)
         delta = d.days
@@ -178,6 +178,23 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
             if avail == delta:
                 result.append(room)
         return result
+
+    def free_room(self, from_date, to_date, roomcount):
+        result = []
+        for room in self.room_set.all():
+            check_date = from_date
+            avail = None
+            while check_date < to_date:
+                places = room.date_place_count(check_date)
+                if places < roomcount:
+                    avail = None
+                    break
+                avail = 1
+                check_date +=timedelta(days=1)
+            if avail:
+                result.append(room)
+        return result
+
 
     @property
     def min_current_amount(self):
@@ -351,6 +368,15 @@ class Room(MetaName):
         try:
             pics = Pic.objects.metalinks_for_object(self)
             return pics[0].pic.url
+        except :
+            return None
+
+    def date_place_count(self,date):
+        try:
+            places = SettlementVariant.objects.filter(room=self,enabled=True).order_by('-settlement')
+            places_max = places[0].settlement
+            availability = Availability.objects.get(room=self,date=date).placecount
+            return places_max*availability
         except :
             return None
 
