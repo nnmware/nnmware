@@ -144,3 +144,9 @@ def upload_avatar_dir(instance, filename):
     new_filename = md5(filename.encode('utf8')).hexdigest() + os.path.splitext(filename)[1]
     timedir = get_date_directory()
     return upload_dir + "/" + timedir + "/" + new_filename
+
+def upload_media_dir(instance, filename):
+    upload_dir = settings.MEDIAFILES
+    new_filename = md5(filename.encode('utf8')).hexdigest() + os.path.splitext(filename)[1]
+    timedir = get_date_directory()
+    return upload_dir + "/" + timedir + "/" + new_filename
