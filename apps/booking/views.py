@@ -84,7 +84,11 @@ class HotelList(ListView):
         options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         notknowndates = self.request.GET.get('notknowndates') or None
-        guests = int(self.request.GET.get('guests')) or None
+        guests_get = self.request.GET.get('guests') or None
+        if guests_get:
+            guests = int(guests_get)
+        else:
+            guests = None
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
@@ -241,7 +245,11 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
-            guests = int(self.request.GET.get('guests'))
+            guests_get = self.request.GET.get('guests') or None
+            if guests_get:
+                guests = int(guests_get)
+            else:
+                guests = None
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
             search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             search_data['city'] = self.object.city
