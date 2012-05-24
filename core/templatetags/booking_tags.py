@@ -244,6 +244,6 @@ def hotels_moscow_count():
 @register.simple_tag
 def settlement_price_on_date(settlement,date):
     try:
-        return PlacePrice.objects.get(settlement=settlement,date=date).amount
+        return int(PlacePrice.objects.get(settlement=settlement,date=date).amount)
     except :
         return None
