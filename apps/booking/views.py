@@ -292,6 +292,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        guests = guests_from_get_request(self.request)
+
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context['city'] = self.object.hotel.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
@@ -299,24 +303,14 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.hotel.get_name
         context['room_options'] = self.object.option.order_by('category')
         context['search_url'] = self.object.hotel.get_absolute_url()
-        try:
-            f_date = self.request.GET.get('from')
+        if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
-                from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
-            guests = int(self.request.GET.get('guests'))
+            context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             context['search'] = 1
-            context['on_date'] = f_date
-            context['from'] = f_date
-            context['to'] = t_date
-            context['guests'] = guests
             context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
-        except :
-            pass
-
         return context
 
 class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
@@ -619,13 +613,12 @@ class ClientBooking(DetailView):
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests not in s:
                 raise Http404
-            context['settlements'] =s
+            context['settlements'] = s
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
-                context['search_data'] = {'from_date':t_date, 'to_date':f_date, 'guests':guests}
-            else:
-                context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+                f_date,t_date = t_date,f_date
+            context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             return context
         else :
             raise Http404
