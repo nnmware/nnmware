@@ -6,7 +6,7 @@ from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL
+from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL, PlacePrice
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
@@ -241,3 +241,9 @@ def hotels_moscow_count():
     result = Hotel.objects.filter(city=city).count()
     return result
 
+@register.simple_tag
+def settlement_price_on_date(settlement,date):
+    try:
+        return PlacePrice.objects.get(settlement=settlement,date=date).amount
+    except :
+        return None
