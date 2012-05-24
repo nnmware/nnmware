@@ -621,6 +621,10 @@ class ClientBooking(DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 f_date,t_date = t_date,f_date
+                from_date,to_date = to_date,from_date
+            avail_count = Availability.objects.filter(room=room, date__range=(from_date, to_date)).count()
+            if avail_count <> (to_date-from_date).days+1:
+                raise Http404
             context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             return context
         else :
