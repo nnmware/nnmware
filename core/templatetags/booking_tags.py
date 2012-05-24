@@ -246,4 +246,4 @@ def settlement_price_on_date(settlement,date):
     try:
         return int(PlacePrice.objects.get(settlement=settlement,date=date).amount)
     except :
-        return None
+        return
