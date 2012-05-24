@@ -622,8 +622,13 @@ class ClientBooking(DetailView):
             if from_date > to_date:
                 f_date,t_date = t_date,f_date
                 from_date,to_date = to_date,from_date
-            avail_count = Availability.objects.filter(room=room, date__range=(from_date, to_date)).count()
-            if avail_count <> (to_date-from_date).days+1:
+            avail_count = Availability.objects.filter(room=room,
+                date__range=(from_date, to_date-timedelta(days=1))).count()
+            if avail_count <> (to_date-from_date).days:
+                raise Http404
+            valid_price_count = PlacePrice.objects.filter(settlement=s,
+                date__range=(from_date, to_date-timedelta(days=1)),amount__gt=0).count()
+            if valid_price_count <> (to_date-from_date).days:
                 raise Http404
             context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             return context
