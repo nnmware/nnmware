@@ -673,7 +673,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
-        self.object.currency = price.currency
+        currency = Currency.objects.get(code=CURRENCY)
+        self.object.currency = currency
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.save()
