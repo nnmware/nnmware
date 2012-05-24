@@ -243,7 +243,7 @@ def hotels_moscow_count():
 
 @register.simple_tag
 def settlement_price_on_date(settlement,date):
-    try:
+    if 1>0: #try:
         return int(PlacePrice.objects.get(settlement=settlement,date=date).amount)
-    except :
-        return ''
+#    except :
+#        return ''
