@@ -16,7 +16,7 @@ from nnmware.apps.userprofile.models import Profile
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
 from nnmware.apps.money.models import Bill
 import time
-from nnmware.core.utils import date_range, convert_to_date
+from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 
 class CurrentUserHotelAdmin(object):
@@ -416,10 +416,10 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            context['dates'] = date_range(from_date, to_date)
+            context['dates'] = daterange(from_date, to_date)
         else :
             from_date = datetime.now()
-            context['dates'] = date_range(from_date, from_date+timedelta(days=14))
+            context['dates'] = daterange(from_date, from_date+timedelta(days=14))
         return context
 
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
