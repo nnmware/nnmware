@@ -613,7 +613,6 @@ class ClientBooking(DetailView):
                 raise Http404
             context['room_id'] = room_id
             context['room'] = room
-
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests not in s:
                 raise Http404
