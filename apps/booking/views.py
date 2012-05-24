@@ -226,7 +226,10 @@ class HotelDetail(AttachedImagesMixin, DetailView):
     template_name = "hotels/detail.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        guests = guests_from_get_request(self.request)
+        # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['tab'] = 'description'
         context['city'] = self.object.city
@@ -235,14 +238,11 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context['hotel_options'] = self.object.option.order_by('category')
         context['search_url'] = self.object.get_absolute_url()
         try:
-            f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
-            guests = guests_from_get_request(self.request)
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
             search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             search_data['city'] = self.object.city
@@ -287,15 +287,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
     model = Room
     template_name = 'hotels/room.html'
 
-#    def get_object(self, queryset=None):
-#        return get_object_or_404(Room, pk=self.kwargs['pk'])
-
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_get_request(self.request)
-
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context['city'] = self.object.hotel.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
@@ -399,6 +394,8 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
     template_name = "cabinet/rates.html"
 
     def get_context_data(self, **kwargs):
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
         # Call the base implementation first to get a context
         context = super(CabinetRates, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -412,15 +409,13 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
                 context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
             except IndexError:
                 pass
-        try:
-            f_date = self.request.GET.get('from')
+        if f_date and t_date:
             from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
             context['dates'] = date_range(from_date, to_date)
-        except :
+        else :
             from_date = datetime.now()
             context['dates'] = date_range(from_date, from_date+timedelta(days=14))
         return context
