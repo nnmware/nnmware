@@ -305,7 +305,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 f_date, t_date = t_date, f_date
             context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             context['search'] = 1
-            context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
+            context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         return context
 
 class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
