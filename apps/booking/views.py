@@ -11,6 +11,7 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
+from nnmware.apps.booking.utils import guests_from_get_request
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
 from nnmware.apps.money.models import Bill
@@ -84,11 +85,7 @@ class HotelList(ListView):
         options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         notknowndates = self.request.GET.get('notknowndates') or None
-        guests_get = self.request.GET.get('guests') or None
-        if guests_get:
-            guests = int(guests_get)
-        else:
-            guests = None
+        guests = guests_from_get_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
@@ -245,11 +242,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
-            guests_get = self.request.GET.get('guests') or None
-            if guests_get:
-                guests = int(guests_get)
-            else:
-                guests = None
+            guests = guests_from_get_request(self.request)
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
             search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             search_data['city'] = self.object.city
@@ -313,7 +306,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-                f_date, t_date = to_date, from_date
+                f_date, t_date = t_date, f_date
             guests = int(self.request.GET.get('guests'))
             context['search'] = 1
             context['on_date'] = f_date
@@ -605,32 +598,35 @@ class ClientBooking(DetailView):
     template_name = "booking/add.html"
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(ClientBooking, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-        context['tab'] = 'rates'
-        context['hotel'] = self.object
-        context['title_line'] = _('booking')
-        if 'room' in self.kwargs.keys():
-            context['room_id'] = int(self.kwargs['room'])
-            room = Room.objects.get(id=int(self.kwargs['room']))
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        guests = guests_from_get_request(self.request)
+        if f_date and t_date and guests and ('room' in self.kwargs.keys()):
+            context = super(ClientBooking, self).get_context_data(**kwargs)
+            context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+            context['tab'] = 'rates'
+            context['hotel'] = self.object
+            context['title_line'] = _('booking')
+            try:
+                room_id = int(self.kwargs['room'])
+                room = Room.objects.get(id=room_id)
+            except :
+                raise Http404
+            context['room_id'] = room_id
             context['room'] = room
-            context['settlements'] = \
-                SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
-        try:
-            f_date = self.request.GET.get('from')
+            s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
+            if guests not in s:
+                raise Http404
+            context['settlements'] =s
             from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
-                from_date, to_date = to_date, from_date
-            place_need = self.request.GET.get('placecount')
-            context['from'] = f_date
-            context['to'] = t_date
-            context['placecount'] = place_need
-        except :
-            pass
-        return context
+                context['search_data'] = {'from_date':t_date, 'to_date':f_date, 'guests':guests}
+            else:
+                context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+            return context
+        else :
+            raise Http404
 
 class ClientAddBooking(AjaxFormMixin, CreateView):
     model = Booking

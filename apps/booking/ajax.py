@@ -83,9 +83,9 @@ def room_delete(request, pk):
 def get_booking_amount(request):
     try:
         room_id = request.REQUEST['room_id']
-        s = request.REQUEST['settlements']
-        from_date = convert_to_date(request.REQUEST['from_date'])
-        to_date = convert_to_date(request.REQUEST['to_date'])
+        s = request.REQUEST['guests']
+        from_date = convert_to_date(request.REQUEST['from'])
+        to_date = convert_to_date(request.REQUEST['to'])
         room = Room.objects.get(id=room_id)
         settlement = SettlementVariant.objects.filter(room=room, settlement=s)
         delta = to_date-from_date
