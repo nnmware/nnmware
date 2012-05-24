@@ -613,6 +613,7 @@ class ClientBooking(DetailView):
                 raise Http404
             context['room_id'] = room_id
             context['room'] = room
+
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests not in s:
                 raise Http404
@@ -626,7 +627,8 @@ class ClientBooking(DetailView):
                 date__range=(from_date, to_date-timedelta(days=1))).count()
             if avail_count <> (to_date-from_date).days:
                 raise Http404
-            valid_price_count = PlacePrice.objects.filter(settlement=s,
+            settlement = get_object_or_404(SettlementVariant,room=room,settlement=guests,enabled=True)
+            valid_price_count = PlacePrice.objects.filter(settlement=settlement,
                 date__range=(from_date, to_date-timedelta(days=1)),amount__gt=0).count()
             if valid_price_count <> (to_date-from_date).days:
                 raise Http404
