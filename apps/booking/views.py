@@ -416,6 +416,8 @@ class CabinetRates(CurrentUserHotelAdmin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
+            if (to_date-from_date).days > 365:
+                to_date = from_date+timedelta(days=365)
             date_gen = daterange(from_date, to_date)
         else :
             from_date = datetime.now()
