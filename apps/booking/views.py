@@ -359,8 +359,6 @@ class CabinetRooms(CurrentUserHotelAdmin, CreateView):
 
     def get_context_data(self, **kwargs):
         hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
-#        if not self.request.user in hotel.admins.all() and not self.request.user.is_superuser:
-#            raise Http404
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
