@@ -595,6 +595,10 @@ class ClientBooking(DetailView):
     model = Hotel
     template_name = "booking/add.html"
 
+    def get_object(self, queryset=None):
+        room = get_object_or_404(Room, pk=self.kwargs['room'])
+        return room.hotel
+
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
