@@ -53,6 +53,14 @@ class HotelOption(MetaName):
         else:
             return _("%(name)s") % { 'name': self.name}
 
+class PaymentMethod(MetaName):
+    pass
+
+    class Meta:
+        verbose_name = _("Payment method")
+        verbose_name_plural = _("Payment methods")
+        ordering = ("name",)
+
 
 UNKNOWN_STAR = -1
 MINI_HOTEL = 0
@@ -108,9 +116,10 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
     current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3)
     booking_terms = models.TextField(verbose_name=_("Booking terms"), blank=True, null=True)
-    schema_road = models.TextField(verbose_name=_("Scheme of road"), blank=True, null=True)
-    guaranteed_booking = models.BooleanField(verbose_name=_("Guaranteed booking"), default=False)
-    non_guaranteed_booking = models.BooleanField(verbose_name=_("Non-guaranteed booking"), default=False)
+    schema_transit = models.TextField(verbose_name=_("Schema of transit"), blank=True, null=True)
+    booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True, null=True)
+    schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True, null=True)
+    payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -223,13 +232,13 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            if not self.id:
+            if not self.pk:
                 super(Hotel, self).save(*args, **kwargs)
-            self.slug = self.id
+            self.slug = self.pk
         else:
             self.slug = self.slug.strip().replace(' ','-')
             if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
-                self.slug = self.id
+                self.slug = self.pk
         super(Hotel, self).save(*args, **kwargs)
 
     def update_hotel_amount(self):
@@ -306,6 +315,8 @@ class Room(MetaName):
     class Meta:
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
+
+    objects = Manager()
 
     def __unicode__(self):
         return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
@@ -470,6 +481,8 @@ class AgentPercent(models.Model):
         verbose_name = _("Agent Percent")
         verbose_name_plural = _("Agent Percents")
 
+    objects = Manager()
+
     def __unicode__(self):
         return _("For %(hotel)s on date %(date)s percent is %(percent)s") % \
                { 'hotel': self.hotel.name,
@@ -547,7 +560,6 @@ class RequestAddHotel(MetaIP):
         verbose_name = _("Request for add hotel")
         verbose_name_plural = _("Requests for add hotels")
         ordering = ("-pk",)
-
 
 def update_hotel_point(sender, instance, **kwargs):
     hotel = instance.hotel

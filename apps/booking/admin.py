@@ -14,10 +14,9 @@ class HotelAdmin(admin.ModelAdmin):
             ('description',),
             ('room_count','starcount'),('best_offer','in_top10'),
             ('longitude','latitude'),
-            ('schema_road')
+            ('schema_transit')
         ]}),
-        (_("Booking"), {"fields": [('guaranteed_booking', 'non_guaranteed_booking'),
-            ('booking_terms')
+        (_("Booking"), {"fields": [('payment_method','booking_terms')
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
@@ -26,7 +25,9 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Hotel options"), {"classes": ("collapse closed",), "fields": [
             ('option')]}),
         (_("English"), {"classes": ("collapse closed",),
-                        "fields": [("name_en","address_en"),("description_en",) ]}),)
+                        "fields": [("name_en","address_en"),("description_en",),
+            ("schema_transit_en"),("booking_terms_en")
+        ]}),)
     ordering = ('register_date','name')
 
 class HotelOptionAdmin(admin.ModelAdmin):
@@ -57,6 +58,14 @@ class RoomOptionAdmin(admin.ModelAdmin):
             (_("English"), {"classes": ("collapse closed",),
                     "fields": [("name_en",),("description_en",) , ]}),)
 
+class PaymentMethodAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    fieldsets = (
+        (_("Payment method"), {"fields": [("name",),
+            ('description',)]}),
+        (_("English"), {"classes": ("collapse closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
 
 class RoomOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('name','name_en','enabled','slug')
@@ -143,5 +152,7 @@ admin.site.register(Availability, AvailabilityAdmin)
 admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
 admin.site.register(SettlementVariant, SettlementVariantAdmin)
 admin.site.register(PlacePrice, PlacePriceAdmin)
+admin.site.register(PaymentMethod, PaymentMethodAdmin)
+
 
 
