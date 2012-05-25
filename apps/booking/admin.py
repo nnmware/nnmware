@@ -1,18 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
-from django.contrib.flatpages.models import FlatPage
-from django.contrib.flatpages.admin import FlatPageAdmin
-#Flatpages
-class FlatPageAdmin(FlatPageAdmin):
-    class Media:
-        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-		    '/static/grappelli/tinymce_setup/tinymce_setup.js',]
-
-# We have to unregister it, and then reregister
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageAdmin)
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
@@ -23,7 +13,11 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
             ('room_count','starcount'),('best_offer','in_top10'),
-            ('longitude','latitude')
+            ('longitude','latitude'),
+            ('scheme_road')
+        ]}),
+        (_("Booking"), {"fields": [('guaranteed_booking', 'non_guaranteed_booking'),
+            ('booking_terms')
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),

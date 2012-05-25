@@ -107,7 +107,10 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
     current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3)
-
+    booking_terms = models.TextField(verbose_name=_("Booking terms"), blank=True, null=True)
+    scheme_road = models.TextField(verbose_name=_("Scheme of road"), blank=True, null=True)
+    guaranteed_booking = models.BooleanField(verbose_name=_("Guaranteed booking"), default=False)
+    non_guaranteed_booking = models.BooleanField(verbose_name=_("Non-guaranteed booking"), default=False)
 
     class Meta:
         verbose_name = _("Hotel")
