@@ -445,7 +445,10 @@ class Booking(MoneyBase, MetaIP):
     uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True, editable=False)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
-
+    card_number = models.CharField(verbose_name=_("Card number"), max_length=12, blank=True)
+    card_valid = models.CharField(verbose_name=_("Card valid to"), max_length=5, blank=True)
+    card_holder = models.CharField(verbose_name=_("Card holder"), max_length=50, blank=True)
+    card_cvv2 = models.CharField(verbose_name=_("Card verification value(CVV2)"), max_length=4, blank=True)
 
     class Meta:
         ordering = ("-date",)
