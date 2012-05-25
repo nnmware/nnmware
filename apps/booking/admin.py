@@ -14,7 +14,7 @@ class HotelAdmin(admin.ModelAdmin):
             ('description',),
             ('room_count','starcount'),('best_offer','in_top10'),
             ('longitude','latitude'),
-            ('scheme_road')
+            ('schema_road')
         ]}),
         (_("Booking"), {"fields": [('guaranteed_booking', 'non_guaranteed_booking'),
             ('booking_terms')
