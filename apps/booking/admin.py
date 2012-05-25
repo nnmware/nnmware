@@ -93,12 +93,13 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('user','from_date','to_date','settlement','amount','currency','status','date','uuid')
     search_fields = ('from_date',)
-    readonly_fields = ('uuid',)
+    readonly_fields = ('uuid','ip','user_agent')
     fieldsets = (
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
             ('amount','currency','date'),
-            ('uuid')
+            ('uuid'),
+            ('ip','user_agent')
         ]}),
         (_("Credit card"), {"classes": ("collapse closed",), "fields": [("card_number",'card_valid'),
             ('card_holder','card_cvv2')]}),
