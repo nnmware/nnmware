@@ -601,22 +601,16 @@ class ClientBooking(DetailView):
         t_date = self.request.GET.get('to') or None
         guests = guests_from_get_request(self.request)
         if f_date and t_date and guests and ('room' in self.kwargs.keys()):
-            context = super(ClientBooking, self).get_context_data(**kwargs)
-            context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-            context['tab'] = 'rates'
-            context['hotel'] = self.object
-            context['title_line'] = _('booking')
             try:
                 room_id = int(self.kwargs['room'])
-                room = Room.objects.get(id=room_id)
-            except :
+            except ValueError:
                 raise Http404
-            context['room_id'] = room_id
-            context['room'] = room
+            room = get_object_or_404(Room,id=room_id)
+            if room.hotel.payment_method.count() <1:
+                raise Http404
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests not in s:
                 raise Http404
-            context['settlements'] = s
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
@@ -633,6 +627,14 @@ class ClientBooking(DetailView):
                 date__range=(from_date, to_date-timedelta(days=1)),amount__gt=0).count()
             if valid_price_count <> (to_date-from_date).days:
                 raise Http404
+            context = super(ClientBooking, self).get_context_data(**kwargs)
+            context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+            context['tab'] = 'rates'
+            context['hotel'] = self.object
+            context['title_line'] = _('booking')
+            context['room_id'] = room_id
+            context['room'] = room
+            context['settlements'] = s
             context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
             return context
         else :
