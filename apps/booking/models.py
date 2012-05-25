@@ -417,13 +417,17 @@ class SettlementVariant(models.Model):
 
 STATUS_UNKNOWN = 0
 STATUS_ACCEPTED = 1
-STATUS_PAID = 2
-STATUS_CANCELED = 3
-STATUS_COMPLETED = 4
+STATUS_PRE_CONFIRMED = 2
+STATUS_CONFIRMED = 3
+STATUS_PAID = 4
+STATUS_CANCELED = 5
+STATUS_COMPLETED = 6
 
 STATUS_CHOICES = (
     (STATUS_UNKNOWN, _("Unknown")),
     (STATUS_ACCEPTED, _("Accepted")),
+    (STATUS_PRE_CONFIRMED, _("Pre-confirmed")),
+    (STATUS_CONFIRMED, _("Confirmed")),
     (STATUS_PAID, _("Paid")),
     (STATUS_CANCELED, _("Cancelled")),
     (STATUS_COMPLETED, _("Completed")),
