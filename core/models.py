@@ -359,7 +359,6 @@ class MetaLink(models.Model):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
-
 class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
