@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking
+from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking, PaymentMethod
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
@@ -219,6 +219,16 @@ def hotels_in_country(request):
                       'longitude':hotel.longitude, 'starcount_name':hotel.get_starcount_display()}
             results.append(answer)
         payload = {'success': True, 'hotels':results}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def payment_method(request):
+    try:
+        p_m = request.REQUEST['p_m']
+        payment_method = PaymentMethod.objects.get(pk=p_m)
+        payload = {'success': True, 'id':payment_method.pk,'description':payment_method.description,
+                   'card':payment_method.use_card}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
