@@ -651,16 +651,15 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
 
     def form_valid(self, form):
         use_card = False
-        p_m = self.request.REQUEST.get('payment_method') or None
+        p_m = self.request.REQUEST['payment_method']
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
-            card_number = self.request.REQUEST.get('card_number') or None
-            card_owner = self.request.REQUEST.get('card_number') or None
-            card_expired = self.request.REQUEST.get('card_number') or None
-            card_cvv2 = self.request.REQUEST.get('card_number') or None
+            card_number = self.request.REQUEST['card_number']
+            card_owner = self.request.REQUEST['card_number']
+            card_expired = self.request.REQUEST['card_number']
+            card_cvv2 = self.request.REQUEST['card_number']
             if payment_method.use_card:
-                if (card_number is not None) and (card_owner is not None) and \
-                   (card_expired is not None) and (card_cvv2 is not None):
+                if card_number and card_owner and card_expired and card_cvv2:
                     if not is_luhn_valid(card_number):
                         payload = {'success': False, 'engine_error':_('Card number is wrong.')}
                         return AjaxLazyAnswer(payload)
