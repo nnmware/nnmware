@@ -105,6 +105,12 @@ class BookingAdmin(admin.ModelAdmin):
             ('card_holder','card_cvv2')]}),
         )
 
+    def get_form(self, request, obj=None, **kwargs):
+        self.exclude = []
+        if request.user.username <> 'root':
+            self.exclude = ['card_number','card_valid','card_holder','card_cvv2']
+        return super(BookingAdmin, self).get_form(request, obj, **kwargs)
+
 class RequestAddHotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','phone','fax','contact_email','website')
     search_fields = ('date','name')
