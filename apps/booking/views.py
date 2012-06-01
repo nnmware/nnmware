@@ -712,8 +712,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         if use_card:
             self.object.card_number = card_number
-            self.object.card_owner = card_owner
-            self.object.card_expired = card_expired
+            self.object.card_holder = card_owner
+            self.object.card_valid = card_expired
             self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_absolute_url()
