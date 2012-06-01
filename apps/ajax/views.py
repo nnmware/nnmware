@@ -304,6 +304,7 @@ def pic_delete(request, object_id):
     return AjaxLazyAnswer(payload)
 
 def pic_setmain(request, object_id):
+    # TODO check user rights!!
     # Link used for User press SetMain for Image
     try:
         pic = Pic.objects.get(id=int(object_id))
