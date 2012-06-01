@@ -666,8 +666,10 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
                     else:
                         use_card = True
                         try:
-                            card_number = int(card_number)
-                            card_cvv2 = int(card_cvv2)
+#                            card_number = int(card_number)
+                            if len(card_cvv2) <> 3:
+                                raise ValueError
+#                            card_cvv2 = int(card_cvv2)
                         except ValueError:
                             payload = {'success': False, 'engine_error':_('Card number or CVV2 is wrong.')}
                             return AjaxLazyAnswer(payload)
