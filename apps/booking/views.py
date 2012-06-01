@@ -646,8 +646,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
     model = Booking
     form_class = BookingAddForm
 
-    def get_success_url(self):
-        return reverse('hotel_list')
+#    def get_success_url(self):
+#        return reverse('hotel_list')
 
     def form_valid(self, form):
         use_card = False
@@ -671,8 +671,6 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         else:
             payload = {'success': False, 'engine_error':_('You are not select payment method.')}
             return AjaxLazyAnswer(payload)
-
-
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
@@ -710,6 +708,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             self.object.card_expired = card_expired
             self.object.card_cvv2 = card_cvv2
         self.object.save()
+        self.success_url = self.object.get_absolute_url()
         return super(ClientAddBooking, self).form_valid(form)
 
 class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
