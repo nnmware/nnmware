@@ -79,10 +79,6 @@ class BookingAddForm(forms.ModelForm):
     room_id = forms.CharField(max_length=30, required=False)
     settlement = forms.CharField(max_length=30, required=False)
     payment_method = forms.CharField(max_length=30, required=False)
-#    card_number = forms.CharField(max_length=30, required=False)
-#    card_owner = forms.CharField(max_length=30, required=False)
-#    card_expired = forms.CharField(max_length=30, required=False)
-#    card_cvv2 = forms.CharField(max_length=30, required=False)
 
     class Meta:
         model = Booking

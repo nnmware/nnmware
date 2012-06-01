@@ -468,6 +468,7 @@ class Booking(MoneyBase, MetaIP):
             self.save()
         return 'booking_hotel_detail', (), { 'slug': self.uuid}
 
+    @permalink
     def get_client_url(self):
         if not self.uuid:
             self.save()
