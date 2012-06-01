@@ -303,6 +303,20 @@ def pic_delete(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def pic_setmain(request, object_id):
+    # Link used for User press SetMain for Image
+    try:
+        pic = Pic.objects.get(id=int(object_id))
+        all_pics =Pic.objects.metalinks_for_object(pic.content_object)
+        all_pics.update(primary=False)
+        pic.primary = True
+        pic.save()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def doc_delete(request, object_id):
     # Link used for User press Delete for Image
     doc = get_object_or_404(Doc, id=int(object_id))
