@@ -659,7 +659,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             card_expired = self.request.REQUEST.get('card_number') or False
             card_cvv2 = self.request.REQUEST.get('card_number') or False
             if payment_method.use_card:
-                if card_number and card_owner and card_expired and card_cvv2:
+                if (card_number is not None) and (card_owner is not None) and \
+                   (card_expired is not None) and (card_cvv2 is not None):
                     if not is_luhn_valid(card_number):
                         payload = {'success': False, 'engine_error':_('Card number is wrong.')}
                         return AjaxLazyAnswer(payload)
