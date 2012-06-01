@@ -646,32 +646,28 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
     model = Booking
     form_class = BookingAddForm
 
-#    def get_success_url(self):
-#        return reverse('hotel_list')
-
     def form_valid(self, form):
         use_card = False
         p_m = self.request.REQUEST.get('payment_method') or None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
             card_number = self.request.REQUEST.get('card_number') or None
-            card_owner = self.request.REQUEST.get('card_owner') or None
-            card_expired = self.request.REQUEST.get('card_expired') or None
+            card_holder = self.request.REQUEST.get('card_holder') or None
+            card_valid = self.request.REQUEST.get('card_valid') or None
             card_cvv2 = self.request.REQUEST.get('card_cvv2') or None
             if payment_method.use_card:
-                if card_number and card_owner and card_expired and card_cvv2:
+                if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
                         payload = {'success': False, 'engine_error':_('Card number is wrong.')}
                         return AjaxLazyAnswer(payload)
                     else:
                         use_card = True
                         try:
-#                            card_number = int(card_number)
                             if len(card_cvv2) <> 3:
                                 raise ValueError
-#                            card_cvv2 = int(card_cvv2)
+                            card_cvv2 = int(card_cvv2)
                         except ValueError:
-                            payload = {'success': False, 'engine_error':_('Card number or CVV2 is wrong.')}
+                            payload = {'success': False, 'engine_error':_('Card CVV2 is wrong.')}
                             return AjaxLazyAnswer(payload)
                 else:
                     payload = {'success': False, 'engine_error':_('You enter not all data of card.')}
@@ -712,8 +708,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         if use_card:
             self.object.card_number = card_number
-            self.object.card_holder = card_owner
-            self.object.card_valid = card_expired
+            self.object.card_holder = card_holder
+            self.object.card_valid = card_valid
             self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_absolute_url()
