@@ -654,10 +654,10 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         p_m = self.request.REQUEST.get('payment_method') or None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
-            card_number = self.request.REQUEST.get('card_number') or False
-            card_owner = self.request.REQUEST.get('card_number') or False
-            card_expired = self.request.REQUEST.get('card_number') or False
-            card_cvv2 = self.request.REQUEST.get('card_number') or False
+            card_number = self.request.REQUEST.get('card_number') or None
+            card_owner = self.request.REQUEST.get('card_number') or None
+            card_expired = self.request.REQUEST.get('card_number') or None
+            card_cvv2 = self.request.REQUEST.get('card_number') or None
             if payment_method.use_card:
                 if (card_number is not None) and (card_owner is not None) and \
                    (card_expired is not None) and (card_cvv2 is not None):
