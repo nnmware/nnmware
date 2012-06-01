@@ -62,7 +62,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     fieldsets = (
-        (_("Payment method"), {"fields": [("name",),
+        (_("Payment method"), {"fields": [("name",'use_card'),
             ('description',)]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
