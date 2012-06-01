@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 20:37+1100\n"
+"POT-Creation-Date: 2012-06-02 01:15+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -300,28 +300,28 @@ msgstr "Категория опций отеля"
 msgid "Booking Event"
 msgstr "Событие бронирования"
 
-#: apps/booking/admin.py:103
+#: apps/booking/admin.py:104
 msgid "Credit card"
 msgstr "Кредитка"
 
-#: apps/booking/admin.py:111
+#: apps/booking/admin.py:112
 msgid "Request for add Hotel"
 msgstr "Заявка на добавление Отеля"
 
-#: apps/booking/admin.py:122 apps/booking/models.py:488
+#: apps/booking/admin.py:123 apps/booking/models.py:488
 msgid "Agent Percent"
 msgstr "Агентский процент"
 
-#: apps/booking/admin.py:132 apps/booking/models.py:391
+#: apps/booking/admin.py:133 apps/booking/models.py:391
 #: apps/booking/models.py:441 apps/booking/models.py:536
 msgid "Settlement Variant"
 msgstr "Вариант поселения"
 
-#: apps/booking/admin.py:138
+#: apps/booking/admin.py:139
 msgid "Availability"
 msgstr "Наличие"
 
-#: apps/booking/admin.py:144 apps/booking/models.py:539
+#: apps/booking/admin.py:145 apps/booking/models.py:539
 msgid "Place Price"
 msgstr "Стоимость места"
 
@@ -407,14 +407,19 @@ msgstr ""
 msgid "%(name)s"
 msgstr ""
 
+#: apps/booking/models.py:57
+
+msgid "Use credit card?"
+msgstr "Используется кредитная карта?"
+
 #: apps/booking/models.py:61 apps/booking/models.py:122
 msgid "Payment methods"
 msgstr "Способы оплаты"
 
 #: apps/booking/models.py:74 apps/booking/models.py:90
 #: apps/booking/models.py:298 apps/booking/models.py:427
-#: apps/money/models.py:64 apps/money/models.py:113 core/models.py:642
-#: core/models.py:717
+#: apps/money/models.py:64 apps/money/models.py:113 core/models.py:641
+#: core/models.py:716
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -800,47 +805,59 @@ msgstr "Заявка на добавление отеля"
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
-#: apps/booking/views.py:194 apps/booking/views.py:218
+#: apps/booking/views.py:196 apps/booking/views.py:220
 msgid "list of hotels"
 msgstr "список отелей"
 
-#: apps/booking/views.py:219
+#: apps/booking/views.py:221
 msgid "admin of hotels"
 msgstr "администратор отелей"
 
-#: apps/booking/views.py:324 apps/booking/views.py:406
-#: apps/booking/views.py:550
+#: apps/booking/views.py:326 apps/booking/views.py:408
+#: apps/booking/views.py:552
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:467 apps/booking/views.py:575
+#: apps/booking/views.py:469 apps/booking/views.py:577
 msgid "bookings"
 msgstr "бронирования"
 
-#: apps/booking/views.py:481
+#: apps/booking/views.py:483
 msgid "bills"
 msgstr "счета"
 
-#: apps/booking/views.py:496
+#: apps/booking/views.py:498
 msgid "request for add hotel"
 msgstr "заявка на добавление отеля"
 
-#: apps/booking/views.py:517
+#: apps/booking/views.py:519
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:538 apps/booking/views.py:690
+#: apps/booking/views.py:540 apps/booking/views.py:715
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:586 apps/booking/views.py:717
-#: apps/booking/views.py:729
+#: apps/booking/views.py:588 apps/booking/views.py:742
+#: apps/booking/views.py:754
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:608
+#: apps/booking/views.py:636
 msgid "booking"
 msgstr "бронирование"
+
+#: apps/booking/views.py:663
+msgid "Card number is wrong."
+msgstr "Неверный номер карты"
+
+#: apps/booking/views.py:666
+msgid "You enter not all data of card."
+msgstr "Вы ввели не все данные кредитной карты"
+
+#: apps/booking/views.py:670
+msgid "You are not select payment method."
+msgstr "Вы не выбрали вариант платежа"
 
 #: apps/money/admin.py:13 apps/money/models.py:92
 msgid "Transaction"
@@ -940,7 +957,7 @@ msgid "Bill status"
 msgstr "Статус счета"
 
 #: apps/money/models.py:132 apps/video/models.py:18 core/admin.py:39
-#: core/admin.py:57 core/models.py:56 core/models.py:292 core/models.py:407
+#: core/admin.py:57 core/models.py:56 core/models.py:292 core/models.py:406
 msgid "Description"
 msgstr "Описание"
 
@@ -1281,7 +1298,7 @@ msgstr "Код внедрения"
 msgid "Published"
 msgstr "Опубликовано"
 
-#: apps/video/models.py:33 core/models.py:644
+#: apps/video/models.py:33 core/models.py:643
 msgid "Video"
 msgstr "Видео"
 
@@ -1302,15 +1319,15 @@ msgstr "nnmware"
 msgid "Meta"
 msgstr "Мета"
 
-#: core/admin.py:88 core/models.py:429
+#: core/admin.py:88 core/models.py:428
 msgid "Doc"
 msgstr "Документ"
 
-#: core/admin.py:99 core/models.py:473
+#: core/admin.py:99 core/models.py:472
 msgid "Pic"
 msgstr "Изображение"
 
-#: core/admin.py:135 core/models.py:674
+#: core/admin.py:135 core/models.py:673
 msgid "Recipient"
 msgstr "Получатель"
 
@@ -1326,7 +1343,7 @@ msgstr "Создает опционально сообщение для всех
 msgid "All users"
 msgstr "Все пользователи"
 
-#: core/admin.py:160 core/models.py:709
+#: core/admin.py:160 core/models.py:708
 msgid "Message"
 msgstr "Сообщение"
 
@@ -1362,7 +1379,7 @@ msgstr "Тэги"
 msgid "Max number or tags - %s."
 msgstr "Максимальное количество тегов - %s."
 
-#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:566
+#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:565
 msgid "comment"
 msgstr "Комментарий"
 
@@ -1422,15 +1439,15 @@ msgstr "Заголовок"
 msgid "URL"
 msgstr "URL"
 
-#: core/models.py:57 core/models.py:568
+#: core/models.py:57 core/models.py:567
 msgid "Status"
 msgstr "Статус"
 
-#: core/models.py:58 core/models.py:406
+#: core/models.py:58 core/models.py:405
 msgid "Author"
 msgstr "Автор"
 
-#: core/models.py:59 core/models.py:405
+#: core/models.py:59 core/models.py:404
 msgid "Published from"
 msgstr "Опубликовано от"
 
@@ -1470,7 +1487,7 @@ msgstr "Смотреть на сайте"
 msgid "Parent"
 msgstr "Родитель"
 
-#: core/models.py:154 core/models.py:409
+#: core/models.py:154 core/models.py:408
 msgid "Ordering"
 msgstr "Упорядочить"
 
@@ -1498,7 +1515,7 @@ msgstr "Родитель дерева"
 msgid "You must not save a category in itself!"
 msgstr "Вы не можете сохранить категорию в саму себя!"
 
-#: core/models.py:262 core/models.py:645
+#: core/models.py:262 core/models.py:644
 msgid "Tag"
 msgstr "Теги"
 
@@ -1526,160 +1543,160 @@ msgstr "ID объекта"
 msgid "Is primary"
 msgstr "Основной"
 
-#: core/models.py:364
+#: core/models.py:363
 msgid "Longitude"
 msgstr "Долгота"
 
-#: core/models.py:365
+#: core/models.py:364
 msgid "Latitude"
 msgstr "Широта"
 
-#: core/models.py:399 core/models.py:425
+#: core/models.py:398 core/models.py:424
 msgid "File"
 msgstr "Файл"
 
-#: core/models.py:400 core/models.py:466
+#: core/models.py:399 core/models.py:465
 msgid "Image"
 msgstr "Изображение"
 
-#: core/models.py:409
+#: core/models.py:408
 msgid "Override alphabetical order in list display"
 msgstr "Заменять сортировку по алфавиту в просмотре списка"
 
-#: core/models.py:410
+#: core/models.py:409
 msgid "Is locked"
 msgstr "Блокировано"
 
-#: core/models.py:416
+#: core/models.py:415
 msgid "IP"
 msgstr ""
 
-#: core/models.py:417
+#: core/models.py:416
 msgid "User Agent"
 msgstr ""
 
-#: core/models.py:424
+#: core/models.py:423
 msgid "Doc type"
 msgstr "Тип документа"
 
-#: core/models.py:430
+#: core/models.py:429
 msgid "Docs"
 msgstr "Документы"
 
-#: core/models.py:467
+#: core/models.py:466
 msgid "Source"
 msgstr "Источник"
 
-#: core/models.py:474
+#: core/models.py:473
 msgid "Pics"
 msgstr "Изображения"
 
-#: core/models.py:477
+#: core/models.py:476
 #, python-format
 msgid "Pic for %(type)s: %(obj)s"
 msgstr "Изображение для %(type)s: %(obj)s"
 
-#: core/models.py:563
+#: core/models.py:562
 msgid "date/time published"
 msgstr "дата/время публикации"
 
-#: core/models.py:564
+#: core/models.py:563
 msgid "date/time updated"
 msgstr "дата/время обновления"
 
-#: core/models.py:570
+#: core/models.py:569
 msgid "IP address"
 msgstr "IP адрес"
 
-#: core/models.py:609
+#: core/models.py:608
 msgid "Threaded Comment"
 msgstr "Древовидный комментарий"
 
-#: core/models.py:610
+#: core/models.py:609
 msgid "Threaded Comments"
 msgstr "Древовидные комментарии"
 
-#: core/models.py:628
+#: core/models.py:627
 msgid "Follow"
 msgstr "Следование"
 
-#: core/models.py:629
+#: core/models.py:628
 msgid "Follows"
 msgstr "Следования"
 
-#: core/models.py:643 core/models.py:718
+#: core/models.py:642 core/models.py:717
 msgid "System"
 msgstr "Система"
 
-#: core/models.py:646
+#: core/models.py:645
 msgid "Account"
 msgstr "Счет"
 
-#: core/models.py:647
+#: core/models.py:646
 msgid "Profile"
 msgstr "Профиль"
 
-#: core/models.py:656
+#: core/models.py:655
 msgid "Notice Type"
 msgstr "Тип уведомления"
 
-#: core/models.py:664
+#: core/models.py:663
 msgid "Notice"
 msgstr "Уведомление"
 
-#: core/models.py:665
+#: core/models.py:664
 msgid "Notices"
 msgstr "Уведомления"
 
-#: core/models.py:671
+#: core/models.py:670
 msgid "Subject"
 msgstr "Тема"
 
-#: core/models.py:672
+#: core/models.py:671
 msgid "Body"
 msgstr "Содержание"
 
-#: core/models.py:673
+#: core/models.py:672
 msgid "Sender"
 msgstr "Отправитель"
 
-#: core/models.py:675
+#: core/models.py:674
 msgid "Parent message"
 msgstr "Родительское сообщениe"
 
-#: core/models.py:676
+#: core/models.py:675
 msgid "sent at"
 msgstr "отослано в"
 
-#: core/models.py:677
+#: core/models.py:676
 msgid "read at"
 msgstr "прочитано в"
 
-#: core/models.py:678
+#: core/models.py:677
 msgid "replied at"
 msgstr "отвечено в"
 
-#: core/models.py:679
+#: core/models.py:678
 msgid "Sender deleted at"
 msgstr "Отправитель удален в"
 
-#: core/models.py:680
+#: core/models.py:679
 msgid "Recipient deleted at"
 msgstr "Получатель удален в"
 
-#: core/models.py:710
+#: core/models.py:709
 msgid "Messages"
 msgstr "Сообщения"
 
-#: core/models.py:726
+#: core/models.py:725
 msgid "Action Type"
 msgstr "Тип действия"
 
-#: core/models.py:733
+#: core/models.py:732
 msgid "Action"
 msgstr "Действие"
 
-#: core/models.py:734
+#: core/models.py:733
 msgid "Actions"
 msgstr "Действия"
 
