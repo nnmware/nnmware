@@ -678,6 +678,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
+        else:
+            self.object.user = None
         room = Room.objects.get(id=form.cleaned_data.get('room_id'))
         settlement = SettlementVariant.objects.get(room=room,
             settlement=form.cleaned_data.get('settlement'))
