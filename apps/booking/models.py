@@ -471,7 +471,7 @@ class Booking(MoneyBase, MetaIP):
     def get_client_url(self):
         if not self.uuid:
             self.save()
-        return 'booking_hotel_detail', (), { 'slug': self.uuid}
+        return 'booking_user_detail', (), { 'slug': self.uuid}
 
 
     @property
