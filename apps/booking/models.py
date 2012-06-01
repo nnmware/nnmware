@@ -368,7 +368,7 @@ class Room(MetaName):
     @property
     def main_image(self):
         try:
-            pics = Pic.objects.metalinks_for_object(self)
+            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
             return pics[0].pic.url
         except :
             return None
