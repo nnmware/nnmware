@@ -54,7 +54,7 @@ class HotelOption(MetaName):
             return _("%(name)s") % { 'name': self.name}
 
 class PaymentMethod(MetaName):
-    pass
+    use_card = models.BooleanField(verbose_name=_("Use credit card?"), default=False)
 
     class Meta:
         verbose_name = _("Payment method")
