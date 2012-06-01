@@ -13,6 +13,7 @@ from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_get_request
 from nnmware.apps.userprofile.models import Profile
+from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
 from nnmware.apps.money.models import Bill
 import time
@@ -648,6 +649,14 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         return reverse('hotel_list')
 
     def form_valid(self, form):
+        p_m = self.request.REQUEST['payment_method'] or None
+        if p_m:
+            payment_method = PaymentMethod.objects.get(pk=int(p_m))
+        else:
+            payload = {'success': False, 'engine_error':_('You are not select payment method.')}
+            return AjaxLazyAnswer(payload)
+
+
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
