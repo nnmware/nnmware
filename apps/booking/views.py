@@ -649,7 +649,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         return reverse('hotel_list')
 
     def form_valid(self, form):
-        p_m = self.request.REQUEST['payment_method'] or None
+        p_m = self.request.REQUEST.get('payment_method') or None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
         else:
