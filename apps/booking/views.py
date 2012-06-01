@@ -19,6 +19,7 @@ from nnmware.apps.money.models import Bill
 import time
 from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
+from nnmware.core.financial import is_luhn_valid
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
@@ -652,6 +653,19 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         p_m = self.request.REQUEST.get('payment_method') or None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
+            card_number = self.request.REQUEST.get('card_number') or None
+            card_owner = self.request.REQUEST.get('card_number') or None
+            card_expired = self.request.REQUEST.get('card_number') or None
+            card_cvv2 = self.request.REQUEST.get('card_number') or None
+            if payment_method.use_card:
+                if card_number and card_owner and card_expired and card_cvv2:
+                    if not is_luhn_valid(card_number):
+                        payload = {'success': False, 'engine_error':_('Card number is wrong.')}
+                        return AjaxLazyAnswer(payload)
+                else:
+                    payload = {'success': False, 'engine_error':_('You enter not all data of card.')}
+                    return AjaxLazyAnswer(payload)
+
         else:
             payload = {'success': False, 'engine_error':_('You are not select payment method.')}
             return AjaxLazyAnswer(payload)
