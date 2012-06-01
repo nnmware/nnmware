@@ -468,6 +468,12 @@ class Booking(MoneyBase, MetaIP):
             self.save()
         return 'booking_hotel_detail', (), { 'slug': self.uuid}
 
+    def get_client_url(self):
+        if not self.uuid:
+            self.save()
+        return 'booking_hotel_detail', (), { 'slug': self.uuid}
+
+
     @property
     def days(self):
         delta = self.to_date-self.from_date
