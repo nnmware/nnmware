@@ -120,6 +120,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True, null=True)
     schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True, null=True)
     payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
+    updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -239,6 +240,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
             self.slug = self.slug.strip().replace(' ','-')
             if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
                 self.slug = self.pk
+        self.updated_date = datetime.now()
         super(Hotel, self).save(*args, **kwargs)
 
     def update_hotel_amount(self):
