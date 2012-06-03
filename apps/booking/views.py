@@ -542,7 +542,7 @@ class RequestsList(CurrentUserSuperuser, ListView):
         return context
 
 class ReportsList(CurrentUserSuperuser, ListView):
-    model = RequestAddHotel
+    model = Hotel
     template_name = "sysadm/reports.html"
 
     def get_context_data(self, **kwargs):
