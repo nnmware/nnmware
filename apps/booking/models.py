@@ -46,7 +46,7 @@ class HotelOption(MetaName):
     class Meta:
         verbose_name = _("Hotel Option")
         verbose_name_plural = _("Hotel Options")
-        ordering = ['-order_in_list', 'name' ]
+        ordering = ['order_in_list', 'name' ]
 
     def __unicode__(self):
         if self.category:
@@ -276,7 +276,7 @@ class RoomOption(MetaName):
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
 
     class Meta:
-        ordering = ['-order_in_list', 'name' ]
+        ordering = ['order_in_list', 'name' ]
         verbose_name = _("Room Option")
         verbose_name_plural = _("Room Options")
 
