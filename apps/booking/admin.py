@@ -40,7 +40,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
-    ordering = ('category','order_in_list','name')
+#    ordering = ('category','order_in_list','name')
 
 
 

@@ -46,7 +46,7 @@ class HotelOption(MetaName):
     class Meta:
         verbose_name = _("Hotel Option")
         verbose_name_plural = _("Hotel Options")
-        ordering = ['order_in_list', 'name' ]
+        ordering = ['category', 'order_in_list', 'name' ]
 
     def __unicode__(self):
         if self.category:
