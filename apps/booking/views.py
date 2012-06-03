@@ -541,6 +541,18 @@ class RequestsList(CurrentUserSuperuser, ListView):
         context['title_line'] = _('request for add')
         return context
 
+class ReportsList(CurrentUserSuperuser, ListView):
+    model = RequestAddHotel
+    template_name = "sysadm/reports.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ReportsList, self).get_context_data(**kwargs)
+        context['tab'] = 'reports'
+        context['title_line'] = _('site reports')
+        return context
+
+
 class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     model = Profile
     form_class = UserCabinetInfoForm
