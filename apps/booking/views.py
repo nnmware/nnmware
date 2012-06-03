@@ -545,6 +545,10 @@ class ReportsList(CurrentUserSuperuser, ListView):
     model = Hotel
     template_name = "sysadm/reports.html"
 
+    def get_queryset(self):
+        result = Hotel.objects.order_by('city__name','name')
+        return result
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(ReportsList, self).get_context_data(**kwargs)
