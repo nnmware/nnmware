@@ -322,7 +322,7 @@ class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-        context['options_list'] = HotelOption.objects.order_by('category')
+        context['options_list'] = HotelOption.objects.order_by('category','order_in_list','name')
         context['tab'] = 'common'
         context['title_line'] = _('private cabinet')
         return context
