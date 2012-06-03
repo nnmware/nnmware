@@ -238,7 +238,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
-        context['hotel_options'] = self.object.option.order_by('category')
+        context['hotel_options'] = self.object.option.order_by('category','order_in_list','name')
         context['search_url'] = self.object.get_absolute_url()
         try:
             from_date = convert_to_date(f_date)
@@ -299,7 +299,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['tab'] = 'description'
         context['title_line'] = self.object.hotel.get_name
-        context['room_options'] = self.object.option.order_by('category')
+        context['room_options'] = self.object.option.order_by('category','order_in_list','name')
         context['search_url'] = self.object.hotel.get_absolute_url()
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
@@ -356,7 +356,7 @@ class CabinetRooms(CurrentUserHotelAdmin, CreateView):
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category')
+        context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
         context['tab'] = 'rooms'
         context['hotel'] = hotel
         return context
@@ -373,7 +373,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         # Call the base implementation first to get a context
         context = super(CabinetEditRoom, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category')
+        context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
         return context

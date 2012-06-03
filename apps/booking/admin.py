@@ -31,7 +31,7 @@ class HotelAdmin(admin.ModelAdmin):
     ordering = ('register_date','name')
 
 class HotelOptionAdmin(admin.ModelAdmin):
-    list_display = ('name','category','in_search','sticky_in_search')
+    list_display = ('name','category','in_search','sticky_in_search','order_in_list')
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel Option"), {"fields": [("name",),
@@ -40,6 +40,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
         ]}),
         (_("English"), {"classes": ("collapse closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
+    ordering = ('category','order_in_list','name')
 
 
 
@@ -48,7 +49,7 @@ class RoomAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
 class RoomOptionAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('name','category','order_in_list')
     search_fields = ('name',)
     fieldsets = (
         (_("Room Option"), {"fields": [("name",),
@@ -57,6 +58,7 @@ class RoomOptionAdmin(admin.ModelAdmin):
             ]}),
             (_("English"), {"classes": ("collapse closed",),
                     "fields": [("name_en",),("description_en",) , ]}),)
+    ordering = ('category','order_in_list','name')
 
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ('name',)
