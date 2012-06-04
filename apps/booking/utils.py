@@ -26,7 +26,7 @@ def booking_new_hotel_mail(booking):
     recipients = settings.MANAGERS
     if booking.hotel.email:
         mail_dict = {'booking': booking,
-                     'site_name': settings.SITENAME, 'username': username}
+                     'site_name': settings.SITENAME}
         subject = render_to_string('booking/new_client_subject.txt', mail_dict)
         subject = ''.join(subject.splitlines())
         message = render_to_string('booking/new_client.txt', mail_dict)
