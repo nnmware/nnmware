@@ -17,18 +17,24 @@ def booking_new_client_mail(booking, username=''):
         recipients = [booking.email]
         mail_dict = {'booking': booking,
                     'site_name': settings.SITENAME, 'username': username}
-        subject = 'booking/new_client_subject.txt'
-        body = 'booking/new_client.txt'
+        subject = 'booking/on_create_to_client_subject.txt'
+        body = 'booking/on_create_to_client.txt'
         send_template_mail(subject,body,mail_dict,recipients)
 
 def booking_new_hotel_mail(booking):
-    recipients = settings.MANAGERS
+    recipients = settings.BOOKING_MANAGERS
     if booking.hotel.email:
-        mail_dict = {'booking': booking,
-                     'site_name': settings.SITENAME}
-        subject = 'booking/new_hotel_subject.txt'
-        body = 'booking/new_client.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
+        recipients.append(booking.hotel.email)
+    elif booking.hotel.contact_email:
+        recipients.append(booking.hotel.contact_email)
+    for admin in booking.hotel.admins.all():
+        if admin.email:
+            recipients.append(admin.email)
+    mail_dict = {'booking': booking,
+        'site_name': settings.SITENAME}
+    subject = 'booking/on_create_to_hotel_subject.txt'
+    body = 'booking/on_create_to_hotel.txt'
+    send_template_mail(subject,body,mail_dict,recipients)
 
 
 
