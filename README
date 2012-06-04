@@ -38,5 +38,10 @@ Licensed under GPL3
 
 support@nnmware.com
 
-required django(current), python-oauth2, south, unidecode
+required django-current, python-oauth2, south, unidecode, xlwt
+
+Working with OpenStreetMap and his geotargeting.
+
+Great thanks Python, Django, Linux and all OpenSource community.
+
 

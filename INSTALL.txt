@@ -2,4 +2,4 @@ Thanks for using this django application.
 
 NNMWARE CMF @ 2012
 
-Required unidecode, oauth2
+Required unidecode, oauth2, xlwt
