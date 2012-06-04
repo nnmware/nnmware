@@ -8,8 +8,11 @@ import random
 import sys
 import types
 from datetime import datetime, date, timedelta
+from django.conf import settings
+from django.core.mail import send_mail
 
 from django.db import models
+from django.template.loader import render_to_string
 from django.utils.encoding import smart_unicode
 from nnmware.core import oembed
 import time
@@ -317,3 +320,9 @@ def daterange(start_date, end_date):
     for n in range((end_date - start_date).days):
         yield start_date + timedelta(n)
 
+def send_template_mail(subject,body,mail_dict, recipients):
+    subject = render_to_string(subject, mail_dict)
+    subject = ''.join(subject.splitlines())
+    body = render_to_string(body, mail_dict)
+    send_mail(subject=subject, message=body, from_email=settings.EMAIL_HOST_USER,
+        recipient_list=recipients)

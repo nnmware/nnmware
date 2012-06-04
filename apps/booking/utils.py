@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from nnmware.core.utils import send_template_mail
 
 def guests_from_get_request(request):
     guests_get = request.GET.get('guests') or None
@@ -13,22 +14,27 @@ def guests_from_get_request(request):
 
 def booking_new_client_mail(booking, username=''):
     if booking.email:
+        recipients = [booking.email]
         mail_dict = {'booking': booking,
                     'site_name': settings.SITENAME, 'username': username}
-        subject = render_to_string('booking/new_client_subject.txt', mail_dict)
-        # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
-        message = render_to_string('booking/new_client.txt', mail_dict)
-        send_mail(subject=subject, message=message, from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[booking.email])
+        subject = 'booking/new_client_subject.txt'
+        body = 'booking/new_client.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
 
 def booking_new_hotel_mail(booking):
     recipients = settings.MANAGERS
     if booking.hotel.email:
         mail_dict = {'booking': booking,
                      'site_name': settings.SITENAME}
-        subject = render_to_string('booking/new_client_subject.txt', mail_dict)
-        subject = ''.join(subject.splitlines())
-        message = render_to_string('booking/new_client.txt', mail_dict)
-        send_mail(subject=subject, message=message, from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[booking.email])
+        subject = 'booking/new_hotel_subject.txt'
+        body = 'booking/new_client.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+
+
+
+
+
+
+
+
+
