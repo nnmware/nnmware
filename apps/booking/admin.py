@@ -100,6 +100,7 @@ class BookingAdmin(admin.ModelAdmin):
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
             ('first_name','middle_name','last_name'),
+            ('phone','email'),
             ('amount','currency','date'),
             ('uuid'),
             ('ip','user_agent')
@@ -111,6 +112,7 @@ class BookingAdmin(admin.ModelAdmin):
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
             ('first_name','middle_name','last_name'),
+            ('phone','email'),
             ('amount','currency','date'),
             ('uuid'),
             ('ip','user_agent')
