@@ -325,4 +325,4 @@ def send_template_mail(subject,body,mail_dict, recipients):
     subject = ''.join(subject.splitlines())
     body = render_to_string(body, mail_dict)
     send_mail(subject=subject, message=body, from_email=settings.EMAIL_HOST_USER,
-        recipient_list=recipients,fail_silently=False)
+        recipient_list=recipients)
