@@ -41,6 +41,3 @@ def booking_new_hotel_mail(booking):
 
 
 
-
-
-

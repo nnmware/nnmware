@@ -11,7 +11,7 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
-from nnmware.apps.booking.utils import guests_from_get_request
+from nnmware.apps.booking.utils import guests_from_get_request, booking_new_hotel_mail
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
@@ -738,6 +738,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             booking_new_client_mail(self.object, self.request.user.username)
         else:
             booking_new_client_mail(self.object)
+        booking_new_hotel_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
 class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
