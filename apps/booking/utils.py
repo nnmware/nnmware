@@ -11,7 +11,7 @@ def guests_from_get_request(request):
         guests = None
     return guests
 
-def booking_new_client_mail(booking):
+def booking_new_client_mail(booking, username=''):
     if booking.email:
         mail_dict = {'booking': booking,
                     'site_name': settings.SITENAME, 'username': username}

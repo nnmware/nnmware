@@ -734,8 +734,10 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.save()
         self.success_url = self.object.get_client_url()
         # TODO make mail
-        booking_new_client_mail(self.object)
-
+        if self.request.user.is_authenticated:
+            booking_new_client_mail(self.object, self.request.user.username)
+        else:
+            booking_new_client_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
 class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
