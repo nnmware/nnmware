@@ -732,6 +732,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_client_url()
+        # TODO make mail
+
         return super(ClientAddBooking, self).form_valid(form)
 
 class RequestAdminAdd(CurrentUserSuperuser, TemplateView):

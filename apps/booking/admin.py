@@ -99,6 +99,7 @@ class BookingAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
+            ('first_name','middle_name','last_name'),
             ('amount','currency','date'),
             ('uuid'),
             ('ip','user_agent')
@@ -109,6 +110,7 @@ class BookingAdmin(admin.ModelAdmin):
     no_root_fieldsets = (
         (_("Booking Event"), {"fields": [("user",'settlement','hotel'),
             ('from_date','to_date','status'),
+            ('first_name','middle_name','last_name'),
             ('amount','currency','date'),
             ('uuid'),
             ('ip','user_agent')
