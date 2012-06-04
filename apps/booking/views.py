@@ -20,6 +20,7 @@ import time
 from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
+from nnmware.apps.booking.utils import booking_new_client_mail
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
@@ -733,6 +734,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.save()
         self.success_url = self.object.get_client_url()
         # TODO make mail
+        booking_new_client_mail(self.object)
 
         return super(ClientAddBooking, self).form_valid(form)
 
