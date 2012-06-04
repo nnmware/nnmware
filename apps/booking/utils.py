@@ -18,6 +18,6 @@ def booking_new_client_mail(booking, username=''):
         subject = render_to_string('booking/new_client_subject.txt', mail_dict)
         # Email subject *must not* contain newlines
         subject = ''.join(subject.splitlines())
-        message = render_to_string('booking/new_client', mail_dict)
+        message = render_to_string('booking/new_client.txt', mail_dict)
         send_mail(subject=subject, message=message, from_email=settings.EMAIL_HOST_USER,
             recipient_list=[booking.email])
