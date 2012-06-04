@@ -62,7 +62,8 @@ or if only a width is requested (to be compatibile with admin interface)::
     %(dirname)s/%(basename)s_t%(width)d.%(extension)s
 
 """
-
+    if url is None:
+        return None
     kwargs = {}
     if args:
         if ',' not in args:
