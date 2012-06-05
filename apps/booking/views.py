@@ -376,6 +376,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
+    slug_field = 'pk'
     form_class = CabinetEditRoomForm
     template_name = "cabinet/room.html"
 
