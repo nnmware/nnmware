@@ -223,15 +223,18 @@ class HotelAdminList(ListView):
         context['tab'] = _('admin of hotels')
         return context
 
-
-class HotelDetail(AttachedImagesMixin, DetailView):
-    model = Hotel
-#    slug_field = 'slug'
-    template_name = "hotels/detail.html"
+class HotelPathMixin(object):
 
     def get_object(self, queryset=None):
         city = get_object_or_404(City, slug=self.kwargs['city'])
         return get_object_or_404(Hotel,city=city,slug=self.kwargs['slug'])
+
+
+class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
+    model = Hotel
+#    slug_field = 'slug'
+    template_name = "hotels/detail.html"
+
 
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
@@ -318,7 +321,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         return context
 
-class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
+class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
