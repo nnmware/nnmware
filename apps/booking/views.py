@@ -578,7 +578,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.all()
             self.report_name = _('All hotels in system')
         elif report_type == 'nopayment':
-            result = Hotel.objects.filter(payment_methods__ne=[])
+            result = Hotel.objects.filter(payment_method__ne=[])
             self.report_name = _('Hotels without payment methods')
         if result:
             result = result.order_by('city__name','name')
