@@ -589,7 +589,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('user_profile', args=[self.object.pk])
+        return reverse('user_profile', args=[self.object.user.username])
 
 class UserBookings(CurrentUserCabinetAccess, DetailView):
     model = Profile
