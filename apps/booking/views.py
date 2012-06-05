@@ -574,7 +574,9 @@ class ReportView(CurrentUserSuperuser, ListView):
         report_type = self.kwargs['slug']
         result = []
         if report_type == 'all':
-            result = Hotel.objects.order_by('city__name','name')
+            result = Hotel.objects.all()
+        if result:
+            result = result.order_by('city__name','name')
         return result
 
     def get_context_data(self, **kwargs):
