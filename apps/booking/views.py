@@ -226,8 +226,12 @@ class HotelAdminList(ListView):
 
 class HotelDetail(AttachedImagesMixin, DetailView):
     model = Hotel
-    slug_field = 'slug'
+#    slug_field = 'slug'
     template_name = "hotels/detail.html"
+
+    def get_object(self, queryset=None):
+        city = get_object_or_404(City, city=self.kwargs['city'])
+        return get_object_or_404(Hotel,city=city,slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
