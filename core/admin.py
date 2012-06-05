@@ -113,7 +113,6 @@ class TagAdmin(admin.ModelAdmin):
 class ActionAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
     list_display = ('user', 'verb', 'content_object','timestamp','ip','user_agent')
-    list_editable = ('verb',)
     list_filter = ('timestamp',)
 
 
@@ -123,7 +122,7 @@ class FollowAdmin(admin.ModelAdmin):
     list_filter = ('user',)
 
 class NoticeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'timestamp', 'verb', 'sender')
+    list_display = ('user', 'timestamp', 'verb', 'sender','ip','user_agent')
     list_filter = ('user',)
 
 class MessageAdminForm(ModelForm):
