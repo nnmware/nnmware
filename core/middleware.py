@@ -77,6 +77,7 @@ class VisitorHitMiddleware(object):
         if request.path.startswith(settings.ADMIN_SYSTEM_PREFIX):
             return
         # see if the user agent is not supposed to be tracked
+        user_agent = request.META.get('HTTP_USER_AGENT', '')[:255]
         for ua in UNTRACKED_USER_AGENT:
             # if the keyword is found in the user agent, stop tracking
             if user_agent.find(ua) != -1:
@@ -85,7 +86,7 @@ class VisitorHitMiddleware(object):
         v = VisitorHit()
         if request.user.is_authenticated():
             v.user = request.user
-        v.user_agent = request.META.get('HTTP_USER_AGENT', '')[:255]
+        v.user_agent = user_agent
         v.ip_address = request.META.get('REMOTE_ADDR','')
         if hasattr(request, 'session') and request.session.session_key:
             # use the current session key if we can
