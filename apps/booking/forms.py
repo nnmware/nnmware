@@ -4,7 +4,7 @@ from django import forms
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
-from nnmware.apps.booking.models import RequestAddHotel
+from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
