@@ -585,7 +585,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.report_name = _('Hotels without payment methods')
         elif report_type == 'setpayment':
             result = Hotel.objects.exclude(payment_method=None)
-            self.report_name = _('Hotels without payment methods')
+            self.report_name = _('Hotels with payment methods')
         elif report_type == 'notsetadmins':
             result = Hotel.objects.filter(admins=None)
             self.report_name = _('Hotels without admins')
