@@ -172,6 +172,10 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     def get_absolute_url(self):
         return "hotel_detail", (), {'city':self.city.slug ,'slug': self.slug}
 
+    @permalink
+    def get_cabinet_url(self):
+        return "cabinet_info", (), {'city':self.city.slug ,'slug': self.slug}
+
     def get_current_percent(self):
         try:
             return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
