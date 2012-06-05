@@ -211,9 +211,11 @@ class HotelList(ListView):
 
 class HotelAdminList(ListView):
     model = Hotel
-    template_name = "hotels/list.html"
+    template_name = "usercabinet/list.html"
 
     def get_queryset(self):
+        if self.request.user.is_superuser:
+            return Hotel.objects.all()
         result = Hotel.objects.filter(admins = self.request.user)
         return result
 
