@@ -230,7 +230,7 @@ class HotelDetail(AttachedImagesMixin, DetailView):
     template_name = "hotels/detail.html"
 
     def get_object(self, queryset=None):
-        city = get_object_or_404(City, city=self.kwargs['city'])
+        city = get_object_or_404(City, slug=self.kwargs['city'])
         return get_object_or_404(Hotel,city=city,slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
