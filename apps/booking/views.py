@@ -26,7 +26,8 @@ class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Hotel, pk=kwargs['pk'])
+        city = get_object_or_404(City, slug=kwargs['city'])
+        obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
@@ -223,7 +224,7 @@ class HotelAdminList(ListView):
         context['tab'] = _('admin of hotels')
         return context
 
-class HotelPathMixin(View):
+class HotelPathMixin(object):
 
     def get_object(self, queryset=None):
         city = get_object_or_404(City, slug=self.kwargs['city'])
@@ -321,7 +322,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         return context
 
-class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView, HotelPathMixin):
+class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
