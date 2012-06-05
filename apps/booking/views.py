@@ -73,7 +73,7 @@ class CurrentUserBookingAccess(object):
 class CurrentUserCabinetAccess(object):
 
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(User, pk=kwargs['pk'])
+        obj = get_object_or_404(User, username=kwargs['username'])
         if not (request.user == obj) and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
