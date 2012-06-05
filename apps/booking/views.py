@@ -705,7 +705,6 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         self.object.hotel = settlement.room.hotel
         self.object.status = STATUS_ACCEPTED
         self.object.date = datetime.now()
-#        self.object.payment_method = payment_method
         from_date = self.object.from_date
         to_date = self.object.to_date
         all_amount = Decimal(0)
