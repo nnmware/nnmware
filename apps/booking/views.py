@@ -215,9 +215,10 @@ class HotelAdminList(ListView):
 
     def get_queryset(self):
         if self.request.user.is_superuser:
-            return Hotel.objects.all()
-        result = Hotel.objects.filter(admins = self.request.user)
-        return result
+            result = Hotel.objects.all()
+        else:
+            result = Hotel.objects.filter(admins = self.request.user)
+        return result.order_by('city__name','name')
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
