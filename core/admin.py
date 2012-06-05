@@ -107,7 +107,7 @@ class PicAdmin(admin.ModelAdmin):
 
 class VisitorHitAdmin(admin.ModelAdmin):
     readonly_fields = ('user','date','ip_address','session_key','user_agent','referrer',
-        'url','secure')
+        'url','secure','hostname')
     fieldsets = (
         (_('Visitor hit'), {'fields': [('user', 'date','secure'),
             ('ip_address', 'session_key'),
@@ -116,7 +116,7 @@ class VisitorHitAdmin(admin.ModelAdmin):
         ]}),
         )
     list_display = ('user', 'date', 'ip_address',
-                    'user_agent','url','session_key','secure')
+                    'user_agent','url','secure')
     list_filter = ('date',)
     search_fields = ('user__username', 'user_agent')
 
