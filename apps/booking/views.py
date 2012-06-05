@@ -556,9 +556,19 @@ class RequestsList(CurrentUserSuperuser, ListView):
         context['title_line'] = _('request for add')
         return context
 
-class ReportsList(CurrentUserSuperuser, ListView):
-    model = Hotel
+class ReportsList(CurrentUserSuperuser, TemplateView):
     template_name = "sysadm/reports.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(ReportsList, self).get_context_data(**kwargs)
+        context['tab'] = 'reports'
+        context['title_line'] = _('site reports')
+        return context
+
+class ReportView(CurrentUserSuperuser, ListView):
+    model = Hotel
+    template_name = "sysadm/report.html"
 
     def get_queryset(self):
         result = Hotel.objects.order_by('city__name','name')
@@ -566,7 +576,7 @@ class ReportsList(CurrentUserSuperuser, ListView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(ReportsList, self).get_context_data(**kwargs)
+        context = super(ReportView, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
         return context
