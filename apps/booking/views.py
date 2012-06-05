@@ -376,12 +376,13 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
+    pk_url_kwarg = 'pk'
     form_class = CabinetEditRoomForm
     template_name = "cabinet/room.html"
 
-    def get_object(self, queryset=None):
-        room = get_object_or_404(Room, slug=self.kwargs['pk'])
-        return room
+#    def get_object(self, queryset=None):
+#        room = get_object_or_404(Room, slug=self.kwargs['pk'])
+#        return room
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -393,7 +394,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_rooms', args=[self.object.hotel.pk])
+        return reverse('cabinet_rooms', args=[self.object.hotel.city.slug,self.object.hotel.slug])
 
     def form_valid(self, form):
         variants = self.request.POST.getlist('settlement')
