@@ -59,6 +59,16 @@ class AjaxMessagingMiddleware(object):
                 response.content = json.dumps(content)
         return response
 
+UNTRACKED_USER_AGENT = [
+                "Teoma", "alexa", "froogle", "Gigabot", "inktomi", "looksmart", "URL_Spider_SQL", "Firefly",
+                "NationalDirectory", "Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot", "crawler",
+                "www.galaxy.com", "Googlebot", "Googlebot/2.1", "Google", "Webmaster", "Scooter", "James Bond",
+                "Slurp", "msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz", "Baiduspider",
+                "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider",
+                "WebAlta Crawler", "MJ12bot", "Yandex/", "YaDirectBot", "StackRambler", "DotBot", "dotbot"
+        ]
+
+
 class VisitorHitMiddleware(object):
 
     def process_request(self, request):
@@ -66,6 +76,11 @@ class VisitorHitMiddleware(object):
             return
         if request.path.startswith(settings.ADMIN_SYSTEM_PREFIX):
             return
+        # see if the user agent is not supposed to be tracked
+        for ua in UNTRACKED_USER_AGENT:
+            # if the keyword is found in the user agent, stop tracking
+            if user_agent.find(ua) != -1:
+                return
         from nnmware.core.models import VisitorHit
         v = VisitorHit()
         if request.user.is_authenticated():
