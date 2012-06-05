@@ -361,7 +361,8 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
+        city = get_object_or_404(City, slug=self.kwargs['city'])
+        hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
