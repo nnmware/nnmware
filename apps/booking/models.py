@@ -457,6 +457,7 @@ class Booking(MoneyBase, MetaIP):
     card_valid = models.CharField(verbose_name=_("Card valid to"), max_length=5, blank=True)
     card_holder = models.CharField(verbose_name=_("Card holder"), max_length=50, blank=True)
     card_cvv2 = models.CharField(verbose_name=_("Card verification value(CVV2)"), max_length=4, blank=True)
+    payment_method = models.ForeingKey(PaymentMethod, verbose_name=_('Payment method'))
 
     class Meta:
         ordering = ("-date",)
