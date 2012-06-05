@@ -88,6 +88,10 @@ def action_handler(verb, **kwargs):
     action.verb=unicode(verb)
     action.action_type =kwargs.pop('action_type', ACTION_UNKNOWN)
     action.description=kwargs.pop('description', None)
+    request = kwargs.pop('request', None)
+    if request:
+        action.ip = request.META['REMOTE_ADDR']
+        action.user_agent = request.META['HTTP_USER_AGENT']
     action.save()
 
 def notice_handler(verb, **kwargs):
@@ -107,6 +111,10 @@ def notice_handler(verb, **kwargs):
     notice.verb=unicode(verb)
     notice.notice_type =kwargs.pop('notice_type', NOTICE_UNKNOWN)
     notice.description=kwargs.pop('description', None)
+    request = kwargs.pop('request', None)
+    if request:
+        notice.ip = request.META['REMOTE_ADDR']
+        notice.user_agent = request.META['HTTP_USER_AGENT']
     notice.save()
 
 action.connect(action_handler, dispatch_uid='nnmware_action')
