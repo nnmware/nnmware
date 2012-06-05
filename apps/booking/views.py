@@ -575,6 +575,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         result = []
         if report_type == 'all':
             result = Hotel.objects.all()
+            self.report_name = _('All hotels in system')
         if result:
             result = result.order_by('city__name','name')
         return result
@@ -584,6 +585,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         context = super(ReportView, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
+        context['report_name'] = self.report_name
         return context
 
 
