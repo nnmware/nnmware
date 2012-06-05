@@ -376,9 +376,12 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
-    slug_field = 'pk'
     form_class = CabinetEditRoomForm
     template_name = "cabinet/room.html"
+
+    def get_object(self, queryset=None):
+        room = get_object_or_404(Room, slug=self.kwargs['pk'])
+        return room
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
