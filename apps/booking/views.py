@@ -571,7 +571,7 @@ class ReportView(CurrentUserSuperuser, ListView):
     template_name = "sysadm/report.html"
 
     def get_queryset(self):
-        report_type = self.kwargs['slug']
+        report_type = self.kwargs['slug'] or None
         self.report_name = _('Error')
         result = []
         if report_type == 'all':
@@ -592,6 +592,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         if result:
             result = result.order_by('city__name','name')
         self.result_count = len(result)
+        self.report_arg = report_type
         return result
 
     def get_context_data(self, **kwargs):
@@ -601,6 +602,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         context['title_line'] = _('site reports')
         context['report_name'] = self.report_name
         context['result_count'] = self.result_count
+        context['report_arg'] = self.report_arg
         return context
 
 
