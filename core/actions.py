@@ -109,5 +109,5 @@ def notice_handler(verb, **kwargs):
     notice.description=kwargs.pop('description', None)
     notice.save()
 
-action.connect(action_handler, dispatch_uid='actstream.models')
+action.connect(action_handler, dispatch_uid='nnmware_action')
 notice.connect(notice_handler, dispatch_uid='notice_sender')

@@ -647,7 +647,7 @@ NOTICE_CHOICES = (
     )
 
 
-class Notice(MetaLink):
+class Notice(MetaLink, MetaIP):
     """
     User notification model
     """
@@ -717,7 +717,7 @@ ACTION_CHOICES = (
     (ACTION_SYSTEM, _("System")),
     )
 
-class Action(MetaLink):
+class Action(MetaLink,MetaIP):
     """
     Model Activity of User
     """
