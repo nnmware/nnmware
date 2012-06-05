@@ -233,7 +233,6 @@ class HotelPathMixin(object):
 
 class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
     model = Hotel
-#    slug_field = 'slug'
     template_name = "hotels/detail.html"
 
 
@@ -337,7 +336,7 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_info', args=[self.object.pk])
+        return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
 
 class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     model = Room
@@ -372,7 +371,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         return context
 
     def get_success_url(self):
-            return reverse('cabinet_rooms', args=[self.object.hotel.pk])
+            return reverse('cabinet_rooms', args=[self.object.hotel.city.slug,self.object.hotel.slug])
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
@@ -460,7 +459,7 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_bills', args=[self.object.target.pk])
+        return reverse('cabinet_bills', args=[self.object.target.city.slug,self.object.target.slug])
 
 class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     model = Hotel
@@ -505,7 +504,7 @@ class RequestAddHotelView(CreateView):
     template_name = "requests/add.html"
 
     def get_success_url(self):
-        return reverse('hotel_all_city')
+        return reverse('hotel_list')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
