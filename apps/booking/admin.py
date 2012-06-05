@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
-    list_filter = ('name','starcount','city')
+    list_filter = ('name','starcount','city__name')
     search_fields = ('name',)
     filter_horizontal = ['option','admins']
     fieldsets = (
