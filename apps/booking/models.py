@@ -386,6 +386,10 @@ class Room(MetaName):
         except :
             return None
 
+    @permalink
+    def get_absolute_url(self):
+        return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
+
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
