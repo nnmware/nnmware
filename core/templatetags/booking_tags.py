@@ -10,6 +10,7 @@ from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, 
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
+from nnmware.core.models import VisitorHit
 from nnmware.core.utils import convert_to_date, daterange
 
 
@@ -256,3 +257,11 @@ def room_availability_on_date(room,date):
     except :
         result = ''
     return result
+
+@register.simple_tag
+def today_visitor_count():
+    return VisitorHit.objects.distinct('ip_address','session_key').count()
+
+@register.simple_tag
+def today_hit_count():
+    return VisitorHit.objects.count()
