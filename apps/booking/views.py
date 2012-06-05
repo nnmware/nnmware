@@ -734,7 +734,6 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_client_url()
-        # TODO make mail
         if self.request.user.is_authenticated:
             booking_new_client_mail(self.object, self.request.user.username)
         else:
