@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 import json
 from nnmware.core.utils import get_message_dict
@@ -63,6 +64,8 @@ class VisitorHitMiddleware(object):
     def process_request(self, request):
         if request.is_ajax():
             return
+#        if request.path.startswith(settings.ADMIN_SYSTEM_PREFIX):
+#            return
         from nnmware.core.models import VisitorHit
         v = VisitorHit()
         if request.user.is_authenticated():
@@ -80,5 +83,5 @@ class VisitorHitMiddleware(object):
         v.secure = request.is_secure()
         v.referrer = request.META.get('HTTP_REFERRER','')
         v.hostname = request.META.get('REMOTE_HOST','')[:100]
-        v.url = request.get_full_path()
+        v.url = request.path #get_full_path()
         v.save()
