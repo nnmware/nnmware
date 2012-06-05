@@ -214,7 +214,7 @@ class HotelAdminList(ListView):
     template_name = "usercabinet/list.html"
 
     def get_queryset(self):
-        if self.request.user:
+        if self.request.user.is_authenticated():
             if self.request.user.is_superuser:
                 result = Hotel.objects.all()
             else:
