@@ -344,7 +344,8 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
-        hotel = get_object_or_404(Hotel, id=self.kwargs['pk'])
+        city = get_object_or_404(City, slug=self.kwargs['city'])
+        hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
         self.object = form.save(commit=False)
         self.object.hotel = hotel
         self.object.save()
