@@ -214,11 +214,13 @@ class HotelAdminList(ListView):
     template_name = "usercabinet/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_superuser:
-            result = Hotel.objects.all()
-        else:
-            result = Hotel.objects.filter(admins = self.request.user)
-        return result.order_by('city__name','name')
+        if self.request.user.is_authenticated:
+            if self.request.user.is_superuser:
+                result = Hotel.objects.all()
+            else:
+                result = Hotel.objects.filter(admins = self.request.user)
+            return result.order_by('city__name','name')
+        raise Http404
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context

@@ -14,8 +14,8 @@ urlpatterns = patterns(
 
     #    url(r'^register/complete/$', direct_to_template, {'template':
     # 'userprofile/userprofile/registration_done.html'},name='signup_complete'),
-    url(r'^email/validation/(?P<key>.{70})/$', email_validation_process,
-        name='email_validation_process'),
+#    url(r'^email/validation/(?P<key>.{70})/$', email_validation_process,
+#        name='email_validation_process'),
 
     #    url(r'^email/validation/processed/$', direct_to_template,
     #        {'template': 'userprofile/userprofile/email_validation_processed.html'},
