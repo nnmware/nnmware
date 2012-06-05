@@ -83,5 +83,12 @@ class BookingAddForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = (
-            'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email')
+            'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email',
+            'payment_method')
 
+    def clean_payment_method(self):
+        p_m = self.cleaned_data.get('payment_method')
+        if p_m:
+            payment_method = PaymentMethod.objects.get(pk=int(p_m))
+            return payment_method
+        raise forms.ValidationError(_("No valid payment method."))
