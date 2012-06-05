@@ -106,7 +106,8 @@ class PicAdmin(admin.ModelAdmin):
     search_fields = ('description', 'user__username')
 
 class VisitorHitAdmin(admin.ModelAdmin):
-    readonly_fields = ('pic',)
+    readonly_fields = ('user','date','ip_address','session_key','user_agent','referrer',
+        'url','secure')
     fieldsets = (
         (_('Visitor hit'), {'fields': [('user', 'date'),
             ('ip_address', 'session_key'),
