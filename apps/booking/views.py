@@ -588,7 +588,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         context = super(ReportView, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
-        context['report_name'] = self.report_name
+        context['report_name'] = self.report_name or None
         return context
 
 
