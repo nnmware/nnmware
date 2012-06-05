@@ -582,6 +582,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.report_name = _('Hotels without payment methods')
         if result:
             result = result.order_by('city__name','name')
+        self.result_count = len(result)
         return result
 
     def get_context_data(self, **kwargs):
@@ -590,6 +591,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
         context['report_name'] = self.report_name
+        context['result_count'] = self.result_count
         return context
 
 
