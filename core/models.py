@@ -779,6 +779,7 @@ class VisitorHit(models.Model):
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
     ip_address = models.CharField(max_length=20, verbose_name=_('IP'))
+    hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
     user_agent = models.CharField(max_length=255, verbose_name=_('User-agent'))
     referrer = models.CharField(max_length=255, verbose_name=_('Referrer'))
     url = models.CharField(max_length=255, verbose_name=_('URL'))
