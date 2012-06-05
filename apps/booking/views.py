@@ -577,6 +577,10 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
+    def get_object(self, queryset=None):
+        user = get_object_or_404(User, username=self.kwargs['username'])
+        return user.get_profile()
+
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserCabinet, self).get_context_data(**kwargs)
@@ -591,6 +595,9 @@ class UserBookings(CurrentUserCabinetAccess, DetailView):
     model = Profile
     template_name = "usercabinet/bookings.html"
 
+    def get_object(self, queryset=None):
+        user = get_object_or_404(User, username=self.kwargs['username'])
+        return user.get_profile()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
