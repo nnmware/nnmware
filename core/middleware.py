@@ -81,3 +81,4 @@ class VisitorHitMiddleware(object):
         v.referrer = request.META.get('HTTP_REFERRER','')
         v.hostname = request.META.get('REMOTE_HOST','')[:100]
         v.url = request.get_full_path()
+        v.save()
