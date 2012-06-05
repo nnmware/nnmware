@@ -116,7 +116,7 @@ class VisitorHitAdmin(admin.ModelAdmin):
         ]}),
         )
     list_display = ('user', 'date', 'ip_address',
-                    'user_agent')
+                    'user_agent','url')
     list_filter = ('date',)
     search_fields = ('user__username', 'user_agent')
 
