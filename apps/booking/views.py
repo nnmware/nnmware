@@ -223,7 +223,7 @@ class HotelAdminList(ListView):
         context['tab'] = _('admin of hotels')
         return context
 
-class HotelPathMixin(object):
+class HotelPathMixin(View):
 
     def get_object(self, queryset=None):
         city = get_object_or_404(City, slug=self.kwargs['city'])
