@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, ModelChoiceField
-from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message
+from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -105,6 +105,19 @@ class PicAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish_date'
     search_fields = ('description', 'user__username')
 
+class VisitorHitAdmin(admin.ModelAdmin):
+    readonly_fields = ('pic',)
+    fieldsets = (
+        (_('Visitor hit'), {'fields': [('user', 'date'),
+            ('ip_address', 'session_key'),
+            ('user_agent', 'referrer'),
+            ('url','secure'),
+        ]}),
+        )
+    list_display = ('user', 'date', 'ip_address',
+                    'user_agent')
+    list_filter = ('date',)
+    search_fields = ('user__username', 'user_agent')
 
 class TagAdmin(admin.ModelAdmin):
     fieldsets = ((_('nnmware'), {'fields': [('name','slug')]}),)
@@ -209,3 +222,4 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Action, ActionAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
+admin.site.register(VisitorHit, VisitorHitAdmin)

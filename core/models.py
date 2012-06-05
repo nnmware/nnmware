@@ -773,3 +773,18 @@ signals.post_save.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id
 signals.post_delete.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
 signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
+
+class VisitorHit(models.Model):
+    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
+    session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
+    ip_address = models.CharField(max_length=20, verbose_name=_('IP'))
+    user_agent = models.CharField(max_length=255, verbose_name=_('User-agent'))
+    referrer = models.CharField(max_length=255, verbose_name=_('Referrer'))
+    url = models.CharField(max_length=255, verbose_name=_('URL'))
+    secure = models.BooleanField(_('Is secure'), default=False)
+
+    class Meta:
+        ordering = ['-date']
+        verbose_name = _("Visitor hit")
+        verbose_name_plural = _("Visitors hits")
