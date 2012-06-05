@@ -1,6 +1,5 @@
 from django.contrib import messages
 import json
-from nnmware.core.models import VisitorHit
 from nnmware.core.utils import get_message_dict
 
 from threading import local
@@ -64,6 +63,7 @@ class VisitorHitMiddleware(object):
     def process_request(self, request):
         if request.is_ajax():
             return
+        from nnmware.core.models import VisitorHit
         v = VisitorHit()
         if request.user.is_authenticated():
             v.user = request.user
