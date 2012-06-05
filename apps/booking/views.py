@@ -321,7 +321,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         return context
 
-class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
+class CabinetInfo(CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView, HotelPathMixin):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
