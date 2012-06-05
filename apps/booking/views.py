@@ -571,7 +571,10 @@ class ReportView(CurrentUserSuperuser, ListView):
     template_name = "sysadm/report.html"
 
     def get_queryset(self):
-        result = Hotel.objects.order_by('city__name','name')
+        report_type = self.kwargs['slug']
+        result = []
+        if report_type == 'all':
+            result = Hotel.objects.order_by('city__name','name')
         return result
 
     def get_context_data(self, **kwargs):
