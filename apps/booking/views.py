@@ -339,7 +339,7 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.pk])
 
-class CabinetRooms(CurrentUserHotelAdmin, CreateView):
+class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     model = Room
     form_class = CabinetAddRoomForm
     template_name = "cabinet/rooms.html"
@@ -403,7 +403,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         return super(CabinetEditRoom, self).form_valid(form)
 
 
-class CabinetRates(CurrentUserHotelAdmin, DetailView):
+class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/rates.html"
 
@@ -456,7 +456,7 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
     def get_success_url(self):
         return reverse('cabinet_bills', args=[self.object.target.pk])
 
-class CabinetBookings(CurrentUserHotelAdmin, DetailView):
+class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/bookings.html"
 
@@ -479,7 +479,7 @@ class CabinetBookings(CurrentUserHotelAdmin, DetailView):
         context['title_line'] = _('bookings')
         return context
 
-class CabinetBills(CurrentUserHotelAdmin, DetailView):
+class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/bills.html"
 
