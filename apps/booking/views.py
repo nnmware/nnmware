@@ -583,6 +583,12 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'setpayment':
             result = Hotel.objects.exclude(payment_method=None)
             self.report_name = _('Hotels without payment methods')
+        elif report_type == 'notsetadmins':
+            result = Hotel.objects.filter(admins=None)
+            self.report_name = _('Hotels without admins')
+        elif report_type == 'setadmins':
+            result = Hotel.objects.exclude(admins=None)
+            self.report_name = _('Hotels with admins')
         if result:
             result = result.order_by('city__name','name')
         self.result_count = len(result)
