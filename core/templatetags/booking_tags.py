@@ -267,3 +267,8 @@ def today_visitor_count():
 @register.simple_tag
 def today_hit_count():
     return VisitorHit.objects.count()
+
+@register.simple_tag
+def room_avg_amount(amount, days):
+    result = amount/days
+    return format(result, '.2f')
