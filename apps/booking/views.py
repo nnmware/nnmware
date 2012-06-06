@@ -822,6 +822,7 @@ class HotelMainPage(TemplateView):
         result_moscow = Hotel.objects.filter(city=city).count()
         context['hotels_moscow'] = result_moscow
         context['hotels_spb'] = result_spb
+        context['title_line'] = _('booking of russian hotels')
         return context
 
 class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
