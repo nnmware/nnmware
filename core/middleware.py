@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from datetime import datetime
 import json
 from nnmware.core.utils import get_message_dict
 
@@ -100,4 +101,5 @@ class VisitorHitMiddleware(object):
         v.referrer = request.META.get('HTTP_REFERRER','')
         v.hostname = request.META.get('REMOTE_HOST','')[:100]
         v.url = request.get_full_path()
+        v.date = datetime.now()
         v.save()
