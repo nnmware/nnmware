@@ -475,6 +475,10 @@ class Booking(MoneyBase, MetaIP):
     def __unicode__(self):
          return u"Booking - %s" % self.pk
 
+    @property
+    def days(self):
+        return (self.to_date-self.from_date).days
+
     @permalink
     def get_absolute_url(self):
         if not self.uuid:

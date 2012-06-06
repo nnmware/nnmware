@@ -260,7 +260,9 @@ def room_availability_on_date(room,date):
 
 @register.simple_tag
 def today_visitor_count():
-    return VisitorHit.objects.distinct('ip_address','session_key').count()
+    result = VisitorHit.objects.values_list('session_key', flat=True).distinct()
+    return len(result)
+#    return VisitorHit.objects.distinct('session_key').count()
 
 @register.simple_tag
 def today_hit_count():
