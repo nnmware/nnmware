@@ -122,6 +122,9 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True, null=True)
     payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
+    condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
+    paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
+
 
     class Meta:
         verbose_name = _("Hotel")

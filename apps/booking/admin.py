@@ -18,7 +18,8 @@ class HotelAdmin(admin.ModelAdmin):
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
-        (_("Booking"), {"classes": ("collapse closed",), "fields": [('payment_method'),('booking_terms')
+        (_("Booking"), {"classes": ("collapse closed",), "fields": [('payment_method'),('booking_terms'),
+            ('condition_cancellation'),('paid_services')
         ]}),
         (_("Hotel admins"), {"classes": ("collapse closed",), "fields": [
             ('admins')]}),
