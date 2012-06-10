@@ -15,6 +15,7 @@ class HotelAdminForm(forms.ModelForm):
 
 
 class HotelAdmin(admin.ModelAdmin):
+    form = HotelAdminForm
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
     list_filter = ('name','starcount','city')
     search_fields = ('name',)
