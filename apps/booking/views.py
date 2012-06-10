@@ -343,6 +343,24 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
 
+class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
+    model = Hotel
+    form_class = CabinetTermsForm
+    template_name = "cabinet/terms.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(CabinetInfo, self).get_context_data(**kwargs)
+        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
+#        context['options_list'] = HotelOption.objects.order_by('category','order_in_list','name')
+        context['tab'] = 'terms'
+        context['title_line'] = _('private cabinet')
+        return context
+
+    def get_success_url(self):
+        return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
+
+
 class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     model = Room
     form_class = CabinetAddRoomForm

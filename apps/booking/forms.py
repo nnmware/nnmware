@@ -20,6 +20,15 @@ class CabinetInfoForm(forms.ModelForm):
         model = Hotel
         fields = ('name', 'description', 'option')
 
+class CabinetTermsForm(forms.ModelForm):
+#    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
+#    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
+
+    class Meta:
+        model = Hotel
+        fields = ('booking_terms', 'schema_transit', 'payment_method','condition_cancellation',
+            'paid_services','time_on','time_off')
+
 class CabinetAddRoomForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     description = forms.CharField(required=False,widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
