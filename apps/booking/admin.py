@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
+from django import forms
 from django.contrib import admin
+from django.contrib.admin import widgets
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
+
+class HotelAdminForm(forms.ModelForm):
+    class Meta:
+        model = Hotel
+        widgets = {
+            'time_on':widgets.AdminTimeWidget(),
+            'time_off':widgets.AdminTimeWidget()
+            }
 
 
 class HotelAdmin(admin.ModelAdmin):
@@ -19,7 +29,7 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
         (_("Booking"), {"classes": ("collapse closed",), "fields": [('payment_method'),('booking_terms'),
-            ('condition_cancellation'),('paid_services')
+            ('condition_cancellation'),('paid_services'),('time_on','time_off')
         ]}),
         (_("Hotel admins"), {"classes": ("collapse closed",), "fields": [
             ('admins')]}),

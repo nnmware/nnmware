@@ -124,6 +124,8 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
+    time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
+    time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
 
 
     class Meta:
