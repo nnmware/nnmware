@@ -27,8 +27,8 @@ class CabinetTermsForm(forms.ModelForm):
     schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
     condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
     paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-#    time_on = forms.CharField(widget=AdminTimeWidget())
-#    time_off = forms.CharField(widget=AdminTimeWidget())
+    time_on = forms.CharField(widget=AdminTimeWidget())
+    time_off = forms.CharField(widget=AdminTimeWidget())
 
     class Meta:
         model = Hotel
