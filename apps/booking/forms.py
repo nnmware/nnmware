@@ -29,7 +29,7 @@ class CabinetTermsForm(forms.ModelForm):
     paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
     time_on = forms.CharField(widget=AdminTimeWidget(),required=False)
     time_off = forms.CharField(widget=AdminTimeWidget(),required=False)
-    payment_method = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=False)
+#    payment_method = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=False)
 
     class Meta:
         model = Hotel

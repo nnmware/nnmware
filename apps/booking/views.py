@@ -358,7 +358,7 @@ class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
+        return reverse('cabinet_terms', args=[self.object.city.slug, self.object.slug])
 
 
 class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
