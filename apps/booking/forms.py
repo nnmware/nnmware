@@ -16,15 +16,15 @@ from nnmware.core.utils import convert_to_date
 class CabinetInfoForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
+    schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
 
     class Meta:
         model = Hotel
-        fields = ('name', 'description', 'option')
+        fields = ('name', 'description', 'schema_transit', 'option')
 
 class CabinetTermsForm(forms.ModelForm):
 #    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-    schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
     condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
     paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
     time_on = forms.CharField(widget=AdminTimeWidget())
@@ -32,7 +32,7 @@ class CabinetTermsForm(forms.ModelForm):
 
     class Meta:
         model = Hotel
-        fields = ('booking_terms', 'schema_transit', 'payment_method','condition_cancellation',
+        fields = ('booking_terms', 'payment_method','condition_cancellation',
             'paid_services','time_on','time_off')
 
 class CabinetAddRoomForm(forms.ModelForm):
