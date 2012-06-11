@@ -24,12 +24,12 @@ class CabinetInfoForm(forms.ModelForm):
 
 class CabinetTermsForm(forms.ModelForm):
 #    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-    time_on = forms.CharField(widget=AdminTimeWidget())
-    time_off = forms.CharField(widget=AdminTimeWidget())
-    payment_method = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=True)
+    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+    time_on = forms.CharField(widget=AdminTimeWidget(),required=False)
+    time_off = forms.CharField(widget=AdminTimeWidget(),required=False)
+    payment_method = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(),required=False)
 
     class Meta:
         model = Hotel
