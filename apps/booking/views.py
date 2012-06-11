@@ -352,7 +352,7 @@ class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
         # Call the base implementation first to get a context
         context = super(CabinetTerms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-#        context['options_list'] = HotelOption.objects.order_by('category','order_in_list','name')
+        context['all_payment_methods'] = PaymentMethod.objects.order_by('name')
         context['tab'] = 'terms'
         context['title_line'] = _('private cabinet')
         return context
