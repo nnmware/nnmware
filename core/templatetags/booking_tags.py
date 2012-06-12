@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 import re
+from django.db.models import Min, Max
 
 from django.template import Library
 from django.template.defaultfilters import stringfilter
@@ -272,3 +273,13 @@ def today_hit_count():
 def room_avg_amount(amount, days):
     result = amount/days
     return format(result, '.2f')
+
+@register.simple_tag
+def min_price_hotel():
+    result = PlacePrice.objects.aggregate(Min('amount'))
+    return result['amount__min']
+
+@register.simple_tag
+def max_price_hotel():
+    result = PlacePrice.objects.aggregate(Max('amount'))
+    return result['amount__max']
