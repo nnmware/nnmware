@@ -211,6 +211,19 @@ def convert_to_client_currency(context, amount):
     except :
         return int(amount)
 
+def amount_request_currency(request, amount):
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        return int((amount*rate.nominal)/exchange)
+    except :
+        return int(amount)
+
+
 @register.simple_tag
 def distance_for(origin, destiny):
     result = distance_to_object(origin,destiny)
@@ -274,12 +287,16 @@ def room_avg_amount(amount, days):
     result = amount/days
     return format(result, '.2f')
 
-@register.simple_tag
-def min_hotel_price():
+@register.simple_tag(takes_context = True)
+def min_hotel_price(context):
+    request = context['request']
     result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'))
-    return int(result['amount__min'])
+    return amount_request_currency(request, int(result['amount__min']))
 
-@register.simple_tag
-def max_hotel_price():
+@register.simple_tag(takes_context = True)
+def max_hotel_price(context):
+    request = context['request']
     result = PlacePrice.objects.aggregate(Max('amount'))
-    return int(result['amount__max'])
+    return amount_request_currency(request, int(result['amount__max']))
+
+
