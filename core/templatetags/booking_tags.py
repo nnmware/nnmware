@@ -276,7 +276,7 @@ def room_avg_amount(amount, days):
 
 @register.simple_tag
 def min_hotel_price():
-    result = PlacePrice.objects.aggregate(Min('amount'))
+    result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'))
     return int(result['amount__min'])
 
 @register.simple_tag
