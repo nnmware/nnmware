@@ -335,6 +335,9 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
+        if not self.request.is_secure():
+            url = '%s://%s%s' % ('https', get_host(self.request), self.request.get_full_path())
+            return HttpResponseRedirect(url)
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
