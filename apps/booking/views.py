@@ -23,6 +23,7 @@ from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.core.decorators import ssl_required
+from nnmware.apps.address.models import City
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
