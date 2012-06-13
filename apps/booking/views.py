@@ -26,9 +26,9 @@ class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        if request.is_secure() == False:
-            url = '%s://%s%s' % ('https', get_host(request), request.get_full_path())
-            return HttpResponseRedirect(url)
+#        if request.is_secure() == False:
+#            url = '%s://%s%s' % ('https', get_host(request), request.get_full_path())
+#            return HttpResponseRedirect(url)
         city = get_object_or_404(City, slug=kwargs['city'])
         obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
