@@ -7,6 +7,73 @@ from django.utils.translation.trans_real import get_language
 from nnmware.core.maps import Geocoder
 from nnmware.core.models import MetaName
 
+class Address(MetaName):
+    name_add = models.CharField(max_length=100, blank=True)
+    name_add_en = models.CharField(max_length=100, blank=True)
+
+    class Meta:
+        ordering = ['name']
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
+
+    @property
+    def get_name_add(self):
+        try:
+            if get_language() == 'en':
+                if self.name_add_en:
+                    return self.name_add_en
+        except :
+            pass
+        if self.name_add:
+            return self.name_add
+        return self.get_name
+
+
+class City(Address):
+    longitude = models.FloatField(_('Longitude'), default=0.0)
+    latitude = models.FloatField(_('Latitude'), default=0.0)
+    region = models.ForeignKey(Region, blank=True, null=True)
+    country = models.ForeignKey(Country, blank=True, null=True)
+
+    class Meta:
+        unique_together = (('name', 'region'),)
+        verbose_name = _("City")
+        verbose_name_plural = _("Cities")
+
+    def fulladdress(self):
+        return u"%s" % self.name
+
+    def get_absolute_url(self):
+        return 'city_detail', [self.slug]
+
+    def geoaddress(self):
+        return self.fulladdress()
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(City, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        if not self.latitude and not self.longitude:
+            self.fill_osm_data()
+        super(City, self).save(*args, **kwargs)
+
+    def fill_osm_data(self):
+        try:
+            client = Geocoder()
+            response = client.geocode(self.geoaddress())[0]
+            self.longitude = response['lon']
+            self.latitude = response['lat']
+        except :
+            pass
+
+
+
 class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
@@ -43,29 +110,6 @@ class MetaGeo(models.Model):
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
-
-class Address(MetaName):
-    name_add = models.CharField(max_length=100, blank=True)
-    name_add_en = models.CharField(max_length=100, blank=True)
-
-    class Meta:
-        ordering = ['name']
-        abstract = True
-
-    def __unicode__(self):
-        return self.name
-
-    @property
-    def get_name_add(self):
-        try:
-            if get_language() == 'en':
-                if self.name_add_en:
-                    return self.name_add_en
-        except :
-            pass
-        if self.name_add:
-            return self.name_add
-        return self.get_name
 
 
 class Country(Address):
@@ -106,34 +150,6 @@ class Region(Address):
                 self.slug = self.pk
         super(Region, self).save(*args, **kwargs)
 
-
-class City(Address, MetaGeo):
-    region = models.ForeignKey(Region, blank=True, null=True)
-    country = models.ForeignKey(Country, blank=True, null=True)
-
-    class Meta:
-        unique_together = (('name', 'region'),)
-        verbose_name = _("City")
-        verbose_name_plural = _("Cities")
-
-    def fulladdress(self):
-        return u"%s" % self.name
-
-    def get_absolute_url(self):
-        return 'city_detail', [self.slug]
-
-    def geoaddress(self):
-        return self.fulladdress()
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            if not self.pk:
-                super(City, self).save(*args, **kwargs)
-            self.slug = self.pk
-        else:
-            if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
-                self.slug = self.pk
-        super(City, self).save(*args, **kwargs)
 
 
 class TourismCategory(MetaName):
