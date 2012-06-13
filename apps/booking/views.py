@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import Http404, get_host, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView, UpdateView, CreateView
@@ -21,10 +22,11 @@ from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
+from nnmware.core.decorators import ssl_required
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
-
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
 #        if request.is_secure() == False:
 #            url = '%s://%s%s' % ('https', get_host(request), request.get_full_path())
@@ -335,9 +337,6 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
-        if not self.request.is_secure():
-            url = '%s://%s%s' % ('https', get_host(self.request), self.request.get_full_path())
-            return HttpResponseRedirect(url)
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
