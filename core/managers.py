@@ -1,58 +1,8 @@
-from collections import defaultdict
-from datetime import datetime
-from django.contrib import messages
+# -*- coding: utf-8 -*-
+
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
-from django.db.models import Manager, Q, CharField, TextField, get_models
-from django.utils.translation import ugettext_lazy as _
-from nnmware.core.middleware import get_request
-
-class PublishedManager(Manager):
-    """
-     Provides filter for restricting items returned by status and
-     publish date when the given user is not a staff member.
-     """
-
-    def get_query_set(self, for_user=None):
-        """
-          For non-staff users, return items with a published status and
-          whose publish and expiry dates fall before and after the
-          current date when s
-          """
-        from nnmware.core.models import STATUS_PUBLISHED, STATUS_STICKY, \
-            STATUS_MODERATION, STATUS_LOCKED
-
-        if get_request() is not None and get_request().user.is_staff:
-            result = super(PublishedManager, self).get_query_set().order_by('-publish_date')
-        elif get_request() is not None and get_request().user.has_perm('%s.change_%s' % (self.model._meta.app_label, self.model._meta.module_name)):
-            result = super(PublishedManager, self).get_query_set().filter(
-                Q(status=STATUS_PUBLISHED) |
-                Q(status=STATUS_STICKY) |
-                Q(status=STATUS_MODERATION) |
-                Q(status=STATUS_LOCKED)
-            ).order_by('-publish_date')
-        elif get_request() is not None and get_request().user.is_authenticated():
-            result = super(PublishedManager, self).get_query_set().filter(
-                Q(publish_date__lte=datetime.now(), status=STATUS_PUBLISHED) |
-                Q(publish_date__lte=datetime.now(), status=STATUS_STICKY) |
-                Q(user=get_request().user, status=STATUS_MODERATION) |
-                Q(user=get_request().user, status=STATUS_LOCKED)
-            ).order_by('-publish_date')
-        else:
-            result = super(PublishedManager, self).get_query_set().filter(
-                Q(publish_date__lte=datetime.now(), status=STATUS_PUBLISHED) |
-                Q(publish_date__lte=datetime.now(), status=STATUS_STICKY)
-            ).filter(Q(login_required=False)).order_by('-publish_date')
-        return result
-
-
-class MetaDataManager(PublishedManager):
-    """
-     Manually combines ``CurrentSiteManager``, ``PublishedManager``
-     and ``SearchableManager`` for the ``Displayable`` model.
-     """
-    pass
-
+from django.db.models import Manager
 
 class MetaLinkManager(Manager):
 

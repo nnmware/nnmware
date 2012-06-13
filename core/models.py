@@ -7,12 +7,11 @@ from StringIO import StringIO
 from datetime import datetime
 import os
 import Image
-from django.contrib import messages
 from django.contrib.auth.models import User
-from django.contrib.contenttypes.generic import GenericForeignKey, GenericRelation
+from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-from django.db.models import permalink, signals, get_model
+from django.db.models import permalink, signals, Manager
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
@@ -20,11 +19,10 @@ from django.core.exceptions import ValidationError
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify, truncatewords_html
-from django.template.loader import render_to_string
 from django.utils.translation import get_language
-from nnmware.core.managers import MetaDataManager, MetaLinkManager, JCommentManager, PublicJCommentManager, \
+from nnmware.core.managers import MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
-from nnmware.core.maps import get_map_url, geocode, Geocoder
+from nnmware.core.maps import Geocoder
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
 
@@ -71,7 +69,7 @@ class MetaData(models.Model):
         ordering = ("-publish_date",)
         abstract = True
 
-    objects = MetaDataManager()
+    objects = Manager()
     search_fields = {"title": 5}
     slug_detail = 'metadata_detail'
 
@@ -125,7 +123,7 @@ class MetaData(models.Model):
         if self.slug:
             slug = self.slug
         else:
-            slug = self.id
+            slug = self.pk
         return (self.slug_detail, (), {
             'year': self.publish_date.year,
             'month': self.publish_date.strftime('%b').lower(),
@@ -529,17 +527,17 @@ class Pic(MetaLink, MetaFile):
         thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
 
     def get_del_url(self):
-        return "pic_del", (), {'object_id': self.id}
+        return "pic_del", (), {'object_id': self.pk}
         #return reverse("pic_del", self.id)
 
     def get_edit_url(self):
-        return reverse("pic_edit", self.id)
+        return reverse("pic_edit", self.pk)
 
     def get_view_url(self):
-        return reverse("pic_view", self.id)
+        return reverse("pic_view", self.pk)
 
     def get_editor_url(self):
-        return reverse("pic_editor", self.id)
+        return reverse("pic_editor", self.pk)
 
 
 class JComment(MetaLink):
