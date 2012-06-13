@@ -2,7 +2,7 @@
 from datetime import date, timedelta, datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.http import Http404, get_host
+from django.http import Http404, get_host, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import DetailView
@@ -28,6 +28,7 @@ class CurrentUserHotelAdmin(object):
     def dispatch(self, request, *args, **kwargs):
         if not request.is_secure():
             url = '%s://%s%s' % ('https', get_host(request), request.get_full_path())
+            return HttpResponseRedirect(url)
         city = get_object_or_404(City, slug=kwargs['city'])
         obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
