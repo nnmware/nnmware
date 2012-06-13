@@ -9,9 +9,9 @@ from django.conf import settings
 from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation.trans_real import get_language
 from nnmware.apps.address.models import City
 from nnmware.core.config import CURRENCY
-from nnmware.core.middleware import get_request
 from nnmware.core.models import MetaName, MetaGeo, Pic
 from nnmware.apps.money.models import MoneyBase, Currency, ExchangeRate
 from nnmware.apps.address.models import Tourism
@@ -136,7 +136,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     objects = Manager()
 
     def get_address(self):
-        if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+        if get_language() == 'en':
             if self.address_en:
                 return self.address_en
             else:
@@ -150,11 +150,6 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
         four = qs(starcount=FOUR_STAR).count()
         five = qs(starcount=FIVE_STAR).count()
         return [two,three,four,five]
-
-    def is_admin(self):
-        if get_request().user in self.admins:
-            return True
-        return False
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city.name)

@@ -327,6 +327,11 @@ class ChangePasswordView(AjaxFormMixin, FormView):
     template_name = 'user/pwd_change.html'
     success_url = reverse_lazy('password_change_done')
 
+    def get_form_kwargs(self):
+        kwargs = super(ChangePasswordView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
     def form_valid(self, form):
         self.request.user.set_password(form.cleaned_data.get('new_password2'))
         self.request.user.save()

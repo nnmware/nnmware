@@ -25,7 +25,6 @@ from django.utils.translation import get_language
 from nnmware.core.managers import MetaDataManager, MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.maps import get_map_url, geocode, Geocoder
-from nnmware.core.middleware import get_request
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
 
@@ -311,16 +310,6 @@ class MetaName(models.Model):
         except :
             return self.name
 
-    @property
-    def get_name_old(self):
-        try:
-            if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
-                if self.name_en:
-                    return self.name_en
-            return self.name
-        except :
-            return self.name
-
     def get_description(self):
         try:
             if get_language() == 'en':
@@ -519,7 +508,6 @@ class Pic(MetaLink, MetaFile):
             orig = self.pic.storage.open(self.pic.name, 'rb').read()
             image = Image.open(StringIO(orig))
         except IOError:
-            messages.Error(get_request(), "Could not open image file: %s", orig)
             return  # What should we do here?  Render a "sorry, didn't work" img?
         quality = quality or settings.PIC_THUMB_QUALITY
         (w, h) = image.size
@@ -589,7 +577,6 @@ class JComment(MetaLink):
     def save(self, **kwargs):
         self.updated_date = datetime.now()
         super(JComment, self).save(**kwargs)
-        messages.info(get_request(), 'Comment %s successfully saved!' % self.id)
 
     def get_base_data(self, show_dates=True):
         """
