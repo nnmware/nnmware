@@ -10,7 +10,6 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User, check_password
 
-from nnmware.core.middleware import get_request
 from nnmware.core.imgutil import fit, aspect_ratio
 from nnmware.core.utils import get_date_directory
 
@@ -64,7 +63,6 @@ class AbstractUploadBackend(object):
         Checking file max size
         """
         if int(self._dest.tell()) > self.upload_size:
-            messages.error(get_request(), "Max filesize is %s! " % self.upload_size)
             self._dest.close()
             os.remove(self._path)
             return True

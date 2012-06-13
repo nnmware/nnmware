@@ -10,7 +10,6 @@ from django.db import models
 from nnmware.apps.address.models import Country
 from nnmware.core.config import CURRENCY, OFFICIAL_RATE
 from nnmware.core.managers import FinancialManager
-from nnmware.core.middleware import get_request
 from nnmware.core.models import Doc
 
 #---------------------------------------------------------------------------

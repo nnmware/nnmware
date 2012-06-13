@@ -9,7 +9,6 @@ from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
-from nnmware.core.middleware import get_request
 from nnmware.core.utils import convert_to_date
 
 

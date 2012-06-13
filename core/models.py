@@ -21,7 +21,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify, truncatewords_html
 from django.template.loader import render_to_string
-
+from django.utils.translation import get_language
 from nnmware.core.managers import MetaDataManager, MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.maps import get_map_url, geocode, Geocoder
@@ -304,6 +304,16 @@ class MetaName(models.Model):
     @property
     def get_name(self):
         try:
+            if get_language() == 'en':
+                if self.name_en:
+                    return self.name_en
+            return self.name
+        except :
+            return self.name
+
+    @property
+    def get_name_old(self):
+        try:
             if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
                 if self.name_en:
                     return self.name_en
@@ -313,7 +323,7 @@ class MetaName(models.Model):
 
     def get_description(self):
         try:
-            if get_request().COOKIES[settings.LANGUAGE_COOKIE_NAME] == 'en-en':
+            if get_language() == 'en':
                 if self.description_en:
                     return self.description_en
         except :
