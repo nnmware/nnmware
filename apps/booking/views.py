@@ -545,6 +545,11 @@ class RequestAddHotelView(CreateView):
     form_class = RequestAddHotelForm
     template_name = "requests/add.html"
 
+    def get_form_kwargs(self):
+        kwargs = super(RequestAddHotelView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
     def get_success_url(self):
         return reverse('hotel_list')
 

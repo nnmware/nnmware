@@ -76,8 +76,9 @@ class RequestAddHotelForm(forms.ModelForm):
                   'website','rooms_count','starcount')
 
     def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
         super(RequestAddHotelForm, self).__init__(*args, **kwargs)
-        if not get_request().user.is_authenticated():
+        if not user.is_authenticated():
             self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
                                                                        'invalid' : _('Answer is wrong') })
 
