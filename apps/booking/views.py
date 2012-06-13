@@ -40,6 +40,7 @@ class CurrentUserHotelAdmin(object):
 class CurrentUserRoomAdmin(object):
     """ Generic update view that check request.user is author of object """
 
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Room, pk=kwargs['pk'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
@@ -50,6 +51,7 @@ class CurrentUserRoomAdmin(object):
 class CurrentUserHotelBillAccess(object):
     """ Generic update view that check request.user may view bills of hotel """
 
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Bill, pk=kwargs['pk'])
         if not request.user in obj.target.admins.all() and not request.user.is_superuser:
@@ -59,6 +61,7 @@ class CurrentUserHotelBillAccess(object):
 class CurrentUserHotelBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Booking, uuid=kwargs['slug'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
@@ -68,6 +71,7 @@ class CurrentUserHotelBookingAccess(object):
 class CurrentUserBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Booking, uuid=kwargs['slug'])
         if obj.user:
@@ -77,6 +81,7 @@ class CurrentUserBookingAccess(object):
 
 class CurrentUserCabinetAccess(object):
 
+    @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(User, username=kwargs['username'])
         if not (request.user == obj) and not request.user.is_superuser:
