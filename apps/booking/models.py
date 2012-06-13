@@ -98,10 +98,7 @@ HOTEL_CHOICES = (
 
 class Hotel(MetaName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
-    city = models.ForeignKey(City, verbose_name=_('City'))
     email = models.EmailField(verbose_name=_("Email"), blank=True)
-    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
-    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
     website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)

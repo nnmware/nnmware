@@ -109,10 +109,7 @@ class TourismCategory(MetaName):
 
 class Tourism(Address, MetaGeo):
     category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'))
-    city = models.ForeignKey(City, verbose_name=_('City'))
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
-    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
-    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
         unique_together = (('name', 'country'),)
@@ -121,9 +118,6 @@ class Tourism(Address, MetaGeo):
 
     def __unicode__(self):
         return u"%s :: %s" % (self.name, self.country)
-
-    def fulladdress(self):
-        return u"%s, %s" % (self.address, self.city)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -136,10 +130,7 @@ class Tourism(Address, MetaGeo):
         super(Tourism, self).save(*args, **kwargs)
 
 class StationMetro(Address, MetaGeo):
-    city = models.ForeignKey(City, verbose_name=_('City'))
     country = models.ForeignKey(Country, verbose_name=_('Country'))
-    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
-    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
         unique_together = (('name', 'city'),)
@@ -149,5 +140,3 @@ class StationMetro(Address, MetaGeo):
     def __unicode__(self):
         return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
 
-    def fulladdress(self):
-        return u"%s, %s" % (self.address, self.city)

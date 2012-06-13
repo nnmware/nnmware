@@ -20,6 +20,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify, truncatewords_html
 from django.utils.translation import get_language
+from nnmware.apps.address.models import City
 from nnmware.core.managers import MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.maps import Geocoder
@@ -134,7 +135,7 @@ class MetaData(models.Model):
         """
         Restrict in-line editing to the objects's owner and superusers.
         """
-        return request.user.is_superuser or request.user.id == self.user_id
+        return request.user.is_superuser or request.user == self.user
 
     def admin_link(self):
         return "<a href='%s'>%s</a>" % (self.get_absolute_url(), _("View on site"))
@@ -271,11 +272,11 @@ class Tag(models.Model):
 
     def followers_count(self):
         ctype = ContentType.objects.get_for_model(self)
-        return Follow.objects.filter(content_type=ctype,object_id=self.id).count()
+        return Follow.objects.filter(content_type=ctype,object_id=self.pk).count()
 
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
-        users = Follow.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
+        users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
         return User.objects.filter(pk__in=users)
 
     @permalink
@@ -359,6 +360,9 @@ class MetaLink(models.Model):
 class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
+    city = models.ForeignKey(City, verbose_name=_('City'))
+    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
+    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
 
     class Meta:
         abstract = True
@@ -387,6 +391,8 @@ class MetaGeo(models.Model):
             self.fill_osm_data()
         super(MetaGeo, self).save(*args, **kwargs)
 
+    def fulladdress(self):
+        return u"%s, %s" % (self.address, self.city)
 
 DOC_FILE = 0
 DOC_IMAGE = 1
