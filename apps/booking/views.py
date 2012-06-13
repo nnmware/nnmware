@@ -392,6 +392,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
         context['tab'] = 'rooms'
         context['hotel'] = hotel
+        context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
@@ -414,6 +415,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
+        context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
@@ -480,6 +482,7 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         context['hotel_count'] = Hotel.objects.filter(city=self.object.target.city).count()
         context['tab'] = 'bills'
         context['hotel'] = self.object.target
+        context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
