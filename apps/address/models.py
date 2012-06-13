@@ -30,6 +30,45 @@ class Address(MetaName):
             return self.name_add
         return self.get_name
 
+class Country(Address):
+
+    class Meta:
+        verbose_name = _("Country")
+        verbose_name_plural = _("Countries")
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(Country, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if Country.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(Country, self).save(*args, **kwargs)
+
+class Region(Address):
+    country = models.ForeignKey(Country, null=True, blank=True)
+
+    class Meta:
+        unique_together = (('name', 'country'),)
+        verbose_name = _("Region")
+        verbose_name_plural = _("Regions")
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(Region, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if Region.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(Region, self).save(*args, **kwargs)
+
+
 
 class City(Address):
     longitude = models.FloatField(_('Longitude'), default=0.0)
@@ -111,44 +150,6 @@ class MetaGeo(models.Model):
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
 
-
-class Country(Address):
-
-    class Meta:
-        verbose_name = _("Country")
-        verbose_name_plural = _("Countries")
-
-    def __unicode__(self):
-        return self.name
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            if not self.pk:
-                super(Country, self).save(*args, **kwargs)
-            self.slug = self.pk
-        else:
-            if Country.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
-                self.slug = self.pk
-        super(Country, self).save(*args, **kwargs)
-
-class Region(Address):
-    country = models.ForeignKey(Country, null=True, blank=True)
-
-    class Meta:
-        unique_together = (('name', 'country'),)
-        verbose_name = _("Region")
-        verbose_name_plural = _("Regions")
-
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            if not self.pk:
-                super(Region, self).save(*args, **kwargs)
-            self.slug = self.pk
-        else:
-            if Region.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
-                self.slug = self.pk
-        super(Region, self).save(*args, **kwargs)
 
 
 
