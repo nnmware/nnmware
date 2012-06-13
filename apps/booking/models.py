@@ -10,12 +10,10 @@ from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.apps.address.models import City
-from nnmware.core.config import CURRENCY
-from nnmware.core.models import MetaName, MetaGeo, Pic
-from nnmware.apps.money.models import MoneyBase, Currency, ExchangeRate
+from nnmware.apps.address.models import MetaGeo
+from nnmware.core.models import MetaName, Pic
+from nnmware.apps.money.models import MoneyBase
 from nnmware.apps.address.models import Tourism
-from nnmware.apps.booking.managers import SettlementVariantManager
 from nnmware.core.models import MetaIP
 from nnmware.core.maps import places_near_object
 

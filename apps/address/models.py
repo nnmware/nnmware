@@ -4,7 +4,45 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.core.models import MetaName, MetaGeo
+from nnmware.core.maps import Geocoder
+from nnmware.core.models import MetaName
+
+class MetaGeo(models.Model):
+    longitude = models.FloatField(_('Longitude'), default=0.0)
+    latitude = models.FloatField(_('Latitude'), default=0.0)
+    city = models.ForeignKey(City, verbose_name=_('City'))
+    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
+    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
+
+    class Meta:
+        abstract = True
+
+    def geoaddress(self):
+        result = self.address
+        addr = result.split(',')
+        try:
+            r = int(addr[1])
+            result = "%s %s" % (addr[1], addr[0])
+        except :
+            pass
+        return u"%s, %s" % (result, self.city)
+
+    def fill_osm_data(self):
+        try:
+            client = Geocoder()
+            response = client.geocode(self.geoaddress())[0]
+            self.longitude = response['lon']
+            self.latitude = response['lat']
+        except :
+            pass
+
+    def save(self, *args, **kwargs):
+        if not self.latitude and not self.longitude:
+            self.fill_osm_data()
+        super(MetaGeo, self).save(*args, **kwargs)
+
+    def fulladdress(self):
+        return u"%s, %s" % (self.address, self.city)
 
 class Address(MetaName):
     name_add = models.CharField(max_length=100, blank=True)
