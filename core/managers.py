@@ -185,9 +185,9 @@ class FollowManager(Manager):
         queryset = self.for_object(instance)
         return queryset.filter(user=user).exists()
 
-    def users(self):
-        content_type = ContentType.objects.get_for_model(User).pk
-        return self.filter(content_type=content_type, user=get_request().user)
+#    def users(self, user):
+#        content_type = ContentType.objects.get_for_model(User).pk
+#        return self.filter(content_type=content_type, user=user)
 
 class FinancialManager(Manager):
     """
@@ -213,14 +213,14 @@ class MessageManager(Manager):
             recipient_deleted_at__isnull=True,
         )
 
-    def messages(self):
+    def messages(self, user):
         """
         Returns all messages that were received by the given user and are not
         marked as deleted.
         """
         return self.filter(
-            Q(recipient=get_request().user, recipient_deleted_at__isnull=True) |
-            Q(sender=get_request().user, sender_deleted_at__isnull=True)
+            Q(recipient=user, recipient_deleted_at__isnull=True) |
+            Q(sender=user, sender_deleted_at__isnull=True)
         ).filter(parent_msg__isnull=True).order_by('-sent_at')
 
 

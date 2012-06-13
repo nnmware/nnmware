@@ -6,7 +6,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.fields import ReCaptchaField
-from nnmware.core.middleware import get_request
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
 
@@ -162,9 +161,13 @@ class PassChangeForm(forms.Form):
     class Meta:
         fields = ('old_password', 'new_password1', 'new_password2')
 
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop('user')
+        super(PassChangeForm, self).__init__(*args, **kwargs)
+
     def clean_old_password(self):
         old_password = self.cleaned_data["old_password"]
-        if not get_request().user.check_password(old_password):
+        if not self.current_user.check_password(old_password):
             raise forms.ValidationError(_("Old password is wrong."))
         return old_password
 

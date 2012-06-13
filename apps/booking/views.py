@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
-from nnmware.apps.booking.utils import guests_from_get_request, booking_new_hotel_mail
+from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
@@ -105,7 +105,7 @@ class HotelList(ListView):
         options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         notknowndates = self.request.GET.get('notknowndates') or None
-        guests = guests_from_get_request(self.request)
+        guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
@@ -259,7 +259,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        guests = guests_from_get_request(self.request)
+        guests = guests_from_request(self.request)
         # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['tab'] = 'description'
@@ -321,7 +321,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        guests = guests_from_get_request(self.request)
+        guests = guests_from_request(self.request)
         context = super(RoomDetail, self).get_context_data(**kwargs)
         context['city'] = self.object.hotel.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
@@ -720,7 +720,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        guests = guests_from_get_request(self.request)
+        guests = guests_from_request(self.request)
         if f_date and t_date and guests and ('room' in self.kwargs.keys()):
             try:
                 room_id = int(self.kwargs['room'])

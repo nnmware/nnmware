@@ -4,7 +4,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from nnmware.core.utils import send_template_mail
 
-def guests_from_get_request(request):
+def guests_from_request(request):
     guests_get = request.GET.get('guests') or None
     if guests_get:
         guests = int(guests_get)
