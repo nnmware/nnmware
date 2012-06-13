@@ -88,6 +88,11 @@ class CurrentUserCabinetAccess(object):
             raise Http404
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
+class RedirectHttpsView(object):
+
+    @method_decorator(ssl_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
 
 class HotelList(ListView):
     model = Hotel
@@ -699,7 +704,7 @@ class UserBookingDetail(CurrentUserBookingAccess, DetailView):
         return context
 
 
-class ClientBooking(DetailView):
+class ClientBooking(RedirectHttpsView, DetailView):
     model = Hotel
     template_name = "booking/add.html"
 
