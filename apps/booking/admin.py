@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib import admin
-from django.contrib.admin import widgets
+from django.contrib.admin.widgets import AdminTimeWidget
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
@@ -9,8 +9,8 @@ class HotelAdminForm(forms.ModelForm):
     class Meta:
         model = Hotel
         widgets = {
-            'time_on':widgets.AdminTimeWidget(),
-            'time_off':widgets.AdminTimeWidget()
+            'time_on':AdminTimeWidget(),
+            'time_off':AdminTimeWidget()
             }
 
 
