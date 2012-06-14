@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import *
 from nnmware.apps.booking.forms import *
-from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail
+from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
@@ -559,6 +559,7 @@ class RequestAddHotelView(CreateView):
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.save()
+        request_add_hotel_mail(self.object)
         return super(RequestAddHotelView, self).form_valid(form)
 
 

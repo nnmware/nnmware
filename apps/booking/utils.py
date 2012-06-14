@@ -36,6 +36,14 @@ def booking_new_hotel_mail(booking):
     body = 'booking/on_create_to_hotel.txt'
     send_template_mail(subject,body,mail_dict,recipients)
 
+def request_add_hotel_mail(req_add):
+    recipients = settings.BOOKING_MANAGERS
+    mail_dict = {'req_add': req_add, 'site_name': settings.SITENAME}
+    subject = 'booking/request_add_hotel_subject.txt'
+    body = 'booking/request_add_hotel.txt'
+    send_template_mail(subject,body,mail_dict,recipients)
+
+
 
 
 
