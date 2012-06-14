@@ -40,7 +40,7 @@ GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'
 
 # urllib2 doesn't support timeouts for python 2.5
 
-def request(method, url, data=None, headers={}, timeout=None):
+def request(method, url, data=None, headers=None, timeout=None):
     host_port = url.split('/')[2]
     timeout_set = False
     try:
@@ -60,7 +60,7 @@ def request(method, url, data=None, headers={}, timeout=None):
         return response.status, response.read()
 
 def get_map_url(api_key, longitude, latitude, zoom, width, height):
-    ''' returns URL of static yandex map '''
+    """ returns URL of static yandex map """
     params = [
        'll=%0.7f,%0.7f' % (float(longitude), float(latitude),),
        'size=%d,%d' % (width, height,),
@@ -72,7 +72,7 @@ def get_map_url(api_key, longitude, latitude, zoom, width, height):
     return STATIC_MAPS_URL + '&'.join(params)
 
 def geocode(api_key, address, timeout=2):
-    ''' returns (longtitude, latitude,) tuple for given address '''
+    """ returns (longtitude, latitude,) tuple for given address """
     try:
         xml = _get_geocode_xml(api_key, address, timeout)
         return _get_coords(xml)

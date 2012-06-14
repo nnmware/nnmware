@@ -96,10 +96,10 @@ class ImageWithThumbnailField(ImageField):
         return super(ImageWithThumbnailField, self).formfield(**defaults)
 
     def save_form_data(self, instance, data):
-        '''
+        """
             Overwrite save_form_data to delete images if "delete" checkbox
             is selected
-        '''
+        """
         if data == '__deleted__':
             filename = getattr(instance, self.name).path
             if os.path.exists(filename):

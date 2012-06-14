@@ -59,7 +59,7 @@ def compact_date(value, arg):
 
 
 class OrderByNode(Node):
-    "For use in the postman_order_by tag"
+    """For use in the postman_order_by tag"""
 
     def __init__(self, code):
         self.code = code
@@ -86,7 +86,7 @@ class OrderByNode(Node):
 
 
 class InboxCountNode(Node):
-    "For use in the postman_unread tag"
+    """For use in the postman_unread tag"""
 
     def __init__(self, asvar=None):
         self.asvar = asvar

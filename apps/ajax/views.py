@@ -53,6 +53,7 @@ def video_like(request, object_id):
     object_id = object_id
     video = get_object_or_404(Video, id=int(object_id))
     ctype = ContentType.objects.get_for_model(Video)
+    payload = {'success': False}
     if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
         if follow(request.user, video):
             action.send(request.user, verb=_('liked the video'), target=video)
@@ -66,8 +67,6 @@ def video_like(request, object_id):
             video.save()
             result = video.liked
             payload = {'success': True, 'count': result}
-    else:
-        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 def video_dislike(request, object_id):
@@ -75,6 +74,7 @@ def video_dislike(request, object_id):
     object_id = object_id
     video = get_object_or_404(Video, id=int(object_id))
     ctype = ContentType.objects.get_for_model(Video)
+    payload = {'success': False}
     if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
         if unfollow(request.user, video):
             action.send(request.user, verb=_('disliked the video'), target=video)
@@ -85,8 +85,6 @@ def video_dislike(request, object_id):
             video.save()
             result = video.liked
             payload = {'success': True, 'count': result}
-    else:
-        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 

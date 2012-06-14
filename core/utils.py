@@ -297,10 +297,10 @@ def url_join(*args):
 
 
 def get_message_dict(message):
-    '''
+    """
     Returns message dictionary. If `persistent_messages` used includes
     additional attributes, such as `id`, for special actions with messages (marking read)
-    '''
+    """
     message_dict = {
         'level': message.level,
         'text': message.message,

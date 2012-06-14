@@ -9,9 +9,7 @@ class RecaptchaResponse(object):
         self.is_valid = is_valid
         self.error_code = error_code
 
-def displayhtml (public_key,
-                 use_ssl = False,
-                 error = None):
+def displayhtml(public_key, use_ssl=False, error=None):
     """Gets the HTML to display for reCAPTCHA
 
     public_key -- The public api key
@@ -41,10 +39,7 @@ def displayhtml (public_key,
         }
 
 
-def submit (recaptcha_challenge_field,
-            recaptcha_response_field,
-            private_key,
-            remoteip):
+def submit(recaptcha_challenge_field, recaptcha_response_field, private_key, remoteip):
     """
     Submits a reCAPTCHA request for verification. Returns RecaptchaResponse
     for the request
@@ -56,23 +51,22 @@ def submit (recaptcha_challenge_field,
     """
 
     if not (recaptcha_response_field and recaptcha_challenge_field and
-            len (recaptcha_response_field) and len (recaptcha_challenge_field)):
-        return RecaptchaResponse (is_valid = False, error_code = 'incorrect-captcha-sol')
-    
+            len(recaptcha_response_field) and len(recaptcha_challenge_field)):
+        return RecaptchaResponse(is_valid=False, error_code='incorrect-captcha-sol')
 
     def encode_if_necessary(s):
         if isinstance(s, unicode):
             return s.encode('utf-8')
         return s
 
-    params = urllib.urlencode ({
+    params = urllib.urlencode({
             'privatekey': encode_if_necessary(private_key),
             'remoteip' :  encode_if_necessary(remoteip),
             'challenge':  encode_if_necessary(recaptcha_challenge_field),
             'response' :  encode_if_necessary(recaptcha_response_field),
             })
 
-    request = urllib2.Request (
+    request = urllib2.Request(
         url = "http://%s/recaptcha/api/verify" % VERIFY_SERVER,
         data = params,
         headers = {
@@ -81,14 +75,14 @@ def submit (recaptcha_challenge_field,
             }
         )
     
-    httpresp = urllib2.urlopen (request)
+    httpresp = urllib2.urlopen(request)
 
-    return_values = httpresp.read ().splitlines ();
-    httpresp.close();
+    return_values = httpresp.read().splitlines()
+    httpresp.close()
 
-    return_code = return_values [0]
+    return_code = return_values[0]
 
     if return_code == "true":
-        return RecaptchaResponse (is_valid=True)
+        return RecaptchaResponse(is_valid=True)
     else:
-        return RecaptchaResponse (is_valid=False, error_code = return_values [1])
+        return RecaptchaResponse(is_valid=False, error_code = return_values [1])

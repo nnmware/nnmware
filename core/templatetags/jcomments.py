@@ -76,7 +76,6 @@ def get_comment_url_json(content_object, parent=None):
         return get_comment_url_ajax(content_object, parent, ajax_type="json")
     except template.TemplateSyntaxError:
         raise template.TemplateSyntaxError, "get_comment_url_json requires its parent object to be of type ThreadedComment"
-    return None
 
 
 def get_comment_url_xml(content_object, parent=None):
@@ -87,7 +86,6 @@ def get_comment_url_xml(content_object, parent=None):
         return get_comment_url_ajax(content_object, parent, ajax_type="xml")
     except template.TemplateSyntaxError:
         raise template.TemplateSyntaxError, "get_comment_url_xml requires its parent object to be of type ThreadedComment"
-    return None
 
 
 def auto_transform_comment(comment):

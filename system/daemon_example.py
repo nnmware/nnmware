@@ -5,10 +5,8 @@
 # Normal Exit - "cdrdaemon stop"
 #
 import os
-import re
 import sys
 import time
-from stat import *
 from socket import *
 
 ###########################################################################

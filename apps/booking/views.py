@@ -273,8 +273,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
             context['free_room'] = self.object.free_room(from_date,to_date,guests)
-            search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
-            search_data['city'] = self.object.city
+            search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests, 'city':self.object.city}
             context['search'] = 1
             context['search_data'] = search_data
             context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -332,8 +331,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 f_date, t_date = t_date, f_date
-            search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
-            search_data['city'] = self.object.hotel.city
+            search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search_data'] = search_data
             context['search'] = 1
             context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
