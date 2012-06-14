@@ -134,7 +134,7 @@ def hotel_add(request):
         hotel.room_count = rooms_count
         hotel.starcount = starcount
         hotel.save()
-        location = reverse('cabinet_info', args=[hotel.pk])
+        location = reverse('cabinet_info', args=[hotel.city.slug, hotel.slug])
         RequestAddHotel.objects.get(id=request_id).delete()
         payload = {'success': True, 'location':location}
     except UserNotAllowed:
