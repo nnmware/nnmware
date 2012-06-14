@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -23,18 +24,20 @@ def booking_new_client_mail(booking, username=''):
 
 def booking_new_hotel_mail(booking):
     recipients = settings.BOOKING_MANAGERS
+    hotel_recipients = []
     if booking.hotel.email:
-        recipients.append(booking.hotel.email)
+        hotel_recipients.append(booking.hotel.email)
     elif booking.hotel.contact_email:
-        recipients.append(booking.hotel.contact_email)
+        hotel_recipients.append(booking.hotel.contact_email)
     for admin in booking.hotel.admins.all():
         if admin.email:
-            recipients.append(admin.email)
+            hotel_recipients.append(admin.email)
     mail_dict = {'booking': booking,
         'site_name': settings.SITENAME}
     subject = 'booking/on_create_to_hotel_subject.txt'
     body = 'booking/on_create_to_hotel.txt'
     send_template_mail(subject,body,mail_dict,recipients)
+    send_template_mail(subject,body,mail_dict,hotel_recipients)
 
 def request_add_hotel_mail(req_add):
     recipients = settings.BOOKING_MANAGERS
