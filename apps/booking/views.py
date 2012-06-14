@@ -29,9 +29,6 @@ class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
-#        if request.is_secure() == False:
-#            url = '%s://%s%s' % ('https', get_host(request), request.get_full_path())
-#            return HttpResponseRedirect(url)
         city = get_object_or_404(City, slug=kwargs['city'])
         obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
@@ -419,10 +416,6 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     pk_url_kwarg = 'pk'
     form_class = CabinetEditRoomForm
     template_name = "cabinet/room.html"
-
-#    def get_object(self, queryset=None):
-#        room = get_object_or_404(Room, slug=self.kwargs['pk'])
-#        return room
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

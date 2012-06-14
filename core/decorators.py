@@ -57,7 +57,7 @@ def ajax_request(func):
 
 def ssl_required(view_func):
     def _checkssl(request, *args, **kwargs):
-        if not request.is_secure():
+        if not request.is_secure() and not settings.DEBUG:
             if hasattr(settings, 'SSL_DOMAIN'):
                 url_str = urlparse.urljoin(
                     settings.SSL_DOMAIN,
