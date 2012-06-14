@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 from nnmware.core.utils import send_template_mail
 
 def guests_from_request(request):
