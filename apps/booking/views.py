@@ -649,6 +649,11 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
+    def get_form_kwargs(self):
+        kwargs = super(UserCabinet, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
     def get_object(self, queryset=None):
         user = get_object_or_404(User, username=self.kwargs['username'])
         return user.get_profile()

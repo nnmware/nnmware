@@ -89,6 +89,17 @@ class UserCabinetInfoForm(forms.ModelForm):
         fields = (
             'fullname', 'publicmail', 'password', 'subscribe')
 
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop('user')
+        super(UserCabinetInfoForm, self).__init__(*args, **kwargs)
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if not self.current_user.check_password(password):
+            self.current_user.set_password(password)
+            self.current_user.save()
+        return password
+
 class BookingAddForm(forms.ModelForm):
     room_id = forms.CharField(max_length=30, required=False)
     settlement = forms.CharField(max_length=30, required=False)
