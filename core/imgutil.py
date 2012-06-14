@@ -46,12 +46,12 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
     return urlparse.urljoin(basedir, th_name)
 
 def _has_thumbnail(photo_url, width=None, height=None,
-                   root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL, aspect=None):
+                   root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL, aspect=None, watermark=None):
     # one of width/height is required
-    assert (width is not None) or (height is not None)
+    assert (width is not None) or (height is not None) or (watermark is not None)
 
     return os.path.isfile(get_path_from_url(_get_thumbnail_path(photo_url,
-        width, height,aspect), root, url_root))
+        width, height,aspect,watermark), root, url_root))
 
 
 def make_thumbnail(photo_url, width=None, height=None, aspect=None,
@@ -274,6 +274,12 @@ def make_watermark(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
     watermark_path = settings.WATERMARK
     wm_url = _get_thumbnail_path(photo_url, watermark=1)
     wm_path = get_path_from_url(wm_url, root, url_root)
+    if _has_thumbnail(photo_url, watermark=1):
+        # thumbnail already exists
+        if not (os.path.getmtime(photo_path) > os.path.getmtime(wm_path)) and not \
+            (os.path.getmtime(watermark_path) > os.path.getmtime(wm_path)):
+            # if photo mtime is newer than thumbnail recreate thumbnail
+            return wm_url
     base_im = Image.open(photo_path)
     logo_im = Image.open(watermark_path) #transparent image
     base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
