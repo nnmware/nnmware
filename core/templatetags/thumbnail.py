@@ -7,7 +7,7 @@
 
 from django.conf import settings
 from nnmware.apps.userprofile.models import Profile
-from nnmware.core.imgutil import make_thumbnail, get_image_size
+from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
 import os
 import time
 from django.template import Library, Node, Template, TemplateSyntaxError, Variable
@@ -26,7 +26,6 @@ DEFAULT_AVATAR = os.path.join(settings.MEDIA_ROOT, settings.DEFAULT_AVATAR)
 
 ##################################################
 ## FILTERS ##
-
 
 def thumbnail(url, args=''):
     """ Returns thumbnail URL and create it if not already exists.
@@ -178,3 +177,14 @@ Usage:
 
 register.filter('image_height', image_height)
 
+def watermark(url):
+    if url is None:
+        return None
+    ret = make_watermark(url)
+    if ret is None:
+        ret = url
+    if not ret.startswith(settings.MEDIA_URL):
+        ret = settings.MEDIA_URL + ret
+    return ret
+
+register.filter('watermark', watermark)

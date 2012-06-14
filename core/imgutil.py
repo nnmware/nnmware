@@ -12,9 +12,10 @@ from nnmware.core.file import get_path_from_url, get_url_from_path
 
 _THUMBNAIL_GLOB = '%s_t*%s'
 _THUMBNAIL_ASPECT = '%s_aspect*%s'
+_WATERMARK = '%s_wm*%s'
 
 
-def _get_thumbnail_path(path, width=None, height=None, aspect=None):
+def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=None):
     """ create thumbnail path from path and required width and/or height.
         thumbnail file name is constructed like this:
             <basename>_t_[w<width>][_h<height>].<extension>
@@ -22,7 +23,7 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None):
      """
 
     # one of width/height is required
-    assert (width is not None) or (height is not None)
+    assert (width is not None) or (height is not None) or (watermark is not None)
 
     basedir = os.path.dirname(path) + '/'
     base, ext = os.path.splitext(os.path.basename(path))
@@ -30,6 +31,8 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None):
     # make thumbnail filename
     if aspect:
         th_name = base + '_aspect'
+    elif watermark:
+        th_name = base + '_wm'
     else:
         th_name = base + '_t'
     if (width is not None) and (height is not None):
@@ -124,6 +127,12 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
         except OSError:
             pass
     for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_ASPECT % (base, ext)):
+        path = os.path.join(basedir, file)
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+    for file in fnmatch.filter(os.listdir(str(basedir)), _WATERMARK % (base, ext)):
         path = os.path.join(basedir, file)
         try:
             os.remove(path)
@@ -258,3 +267,15 @@ def aspect_ratio(image, w, h):
 def get_thumbnail_path(url,size):
     url_t = make_thumbnail(url, width=size)
     return get_path_from_url(url_t)
+
+def make_watermark(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
+    """ create watermark """
+    photo_path = get_path_from_url(photo_url, root, url_root)
+    watermark_path = settings.WATERMARK
+    wm_url = _get_thumbnail_path(photo_url, watermark=1)
+    wm_path = get_path_from_url(wm_url, root, url_root)
+    base_im = Image.open(photo_path)
+    logo_im = Image.open(watermark_path) #transparent image
+    base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
+    base_im.save(wm_path,"PNG")
+    return wm_url
