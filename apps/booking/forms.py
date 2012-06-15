@@ -59,15 +59,15 @@ class CabinetEditBillForm(forms.ModelForm):
         fields = ('date_billed', 'status', 'description','amount','currency')
 
 class RequestAddHotelForm(forms.ModelForm):
-    city = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    address = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '32'}))
-    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    fax = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    contact_email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    website = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
-    rooms_count = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '25'}))
+    city = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    address = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '35'}))
+    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    fax = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    contact_email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    website = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    rooms_count = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
 
     class Meta:
         model = RequestAddHotel
