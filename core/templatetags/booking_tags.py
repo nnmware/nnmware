@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 from django.db.models import Min, Max
 
@@ -286,13 +286,12 @@ def room_availability_on_date(room,date):
 
 @register.simple_tag
 def today_visitor_count():
-    result = VisitorHit.objects.values_list('session_key', flat=True).distinct()
+    result = VisitorHit.objects.filter(dat__lte=datetime.now()-timedelta(days=1)).values_list('session_key', flat=True).distinct()
     return len(result)
-#    return VisitorHit.objects.distinct('session_key').count()
 
 @register.simple_tag
 def today_hit_count():
-    return VisitorHit.objects.count()
+    return VisitorHit.objects.filter(dat__lte=datetime.now()-timedelta(days=1)).count()
 
 @register.simple_tag
 def room_avg_amount(amount, days):
