@@ -52,7 +52,7 @@ def search_options():
 
 @register.assignment_tag
 def hotels_five_stars():
-    result = Hotel.objects.filter(starcount=FIVE_STAR)
+    result = Hotel.objects.filter(starcount=FIVE_STAR).order_by('name')
     return make_hotel_intro_list(result)
 
 def make_hotel_intro_list(h_list):
