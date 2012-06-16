@@ -63,10 +63,9 @@ def make_hotel_intro_list(h_list):
     for i in range(remainder):
         all_len[i] +=1
     for i in all_len:
-        result.append(h_list[all_len[i]])
+        result.append(h_list[5])   #all_len[i]])
 #        h_list = h_list[all_len[i]:]
     return result
-
 
 @register.assignment_tag
 def hotels_four_stars():
