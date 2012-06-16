@@ -70,22 +70,22 @@ def make_hotel_intro_list(h_list):
 @register.assignment_tag
 def hotels_four_stars():
     result = Hotel.objects.filter(starcount=FOUR_STAR)
-    return result
+    return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_three_stars():
     result = Hotel.objects.filter(starcount=THREE_STAR)
-    return result
+    return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_two_stars():
     result = Hotel.objects.filter(starcount=TWO_STAR)
-    return result
+    return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_mini():
     result = Hotel.objects.filter(starcount=MINI_HOTEL)
-    return result
+    return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_city():
