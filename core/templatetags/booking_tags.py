@@ -53,7 +53,22 @@ def search_options():
 @register.assignment_tag
 def hotels_five_stars():
     result = Hotel.objects.filter(starcount=FIVE_STAR)
+    return make_hotel_intro_list(result)
+
+def make_hotel_intro_list(h_list):
+    result = []
+    arr_len = len(h_list)
+    len_list, remainder = divmod(arr_len, 5)
+    all_len = [len_list,len_list,len_list,len_list,len_list]
+    for i in range(remainder):
+        all_len[i] +=1
+    for i in all_len:
+        if i:
+            result.append(h_list[all_len[i-1]:all_len[i]])
+        else:
+            result.append(h_list[:all_len[i]])
     return result
+
 
 @register.assignment_tag
 def hotels_four_stars():
