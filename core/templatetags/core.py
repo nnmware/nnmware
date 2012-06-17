@@ -102,7 +102,7 @@ def paginator(context):
     view.
     """
     num_pages= context["paginator"].num_pages
-    curr_page_num = context["page"].number
+    curr_page_num = context["page_obj"].number
     in_leading_range = in_trailing_range = False
     pages_outside_leading_range = pages_outside_trailing_range = range(0)
 
