@@ -284,8 +284,8 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             pass
         return context
 
-class HotelLocation(DetailView):
-    model = Hotel
+class HotelLocation(HotelPathMixin, DetailView):
+#    model = Hotel
     slug_field = 'slug'
     template_name = "hotels/location.html"
 
@@ -299,20 +299,24 @@ class HotelLocation(DetailView):
         context['tab'] = 'location'
         return context
 
-class HotelReviews(DetailView):
-    model = Hotel
+class HotelReviews(HotelPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 5
     slug_field = 'slug'
     template_name = "hotels/reviews.html"
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
+        kwargs['object'] = self.object
         context = super(HotelReviews, self).get_context_data(**kwargs)
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reviews'
         context['title_line'] = self.object.get_name
-        context['reviews'] = self.object.review_set.all()
         return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return self.object.review_set.all()
 
 class RoomDetail(AttachedImagesMixin, DetailView):
     model = Room
@@ -577,6 +581,7 @@ class RequestAddHotelView(CreateView):
 
 class BookingsList(CurrentUserSuperuser, ListView):
     model = Booking
+    paginate_by = 20
     template_name = "sysadm/bookings.html"
 
     def get_context_data(self, **kwargs):
@@ -584,6 +589,9 @@ class BookingsList(CurrentUserSuperuser, ListView):
         context = super(BookingsList, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
         context['title_line'] = _('booking list')
+        return context
+
+    def get_queryset(self):
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -591,12 +599,12 @@ class BookingsList(CurrentUserSuperuser, ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            context['bookings'] = Booking.objects.filter(date__range=(from_date, to_date))
+            return Booking.objects.filter(date__range=(from_date, to_date))
         except :
-            context['bookings'] = Booking.objects.all()
-        return context
+            return Booking.objects.all()
 
 class RequestsList(CurrentUserSuperuser, ListView):
+    paginate_by = 10
     model = RequestAddHotel
     template_name = "sysadm/requests.html"
 

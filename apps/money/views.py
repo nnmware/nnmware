@@ -3,6 +3,7 @@ from nnmware.apps.money.models import Bill
 
 class BillsList(ListView):
     model = Bill
+    paginate_by = 20
     template_name = "sysadm/bills.html"
 
     def get_context_data(self, **kwargs):
