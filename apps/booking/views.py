@@ -7,7 +7,7 @@ from django.http import Http404, get_host, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, TemplateView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView, UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
@@ -670,9 +670,10 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.user.username])
 
-class UserBookings(CurrentUserCabinetAccess, DetailView):
-    model = Profile
-    template_name = "usercabinet/bookings.html"
+class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
+#    model = Profile
+    paginate_by = 5
+    template_name = "usercabinet/bookings_new.html"
 
     def get_object(self, queryset=None):
         user = get_object_or_404(User, username=self.kwargs['username'])
@@ -680,8 +681,14 @@ class UserBookings(CurrentUserCabinetAccess, DetailView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
+        kwargs['object'] = self.object
         context = super(UserBookings, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
+        context['title_line'] = _('bookings')
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -689,11 +696,34 @@ class UserBookings(CurrentUserCabinetAccess, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            context['bookings'] = Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
+            return Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
         except :
-            context['bookings'] = Booking.objects.filter(user=self.object.user)
-        context['title_line'] = _('bookings')
-        return context
+            return Booking.objects.filter(user=self.object.user)
+
+#class UserBookings(CurrentUserCabinetAccess, DetailView):
+#    model = Profile
+#    template_name = "usercabinet/bookings.html"
+#
+#    def get_object(self, queryset=None):
+#        user = get_object_or_404(User, username=self.kwargs['username'])
+#        return user.get_profile()
+#
+#    def get_context_data(self, **kwargs):
+#        # Call the base implementation first to get a context
+#        context = super(UserBookings, self).get_context_data(**kwargs)
+#        context['tab'] = 'bookings'
+#        try:
+#            f_date = self.request.GET.get('from')
+#            from_date = convert_to_date(f_date)
+#            t_date = self.request.GET.get('to')
+#            to_date = convert_to_date(t_date)
+#            if from_date > to_date:
+#                from_date, to_date = to_date, from_date
+#            context['bookings'] = Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
+#        except :
+#            context['bookings'] = Booking.objects.filter(user=self.object.user)
+#        context['title_line'] = _('bookings')
+#        return context
 
 class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     model = Booking
