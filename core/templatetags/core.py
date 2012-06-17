@@ -88,7 +88,7 @@ def short_urlize(url):
 register.tag('get_tree_path', do_get_tree_path)
 
 @register.assignment_tag(takes_context=True)
-def paginator(context, adjacent_pages=2):
+def paginator(context):
     """
     To be used in conjunction with the object_list generic view.
 
@@ -96,6 +96,7 @@ def paginator(context, adjacent_pages=2):
     last page links in addition to those created by the object_list generic
     view.
     """
+    adjacent_pages=2
     page_numbers = [n for n in \
                     range(context["paginator"].num_pages - adjacent_pages,
                     context["paginator"].num_pages + adjacent_pages + 1) \
