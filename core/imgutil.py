@@ -280,8 +280,11 @@ def make_watermark(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
             (os.path.getmtime(watermark_path) > os.path.getmtime(wm_path)):
             # if photo mtime is newer than thumbnail recreate thumbnail
             return wm_url
-    base_im = Image.open(photo_path)
-    logo_im = Image.open(watermark_path) #transparent image
+    try:
+        base_im = Image.open(photo_path)
+        logo_im = Image.open(watermark_path) #transparent image
+    except IOError:
+        return None
     base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
     base_im.save(wm_path,"PNG")
     return wm_url
