@@ -97,9 +97,9 @@ def paginator(context, adjacent_pages=2):
     view.
     """
     page_numbers = [n for n in \
-                    range(context["page_obj"].paginator.num_pages - adjacent_pages,
-                    context["page_obj"].paginator.num_pages + adjacent_pages + 1) \
-                    if n > 0 and n <= context["pages"]]
+                    range(context["paginator"].num_pages - adjacent_pages,
+                    context["paginator"].num_pages + adjacent_pages + 1) \
+                    if n > 0 and n <= context["paginator"].num_pages]
     return {
         "hits": context["hits"],
         "results_per_page": context["results_per_page"],
