@@ -16,8 +16,9 @@ from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.config import CURRENCY
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
-from nnmware.apps.money.models import Bill
+from nnmware.apps.money.models import Bill, Currency
 import time
 from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
@@ -626,6 +627,7 @@ class ReportsList(CurrentUserSuperuser, TemplateView):
         return context
 
 class ReportView(CurrentUserSuperuser, ListView):
+    paginate_by = 50
     model = Hotel
     template_name = "sysadm/report.html"
 
