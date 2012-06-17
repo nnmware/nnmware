@@ -226,6 +226,7 @@ class HotelList(ListView):
 
 class HotelAdminList(ListView):
     model = Hotel
+    paginate_by = 50
     template_name = "usercabinet/list.html"
 
     def get_queryset(self):
@@ -497,16 +498,23 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
     def get_success_url(self):
         return reverse('cabinet_bills', args=[self.object.target.city.slug,self.object.target.slug])
 
-class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
-    model = Hotel
+class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
+#    model = Hotel
+    paginate_by = 20
     template_name = "cabinet/bookings.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
+        kwargs['object'] = self.object
         context = super(CabinetBookings, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'booking'
         context['hotel'] = self.object
+        context['title_line'] = _('bookings')
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -514,25 +522,27 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            context['bookings'] = Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
+            return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
         except :
-            context['bookings'] = Booking.objects.filter(hotel=self.object)
-        context['title_line'] = _('bookings')
-        return context
+            return Booking.objects.filter(hotel=self.object)
 
-class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
-    model = Hotel
+class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
+#    model = Hotel
     template_name = "cabinet/bills.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
+        kwargs['object'] = self.object
         context = super(CabinetBills, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'bills'
         context['hotel'] = self.object
-        context['accounts'] = Bill.objects.for_object(self.object)
         context['title_line'] = _('bills')
         return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Bill.objects.for_object(self.object)
 
 class RequestAddHotelView(CreateView):
     model = RequestAddHotel
