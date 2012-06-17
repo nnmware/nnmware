@@ -87,6 +87,11 @@ def short_urlize(url):
 
 register.tag('get_tree_path', do_get_tree_path)
 
+LEADING_PAGE_RANGE_DISPLAYED = TRAILING_PAGE_RANGE_DISPLAYED = 10
+LEADING_PAGE_RANGE = TRAILING_PAGE_RANGE = 8
+NUM_PAGES_OUTSIDE_RANGE = 2
+ADJACENT_PAGES = 4
+
 @register.assignment_tag(takes_context=True)
 def paginator(context):
     """
@@ -96,11 +101,37 @@ def paginator(context):
     last page links in addition to those created by the object_list generic
     view.
     """
-    adjacent_pages=2
-    page_numbers = [n for n in \
-                    range(context["paginator"].num_pages - adjacent_pages,
-                    context["paginator"].num_pages + adjacent_pages + 1) \
-                    if n > 0 and n <= context["paginator"].num_pages]
-    return page_numbers
+    num_pages= context["paginator"].num_pages
+    in_leading_range = in_trailing_range = False
+    pages_outside_leading_range = pages_outside_trailing_range = range(0)
+
+    if num_pages <= LEADING_PAGE_RANGE_DISPLAYED:
+        in_leading_range = in_trailing_range = True
+        page_numbers = [n for n in range(1, num_pages + 1) if n > 0 and n <= num_pages]
+    elif num_pages <= LEADING_PAGE_RANGE:
+        in_leading_range = True
+        page_numbers = [n for n in range(1, LEADING_PAGE_RANGE_DISPLAYED + 1) if n > 0 and n <= num_pages]
+        pages_outside_leading_range = [n + num_pages for n in range(0, -NUM_PAGES_OUTSIDE_RANGE, -1)]
+    elif num_pages > (num_pages - TRAILING_PAGE_RANGE):
+        in_trailing_range = True
+        page_numbers = [n for n in range(num_pages - TRAILING_PAGE_RANGE_DISPLAYED + 1, num_pages + 1) if n > 0 and n <= num_pages]
+        pages_outside_trailing_range = [n + 1 for n in range(0, NUM_PAGES_OUTSIDE_RANGE)]
+    else:
+        page_numbers = [n for n in range(num_pages - ADJACENT_PAGES, num_pages + ADJACENT_PAGES + 1) if n > 0 and n <= num_pages]
+        pages_outside_leading_range = [n + num_pages for n in range(0, -NUM_PAGES_OUTSIDE_RANGE, -1)]
+        pages_outside_trailing_range = [n + 1 for n in range(0, NUM_PAGES_OUTSIDE_RANGE)]
+    return {
+        "page_numbers": page_numbers,
+        "in_leading_range" : in_leading_range,
+        "in_trailing_range" : in_trailing_range,
+        "pages_outside_leading_range": pages_outside_leading_range,
+        "pages_outside_trailing_range": pages_outside_trailing_range
+    }
+    #adjacent_pages=2
+#    page_numbers = [n for n in \
+#                    range(context["paginator"].num_pages - adjacent_pages,
+#                    context["paginator"].num_pages + adjacent_pages + 1) \
+#                    if n > 0 and n <= context["paginator"].num_pages]
+#    return page_numbers
 
 
