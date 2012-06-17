@@ -121,13 +121,21 @@ def paginator(context):
         page_numbers = [n for n in range(curr_page_num - ADJACENT_PAGES, curr_page_num + ADJACENT_PAGES + 1) if n > 0 and n <= num_pages]
         pages_outside_leading_range = [n + num_pages for n in range(0, -NUM_PAGES_OUTSIDE_RANGE, -1)]
         pages_outside_trailing_range = [n + 1 for n in range(0, NUM_PAGES_OUTSIDE_RANGE)]
+    getvars = context['request'].GET.copy()
+    if 'page' in getvars:
+        del getvars['page']
+    if len(getvars.keys()) > 0:
+        new_getvars = "&%s" % getvars.urlencode()
+    else:
+        new_getvars = ''
     return {
+        "getvars":new_getvars,
         "page_numbers": page_numbers,
         "in_leading_range" : in_leading_range,
         "in_trailing_range" : in_trailing_range,
         "pages_outside_leading_range": pages_outside_leading_range,
         "pages_outside_trailing_range": pages_outside_trailing_range
-    }
+        }
     #adjacent_pages=2
 #    page_numbers = [n for n in \
 #                    range(context["paginator"].num_pages - adjacent_pages,
