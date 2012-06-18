@@ -55,7 +55,7 @@ class AjaxFormMixin(object):
     def form_valid(self, form):
         if self.request.is_ajax():
             self.success = True
-            payload = {'success': self.success, 'location': self.success_url, 'status':self.status_msg}
+            payload = {'success': self.success, 'location': self.success_url, 'status_msg':self.status_msg}
             return AjaxLazyAnswer(payload)
         else:
             return HttpResponseRedirect(self.success_url)
