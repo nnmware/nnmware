@@ -694,7 +694,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
 class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
 #    model = Profile
     paginate_by = 5
-    template_name = "usercabinet/bookings_new.html"
+    template_name = "usercabinet/bookings.html"
 
     def get_object(self, queryset=None):
         user = get_object_or_404(User, username=self.kwargs['username'])
