@@ -415,7 +415,8 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         return context
 
     def get_success_url(self):
-            return reverse('cabinet_rooms', args=[self.object.hotel.city.slug,self.object.hotel.slug])
+            return reverse('cabinet_room', args=[self.object.hotel.city.slug,self.object.hotel.slug,
+                                                 self.object.pk])
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
