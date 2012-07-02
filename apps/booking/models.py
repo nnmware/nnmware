@@ -61,7 +61,8 @@ class PaymentMethod(MetaName):
         ordering = ("name",)
 
 
-UNKNOWN_STAR = -1
+UNKNOWN_STAR = -10
+HOSTEL = -1
 MINI_HOTEL = 0
 ONE_STAR = 1
 TWO_STAR = 2
@@ -71,6 +72,7 @@ FIVE_STAR = 5
 
 STAR_CHOICES = (
     (UNKNOWN_STAR, _("Unknown")),
+    (HOSTEL, _("Hostel")),
     (MINI_HOTEL, _("Mini-hotel")),
     (ONE_STAR, _("One star")),
     (TWO_STAR, _("Two star")),
@@ -156,8 +158,10 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
         return Hotel.objects.all().count()
 
     def stars(self):
-        if self.starcount == -1:
+        if self.starcount == -10:
             return None
+        elif self.starcount == -1:
+            return 'hostel'
         elif not self.starcount:
             return 'mini'
         else:
