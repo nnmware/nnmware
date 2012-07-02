@@ -24,6 +24,11 @@ def minihotel_count(city=None):
     return result
 
 @register.assignment_tag
+def hostel_count(city=None):
+    result = Hotel.objects.filter(starcount=HOSTEL).count()
+    return result
+
+@register.assignment_tag
 def two_star_count(city=None):
     result = Hotel.objects.filter(starcount=TWO_STAR).count()
     return result
