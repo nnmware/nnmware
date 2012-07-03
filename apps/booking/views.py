@@ -756,7 +756,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             if room.hotel.payment_method.count() <1:
                 raise Http404
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
-            if guests not in s:
+            if guests > max(s):
                 raise Http404
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
