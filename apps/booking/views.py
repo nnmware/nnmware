@@ -769,7 +769,9 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 date__range=(from_date, to_date-timedelta(days=1)),placecount__gt=0).count()
             if avail_count <> (to_date-from_date).days:
                 raise Http404
-            settlement = get_object_or_404(SettlementVariant,room=room,settlement=guests,enabled=True)
+            settlement = SettlementVariant.objects.filter(room=room,
+                settlement__gte=guests, enabled=True).order_by('settlement')[0]
+            #settlement = get_object_or_404(SettlementVariant,room=room,settlement=guests,enabled=True)
             valid_price_count = PlacePrice.objects.filter(settlement=settlement,
                 date__range=(from_date, to_date-timedelta(days=1)),amount__gt=0).count()
             if valid_price_count <> (to_date-from_date).days:
