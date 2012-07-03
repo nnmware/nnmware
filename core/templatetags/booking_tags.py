@@ -139,34 +139,24 @@ def minprice_hotel_date(context, hotel, on_date):
     request = context['request']
     date = convert_to_date(on_date)
     hotel_price = hotel.amount_on_date(date)
-    try:
-        currency = Currency.objects.get(code=request.COOKIES['currency'])
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
-            exchange = rate.official_rate
-        else:
-            exchange = rate.rate
-        result = (hotel_price*rate.nominal)/exchange
-    except :
-        result = hotel_price
-    return int(result)
+    return amount_request_currency(request, hotel_price)
 
 @register.simple_tag(takes_context = True)
 def room_price_date(context, room, on_date):
     request = context['request']
     date = convert_to_date(on_date)
     room_price = room.amount_on_date(date)
-    try:
-        currency = Currency.objects.get(code=request.COOKIES['currency'])
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
-            exchange = rate.official_rate
-        else:
-            exchange = rate.rate
-        result = (room_price*rate.nominal)/exchange
-    except :
-        result = room_price
-    return int(result)
+    return amount_request_currency(request, room_price)
+
+@register.simple_tag(takes_context=True)
+def client_days_booking(context):
+    search_data = context['search_data']
+    f_date = search_data['from_date']
+    t_date = search_data['to_date']
+    from_date = convert_to_date(f_date)
+    to_date = convert_to_date(t_date)
+    delta = (to_date - from_date).days
+    return delta
 
 @register.simple_tag(takes_context = True)
 def room_price_average(context, room):
@@ -182,17 +172,23 @@ def room_price_average(context, room):
     for single_date in daterange(from_date, to_date):
         room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
     result = room_all_amount/delta
-    try:
-        currency = Currency.objects.get(code=request.COOKIES['currency'])
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
-            exchange = rate.official_rate
-        else:
-            exchange = rate.rate
-        result = (result*rate.nominal)/exchange
-    except :
-        pass
-    return int(result)
+    return amount_request_currency(request, result)
+
+@register.simple_tag(takes_context = True)
+def room_full_amount(context, room):
+    request = context['request']
+    search_data = context['search_data']
+    f_date = search_data['from_date']
+    t_date = search_data['to_date']
+    guests = search_data['guests']
+    from_date = convert_to_date(f_date)
+    to_date = convert_to_date(t_date)
+    delta = (to_date - from_date).days
+    room_all_amount = 0
+    for single_date in daterange(from_date, to_date):
+        room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
+    result = room_all_amount
+    return amount_request_currency(request, result)
 
 @register.simple_tag(takes_context = True)
 def room_variant(context, room):
@@ -223,16 +219,7 @@ def client_currency(context):
 @register.simple_tag(takes_context = True)
 def convert_to_client_currency(context, amount):
     request = context['request']
-    try:
-        currency = Currency.objects.get(code=request.COOKIES['currency'])
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
-            exchange = rate.official_rate
-        else:
-            exchange = rate.rate
-        return int((amount*rate.nominal)/exchange)
-    except :
-        return int(amount)
+    return amount_request_currency(request, amount)
 
 def amount_request_currency(request, amount):
     try:
