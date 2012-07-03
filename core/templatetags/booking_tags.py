@@ -156,7 +156,7 @@ def client_days_booking(context):
     from_date = convert_to_date(f_date)
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
-    return delta
+    return int(delta)
 
 @register.simple_tag(takes_context = True)
 def room_price_average(context, room):
