@@ -10,7 +10,7 @@ import time
 from socket import *
 
 ###########################################################################
-workdir = "/var/www/nnmware"
+workdir = "/sites/daemon"
 logfile = "nnmware.log"
 pidfile = "nnmware.pid"
 statHost = ""
