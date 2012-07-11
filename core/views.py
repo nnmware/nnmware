@@ -449,6 +449,7 @@ class TagDetail(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(TagDetail,self).get_context_data(**kwargs)
+        context['tab'] = 'all'
         context['ctype'] = ContentType.objects.get_for_model(Tag)
         return context
 
