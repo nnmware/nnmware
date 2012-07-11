@@ -13,7 +13,7 @@ from nnmware.core.backends import image_from_url
 from nnmware.core.models import Tag, Follow
 from nnmware.core.utils import gen_shortcut, get_oembed_end_point, get_video_provider_from_link
 from nnmware.core.utils import update_video_size
-from nnmware.core.views import AjaxFormMixin
+from nnmware.core.views import AjaxFormMixin, TagDetail
 
 class VideoAdd(AjaxFormMixin, FormView):
     model = Video
@@ -129,3 +129,6 @@ class VideoLovedFeed(ListView):
         context['tab'] = 'loved'
         context['tab_message'] = 'LOVED ON 24 HOURS:'
         return context
+
+class TagSubscribers(TagDetail):
+    template_name = "tag/subscribers.html"
