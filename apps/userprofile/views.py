@@ -103,13 +103,13 @@ class UserVideoLoved(DetailView):
         return context
 
 class UserActivity(SingleObjectMixin, ListView):
-    model = User
+#    model = User
     paginate_by = 20
-    slug_field = 'username'
+#    slug_field = 'username'
     template_name = "user/activity.html"
 
-#    def get_object(self, queryset=None):
-#        return get_object_or_404(User, username=city,slug=self.kwargs['slug'])
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, username=self.kwargs['username'])
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
