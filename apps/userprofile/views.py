@@ -113,6 +113,7 @@ class UserActivity(SingleObjectMixin, ListView):
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
+        kwargs['object'] = self.object
         context = super(UserActivity, self).get_context_data(**kwargs)
 #        ctype = ContentType.objects.get_for_model(User)
         context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
