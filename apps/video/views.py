@@ -132,3 +132,8 @@ class VideoLovedFeed(ListView):
 
 class TagSubscribers(TagDetail):
     template_name = "tag/subscribers.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TagSubscribers, self).get_context_data(**kwargs)
+        context['tab'] = 'subscribers'
+        return context
