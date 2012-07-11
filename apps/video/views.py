@@ -70,7 +70,7 @@ class VideoDetail(DetailView):
 
 class VideoTimelineFeed(ListView):
     model = Video
-    template_name = "video/feed.html"
+    template_name = "video/timeline.html"
 
     def get_queryset(self):
         ctype = ContentType.objects.get_for_model(Tag)
