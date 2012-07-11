@@ -109,7 +109,7 @@ class UserActivity(SingleObjectMixin, ListView):
     template_name = "user/activity.html"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs['username'])
+        return get_object_or_404(User, username=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
