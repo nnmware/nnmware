@@ -19,7 +19,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from django.views.generic.base import View, TemplateView
 from django.views.generic import FormView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic import YearArchiveView, MonthArchiveView, \
@@ -102,10 +102,14 @@ class UserVideoLoved(DetailView):
         context['tab_message'] = 'LOVED VIDEOS:'
         return context
 
-class UserActivity(DetailView):
+class UserActivity(SingleObjectMixin, ListView):
     model = User
+    paginate_by = 20
     slug_field = 'username'
     template_name = "user/activity.html"
+
+#    def get_object(self, queryset=None):
+#        return get_object_or_404(User, username=city,slug=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
@@ -115,6 +119,10 @@ class UserActivity(DetailView):
         context['tab'] = 'activity'
         context['tab_message'] = 'THIS USER ACTIVITY:'
         return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Action.objects.filter(user=self.object)
 
 
 class UserVideoAdded(DetailView):
