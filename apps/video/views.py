@@ -11,7 +11,7 @@ from nnmware.apps.video.models import Video
 from nnmware.apps.video.forms import VideoAddForm
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
-from nnmware.core.models import Tag, Follow, Action
+from nnmware.core.models import Tag, Follow, Action, JComment
 from nnmware.core.utils import gen_shortcut, get_oembed_end_point, get_video_provider_from_link
 from nnmware.core.utils import update_video_size
 from nnmware.core.views import AjaxFormMixin, TagDetail
@@ -55,19 +55,26 @@ class VideoAdd(AjaxFormMixin, FormView):
         self.success_url = obj.get_absolute_url()
         return super(VideoAdd, self).form_valid(form)
 
-class VideoDetail(DetailView):
+class VideoDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
-    model = Video
-    slug_field = 'slug'
+    paginate_by = 20
     template_name = "video/detail.html"
 
+    def get_object(self, queryset=None):
+        return get_object_or_404(Video, slug=self.kwargs['slug'])
+
     def get_context_data(self, **kwargs):
+        kwargs['object'] = self.object
         context = super(VideoDetail, self).get_context_data(**kwargs)
         context['object'].embedcode = update_video_size(context['object'].embedcode,640,363)
         context['ctype'] = ContentType.objects.get_for_model(Video)
         self.object.viewcount += 1
         self.object.save()
         return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return JComment.public.get_tree(self.object)
 
 class VideoTimelineFeed(ListView):
     paginate_by = 5
