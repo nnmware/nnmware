@@ -213,6 +213,9 @@ def oneline(value):
     except:
         return value
 
+@register.filter
+def nerd_comment(value):
+    return 59*value
 
 def do_get_j_comment_form(parser, token):
     """
