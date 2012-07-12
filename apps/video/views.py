@@ -197,6 +197,7 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
+        self.object = self.get_object()
         follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list('object_id',flat=True)
         return Video.objects.filter(id__in=follow)
 
@@ -215,6 +216,7 @@ class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
+        self.object = self.get_object()
         follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list('object_id',flat=True)
         return Tag.objects.filter(id__in=follow)
 
@@ -232,6 +234,7 @@ class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
+        self.object = self.get_object()
         follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(User)).values_list('object_id',flat=True)
         return User.objects.filter(id__in=follow)
 
@@ -249,5 +252,6 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
         return context
 
     def get_queryset(self):
+        self.object = self.get_object()
         followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(User)).values_list('user',flat=True)
         return User.objects.filter(id__in=followers)
