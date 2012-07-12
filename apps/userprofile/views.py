@@ -117,7 +117,6 @@ class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
-#        kwargs['object'] = self.object
         context = super(UserActivity, self).get_context_data(**kwargs)
 #        ctype = ContentType.objects.get_for_model(User)
         context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
@@ -130,20 +129,23 @@ class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
         return Action.objects.filter(user=self.object)
 
 
-class UserVideoAdded(DetailView):
-    model = User
-    slug_field = 'username'
+class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 12
     template_name = "user/added_video.html"
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(UserVideoAdded, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['user_video'] = Video.objects.filter(user=self.object).order_by('-publish_date')
         context['ctype'] = ContentType.objects.get_for_model(User)
         context['tab'] = 'added'
         context['tab_message'] = 'VIDEO ADDED THIS USER:'
         return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Video.objects.filter(user=self.object).order_by('-publish_date')
+
 
 class UserFollowTags(DetailView):
     model = User
