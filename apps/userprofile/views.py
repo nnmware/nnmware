@@ -102,14 +102,19 @@ class UserVideoLoved(DetailView):
         context['tab_message'] = 'LOVED VIDEOS:'
         return context
 
-class UserActivity(SingleObjectMixin, ListView):
+class UserPathMixin(object):
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, username=self.kwargs['username'])
+
+class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
 #    model = User
     paginate_by = 20
 #    slug_field = 'username'
     template_name = "user/activity.html"
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs['slug'])
+#    def get_object(self, queryset=None):
+#        return get_object_or_404(User, username=self.kwargs['slug'])
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
