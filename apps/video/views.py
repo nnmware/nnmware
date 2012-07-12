@@ -121,6 +121,7 @@ class VideoLatestFeed(ListView):
 
 
 class VideoLovedFeed(ListView):
+    paginate_by = 12
     model = Video
     template_name = "video/feed.html"
 

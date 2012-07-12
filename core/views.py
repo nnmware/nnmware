@@ -470,7 +470,7 @@ class TagsView(ListView):
 
 class TagsPopularView(ListView):
     # Popular Tags limit 20
-    template_name = 'tag/tags_list.html'
+    template_name = 'tag/popular.html'
     model = Tag
     queryset = sorted(Tag.objects.order_by('-follow')[:20], key=lambda o: o.name)
 
