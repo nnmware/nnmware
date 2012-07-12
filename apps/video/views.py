@@ -200,3 +200,54 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
         follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list('object_id',flat=True)
         return Video.objects.filter(id__in=follow)
 
+
+class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/follow_tags.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowTags, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['tab'] = 'follow_tags'
+        context['tab_message'] = 'USER FOLLOW THIS TAGS:'
+        return context
+
+    def get_queryset(self):
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list('object_id',flat=True)
+        return Tag.objects.filter(id__in=follow)
+
+class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/user_follow_list.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowUsers, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['tab'] = 'follow_users'
+        context['tab_message'] = 'USER FOLLOW THIS USERS:'
+        return context
+
+    def get_queryset(self):
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(User)).values_list('object_id',flat=True)
+        return User.objects.filter(id__in=follow)
+
+class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/user_follow_list.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowerUsers, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['tab'] = 'follower_users'
+        context['tab_message'] = 'USERS FOLLOW ON THIS USER:'
+        return context
+
+    def get_queryset(self):
+        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(User)).values_list('user',flat=True)
+        return User.objects.filter(id__in=followers)

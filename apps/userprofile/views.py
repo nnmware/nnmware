@@ -87,58 +87,6 @@ class UserDetail(DetailView):
         return context
 
 
-class UserFollowTags(DetailView):
-    model = User
-    slug_field = 'username'
-    template_name = "user/follow_tags.html"
-    make_object_list = True
-
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserFollowTags, self).get_context_data(**kwargs)
-        context['added'] = Video.objects.filter(user=self.object).count()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list('object_id',flat=True)
-        context['tags_list'] = Tag.objects.filter(id__in=follow)
-        context['ctype'] = ContentType.objects.get_for_model(User)
-        context['tab'] = 'follow_tags'
-        context['tab_message'] = 'USER FOLLOW THIS TAGS:'
-        return context
-
-class UserFollowUsers(DetailView):
-    model = User
-    slug_field = 'username'
-    template_name = "user/follow_users.html"
-    make_object_list = True
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserFollowUsers, self).get_context_data(**kwargs)
-        context['added'] = Video.objects.filter(user=self.object).count()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(User)).values_list('object_id',flat=True)
-        context['users'] = User.objects.filter(id__in=follow)
-        context['ctype'] = ContentType.objects.get_for_model(User)
-        context['tab'] = 'follow_users'
-        context['tab_message'] = 'USER FOLLOW THIS USERS:'
-        return context
-
-class UserFollowerUsers(DetailView):
-    model = User
-    slug_field = 'username'
-    template_name = "user/follower_users.html"
-    make_object_list = True
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserFollowerUsers, self).get_context_data(**kwargs)
-        context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
-        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(User)).values_list('user',flat=True)
-        context['users'] = User.objects.filter(id__in=followers)
-        context['tab'] = 'follower_users'
-        context['tab_message'] = 'USERS FOLLOW ON THIS USER:'
-        return context
-
 
 class ProfileEdit(AjaxFormMixin, UpdateView):
     form_class = ProfileForm
