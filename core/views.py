@@ -454,6 +454,7 @@ class TagDetail(DetailView):
         return context
 
 class TagsView(ListView):
+    paginate_by = 20
     template_name = 'tag/tags_list.html'
     model = Tag
 
