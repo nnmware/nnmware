@@ -63,7 +63,7 @@ class VideoDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(VideoDetail, self).get_context_data(**kwargs)
-        context['object'].embedcode = update_video_size(context['object'].embedcode,620,350)
+        context['object'].embedcode = update_video_size(context['object'].embedcode,640,363)
         context['ctype'] = ContentType.objects.get_for_model(Video)
         self.object.viewcount += 1
         self.object.save()
