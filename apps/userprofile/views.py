@@ -24,10 +24,8 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from django.views.generic import YearArchiveView, MonthArchiveView, \
     DayArchiveView
-from nnmware.apps.video.models import Video
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
-from nnmware.core.models import Tag, Follow, Action
 from nnmware.core.views import AjaxFormMixin
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
