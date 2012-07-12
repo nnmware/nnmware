@@ -86,66 +86,6 @@ class UserDetail(DetailView):
         context['ctype'] = ContentType.objects.get_for_model(User)
         return context
 
-class UserVideoLoved(DetailView):
-    model = User
-    slug_field = 'username'
-    template_name = "user/loved_video.html"
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserVideoLoved, self).get_context_data(**kwargs)
-        context['added'] = Video.objects.filter(user=self.object).count()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list('object_id',flat=True)
-        context['videos'] = Video.objects.filter(id__in=follow)
-        context['ctype'] = ContentType.objects.get_for_model(User)
-        context['tab'] = 'loved'
-        context['tab_message'] = 'LOVED VIDEOS:'
-        return context
-
-class UserPathMixin(object):
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs['username'])
-
-    def get_context_data(self, **kwargs):
-        kwargs['object'] = self.object
-        return super(UserPathMixin, self).get_context_data(**kwargs)
-
-class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
-    paginate_by = 20
-    template_name = "user/activity.html"
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserActivity, self).get_context_data(**kwargs)
-#        ctype = ContentType.objects.get_for_model(User)
-        context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
-        context['tab'] = 'activity'
-        context['tab_message'] = 'THIS USER ACTIVITY:'
-        return context
-
-    def get_queryset(self):
-        self.object = self.get_object()
-        return Action.objects.filter(user=self.object)
-
-
-class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
-    paginate_by = 12
-    template_name = "user/added_video.html"
-
-    def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
-        context = super(UserVideoAdded, self).get_context_data(**kwargs)
-        context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
-        context['tab'] = 'added'
-        context['tab_message'] = 'VIDEO ADDED THIS USER:'
-        return context
-
-    def get_queryset(self):
-        self.object = self.get_object()
-        return Video.objects.filter(user=self.object).order_by('-publish_date')
-
 
 class UserFollowTags(DetailView):
     model = User
