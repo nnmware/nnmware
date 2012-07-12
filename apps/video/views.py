@@ -70,6 +70,7 @@ class VideoDetail(DetailView):
         return context
 
 class VideoTimelineFeed(ListView):
+    paginate_by = 5
     model = Video
     template_name = "video/timeline.html"
 
@@ -88,6 +89,7 @@ class VideoTimelineFeed(ListView):
 
 
 class VideoPopularFeed(ListView):
+    paginate_by = 12
     model = Video
     template_name = "video/feed.html"
 
@@ -104,7 +106,7 @@ class VideoPopularFeed(ListView):
 
 class VideoLatestFeed(ListView):
     model = Video
-    paginate_by = 5
+    paginate_by = 12
     template_name = "video/feed.html"
 
     def get_queryset(self):
