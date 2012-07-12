@@ -284,16 +284,16 @@ def room_availability_on_date(room,date):
 
 @register.simple_tag
 def today_visitor_count():
-#    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1)).values_list('session_key', flat=True).distinct()
-    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
-        date__gte=datetime.now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
+    result = VisitorHit.objects.values_list('session_key', flat=True).distinct()
+#    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
+#        date__gte=datetime.now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
     return len(result)
 
 @register.simple_tag
 def today_hit_count():
-#    return VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1)).count()
-    return VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
-        date__gte=datetime.now().date()-timedelta(days=30)).count()
+    return VisitorHit.objects.count()
+#    return VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
+#        date__gte=datetime.now().date()-timedelta(days=30)).count()
 
 @register.simple_tag
 def room_avg_amount(amount, days):
