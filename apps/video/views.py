@@ -104,6 +104,7 @@ class VideoPopularFeed(ListView):
 
 class VideoLatestFeed(ListView):
     model = Video
+    paginate_by = 5
     template_name = "video/feed.html"
 
     def get_queryset(self):
