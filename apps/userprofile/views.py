@@ -107,18 +107,17 @@ class UserPathMixin(object):
     def get_object(self, queryset=None):
         return get_object_or_404(User, username=self.kwargs['username'])
 
-class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
-#    model = User
-    paginate_by = 20
-#    slug_field = 'username'
-    template_name = "user/activity.html"
+    def get_context_data(self, **kwargs):
+        kwargs['object'] = self.object
+        return super(UserPathMixin, self).get_context_data(**kwargs)
 
-#    def get_object(self, queryset=None):
-#        return get_object_or_404(User, username=self.kwargs['slug'])
+class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/activity.html"
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
-        kwargs['object'] = self.object
+#        kwargs['object'] = self.object
         context = super(UserActivity, self).get_context_data(**kwargs)
 #        ctype = ContentType.objects.get_for_model(User)
         context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
