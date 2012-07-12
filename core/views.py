@@ -494,6 +494,7 @@ class TagsLetterView(ListView):
         return Tag.objects.filter(name__startswith=self.kwargs['letter'])
 
 class NoticeView(ListView):
+    paginate_by = 20
     template_name = 'notice/list.html'
     model = Notice
 
@@ -501,11 +502,13 @@ class NoticeView(ListView):
         return Notice.objects.filter(user=self.request.user).order_by('-timestamp')
 
 class MessageView(ListView):
+    paginate_by = 20
     model = Message
     template_name = "messages/list.html"
     context_object_name = "object_list"
     make_object_list = True
 
     def get_queryset(self):
-        return Message.objects.messages()
+        return Message.objects.messages(self.request.user)
+
 
