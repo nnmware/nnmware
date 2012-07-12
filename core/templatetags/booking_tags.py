@@ -284,7 +284,7 @@ def room_availability_on_date(room,date):
 
 @register.simple_tag
 def today_visitor_count():
-    result = VisitorHit.objects.values_list('session_key', flat=True).distinct()
+    result = set(VisitorHit.objects.values_list('session_key', flat=True))
 #    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
 #        date__gte=datetime.now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
     return len(result)
