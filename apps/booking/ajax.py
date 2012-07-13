@@ -12,6 +12,7 @@ from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Ava
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
+from nnmware.core.templatetags.jcomments import get_image_attach_url
 from nnmware.core.utils import convert_to_date
 from nnmware.core.ajax import AjaxLazyAnswer
 
@@ -234,6 +235,23 @@ def payment_method(request):
         payment_method = PaymentMethod.objects.get(pk=p_m)
         payload = {'success': True, 'id':payment_method.pk,'description':payment_method.description,
                    'card':payment_method.use_card}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def add_category(request):
+    try:
+        hotel_pk = request.REQUEST['hotel']
+        hotel = Hotel.objects.get(pk=hotel_pk)
+        category_name = request.REQUEST['category_name']
+        r = Room.objects.filter(hotel=hotel,name=category_name)
+        if r > 0:
+            raise ValueError
+        room = Room(hotel=hotel,name=category_name)
+        room.save()
+        file_path = get_image_attach_url(room)
+        form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
+        payload = {'success': True, 'file_path':file_path,'form_path':form_path }
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
