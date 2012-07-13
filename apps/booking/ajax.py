@@ -244,7 +244,7 @@ def add_category(request):
         hotel_pk = request.REQUEST['hotel']
         hotel = Hotel.objects.get(pk=hotel_pk)
         category_name = request.REQUEST['category_name']
-        r = Room.objects.filter(hotel=hotel,name=category_name)
+        r = Room.objects.filter(hotel=hotel,name=category_name).count()
         if r > 0:
             raise ValueError
         room = Room(hotel=hotel,name=category_name)
