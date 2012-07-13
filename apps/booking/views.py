@@ -382,7 +382,7 @@ class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
 
 class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     model = Room
-    form_class = CabinetAddRoomForm
+    form_class = CabinetRoomForm
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
@@ -390,8 +390,9 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
         self.object = form.save(commit=False)
         self.object.hotel = hotel
-        self.object.save()
         variants = self.request.POST.getlist('settlement')
+        self.object.places = max(variants)
+        self.object.save()
         for variant in variants:
             try:
                 settlement = SettlementVariant.objects.get(room=self.object, settlement =variant)
@@ -421,7 +422,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
     pk_url_kwarg = 'pk'
-    form_class = CabinetEditRoomForm
+    form_class = CabinetRoomForm
     template_name = "cabinet/room.html"
 
     def get_context_data(self, **kwargs):
@@ -439,6 +440,8 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
 
     def form_valid(self, form):
         variants = self.request.POST.getlist('settlement')
+        self.object.places = max(variants)
+        self.object.save()
         SettlementVariant.objects.filter(room=self.object).update(enabled=False)
         for variant in variants:
             try:

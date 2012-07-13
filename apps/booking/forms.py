@@ -33,23 +33,13 @@ class CabinetTermsForm(forms.ModelForm):
         fields = ('booking_terms', 'payment_method','condition_cancellation',
             'paid_services','time_on','time_off')
 
-class CabinetAddRoomForm(forms.ModelForm):
+class CabinetRoomForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     description = forms.CharField(required=False,widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
 
     class Meta:
         model = Room
-        fields = ('name', 'description', 'option','places')
-
-
-class CabinetEditRoomForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
-
-    class Meta:
-        model = Room
-        fields = ('name', 'description', 'option', 'places')
-
+        fields = ('name', 'description', 'option')
 
 class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}))
