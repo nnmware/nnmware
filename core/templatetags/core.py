@@ -132,3 +132,10 @@ def paginator(context):
         "pages_outside_leading_range": pages_outside_leading_range,
         "pages_outside_trailing_range": pages_outside_trailing_range
         }
+
+@register.filter
+def no_end_slash(value):
+    if value[-1:] == '/':
+        return value[:-1]
+    else:
+        return value
