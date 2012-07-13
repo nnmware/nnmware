@@ -390,17 +390,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
         self.object = form.save(commit=False)
         self.object.hotel = hotel
-        variants = self.request.POST.getlist('settlement')
-        self.object.places = max(variants)
         self.object.save()
-        for variant in variants:
-            try:
-                settlement = SettlementVariant.objects.get(room=self.object, settlement =variant)
-                if not settlement.enabled:
-                    settlement.enabled = True
-                    settlement.save()
-            except :
-                SettlementVariant(room=self.object,settlement=variant,enabled=True).save()
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
