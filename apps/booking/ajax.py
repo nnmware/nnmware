@@ -242,7 +242,7 @@ def payment_method(request):
     return AjaxLazyAnswer(payload)
 
 def add_category(request):
-    try:
+    if 1>0: #try:
         hotel_pk = request.REQUEST['hotel']
         hotel = Hotel.objects.get(pk=hotel_pk)
         category_name = request.REQUEST['category_name']
@@ -254,6 +254,6 @@ def add_category(request):
         file_path = get_image_attach_url(room)
         form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
         payload = {'success': True, 'file_path':file_path,'form_path':form_path }
-    except :
-        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
