@@ -2,7 +2,9 @@
 
 from datetime import datetime, timedelta
 from decimal import Decimal
+from exceptions import ValueError
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
@@ -249,9 +251,12 @@ def add_category(request):
             raise ValueError
         room = Room(hotel=hotel,name=category_name)
         room.save()
-        file_path = get_image_attach_url(room)
-        form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
-        payload = {'success': True, 'file_path':file_path,'form_path':form_path }
+        c_type = ContentType.objects.get_for_model(room).id
+        o_id = room.pk
+        h_city_slug = hotel.city.slug
+        h_slug = hotel.slug
+        payload = {'success': True, 'c_type':c_type,'o_id':o_id,
+                   'h_city_slug':h_city_slug, 'h_slug':h_slug}
 #    except :
 #        payload = {'success': False}
     return AjaxLazyAnswer(payload)
