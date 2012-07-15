@@ -2,7 +2,7 @@
 
 from datetime import datetime, timedelta
 from decimal import Decimal
-from exceptions import ValueError
+from exceptions import ValueError, Exception
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
@@ -242,18 +242,20 @@ def payment_method(request):
     return AjaxLazyAnswer(payload)
 
 def add_category(request):
-    if 1>0: #try:
+    try:
         hotel_pk = request.REQUEST['hotel']
         hotel = Hotel.objects.get(pk=hotel_pk)
+        if request.user not in hotel.admins.all() and not request.user.is_superuser:
+            raise UserNotAllowed
         category_name = request.REQUEST['category_name']
         r = Room.objects.filter(hotel=hotel,name=category_name).count()
         if r > 0:
-            raise ValueError
+            raise UserNotAllowed
         room = Room(hotel=hotel,name=category_name)
         room.save()
         file_path = get_image_attach_url(room)
         form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
         payload = {'success': True, 'file_path':file_path,'form_path':form_path }
-#    except :
-#        payload = {'success': False}
+    except UserNotAllowed:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
