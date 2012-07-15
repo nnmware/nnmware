@@ -251,12 +251,9 @@ def add_category(request):
             raise ValueError
         room = Room(hotel=hotel,name=category_name)
         room.save()
-        c_type = ContentType.objects.get_for_model(room).id
-        o_id = room.pk
-        h_city_slug = hotel.city.slug
-        h_slug = hotel.slug
-        payload = {'success': True, 'c_type':c_type,'o_id':o_id,
-                   'h_city_slug':h_city_slug, 'h_slug':h_slug}
-#    except :
+        file_path = get_image_attach_url(room)
+        form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
+        payload = {'success': True, 'file_path':file_path,'form_path':form_path }
+    #    except :
 #        payload = {'success': False}
     return AjaxLazyAnswer(payload)
