@@ -85,9 +85,10 @@ class UserCabinetInfoForm(forms.ModelForm):
 
     def clean_password(self):
         password = self.cleaned_data["password"]
-        if not self.current_user.check_password(password):
-            self.current_user.set_password(password)
-            self.current_user.save()
+        if len(password.strip(' ')) > 0:
+            if not self.current_user.check_password(password):
+                self.current_user.set_password(password)
+                self.current_user.save()
         return password
 
 class BookingAddForm(forms.ModelForm):
