@@ -58,7 +58,7 @@ def search_options():
 
 @register.assignment_tag
 def hotels_five_stars():
-    result = Hotel.objects.filter(starcount=FIVE_STAR).order_by('name')
+    result = Hotel.objects.filter(starcount=FIVE_STAR).select_related().order_by('name')
     return make_hotel_intro_list(result)
 
 def make_hotel_intro_list(h_list):
@@ -75,27 +75,27 @@ def make_hotel_intro_list(h_list):
 
 @register.assignment_tag
 def hotels_four_stars():
-    result = Hotel.objects.filter(starcount=FOUR_STAR)
+    result = Hotel.objects.filter(starcount=FOUR_STAR).select_related()
     return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_three_stars():
-    result = Hotel.objects.filter(starcount=THREE_STAR)
+    result = Hotel.objects.filter(starcount=THREE_STAR).select_related()
     return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_two_stars():
-    result = Hotel.objects.filter(starcount=TWO_STAR)
+    result = Hotel.objects.filter(starcount=TWO_STAR).select_related()
     return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_mini():
-    result = Hotel.objects.filter(starcount=MINI_HOTEL)
+    result = Hotel.objects.filter(starcount=MINI_HOTEL).select_related()
     return make_hotel_intro_list(result)
 
 @register.assignment_tag
 def hotels_hostel():
-    result = Hotel.objects.filter(starcount=HOSTEL)
+    result = Hotel.objects.filter(starcount=HOSTEL).select_related()
     return make_hotel_intro_list(result)
 
 @register.assignment_tag
@@ -110,13 +110,13 @@ def hotels_count():
 
 @register.assignment_tag
 def hotels_best_offer():
-    result = Hotel.objects.select_related().filter(best_offer=True).order_by('-current_amount')
+    result = Hotel.objects.filter(best_offer=True).select_related().order_by('-current_amount')
     return result
 
 @register.assignment_tag
 def hotels_top10():
     city = City.objects.get(slug='moscow')
-    result = Hotel.objects.select_related().filter(in_top10=True, city=city).order_by('-current_amount')
+    result = Hotel.objects.filter(in_top10=True, city=city).select_related().order_by('-current_amount')
     return result
 
 @register.simple_tag(takes_context = True)
