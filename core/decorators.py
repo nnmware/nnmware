@@ -70,3 +70,12 @@ def ssl_required(view_func):
 
         return view_func(request, *args, **kwargs)
     return _checkssl
+
+def ssl_not_required(view_func):
+    def _checkssl(request, *args, **kwargs):
+        if request.is_secure():
+            url_str = request.build_absolute_uri()
+            url_str = url_str.replace('https://', 'http://')
+            return HttpResponseRedirect(url_str)
+        return view_func(request, *args, **kwargs)
+    return _checkssl

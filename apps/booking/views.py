@@ -24,7 +24,7 @@ from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
-from nnmware.core.decorators import ssl_required
+from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.apps.address.models import City
 
 class CurrentUserHotelAdmin(object):
@@ -94,7 +94,14 @@ class RedirectHttpsView(object):
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
 
-class HotelList(ListView):
+class RedirectHttpView(object):
+
+    @method_decorator(ssl_not_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
+
+
+class HotelList(RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
