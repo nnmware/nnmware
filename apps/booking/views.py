@@ -17,15 +17,17 @@ from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_ma
 from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
-from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, CurrentUserSuperuser
+from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
+    CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
 import time
 from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
-from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.apps.address.models import City
+from nnmware.core.decorators import ssl_required
+
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
@@ -87,18 +89,6 @@ class CurrentUserCabinetAccess(object):
         if not (request.user == obj) and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
-
-class RedirectHttpsView(object):
-
-    @method_decorator(ssl_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
-
-class RedirectHttpView(object):
-
-    @method_decorator(ssl_not_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
 
 class HotelList(RedirectHttpView, ListView):
@@ -292,7 +282,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             pass
         return context
 
-class HotelLocation(HotelPathMixin, DetailView):
+class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
 #    model = Hotel
     slug_field = 'slug'
     template_name = "hotels/location.html"

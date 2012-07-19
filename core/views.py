@@ -10,13 +10,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response, get_object_or_404
 from django.template.base import Template
 from django.template import RequestContext
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-
+from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails
@@ -512,4 +513,15 @@ class MessageView(ListView):
     def get_queryset(self):
         return Message.objects.messages(self.request.user)
 
+class RedirectHttpsView(object):
+
+    @method_decorator(ssl_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
+
+class RedirectHttpView(object):
+
+    @method_decorator(ssl_not_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
