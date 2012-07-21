@@ -29,14 +29,14 @@ class HotelAdmin(admin.ModelAdmin):
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
         ]}),
-        (_("Booking"), {"classes": ("collapse closed",), "fields": [('payment_method'),('booking_terms'),
+        (_("Booking"), {"classes": ("grp-collapse grp-closed",), "fields": [('payment_method'),('booking_terms'),
             ('condition_cancellation'),('paid_services'),('time_on','time_off')
         ]}),
-        (_("Hotel admins"), {"classes": ("collapse closed",), "fields": [
+        (_("Hotel admins"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('admins')]}),
-        (_("Hotel options"), {"classes": ("collapse closed",), "fields": [
+        (_("Hotel options"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('option')]}),
-        (_("English"), {"classes": ("collapse closed",),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en","address_en"),("description_en",),
             ("schema_transit_en"),("booking_terms_en")
         ]}),)
@@ -51,7 +51,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
             ('description',)]}),
         (_("Addons"), {"fields": [('category','order_in_list' ), ( 'enabled','in_search','sticky_in_search'),
         ]}),
-        (_("English"), {"classes": ("collapse closed",),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 #    ordering = ('category','order_in_list','name')
 
@@ -69,7 +69,7 @@ class RoomOptionAdmin(admin.ModelAdmin):
             ('description',)]}),
             (_("Addons"), {"fields": [('category','slug' ), ( 'enabled','order_in_list'),
             ]}),
-            (_("English"), {"classes": ("collapse closed",),
+            (_("English"), {"classes": ("grp-collapse grp-closed",),
                     "fields": [("name_en",),("description_en",) , ]}),)
     ordering = ('category','order_in_list','name')
 
@@ -79,7 +79,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Payment method"), {"fields": [("name",'use_card'),
             ('description',)]}),
-        (_("English"), {"classes": ("collapse closed",),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class RoomOptionCategoryAdmin(admin.ModelAdmin):
@@ -90,7 +90,7 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
             ('description',)]}),
         (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',),
         ]}),
-        (_("English"), {"classes": ("collapse closed",),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 
@@ -102,7 +102,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
             ('description',)]}),
         (_("Addons"), {"fields": [('order_in_list' ), ( 'enabled',), ( 'icon',),
         ]}),
-        (_("English"), {"classes": ("collapse closed",),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",),("description_en",) , ]}),)
 
 class BookingAdmin(admin.ModelAdmin):
@@ -118,7 +118,7 @@ class BookingAdmin(admin.ModelAdmin):
             ('uuid'),
             ('ip','user_agent')
         ]}),
-        (_("Credit card"), {"classes": ("collapse closed",), "fields": [("card_number",'card_valid'),
+        (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number",'card_valid'),
             ('card_holder','card_cvv2')]}),
         )
     no_root_fieldsets = (
