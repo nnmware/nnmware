@@ -119,7 +119,7 @@ class VisitorHitAdmin(admin.ModelAdmin):
                     'user_agent','url','secure')
     list_filter = ('date','user')
     search_fields = ('user__username', 'user_agent')
-    ordering = ('date','user','ip_address')
+    ordering = ('-date','user','ip_address')
 
 class TagAdmin(admin.ModelAdmin):
     fieldsets = ((_('nnmware'), {'fields': [('name','slug')]}),)
