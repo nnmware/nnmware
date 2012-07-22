@@ -84,6 +84,20 @@ def room_delete(request, pk):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def request_hotel_delete(request, pk):
+    try:
+        req_hotel = RequestAddHotel.objects.get(id=pk)
+        if not request.user.is_superuser:
+            raise UserNotAllowed
+        req_hotel.delete()
+        payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg':_('You are not allowed change room variants.')}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def get_booking_amount(request):
     try:
         room_id = request.REQUEST['room_id']
