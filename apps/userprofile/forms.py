@@ -9,6 +9,8 @@ from nnmware.core.fields import ReCaptchaField
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
 
+class UserIsDisabled(Exception):
+    pass
 
 class RegistrationForm(UserCreationForm):
     """
@@ -94,6 +96,7 @@ class SignupForm(UserCreationForm):
                 return email
 
 
+
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if not password1:
@@ -109,31 +112,11 @@ class SignupForm(UserCreationForm):
         return password2
 
 
-class LoginForm(forms.ModelForm):
-
-    class Meta:
-        model = User
-        fields = ('username', 'password')
-        widgets = dict(password=forms.PasswordInput)
-
-    def clean(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            if not user.is_active:
-                raise forms.ValidationError(_("The user is disabled."))
-            return self.cleaned_data
-        else:
-            raise forms.ValidationError(_("Incorrect login."))
-
-class SigninForm(forms.Form):
+class LoginForm(forms.Form):
     username = forms.CharField(label=_(u'Username'), max_length=30)
     password = forms.CharField(label=_(u'Password'), max_length=30)
 
     class Meta:
-#        model = User
-#        fields = ('username', 'password')
         widgets = dict(password=forms.PasswordInput)
 
     def clean_username(self):
@@ -142,26 +125,22 @@ class SigninForm(forms.Form):
             raise forms.ValidationError("THIS FIELD IS REQUIRED")
         try:
             user = User.objects.get(username=username)
-            if not user.is_active:
-                raise forms.ValidationError(_("THE USER IS DISABLED"))
-            self.auth_method = 'username'
+            if not user.is_active: raise UserIsDisabled
             return username
         except User.DoesNotExist:
             try:
                 user = User.objects.get(email=username)
-                if not user.is_active:
-                    raise forms.ValidationError(_("THE USER IS DISABLED"))
-                self.auth_method = 'email'
+                if not user.is_active: raise UserIsDisabled
                 return username
-            except:
-                raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
+            except UserIsDisabled: raise UserIsDisabled
+            except: raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
+        except UserIsDisabled: raise forms.ValidationError(_("THE USER IS DISABLED"))
 
     def clean_password(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
-        if not user:
-            raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
+        if not user: raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
         return password
 
 class PassChangeForm(forms.Form):
