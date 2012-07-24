@@ -125,6 +125,7 @@ class FollowManager(Manager):
         """
         Filter to a specific instance.
         """
+
         content_type = ContentType.objects.get_for_model(instance).pk
         return self.filter(content_type=content_type, object_id=instance.pk)
 
