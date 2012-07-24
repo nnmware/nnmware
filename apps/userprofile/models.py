@@ -80,6 +80,13 @@ class Profile(models.Model):
     def __unicode__(self):
         return _("%s's userprofile") % self.user
 
+    @property
+    def get_avatar(self):
+        if self.avatar is not None:
+            return self.avatar.url
+        else:
+            return settings.MEDIA_URL + settings.DEFAULT_AVATAR
+
     def get_name(self):
         if self.fullname:
             return self.fullname
