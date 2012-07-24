@@ -180,7 +180,7 @@ class RegisterView(AjaxFormMixin, FormView):
         newuser.save()
         return super(RegisterView, self).form_valid(form)
 
-class SignupView(FormView):
+class SignupView(AjaxFormMixin, FormView):
     form_class = SignupForm
     template_name = 'registration/signup.html'
     success_url = "/"
@@ -208,10 +208,7 @@ class SignupView(FormView):
         send_template_mail(subject,body,mail_dict,[e.email])
         return super(SignupView, self).form_valid(form)
 
-class SignupAjaxView(AjaxFormMixin, SignupView):
-    pass
-
-class LoginView(FormView):
+class LoginView(AjaxFormMixin, FormView):
     form_class = LoginForm
     template_name = 'user/login.html'
     success_url = "/"
@@ -223,9 +220,6 @@ class LoginView(FormView):
         user = authenticate(username=username, password=password)
         login(self.request, user)
         return super(LoginView, self).form_valid(form)
-
-class LoginAjaxView(AjaxFormMixin, LoginView):
-    success_url = "/"
 
 
 class ChangePasswordView(AjaxFormMixin, FormView):
