@@ -85,7 +85,7 @@ class Profile(models.Model):
         if self.avatar:
             return self.avatar.url
         else:
-            return settings.MEDIA_URL + settings.DEFAULT_AVATAR
+            return settings.DEFAULT_AVATAR
 
     def get_name(self):
         if self.fullname:
