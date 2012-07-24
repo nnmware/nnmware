@@ -211,7 +211,7 @@ class SignupView(FormView):
 class SignupAjaxView(AjaxFormMixin, SignupView):
     pass
 
-class LoginView(AjaxFormMixin, FormView):
+class LoginView(FormView):
     form_class = LoginForm
     template_name = 'user/login.html'
     success_url = "/"
@@ -224,7 +224,7 @@ class LoginView(AjaxFormMixin, FormView):
         login(self.request, user)
         return super(LoginView, self).form_valid(form)
 
-class LoginAjaxView(LoginView, AjaxFormMixin):
+class LoginAjaxView(AjaxFormMixin, LoginView):
     pass
 
 class ChangePasswordView(AjaxFormMixin, FormView):
