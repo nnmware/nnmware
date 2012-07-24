@@ -93,13 +93,14 @@ class Profile(models.Model):
         else:
             return self.user.username
 
+    def _ctype(self):
+        return ContentType.objects.get_for_model(User)
+
     def followers_count(self):
-        ctype = ContentType.objects.get_for_model(User)
-        return Follow.objects.filter(content_type=ctype,object_id=self.user.pk).count()
+        return Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).count()
 
     def followers(self):
-        ctype = ContentType.objects.get_for_model(User)
-        users = Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('user',flat=True)
+        users = Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).values_list('user',flat=True)
         return User.objects.filter(pk__in=users)
 
     def follow_tags_count(self):
@@ -116,9 +117,7 @@ class Profile(models.Model):
         return self.user.follow_set.filter(content_type=ctype).count()
 
     def follow_count(self):
-        ctype = ContentType.objects.get_for_model(User)
-        return self.user.follow_set.filter(content_type=ctype).count()
-
+        return self.user.follow_set.filter(content_type=self._ctype()).count()
 
 
     def get_absolute_url(self):
