@@ -27,7 +27,7 @@ def tags_step2():
 @register.assignment_tag
 def users_step2():
     # Return most popular 6 users
-    return User.objects.annotate(video_count=Count('get_profile__video')).order_by('-video_count')[:6]
+    return User.objects.annotate(video_count=Count('video')).order_by('-video_count')[:6]
 
 
 @register.simple_tag

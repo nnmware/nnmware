@@ -36,7 +36,7 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, unique=True)
+    user = models.ForeignKey(User, unique=True, related_name='user_profile')
 
     fullname = models.CharField(max_length=100, verbose_name=_(u'Full Name'), blank=True)
     birthdate = models.DateField(verbose_name=_(u'Date birth'), blank=True, null=True)
