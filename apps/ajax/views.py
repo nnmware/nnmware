@@ -88,6 +88,14 @@ def video_dislike(request, object_id):
     return AjaxLazyAnswer(payload)
 
 
+def check_tag(request, object_id):
+    object_id = object_id
+    ctype = ContentType.objects.get_for_model(Tag)
+    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+        return follow_tag(request, object_id)
+    else:
+        return unfollow_tag(request, object_id)
+
 def follow_tag(request, object_id):
     # Link used for User press Like on Video Detail Page
     object_id = object_id
