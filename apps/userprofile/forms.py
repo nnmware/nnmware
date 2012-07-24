@@ -130,18 +130,29 @@ class SigninForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'password')
+        fields = ('username', 'password')
         widgets = dict(password=forms.PasswordInput)
 
     def clean_email(self):
-        email = self.cleaned_data["email"]
-        if not email:
+        username = self.cleaned_data["username"]
+        if not username:
             raise forms.ValidationError("THIS FIELD IS REQUIRED")
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
             if not user.is_active:
                 raise forms.ValidationError(_("THE USER IS DISABLED"))
-            return email
+            self.auth_method = 'username'
+            return username
+        except User.DoesNotExist:
+            try:
+                user = User.objects.get(email=username)
+                if not user.is_active:
+                    raise forms.ValidationError(_("THE USER IS DISABLED"))
+                self.auth_method = 'email'
+                return username
+            except:
+                raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
+
         except User.DoesNotExist:
             raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
 

@@ -210,7 +210,6 @@ class LoginView(AjaxFormMixin, FormView):
 
 class SigninView(AjaxFormMixin, FormView):
     form_class = SigninForm
-    template_name = 'user/login.html'
     success_url = "/"
     status = _("YOU SUCCESSFULLY SIGN IN")
 
