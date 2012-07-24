@@ -127,11 +127,13 @@ class LoginForm(forms.ModelForm):
         else:
             raise forms.ValidationError(_("Incorrect login."))
 
-class SigninForm(forms.ModelForm):
+class SigninForm(forms.Form):
+    username = forms.CharField(label=_(u'Username'), max_length=30)
+    password = forms.CharField(label=_(u'Password'), max_length=30)
 
     class Meta:
-        model = User
-        fields = ('username', 'password')
+#        model = User
+#        fields = ('username', 'password')
         widgets = dict(password=forms.PasswordInput)
 
     def clean_username(self):
