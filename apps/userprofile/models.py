@@ -103,6 +103,13 @@ class Profile(models.Model):
 #        users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
 #        return User.objects.filter(pk__in=users)
 
+    @property
+    def followers_1(self):
+        ctype = ContentType.objects.get_for_model(User)
+        users = Follow.objects.filter(content_type=ctype,object_id=self.user.id).values_list('user',flat=True)
+    #        users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
+        return User.objects.filter(pk__in=users)
+
 
     def follow_tags_count(self):
         ctype = ContentType.objects.get_for_model(Tag)
