@@ -225,7 +225,8 @@ class LoginView(FormView):
         return super(LoginView, self).form_valid(form)
 
 class LoginAjaxView(AjaxFormMixin, LoginView):
-    pass
+    success_url = "/"
+
 
 class ChangePasswordView(AjaxFormMixin, FormView):
     form_class = PassChangeForm
