@@ -24,10 +24,11 @@ def tags_step2():
     # Return most popular 10 Tags
     return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:9]
 
-@register.assignment_tag
-def users_step2():
+@register.assignment_tag(takes_context=True)
+def users_step2(context):
+    request = context['request']
     # Return most popular 6 users
-    return User.objects.annotate(video_count=Count('video')).order_by('-video_count')[:6]
+    return User.objects.filter(username__ne=request.user).annotate(video_count=Count('video')).order_by('-video_count')[:6]
 
 
 @register.simple_tag
