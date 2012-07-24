@@ -97,6 +97,7 @@ class Profile(models.Model):
         ctype = ContentType.objects.get_for_model(User)
         return Follow.objects.filter(content_type=ctype,object_id=self.user.id).count()
 
+    @property
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
         users = Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('user',flat=True)
