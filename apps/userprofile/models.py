@@ -106,7 +106,7 @@ class Profile(models.Model):
     @property
     def followers_1(self):
         ctype = ContentType.objects.get_for_model(User)
-        return Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('actor')
+        return Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('user')
     #        users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
         #return User.objects.filter(pk__in=users)
 
