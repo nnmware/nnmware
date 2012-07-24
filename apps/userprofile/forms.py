@@ -126,11 +126,13 @@ class LoginForm(forms.Form):
         try:
             user = User.objects.get(username=username)
             if not user.is_active: raise UserIsDisabled
+            self.auth_username = True
             return username
         except User.DoesNotExist:
             try:
                 user = User.objects.get(email=username)
                 if not user.is_active: raise UserIsDisabled
+                self.auth_username = False
                 return username
             except UserIsDisabled: raise UserIsDisabled
             except: raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
@@ -139,7 +141,10 @@ class LoginForm(forms.Form):
     def clean_password(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
+        if self.auth_username:
+            user = authenticate(username=username, password=password)
+        else:
+            user = authenticate(email=username, password=password)
         if not user: raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
         return password
 
