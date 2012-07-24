@@ -220,10 +220,7 @@ class LoginView(FormView):
     def form_valid(self, form):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        if form.auth_username:
-            user = authenticate(username=username, password=password)
-        else:
-            user = authenticate(email=username, password=password)
+        user = authenticate(username=username, password=password)
         login(self.request, user)
         return super(LoginView, self).form_valid(form)
 
