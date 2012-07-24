@@ -59,15 +59,25 @@ class SignupForm(UserCreationForm):
     """
     Form for registering a new user userprofile.
     """
-    email = forms.EmailField(label='Email address', max_length=75)
+#    email = forms.EmailField(label='Email address', max_length=75)
     class Meta:
         model = User
         fields = ('username', 'email')
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if not username:
+            raise forms.ValidationError(_("USERNAME IS REQUIRED"))
+        try:
+            User.objects.get(username=username)
+            raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
+        except:
+            return username
+
     def clean_email(self):
         """
         Verify that the email exists
-        """
+/        """
         email = self.cleaned_data.get("email")
 
         if not email:
@@ -83,15 +93,6 @@ class SignupForm(UserCreationForm):
             except EmailValidation.DoesNotExist:
                 return email
 
-    def clean_username(self):
-        username = self.cleaned_data.get('username')
-        if not username:
-            raise forms.ValidationError(_("USERNAME IS REQUIRED"))
-        try:
-            User.objects.get(username=username)
-            raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
-        except:
-            return username
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
@@ -133,7 +134,7 @@ class SigninForm(forms.ModelForm):
         fields = ('username', 'password')
         widgets = dict(password=forms.PasswordInput)
 
-    def clean_email(self):
+    def clean_username(self):
         username = self.cleaned_data["username"]
         if not username:
             raise forms.ValidationError("THIS FIELD IS REQUIRED")
@@ -153,13 +154,10 @@ class SigninForm(forms.ModelForm):
             except:
                 raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
 
-        except User.DoesNotExist:
-            raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
-
     def clean_password(self):
-        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=username, password=password)
         if not user:
             raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
         return password

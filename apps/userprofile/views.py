@@ -26,6 +26,7 @@ from django.views.generic import YearArchiveView, MonthArchiveView, \
     DayArchiveView
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
+from nnmware.core.utils import make_key, send_template_mail
 from nnmware.core.views import AjaxFormMixin
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
@@ -179,22 +180,36 @@ class RegisterView(AjaxFormMixin, FormView):
         newuser.save()
         return super(RegisterView, self).form_valid(form)
 
-class SignupView(AjaxFormMixin, FormView):
+class SignupView(FormView):
     form_class = SignupForm
-    template_name = 'user/registration.html'
+    template_name = 'registration/signup.html'
     success_url = "/"
     status = _("YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL")
 
     def form_valid(self, form):
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
         email = form.cleaned_data.get('email')
-        newuser = User.objects.create_user(username=username, email=email, password=password)
-        newuser.is_active = True
-        EmailValidation.objects.add(user=newuser, email=newuser.email)
-        newuser.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        try:
+            e = EmailValidation.objects.get(email=email)
+        except :
+            e = EmailValidation()
+            e.username = username
+            e.email = email
+            e.password = password
+            e.created = datetime.now()
+            e.key = make_key(username)
+            e.save()
+        mail_dict = {'key': e.key,
+                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                     'site_name': settings.SITENAME, 'email': email}
+        subject = 'registration/activation_subject.txt'
+        body = 'registration/activation.txt'
+        send_template_mail(subject,body,mail_dict,[e.email])
         return super(SignupView, self).form_valid(form)
 
+class SignupAjaxView(AjaxFormMixin, SignupView):
+    pass
 
 class LoginView(AjaxFormMixin, FormView):
     form_class = LoginForm
@@ -215,9 +230,9 @@ class SigninView(AjaxFormMixin, FormView):
 
 
     def form_valid(self, form):
-        email = form.cleaned_data.get('email')
+        username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password')
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=username, password=password)
         login(self.request, user)
         return super(SigninView, self).form_valid(form)
 
