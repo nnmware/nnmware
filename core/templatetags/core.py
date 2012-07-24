@@ -18,6 +18,11 @@ def tag_links():
     # Return most popular 10 Tags
     return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:10]
 
+@register.assignment_tag
+def tags_step2():
+    # Return most popular 10 Tags
+    return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:9]
+
 @register.simple_tag
 def video_views():
     return Video.objects.aggregate(Sum('viewcount'))['viewcount__sum']
