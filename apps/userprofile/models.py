@@ -95,12 +95,11 @@ class Profile(models.Model):
 
     def followers_count(self):
         ctype = ContentType.objects.get_for_model(User)
-        return Follow.objects.filter(content_type=ctype,object_id=self.user.id).count()
+        return Follow.objects.filter(content_type=ctype,object_id=self.user.pk).count()
 
     def followers(self):
         ctype = ContentType.objects.get_for_model(User)
-        users = Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('user',flat=True)
-        return User.objects.filter(pk__in=users)
+        return Follow.objects.filter(content_type=ctype,object_id=self.user.pk).values_list('user',flat=True)
 
 
     def follow_tags_count(self):
