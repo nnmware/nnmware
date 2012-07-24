@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django import template
+from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from nnmware.apps.video.models import Video
@@ -22,6 +23,12 @@ def tag_links():
 def tags_step2():
     # Return most popular 10 Tags
     return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:9]
+
+@register.assignment_tag
+def users_step2():
+    # Return most popular 10 Tags
+    return User.objects.annotate(video_count=Count('video')).order_by('-video_count')[:6]
+
 
 @register.simple_tag
 def video_views():
