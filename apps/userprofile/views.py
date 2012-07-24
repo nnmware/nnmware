@@ -225,7 +225,7 @@ class LoginView(FormView):
         login(self.request, user)
         return super(LoginView, self).form_valid(form)
 
-class LoginAjaxView(AjaxFormMixin, LoginView):
+class LoginAjaxView(LoginView, AjaxFormMixin):
     pass
 
 class ChangePasswordView(AjaxFormMixin, FormView):
