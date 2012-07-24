@@ -28,7 +28,7 @@ def tags_step2():
 def users_step2(context):
     request = context['request']
     # Return most popular 6 users
-    return User.objects.filter(username__ne=request.user).annotate(video_count=Count('video')).order_by('-video_count')[:6]
+    return User.objects.exclude(username=request.user.username).annotate(video_count=Count('video')).order_by('-video_count')[:6]
 
 
 @register.simple_tag
