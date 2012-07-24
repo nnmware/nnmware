@@ -211,7 +211,7 @@ class SignupView(FormView):
 class SignupAjaxView(AjaxFormMixin, SignupView):
     pass
 
-class LoginView(FormView):
+class LoginView(AjaxFormMixin, FormView):
     form_class = LoginForm
     template_name = 'user/login.html'
     success_url = "/"
