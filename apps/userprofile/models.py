@@ -60,9 +60,7 @@ class Profile(models.Model):
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
-    avatar = models.ForeignKey(Pic, blank=True, null=False)
-#    avatar_complete = models.BooleanField(_('Avatar is set'), default=False, editable=False)
-
+    avatar = models.ForeignKey(Pic, blank=True, null=True)
 
     class Meta:
         ordering = ['user', ]
@@ -86,23 +84,6 @@ class Profile(models.Model):
             return self.avatar.pic.url
         else:
             return settings.DEFAULT_AVATAR
-
-#    @property
-#    def get_avatar(self):
-#        try:
-#            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
-#            return pics[0].pic.url
-#        except :
-#            return settings.DEFAULT_AVATAR
-##
-##            return None
-
-    def get_avatar_object(self):
-        try:
-            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
-            return pics[0]
-        except :
-            return None
 
 
     def get_name(self):
