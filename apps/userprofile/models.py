@@ -82,10 +82,10 @@ class Profile(models.Model):
 
     @property
     def get_avatar(self):
-        if self.avatar:
+        if self.avatar is not None:
             return self.avatar.pic.url
         else:
-            return settings.MEDIA_URL + settings.DEFAULT_AVATAR
+            return settings.DEFAULT_AVATAR
 
 #    @property
 #    def get_avatar(self):
