@@ -138,15 +138,15 @@ def unfollow_tag(request, object_id):
     return AjaxLazyAnswer(payload)
 
 def check_notify(request):
-    try:
+    if 1>0: #try:
         if request.user.get_profile.subscribe == True:
             request.user.get_profile.subscribe = False
         else:
             request.user.get_profile.subscribe = True
         request.user.get_profile.save()
         payload = {'success': True}
-    except :
-        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 def check_user(request, object_id):
