@@ -95,57 +95,6 @@ or if only a width is requested (to be compatibile with admin interface)::
 #
 register.filter('thumbnail', thumbnail)
 
-class ResizedThumbnailNode(Node):
-    def __init__(self, size, username=None):
-        try:
-            self.size = int(size)
-        except:
-            self.size = Variable(size)
-        if username:
-            self.user = Variable(username)
-        else:
-            self.user = Variable("user")
-
-    def render(self, context):
-        # If size is not an int, then it's a Variable, so try to resolve it.
-        if not isinstance(self.size, int):
-            self.size = int(self.size.resolve(context))
-
-        try:
-            user = self.user.resolve(context)
-            avatar = Profile.objects.get(user=user).avatar
-            avatar_path = avatar.path
-        except:
-            avatar_path = DEFAULT_AVATAR
-            url = avatar_path.replace(settings.MEDIA_ROOT, settings.MEDIA_URL)
-
-        ret = make_thumbnail(avatar_path, width=self.size)
-        ret = ret.replace(settings.MEDIA_ROOT, settings.MEDIA_URL)
-
-        if ret is None:
-            ret = avatar_path
-
-        if not ret.startswith(settings.MEDIA_URL):
-            ret = settings.MEDIA_URL + ret
-
-        return ret
-
-
-@register.tag
-def avatar(parser, token):
-    bits = token.contents.split()
-    username = None
-    if len(bits) > 3:
-        raise TemplateSyntaxError, _(u"You have to provide only the size as \
-            an integer (both sides will be equal) and optionally, the \
-            username.")
-    elif len(bits) == 3:
-        username = bits[2]
-    elif len(bits) < 2:
-        bits.append("96")
-    return ResizedThumbnailNode(bits[1], username)
-
-
 
 
 def image_width(url):
