@@ -210,7 +210,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
             if not result:
                 result = min_price
             else:
-                if result > min_price:
+                if result > min_price and min_price > 0:
                     result = min_price
         return result
 
