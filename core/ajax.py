@@ -5,6 +5,7 @@ import Image
 import json
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.middleware import http
 from django.shortcuts import get_object_or_404
@@ -117,6 +118,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 messages.error(request, "File is not image format")
                 os.remove(fullpath)
                 self.success = False
+                self.pic_id = None
             if self.success:
                 new = Pic()
                 self._new_obj(new, request, **kwargs)
@@ -125,10 +127,9 @@ class AjaxImageUploader(AjaxAbstractUploader):
                     new.pic.field.upload_to, new.pic.path)
                 new.size = os.path.getsize(fullpath)
                 new.save()
-                messages.success(request, _("Image %s successfully uploaded") %
-                            new.description)
+                self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
-            payload = {'success': self.success, 'filename': self.filename}
+            payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             return AjaxAnswer(payload)
@@ -150,20 +151,25 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 messages.error(request, "File is not image format")
                 os.remove(fullpath)
                 self.success = False
+                self.pic_id = None
             if self.success:
-                profile = request.user.get_profile()
                 try:
-                    remove_thumbnails(profile.avatar.url)
-                    remove_file(profile.avatar.url)
+                    request.user.get_profile().avatar.delete()
                 except :
                     pass
-                profile.avatar = self.extra_context['path']
-                profile.avatar_complete = False
-                profile.save()
-                resize_image(profile.avatar.url)
-                messages.success(request, _("Avatar %s successfully uploaded"))
+                new = Pic()
+                new.content_type = ContentType.objects.get_for_model(User)
+                new.object_id = request.user.pk
+                new.description = self.extra_context['oldname']
+                new.user = request.user
+                new.publish_date = datetime.now()
+                new.pic = self.extra_context['path']
+                new.save()
+                request.user.get_profile().avatar = new
+                request.user.get_profile().save()
+                self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
-            payload = {'success': self.success, 'filename': self.filename}
+            payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             return AjaxAnswer(payload)

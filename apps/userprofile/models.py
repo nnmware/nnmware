@@ -14,7 +14,7 @@ from django.template import loader, Context
 from nnmware.apps.video.models import Video
 from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
-from nnmware.core.models import Follow, Tag
+from nnmware.core.models import Follow, Tag, Pic
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)
 ACTION_RECORD_TYPES = (('A', 'Activation'),
@@ -60,8 +60,8 @@ class Profile(models.Model):
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
-    avatar = models.ImageField(upload_to=upload_avatar_dir, blank=True, null=True)
-    avatar_complete = models.BooleanField(_('Avatar is set'), default=False, editable=False)
+    avatar = models.ForeignKey(Pic, blank=True, null=False)
+#    avatar_complete = models.BooleanField(_('Avatar is set'), default=False, editable=False)
 
 
     class Meta:
@@ -83,9 +83,27 @@ class Profile(models.Model):
     @property
     def get_avatar(self):
         if self.avatar:
-            return self.avatar.url
+            return self.avatar.pic.url
         else:
             return settings.DEFAULT_AVATAR
+
+#    @property
+#    def get_avatar(self):
+#        try:
+#            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
+#            return pics[0].pic.url
+#        except :
+#            return settings.DEFAULT_AVATAR
+##
+##            return None
+
+    def get_avatar_object(self):
+        try:
+            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
+            return pics[0]
+        except :
+            return None
+
 
     def get_name(self):
         if self.fullname:
