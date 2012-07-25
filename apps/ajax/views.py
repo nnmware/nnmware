@@ -31,7 +31,7 @@ def get_video(request):
     if not link[:7] == 'http://':
         link = 'http://%s' % link
     if link.find(u'youtu.be') != -1:
-        link.replace('youtu.be/','www.youtube.com/watch?v=')
+        link = link.replace('youtu.be/','www.youtube.com/watch?v=')
     try:
         search_qs = Video.objects.filter(video_url=link)[0]
     except:
