@@ -68,11 +68,6 @@ class Profile(models.Model):
         verbose_name_plural = _("Users Profiles")
 
     def delete(self, *args, **kwargs):
-#        try:
-#            remove_thumbnails(self.avatar.path)
-#            remove_file(self.avatar.path)
-#        except:
-#            pass
         self.avatar.delete()
         super(Profile, self).delete(*args, **kwargs)
 
@@ -81,10 +76,10 @@ class Profile(models.Model):
 
     @property
     def get_avatar(self):
-#        if self.avatar is not None:
-#            return self.avatar.pic.url
-#        else:
-         return settings.DEFAULT_AVATAR
+        if self.avatar.pk is not None:
+            return self.avatar.pic.url
+        else:
+            return settings.DEFAULT_AVATAR
 
 
     def get_name(self):
