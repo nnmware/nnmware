@@ -26,6 +26,8 @@ class VideoAdd(AjaxFormMixin, FormView):
         link = form.cleaned_data.get('video_url')
         if not link[:7] == 'http://':
             link = 'http://%s' % link
+        if link.find(u'youtu.be') != -1:
+            link.replace('youtu.be/','www.youtube.com/watch?v=')
         consumer = oembed.OEmbedConsumer()
         # TODO: more code security here - big chance to get fatal error
         endpoint = get_oembed_end_point(link)
