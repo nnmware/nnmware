@@ -76,7 +76,7 @@ class Profile(models.Model):
 
     @property
     def get_avatar(self):
-        if self.avatar.pk is not None:
+        if self.avatar.pk:
             return self.avatar.pic.url
         else:
             return settings.DEFAULT_AVATAR
