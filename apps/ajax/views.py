@@ -137,6 +137,18 @@ def unfollow_tag(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def check_notify(request):
+    try:
+        if request.user.get_profile.subscribe == True:
+            request.user.get_profile.subscribe = False
+        else:
+            request.user.get_profile.subscribe = True
+        request.user.get_profile.save()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
 def check_user(request, object_id):
     object_id = object_id
     ctype = ContentType.objects.get_for_model(User)
