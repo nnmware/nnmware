@@ -139,11 +139,12 @@ def unfollow_tag(request, object_id):
 
 def check_notify(request):
     if 1>0: #try:
-        if request.user.get_profile.subscribe == True:
-            request.user.get_profile.subscribe = False
+        profile = request.user.get_profile()
+        if profile.subscribe:
+            profile.subscribe = False
         else:
-            request.user.get_profile.subscribe = True
-        request.user.get_profile.save()
+            profile.subscribe = True
+        profile.save()
         payload = {'success': True}
 #    except :
 #        payload = {'success': False}
