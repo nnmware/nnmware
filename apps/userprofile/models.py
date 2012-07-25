@@ -76,7 +76,7 @@ class Profile(models.Model):
 
     @property
     def get_avatar(self):
-        if self.avatar.is_exist():
+        if self.avatar:
             return self.avatar.pic.url
         else:
             return settings.DEFAULT_AVATAR
