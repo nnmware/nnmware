@@ -436,11 +436,12 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)
         comment.comment = request.REQUEST['comment']
-        comment.save()
-        kwargs={'content_type': content_type, 'object_id': comment.pk}
+        kwargs={'content_type': content_type, 'object_id': object_id}
         if parent_id is not None:
             comment.parent_id = int(parent_id)
-            kwargs['parent_id'] = parent_id
+        comment.save()
+        if parent_id is not None:
+            kwargs['parent_id'] = comment.pk
             reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         else:
             reply_link = reverse("jcomment_add", kwargs=kwargs)
