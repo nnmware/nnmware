@@ -446,7 +446,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
 #        payload = {'success': False, 'error':_('You are not allowed for add comment')}
 #    except :
 #        payload = {'success': False}
-    return AjaxAnswer(payload)
+    return AjaxLazyAnswer(payload)
 
 #        try:
 #            context['action'] = reverse("jcomment_parent_add", kwargs={'content_type': self.kwargs['content_type'],
