@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from nnmware.apps.userprofile.models import Profile
 from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
-from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader
+from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader, AjaxAnswer
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc, JComment
@@ -446,7 +446,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
 #        payload = {'success': False, 'error':_('You are not allowed for add comment')}
 #    except :
 #        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return AjaxAnswer(payload)
 
 #        try:
 #            context['action'] = reverse("jcomment_parent_add", kwargs={'content_type': self.kwargs['content_type'],
