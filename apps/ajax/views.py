@@ -439,6 +439,9 @@ def comment_add(request, content_type, object_id, parent_id=None):
         if parent_id is not None:
             comment.parent_id = int(parent_id)
             kwargs['parent_id'] = parent_id
+            reply_link = reverse("jcomment_parent_add", kwargs)
+        else:
+            reply_link = reverse("jcomment_add", kwargs)
         comment.comment = request.REQUEST['comment']
         comment.save()
         comment_text = linebreaksbr(comment.comment)
@@ -451,7 +454,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
                    'username_url':comment.user.get_profile().get_absolute_url(),
                    'comment':comment_text, 'avatar_id':avatar_id,
-                   'comment_date': comment_date,
+                   'comment_date': comment_date, 'reply_link':reply_link,
                    'object_comments':comment.content_object.comments }
 #    except AccessError:
 #        payload = {'success': False, 'error':_('You are not allowed for add comment')}
