@@ -427,7 +427,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
     """
     Its Ajax posted comments
     """
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
         comment = JComment()
@@ -441,10 +441,10 @@ def comment_add(request, content_type, object_id, parent_id=None):
         ajax_success_url = comment.content_object.get_absolute_url()
         payload = {'success': True, 'id':comment.pk, 'depth':comment.depth,
                    'comment':comment.comment, 'avatar_id':comment.user.avatar.pk}
-    except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add comment')}
-    except :
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False, 'error':_('You are not allowed for add comment')}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 #        try:
