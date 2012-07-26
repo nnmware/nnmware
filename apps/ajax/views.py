@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import linebreaksbr
 from nnmware.apps.userprofile.models import Profile
 from nnmware.apps.video.models import Video
 from nnmware.core.actions import follow, unfollow
@@ -434,14 +435,17 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.user = request.user
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)
+        kwargs={'content_type': content_type, 'object_id': object_id}
         if parent_id is not None:
             comment.parent_id = int(parent_id)
+            kwargs['parent_id'] = parent_id
         comment.comment = request.REQUEST['comment']
         comment.save()
+        comment_text = linebreaksbr(comment.comment)
         ajax_success_url = comment.content_object.get_absolute_url()
         payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
                    'username_url':comment.user.get_profile().get_absolute_url(),
-                   'comment':comment.comment, 'avatar_id':comment.user.get_profile().avatar.pk,
+                   'comment':comment_text, 'avatar_id':comment.user.get_profile().avatar.pk,
                    'object_comments':comment.content_object.comments }
 #    except AccessError:
 #        payload = {'success': False, 'error':_('You are not allowed for add comment')}
