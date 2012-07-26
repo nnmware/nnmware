@@ -442,7 +442,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.comment = request.REQUEST['comment']
         comment.save()
         comment_text = linebreaksbr(comment.comment)
-        comment_date = datetime.time.strftime(settings.COMMENT_DATE_FORMAT, comment.publish_date)
+        comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
         ajax_success_url = comment.content_object.get_absolute_url()
         payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
                    'username_url':comment.user.get_profile().get_absolute_url(),
