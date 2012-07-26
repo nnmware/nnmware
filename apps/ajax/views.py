@@ -443,10 +443,14 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.save()
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
+        try:
+            avatar_id = comment.user.get_profile().avatar.pk
+        except :
+            avatar_id = False
         ajax_success_url = comment.content_object.get_absolute_url()
         payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
                    'username_url':comment.user.get_profile().get_absolute_url(),
-                   'comment':comment_text, 'avatar_id':comment.user.get_profile().avatar.pk,
+                   'comment':comment_text, 'avatar_id':avatar_id,
                    'comment_date': comment_date,
                    'object_comments':comment.content_object.comments }
 #    except AccessError:
