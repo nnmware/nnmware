@@ -435,15 +435,15 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.user = request.user
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)
-        kwargs={'content_type': content_type, 'object_id': object_id}
+        comment.comment = request.REQUEST['comment']
+        comment.save()
+        kwargs={'content_type': content_type, 'object_id': comment.pk}
         if parent_id is not None:
             comment.parent_id = int(parent_id)
             kwargs['parent_id'] = parent_id
             reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         else:
             reply_link = reverse("jcomment_add", kwargs=kwargs)
-        comment.comment = request.REQUEST['comment']
-        comment.save()
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
