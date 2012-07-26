@@ -81,7 +81,7 @@ class Profile(models.Model):
         except :
             return settings.DEFAULT_AVATAR
 
-
+    @property
     def get_name(self):
         if self.fullname:
             return self.fullname
