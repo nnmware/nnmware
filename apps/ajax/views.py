@@ -439,9 +439,9 @@ def comment_add(request, content_type, object_id, parent_id=None):
         if parent_id is not None:
             comment.parent_id = int(parent_id)
             kwargs['parent_id'] = parent_id
-            reply_link = reverse("jcomment_parent_add", kwargs)
+            reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         else:
-            reply_link = reverse("jcomment_add", kwargs)
+            reply_link = reverse("jcomment_add", kwargs=kwargs)
         comment.comment = request.REQUEST['comment']
         comment.save()
         comment_text = linebreaksbr(comment.comment)
