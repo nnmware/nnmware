@@ -439,7 +439,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.comment = request.REQUEST['comment']
         comment.save()
         ajax_success_url = comment.content_object.get_absolute_url()
-        payload = {'success': True, 'id':comment.pk, 'depth':comment.depth,
+        payload = {'success': True, 'id':comment.pk, #'depth':comment.depth,
                    'comment':comment.comment, 'avatar_id':comment.user.avatar.pk}
 #    except AccessError:
 #        payload = {'success': False, 'error':_('You are not allowed for add comment')}
