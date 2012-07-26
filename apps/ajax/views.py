@@ -428,7 +428,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
     """
     Its Ajax posted comments
     """
-    if 1>0: #try:
+    try:
         if not request.user.is_authenticated():
             raise AccessError
         comment = JComment()
@@ -436,39 +436,30 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)
         comment.comment = request.REQUEST['comment']
+        if len(comment.comment) == 0:
+            raise AccessError
         kwargs={'content_type': content_type, 'object_id': object_id}
         if parent_id is not None:
             comment.parent_id = int(parent_id)
         comment.save()
+        avatar_id = reply_link = False
         if parent_id is not None:
             kwargs['parent_id'] = comment.pk
             reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
-        else:
-            reply_link = reverse("jcomment_add", kwargs=kwargs)
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
             avatar_id = comment.user.get_profile().avatar.pk
         except :
-            avatar_id = False
-        ajax_success_url = comment.content_object.get_absolute_url()
+            pass
         payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
                    'username_url':comment.user.get_profile().get_absolute_url(),
                    'comment':comment_text, 'avatar_id':avatar_id,
                    'comment_date': comment_date, 'reply_link':reply_link,
                    'object_comments':comment.content_object.comments }
-#    except AccessError:
-#        payload = {'success': False, 'error':_('You are not allowed for add comment')}
-#    except :
-#        payload = {'success': False}
+    except AccessError:
+        payload = {'success': False, 'error':_('You are not allowed for add comment')}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
-
-#        try:
-#            context['action'] = reverse("jcomment_parent_add", kwargs={'content_type': self.kwargs['content_type'],
-#                                                                       'object_id': self.kwargs['object_id'],
-#                                                                       'parent_id': self.kwargs['parent_id']})
-#        except:
-#            context['action'] = reverse("jcomment_add",
-#                kwargs={'content_type': self.kwargs['content_type'], 'object_id': self.kwargs['object_id']})
-#        return context
 
