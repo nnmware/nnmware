@@ -442,10 +442,12 @@ def comment_add(request, content_type, object_id, parent_id=None):
         if parent_id is not None:
             comment.parent_id = int(parent_id)
         comment.save()
-        avatar_id = reply_link = False
+        avatar_id = False
         if parent_id is not None:
             kwargs['parent_id'] = comment.pk
-            reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
+        else:
+            kwargs['parent_id'] = parent_id
+        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
