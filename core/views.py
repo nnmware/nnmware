@@ -513,6 +513,16 @@ class MessageView(ListView):
     def get_queryset(self):
         return Message.objects.messages(self.request.user)
 
+class MessageContactsView(ListView):
+    paginate_by = 20
+    model = Message
+    template_name = "messages/list.html"
+    context_object_name = "object_list"
+    make_object_list = True
+
+    def get_queryset(self):
+        return Message.objects.messages(self.request.user)
+
 class RedirectHttpsView(object):
 
     @method_decorator(ssl_required)

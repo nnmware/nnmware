@@ -181,11 +181,12 @@ class MessageAdmin(admin.ModelAdmin):
             'fields': (
                 'sent_at', 'read_at', 'replied_at',
                 'sender_deleted_at', 'recipient_deleted_at',
+                'ip','user_agent',
                 ),
             'classes': ('collapse', 'wide'),
             }),
         )
-    list_display = ('subject', 'sender', 'recipient', 'sent_at', 'read_at')
+    list_display = ('subject', 'sender', 'ip','recipient', 'sent_at', 'read_at')
     list_filter = ('sent_at', 'sender', 'recipient')
     search_fields = ('subject', 'body')
 
