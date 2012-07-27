@@ -91,54 +91,6 @@ def video_dislike(request, object_id):
     return AjaxLazyAnswer(payload)
 
 
-def check_tag(request, object_id):
-    object_id = object_id
-    ctype = ContentType.objects.get_for_model(Tag)
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        return follow_tag(request, object_id)
-    else:
-        return unfollow_tag(request, object_id)
-
-def follow_tag(request, object_id):
-    # Link used for User press Like on Video Detail Page
-    object_id = object_id
-    tag = get_object_or_404(Tag, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(Tag)
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        follow(request.user, tag)
-        action.send(request.user, verb=_('follow the tag'), target=tag)
-        if request.user.get_profile().followers_count:
-            for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
-                    notice.send(request.user, user=u, verb=_('also now follow'), target=tag)
-                else:
-                    notice.send(request.user, user=u, verb=_('now follow'), target=tag)
-        tag.follow = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        tag.save()
-        result = tag.follow
-        payload = {'success': True, 'count': result}
-    else:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
-
-def unfollow_tag(request, object_id):
-    # Link used for User press Like on Video Detail Page
-    object_id = object_id
-    tag = get_object_or_404(Tag, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(Tag)
-    if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        unfollow(request.user, tag)
-        action.send(request.user, verb=_('unfollow the tag'), target=tag)
-        if request.user.get_profile().followers_count:
-            for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                notice.send(request.user, user=u, verb=_('now follow'), target=tag)
-        tag.follow = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        tag.save()
-        result = tag.follow
-        payload = {'success': True, 'count': result}
-    else:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
 
 def push_tag(request, object_id):
     # Link used for User follow tag
@@ -170,7 +122,7 @@ def push_tag(request, object_id):
 
 
 
-def check_notify(request):
+def push_notify(request):
     try:
         profile = request.user.get_profile()
         if profile.subscribe:
