@@ -204,7 +204,7 @@ def unfollow_user(request, object_id):
 
 def push_user(request, object_id):
     # Link used for User press button in user panel
-    try:
+    if 1>0: try:
         object_id = object_id
         user = get_object_or_404(User, id=int(object_id))
         ctype = ContentType.objects.get_for_model(User)
@@ -229,8 +229,8 @@ def push_user(request, object_id):
         user.get_profile().save()
         result = user.get_profile().follow
         payload = {'success': True, 'count': result, 'id': user.pk, 'status':status}
-    except :
-        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
