@@ -225,9 +225,9 @@ def push_user(request, object_id):
                         notice.send(request.user, user=u, verb=_('also now follow'), target=user)
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
-        user.get_profile().follow = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        user.get_profile().save()
-        result = user.get_profile().follow
+        result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
+#        user.get_profile().save()
+#        result = user.get_profile().follow
         payload = {'success': True, 'count': result, 'id': user.pk, 'status':status}
 #    except :
 #        payload = {'success': False}
