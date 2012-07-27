@@ -508,7 +508,7 @@ class Pic(MetaLink, MetaFile):
         return reverse("pic_editor", self.pk)
 
 
-class JComment(MetaLink):
+class JComment(MetaLink, MetaIP):
     """
     A threaded comment which must be associated with an instance of
     ``django.contrib.auth.models.User``.  It is given its hierarchy by
@@ -530,7 +530,7 @@ class JComment(MetaLink):
     # Status Fields
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
     # Extra Field
-    ip_address = models.IPAddressField(_('IP address'), null=True, blank=True)
+#    ip_address = models.IPAddressField(_('IP address'), null=True, blank=True)
 
     objects = JCommentManager()
     public = PublicJCommentManager()
@@ -626,7 +626,7 @@ class Notice(MetaLink, MetaIP):
         verbose_name = _("Notice")
         verbose_name_plural = _("Notices")
 
-class Message(models.Model):
+class Message(MetaIP):
     """
     A private message from user to user
     """
