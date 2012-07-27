@@ -206,7 +206,7 @@ def push_user(request, object_id):
     # Link used for User press button in user panel
     if 1>0: #try:
         object_id = int(object_id)
-        user = get_object_or_404(User, id=int(object_id))
+        user = User.objects.get(id=int(object_id))
         ctype = ContentType.objects.get_for_model(User)
         status = False
         if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
