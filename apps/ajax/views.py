@@ -441,8 +441,8 @@ def push_message(request, object_id):
         message_date = msg.sent_at.strftime(settings.COMMENT_DATE_FORMAT)
         payload = {'success': True, 'id':msg.pk, 'username':msg.sender.get_profile().get_name,
                    'username_url':msg.sender.get_profile().get_absolute_url(),
-                   'message':msg.subject, 'avatar_id':avatar_id,
-                   'message_date': message_date}
+                   'message_subject':msg.subject, 'avatar_id':avatar_id,
+                   'message_date': message_date, 'message_body':msg.body }
     except AccessError:
         payload = {'success': False, 'error':_('You are not allowed for send message')}
     except :
