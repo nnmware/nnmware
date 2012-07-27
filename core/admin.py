@@ -12,7 +12,7 @@ class JCommentAdmin(admin.ModelAdmin):
         (_('nnmware'), {'fields': [('parent', 'content_type', 'object_id')]}),
         (_('Content'), {'fields': [('comment', 'user', 'status')]}),
         (_('Meta'), {'fields': [('publish_date', 'updated_date',
-                                 'ip_address')]}),
+                                 'ip')]}),
         )
     list_display = ('user', 'publish_date', 'content_type',
                     'parent', '__unicode__')
