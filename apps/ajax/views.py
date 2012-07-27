@@ -140,6 +140,36 @@ def unfollow_tag(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def push_tag(request, object_id):
+    # Link used for User follow tag
+    try:
+        tag = Tag.objects.get(id=object_id)
+        ctype = ContentType.objects.get_for_model(Tag)
+        status = False
+        if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+            unfollow(request.user, tag)
+            action.send(request.user, verb=_('unfollow the tag'), target=tag)
+            if request.user.get_profile().followers_count:
+                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                    notice.send(request.user, user=u, verb=_('now follow'), target=tag)
+        else:
+            follow(request.user, tag)
+            status = True
+            action.send(request.user, verb=_('follow the tag'), target=tag)
+            if request.user.get_profile().followers_count:
+                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                    if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
+                        notice.send(request.user, user=u, verb=_('also now follow'), target=tag)
+                    else:
+                        notice.send(request.user, user=u, verb=_('now follow'), target=tag)
+        result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
+        payload = {'success': True, 'count': result, 'id': tag.pk, 'status':status}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+
 def check_notify(request):
     try:
         profile = request.user.get_profile()
@@ -153,54 +183,6 @@ def check_notify(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def check_user(request, object_id):
-    object_id = object_id
-    ctype = ContentType.objects.get_for_model(User)
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        return follow_user(request, object_id)
-    else:
-        return unfollow_user(request, object_id)
-
-def follow_user(request, object_id):
-    # Link used for User press Follow on User Detail Page
-    object_id = object_id
-    user = get_object_or_404(User, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(User)
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        follow(request.user, user)
-        action.send(request.user, verb=_('follow the user'), target=user)
-        if request.user.get_profile().followers_count:
-            for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                if u.follow_set.filter(content_type=ctype, object_id=user.pk).count:
-                    notice.send(request.user, user=u, verb=_('also now follow'), target=user)
-                else:
-                    notice.send(request.user, user=u, verb=_('now follow'), target=user)
-        user.get_profile().follow = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        user.get_profile().save()
-        result = user.get_profile().follow
-        payload = {'success': True, 'count': result, 'id': user.pk}
-    else:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
-
-def unfollow_user(request, object_id):
-    # Link used for User press Unfollow on User Detail Page
-    object_id = object_id
-    user = get_object_or_404(User, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(User)
-    if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        unfollow(request.user, user)
-        action.send(request.user, verb=_('unfollow the user'), target=user)
-        if request.user.get_profile().followers_count:
-            for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                notice.send(request.user, user=u, verb=_('now unfollow'), target=user)
-        user.get_profile().follow = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        user.get_profile().save()
-        result = user.get_profile().follow
-        payload = {'success': True, 'count': result, 'id': user.pk}
-    else:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
 
 def push_user(request, object_id):
     # Link used for User press button in user panel
