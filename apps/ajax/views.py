@@ -51,44 +51,6 @@ def get_video(request):
 #        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def video_like(request, object_id):
-    # Link used for User press Like on Video Detail Page
-    object_id = object_id
-    video = get_object_or_404(Video, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(Video)
-    payload = {'success': False}
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        if follow(request.user, video):
-            action.send(request.user, verb=_('liked the video'), target=video)
-            if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                    if u.follow_set.filter(content_type=ctype, object_id=video.pk).count:
-                        notice.send(request.user, user=u, verb=_('also now liked'), target=video)
-                    else:
-                        notice.send(request.user, user=u, verb=_('now liked'), target=video)
-            video.liked = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-            video.save()
-            result = video.liked
-            payload = {'success': True, 'count': result}
-    return AjaxLazyAnswer(payload)
-
-def video_dislike(request, object_id):
-    # Link used for User press Like on Video Detail Page
-    object_id = object_id
-    video = get_object_or_404(Video, id=int(object_id))
-    ctype = ContentType.objects.get_for_model(Video)
-    payload = {'success': False}
-    if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
-        if unfollow(request.user, video):
-            action.send(request.user, verb=_('disliked the video'), target=video)
-            if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
-                    notice.send(request.user, user=u, verb=_('now disliked'), target=video)
-            video.liked = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-            video.save()
-            result = video.liked
-            payload = {'success': True, 'count': result}
-    return AjaxLazyAnswer(payload)
 
 def push_video(request, object_id):
     # Link used for User press Like on Video Detail Page
