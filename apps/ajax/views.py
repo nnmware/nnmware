@@ -129,6 +129,8 @@ def push_user(request, object_id):
     # Link used for User press button in user panel
     try:
         user = User.objects.get(id=object_id)
+        if request.user == user:
+            raise AccessError
         ctype = ContentType.objects.get_for_model(User)
         status = False
         if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
@@ -149,6 +151,8 @@ def push_user(request, object_id):
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
         payload = {'success': True, 'count': result, 'id': user.pk, 'status':status}
+    except AccessError:
+        payload = {'success': False}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
@@ -385,6 +389,8 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.user = request.user
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)
+        comment.ip = request.META['REMOTE_ADDR']
+        comment.user_agent = request.META['HTTP_USER_AGENT']
         comment.comment = request.REQUEST['comment']
         if len(comment.comment) == 0:
             raise AccessError
@@ -419,33 +425,25 @@ def push_message(request, object_id):
     try:
         if not request.user.is_authenticated():
             raise AccessError
-        comment = JComment()
-        comment.user = request.user
-        comment.content_type = get_object_or_404(ContentType, id=int(content_type))
-        comment.object_id = int(object_id)
-        comment.comment = request.REQUEST['comment']
-        if len(comment.comment) == 0:
-            raise AccessError
-        kwargs={'content_type': content_type, 'object_id': object_id}
-        if parent_id is not None:
-            comment.parent_id = int(parent_id)
-        comment.save()
-        avatar_id = False
-        kwargs['parent_id'] = comment.pk
-        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
-        comment_text = linebreaksbr(comment.comment)
-        comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
+        msg = Message()
+        msg.ip = request.META['REMOTE_ADDR']
+        msg.user_agent = request.META['HTTP_USER_AGENT']
+        msg.subject = request.POST.get('message_subject') or None
+        msg.body = request.POST.get('message_body') or None
+        msg.sender = request.user
+        msg.recipient = User.objects.get(id=object_id)
+        msg.sent_at = datetime.now()
+        msg.save()
         try:
-            avatar_id = comment.user.get_profile().avatar.pk
+            avatar_id = request.user.get_profile().avatar.pk
         except :
             pass
-        payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_profile().get_name,
-                   'username_url':comment.user.get_profile().get_absolute_url(),
-                   'comment':comment_text, 'avatar_id':avatar_id,
-                   'comment_date': comment_date, 'reply_link':reply_link,
-                   'object_comments':comment.content_object.comments }
+        payload = {'success': True, 'id':msg.pk, 'username':msg.sender.get_profile().get_name,
+                   'username_url':msg.sender.get_profile().get_absolute_url(),
+                   'message':msg.subject, 'avatar_id':avatar_id,
+                   'message_date': msg.sent_at}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add comment')}
+        payload = {'success': False, 'error':_('You are not allowed for send message')}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
