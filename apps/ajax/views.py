@@ -204,8 +204,7 @@ def unfollow_user(request, object_id):
 
 def push_user(request, object_id):
     # Link used for User press button in user panel
-    if 1>0: #try:
-#        object_id = int(object_id)
+    try:
         user = User.objects.get(id=object_id)
         ctype = ContentType.objects.get_for_model(User)
         status = False
@@ -225,12 +224,10 @@ def push_user(request, object_id):
                         notice.send(request.user, user=u, verb=_('also now follow'), target=user)
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
-        result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-#        user.get_profile().save()
-#        result = user.get_profile().follow
-        payload = {'success': True, 'count': result, 'id': user.pk, 'status':status}
-#    except :
-#        payload = {'success': False}
+        count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
+        payload = {'success': True, 'count': count, 'id': user.pk, 'status':status}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
