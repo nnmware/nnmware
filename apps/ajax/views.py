@@ -225,6 +225,23 @@ def notice_delete(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def message_delete(request, object_id):
+    # Link used when User delete the Message
+    msg = None
+    if Message.objects.filter(sender=request.user,id=object_id).count():
+        msg = Message.objects.get(sender=request.user,id=object_id)
+        msg.sender_deleted_at = datetime.now()
+    elif Message.objects.filter(recipient=request.user,id=object_id).count():
+        msg.recipient_deleted_at = datetime.now()
+    if msg is not None:
+         msg.save()
+         result = Notice.objects.filter(user=request.user).count()
+         payload = {'success': True, 'count': result}
+    else :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def avatar_delete(request):
     try:
         profile = request.user.get_profile()
