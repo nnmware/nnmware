@@ -120,7 +120,7 @@ class Profile(models.Model):
 
     @property
     def unread_msg_count(self):
-        return Message.unread(self.user).count()
+        return Message.objects.unread(self.user).count()
 
     def save(self, *args, **kwargs):
         self.date_modified = datetime.datetime.now()
