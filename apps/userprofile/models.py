@@ -14,7 +14,7 @@ from django.template import loader, Context
 from nnmware.apps.video.models import Video
 from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
-from nnmware.core.models import Follow, Tag, Pic
+from nnmware.core.models import Follow, Tag, Pic, Message
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)
 ACTION_RECORD_TYPES = (('A', 'Activation'),
@@ -117,6 +117,9 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.user.username])
+
+    def unread_msg_count(self):
+        return Message.unread(self.user).count()
 
     def save(self, *args, **kwargs):
         self.date_modified = datetime.datetime.now()

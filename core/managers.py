@@ -166,6 +166,16 @@ class MessageManager(Manager):
             recipient_deleted_at__isnull=True,
         )
 
+    def unread(self, user):
+        """
+        Returns all messages that were received by the given user and are not
+        marked as read.
+        """
+        return self.filter(
+            recipient=user,
+            read_at__isnull=True,
+        )
+
     def users(self, user):
         messages = self.filter(
             Q(recipient=user, recipient_deleted_at__isnull=True) |
