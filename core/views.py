@@ -13,7 +13,7 @@ from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
@@ -24,6 +24,12 @@ from nnmware.core.imgutil import remove_thumbnails
 from nnmware.core.models import JComment, DEFAULT_MAX_JCOMMENT_LENGTH, STATUS_DELETE, Doc, Pic, Follow, Notice, Message, Action
 from nnmware.core.forms import *
 from nnmware.core.actions import follow, unfollow
+
+
+class UserPathMixin(object):
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(User, username=self.kwargs['username'])
 
 
 def _adjust_max_comment_length(form):
@@ -503,7 +509,7 @@ class NoticeView(ListView):
     def get_queryset(self):
         return Notice.objects.filter(user=self.request.user).order_by('-timestamp')
 
-class MessagesView(ListView):
+class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
     model = Message
     template_name = "messages/list.html"
@@ -511,8 +517,15 @@ class MessagesView(ListView):
     make_object_list = True
 
     def get_queryset(self):
-        recipient = User.objects.get(username=self.kwargs['username'])
-        return Message.objects.concrete_user(self.request.user, recipient)
+        self.object = self.get_object()
+        return Message.objects.concrete_user(self.request.user, self.object)
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        kwargs['object'] = self.object
+        context = super(MessagesView, self).get_context_data(**kwargs)
+        return context
+
 
 class MessageContactsView(ListView):
     paginate_by = 20

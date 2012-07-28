@@ -34,6 +34,7 @@ from nnmware.apps.userprofile.forms import *
 from nnmware.core.imgutil import fit
 
 
+
 class UserList(ListView):
     model = User
     context_object_name = "object_list"
