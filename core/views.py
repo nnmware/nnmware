@@ -520,7 +520,7 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
     def get_queryset(self):
         self.object = self.get_object()
         result = Message.objects.concrete_user(self.request.user, self.object)
-        result.filter(recipient=self.request.user).update(read_at=datetime.now())
+        answ = result.filter(recipient=self.request.user).update(read_at=datetime.now())
         return result
 
     def get_context_data(self, **kwargs):
