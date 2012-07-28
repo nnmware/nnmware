@@ -118,6 +118,7 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.user.username])
 
+    @property
     def unread_msg_count(self):
         return Message.unread(self.user).count()
 
