@@ -225,7 +225,7 @@ def notice_delete(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def message_delete(request, object_id):
+def delete_message(request, object_id):
     # Link used when User delete the Message
     msg = None
     if Message.objects.filter(sender=request.user,id=object_id).count():
