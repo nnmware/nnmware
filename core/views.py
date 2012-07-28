@@ -521,7 +521,7 @@ class MessageContactsView(ListView):
     make_object_list = True
 
     def get_queryset(self):
-        return Message.objects.messages(self.request.user)
+        return Message.objects.users(self.request.user)
 
 class RedirectHttpsView(object):
 

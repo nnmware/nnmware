@@ -166,6 +166,14 @@ class MessageManager(Manager):
             recipient_deleted_at__isnull=True,
         )
 
+    def users(self, user):
+        messages = self.filter(
+            Q(recipient=user, recipient_deleted_at__isnull=True) |
+            Q(sender=user, sender_deleted_at__isnull=True))
+        senders = messages.values_list('sender',flat=True)
+        recipients = messages.values_list('recipient',flat=True)
+        return User.objects.exclude(pk=user.pk).filter(pk__in=senders).filter(pk__in=recipients)
+
     def messages(self, user):
         """
         Returns all messages that were received by the given user and are not

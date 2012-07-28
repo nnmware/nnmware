@@ -420,7 +420,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
 
 def push_message(request, object_id):
     """
-    Its Ajax posted comments
+    Its Ajax posted message
     """
     try:
         if not request.user.is_authenticated():
