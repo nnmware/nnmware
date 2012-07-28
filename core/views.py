@@ -503,7 +503,7 @@ class NoticeView(ListView):
     def get_queryset(self):
         return Notice.objects.filter(user=self.request.user).order_by('-timestamp')
 
-class MessageView(ListView):
+class MessagesView(ListView):
     paginate_by = 20
     model = Message
     template_name = "messages/list.html"
@@ -511,7 +511,8 @@ class MessageView(ListView):
     make_object_list = True
 
     def get_queryset(self):
-        return Message.objects.messages(self.request.user)
+        recipient = User.objects.get(self.kwargs['username'])
+        return Message.objects.concrete_user(self.request.user, recipient)
 
 class MessageContactsView(ListView):
     paginate_by = 20

@@ -175,6 +175,11 @@ class MessageManager(Manager):
         return User.objects.exclude(pk=user.pk).filter(
             Q(pk__in=senders) | Q(pk__in=recipients)).order_by('username')
 
+    def concrete_user(self, user, recipient):
+        return self.filter(
+            Q(recipient=user, recipient_deleted_at__isnull=True, sender=recipient) |
+            Q(sender=user, sender_deleted_at__isnull=True, recipient=recipient)).order_by('sent_at')
+
     def messages(self, user):
         """
         Returns all messages that were received by the given user and are not
