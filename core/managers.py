@@ -172,7 +172,7 @@ class MessageManager(Manager):
             Q(sender=user, sender_deleted_at__isnull=True))
         senders = messages.values_list('sender',flat=True)
         recipients = messages.values_list('recipient',flat=True)
-        return User.objects.exclude(pk=user.pk).filter(pk__in=senders).filter(pk__in=recipients)
+        return User.objects.exclude(pk=user.pk).filter(pk__in=recipients) #senders).filter(pk__in=recipients)
 
     def messages(self, user):
         """
