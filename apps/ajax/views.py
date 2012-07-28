@@ -233,6 +233,7 @@ def delete_message(request, object_id):
         another_user = msg.recipient
         msg.sender_deleted_at = datetime.now()
     elif Message.objects.filter(recipient=request.user,id=object_id).count():
+        msg = Message.objects.get(recipient=request.user,id=object_id)
         another_user = msg.sender
         msg.recipient_deleted_at = datetime.now()
     if msg is not None:
