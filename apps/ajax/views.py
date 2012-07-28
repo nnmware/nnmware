@@ -422,7 +422,7 @@ def push_message(request, object_id):
     """
     Its Ajax posted message
     """
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
         msg = Message()
@@ -443,8 +443,8 @@ def push_message(request, object_id):
                    'username_url':msg.sender.get_profile().get_absolute_url(),
                    'message_subject':msg.subject, 'avatar_id':avatar_id,
                    'message_date': message_date, 'message_body':msg.body }
-    except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for send message')}
-    except :
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False, 'error':_('You are not allowed for send message')}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
