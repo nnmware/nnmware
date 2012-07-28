@@ -511,7 +511,7 @@ class MessagesView(ListView):
     make_object_list = True
 
     def get_queryset(self):
-        recipient = User.objects.get(self.kwargs['username'])
+        recipient = User.objects.get(username=self.kwargs['username'])
         return Message.objects.concrete_user(self.request.user, recipient)
 
 class MessageContactsView(ListView):
