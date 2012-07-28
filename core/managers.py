@@ -173,7 +173,7 @@ class MessageManager(Manager):
         senders = messages.values_list('sender',flat=True)
         recipients = messages.values_list('recipient',flat=True)
         return User.objects.exclude(pk=user.pk).filter(
-            Q(pk__in=senders) | Q(pk__in=recipients))
+            Q(pk__in=senders) | Q(pk__in=recipients)).order_by('username')
 
     def messages(self, user):
         """
