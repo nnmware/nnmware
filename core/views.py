@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 import Image
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -518,7 +519,9 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        return Message.objects.concrete_user(self.request.user, self.object)
+        result = Message.objects.concrete_user(self.request.user, self.object)
+        result.filter(recipient=self.request.user).update(read_at=datetime.now())
+        return result
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
