@@ -178,7 +178,7 @@ class MessageManager(Manager):
     def concrete_user(self, user, recipient):
         return self.filter(
             Q(recipient=user, recipient_deleted_at__isnull=True, sender=recipient) |
-            Q(sender=user, sender_deleted_at__isnull=True, recipient=recipient)).order_by('-sent_at')
+            Q(sender=user, sender_deleted_at__isnull=True, recipient=recipient)).order_by('sent_at')
 
     def messages(self, user):
         """
