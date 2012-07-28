@@ -517,7 +517,7 @@ class MessageContactsView(ListView):
     paginate_by = 20
     model = Message
     template_name = "messages/userlist.html"
-    context_object_name = "object_list"
+#    context_object_name = "object_list"
     make_object_list = True
 
     def get_queryset(self):
