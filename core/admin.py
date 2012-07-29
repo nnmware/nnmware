@@ -164,27 +164,16 @@ class MessageAdminForm(ModelForm):
 class MessageAdmin(admin.ModelAdmin):
     form = MessageAdminForm
     fieldsets = (
-        (None, {
+        (_('Main'), {
             'fields': (
                 'sender',
                 ('recipient', 'group'),
                 ),
             }),
-        (_('Message'), {
-            'fields': (
-                'parent_msg',
-                'subject', 'body',
-                ),
-            'classes': ('monospace' ),
-            }),
-        (_('Date/time'), {
-            'fields': (
-                'sent_at', 'read_at', 'replied_at',
-                'sender_deleted_at', 'recipient_deleted_at',
-                'ip','user_agent',
-                ),
-            'classes': ('collapse', 'wide'),
-            }),
+        (_("Message"), {"classes": ("grp-collapse grp-closed",), "fields": [("subject",'body'),
+            ('parent_msg',)]}),
+        (_("Date/Time"), {"classes": ("grp-collapse grp-closed",), "fields": [('sent_at', 'read_at', 'replied_at'),
+            ('sender_deleted_at', 'recipient_deleted_at'),('ip','user_agent')]}),
         )
     list_display = ('__unicode__', 'sender', 'ip','recipient', 'sent_at', 'read_at')
     list_filter = ('sent_at', 'sender', 'recipient')
