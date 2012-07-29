@@ -655,7 +655,11 @@ class Message(MetaIP):
         return False
 
     def __unicode__(self):
-        return self.subject
+        if self.subject is not None:
+            return self.subject
+        if self.body is not None:
+            return self.body[:40]
+        return None
 
     def get_absolute_url(self):
         return 'messages_detail', [self.id]
