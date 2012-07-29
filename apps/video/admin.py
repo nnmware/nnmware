@@ -11,7 +11,7 @@ class VideoAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("user", "project_name"),
             ('project_url', 'video_url')]}),
-        (_("Addons"), {"fields": [('description', 'login_required', 'slug'),
+        (_("Addons"), {"fields": [('description'), ('login_required', 'slug'),
             ('thumbnail')]}),
         (_("Tags"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('tags')]}),
