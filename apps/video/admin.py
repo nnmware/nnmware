@@ -7,6 +7,7 @@ class VideoAdmin(admin.ModelAdmin):
     list_display = ('user','project_name','slug' )
     list_filter = ('user','project_name')
     search_fields = ('user__username', 'user__first_name')
+    filter_horizontal = ['tags']
     fieldsets = (
         (_("Main"), {"fields": [("user", "project_name"),
             ('project_url', 'video_url')]}),
