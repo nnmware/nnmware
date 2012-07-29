@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ('user','project_name','slug' )
+    list_display = ('user','project_name','slug','description' )
     list_filter = ('user','project_name')
     search_fields = ('user__username', 'user__first_name')
     filter_horizontal = ['tags']
