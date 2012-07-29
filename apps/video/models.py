@@ -26,7 +26,7 @@ class Video(models.Model):
     embedcode = models.TextField(verbose_name=_(u'Embed code'), blank=True)
     publish = models.BooleanField(_("Published"), default=False)
     tags = models.ManyToManyField(Tag)
-    users_viewed = models.ManyToManyField(User)
+    users_viewed = models.ManyToManyField(User, related_name='view_this_video')
     comments = models.IntegerField(blank=True, default=0)
 
 
