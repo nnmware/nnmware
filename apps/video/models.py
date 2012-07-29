@@ -23,9 +23,10 @@ class Video(models.Model):
     duration = models.PositiveIntegerField(null=True,blank=True,editable=False)
     viewcount = models.PositiveIntegerField(default=0, editable=False)
     liked = models.PositiveIntegerField(default=0, editable=False)
-    embedcode = models.CharField(max_length=1000, verbose_name=_(u'Embed code'), blank=True)
+    embedcode = models.TextField(verbose_name=_(u'Embed code'), blank=True)
     publish = models.BooleanField(_("Published"), default=False)
     tags = models.ManyToManyField(Tag)
+    users_viewed = models.ManyToManyField(User)
     comments = models.IntegerField(blank=True, default=0)
 
 
