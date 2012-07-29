@@ -15,7 +15,7 @@ class Video(models.Model):
     project_url = models.URLField(max_length=255, verbose_name=_(u'Project URL'), blank=True)
     video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
     video_provider = models.CharField(max_length=150, verbose_name=_(u'Video Provider'), blank=True)
-    description = models.CharField(max_length=140, verbose_name=_(u'Description'), blank=True)
+    description = models.TextField(verbose_name=_(u'Description'), blank=True)
     publish_date = models.DateTimeField(_("Publish date"), auto_now_add=True)
     thumbnail = models.ImageField(upload_to="video/%Y/%b/%d", blank=True)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
