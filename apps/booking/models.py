@@ -391,7 +391,12 @@ class Room(MetaName):
 
     @permalink
     def get_absolute_url(self):
-        return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
+        try:
+            return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
+        except :
+            return None
+
+
 
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
