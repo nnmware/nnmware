@@ -391,10 +391,7 @@ class Room(MetaName):
 
     @permalink
     def get_absolute_url(self):
-        try:
-            return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
-        except :
-            return None
+        return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
 
 
 
