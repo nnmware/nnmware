@@ -170,7 +170,7 @@ class MessageAdmin(admin.ModelAdmin):
                 ('recipient', 'group'),
                 ),
             }),
-        (_("Message"), {"classes": ("grp-collapse grp-closed",), "fields": [("subject",'body'),
+        (_("Message"), {"classes": ("grp-collapse grp-closed",), "fields": [('subject',),('body',),
             ('parent_msg',)]}),
         (_("Date/Time"), {"classes": ("grp-collapse grp-closed",), "fields": [('sent_at', 'read_at', 'replied_at'),
             ('sender_deleted_at', 'recipient_deleted_at'),('ip','user_agent')]}),
