@@ -11,7 +11,7 @@ extra_data field, check OAuthBackend class for details on how to extend it.
 from urlparse import parse_qs
 from oauth2 import Token
 
-from nnmware.apps.social.utils import setting
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
 
 
@@ -20,6 +20,7 @@ FITBIT_SERVER = 'https://api.fitbit.com'
 FITBIT_REQUEST_TOKEN_URL = '%s/oauth/request_token' % FITBIT_SERVER
 FITBIT_AUTHORIZATION_URL = '%s/oauth/authorize' % FITBIT_SERVER
 FITBIT_ACCESS_TOKEN_URL = '%s/oauth/access_token' % FITBIT_SERVER
+FITBIT_USERINFO = 'http://api.fitbit.com/1/user/-/profile.json'
 EXPIRES_NAME = setting('SOCIAL_AUTH_EXPIRATION', 'expires')
 
 
@@ -31,8 +32,15 @@ class FitbitBackend(OAuthBackend):
                   ('username', 'username'),
                   ('expires', EXPIRES_NAME)]
 
+    def get_user_id(self, details, response):
+        """
+        Fitbit doesn't provide user data, it must be requested to its API:
+            https://wiki.fitbit.com/display/API/API-Get-User-Info
+        """
+        return response['id']
+
     def get_user_details(self, response):
-        """Return user details from Fitbit userprofile"""
+        """Return user details from Fitbit account"""
         return {USERNAME: response.get('id'),
                 'email': '',
                 'first_name': response.get('fullname')}
@@ -58,18 +66,15 @@ class FitbitAuth(ConsumerBasedOAuth):
         token = Token.from_string(response)
         params = parse_qs(response)
 
-        token.user_nsid = params['user_nsid'][0] if 'user_nsid' in params \
-                                                 else None
-        token.fullname = params['fullname'][0] if 'fullname' in params \
-                                               else None
-        token.username = params['username'][0] if 'username' in params \
-                                               else None
+        token.encoded_user_id = params.get('encoded_user_id', [None])[0]
+        token.fullname = params.get('fullname', [None])[0]
+        token.username = params.get('username', [None])[0]
         return token
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from service"""
         return {
-            'id': access_token.user_nsid,
+            'id': access_token.encoded_user_id,
             'username': access_token.username,
             'fullname': access_token.fullname,
         }

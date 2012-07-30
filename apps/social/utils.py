@@ -1,10 +1,30 @@
+import time
+import random
+import hashlib
 import urlparse
+import urllib
+from urllib2 import urlopen
 import logging
-from collections import defaultdict
 
+from collections import defaultdict
+from datetime import timedelta, tzinfo
 from django.conf import settings
 from django.db.models import Model
 from django.contrib.contenttypes.models import ContentType
+from django.utils.functional import SimpleLazyObject
+from nnmware.core.utils import setting
+
+try:
+    random = random.SystemRandom()
+    using_sysrandom = True
+except NotImplementedError:
+    using_sysrandom = False
+
+
+from django.utils.crypto import get_random_string
+from django.utils.timezone import utc
+from django.utils.crypto import constant_time_compare
+from django.utils.functional import empty
 
 
 def sanitize_log_data(secret, data=None, leave_characters=4):
@@ -30,9 +50,8 @@ def sanitize_redirect(host, redirect_to):
     """
     Given the hostname and an untrusted URL to redirect to,
     this method tests it to make sure it isn't garbage/harmful
-    and returns it, else returns None.
-
-    See http://code.djangoproject.com/browser/django/trunk/django/contrib/auth/views.py#L36
+    and returns it, else returns None, similar as how's it done
+    on django.contrib.auth.views.
 
     >>> print sanitize_redirect('myapp.com', None)
     None
@@ -67,8 +86,7 @@ def group_backend_by_type(items, key=lambda x: x):
     """Group items by backend type."""
 
     # Beware of cyclical imports!
-    from nnmware.apps.social.backends import \
-        get_backends, OpenIdAuth, BaseOAuth, BaseOAuth2
+    from nnmware.apps.social.backends import get_backends, OpenIdAuth, BaseOAuth, BaseOAuth2
 
     result = defaultdict(list)
     backends = get_backends()
@@ -83,12 +101,6 @@ def group_backend_by_type(items, key=lambda x: x):
             result['oauth'].append(item)
     return dict(result)
 
-
-def setting(name, default=None):
-    """Return setting value for given name or default value."""
-    return getattr(settings, name, default)
-
-
 def backend_setting(backend, name, default=None):
     """
     Looks for setting value following these rules:
@@ -97,24 +109,21 @@ def backend_setting(backend, name, default=None):
         3. Return default
     """
     backend_name = backend.AUTH_BACKEND.name.upper().replace('-', '_')
-    return setting('%s_%s' % (backend_name, name)) or \
-           setting(name) or \
-           default
+    return setting('%s_%s' % (backend_name, name)) or setting(name) or default
 
 
 logger = None
 if not logger:
-    logging.basicConfig()
     logger = logging.getLogger('SocialAuth')
     logger.setLevel(logging.DEBUG)
 
 
 def log(level, *args, **kwargs):
     """Small wrapper around logger functions."""
-    { 'debug': logger.debug,
-      'error': logger.error,
-      'exception': logger.exception,
-      'warn': logger.warn }[level](*args, **kwargs)
+    {'debug': logger.debug,
+     'error': logger.error,
+     'exception': logger.exception,
+     'warn': logger.warn}[level](*args, **kwargs)
 
 
 def model_to_ctype(val):
@@ -145,6 +154,43 @@ def clean_partial_pipeline(request):
         request.session.pop(name, None)
 
 
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+def log_exceptions_to_messages(request, backend, err):
+    """Log exception messages to messages app if it's installed."""
+    if 'django.contrib.messages' in setting('INSTALLED_APPS'):
+        from django.contrib.messages.api import error
+        name = backend.AUTH_BACKEND.name
+        error(request, unicode(err), extra_tags='social-auth %s' % name)
+
+
+def url_add_parameters(url, params):
+    """Adds parameters to URL, parameter will be repeated if already present"""
+    if params:
+        fragments = list(urlparse.urlparse(url))
+        fragments[4] = urllib.urlencode(urlparse.parse_qsl(fragments[4]) +
+                                        params.items())
+        url = urlparse.urlunparse(fragments)
+    return url
+
+
+class LazyDict(SimpleLazyObject):
+    """Lazy dict initialization."""
+    def __getitem__(self, name):
+        if self._wrapped is empty:
+            self._setup()
+        return self._wrapped[name]
+
+    def __setitem__(self, name, value):
+        if self._wrapped is empty:
+            self._setup()
+        self._wrapped[name] = value
+
+
+def dsa_urlopen(*args, **kwargs):
+    """Like urllib2.urlopen but sets a timeout defined by
+    SOCIAL_AUTH_URLOPEN_TIMEOUT setting if defined (and not already in
+    kwargs)."""
+    timeout = setting('SOCIAL_AUTH_URLOPEN_TIMEOUT')
+    if timeout and 'timeout' not in kwargs:
+        kwargs['timeout'] = timeout
+    return urlopen(*args, **kwargs)
+

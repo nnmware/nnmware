@@ -1,8 +1,9 @@
-import urllib
+from urllib import urlencode
 
 import json
 
 from nnmware.apps.social.backends import BaseOAuth2, OAuthBackend, USERNAME
+from nnmware.apps.social.utils import dsa_urlopen
 
 
 FOURSQUARE_SERVER = 'foursquare.com'
@@ -18,7 +19,7 @@ class FoursquareBackend(OAuthBackend):
         return response['response']['user']['id']
 
     def get_user_details(self, response):
-        """Return user details from Foursquare userprofile"""
+        """Return user details from Foursquare account"""
         firstName = response['response']['user']['firstName']
         lastName = response['response']['user'].get('lastName', '')
         email = response['response']['user']['contact']['email']
@@ -38,12 +39,12 @@ class FoursquareAuth(BaseOAuth2):
     SETTINGS_KEY_NAME = 'FOURSQUARE_CONSUMER_KEY'
     SETTINGS_SECRET_NAME = 'FOURSQUARE_CONSUMER_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from service"""
-        params = {'oauth_token': access_token,}
-        url = FOURSQUARE_CHECK_AUTH + '?' + urllib.urlencode(params)
+        params = {'oauth_token': access_token}
+        url = FOURSQUARE_CHECK_AUTH + '?' + urlencode(params)
         try:
-            return json.load(urllib.urlopen(url))
+            return json.load(dsa_urlopen(url))
         except ValueError:
             return None
 

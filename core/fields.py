@@ -15,8 +15,6 @@ from django.utils.encoding import smart_unicode
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import rename_by_field
 from nnmware.core.widgets import ImageWithThumbnailWidget, CLEditorWidget
-
-from django.utils.encoding import smart_unicode
 from nnmware.core.widgets import ReCaptchaWidget
 from nnmware.core.captcha import submit
 
@@ -140,11 +138,27 @@ class ImageWithThumbnailField(ImageField):
         signals.post_save.connect(self._save_rename, sender=cls)
 
 
-class JSONField(TextField):
+
+try:
+    # South introspection rules for our custom field.
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([(
+        (ImageWithThumbnailField, ),
+        [],
+            {
+            'name_field': ["name_field", {"default": None}],
+            'auto_rename': ["auto_rename", {"default": None}],
+            },
+        )], ['^nnmware\.core\.fields'])
+except :
+    pass
+
+
+class JSONField(models.TextField):
     """Simple JSON field that stores python structures as JSON strings
     on database.
     """
-    __metaclass__ = SubfieldBase
+    __metaclass__ = models.SubfieldBase
 
     def to_python(self, value):
         """
@@ -186,17 +200,9 @@ class JSONField(TextField):
         """Return value dumped to string."""
         return self.get_prep_value(self._get_val_from_obj(obj))
 
-try:
-    # South introspection rules for our custom field.
-    from south.modelsinspector import add_introspection_rules
-    add_introspection_rules([(
-        (ImageWithThumbnailField, ),
-        [],
-            {
-            'name_field': ["name_field", {"default": None}],
-            'auto_rename': ["auto_rename", {"default": None}],
-            },
-        )], ['^nnmware\.core\.fields'])
-except ImportError:
-    pass
 
+try:
+    from south.modelsinspector import add_introspection_rules
+    add_introspection_rules([], ['^nnmware\.core\.fields\.JSONField'])
+except :
+    pass

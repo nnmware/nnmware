@@ -10,7 +10,7 @@ field, check OAuthBackend class for details on how to extend it.
 """
 import json
 
-from nnmware.apps.social.utils import setting
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
 
 
@@ -32,8 +32,8 @@ class DropboxBackend(OAuthBackend):
     ]
 
     def get_user_details(self, response):
-        """Return user details from Dropbox userprofile"""
-        return {USERNAME: response.get('uid'),
+        """Return user details from Dropbox account"""
+        return {USERNAME: str(response.get('uid')),
                 'email': response.get('email'),
                 'first_name': response.get('display_name')}
 
@@ -53,9 +53,9 @@ class DropboxAuth(ConsumerBasedOAuth):
     SETTINGS_KEY_NAME = 'DROPBOX_APP_ID'
     SETTINGS_SECRET_NAME = 'DROPBOX_API_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from service"""
-        url = 'https://' + DROPBOX_API + '/1/userprofile/info'
+        url = 'https://' + DROPBOX_API + '/1/account/info'
         request = self.oauth_request(access_token, url)
         response = self.fetch_response(request)
         try:

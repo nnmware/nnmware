@@ -6,8 +6,9 @@ No extra configurations are needed to make this work.
 from xml.etree import ElementTree
 from xml.parsers.expat import ExpatError
 
-from nnmware.apps.social.utils import setting
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
+from nnmware.apps.social.backends.exceptions import AuthCanceled, AuthUnknownError
 
 
 LINKEDIN_SERVER = 'linkedin.com'
@@ -31,7 +32,7 @@ class LinkedinBackend(OAuthBackend):
                   ('last-name', 'last_name')]
 
     def get_user_details(self, response):
-        """Return user details from Linkedin userprofile"""
+        """Return user details from Linkedin account"""
         first_name, last_name = response['first-name'], response['last-name']
         return {USERNAME: first_name + last_name,
                 'fullname': first_name + ' ' + last_name,
@@ -50,7 +51,7 @@ class LinkedinAuth(ConsumerBasedOAuth):
     SETTINGS_KEY_NAME = 'LINKEDIN_CONSUMER_KEY'
     SETTINGS_SECRET_NAME = 'LINKEDIN_CONSUMER_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Return user data provided"""
         fields_selectors = LINKEDIN_FIELD_SELECTORS + \
                            setting('LINKEDIN_EXTRA_FIELD_SELECTORS', [])
@@ -62,9 +63,16 @@ class LinkedinAuth(ConsumerBasedOAuth):
         except (ExpatError, KeyError, IndexError):
             return None
 
-    @classmethod
-    def enabled(cls):
-        return True
+    def auth_complete(self, *args, **kwargs):
+        """Complete auth process. Check LinkedIn error response."""
+        oauth_problem = self.request.GET.get('oauth_problem')
+        if oauth_problem:
+            if oauth_problem == 'user_refused':
+                raise AuthCanceled(self, '')
+            else:
+                raise AuthUnknownError(self, 'LinkedIn error was %s' % \
+                                                    oauth_problem)
+        return super(LinkedinAuth, self).auth_complete(*args, **kwargs)
 
 
 def to_dict(xml):

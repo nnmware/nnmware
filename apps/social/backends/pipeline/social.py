@@ -1,39 +1,33 @@
 from django.db.utils import IntegrityError
 
-from nnmware.apps.social.utils import setting
 from nnmware.apps.social.models import UserSocialAuth
-from nnmware.apps.social.backends.pipeline import warn_setting
+from nnmware.apps.social.backends.exceptions import AuthException
+from django.utils.translation import ugettext
 
 
 def social_auth_user(backend, uid, user=None, *args, **kwargs):
-    """Return UserSocialAuth userprofile for backend/uid pair or None if it
+    """Return UserSocialAuth account for backend/uid pair or None if it
     doesn't exists.
 
-    Raise ValueError if UserSocialAuth entry belongs to another user.
+    Raise AuthException if UserSocialAuth entry belongs to another user.
     """
-    try:
-        social_user = UserSocialAuth.objects.select_related('user')\
-                                            .get(provider=backend.name,
-                                                 uid=uid)
-    except UserSocialAuth.DoesNotExist:
-        social_user = None
-
+    social_user = UserSocialAuth.get_social_auth(backend.name, uid)
     if social_user:
         if user and social_user.user != user:
-            raise ValueError('Account already in use.', social_user)
+            msg = ugettext('This %(provider)s account already in use.')
+            raise AuthException(backend, msg % {'provider': backend.name})
         elif not user:
             user = social_user.user
     return {'social_user': social_user, 'user': user}
 
 
 def associate_user(backend, user, uid, social_user=None, *args, **kwargs):
-    """Associate user social userprofile with user instance."""
+    """Associate user social account with user instance."""
     if social_user:
         return None
 
     try:
-        social = UserSocialAuth.objects.create(user=user, uid=uid,
-                                               provider=backend.name)
+        social = UserSocialAuth.create_social_auth(user, uid, backend.name)
     except IntegrityError:
         # Protect for possible race condition, those bastard with FTL
         # clicking capabilities, check issue #131:
@@ -49,10 +43,10 @@ def load_extra_data(backend, details, response, social_user, uid, user,
     """Load extra data from provider and store it on current UserSocialAuth
     extra_data field.
     """
-    warn_setting('SOCIAL_AUTH_EXTRA_DATA', 'load_extra_data')
-
-    if setting('SOCIAL_AUTH_EXTRA_DATA', True):
-        extra_data = backend.extra_data(user, uid, response, details)
-        if extra_data and social_user.extra_data != extra_data:
+    extra_data = backend.extra_data(user, uid, response, details)
+    if extra_data and social_user.extra_data != extra_data:
+        if social_user.extra_data:
+            social_user.extra_data.update(extra_data)
+        else:
             social_user.extra_data = extra_data
-            social_user.save()
+        social_user.save()

@@ -3,7 +3,7 @@ Twitter OAuth support.
 
 This adds support for Twitter OAuth service. An application must
 be registered first on twitter and the settings TWITTER_CONSUMER_KEY
-and TWITTER_CONSUMER_SECRET must be defined with they corresponding
+and TWITTER_CONSUMER_SECRET must be defined with the corresponding
 values.
 
 User screen name is used to generate username.
@@ -12,8 +12,8 @@ By default account id is stored in extra_data field, check OAuthBackend
 class for details on how to extend it.
 """
 import json
-
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
+from nnmware.apps.social.backends.exceptions import AuthCanceled
 
 
 # Twitter configuration
@@ -23,7 +23,7 @@ TWITTER_ACCESS_TOKEN_URL = 'https://%s/oauth/access_token' % TWITTER_SERVER
 # Note: oauth/authorize forces the user to authorize every time.
 #       oauth/authenticate uses their previous selection, barring revocation.
 TWITTER_AUTHORIZATION_URL = 'http://%s/oauth/authenticate' % TWITTER_SERVER
-TWITTER_CHECK_AUTH = 'https://twitter.com/userprofile/verify_credentials.json'
+TWITTER_CHECK_AUTH = 'https://twitter.com/account/verify_credentials.json'
 
 
 class TwitterBackend(OAuthBackend):
@@ -32,7 +32,7 @@ class TwitterBackend(OAuthBackend):
     EXTRA_DATA = [('id', 'id')]
 
     def get_user_details(self, response):
-        """Return user details from Twitter userprofile"""
+        """Return user details from Twitter account"""
         try:
             first_name, last_name = response['name'].split(' ', 1)
         except:
@@ -43,6 +43,20 @@ class TwitterBackend(OAuthBackend):
                 'fullname': response['name'],
                 'first_name': first_name,
                 'last_name': last_name}
+
+    @classmethod
+    def tokens(cls, instance):
+        """Return the tokens needed to authenticate the access to any API the
+        service might provide. Twitter uses a pair of OAuthToken consisting of
+        an oauth_token and oauth_token_secret.
+
+        instance must be a UserSocialAuth instance.
+        """
+        token = super(TwitterBackend, cls).tokens(instance)
+        if token and 'access_token' in token:
+            token = dict(tok.split('=')
+                            for tok in token['access_token'].split('&'))
+        return token
 
 
 class TwitterAuth(ConsumerBasedOAuth):
@@ -55,7 +69,7 @@ class TwitterAuth(ConsumerBasedOAuth):
     SETTINGS_KEY_NAME = 'TWITTER_CONSUMER_KEY'
     SETTINGS_SECRET_NAME = 'TWITTER_CONSUMER_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Return user data provided"""
         request = self.oauth_request(access_token, TWITTER_CHECK_AUTH)
         json = self.fetch_response(request)
@@ -65,9 +79,9 @@ class TwitterAuth(ConsumerBasedOAuth):
             return None
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes login process, must return user instance"""
         if 'denied' in self.data:
-            raise ValueError('Authentication denied')
+            raise AuthCanceled(self)
         else:
             return super(TwitterAuth, self).auth_complete(*args, **kwargs)
 

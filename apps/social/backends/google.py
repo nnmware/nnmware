@@ -14,14 +14,16 @@ APIs console https://code.google.com/apis/console/ Identity option.
 OpenID also works straightforward, it doesn't need further configurations.
 """
 from urllib import urlencode
-from urllib2 import Request, urlopen
+from urllib2 import Request
 
 from oauth2 import Request as OAuthRequest
-import json
 
-from nnmware.apps.social.utils import setting
+import json
+from nnmware.apps.social.utils import dsa_urlopen
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import OpenIdAuth, ConsumerBasedOAuth, BaseOAuth2, \
-                                 OAuthBackend, OpenIDBackend, USERNAME
+    OAuthBackend, OpenIDBackend, USERNAME
+from nnmware.apps.social.backends.exceptions import *
 
 
 # Google OAuth base configuration
@@ -37,7 +39,10 @@ GOOGLE_OATUH2_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/auth'
 # scope for user email, specify extra scopes in settings, for example:
 # GOOGLE_OAUTH_EXTRA_SCOPE = ['https://www.google.com/m8/feeds/']
 GOOGLE_OAUTH_SCOPE = ['https://www.googleapis.com/auth/userinfo#email']
+GOOGLE_OAUTH2_SCOPE = ['https://www.googleapis.com/auth/userinfo.email',
+                       'https://www.googleapis.com/auth/userinfo.profile']
 GOOGLEAPIS_EMAIL = 'https://www.googleapis.com/userinfo/email'
+GOOGLEAPIS_PROFILE = 'https://www.googleapis.com/oauth2/v1/userinfo'
 GOOGLE_OPENID_URL = 'https://www.google.com/accounts/o8/id'
 
 
@@ -47,13 +52,13 @@ class GoogleOAuthBackend(OAuthBackend):
     name = 'google-oauth'
 
     def get_user_id(self, details, response):
-        "Use google email as unique id"""
-        validate_whitelists(details['email'])
+        """Use google email as unique id"""
+        validate_whitelists(self, details['email'])
         return details['email']
 
     def get_user_details(self, response):
-        """Return user details from Orkut userprofile"""
-        email = response['email']
+        """Return user details from Orkut account"""
+        email = response.get('email', '')
         return {USERNAME: email.split('@', 1)[0],
                 'email': email,
                 'fullname': '',
@@ -65,9 +70,25 @@ class GoogleOAuth2Backend(GoogleOAuthBackend):
     """Google OAuth2 authentication backend"""
     name = 'google-oauth2'
     EXTRA_DATA = [
-        ('refresh_token', 'refresh_token'),
+        ('refresh_token', 'refresh_token', True),
         ('expires_in', setting('SOCIAL_AUTH_EXPIRATION', 'expires'))
     ]
+
+    def get_user_id(self, details, response):
+        """Use google email or id as unique id"""
+        user_id = super(GoogleOAuth2Backend, self).get_user_id(details,
+                                                               response)
+        if setting('GOOGLE_OAUTH2_USE_UNIQUE_USER_ID', False):
+            return response['id']
+        return user_id
+
+    def get_user_details(self, response):
+        email = response.get('email', '')
+        return {USERNAME: email.split('@', 1)[0],
+                'email': email,
+                'fullname': response.get('name', ''),
+                'first_name': response.get('given_name', ''),
+                'last_name': response.get('family_name', '')}
 
 
 class GoogleBackend(OpenIDBackend):
@@ -80,7 +101,7 @@ class GoogleBackend(OpenIDBackend):
         is unique enought to flag a single user. Email comes from schema:
         http://axschema.org/contact/email
         """
-        validate_whitelists(details['email'])
+        validate_whitelists(self, details['email'])
 
         return details['email']
 
@@ -102,7 +123,7 @@ class BaseGoogleOAuth(ConsumerBasedOAuth):
     ACCESS_TOKEN_URL = ACCESS_TOKEN_URL
     SERVER_URL = GOOGLE_OAUTH_SERVER
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from G service"""
         raise NotImplementedError('Implement in subclass')
 
@@ -113,7 +134,7 @@ class GoogleOAuth(BaseGoogleOAuth):
     SETTINGS_KEY_NAME = 'GOOGLE_CONSUMER_KEY'
     SETTINGS_SECRET_NAME = 'GOOGLE_CONSUMER_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Return user data from Google API"""
         request = self.oauth_request(access_token, GOOGLEAPIS_EMAIL,
                                      {'alt': 'json'})
@@ -137,14 +158,15 @@ class GoogleOAuth(BaseGoogleOAuth):
             extra_params['xoauth_displayname'] = xoauth_displayname
         return super(GoogleOAuth, self).oauth_request(token, url, extra_params)
 
-    def get_key_and_secret(self):
+    @classmethod
+    def get_key_and_secret(cls):
         """Return Google OAuth Consumer Key and Consumer Secret pair, uses
         anonymous by default, beware that this marks the application as not
         registered and a security badge is displayed on authorization page.
         http://code.google.com/apis/accounts/docs/OAuth_ref.html#SigningOAuth
         """
         try:
-            return super(GoogleOAuth, self).get_key_and_secret()
+            return super(GoogleOAuth, cls).get_key_and_secret()
         except AttributeError:
             return 'anonymous', 'anonymous'
 
@@ -171,14 +193,13 @@ class GoogleOAuth2(BaseOAuth2):
     ACCESS_TOKEN_URL = 'https://accounts.google.com/o/oauth2/token'
     SETTINGS_KEY_NAME = _OAUTH2_KEY_NAME
     SETTINGS_SECRET_NAME = 'GOOGLE_OAUTH2_CLIENT_SECRET'
+    SCOPE_VAR_NAME = 'GOOGLE_OAUTH_EXTRA_SCOPE'
+    DEFAULT_SCOPE = GOOGLE_OAUTH2_SCOPE
+    REDIRECT_STATE = False
 
-    def get_scope(self):
-        return GOOGLE_OAUTH_SCOPE + setting('GOOGLE_OAUTH_EXTRA_SCOPE', [])
-
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Return user data from Google API"""
-        data = {'oauth_token': access_token, 'alt': 'json'}
-        return googleapis_email(GOOGLEAPIS_EMAIL, urlencode(data))
+        return googleapis_profile(GOOGLEAPIS_PROFILE, access_token)
 
 
 def googleapis_email(url, params):
@@ -187,29 +208,44 @@ def googleapis_email(url, params):
 
     Parameters must be passed in queryset and Authorization header as described
     on Google OAuth documentation at:
-        http://groups.google.com/group/oauth/browse_thread/thread/d15add9beb418ebc
-    and:
-        http://code.google.com/apis/accounts/docs/OAuth2.html#CallingAnAPI
+    http://groups.google.com/group/oauth/browse_thread/thread/d15add9beb418ebc
+    and: http://code.google.com/apis/accounts/docs/OAuth2.html#CallingAnAPI
     """
     request = Request(url + '?' + params, headers={'Authorization': params})
     try:
-        return json.loads(urlopen(request).read())['data']
+        return json.loads(dsa_urlopen(request).read())['data']
     except (ValueError, KeyError, IOError):
         return None
 
 
-def validate_whitelists(email):
-    """Validates allowed domains and emails against the GOOGLE_WHITE_LISTED_DOMAINS 
-    and GOOGLE_WHITE_LISTED_EMAILS settings.
-    Allows all domains or emails if setting is an empty list.
+def googleapis_profile(url, access_token):
+    """
+    Loads user data from googleapis service, such as name, given_name,
+    family_name, etc. as it's described in:
+    https://developers.google.com/accounts/docs/OAuth2Login
+    """
+    data = {'access_token': access_token, 'alt': 'json'}
+    request = Request(url + '?' + urlencode(data))
+    try:
+        return json.loads(dsa_urlopen(request).read())
+    except (ValueError, KeyError, IOError):
+        return None
+
+
+def validate_whitelists(backend, email):
+    """
+    Validates allowed domains and emails against the following settings:
+        GOOGLE_WHITE_LISTED_DOMAINS
+        GOOGLE_WHITE_LISTED_EMAILS
+
+    All domains and emails are allowed if setting is an empty list.
     """
     emails = setting('GOOGLE_WHITE_LISTED_EMAILS', [])
     domains = setting('GOOGLE_WHITE_LISTED_DOMAINS', [])
     if emails and email in emails:
-        return # you're good
+        return  # you're good
     if domains and email.split('@', 1)[1] not in domains:
-        raise ValueError('Domain not allowed')
-
+        raise AuthFailed(backend, 'Domain not allowed')
 
 
 # Backend definition

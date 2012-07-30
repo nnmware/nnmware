@@ -1,72 +1,25 @@
 """Views
 
 Notes:
-    * Some views are marked to avoid csrf tocken check becuase they relay
-      on third party providers that (if using POST) won't be sending crfs
+    * Some views are marked to avoid csrf tocken check because they rely
+      on third party providers that (if using POST) won't be sending csrf
       token back.
 """
-from functools import wraps
-
-from django.http import HttpResponseRedirect, HttpResponse, \
-                        HttpResponseServerError
-from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 
-from nnmware.apps.social.backends import get_backend
-from nnmware.apps.social.utils import sanitize_redirect, setting, log, \
+from nnmware.apps.social.utils import sanitize_redirect, setting, \
                               backend_setting, clean_partial_pipeline
+from nnmware.core.decorators import dsa_view
 
 
 DEFAULT_REDIRECT = setting('SOCIAL_AUTH_LOGIN_REDIRECT_URL') or \
                    setting('LOGIN_REDIRECT_URL')
 LOGIN_ERROR_URL = setting('LOGIN_ERROR_URL', setting('LOGIN_URL'))
-RAISE_EXCEPTIONS = setting('SOCIAL_AUTH_RAISE_EXCEPTIONS', setting('DEBUG'))
-
-
-def dsa_view(redirect_name=None):
-    """Decorate djangos-social-auth views. Will check and retrieve backend
-    or return HttpResponseServerError if backend is not found.
-
-        redirect_name parameter is used to build redirect URL used by backend.
-    """
-    def dec(func):
-        @wraps(func)
-        def wrapper(request, backend, *args, **kwargs):
-            if redirect_name:
-                redirect = reverse(redirect_name, args=(backend,))
-            else:
-                redirect = request.path
-            backend = get_backend(backend, request, redirect)
-
-            if not backend:
-                return HttpResponseServerError('Incorrect authentication ' + \
-                                               'service')
-
-            try:
-                return func(request, backend, *args, **kwargs)
-            except Exception, e:  # some error ocurred
-                if RAISE_EXCEPTIONS:
-                    raise
-                backend_name = backend.AUTH_BACKEND.name
-
-                log('error', unicode(e), exc_info=True,
-                    extra=dict(request=request))
-
-                if 'django.contrib.messages' in setting('INSTALLED_APPS'):
-                    from django.contrib.messages.api import error
-                    error(request, unicode(e), extra_tags=backend_name)
-                else:
-                    log('warn', 'Messages framework not in place, some '+
-                                'errors have not been shown to the user.')
-
-                url = backend_setting(backend, 'SOCIAL_AUTH_BACKEND_ERROR_URL',
-                                      LOGIN_ERROR_URL)
-                return HttpResponseRedirect(url)
-        return wrapper
-    return dec
+PIPELINE_KEY = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
 
 
 @dsa_view(setting('SOCIAL_AUTH_COMPLETE_URL_NAME', 'socialauth_complete'))
@@ -80,20 +33,13 @@ def auth(request, backend):
 def complete(request, backend, *args, **kwargs):
     """Authentication complete view, override this view if transaction
     management doesn't suit your needs."""
-    return complete_process(request, backend, *args, **kwargs)
+    if request.user.is_authenticated():
+        return associate_complete(request, backend, *args, **kwargs)
+    else:
+        return complete_process(request, backend, *args, **kwargs)
 
 
 @login_required
-@dsa_view(setting('SOCIAL_AUTH_ASSOCIATE_URL_NAME',
-                  'socialauth_associate_complete'))
-def associate(request, backend):
-    """Authentication starting process"""
-    return auth_process(request, backend)
-
-
-@csrf_exempt
-@login_required
-@dsa_view()
 def associate_complete(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
@@ -158,17 +104,27 @@ def complete_process(request, backend, *args, **kwargs):
 
     if user:
         if getattr(user, 'is_active', True):
+            # catch is_new flag before login() might reset the instance
+            is_new = getattr(user, 'is_new', False)
             login(request, user)
             # user.social_user is the used UserSocialAuth instance defined
             # in authenticate process
             social_user = user.social_user
+            if redirect_value:
+                request.session[REDIRECT_FIELD_NAME] = redirect_value or \
+                                                       DEFAULT_REDIRECT
 
             if setting('SOCIAL_AUTH_SESSION_EXPIRATION', True):
                 # Set session expiration date if present and not disabled by
                 # setting. Use last social-auth instance for current provider,
                 # users can associate several accounts with a same provider.
-                if social_user.expiration_delta():
-                    request.session.set_expiry(social_user.expiration_delta())
+                expiration = social_user.expiration_datetime()
+                if expiration:
+                    try:
+                        request.session.set_expiry(expiration)
+                    except OverflowError:
+                        # Handle django time zone overflow, set default expiry.
+                        request.session.set_expiry(None)
 
             # store last login backend name in session
             key = setting('SOCIAL_AUTH_LAST_LOGIN',
@@ -176,10 +132,10 @@ def complete_process(request, backend, *args, **kwargs):
             request.session[key] = social_user.provider
 
             # Remove possible redirect URL from session, if this is a new
-            # userprofile, send him to the new-users-page if defined.
+            # account, send him to the new-users-page if defined.
             new_user_redirect = backend_setting(backend,
                                            'SOCIAL_AUTH_NEW_USER_REDIRECT_URL')
-            if new_user_redirect and getattr(user, 'is_new', False):
+            if new_user_redirect and is_new:
                 url = new_user_redirect
             else:
                 url = redirect_value or \
@@ -202,12 +158,13 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
     if user and not user.is_authenticated():
         user = None
 
-    name = setting('SOCIAL_AUTH_PARTIAL_PIPELINE_KEY', 'partial_pipeline')
-    if request.session.get(name):
-        data = request.session.pop(name)
-        idx, args, kwargs = backend.from_session_dict(data, user=user,
-                                                      request=request,
-                                                      *args, **kwargs)
-        return backend.continue_pipeline(pipeline_index=idx, *args, **kwargs)
-    else:
-        return backend.auth_complete(user=user, request=request, *args, **kwargs)
+    if request.session.get(PIPELINE_KEY):
+        data = request.session.pop(PIPELINE_KEY)
+        idx, xargs, xkwargs = backend.from_session_dict(data, user=user,
+                                                        request=request,
+                                                        *args, **kwargs)
+        if 'backend' in xkwargs and \
+           xkwargs['backend'].name == backend.AUTH_BACKEND.name:
+            return backend.continue_pipeline(pipeline_index=idx,
+                                             *xargs, **xkwargs)
+    return backend.auth_complete(user=user, request=request, *args, **kwargs)

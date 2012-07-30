@@ -326,3 +326,7 @@ def send_template_mail(subject,body,mail_dict, recipients):
     body = render_to_string(body, mail_dict)
     send_mail(subject=subject, message=body, from_email=settings.EMAIL_HOST_USER,
         recipient_list=recipients)
+
+def setting(name, default=None):
+    """Return setting value for given name or default value."""
+    return getattr(settings, name, default)

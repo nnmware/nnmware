@@ -11,7 +11,7 @@ extra_data field, check OAuthBackend class for details on how to extend it.
 from urlparse import parse_qs
 from oauth2 import Token
 
-from nnmware.apps.social.utils import setting
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
 
 
@@ -33,7 +33,7 @@ class FlickrBackend(OAuthBackend):
     ]
 
     def get_user_details(self, response):
-        """Return user details from Flickr userprofile"""
+        """Return user details from Flickr account"""
         return {USERNAME: response.get('id'),
                 'email': '',
                 'first_name': response.get('fullname')}
@@ -67,13 +67,19 @@ class FlickrAuth(ConsumerBasedOAuth):
                                                else None
         return token
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from service"""
         return {
             'id': access_token.user_nsid,
             'username': access_token.username,
             'fullname': access_token.fullname,
         }
+
+    def auth_extra_arguments(self):
+        params = super(FlickrAuth, self).auth_extra_arguments() or {}
+        if not 'perms' in params:
+            params['perms'] = 'read'
+        return params
 
 
 # Backend definition

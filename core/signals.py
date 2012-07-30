@@ -22,5 +22,3 @@ notice = Signal(providing_args=['user','sender', 'verb', 'target', 'description'
 pre_update = Signal(providing_args=['user', 'response', 'details'])
 
 socialauth_registered = Signal(providing_args=['user', 'response', 'details'])
-
-socialauth_not_registered = Signal(providing_args=['uid', 'response', 'details'])

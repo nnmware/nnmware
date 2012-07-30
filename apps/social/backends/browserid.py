@@ -4,14 +4,14 @@ BrowserID support
 import time
 from datetime import datetime
 from urllib import urlencode
-from urllib2 import urlopen
 
 from django.contrib.auth import authenticate
 import json
 
 from nnmware.apps.social.backends import SocialAuthBackend, BaseAuth, USERNAME
-from nnmware.apps.social.utils import log, setting
-
+from nnmware.apps.social.utils import log, dsa_urlopen
+from nnmware.core.utils import setting
+from nnmware.apps.social.backends.exceptions import AuthFailed, AuthMissingParameter
 
 # BrowserID verification server
 BROWSER_ID_SERVER = 'https://browserid.org/verify'
@@ -60,7 +60,7 @@ class BrowserIDAuth(BaseAuth):
     def auth_complete(self, *args, **kwargs):
         """Completes loging process, must return user instance"""
         if not 'assertion' in self.data:
-            raise ValueError('Missing assertion parameter')
+            raise AuthMissingParameter(self, 'assertion')
 
         data = urlencode({
             'assertion': self.data['assertion'],
@@ -68,14 +68,14 @@ class BrowserIDAuth(BaseAuth):
         })
 
         try:
-            response = json.load(urlopen(BROWSER_ID_SERVER, data=data))
+            response = json.load(dsa_urlopen(BROWSER_ID_SERVER, data=data))
         except ValueError:
             log('error', 'Could not load user data from BrowserID.',
                 exc_info=True)
         else:
             if response.get('status') == 'failure':
                 log('debug', 'Authentication failed.')
-                raise ValueError('Authentication failed')
+                raise AuthFailed(self)
 
             kwargs.update({
                 'auth': self,

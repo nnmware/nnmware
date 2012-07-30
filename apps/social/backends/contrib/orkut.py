@@ -10,11 +10,10 @@ can be specified by defining ORKUT_EXTRA_DATA setting.
 OAuth settings ORKUT_CONSUMER_KEY and ORKUT_CONSUMER_SECRET are needed
 to enable this service support.
 """
-import urllib
-
 import json
 
-from nnmware.apps.social.utils import setting
+from nnmware.apps.social.utils import dsa_urlopen
+from nnmware.core.utils import setting
 from nnmware.apps.social.backends import OAuthBackend, USERNAME
 from nnmware.apps.social.backends.google import BaseGoogleOAuth
 
@@ -32,7 +31,7 @@ class OrkutBackend(OAuthBackend):
     name = 'orkut'
 
     def get_user_details(self, response):
-        """Return user details from Orkut userprofile"""
+        """Return user details from Orkut account"""
         try:
             emails = response['emails'][0]['value']
         except (KeyError, IndexError):
@@ -51,7 +50,7 @@ class OrkutAuth(BaseGoogleOAuth):
     SETTINGS_KEY_NAME = 'ORKUT_CONSUMER_KEY'
     SETTINGS_SECRET_NAME = 'ORKUT_CONSUMER_SECRET'
 
-    def user_data(self, access_token):
+    def user_data(self, access_token, *args, **kwargs):
         """Loads user data from Orkut service"""
         fields = ORKUT_DEFAULT_DATA
         if setting('ORKUT_EXTRA_DATA'):
@@ -64,7 +63,7 @@ class OrkutAuth(BaseGoogleOAuth):
                   'fields': fields,
                   'scope': ' '.join(scope)}
         request = self.oauth_request(access_token, ORKUT_REST_ENDPOINT, params)
-        response = urllib.urlopen(request.to_url()).read()
+        response = dsa_urlopen(request.to_url()).read()
         try:
             return json.loads(response)['data']
         except (ValueError, KeyError):

@@ -1,23 +1,23 @@
-from django.contrib.auth.models import User
-from django.core.exceptions import MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 
-from nnmware.apps.social.utils import setting
-from nnmware.apps.social.backends.pipeline import warn_setting
+from nnmware.apps.social.models import UserSocialAuth
+from nnmware.apps.social.backends.exceptions import AuthException
 
 
-def associate_by_email(details, *args, **kwargs):
+def associate_by_email(details, user=None, *args, **kwargs):
     """Return user entry with same email address as one returned on details."""
+    if user:
+        return None
+
     email = details.get('email')
 
-    warn_setting('SOCIAL_AUTH_ASSOCIATE_BY_MAIL', 'associate_by_email')
-
-    if email and setting('SOCIAL_AUTH_ASSOCIATE_BY_MAIL'):
+    if email:
         # try to associate accounts registered with the same email address,
-        # only if it's a single object. ValueError is raised if multiple
+        # only if it's a single object. AuthException is raised if multiple
         # objects are returned
         try:
-            return {'user': User.objects.get(email=email)}
+            return {'user': UserSocialAuth.get_user_by_email(email=email)}
         except MultipleObjectsReturned:
-            raise ValueError('Not unique email address.')
-        except User.DoesNotExist:
+            raise AuthException(kwargs['backend'], 'Not unique email address.')
+        except ObjectDoesNotExist:
             pass
