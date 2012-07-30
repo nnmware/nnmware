@@ -206,7 +206,7 @@ class VKontakteAppAuth(VKontakteOAuth2):
 
         for param in required_params:
             if not param in self.request.REQUEST:
-                return (False, None)
+                return False, None
 
         auth_key = self.request.REQUEST.get('auth_key')
 
@@ -217,8 +217,7 @@ class VKontakteAppAuth(VKontakteOAuth2):
                                   USE_APP_AUTH['key']])).hexdigest()
 
             if check_key != auth_key:
-                raise ValueError('VKontakte authentication failed: invalid ' \
-                                 'auth key')
+                raise ValueError('VKontakte authentication failed: invalid auth key')
 
         user_check = USE_APP_AUTH.get('user_mode', 0)
         user_id = self.request.REQUEST.get('viewer_id')
@@ -228,7 +227,7 @@ class VKontakteAppAuth(VKontakteOAuth2):
                         if user_check == 1 else self.is_app_user(user_id)
 
             if not int(is_user):
-                return (True, None)
+                return True, None
 
         data = {'response': self.user_profile(user_id), 'user_id': user_id}
 

@@ -359,7 +359,7 @@ class BaseAuth(object):
         kwargs = kwargs.copy()
         kwargs.update((key, ctype_to_model(val))
                             for key, val in session_data['kwargs'].iteritems())
-        return (session_data['next'], args, kwargs)
+        return session_data['next'], args, kwargs
 
     def continue_pipeline(self, *args, **kwargs):
         """Continue previous halted pipeline"""

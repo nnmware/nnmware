@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
-import re
+from datetime import datetime
 from django.db.models import Min, Max
 
 from django.template import Library

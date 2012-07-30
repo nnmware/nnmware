@@ -80,8 +80,7 @@ class LiveAuth(BaseOAuth2):
         try:
             return json.load(dsa_urlopen(url))
         except (ValueError, IOError):
-            raise AuthUnknownError('Error during profile retrieval, ' \
-                                   'please, try again later')
+            raise AuthUnknownError('Error during profile retrieval, please, try again later')
 
 
 # Backend definition

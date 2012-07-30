@@ -1,4 +1,3 @@
-from copy import deepcopy
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.forms.fields import ChoiceField

@@ -1,6 +1,3 @@
-from datetime import datetime
-
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 
 from nnmware.core.models import NOTICE_UNKNOWN, ACTION_UNKNOWN

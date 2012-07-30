@@ -1,6 +1,4 @@
 # -*- encoding: utf-8 -*-
-import re
-
 from django.template import Library
 from django.template.base import Template
 from django.template.loader import render_to_string
@@ -8,13 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import Tree
 from nnmware.core.data import *
 
-try:
-    from xml.etree.ElementTree import Element, SubElement, tostring
-except ImportError:
-    from elementtree.ElementTree import Element, SubElement, tostring
+from xml.etree.ElementTree import Element, SubElement, tostring
 
 register = Library()
-
 
 @register.simple_tag
 def menu(app=None):

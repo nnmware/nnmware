@@ -1,13 +1,10 @@
-from decimal import Decimal
-import logging
 import os
 import json
 from django import forms
 from django.conf import settings
 from django.db import models
 from django.db.models import signals
-from django.db.models.fields import TextField, CharField, \
-    IntegerField, FloatField, DecimalField
+from django.db.models.fields import TextField
 from django.db.models.fields.files import ImageField
 from django.core.exceptions import ValidationError
 from django.db.models.fields.subclassing import SubfieldBase

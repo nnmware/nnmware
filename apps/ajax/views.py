@@ -412,7 +412,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
         comment.comment = request.REQUEST['comment']
-        if len(comment.comment) == 0:
+        if not len(comment.comment):
             raise AccessError
         kwargs={'content_type': content_type, 'object_id': object_id}
         if parent_id is not None:
