@@ -149,10 +149,16 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
 
 
 class AgentPercentAdmin(admin.ModelAdmin):
-    list_display = ('hotel','hotel_city','date','percent')
+    list_display = ('hotel','city_of_hotel','date','percent')
     search_fields = ('date',)
     fieldsets = (
         (_("Agent Percent"), {"fields": [("hotel",'date','percent'),]}),)
+
+    def city_of_hotel(self, obj):
+        return '%s' % obj.hotel.city
+    city_of_hotel.short_description = _('City')
+
+
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
