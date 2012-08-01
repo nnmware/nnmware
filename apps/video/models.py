@@ -42,7 +42,7 @@ class Video(models.Model):
         try:
             remove_thumbnails(self.thumbnail.path)
             remove_file(self.thumbnail.path)
-        except:
+        except :
             pass
         super(Video, self).delete(*args, **kwargs)
 
