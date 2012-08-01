@@ -71,7 +71,7 @@ class VideoDetail(SingleObjectMixin, ListView):
         context['object'].embedcode = update_video_size(context['object'].embedcode,640,363)
         context['ctype'] = ContentType.objects.get_for_model(Video)
         self.object.viewcount += 1
-        if self.request.user not in self.object.users_viewed:
+        if self.request.user not in self.object.users_viewed.all():
             self.object.users_viewed.add(self.request.user)
         self.object.save()
         return context
