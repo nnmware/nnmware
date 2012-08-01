@@ -7,7 +7,7 @@ class VideoAdmin(admin.ModelAdmin):
     list_display = ('project_name','user','slug','description' )
     list_filter = ('user','project_name')
     search_fields = ('user__username', 'user__first_name')
-    filter_horizontal = ['tags']
+    filter_horizontal = ['tags','users_viewed']
     fieldsets = (
         (_("Main"), {"fields": [("user", "project_name"),
             ('project_url', 'video_url')]}),
@@ -15,7 +15,8 @@ class VideoAdmin(admin.ModelAdmin):
             ('thumbnail')]}),
         (_("Tags"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('tags')]}),
-
+        (_("Users viewed"), {"classes": ("grp-collapse grp-closed",), "fields": [
+            ('users_viewed')]}),
         )
 
 admin.site.register(Video, VideoAdmin)
