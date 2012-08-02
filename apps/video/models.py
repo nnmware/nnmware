@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file
-from nnmware.core.models import Tag, Follow
+from nnmware.core.models import Tag, Follow, JComment
 
 class Video(models.Model):
 
@@ -61,3 +61,8 @@ class Video(models.Model):
 
     def tags2(self):
         return self.tags.all()[:2]
+
+    def users_commented(self):
+        ctype = ContentType.objects.get_for_model(self)
+        users = JComment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
+        return User.objects.filter(pk__in=users)
