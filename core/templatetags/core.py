@@ -20,8 +20,17 @@ def video_popular_links(context):
         category = context['category_panel']
     except KeyError:
         category = None
-    return Video.objects.filter(publish_date__gte=datetime.now() \
-        -timedelta(days=1)).order_by('-viewcount')[:2]
+    videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
+    if user.is_authenticated():
+        result = videos.exclude(users_viewed = user)
+    if category is not None:
+        result = result.filter(tags = category)
+    result = list(result.order_by('-viewcount')[:2])
+    if len(result) < 2:
+        result.extend(list(videos).order_by('?'))
+    return result[:2]
+
+
 
 @register.assignment_tag(takes_context=True)
 def video_other_links(context):
