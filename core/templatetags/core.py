@@ -28,6 +28,8 @@ def video_popular_links(context):
     result = list(result.order_by('-viewcount')[:2])
     if len(result) < 2:
         result.extend(list(videos.order_by('?')))
+    if len(result) < 2:
+        result.extend(list(Video.objects.order_by('?')))
     return result[:2]
 
 
@@ -48,6 +50,8 @@ def video_other_links(context):
     result = list(result.order_by('?')[:2])
     if len(result) < 2:
         result.extend(list(videos.order_by('?')))
+    if len(result) < 2:
+        result.extend(list(Video.objects.order_by('?')))
     return result[:2]
 
 @register.assignment_tag
