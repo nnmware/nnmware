@@ -31,7 +31,7 @@ def video_other_links(context):
     except KeyError:
         category = None
     return Video.objects.filter(publish_date__gte=datetime.now()\
-    -timedelta(days=1)).filter(users_viewed__ne = user).order_by('viewcount')[:2]
+    -timedelta(days=1)).filter(users_viewed = user).order_by('viewcount')[:2]
 
 @register.assignment_tag
 def tag_links():
