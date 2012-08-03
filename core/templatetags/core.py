@@ -9,51 +9,35 @@ from nnmware.core.models import Tag
 
 register = template.Library()
 
-@register.assignment_tag
-def video_links():
-    return Video.objects.all()[:4]
+def video_links(context, mode='random'):
+    user= context["user"]
+    try:
+        category = context['category_panel']
+    except KeyError:
+        category = None
+    videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
+    result = videos
+    if user.is_authenticated():
+        result = result.exclude(users_viewed = user)
+    if category is not None:
+        result = result.filter(tags = category)
+    if mode == 'popular':
+        result = list(result.order_by('-viewcount')[:2])
+    else:
+        result = list(result.order_by('?')[:2])
+    if len(result) < 2:
+        result.extend(list(videos.order_by('?')))
+    if len(result) < 2:
+        result.extend(list(Video.objects.order_by('?')))
+    return result[:2]
 
 @register.assignment_tag(takes_context=True)
 def video_popular_links(context):
-    user= context["user"]
-    try:
-        category = context['category_panel']
-    except KeyError:
-        category = None
-    videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
-    result = videos
-    if user.is_authenticated():
-        result = result.exclude(users_viewed = user)
-    if category is not None:
-        result = result.filter(tags = category)
-    result = list(result.order_by('-viewcount')[:2])
-    if len(result) < 2:
-        result.extend(list(videos.order_by('?')))
-    if len(result) < 2:
-        result.extend(list(Video.objects.order_by('?')))
-    return result[:2]
-
-
+    return video_links(context, mode='popular')
 
 @register.assignment_tag(takes_context=True)
 def video_other_links(context):
-    user= context["user"]
-    try:
-        category = context['category_panel']
-    except KeyError:
-        category = None
-    videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
-    result = videos
-    if user.is_authenticated():
-        result = result.exclude(users_viewed = user)
-    if category is not None:
-        result = result.filter(tags = category)
-    result = list(result.order_by('?')[:2])
-    if len(result) < 2:
-        result.extend(list(videos.order_by('?')))
-    if len(result) < 2:
-        result.extend(list(Video.objects.order_by('?')))
-    return result[:2]
+    return video_links(context)
 
 @register.assignment_tag
 def tag_links():
