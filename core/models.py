@@ -699,6 +699,10 @@ class Action(MetaLink,MetaIP):
         verbose_name = _("Action")
         verbose_name_plural = _("Actions")
 
+    @property
+    def target_type(self):
+        return ContentType.objects.get_for_model(self.content_type)
+
 
     def __unicode__(self):
         return u'%s %s %s ago' % (self.user, self.verb, self.timesince())
