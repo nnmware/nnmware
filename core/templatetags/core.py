@@ -27,7 +27,7 @@ def video_popular_links(context):
         result = result.filter(tags = category)
     result = list(result.order_by('-viewcount')[:2])
     if len(result) < 2:
-        result.extend(list(videos).order_by('?'))
+        result.extend(list(videos.order_by('?')))
     return result[:2]
 
 
