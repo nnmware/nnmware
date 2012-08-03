@@ -22,7 +22,7 @@ def video_links(context, mode='random'):
     if category is not None:
         result = result.filter(tags = category)
     if mode == 'popular':
-        result = list(result.order_by('-viewcount')[:2])
+        result = list(result.order_by('viewcount')[:2])
     else:
         result = list(result.order_by('?')[:2])
     if len(result) < 2:
