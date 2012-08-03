@@ -32,8 +32,8 @@ def video_other_links(context):
     except KeyError:
         category = None
     if user.is_authenticated():
-        result = Video.objects.filter(publish_date__gte=datetime.now() \
-            -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount')
+        result = list(Video.objects.filter(publish_date__gte=datetime.now() \
+            -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount'))
     if len(result) < 2:
         result.extend(list(Video.objects.filter(publish_date__gte=datetime.now()\
         -timedelta(days=1)).order_by('-viewcount')))
