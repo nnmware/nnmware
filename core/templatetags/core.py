@@ -26,12 +26,14 @@ def video_popular_links(context):
 @register.assignment_tag(takes_context=True)
 def video_other_links(context):
     user= context["user"]
+    result = []
     try:
         category = context['category_panel']
     except KeyError:
         category = None
-    result = Video.objects.filter(publish_date__gte=datetime.now() \
-    -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount')
+    if user.is_authenticated():
+        result = Video.objects.filter(publish_date__gte=datetime.now() \
+            -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount')
     if len(result) < 2:
         result += Video.objects.filter(publish_date__gte=datetime.now()\
         -timedelta(days=1)).order_by('-viewcount')
