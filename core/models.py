@@ -701,7 +701,7 @@ class Action(MetaLink,MetaIP):
 
     @property
     def target_type(self):
-        return ContentType.objects.get_for_model(self.content_object)
+        return ContentType.objects.get_for_model(self.content_object).model
 
     def __unicode__(self):
         return u'%s %s %s ago' % (self.user, self.verb, self.timesince())
