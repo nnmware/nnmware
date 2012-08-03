@@ -18,7 +18,7 @@ def video_popular_links(context):
     user= context["user"]
     try:
         category = context['category_panel']
-    except AttributeError:
+    except KeyError:
         category = None
     return Video.objects.filter(publish_date__gte=datetime.now() \
         -timedelta(days=1)).order_by('viewcount')[:2]
@@ -28,7 +28,7 @@ def video_other_links(context):
     user= context["user"]
     try:
         category = context['category_panel']
-    except AttributeError:
+    except KeyError:
         category = None
     return Video.objects.filter(publish_date__gte=datetime.now()\
     -timedelta(days=1)).order_by('-viewcount')[:2]
