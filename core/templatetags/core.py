@@ -21,7 +21,7 @@ def video_popular_links(context):
     except :
         category = None
     return Video.objects.filter(publish_date__gte=datetime.now() \
-        -timedelta(days=1)).order_by('-viewcount')[:2]
+        -timedelta(days=1)).order_by('viewcount')[:2]
 
 @register.assignment_tag(takes_context=True)
 def video_other_links(context):
