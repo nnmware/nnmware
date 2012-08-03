@@ -701,7 +701,7 @@ class Action(MetaLink,MetaIP):
 
     @property
     def target_type(self):
-        return ContentType.objects.get_for_model(self.content_type).app_label
+        return ContentType.objects.get_for_model(self.content_type).app_name
 
 
     def __unicode__(self):
