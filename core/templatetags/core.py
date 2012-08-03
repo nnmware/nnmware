@@ -16,9 +16,9 @@ def video_links():
 @register.assignment_tag(takes_context=True)
 def video_popular_links(context):
     user= context["user"]
-    if 'category_panel' in context.keys():
+    try:
         category = context['category_panel']
-    else:
+    except :
         category = None
     return Video.objects.filter(publish_date__gte=datetime.now() \
         -timedelta(days=1)).order_by('-viewcount')[:2]
