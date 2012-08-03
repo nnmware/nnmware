@@ -35,8 +35,8 @@ def video_other_links(context):
         result = Video.objects.filter(publish_date__gte=datetime.now() \
             -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount')
     if len(result) < 2:
-        result += Video.objects.filter(publish_date__gte=datetime.now()\
-        -timedelta(days=1)).order_by('-viewcount')
+        result.extend(list(Video.objects.filter(publish_date__gte=datetime.now()\
+        -timedelta(days=1)).order_by('-viewcount')))
     return result[:2]
 
 @register.assignment_tag
