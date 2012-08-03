@@ -38,7 +38,6 @@ def video_popular_links(context):
 @register.assignment_tag(takes_context=True)
 def video_other_links(context):
     user= context["user"]
-    result = []
     try:
         category = context['category_panel']
     except KeyError:
