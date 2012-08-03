@@ -21,8 +21,9 @@ def video_popular_links(context):
     except KeyError:
         category = None
     videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
+    result = videos
     if user.is_authenticated():
-        result = videos.exclude(users_viewed = user)
+        result = result.exclude(users_viewed = user)
     if category is not None:
         result = result.filter(tags = category)
     result = list(result.order_by('-viewcount')[:2])
@@ -43,8 +44,9 @@ def video_other_links(context):
     except KeyError:
         category = None
     videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
+    result = videos
     if user.is_authenticated():
-        result = videos.exclude(users_viewed = user)
+        result = result.exclude(users_viewed = user)
     if category is not None:
         result = result.filter(tags = category)
     result = list(result.order_by('?')[:2])
