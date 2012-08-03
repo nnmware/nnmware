@@ -33,10 +33,10 @@ def video_other_links(context):
         category = None
     if user.is_authenticated():
         result = list(Video.objects.filter(publish_date__gte=datetime.now() \
-            -timedelta(days=1)).exclude(users_viewed = user).order_by('viewcount'))
+            -timedelta(days=1)).exclude(users_viewed = user).order_by('?'))
     if len(result) < 2:
         result.extend(list(Video.objects.filter(publish_date__gte=datetime.now()\
-        -timedelta(days=1)).order_by('-viewcount')))
+        -timedelta(days=1)).order_by('?')))
     return result[:2]
 
 @register.assignment_tag
