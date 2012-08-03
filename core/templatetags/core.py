@@ -13,6 +13,20 @@ register = template.Library()
 def video_links():
     return Video.objects.all()[:4]
 
+@register.assignment_tag(takes_context=True)
+def video_popular_links(context):
+    user= context["user"]
+    category = context['category_panel']
+    return Video.objects.filter(publish_date__gte=datetime.now() \
+        -timedelta(days=1)).order_by('-viewcount')[:2]
+
+@register.assignment_tag(takes_context=True)
+def video_other_links(context):
+    user= context["user"]
+    category = context['category_panel']
+    return Video.objects.filter(publish_date__gte=datetime.now()\
+    -timedelta(days=1)).order_by('-viewcount')[:2]
+#    return Video.objects.all()[:4]
 
 @register.assignment_tag
 def tag_links():
