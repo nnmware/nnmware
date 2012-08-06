@@ -16,6 +16,9 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
         """Meta data"""
         unique_together = ('provider', 'uid')
         app_label = 'social'
+        verbose_name = _("User Social Auth")
+        verbose_name_plural = _("User Social Auth")
+
 
     @classmethod
     def create_user(cls, *args, **kwargs):
