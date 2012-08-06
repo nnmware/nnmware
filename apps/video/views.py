@@ -183,8 +183,7 @@ class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        r = range(2,5)
-        return Action.objects.filter(user=self.object).filter(action_type__in=r)
+        return Action.objects.filter(user=self.object).filter(action_type__gt=1)
 
 
 class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
