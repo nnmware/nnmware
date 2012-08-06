@@ -57,7 +57,8 @@ class VideoAdd(AjaxFormMixin, FormView):
             obj.tags.add(alltags.get(name=tag))
             obj.save()
         self.success_url = obj.get_absolute_url()
-        action.send(self.request.user, verb=_('added the video'), action_type=ACTION_ADDED, target=obj)
+        action.send(self.request.user, verb=_('added the video'), action_type=ACTION_ADDED, target=obj,
+            request=self.request)
         return super(VideoAdd, self).form_valid(form)
 
 class VideoDetail(SingleObjectMixin, ListView):
