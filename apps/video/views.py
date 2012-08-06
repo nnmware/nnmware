@@ -11,7 +11,8 @@ from nnmware.apps.video.models import Video
 from nnmware.apps.video.forms import VideoAddForm
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
-from nnmware.core.models import Tag, Follow, Action, JComment
+from nnmware.core.models import Tag, Follow, Action, JComment, ACTION_ADDED
+from nnmware.core.signals import action
 from nnmware.core.utils import gen_shortcut, get_oembed_end_point, get_video_provider_from_link
 from nnmware.core.utils import update_video_size
 from nnmware.core.views import AjaxFormMixin, TagDetail
@@ -55,6 +56,7 @@ class VideoAdd(AjaxFormMixin, FormView):
             obj.tags.add(alltags.get(name=tag))
             obj.save()
         self.success_url = obj.get_absolute_url()
+        action.send(self.request.user, verb=_('added the video'), action_type=ACTION_ADDED, target=obj)
         return super(VideoAdd, self).form_valid(form)
 
 class VideoDetail(SingleObjectMixin, ListView):

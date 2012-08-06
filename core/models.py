@@ -678,10 +678,16 @@ class Message(MetaIP):
 
 ACTION_UNKNOWN = 0
 ACTION_SYSTEM = 1
+ACTION_ADDED = 2
+ACTION_COMMENTED = 3
+ACTION_FOLLOWED = 4
 
 ACTION_CHOICES = (
     (ACTION_UNKNOWN, _("Unknown")),
     (ACTION_SYSTEM, _("System")),
+    (ACTION_ADDED, _("Added")),
+    (ACTION_COMMENTED, _("Commented")),
+    (ACTION_FOLLOWED, _("Followed")),
     )
 
 class Action(MetaLink,MetaIP):

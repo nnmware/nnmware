@@ -15,7 +15,7 @@ from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader, AjaxAnswer
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
-from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc, JComment
+from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc, JComment, ACTION_FOLLOWED
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.signals import action, notice
@@ -96,7 +96,7 @@ def push_tag(request, object_id):
         else:
             follow(request.user, tag)
             status = True
-            action.send(request.user, verb=_('follow the tag'), target=tag)
+            action.send(request.user, verb=_('follow the tag'), action_type=ACTION_FOLLOWED, target=tag)
             if request.user.get_profile().followers_count:
                 for u in User.objects.filter(pk__in=request.user.get_profile().followers):
                     if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
