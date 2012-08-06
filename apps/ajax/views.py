@@ -22,6 +22,7 @@ from nnmware.core.signals import action, notice
 from nnmware.core.utils import get_oembed_end_point, update_video_size
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.file import get_path_from_url
+from nnmware.core.models import ACTION_LIKED
 
 class AccessError(Exception):
     pass
@@ -60,14 +61,15 @@ def push_video(request, object_id):
         status = False
         if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
             if unfollow(request.user, video):
-                action.send(request.user, verb=_('disliked the video'), target=video)
+#                action.send(request.user, verb=_('disliked the video'), target=video)
                 if request.user.get_profile().followers_count:
                     for u in User.objects.filter(pk__in=request.user.get_profile().followers):
                         notice.send(request.user, user=u, verb=_('now disliked'), target=video)
         else:
             if follow(request.user, video):
                 status = True
-                action.send(request.user, verb=_('liked the video'), target=video)
+                action.send(request.user, verb=_('liked the video'), action_type=ACTION_LIKED,
+                    target=video, request=request)
                 if request.user.get_profile().followers_count:
                     for u in User.objects.filter(pk__in=request.user.get_profile().followers):
                         if u.follow_set.filter(content_type=ctype, object_id=video.pk).count:
