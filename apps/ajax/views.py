@@ -15,7 +15,7 @@ from nnmware.core.actions import follow, unfollow
 from nnmware.core.ajax import AjaxFileUploader, AjaxImageUploader, AjaxAvatarUploader, AjaxAnswer
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
-from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc, JComment, ACTION_FOLLOWED
+from nnmware.core.models import Tag, Follow, Notice, Message, Pic, Doc, JComment, ACTION_FOLLOWED, ACTION_COMMENTED
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.signals import action, notice
@@ -96,7 +96,8 @@ def push_tag(request, object_id):
         else:
             follow(request.user, tag)
             status = True
-            action.send(request.user, verb=_('follow the tag'), action_type=ACTION_FOLLOWED, target=tag)
+            action.send(request.user, verb=_('follow the tag'), action_type=ACTION_FOLLOWED, target=tag,
+                request=request)
             if request.user.get_profile().followers_count:
                 for u in User.objects.filter(pk__in=request.user.get_profile().followers):
                     if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
@@ -418,6 +419,8 @@ def comment_add(request, content_type, object_id, parent_id=None):
         if parent_id is not None:
             comment.parent_id = int(parent_id)
         comment.save()
+        action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
+            description= comment.comment, target=comment.content_object, request=request)
         avatar_id = False
         kwargs['parent_id'] = comment.pk
         reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
