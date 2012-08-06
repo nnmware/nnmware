@@ -1,6 +1,7 @@
 """Django ORM models for Social Auth"""
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.social.base import UserSocialAuthMixin, AssociationMixin, NonceMixin
 from nnmware.core.fields import JSONField
 
