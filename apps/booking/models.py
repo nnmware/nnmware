@@ -505,7 +505,7 @@ class Booking(MoneyBase, MetaIP):
 
 
 class AgentPercent(models.Model):
-    hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
+    hotel = models.ForeignKey(Hotel)
     date = models.DateField(verbose_name=_("From date"))
     percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0)
 
