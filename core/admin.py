@@ -23,17 +23,17 @@ admin.site.register(JComment, JCommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
-    list_display = ('title', '_parents_repr', 'status', 'rootnode', 'user')
-    list_display_links = ("title",)
+    list_display = ('name', '_parents_repr', 'status', 'rootnode', 'user')
+    list_display_links = ("name",)
     list_editable = ("status",)
     list_filter = ("status",)
-    ordering = ['parent__id', 'title']
-    prepopulated_fields = {'slug': ('title',)}
+    ordering = ['parent__id', 'name']
+    prepopulated_fields = {'slug': ('name',)}
     actions = None
-    search_fields = ("title", )
+    search_fields = ("name", )
     date_hierarchy = "publish_date"
     fieldsets = (
-        (_("Main"), {"fields": [("title", "slug", "parent"), ("publish_date",
+        (_("Main"), {"fields": [("name", "slug", "parent"), ("publish_date",
                     "user", "status", "login_required")]}),
         (_("Description"), {"classes": ("collapse",),
                 "fields": [("description", "ordering", "rootnode"), ]}),
