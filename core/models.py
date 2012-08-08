@@ -42,6 +42,13 @@ STATUS_CHOICES = (
     (STATUS_MODERATION, _("Moderation")),
     )
 
+class Color(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_('Color'))
+
+    class Meta:
+        verbose_name = _("Color")
+        verbose_name_plural = _("Colors")
+
 class MetaContent(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
