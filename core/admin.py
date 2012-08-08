@@ -31,7 +31,7 @@ class TreeAdmin(admin.ModelAdmin):
     actions = None
     search_fields = ("name", )
     fieldsets = (
-        (_("Main"), {"fields": [("name", "slug"), ("parent"
+        (_("Main"), {"fields": [("name", "slug"), ("parent",
                     "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
                 "fields": [("description",),("ordering", "rootnode"), ]}),
