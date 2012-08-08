@@ -8,7 +8,7 @@ class ProductCategory(Tree):
     slug_detail = 'product_category'
 
     class Meta:
-        ordering = ['parent__id', 'title']
+        ordering = ['parent__id',]
         verbose_name = _('Product Category')
         verbose_name_plural = _('Product Categories')
 
