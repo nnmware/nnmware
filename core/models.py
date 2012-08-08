@@ -42,6 +42,24 @@ STATUS_CHOICES = (
     (STATUS_MODERATION, _("Moderation")),
     )
 
+class MetaContent(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    class Meta:
+        abstract = True
+
+class Unit(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name of unit'))
+
+    class Meta:
+        verbose_name = _("Unit")
+        verbose_name_plural = _("Units")
+        abstract = True
+
+    def __unicode__(self):
+        return "%s" % self.name
 
 class MetaData(models.Model):
     """

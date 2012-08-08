@@ -127,6 +127,9 @@ class ActionAdmin(admin.ModelAdmin):
     list_display = ('user', 'verb', 'content_object','timestamp','ip','user_agent')
     list_filter = ('timestamp',)
 
+class UnitAdmin(admin.ModelAdmin):
+    list_display = ('name', )
+    list_filter = ('name',)
 
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'user', 'actor')
