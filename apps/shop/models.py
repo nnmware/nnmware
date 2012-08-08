@@ -37,7 +37,7 @@ class ProductParameter(models.Model):
         verbose_name_plural = _("Product parameters")
 
     def __unicode__(self):
-        return "%s %s" % self.name, self.unit.name
+        return "%s %s" % (self.name, self.unit.name)
 
 class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
@@ -49,7 +49,7 @@ class ProductParameterValue(MetaContent):
         verbose_name_plural = _("Product parameters values")
 
     def __unicode__(self):
-        return "%s = %s %s" % self.parameter.name, self.value, self.parameter.unit.name
+        return "%s = %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
 
     @property
     def value(self):
