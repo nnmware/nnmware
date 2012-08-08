@@ -49,7 +49,7 @@ class ProductParameterValue(MetaContent):
         verbose_name_plural = _("Product parameters values")
 
     def __unicode__(self):
-        return "%s = %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
+        return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
 
     @property
     def value(self):
@@ -57,6 +57,5 @@ class ProductParameterValue(MetaContent):
             return self.string_value
         else:
             return self.number_value
-
 
 
