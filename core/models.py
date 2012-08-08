@@ -227,7 +227,7 @@ class Tree(MetaName):
         return ' > '
 
     def _parents_repr(self):
-        name_list = [node.title for node in self._recurse_for_parents(self)]
+        name_list = [node.name for node in self._recurse_for_parents(self)]
         return self.get_separator().join(name_list)
 
     _parents_repr.short_description = _("Tree parents")
@@ -237,15 +237,15 @@ class Tree(MetaName):
         name_list = []
         url_list = []
         for node in self._recurse_for_parents(self):
-            name_list.append(node.title)
+            name_list.append(node.name)
             url_list.append(node.get_absolute_url())
-        name_list.append(self.title)
+        name_list.append(self.name)
         url_list.append(self.get_absolute_url())
         return zip(name_list, url_list)
 
     def __unicode__(self):
-        name_list = [node.title for node in self._recurse_for_parents(self)]
-        name_list.append(self.title)
+        name_list = [node.name for node in self._recurse_for_parents(self)]
+        name_list.append(self.name)
         return self.get_separator().join(name_list)
 
     def save(self, *args, **kwargs):
