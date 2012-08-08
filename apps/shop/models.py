@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import Tree, MetaName, MetaContent
-from nnmware.core.models import Unit
+from nnmware.core.models import Unit, Parameter
 
 
 class ProductCategory(Tree):
@@ -27,17 +27,12 @@ class Product(MetaName):
 class ParameterUnit(Unit):
     pass
 
-class ProductParameter(models.Model):
-    name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
+class ProductParameter(Parameter):
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit')
-    is_string = models.BooleanField(_('Is string?'), default=True)
 
     class Meta:
         verbose_name = _("Product parameter")
         verbose_name_plural = _("Product parameters")
-
-    def __unicode__(self):
-        return "%s (%s)" % (self.name, self.unit.name)
 
 class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
