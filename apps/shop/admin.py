@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class ProductCategoryAdmin(TreeAdmin):
-    list_display = ("name", "_parents_repr", "admin_link")
+    list_display = ("name", "_parents_repr")
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
