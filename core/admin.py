@@ -33,7 +33,7 @@ class TreeAdmin(admin.ModelAdmin):
     date_hierarchy = "publish_date"
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug", "parent"), (
-                    "status", "login_required")]}),
+                    "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
                 "fields": [("description", "ordering", "rootnode"), ]}),
         )
