@@ -14,6 +14,8 @@ class ProductCategory(Tree):
         verbose_name = _('Product Category')
         verbose_name_plural = _('Product Categories')
 
+class ProductColor(Color):
+    pass
 
 class Product(MetaName, MoneyBase):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
@@ -21,6 +23,8 @@ class Product(MetaName, MoneyBase):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now())
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
+    color = models.ForeignKey(ProductColor, verbose_name=_('Color'), null=True, blank=True,
+        on_delete=models.SET_NULL)
 
 
     class Meta:
@@ -30,8 +34,6 @@ class Product(MetaName, MoneyBase):
 class ParameterUnit(Unit):
     pass
 
-class ProductColor(Color):
-    pass
 
 class ProductParameter(Parameter):
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
