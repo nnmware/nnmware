@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.models import Tree, MetaName, MetaContent
+from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
 
 
@@ -28,6 +28,9 @@ class Product(MetaName, MoneyBase):
         verbose_name_plural = _("Products")
 
 class ParameterUnit(Unit):
+    pass
+
+class ProductColor(Color):
     pass
 
 class ProductParameter(Parameter):
