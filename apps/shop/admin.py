@@ -13,4 +13,4 @@ class ProductCategoryAdmin(TreeAdmin):
     list_display = ("title", "_parents_repr", "user", "status", "admin_link")
 
 admin.site.register(Product, ProductAdmin)
-admin.site.register(ProdictCategory, ProductCategoryAdmin)
+admin.site.register(ProductCategory, ProductCategoryAdmin)
