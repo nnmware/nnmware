@@ -11,9 +11,16 @@ class ProductParameterValueInline(generic.GenericStackedInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
-
+    readonly_fields = ('created_date','updated_date')
     list_display = ("name", "category", "created_date")
     inlines = [ ProductParameterValueInline, ]
+    fieldsets = (
+        (_("Product"), {"fields": [('name','category'),
+            ('slug','order_in_list'),
+            ('description',),
+            ("created_date",'updated_date'),
+        ]}),
+        )
 
 
 class ProductCategoryAdmin(TreeAdmin):
