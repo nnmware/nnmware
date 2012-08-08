@@ -1,7 +1,7 @@
 from django.contrib import admin
 from nnmware.core.admin import TreeAdmin
 
-from nnmware.apps.shop.models import Product, ProdictCategory
+from nnmware.apps.shop.models import Product, ProductCategory
 
 
 class ProductAdmin(admin.ModelAdmin):

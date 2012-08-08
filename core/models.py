@@ -141,8 +141,52 @@ class MetaData(models.Model):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
+class MetaName(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=100)
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
+    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
 
-class Tree(MetaData):
+    class Meta:
+        ordering = ['name', ]
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
+
+    @property
+    def get_name(self):
+        try:
+            if get_language() == 'en':
+                if self.name_en:
+                    return self.name_en
+            return self.name
+        except :
+            return self.name
+
+    def get_description(self):
+        try:
+            if get_language() == 'en':
+                if self.description_en:
+                    return self.description_en
+        except :
+            pass
+        return self.description
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.id:
+                super(MetaName, self).save(*args, **kwargs)
+            self.slug = self.id
+        else:
+            self.slug = str(self.slug).strip().replace(' ','-')
+        super(MetaName, self).save(*args, **kwargs)
+
+
+class Tree(MetaName):
     """
     Main nodes tree
     """
@@ -281,49 +325,6 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return "tag_detail", (), {'slug': self.slug}
 
-class MetaName(models.Model):
-    name = models.CharField(verbose_name=_("Name"), max_length=100)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
-    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
-    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
-    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
-
-    class Meta:
-        ordering = ['name', ]
-        abstract = True
-
-    def __unicode__(self):
-        return self.name
-
-    @property
-    def get_name(self):
-        try:
-            if get_language() == 'en':
-                if self.name_en:
-                    return self.name_en
-            return self.name
-        except :
-            return self.name
-
-    def get_description(self):
-        try:
-            if get_language() == 'en':
-                if self.description_en:
-                    return self.description_en
-        except :
-            pass
-        return self.description
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            if not self.id:
-                super(MetaName, self).save(*args, **kwargs)
-            self.slug = self.id
-        else:
-            self.slug = str(self.slug).strip().replace(' ','-')
-        super(MetaName, self).save(*args, **kwargs)
 
 class MetaLink(models.Model):
     # Generic Foreign Key Fields
