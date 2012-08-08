@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from nnmware.core.admin import TreeAdmin, UnitAdmin
 
-from nnmware.apps.shop.models import Product, ProductCategory, Unit, ProductParameterValue, ProductParameter
+from nnmware.apps.shop.models import Product, ProductCategory, ParameterUnit, ProductParameterValue, ProductParameter
 
 class ProductParameterValueInline(generic.GenericStackedInline):
     model = ProductParameterValue
@@ -26,5 +26,5 @@ class ProductParameterAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
-admin.site.register(Unit, UnitAdmin)
+admin.site.register(ParameterUnit, UnitAdmin)
 admin.site.register(ProductParameter, ProductParameterAdmin)
