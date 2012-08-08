@@ -30,7 +30,6 @@ class TreeAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
     actions = None
     search_fields = ("name", )
-    date_hierarchy = "created_date"
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug", "parent"), (
                     "login_required",)]}),
