@@ -50,6 +50,9 @@ class Color(models.Model):
         verbose_name_plural = _("Colors")
         abstract = True
 
+    def __unicode__(self):
+        return self.name
+
 class MetaContent(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
