@@ -193,6 +193,7 @@ class Tree(MetaName):
     parent = models.ForeignKey('self', verbose_name=_("Parent"), blank=True, null=True, related_name="children")
     ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in tree display"))
     rootnode = models.BooleanField(_('Root node'), default=False)
+    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
 
     class Meta:
         ordering = ['ordering', ]
