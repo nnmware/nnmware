@@ -48,6 +48,7 @@ class Color(models.Model):
     class Meta:
         verbose_name = _("Color")
         verbose_name_plural = _("Colors")
+        abstract = True
 
 class MetaContent(models.Model):
     content_type = models.ForeignKey(ContentType)
