@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from nnmware.core.admin import TreeAdmin, UnitAdmin
-
+from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.shop.models import Product, ProductCategory, ParameterUnit, ProductParameterValue, ProductParameter
 
 class ProductParameterValueInline(generic.GenericStackedInline):
