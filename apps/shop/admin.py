@@ -21,7 +21,7 @@ class ProductAdmin(admin.ModelAdmin):
             ('slug','order_in_list'),
             ('amount','quantity'),
             ('description',),
-            ("created_date",'updated_date'),
+            ('color',"created_date",'updated_date'),
         ]}),
         )
 
