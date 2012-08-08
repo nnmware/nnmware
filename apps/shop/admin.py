@@ -18,6 +18,7 @@ class ProductAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Product"), {"fields": [('name','category'),
             ('slug','order_in_list'),
+            ('amount','quantity'),
             ('description',),
             ("created_date",'updated_date'),
         ]}),

@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.money.models import MoneyBase
 from nnmware.core.models import Tree, MetaName, MetaContent
 from nnmware.core.models import Unit, Parameter
 
@@ -14,11 +15,13 @@ class ProductCategory(Tree):
         verbose_name_plural = _('Product Categories')
 
 
-class Product(MetaName):
+class Product(MetaName, MoneyBase):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
         on_delete=models.SET_NULL)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now())
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
+    quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
+
 
     class Meta:
         verbose_name = _("Product")
