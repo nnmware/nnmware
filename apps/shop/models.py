@@ -37,7 +37,7 @@ class ProductParameter(Parameter):
 class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     string_value = models.CharField(max_length=255, verbose_name=_('String value of parameter'), blank=True)
-    number_value = models.DecimalField(verbose_name=_('Number value of parameter'), default=0, decimal_places=1, max_digits=4)
+    number_value = models.DecimalField(verbose_name=_('Number value of parameter'), default=0, decimal_places=10, max_digits=19)
 
     class Meta:
         verbose_name = _("Product parameter value")
