@@ -63,25 +63,17 @@ class Unit(models.Model):
 
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
-    is_string = models.BooleanField(_('Is string?'), default=True)
 
     class Meta:
         verbose_name = _("Parameter")
         verbose_name_plural = _("Parameters")
         abstract = True
 
-    @property
-    def parameter_type_text(self):
-        if self.is_string:
-            return _('string')
-        else:
-            return _('number')
-
     def __unicode__(self):
         try:
-            return "%s (%s, %s)" % (self.name, self.unit.name, self.parameter_type_text)
+            return "%s (%s)" % (self.name, self.unit.name)
         except :
-            return "%s (%s)" % (self.name, self.parameter_type_text)
+            return "%s" % self.name
 
 
 class MetaData(models.Model):

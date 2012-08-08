@@ -28,7 +28,7 @@ class ProductCategoryAdmin(TreeAdmin):
 
 class ProductParameterAdmin(admin.ModelAdmin):
 
-    list_display = ("name", "unit", "is_string")
+    list_display = ("name", "unit")
 
 
 admin.site.register(Product, ProductAdmin)
