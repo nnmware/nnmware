@@ -7,7 +7,7 @@ from nnmware.apps.shop.models import Product, ProductCategory, ParameterUnit, Pr
 class ProductParameterValueInline(generic.GenericStackedInline):
     model = ProductParameterValue
     extra = 0
-    fields = (('parameter',),('string_value','number_value'),)
+    fields = (('parameter','value'),)
 
 
 class ProductAdmin(admin.ModelAdmin):

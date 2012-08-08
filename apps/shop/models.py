@@ -28,7 +28,7 @@ class ParameterUnit(Unit):
     pass
 
 class ProductParameter(Parameter):
-    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit')
+    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True)
 
     class Meta:
         verbose_name = _("Product parameter")
@@ -36,21 +36,18 @@ class ProductParameter(Parameter):
 
 class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
-    string_value = models.CharField(max_length=255, verbose_name=_('String value of parameter'), blank=True)
-    number_value = models.DecimalField(verbose_name=_('Number value of parameter'), default=0, decimal_places=10, max_digits=19)
+    value = models.CharField(max_length=255, verbose_name=_('Value of parameter'), blank=True)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
 
     class Meta:
         verbose_name = _("Product parameter value")
         verbose_name_plural = _("Product parameters values")
 
     def __unicode__(self):
-        return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
+        try:
+            return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
+        except :
+            return "%s: %s" % (self.parameter.name, self.value)
 
-    @property
-    def value(self):
-        if self.parameter.is_string:
-            return self.string_value
-        else:
-            return self.number_value
 
 
