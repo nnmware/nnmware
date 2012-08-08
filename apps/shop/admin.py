@@ -13,7 +13,7 @@ class ProductParameterValueInline(generic.GenericStackedInline):
 
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date','updated_date')
-    list_display = ("name", "category", "created_date")
+    list_display = ("name", "category", "created_date",'quantity','amount')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ ProductParameterValueInline, ]
     fieldsets = (
@@ -22,6 +22,7 @@ class ProductAdmin(admin.ModelAdmin):
             ('amount','quantity'),
             ('description',),
             ('color',"created_date",'updated_date'),
+            ('shop_pn','vendor_pn'),
         ]}),
         )
 

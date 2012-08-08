@@ -25,7 +25,8 @@ class Product(MetaName, MoneyBase):
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     color = models.ForeignKey(ProductColor, verbose_name=_('Color'), null=True, blank=True,
         on_delete=models.SET_NULL)
-
+    shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
+    vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
 
     class Meta:
         verbose_name = _("Product")
