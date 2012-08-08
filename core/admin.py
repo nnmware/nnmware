@@ -23,7 +23,7 @@ admin.site.register(JComment, JCommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
-    list_display = ('name', '_parents_repr', 'status', 'rootnode', 'user')
+    list_display = ('name', '_parents_repr', 'status', 'rootnode')
     list_display_links = ("name",)
     list_filter = ("name",)
     ordering = ['parent__id', 'name']
