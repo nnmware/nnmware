@@ -31,7 +31,7 @@ class ParameterUnit(Unit):
     pass
 
 class ProductParameter(Parameter):
-    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True)
+    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
 
     class Meta:
         verbose_name = _("Product parameter")
