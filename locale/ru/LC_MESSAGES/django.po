@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-09 04:02+1100\n"
+"POT-Creation-Date: 2012-08-09 05:11+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,7 +170,7 @@ msgid "ArticleCategories"
 msgstr "Категории статей"
 
 #: apps/article/models.py:17 apps/board/models.py:17
-#: apps/booking/models.py:278 apps/shop/models.py:18 apps/topic/models.py:20
+#: apps/booking/models.py:278 apps/shop/models.py:21 apps/topic/models.py:20
 msgid "Category"
 msgstr "Категория"
 
@@ -550,7 +550,7 @@ msgstr "Правила бронирования(английский)"
 msgid "Schema of transit(English)"
 msgstr "Схема проезда(английский)"
 
-#: apps/booking/models.py:121 apps/shop/models.py:21 core/models.py:97
+#: apps/booking/models.py:121 apps/shop/models.py:24 core/models.py:97
 msgid "Updated date"
 msgstr "Дата обновления"
 
@@ -1054,55 +1054,63 @@ msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(target)s :: Сумма: "
 "%(amount)s %(currency)s"
 
-#: apps/shop/models.py:13
-msgid "Product Category"
-msgstr "Категория товара"
-
-#: apps/shop/models.py:14
-msgid "Product Categories"
-msgstr "Категории товаров"
-
-#: apps/shop/models.py:20
-msgid "Created date"
-msgstr "Дата создания"
-
-#: apps/shop/models.py:24
+#: apps/shop/admin.py:20 apps/shop/models.py:31
 msgid "Product"
 msgstr "Товар"
 
+#: apps/shop/models.py:14
+msgid "Product Category"
+msgstr "Категория товара"
+
+#: apps/shop/models.py:15
+msgid "Product Categories"
+msgstr "Категории товаров"
+
+#: apps/shop/models.py:23
+msgid "Created date"
+msgstr "Дата создания"
+
 #: apps/shop/models.py:25
+msgid "Quantity"
+msgstr "Количество"
+
+#: apps/shop/models.py:26 core/models.py:46 core/models.py:49
+msgid "Color"
+msgstr "Цвет"
+
+#: apps/shop/models.py:32
 msgid "Products"
 msgstr "Товары"
 
-#: apps/shop/models.py:31 core/models.py:57
+#: apps/shop/models.py:39 core/models.py:65
 msgid "Unit"
 msgstr "Единица измерения"
 
-#: apps/shop/models.py:34
+#: apps/shop/models.py:42
 msgid "Product parameter"
 msgstr "Параметр товара"
 
-#: apps/shop/models.py:35
+#: apps/shop/models.py:43
 msgid "Product parameters"
 msgstr "Параметры товаров"
 
-#: apps/shop/models.py:38 core/models.py:69
+#: apps/shop/models.py:46 core/models.py:76
 msgid "Parameter"
 msgstr "Параметр"
 
-#: apps/shop/models.py:39
-msgid "String value of parameter"
-msgstr "Строковое значение параметра"
+#: apps/shop/models.py:47
+msgid "Value of parameter"
+msgstr "Значение параметра"
 
-#: apps/shop/models.py:40
-msgid "Number value of parameter"
-msgstr "Числовое значение параметра"
+#: apps/shop/models.py:48 core/models.py:192
+msgid "Order in list"
+msgstr "Очередность в списке"
 
-#: apps/shop/models.py:43
+#: apps/shop/models.py:51
 msgid "Product parameter value"
 msgstr "Значение параметра товара"
 
-#: apps/shop/models.py:44
+#: apps/shop/models.py:52
 msgid "Product parameters values"
 msgstr "Значения параметров товара"
 
@@ -1202,7 +1210,7 @@ msgid "Found %(len)s deleted topics"
 msgstr "Найдено %(len)s удаленных топиков "
 
 #: apps/userprofile/admin.py:11 apps/video/admin.py:12 core/admin.py:34
-#: core/admin.py:53 core/admin.py:167
+#: core/admin.py:53 core/admin.py:171
 msgid "Main"
 msgstr "Основная"
 
@@ -1520,27 +1528,27 @@ msgstr "Изображение"
 msgid "Visitor hit"
 msgstr "Посещение пользователя"
 
-#: core/admin.py:148 core/models.py:679
+#: core/admin.py:152 core/models.py:679
 msgid "Recipient"
 msgstr "Получатель"
 
-#: core/admin.py:150
+#: core/admin.py:154
 msgid "group"
 msgstr "группа"
 
-#: core/admin.py:151
+#: core/admin.py:155
 msgid "Creates the message optionally for all users or a group of users."
 msgstr "Создает опционально сообщение для всех пользователей данной группы."
 
-#: core/admin.py:158
+#: core/admin.py:162
 msgid "All users"
 msgstr "Все пользователи"
 
-#: core/admin.py:173 core/models.py:718
+#: core/admin.py:177 core/models.py:718
 msgid "Message"
 msgstr "Сообщение"
 
-#: core/admin.py:175
+#: core/admin.py:179
 msgid "Date/Time"
 msgstr "Дата/Время"
 
@@ -1610,33 +1618,25 @@ msgstr "Приклеено"
 msgid "Moderation"
 msgstr "Модерирование"
 
-#: core/models.py:54
+#: core/models.py:50
+msgid "Colors"
+msgstr "Цвета"
+
+#: core/models.py:62
 msgid "Name of unit"
 msgstr "Название единицы измерения"
 
-#: core/models.py:58
+#: core/models.py:66
 msgid "Units"
 msgstr "Единицы измерения"
 
-#: core/models.py:65
+#: core/models.py:73
 msgid "Name of parameter"
 msgstr "Название параметра"
 
-#: core/models.py:66
-msgid "Is string?"
-msgstr "Это строка?"
-
-#: core/models.py:70
+#: core/models.py:77
 msgid "Parameters"
 msgstr "Параметры"
-
-#: core/models.py:76
-msgid "string"
-msgstr "строка"
-
-#: core/models.py:78
-msgid "number"
-msgstr "число"
 
 #: core/models.py:91
 msgid "Title"
@@ -1697,10 +1697,6 @@ msgstr "Описание(Английский)"
 #: core/models.py:191
 msgid "URL-identifier"
 msgstr "URL-идентификатор"
-
-#: core/models.py:192
-msgid "Order in list"
-msgstr "Очередность в списке"
 
 #: core/models.py:234
 msgid "Parent"
@@ -1946,6 +1942,21 @@ msgstr "Удалить"
 #: core/templatetags/booking_tags.py:216
 msgid "rub"
 msgstr "руб"
+
+#~ msgid "String value of parameter"
+#~ msgstr "Строковое значение параметра"
+
+#~ msgid "Number value of parameter"
+#~ msgstr "Числовое значение параметра"
+
+#~ msgid "Is string?"
+#~ msgstr "Это строка?"
+
+#~ msgid "string"
+#~ msgstr "строка"
+
+#~ msgid "number"
+#~ msgstr "число"
 
 #~ msgid "disliked the video"
 #~ msgstr "не нравится видео"
