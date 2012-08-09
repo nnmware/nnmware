@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.money.models import MoneyBase
+from nnmware.apps.shop.models import Vendor
 from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
 
@@ -17,6 +18,9 @@ class ProductCategory(Tree):
 class ProductColor(Color):
     pass
 
+class ProductVendor(Vendor):
+    pass
+
 class Product(MetaName, MoneyBase):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
         on_delete=models.SET_NULL)
@@ -27,6 +31,8 @@ class Product(MetaName, MoneyBase):
         on_delete=models.SET_NULL)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
+    vendor = models.ForeignKey(ProductVendor, verbose_name=_('Category'), null=True, blank=True,
+        on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _("Product")

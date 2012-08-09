@@ -53,6 +53,20 @@ class Color(models.Model):
     def __unicode__(self):
         return self.name
 
+class Vendor(models.Model):
+    name = models.CharField(_("Name of vendor"),max_length=200)
+    site = models.URLField(verify_exists=False)
+    desc = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
+
+    class Meta:
+        ordering = ['name', 'site']
+        verbose_name = _("Vendor")
+        verbose_name_plural = _("Vendors")
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
+
 class MetaContent(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
