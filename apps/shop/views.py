@@ -14,3 +14,7 @@ class ShopCategory(ListView):
         result = get_queryset_category(self, Product, ProductCategory)
         return result
 
+class ShopAllCategory(ListView):
+    template_name = 'shop/product_list.html'
+    model = Product
+
