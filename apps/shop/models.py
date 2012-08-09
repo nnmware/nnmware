@@ -20,13 +20,13 @@ class ProductColor(Color):
 
 class Vendor(models.Model):
     name = models.CharField(_("Name of vendor"),max_length=200)
-    site = models.URLField(_("URL"), blank=True)
+    website = models.URLField(_("URL"), blank=True)
     description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
         on_delete=models.SET_NULL)
 
     class Meta:
-        ordering = ['name', 'site']
+        ordering = ['name', 'website']
         verbose_name = _("Vendor")
         verbose_name_plural = _("Vendors")
 
