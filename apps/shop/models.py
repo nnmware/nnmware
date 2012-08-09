@@ -52,6 +52,9 @@ class Product(MetaName, MoneyBase):
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
 
+    def parameters(self):
+        return ProductParameter.objects.filter(content_object=self)
+
 class ParameterUnit(Unit):
     pass
 
