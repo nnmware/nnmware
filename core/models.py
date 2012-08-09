@@ -20,6 +20,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify, truncatewords_html
 from django.utils.translation import get_language
+from nnmware.apps.address.models import Country
 from nnmware.core.managers import MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
