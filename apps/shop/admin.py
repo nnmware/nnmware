@@ -36,9 +36,14 @@ class ProductParameterAdmin(admin.ModelAdmin):
 
     list_display = ("name", "unit")
 
+class VendorAdmin(admin.ModelAdmin):
+    fieldsets = ((_('Vendor'), {'fields': [('name','country','website'),('description',)]}),)
+    list_display = ('name','country','website')
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ParameterUnit, UnitAdmin)
 admin.site.register(ProductParameter, ProductParameterAdmin)
 admin.site.register(ProductColor, ColorAdmin)
+admin.site.register(Vendor, VendorAdmin)
