@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.money.models import MoneyBase
-from nnmware.apps.shop.models import Vendor
+from nnmware.core.models import Vendor
 from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
 
