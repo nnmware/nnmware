@@ -1,13 +1,10 @@
 # -*- encoding: utf-8 -*-
 
 
-try:
-    from xml.etree.ElementTree import Element, SubElement, tostring
-except ImportError:
-    from elementtree.ElementTree import Element, SubElement, tostring
+from xml.etree.ElementTree import Element, SubElement, tostring
 
 
-def get_queryset_category(obj, main_obj, cat_obj, order='-publish_date'):
+def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
     slug = obj.kwargs['slug']
     if obj.kwargs['parent_slugs']:
         parent_slugs = obj.kwargs['parent_slugs']
