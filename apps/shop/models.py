@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.apps.money.models import MoneyBase
-from nnmware.apps.shop.models import Vendor
 from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
 
@@ -19,8 +18,21 @@ class ProductCategory(Tree):
 class ProductColor(Color):
     pass
 
-class ProductVendor(Vendor):
-    pass
+class Vendor(models.Model):
+    name = models.CharField(_("Name of vendor"),max_length=200)
+    site = models.URLField(_("URL"), blank=True)
+    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
+        on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ['name', 'site']
+        verbose_name = _("Vendor")
+        verbose_name_plural = _("Vendors")
+
+    def __unicode__(self):
+        return self.name
+
 
 class Product(MetaName, MoneyBase):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
@@ -32,7 +44,7 @@ class Product(MetaName, MoneyBase):
         on_delete=models.SET_NULL)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
-    vendor = models.ForeignKey(ProductVendor, verbose_name=_('Vendor'), null=True, blank=True,
+    vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
         on_delete=models.SET_NULL)
 
     class Meta:

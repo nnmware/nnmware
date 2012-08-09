@@ -20,7 +20,6 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify, truncatewords_html
 from django.utils.translation import get_language
-from nnmware.apps.address.models import Country
 from nnmware.core.managers import MetaLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
@@ -72,23 +71,6 @@ class Unit(models.Model):
 
     def __unicode__(self):
         return "%s" % self.name
-
-class Vendor(models.Model):
-    name = models.CharField(_("Name of vendor"),max_length=200)
-    site = models.URLField(_("URL"), blank=True)
-    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
-        on_delete=models.SET_NULL)
-
-    class Meta:
-        ordering = ['name', 'site']
-        verbose_name = _("Vendor")
-        verbose_name_plural = _("Vendors")
-        abstract = True
-
-    def __unicode__(self):
-        return self.name
-
 
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
