@@ -25,14 +25,14 @@ def menu(app=None):
     else:
         pass
 
-    try:
+    if 1>0: #try:
         html = Element("ul")
         for node in Tree.objects.all():
             if not node.parent:
                 recurse_for_children(node, html)
         return tostring(html, 'utf-8')
-    except:
-        return 'error'
+#    except:
+#        return 'error'
 
 
 @register.simple_tag
