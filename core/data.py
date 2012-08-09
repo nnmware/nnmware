@@ -31,7 +31,7 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
         temp_parent = SubElement(parent_node, 'li')
         attrs = {'href': current_node.get_absolute_url()}
         link = SubElement(temp_parent, 'a', attrs)
-        link.text = current_node.title
+        link.text = current_node.name
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul')
             children = current_node.children.all()
