@@ -58,6 +58,8 @@ class MetaContent(models.Model):
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
+    objects = MetaLinkManager()
+
     class Meta:
         abstract = True
 

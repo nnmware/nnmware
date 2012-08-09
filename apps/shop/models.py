@@ -53,7 +53,7 @@ class Product(MetaName, MoneyBase):
         verbose_name_plural = _("Products")
 
     def parameters(self):
-        return ProductParameterValue.metalinks_for_object(self)
+        return ProductParameterValue.objects.metalinks_for_object(self)
 
 class ParameterUnit(Unit):
     pass
