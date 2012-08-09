@@ -3,7 +3,6 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.models import Vendor
 from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
 
@@ -45,7 +44,7 @@ class Product(MetaName, MoneyBase):
         on_delete=models.SET_NULL)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
-    vendor = models.ForeignKey(ProductVendor, verbose_name=_('Category'), null=True, blank=True,
+    vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
         on_delete=models.SET_NULL)
 
     class Meta:
