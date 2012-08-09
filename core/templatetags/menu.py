@@ -16,6 +16,8 @@ def menu(app=None):
         from nnmware.apps.topic.models import Category as Tree
     elif app == 'board':
         from nnmware.apps.board.models import Category as Tree
+    elif app == 'shop':
+        from nnmware.apps.shop.models import ProductCategory as Tree
     elif app == 'article':
         from nnmware.apps.article.models import Category as Tree
     elif app == 'dashboard':
