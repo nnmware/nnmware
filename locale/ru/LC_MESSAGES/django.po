@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-09 05:39+1100\n"
+"POT-Creation-Date: 2012-08-09 11:25+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -170,7 +170,8 @@ msgid "ArticleCategories"
 msgstr "Категории статей"
 
 #: apps/article/models.py:17 apps/board/models.py:17
-#: apps/booking/models.py:278 apps/shop/models.py:21 apps/topic/models.py:20
+#: apps/booking/models.py:278 apps/shop/models.py:25 apps/shop/models.py:34
+#: apps/topic/models.py:20
 msgid "Category"
 msgstr "Категория"
 
@@ -436,8 +437,8 @@ msgstr "Способы оплаты"
 
 #: apps/booking/models.py:74 apps/booking/models.py:91
 #: apps/booking/models.py:305 apps/booking/models.py:440
-#: apps/money/models.py:63 apps/money/models.py:112 core/models.py:650
-#: core/models.py:733
+#: apps/money/models.py:63 apps/money/models.py:112 core/models.py:664
+#: core/models.py:747
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -550,7 +551,7 @@ msgstr "Правила бронирования(английский)"
 msgid "Schema of transit(English)"
 msgstr "Схема проезда(английский)"
 
-#: apps/booking/models.py:121 apps/shop/models.py:24 core/models.py:100
+#: apps/booking/models.py:121 apps/shop/models.py:28 core/models.py:114
 msgid "Updated date"
 msgstr "Дата обновления"
 
@@ -678,11 +679,11 @@ msgid "Completed"
 msgstr "Завершено"
 
 #: apps/booking/models.py:450 apps/booking/models.py:578
-#: apps/money/models.py:74 apps/money/models.py:123 core/models.py:802
+#: apps/money/models.py:74 apps/money/models.py:123 core/models.py:816
 msgid "User"
 msgstr "Пользователь"
 
-#: apps/booking/models.py:451 core/models.py:803
+#: apps/booking/models.py:451 core/models.py:817
 msgid "Creation date"
 msgstr "Дата создания"
 
@@ -826,8 +827,8 @@ msgstr ""
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:582 apps/money/models.py:19 core/models.py:189
-#: core/models.py:340
+#: apps/booking/models.py:582 apps/money/models.py:19 core/models.py:203
+#: core/models.py:354
 msgid "Name"
 msgstr "Имя"
 
@@ -955,7 +956,7 @@ msgstr "Курс обмена валют"
 msgid "Currency code"
 msgstr "Код валюты"
 
-#: apps/money/models.py:20 core/models.py:190
+#: apps/money/models.py:20 core/models.py:204
 msgid "Name(English"
 msgstr "Название(Английский)"
 
@@ -1037,7 +1038,7 @@ msgid "Bill status"
 msgstr "Статус счета"
 
 #: apps/money/models.py:131 apps/video/models.py:18 core/admin.py:36
-#: core/admin.py:54 core/models.py:96 core/models.py:192 core/models.py:417
+#: core/admin.py:54 core/models.py:110 core/models.py:206 core/models.py:431
 msgid "Description"
 msgstr "Описание"
 
@@ -1054,71 +1055,71 @@ msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(target)s :: Сумма: "
 "%(amount)s %(currency)s"
 
-#: apps/shop/admin.py:20 apps/shop/models.py:32
+#: apps/shop/admin.py:20 apps/shop/models.py:38
 msgid "Product"
 msgstr "Товар"
 
-#: apps/shop/models.py:14
+#: apps/shop/models.py:15
 msgid "Product Category"
 msgstr "Категория товара"
 
-#: apps/shop/models.py:15
+#: apps/shop/models.py:16
 msgid "Product Categories"
 msgstr "Категории товаров"
 
-#: apps/shop/models.py:23
+#: apps/shop/models.py:27
 msgid "Created date"
 msgstr "Дата создания"
 
-#: apps/shop/models.py:25
+#: apps/shop/models.py:29
 msgid "Quantity"
 msgstr "Количество"
 
-#: apps/shop/models.py:26 core/models.py:46 core/models.py:49
+#: apps/shop/models.py:30 core/models.py:46 core/models.py:49
 msgid "Color"
 msgstr "Цвет"
 
-#: apps/shop/models.py:28
+#: apps/shop/models.py:32
 msgid "Shop part number"
 msgstr "Артикул продавца"
 
-#: apps/shop/models.py:29
+#: apps/shop/models.py:33
 msgid "Vendor part number"
 msgstr "Артикул производителя"
 
-#: apps/shop/models.py:33
+#: apps/shop/models.py:39
 msgid "Products"
 msgstr "Товары"
 
-#: apps/shop/models.py:40 core/models.py:68
+#: apps/shop/models.py:46 core/models.py:82
 msgid "Unit"
 msgstr "Единица измерения"
 
-#: apps/shop/models.py:43
+#: apps/shop/models.py:49
 msgid "Product parameter"
 msgstr "Параметр товара"
 
-#: apps/shop/models.py:44
+#: apps/shop/models.py:50
 msgid "Product parameters"
 msgstr "Параметры товаров"
 
-#: apps/shop/models.py:47 core/models.py:79
+#: apps/shop/models.py:53 core/models.py:93
 msgid "Parameter"
 msgstr "Параметр"
 
-#: apps/shop/models.py:48
+#: apps/shop/models.py:54
 msgid "Value of parameter"
 msgstr "Значение параметра"
 
-#: apps/shop/models.py:49 core/models.py:195
+#: apps/shop/models.py:55 core/models.py:209
 msgid "Order in list"
 msgstr "Очередность в списке"
 
-#: apps/shop/models.py:52
+#: apps/shop/models.py:58
 msgid "Product parameter value"
 msgstr "Значение параметра товара"
 
-#: apps/shop/models.py:53
+#: apps/shop/models.py:59
 msgid "Product parameters values"
 msgstr "Значения параметров товара"
 
@@ -1449,7 +1450,7 @@ msgstr ""
 msgid "YOU SUCCESSFULLY SIGN IN"
 msgstr "ВЫ УСПЕШНО ЗАРЕГИСТРИРОВАНЫ"
 
-#: apps/video/admin.py:16 core/forms.py:19 core/models.py:348
+#: apps/video/admin.py:16 core/forms.py:19 core/models.py:362
 msgid "Tags"
 msgstr "Тэги"
 
@@ -1477,11 +1478,11 @@ msgstr "Видеопровайдер"
 msgid "Publish date"
 msgstr "Дата публикации"
 
-#: apps/video/models.py:21 core/models.py:101 core/models.py:240
+#: apps/video/models.py:21 core/models.py:115 core/models.py:254
 msgid "Login required"
 msgstr "Требуется регистрация"
 
-#: apps/video/models.py:21 core/models.py:101 core/models.py:240
+#: apps/video/models.py:21 core/models.py:115 core/models.py:254
 msgid "Enable this if users must login before access with this objects."
 msgstr ""
 "Включите это, если пользователи должны зарегистрироваться для доступа к "
@@ -1499,7 +1500,7 @@ msgstr "Код внедрения"
 msgid "Published"
 msgstr "Опубликовано"
 
-#: apps/video/models.py:34 core/models.py:652
+#: apps/video/models.py:34 core/models.py:666
 msgid "Video"
 msgstr "Видео"
 
@@ -1524,19 +1525,19 @@ msgstr "nnmware"
 msgid "Meta"
 msgstr "Мета"
 
-#: core/admin.py:85 core/models.py:439
+#: core/admin.py:85 core/models.py:453
 msgid "Doc"
 msgstr "Документ"
 
-#: core/admin.py:96 core/models.py:483
+#: core/admin.py:96 core/models.py:497
 msgid "Pic"
 msgstr "Изображение"
 
-#: core/admin.py:109 core/models.py:814
+#: core/admin.py:109 core/models.py:828
 msgid "Visitor hit"
 msgstr "Посещение пользователя"
 
-#: core/admin.py:152 core/models.py:682
+#: core/admin.py:152 core/models.py:696
 msgid "Recipient"
 msgstr "Получатель"
 
@@ -1552,7 +1553,7 @@ msgstr "Создает опционально сообщение для всех
 msgid "All users"
 msgstr "Все пользователи"
 
-#: core/admin.py:177 core/models.py:721
+#: core/admin.py:177 core/models.py:735
 msgid "Message"
 msgstr "Сообщение"
 
@@ -1574,7 +1575,7 @@ msgstr "Неверная каптча"
 msgid "Max number or tags - %s."
 msgstr "Максимальное количество тегов - %s."
 
-#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:575
+#: core/forms.py:42 core/forms.py:56 core/forms.py:71 core/models.py:589
 msgid "comment"
 msgstr "Комментарий"
 
@@ -1630,308 +1631,324 @@ msgstr "Модерирование"
 msgid "Colors"
 msgstr "Цвета"
 
-#: core/models.py:65
-msgid "Name of unit"
-msgstr "Название единицы измерения"
+#: core/models.py:57
+msgid "Name of vendor"
+msgstr "Название производителя"
 
-#: core/models.py:69
-msgid "Units"
-msgstr "Единицы измерения"
-
-#: core/models.py:76
-msgid "Name of parameter"
-msgstr "Название параметра"
-
-#: core/models.py:80
-msgid "Parameters"
-msgstr "Параметры"
-
-#: core/models.py:94
-msgid "Title"
-msgstr "Заголовок"
-
-#: core/models.py:95 core/models.py:341 core/models.py:809
+#: core/models.py:58 core/models.py:109 core/models.py:355 core/models.py:823
 msgid "URL"
 msgstr "URL"
 
-#: core/models.py:97 core/models.py:577
+#: core/models.py:59
+msgid "Description of Vendor"
+msgstr "Описание производителя"
+
+#: core/models.py:63
+msgid "Vendor"
+msgstr "Производитель"
+
+#: core/models.py:64
+msgid "Vendors"
+msgstr "Производители"
+
+#: core/models.py:79
+msgid "Name of unit"
+msgstr "Название единицы измерения"
+
+#: core/models.py:83
+msgid "Units"
+msgstr "Единицы измерения"
+
+#: core/models.py:90
+msgid "Name of parameter"
+msgstr "Название параметра"
+
+#: core/models.py:94
+msgid "Parameters"
+msgstr "Параметры"
+
+#: core/models.py:108
+msgid "Title"
+msgstr "Заголовок"
+
+#: core/models.py:111 core/models.py:591
 msgid "Status"
 msgstr "Статус"
 
-#: core/models.py:98 core/models.py:416
+#: core/models.py:112 core/models.py:430
 msgid "Author"
 msgstr "Автор"
 
-#: core/models.py:99 core/models.py:415
+#: core/models.py:113 core/models.py:429
 msgid "Published from"
 msgstr "Опубликовано от"
 
-#: core/models.py:99
+#: core/models.py:113
 msgid "With published checked, won't be shown until this time"
 msgstr "С датой публикации не будет показываться до этого времени"
 
-#: core/models.py:102
+#: core/models.py:116
 msgid "allow comments"
 msgstr "разрешить комментарии"
 
-#: core/models.py:103
+#: core/models.py:117
 msgid "allow pics"
 msgstr "разрешить картинки"
 
-#: core/models.py:104
+#: core/models.py:118
 msgid "allow docs"
 msgstr "разрешить документы"
 
-#: core/models.py:110
+#: core/models.py:124
 msgid "MetaData"
 msgstr "Метаданное"
 
-#: core/models.py:111
+#: core/models.py:125
 msgid "MetaDatas"
 msgstr "Метаданные"
 
-#: core/models.py:183 core/models.py:399
+#: core/models.py:197 core/models.py:413
 msgid "View on site"
 msgstr "Смотреть на сайте"
 
-#: core/models.py:191
+#: core/models.py:205
 msgid "Enabled in system"
 msgstr "Включено в системе"
 
-#: core/models.py:193
+#: core/models.py:207
 msgid "Description(English)"
 msgstr "Описание(Английский)"
 
-#: core/models.py:194
+#: core/models.py:208
 msgid "URL-identifier"
 msgstr "URL-идентификатор"
 
-#: core/models.py:237
+#: core/models.py:251
 msgid "Parent"
 msgstr "Родитель"
 
-#: core/models.py:238 core/models.py:419
+#: core/models.py:252 core/models.py:433
 msgid "Ordering"
 msgstr "Упорядочить"
 
-#: core/models.py:238
+#: core/models.py:252
 msgid "Override alphabetical order in tree display"
 msgstr "Заменять сортировку по алфавиту в просмотре дерева"
 
-#: core/models.py:239
+#: core/models.py:253
 msgid "Root node"
 msgstr "Корневой узел"
 
-#: core/models.py:244
+#: core/models.py:258
 msgid "Tree"
 msgstr "Дерево"
 
-#: core/models.py:245
+#: core/models.py:259
 msgid "Trees"
 msgstr "Деревья"
 
-#: core/models.py:277
+#: core/models.py:291
 msgid "Tree parents"
 msgstr "Родитель дерева"
 
-#: core/models.py:298 core/models.py:301
+#: core/models.py:312 core/models.py:315
 msgid "You must not save a category in itself!"
 msgstr "Вы не можете сохранить категорию в саму себя!"
 
-#: core/models.py:347 core/models.py:653
+#: core/models.py:361 core/models.py:667
 msgid "Tag"
 msgstr "Теги"
 
-#: core/models.py:377
+#: core/models.py:391
 msgid "object ID"
 msgstr "ID объекта"
 
-#: core/models.py:379
+#: core/models.py:393
 msgid "Is primary"
 msgstr "Основной"
 
-#: core/models.py:409 core/models.py:435
+#: core/models.py:423 core/models.py:449
 msgid "File"
 msgstr "Файл"
 
-#: core/models.py:410 core/models.py:476
+#: core/models.py:424 core/models.py:490
 msgid "Image"
 msgstr "Изображение"
 
-#: core/models.py:419
+#: core/models.py:433
 msgid "Override alphabetical order in list display"
 msgstr "Заменять сортировку по алфавиту в просмотре списка"
 
-#: core/models.py:420
+#: core/models.py:434
 msgid "Is locked"
 msgstr "Блокировано"
 
-#: core/models.py:426 core/models.py:805
+#: core/models.py:440 core/models.py:819
 msgid "IP"
 msgstr ""
 
-#: core/models.py:427
+#: core/models.py:441
 msgid "User Agent"
 msgstr ""
 
-#: core/models.py:434
+#: core/models.py:448
 msgid "Doc type"
 msgstr "Тип документа"
 
-#: core/models.py:440
+#: core/models.py:454
 msgid "Docs"
 msgstr "Документы"
 
-#: core/models.py:477
+#: core/models.py:491
 msgid "Source"
 msgstr "Источник"
 
-#: core/models.py:484
+#: core/models.py:498
 msgid "Pics"
 msgstr "Изображения"
 
-#: core/models.py:487
+#: core/models.py:501
 #, python-format
 msgid "Pic for %(type)s: %(obj)s"
 msgstr "Изображение для %(type)s: %(obj)s"
 
-#: core/models.py:572
+#: core/models.py:586
 msgid "date/time published"
 msgstr "дата/время публикации"
 
-#: core/models.py:573
+#: core/models.py:587
 msgid "date/time updated"
 msgstr "дата/время обновления"
 
-#: core/models.py:617
+#: core/models.py:631
 msgid "Threaded Comment"
 msgstr "Древовидный комментарий"
 
-#: core/models.py:618
+#: core/models.py:632
 msgid "Threaded Comments"
 msgstr "Древовидные комментарии"
 
-#: core/models.py:636
+#: core/models.py:650
 msgid "Follow"
 msgstr "Следование"
 
-#: core/models.py:637
+#: core/models.py:651
 msgid "Follows"
 msgstr "Следования"
 
-#: core/models.py:651 core/models.py:734
+#: core/models.py:665 core/models.py:748
 msgid "System"
 msgstr "Система"
 
-#: core/models.py:654
+#: core/models.py:668
 msgid "Account"
 msgstr "Счет"
 
-#: core/models.py:655
+#: core/models.py:669
 msgid "Profile"
 msgstr "Профиль"
 
-#: core/models.py:664
+#: core/models.py:678
 msgid "Notice Type"
 msgstr "Тип уведомления"
 
-#: core/models.py:672
+#: core/models.py:686
 msgid "Notice"
 msgstr "Уведомление"
 
-#: core/models.py:673
+#: core/models.py:687
 msgid "Notices"
 msgstr "Уведомления"
 
-#: core/models.py:679
+#: core/models.py:693
 msgid "Subject"
 msgstr "Тема"
 
-#: core/models.py:680
+#: core/models.py:694
 msgid "Body"
 msgstr "Содержание"
 
-#: core/models.py:681
+#: core/models.py:695
 msgid "Sender"
 msgstr "Отправитель"
 
-#: core/models.py:683
+#: core/models.py:697
 msgid "Parent message"
 msgstr "Родительское сообщениe"
 
-#: core/models.py:684
+#: core/models.py:698
 msgid "sent at"
 msgstr "отослано в"
 
-#: core/models.py:685
+#: core/models.py:699
 msgid "read at"
 msgstr "прочитано в"
 
-#: core/models.py:686
+#: core/models.py:700
 msgid "replied at"
 msgstr "отвечено в"
 
-#: core/models.py:687
+#: core/models.py:701
 msgid "Sender deleted at"
 msgstr "Отправитель удален в"
 
-#: core/models.py:688
+#: core/models.py:702
 msgid "Recipient deleted at"
 msgstr "Получатель удален в"
 
-#: core/models.py:722
+#: core/models.py:736
 msgid "Messages"
 msgstr "Сообщения"
 
-#: core/models.py:735
+#: core/models.py:749
 msgid "Added"
 msgstr "Добавил"
 
-#: core/models.py:736
+#: core/models.py:750
 msgid "Commented"
 msgstr "Прокомментировал"
 
-#: core/models.py:737
+#: core/models.py:751
 msgid "Followed"
 msgstr "Следует"
 
-#: core/models.py:738
+#: core/models.py:752
 msgid "Liked"
 msgstr "Нравится"
 
-#: core/models.py:746
+#: core/models.py:760
 msgid "Action Type"
 msgstr "Тип действия"
 
-#: core/models.py:753
+#: core/models.py:767
 msgid "Action"
 msgstr "Действие"
 
-#: core/models.py:754
+#: core/models.py:768
 msgid "Actions"
 msgstr "Действия"
 
-#: core/models.py:804
+#: core/models.py:818
 msgid "Session key"
 msgstr "Ключ сессии"
 
-#: core/models.py:806
+#: core/models.py:820
 msgid "Hostname"
 msgstr "Имя хоста"
 
-#: core/models.py:807
+#: core/models.py:821
 msgid "User-agent"
 msgstr ""
 
-#: core/models.py:808
+#: core/models.py:822
 msgid "Referrer"
 msgstr "Реферрер"
 
-#: core/models.py:810
+#: core/models.py:824
 msgid "Is secure"
 msgstr "HTTPS"
 
-#: core/models.py:815
+#: core/models.py:829
 msgid "Visitors hits"
 msgstr "Посещения пользователей"
 
