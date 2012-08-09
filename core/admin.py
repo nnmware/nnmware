@@ -135,6 +135,10 @@ class ColorAdmin(admin.ModelAdmin):
     list_display = ('name', )
     list_filter = ('name',)
 
+class VendorAdmin(admin.ModelAdmin):
+    fieldsets = ((_('Vendor'), {'fields': [('name','country','website')]}),)
+    list_display = ('name','country','website')
+
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'user', 'actor')
     list_editable = ('user',)
