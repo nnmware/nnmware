@@ -55,7 +55,7 @@ class Color(models.Model):
 
 class Vendor(models.Model):
     name = models.CharField(_("Name of vendor"),max_length=200)
-    site = models.URLField(verify_exists=False)
+    site = models.URLField(_("URL"), blank=True)
     desc = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
 
     class Meta:
