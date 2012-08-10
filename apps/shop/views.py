@@ -2,6 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from nnmware.apps.shop.form import EditProductForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket
 from nnmware.core.data import get_queryset_category
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin
