@@ -28,7 +28,7 @@ class BasketView(ListView):
     def get_queryset(self):
         return Basket.objects.filter(user=self.request.user)
 
-class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
+class EditProduct(CurrentUserSuperuser, AttachedImagesMixin, UpdateView, AjaxFormMixin):
     model = Product
     pk_url_kwarg = 'pk'
     form_class = EditProductForm
