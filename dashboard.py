@@ -72,7 +72,7 @@ class NnmwareDashboard(Dashboard):
 
         # append another link list module for "support".
         self.children.append(modules.LinkList(
-            _('Nerd.do'),
+            _('nnmware.example'),
             column=3,
             children=[
                 {
