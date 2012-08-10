@@ -5,8 +5,9 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.models import Tree, MetaName, MetaContent, Color, MetaDate
+from nnmware.core.models import Tree, MetaName, MetaContent, Color
 from nnmware.core.models import Unit, Parameter
+from nnmware.core.abstract import MetaDate
 
 
 class ProductCategory(Tree):

@@ -3,7 +3,7 @@ from django.contrib.contenttypes import generic
 from nnmware.core.admin import TreeAdmin, UnitAdmin
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.shop.models import Product, ProductParameter, ProductColor, ProductParameterValue, \
-    Vendor, ProductCategory, ParameterUnit
+    Vendor, ProductCategory, ParameterUnit, Basket
 from nnmware.core.admin import ColorAdmin
 
 class ProductParameterValueInline(generic.GenericStackedInline):
@@ -49,3 +49,4 @@ admin.site.register(ParameterUnit, UnitAdmin)
 admin.site.register(ProductParameter, ProductParameterAdmin)
 admin.site.register(ProductColor, ColorAdmin)
 admin.site.register(Vendor, VendorAdmin)
+admin.site.register(Basket, BasketAdmin)
