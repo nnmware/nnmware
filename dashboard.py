@@ -14,12 +14,12 @@ class NnmwareDashboard(Dashboard):
         
         # append an app list module for "Applications"
         self.children.append(modules.Group(
-            _('NNMWARE System:'),
+            _('nnmware system boot:'),
             collapsible=True,
             column=1,
             children = [
                 modules.AppList(
-                    _('NNMWARE Core'),
+                    _('Core'),
                     column=1,
                     css_classes=('grp-collapse',),
                     models=('nnmware.core.*',
