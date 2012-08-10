@@ -1,5 +1,5 @@
 """NNMWARE CMF"""
-__version__ = '0.50.dev'
+__version__ = '0.51.dev'
 __license__ = 'GPL3 License'
 
 __author__ = 'nnmware'

@@ -86,6 +86,8 @@ class Basket(MetaDate):
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
 
+
+
     class Meta:
         verbose_name = _("Basket")
         verbose_name_plural = _("Baskets")
