@@ -11,6 +11,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template import loader, Context
+from nnmware.apps.shop.models import Basket
 from nnmware.apps.video.models import Video
 from nnmware.core.imgutil import remove_file, remove_thumbnails
 from nnmware.core.backends import upload_avatar_dir
@@ -117,6 +118,13 @@ class Profile(models.Model):
 
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.user.username])
+
+    def basket_sum(self):
+        try:
+            return Basket.objects.filter(user=self).count()
+        except :
+            return None
+
 
     @property
     def unread_msg_count(self):
