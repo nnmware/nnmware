@@ -188,6 +188,14 @@ class MetaName(models.Model):
             pass
         return self.description
 
+    @property
+    def main_image(self):
+        try:
+            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
+            return pics[0].pic.url
+        except :
+            return None
+
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.id:
