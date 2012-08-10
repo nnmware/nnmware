@@ -49,3 +49,22 @@ Working with OpenStreetMap and his geotargeting.
 Great thanks Python, Django, Linux and all OpenSource community.
 
 
+
+============================================
+QUICK START
+============================================
+
+Install django-current, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(reccomended)
+
+cd /usr/src
+git clone https://github.com/nnmware/nnmware.git
+cd /usr/src/nnmware
+./syncdb
+./runserver:8080
+
+locate you browser at http://localhost:8080/admin/ ,
+login and enjoy.
+
+you may disable django-grappelli in settings.py
+
+
