@@ -54,7 +54,8 @@ Great thanks Python, Django, Linux and all OpenSource community.
 QUICK START
 ============================================
 
-Install django-current, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(reccomended)
+Install django-current or django-1.4, south, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(reccomended)
+
 
 cd /usr/src
 git clone https://github.com/nnmware/nnmware.git
