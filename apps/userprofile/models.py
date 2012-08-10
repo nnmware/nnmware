@@ -121,7 +121,7 @@ class Profile(models.Model):
 
     def basket_sum(self):
         try:
-            return Basket.objects.filter(user=self).count()
+            return Basket.objects.filter(user=self.user).count()
         except :
             return None
 
