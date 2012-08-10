@@ -4,7 +4,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.models import Product, ProductCategory, Basket
 from nnmware.core.data import get_queryset_category
-
+from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin
 
 
 class ShopCategory(ListView):
@@ -26,5 +26,8 @@ class BasketView(ListView):
     def get_queryset(self):
         return Basket.objects.filter(user=self.request.user)
 
-class EditProduct(UpdateView):
-    pass
+class EditProduct(CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
+    model = Product
+    pk_url_kwarg = 'pk'
+    form_class = EditProductForm
+    template_name = "shop/edit_product.html"
