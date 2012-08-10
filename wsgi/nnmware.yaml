@@ -1,19 +1,19 @@
 uwsgi:
-    print: Rusbooking Configuration Started
+    print: Nnmware Configuration Started
     # указываем socket, при помощи которого будет происходить
     # взаимодействие между nginx и uwsgi
     socket: /var/tmp/nnmware_uwsgi.sock
     # здесь указываем путь к django-проекту
-    pythonpath: /sites/nnmware/project_dir
+    pythonpath: /usr/src/nnmware
     # устанавливаем переменную окружения, которая хранит имя settings файла
     env: DJANGO_SETTINGS_MODULE=settings
     # это имя модуля, который будет запускаться на выполнение
     # в такой постановке, будет запускаться wsgi.py из директории
     # указанной выше в 'pythonpath'
     module: wsgi
-    chdir: /sites/nnmware/project_dir
+    chdir: /usr/src/nnmware
     путь к лог файлу
-    daemonize: /sites/nnmware/log/uwsgi.log
+    daemonize: /usr/src/nnmware/log/uwsgi.log
     # прочие настройки, значения который можно посмотреть на сайте uWSGI
     max-requests: 5000
     buffer-size: 32768
@@ -23,6 +23,6 @@ uwsgi:
     no-orphans: 1
     # если выполнить команду "touch <имя ниже указанного файла>",
     # то произойдет перезапуск uwsgi демона.
-    touch-reload: /sites/nnmware/log/uwsgi
+    touch-reload: /usr/src/nnmware/log/uwsgi
     post-buffering: 8192
     

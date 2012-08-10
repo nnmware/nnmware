@@ -34,11 +34,15 @@ contains base for:
 [Booking]
     Booking application base 
 
+[Shop]
+    Shop application base 
+
 Licensed under GPL3 
 
 support@nnmware.com
 
 required django-current, python-oauth2, south, unidecode, xlwt
+reccomended django-grappelli
 
 Working with OpenStreetMap and his geotargeting.
 
