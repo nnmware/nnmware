@@ -190,7 +190,6 @@ class AvatarForm(forms.ModelForm):
 
 
 
-
 class AvatarCropForm(forms.ModelForm):
     """
     Crop dimensions form

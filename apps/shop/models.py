@@ -57,7 +57,6 @@ class Product(MetaName, MoneyBase, MetaDate):
 class ParameterUnit(Unit):
     pass
 
-
 class ProductParameter(Parameter):
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
 
@@ -85,7 +84,6 @@ class Basket(MetaDate):
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='basket')
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
-
 
 
     class Meta:
