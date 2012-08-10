@@ -13,8 +13,6 @@ class EditProductForm(forms.ModelForm):
         fields = ('name','category','slug','amount','quantity')
 
     def clean(self):
-        if not (self.cleaned_data.get('avatar')):
-            raise forms.ValidationError(_('You must enter one of the options'))
         return self.cleaned_data
 
 
