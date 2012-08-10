@@ -82,7 +82,7 @@ class NnmwareDashboard(Dashboard):
                 },
                 {
                     'title': _('Admin page'),
-                    'url': '/is_not_adm/',
+                    'url': '/admin/',
                     'external': False,
                 },
 
