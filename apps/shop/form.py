@@ -8,7 +8,7 @@ class EditProductForm(forms.ModelForm):
     """
     class Meta:
         model = Product
-        fields = ('name','category')
+        fields = ('name','category','slug','amount','quantity')
 
     def clean(self):
         if not (self.cleaned_data.get('avatar')):
