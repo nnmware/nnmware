@@ -1,5 +1,4 @@
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
 
 from grappelli.dashboard import modules, Dashboard
 from grappelli.dashboard.utils import get_admin_site_name
@@ -27,7 +26,7 @@ class NnmwareDashboard(Dashboard):
                 	    ),
                 ),
                 modules.AppList(
-                    _('Money&Addresses&Video'),
+                    _('Money :: Addresses :: Video'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
                     models=( 'nnmware.apps.money.*',
