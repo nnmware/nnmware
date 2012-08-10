@@ -23,3 +23,29 @@ class MetaDate(models.Model):
 
     class Meta:
         abstract = True
+
+class Unit(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name of unit'))
+
+    class Meta:
+        verbose_name = _("Unit")
+        verbose_name_plural = _("Units")
+        abstract = True
+
+    def __unicode__(self):
+        return "%s" % self.name
+
+class Parameter(models.Model):
+    name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
+
+    class Meta:
+        verbose_name = _("Parameter")
+        verbose_name_plural = _("Parameters")
+        abstract = True
+
+    def __unicode__(self):
+        try:
+            return "%s (%s)" % (self.name, self.unit.name)
+        except :
+            return "%s" % self.name
+
