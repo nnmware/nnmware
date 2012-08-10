@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.models import Tree, MetaName, MetaContent, Color
+from nnmware.core.models import Tree, MetaName, MetaContent, Color, MetaDate
 from nnmware.core.models import Unit, Parameter
 
 
@@ -35,11 +36,9 @@ class Vendor(models.Model):
         return self.name
 
 
-class Product(MetaName, MoneyBase):
+class Product(MetaName, MoneyBase, MetaDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
         on_delete=models.SET_NULL)
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
-    updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     color = models.ForeignKey(ProductColor, verbose_name=_('Color'), null=True, blank=True,
         on_delete=models.SET_NULL)
@@ -82,4 +81,12 @@ class ProductParameterValue(MetaContent):
             return "%s: %s" % (self.parameter.name, self.value)
 
 
+class Basket(MetaDate):
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='basket')
+    quantity = models.IntegerField(verbose_name=_('Quantity'))
+    product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
+
+    class Meta:
+        verbose_name = _("Basket")
+        verbose_name_plural = _("Baskets")
 

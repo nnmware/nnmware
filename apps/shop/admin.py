@@ -33,12 +33,14 @@ class ProductCategoryAdmin(TreeAdmin):
     list_display = ("name", "_parents_repr")
 
 class ProductParameterAdmin(admin.ModelAdmin):
-
     list_display = ("name", "unit")
 
 class VendorAdmin(admin.ModelAdmin):
     fieldsets = ((_('Vendor'), {'fields': [('name','country','website'),('description',)]}),)
     list_display = ('name','country','website')
+
+class BasketAdmin(admin.ModelAdmin):
+    list_display = ("user", "product",'quantity','created_date','updated_date')
 
 
 admin.site.register(Product, ProductAdmin)
