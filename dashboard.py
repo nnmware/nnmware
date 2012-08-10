@@ -21,7 +21,7 @@ class NnmwareDashboard(Dashboard):
                 modules.AppList(
                     _('NNMWARE Core'),
                     column=1,
-                    collapsible=False,
+                    css_classes=('grp-collapse',),
                     models=('nnmware.core.*',
                 	    ),
                 ),
