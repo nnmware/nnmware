@@ -22,7 +22,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'nnmware',
+        'NAME': 'nnmware.db',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -38,7 +38,7 @@ LOCALE_PATHS = (
 TIME_ZONE = 'Europe/Moscow'
 LANGUAGE_CODE = 'en-en'
 SITE_ID = 1
-USE_I18N = True
+USE_I18N = False
 
 MEDIA_ROOT = '/usr/src/nnmware/media'
 STATIC_ROOT = os.path.join(DIRNAME, 'static')
