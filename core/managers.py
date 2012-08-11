@@ -111,7 +111,7 @@ class PublicJCommentManager(JCommentManager):
      """
 
     def get_query_set(self):
-        from nnmware.core.models import STATUS_PUBLISHED, STATUS_STICKY
+        from nnmware.core.abstract import STATUS_PUBLISHED, STATUS_STICKY
 
         return super(JCommentManager, self).get_query_set().filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
