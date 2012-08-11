@@ -16,7 +16,6 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.managers import MetaLinkManager
-from nnmware.core.models import Pic
 
 class Color(models.Model):
     name = models.CharField(max_length=255, verbose_name=_('Color'))
@@ -227,6 +226,7 @@ class MetaName(models.Model):
 
     @property
     def all_images(self):
+        from nnmware.core.models import Pic
         return Pic.objects.metalinks_for_object(self).order_by('-primary')
 
     def save(self, *args, **kwargs):
