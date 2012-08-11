@@ -26,7 +26,7 @@ class BoardList(ListView):
 class BoardYearList(YearArchiveView):
     template_name = 'board/board_list.html'
     model = Board
-    date_field = "publish_date"
+    date_field = "created_date"
     context_object_name = "object_list"
     make_object_list = True
     allow_empty = True
@@ -35,7 +35,7 @@ class BoardYearList(YearArchiveView):
 class BoardMonthList(MonthArchiveView):
     template_name = 'board/board_list.html'
     model = Board
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 
@@ -43,7 +43,7 @@ class BoardMonthList(MonthArchiveView):
 class BoardDayList(DayArchiveView):
     template_name = 'board/board_list.html'
     model = Board
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 

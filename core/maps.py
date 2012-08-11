@@ -38,7 +38,6 @@ STATIC_MAPS_URL = 'http://static-maps.yandex.ru/1.x/?'
 GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'
 
 
-# urllib2 doesn't support timeouts for python 2.5
 
 def request(method, url, data=None, headers=None, timeout=None):
     host_port = url.split('/')[2]

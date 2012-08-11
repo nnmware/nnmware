@@ -267,7 +267,7 @@ class LatestCommentsNode(template.Node):
         self.context_name = context_name
 
     def render(self, context):
-        comments = JComment.objects.order_by('-publish_date')[:self.num]
+        comments = JComment.objects.order_by('-created_date')[:self.num]
         context[self.context_name] = comments
         return ''
 

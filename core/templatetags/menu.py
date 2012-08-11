@@ -67,7 +67,7 @@ def menu_date(app=None):
         from nnmware.core.models import Pic as Alldata
     elif app == 'doc':
         from nnmware.core.models import Doc as Alldata
-    query = Alldata.objects.all().order_by('-publish_date')
+    query = Alldata.objects.all().order_by('-created_date')
     objects_years_dict = create_archive_list(query)
     html = Element("ul")
     keyList = objects_years_dict.keys()

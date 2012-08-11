@@ -15,7 +15,7 @@ def video_links(context, mode='random'):
         category = context['category_panel']
     except KeyError:
         category = None
-    videos = Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1))
+    videos = Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1))
     result = videos
     if user.is_authenticated():
         result = result.exclude(users_viewed = user)

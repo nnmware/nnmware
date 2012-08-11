@@ -54,6 +54,9 @@ class Product(MetaName, MoneyBase, MetaDate):
     def parameters(self):
         return ProductParameterValue.objects.metalinks_for_object(self)
 
+    def pics(self):
+        pass
+
 class ParameterUnit(Unit):
     pass
 

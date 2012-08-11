@@ -427,7 +427,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         kwargs['parent_id'] = comment.pk
         reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         comment_text = linebreaksbr(comment.comment)
-        comment_date = comment.publish_date.strftime(settings.COMMENT_DATE_FORMAT)
+        comment_date = comment.created_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
             avatar_id = comment.user.get_profile().avatar.pk
         except :

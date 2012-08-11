@@ -14,7 +14,7 @@ from nnmware.apps.article.models import *
 
 class ArticleDetail(AttachedFilesMixin, DateDetailView):
     model = Article
-    date_field = 'publish_date'
+    date_field = 'created_date'
 
 
 class ArticleList(ListView):
@@ -25,7 +25,7 @@ class ArticleList(ListView):
             Q(status=STATUS_DELETE) |
             Q(status=STATUS_MODERATION) |
             Q(status=STATUS_LOCKED)
-            ).order_by('-publish_date')
+            ).order_by('-created_date')
         messages.add_message(self.request, messages.INFO,
             _(u'Found %(len)s articles') % {'len': len(result)})
         return result
@@ -34,7 +34,7 @@ class ArticleList(ListView):
 class ArticleDateTemplate(object):
     template_name = 'article/article_list.html'
     model = Article
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
     allow_empty = True

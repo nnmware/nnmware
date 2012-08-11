@@ -51,7 +51,7 @@ class JCommentManager(Manager):
         children = list(self.get_query_set().filter(
             content_type=content_type,
             object_id=getattr(content_object, 'pk', getattr(content_object, 'id')),
-        ).select_related().order_by('-publish_date'))
+        ).select_related().order_by('-created_date'))
         to_return = []
         if root:
             if isinstance(root, int):

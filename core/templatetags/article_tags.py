@@ -63,9 +63,9 @@ class GetArticlesNode(template.Node):
     def render(self, context):
         # determine the order to sort the articles
         if self.order and self.order.lower() == 'desc':
-            order = '-publish_date'
+            order = '-created_date'
         else:
-            order = 'publish_date'
+            order = 'created_date'
 
         user = context.get('user', None)
 
@@ -136,7 +136,7 @@ class GetArticleArchivesNode(template.Node):
 
             # iterate over all live articles
             for article in Article.objects.live(user=user).select_related():
-                pub = article.publish_date
+                pub = article.created_date
 
                 # see if we already have an article in this year
                 if not pub.year in archives:

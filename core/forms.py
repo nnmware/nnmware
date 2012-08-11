@@ -49,7 +49,7 @@ class JCommentForm(forms.ModelForm):
 class JCommentStatusForm(forms.ModelForm):
     class Meta:
         model = JComment
-        fields = ('status', 'publish_date')
+        fields = ('status', 'created_date')
 
 
 class JCommentEditorForm(forms.ModelForm):
@@ -64,7 +64,7 @@ class JCommentEditorForm(forms.ModelForm):
 class JCommentEditorStatusForm(forms.ModelForm):
     class Meta:
         model = JComment
-        fields = ('status', 'publish_date')
+        fields = ('status', 'created_date')
 
 
 class JCommentAdminForm(forms.ModelForm):
@@ -79,13 +79,13 @@ class JCommentAdminForm(forms.ModelForm):
 class JCommentAdminStatusForm(forms.ModelForm):
     class Meta:
         model = JComment
-        fields = ('status', 'publish_date')
+        fields = ('status', 'created_date')
 
 
 class DocForm(forms.ModelForm):
     class Meta(object):
         model = Doc
-        fields = ('file', 'description', 'publish_date', 'locked', 'filetype')
+        fields = ('file', 'description', 'created_date', 'locked', 'filetype')
 
 
 class DocDeleteForm(forms.ModelForm):

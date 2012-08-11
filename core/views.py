@@ -301,7 +301,7 @@ class PicList(ListView):
 class PicYearList(YearArchiveView):
     template_name = 'upload/pic_list.html'
     model = Pic
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
     allow_empty = True
@@ -310,7 +310,7 @@ class PicYearList(YearArchiveView):
 class PicMonthList(MonthArchiveView):
     template_name = 'upload/pic_list.html'
     model = Pic
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 
@@ -318,7 +318,7 @@ class PicMonthList(MonthArchiveView):
 class PicDayList(DayArchiveView):
     template_name = 'upload/pic_list.html'
     model = Pic
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 
@@ -331,7 +331,7 @@ class DocList(ListView):
 class DocYearList(YearArchiveView):
     template_name = 'upload/doc_list.html'
     model = Doc
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
     allow_empty = True
@@ -340,7 +340,7 @@ class DocYearList(YearArchiveView):
 class DocMonthList(MonthArchiveView):
     template_name = 'upload/doc_list.html'
     model = Doc
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 
@@ -348,7 +348,7 @@ class DocMonthList(MonthArchiveView):
 class DocDayList(DayArchiveView):
     template_name = 'upload/doc_list.html'
     model = Doc
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
 

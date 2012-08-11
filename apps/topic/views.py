@@ -55,7 +55,7 @@ class TopicUserList(ListView):
 class TopicDateTemplate(object):
     template_name = 'topic/topic_list.html'
     model = Topic
-    date_field = 'publish_date'
+    date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
     allow_empty = True

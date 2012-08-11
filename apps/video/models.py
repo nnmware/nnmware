@@ -7,8 +7,9 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.models import Tag, Follow, JComment
+from nnmware.core.abstract import MetaDate
 
-class Video(models.Model):
+class Video(MetaDate):
 
     user = models.ForeignKey(User)
     project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)
@@ -16,7 +17,6 @@ class Video(models.Model):
     video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
     video_provider = models.CharField(max_length=150, verbose_name=_(u'Video Provider'), blank=True)
     description = models.TextField(verbose_name=_(u'Description'), blank=True)
-    publish_date = models.DateTimeField(_("Publish date"), auto_now_add=True)
     thumbnail = models.ImageField(upload_to="video/%Y/%b/%d", blank=True)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
     slug = models.SlugField(_("Slug"), max_length=255, blank=True)
@@ -33,7 +33,7 @@ class Video(models.Model):
     class Meta:
         verbose_name = _("Video")
         verbose_name_plural = _("Videos")
-        ordering = ("-publish_date",)
+        ordering = ("-created_date",)
 
     def __unicode__(self):
         return _("%s") % self.project_name

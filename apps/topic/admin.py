@@ -14,7 +14,7 @@ class TopicAdmin(MetaDataAdmin):
     """
     actions = None
     fieldsets = topic_fieldsets
-    list_display = ("title", "category", "publish_date", "user", "status",
+    list_display = ("title", "category", "created_date", "user", "status",
                     "admin_link")
 
 

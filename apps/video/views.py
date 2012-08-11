@@ -94,7 +94,7 @@ class VideoTimelineFeed(ListView):
         ctype = ContentType.objects.get_for_model(Tag)
         tags_id = Follow.objects.filter(user=self.request.user,content_type=ctype).values_list('object_id',flat=True)
         tags = Tag.objects.filter(pk__in=tags_id)
-        return Video.objects.filter(tags__in=tags).order_by('-publish_date').distinct()
+        return Video.objects.filter(tags__in=tags).order_by('-created_date').distinct()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -110,7 +110,7 @@ class VideoPopularFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -126,7 +126,7 @@ class VideoLatestFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.order_by('-publish_date')
+        return Video.objects.order_by('-created_date')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -142,7 +142,7 @@ class VideoLovedFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(publish_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -201,7 +201,7 @@ class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        return Video.objects.filter(user=self.object).order_by('-publish_date')
+        return Video.objects.filter(user=self.object).order_by('-created_date')
 
 class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 12

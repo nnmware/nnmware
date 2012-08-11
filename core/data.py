@@ -65,23 +65,23 @@ def create_archive_list(_query):
     archive_list = {}
 
     for item in _query:
-        if item.publish_date.year not in archive_list.keys():
-            archive_list[item.publish_date.year] = {}
+        if item.created_date.year not in archive_list.keys():
+            archive_list[item.created_date.year] = {}
         else:
             pass
 
     for entry in _query:
         for item in archive_list.keys():
-            _year = entry.publish_date.year
+            _year = entry.created_date.year
             if _year == item:
-                _month = entry.publish_date.strftime("%b")
+                _month = entry.created_date.strftime("%b")
                 if _month not in archive_list[item].keys():
                     archive_list[item][_month] = []
 
     for entry in _query:
-        _year = entry.publish_date.year
-        _month = entry.publish_date.strftime("%b")
-        _day = entry.publish_date.strftime("%d")
+        _year = entry.created_date.year
+        _month = entry.created_date.strftime("%b")
+        _day = entry.created_date.strftime("%d")
         if _day not in archive_list[_year][_month]:
             archive_list[_year][_month].append(_day)
 

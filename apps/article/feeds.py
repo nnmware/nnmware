@@ -33,7 +33,7 @@ class LatestEntries(Feed, SiteMixin):
 
         if articles is None:
             articles = \
-                list(Article.objects.live().order_by('-publish_date')[:15])
+                list(Article.objects.live().order_by('-created_date')[:15])
             cache.set(key, articles, FEED_TIMEOUT)
 
         return articles
@@ -42,7 +42,7 @@ class LatestEntries(Feed, SiteMixin):
         return item.author.username
 
     def item_pubdate(self, item):
-        return item.publish_date
+        return item.created_date
 
 
 class TagFeed(Feed, SiteMixin):
@@ -69,7 +69,7 @@ class TagFeed(Feed, SiteMixin):
         articles = cache.get(key)
 
         if articles is None:
-            articles = list(obj.article_set.live().order_by('-publish_date'))
+            articles = list(obj.article_set.live().order_by('-created_date'))
             cache.set(key, articles, FEED_TIMEOUT)
 
         return articles
@@ -81,7 +81,7 @@ class TagFeed(Feed, SiteMixin):
         return reverse('articles_by_author', args=[item.author.username])
 
     def item_pubdate(self, item):
-        return item.publish_date
+        return item.created_date
 
 
 class LatestEntriesAtom(LatestEntries):

@@ -10,13 +10,13 @@ class JCommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('nnmware'), {'fields': [('parent', 'content_type', 'object_id')]}),
         (_('Content'), {'fields': [('comment', 'user', 'status')]}),
-        (_('Meta'), {'fields': [('publish_date', 'updated_date',
+        (_('Meta'), {'fields': [('created_date', 'updated_date',
                                  'ip')]}),
         )
-    list_display = ('user', 'publish_date', 'content_type',
+    list_display = ('user', 'created_date', 'content_type',
                     'parent', '__unicode__')
-    list_filter = ('publish_date',)
-    date_hierarchy = 'publish_date'
+    list_filter = ('created_date',)
+    date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
 
 admin.site.register(JComment, JCommentAdmin)
@@ -48,10 +48,10 @@ class MetaDataAdmin(admin.ModelAdmin):
     list_editable = ("status",)
     list_filter = ("status",)
     search_fields = ("title", "content",)
-    date_hierarchy = "publish_date"
+    date_hierarchy = "created_date"
     fieldsets = (
         (_("Main"), {"fields": [("title", "slug", "status", "user"), ]}),
-        (_("Description"), {"fields": [("description", "publish_date",
+        (_("Description"), {"fields": [("description", "created_date",
                     "allow_comments"), ]}),
         )
 
@@ -82,10 +82,10 @@ class DocAdmin(admin.ModelAdmin):
 #    readonly_fields = ('file',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Doc'), {'fields': [('file', 'publish_date', 'ordering')]}),
+        (_('Doc'), {'fields': [('file', 'created_date', 'ordering')]}),
         (_('Meta'), {'fields': [('description', 'filetype')]}),
         )
-    list_display = ("description", "file", "publish_date", "user",
+    list_display = ("description", "file", "created_date", "user",
             "locked", "size", "admin_link")
 
 
@@ -93,13 +93,13 @@ class PicAdmin(admin.ModelAdmin):
  #   readonly_fields = ('pic',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Pic'), {'fields': [('pic', 'publish_date')]}),
+        (_('Pic'), {'fields': [('pic', 'created_date')]}),
         (_('Meta'), {'fields': [('description', 'source')]}),
         )
-    list_display = ('user', 'publish_date', 'content_type',
+    list_display = ('user', 'created_date', 'content_type',
                     'pic', '__unicode__')
-    list_filter = ('publish_date',)
-    date_hierarchy = 'publish_date'
+    list_filter = ('created_date',)
+    date_hierarchy = 'created_date'
     search_fields = ('description', 'user__username')
 
 class VisitorHitAdmin(admin.ModelAdmin):

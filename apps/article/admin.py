@@ -15,7 +15,7 @@ class ArticleAdmin(MetaDataAdmin):
      """
     #    actions = None
     fieldsets = articlepost_fieldsets
-    list_display = ("title", "category", "publish_date", "user", "status",
+    list_display = ("title", "category", "created_date", "user", "status",
                     "admin_link")
 
 

@@ -71,7 +71,7 @@ class AjaxAbstractUploader(object):
         target.object_id = int(kwargs['object_id'])
         target.description = self.extra_context['oldname']
         target.user = request.user
-        target.publish_date = datetime.now()
+        target.created_date = datetime.now()
 
 
 class AjaxFileUploader(AjaxAbstractUploader):
@@ -162,7 +162,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 new.object_id = request.user.pk
                 new.description = self.extra_context['oldname']
                 new.user = request.user
-                new.publish_date = datetime.now()
+                new.created_date = datetime.now()
                 new.pic = self.extra_context['path']
                 new.save()
                 request.user.get_profile().avatar = new
@@ -178,3 +178,42 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
 def as_json(errors):
     return dict((k, map(unicode, v)) for k, v in errors.items())
 
+def img_check_rights(request, obj):
+    if request.user.is_superuser:
+        return True
+    return False
+
+def img_setmain(request, object_id):
+    # Link used for User press SetMain for Image
+    pic = get_object_or_404(Pic, id=int(object_id))
+    if img_check_rights(request,pic):
+        all_pics =Pic.objects.metalinks_for_object(pic.content_object)
+        all_pics.update(primary=False)
+        pic.primary = True
+        pic.save()
+        payload = {'success': True}
+    else :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def img_delete(request, object_id):
+    # Link used for User press Delete for Image
+    pic = get_object_or_404(Pic, id=int(object_id))
+    if img_check_rights(request,pic):
+        pic.delete()
+        payload = {'success': True}
+    else :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+def img_getcrop(request, object_id):
+    # Link used for User want crop image
+    pic = get_object_or_404(Pic, id=int(object_id))
+    try:
+        payload = {'success': True,
+                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH),
+                   'id':pic.pk}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
