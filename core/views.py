@@ -22,9 +22,9 @@ from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails
-from nnmware.core.models import JComment, DEFAULT_MAX_JCOMMENT_LENGTH, STATUS_DELETE, Doc, Pic, Follow, Notice, Message, Action
+from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action
 from nnmware.core.forms import *
-from nnmware.core.actions import follow, unfollow
+from nnmware.core.abstract import STATUS_DELETE
 
 
 class UserPathMixin(object):
