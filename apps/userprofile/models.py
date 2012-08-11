@@ -13,8 +13,6 @@ from django.core.urlresolvers import reverse
 from django.template import loader, Context
 from nnmware.apps.shop.models import Basket
 from nnmware.apps.video.models import Video
-from nnmware.core.imgutil import remove_file, remove_thumbnails
-from nnmware.core.backends import upload_avatar_dir
 from nnmware.core.models import Follow, Tag, Pic, Message
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)

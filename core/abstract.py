@@ -13,7 +13,8 @@ from django.db.models import permalink
 from django.db.models.manager import Manager
 from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import ugettext_lazy as _
+from django.utils.translation.trans_real import get_language
 from nnmware.core.managers import MetaLinkManager
 from nnmware.core.models import Pic
 

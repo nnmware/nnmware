@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.fields import RichTextField
-from nnmware.core.models import Tree, MetaData
+from nnmware.core.abstract import Tree, MetaData
 
 
 class Category(Tree):

@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.maps import Geocoder
-from nnmware.core.models import MetaName
+from nnmware.core.abstract import MetaName
 
 class Address(MetaName):
     name_add = models.CharField(max_length=100, blank=True)

@@ -25,11 +25,6 @@ from nnmware.core.file import get_path_from_url
 from nnmware.core.abstract import MetaLink, MetaFile
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, MetaIP, STATUS_PUBLISHED, STATUS_CHOICES
 
-DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
-DEFAULT_MAX_JCOMMENT_DEPTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_DEPTH', 8)
-
-
-
 
 class Tag(models.Model):
     """
