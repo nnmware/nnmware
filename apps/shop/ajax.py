@@ -23,7 +23,7 @@ def autocomplete_search(request,size=16):
     return AjaxLazyAnswer(payload)
 
 def add_param(request,object_id):
-    try:
+    if 1>0: #try:
         if not request.user.is_superuser:
            raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
@@ -36,8 +36,8 @@ def add_param(request,object_id):
         param.save()
         payload = {'success': True, 'name':param.parameter.name, 'unit':param.parameter.unit.name,
                    'value':param.value}
-    except AccessError:
-        payload = {'success': False}
-    except :
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
