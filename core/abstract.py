@@ -220,7 +220,7 @@ class MetaName(models.Model):
     @property
     def main_image(self):
         try:
-            return self.all_images[0].pic.url
+            return self.pics[0].pic.url
         except :
             return None
 
