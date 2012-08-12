@@ -2,7 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
@@ -67,7 +67,12 @@ def add_basket(request, object_id):
         if not request.user.is_authenticated():
             raise AccessError
         p = Product.objects.get(pk=int(object_id))
-
+        if Basket.objects.filter(user=request.user, product=p).count() >0 :
+            b = Basket.objects.get(user=request.user, product=p)
+            b.quantity += 1
+        else:
+            b = Basket(user=request.user,product=p)
+            b.quantity = 1
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
