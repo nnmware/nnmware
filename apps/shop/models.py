@@ -57,7 +57,7 @@ class Product(MetaName, MoneyBase, MetaDate):
 
     @permalink
     def get_absolute_url(self):
-        return "product_detail", (), {'object_id': self.pk}
+        return "product_detail", (), {'pk': self.pk}
 
 class ParameterUnit(Unit):
     pass
