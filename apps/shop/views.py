@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm
@@ -19,6 +20,10 @@ class ShopCategory(ListView):
 
 class ShopAllCategory(ListView):
     template_name = 'shop/product_list.html'
+    model = Product
+
+class ProductView(DetailView):
+    template_name = 'shop/product.html'
     model = Product
 
 class BasketView(ListView):

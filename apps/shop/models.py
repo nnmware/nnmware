@@ -2,6 +2,7 @@
 from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.apps.money.models import MoneyBase
@@ -54,8 +55,9 @@ class Product(MetaName, MoneyBase, MetaDate):
     def parameters(self):
         return ProductParameterValue.objects.metalinks_for_object(self)
 
-    def pics(self):
-        pass
+    @permalink
+    def get_absolute_url(self):
+        return "product_detail", (), {'object_id': self.pk}
 
 class ParameterUnit(Unit):
     pass
