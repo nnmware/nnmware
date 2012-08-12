@@ -16,7 +16,7 @@ from django.views.generic.edit import FormMixin
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
-from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
+from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file, make_thumbnail
 
 def AjaxAnswer(payload):
     return HttpResponse(json.dumps(payload), content_type='application/json')
@@ -129,9 +129,13 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 new.save()
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
+                addons = {'size':os.path.getsize(fullpath),
+                          'thumbnail':make_thumbnail(new.pic.url, width=settings.DEFAULT_UPLOAD_THUMBNAIL_SIZE)}
             payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
+            if addons:
+                payload.update(addons)
             return AjaxAnswer(payload)
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
