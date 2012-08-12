@@ -16,7 +16,7 @@ def autocomplete_search(request,width=16):
 #        url = reverse('product_detail', args=[r.pk])
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
-                      'slug': r.slug, 'amount':r.amount }
+                      'slug': r.slug, 'amount':"%0.2f" % (r.amount,) }
         results.append(userstring)
     payload = {'answer': results}
     return AjaxAnswer(payload)
