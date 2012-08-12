@@ -97,3 +97,6 @@ class Basket(MetaDate):
         verbose_name = _("Basket")
         verbose_name_plural = _("Baskets")
 
+    @property
+    def sum(self):
+        return self.quantity*self.product.amount

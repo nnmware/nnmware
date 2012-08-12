@@ -74,7 +74,14 @@ def add_basket(request, object_id):
             b = Basket(user=request.user,product=p)
             b.quantity = 1
         b.save()
-        payload = {'success': True}
+        basket_user = Basket.objects.filter(user=request.user)
+        basket_count = basket_user.count()
+        all_sum = None
+        for item in basket_user:
+            all_sum += item.sum
+
+        payload = {'success': True, 'basket_count':basket_count,
+                   'basket_sum':"%0.2f" % (all_sum,)}
     except AccessError:
         payload = {'success': False}
     except:
