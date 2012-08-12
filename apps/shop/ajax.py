@@ -48,13 +48,13 @@ def add_param(request,object_id):
 
 def param_value_delete(request, object_id):
     # Link used when User delete the param value
-    try:
+    if 1>0: # try:
         if not request.user.is_superuser:
             raise AccessError
         ProductParameterValue.objects.get(pk=object_id).delete()
         payload = {'success': True}
-    except AccessError:
-        payload = {'success': False}
-    except:
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False}
+#    except:
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
