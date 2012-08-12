@@ -24,7 +24,7 @@ def autocomplete_search(request,size=16):
 
 def add_param(request,object_id):
     try:
-        if not request.user.is_superuser():
+        if not request.user.is_superuser:
            raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
         ctype = ContentType.objects.get_for_model(Product)
