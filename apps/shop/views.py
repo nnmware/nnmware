@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -7,7 +8,9 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket
+from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
+from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 
@@ -67,3 +70,12 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
     def get_success_url(self):
         return self.object.get_absolute_url()
 
+def add_product(request):
+    # Link used when admin add product
+   if not request.user.is_superuser:
+        raise Http404
+   p = Product()
+   p.name = _('New product')
+   p.avail = False
+   p.save()
+   return HttpResponseRedirect(reverse("edit_product", args=[p.pk]))
