@@ -53,6 +53,7 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
     pk_url_kwarg = 'pk'
     form_class = EditProductForm
     template_name = "shop/edit_product.html"
+    success_url = self.object.get_absolute_url
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -64,6 +65,6 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
         context['title_line'] = _('edit form')
         return context
 
-    def get_success_url(self):
-        return self.object.get_absolute_url
+#    def get_success_url(self):
+#        return self.object.get_absolute_url
 
