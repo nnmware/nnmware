@@ -12,7 +12,7 @@ def autocomplete_search(request,size=16):
         Q(name__icontains=request.REQUEST['q']) |
         Q(name_en__icontains=request.REQUEST['q'])).order_by('name')[:5]
     for r in search_qs:
-        img = make_thumbnail(r.main_image,width=size)
+        img = make_thumbnail(r.main_image,width=int(size))
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
                       'slug': r.slug, 'amount':"%0.2f" % (r.amount,) }
