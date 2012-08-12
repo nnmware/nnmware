@@ -67,7 +67,7 @@ def add_basket(request, object_id):
         if not request.user.is_authenticated():
             raise AccessError
         p = Product.objects.get(pk=int(object_id))
-        if not p.avail or p.quantity < 1:
+        if not p.avail or p.quantity < 1 or p.amount <= 0 :
             raise AccessError
         if Basket.objects.filter(user=request.user, product=p).count() >0 :
             b = Basket.objects.get(user=request.user, product=p)
