@@ -19,4 +19,4 @@ def autocomplete_search(request,width=16):
                       'slug': r.slug, 'amount':"%0.2f" % (r.amount,) }
         results.append(userstring)
     payload = {'answer': results}
-    return AjaxAnswer(payload)
+    return AjaxLazyAnswer(payload)
