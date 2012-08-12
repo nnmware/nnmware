@@ -23,7 +23,7 @@ def autocomplete_search(request,size=16):
     return AjaxLazyAnswer(payload)
 
 def add_param(request,object_id):
-    if 1>0: #try:
+    try:
         if not request.user.is_superuser:
            raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
@@ -40,8 +40,21 @@ def add_param(request,object_id):
             unit = ''
         payload = {'success': True, 'name':param.parameter.name, 'unit':unit,
                    'value':param.value}
-#    except AccessError:
-#        payload = {'success': False}
-#    except :
-#        payload = {'success': False}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def param_value_delete(request, object_id):
+    # Link used when User delete the param value
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        ProductParameterValue.objects.get(pk=object_id).delete()
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
