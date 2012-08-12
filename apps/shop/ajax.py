@@ -33,6 +33,8 @@ def add_param(request,object_id):
         param.object_id = p.pk
         param.parameter = get_object_or_404(ProductParameter,pk=int(request.REQUEST['param']))
         param.value = request.REQUEST['value']
+        if request.REQUEST['keyparam'] == 'on':
+            param.keyparam = True
         param.save()
         try:
             unit = param.parameter.unit.name
