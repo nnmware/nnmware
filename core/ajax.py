@@ -13,6 +13,8 @@ from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.views.generic.base import View
 from django.views.generic.edit import FormMixin
+from nnmware.apps.ajax.views import AccessError
+from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
@@ -219,6 +221,27 @@ def img_getcrop(request, object_id):
         payload = {'success': True,
                    'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH),
                    'id':pic.pk}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def img_rotate(request):
+    # Rotate image
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        img_pk = request.REQUEST['crop_id']
+        pic = get_object_or_404(Pic, id=int(img_pk))
+        img = get_path_from_url(pic.pic.url)
+        im = Image.open(img)
+        im = im.rotate(90)
+        if im.mode not in ('L', 'RGB'):
+            im = im.convert('RGB')
+        im.save(img)
+        pic.save()
+        payload = {'success': True, 'id':pic.pk}
+    except AccessError:
+        payload = {'success': False, 'error':_('You are not allowed rotate this image')}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
