@@ -11,7 +11,8 @@ class EditProductForm(forms.ModelForm):
     params = forms.ModelChoiceField(queryset=ProductParameter.objects.all(), required=False)
     class Meta:
         model = Product
-        fields = ('name','category','slug','amount','quantity','avail','description')
+        fields = ('name','category','slug','amount','quantity','avail','description',
+            'shop_pn','vendor_pn','vendor')
 
     def clean(self):
         return self.cleaned_data
