@@ -2,7 +2,7 @@
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from nnmware.apps.shop.models import Product
-from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.ajax import AjaxLazyAnswer, AjaxAnswer
 from nnmware.core.imgutil import make_thumbnail
 
 
@@ -14,9 +14,9 @@ def autocomplete_search(request,width=16):
     for r in search_qs:
         img = make_thumbnail(r.main_image,width=width)
 #        url = reverse('product_detail', args=[r.pk])
-        userstring = {'name': r.name, 'path': r.get_absolute_url,
+        userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
                       'slug': r.slug, 'amount':r.amount }
         results.append(userstring)
     payload = {'answer': results}
-    return AjaxLazyAnswer(payload)
+    return AjaxAnswer(payload)
