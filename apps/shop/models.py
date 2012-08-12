@@ -74,6 +74,7 @@ class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = models.CharField(max_length=255, verbose_name=_('Value of parameter'), blank=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
+    keyparam = models.BooleanField(verbose_name=_("In key params"), default=False)
 
     class Meta:
         verbose_name = _("Product parameter value")
