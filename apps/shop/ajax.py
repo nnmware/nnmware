@@ -17,7 +17,7 @@ def autocomplete_search(request,size=16):
         img = make_thumbnail(r.main_image,width=int(size))
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
-                      'slug': r.slug, 'amount':"%0.2f" % (r.amount,) }
+                      'slug': r.slug, 'amount':"%0.2f" % (r.amount,),'id':r.pk }
         results.append(userstring)
     payload = {'answer': results}
     return AjaxLazyAnswer(payload)
