@@ -76,7 +76,7 @@ def add_basket(request, object_id):
         b.save()
         basket_user = Basket.objects.filter(user=request.user)
         basket_count = basket_user.count()
-        all_sum = None
+        all_sum = 0
         for item in basket_user:
             all_sum += item.sum
 
