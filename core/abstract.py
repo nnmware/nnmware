@@ -225,7 +225,7 @@ class MetaName(models.Model):
             return None
 
     @property
-    def all_images(self):
+    def pics(self):
         from nnmware.core.models import Pic
         return Pic.objects.metalinks_for_object(self).order_by('-primary')
 
