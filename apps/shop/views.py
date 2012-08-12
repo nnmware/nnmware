@@ -65,5 +65,5 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
         return context
 
     def get_success_url(self):
-        return self.object.get_absolute_url
+        return self.object.get_absolute_url()
 
