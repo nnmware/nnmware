@@ -2,13 +2,13 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.shop.models import Product, ProductParameterValue
+from nnmware.apps.shop.models import Product, ProductParameter
 
 class EditProductForm(forms.ModelForm):
     """
     Superuser edit product form
     """
-    params = forms.ModelChoiceField(queryset=ProductParameterValue.objects.all(), required=False)
+    params = forms.ModelChoiceField(queryset=ProductParameter.objects.all(), required=False)
     class Meta:
         model = Product
         fields = ('name','category','slug','amount','quantity')
