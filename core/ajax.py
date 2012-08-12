@@ -119,6 +119,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 os.remove(fullpath)
                 self.success = False
                 self.pic_id = None
+                addons = None
             if self.success:
                 new = Pic()
                 self._new_obj(new, request, **kwargs)
