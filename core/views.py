@@ -62,7 +62,7 @@ class AjaxFormMixin(object):
     def form_valid(self, form):
         if self.request.is_ajax():
             self.success = True
-            payload = {'success': self.success, 'location': self.success_url}
+            payload = {'success': self.success, 'location': self.success_url or self.get_success_url()}
             try:
                 payload['status_msg'] = self.status_msg
             except :
