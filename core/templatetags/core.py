@@ -71,6 +71,11 @@ def do_get_tree_path(parser, token):
 def multiply(value, times):
     return value*times
 
+@register.filter
+def to_2_digits(value):
+    return format(value, '.2f')
+
+
 @register.filter("inline_truncate")
 def inline_truncate(value, size):
     """Truncates a string to the given size placing the ellipsis at the middle of the string"""
