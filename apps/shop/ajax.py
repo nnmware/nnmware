@@ -100,7 +100,7 @@ def delete_basket(request, object_id):
         for item in basket_user:
             all_sum += item.sum
         payload = {'success': True, 'basket_count':basket_count,
-                   'basket_sum':"%0.2f" % (all_sum,)}
+                   'basket_sum':"%0.2f" % (all_sum,),'id':int(object_id)}
     except AccessError:
         payload = {'success': False}
     except:
