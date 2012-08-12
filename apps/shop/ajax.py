@@ -2,7 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from nnmware.apps.shop.models import Product, ProductParameterValue
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import make_thumbnail
 
@@ -28,8 +28,9 @@ def add_param(request,object_id):
         param = ProductParameterValue()
         param.content_type = ctype
         param.object_id = p.pk
-        param.user_agent = request.META['HTTP_USER_AGENT']
-
+        param.parameter = get_object_or_404(ProductParameter,pk=int(request.META['param']))
+        param.value = request.META['value']
+        param.save()
         payload = {'success': True}
     except :
         payload = {'success': False}
