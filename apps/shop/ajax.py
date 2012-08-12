@@ -51,7 +51,7 @@ def param_value_delete(request, object_id):
     if 1>0: # try:
         if not request.user.is_superuser:
             raise AccessError
-        ProductParameterValue.objects.get(pk=object_id).delete()
+        ProductParameterValue.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
 #    except AccessError:
 #        payload = {'success': False}
