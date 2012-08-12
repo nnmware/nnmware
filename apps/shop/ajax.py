@@ -6,14 +6,13 @@ from nnmware.core.ajax import AjaxLazyAnswer, AjaxAnswer
 from nnmware.core.imgutil import make_thumbnail
 
 
-def autocomplete_search(request,width=16):
+def autocomplete_search(request,size=16):
     results = []
     search_qs = Product.objects.filter(
         Q(name__icontains=request.REQUEST['q']) |
         Q(name_en__icontains=request.REQUEST['q'])).order_by('name')[:5]
     for r in search_qs:
-        img = make_thumbnail(r.main_image,width=width)
-#        url = reverse('product_detail', args=[r.pk])
+        img = make_thumbnail(r.main_image,width=size)
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
                       'slug': r.slug, 'amount':"%0.2f" % (r.amount,) }
