@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.urlresolvers import reverse
+from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
@@ -79,3 +80,12 @@ def add_product(request):
    p.avail = False
    p.save()
    return HttpResponseRedirect(reverse("edit_product", args=[p.pk]))
+
+class SearchView(ListView):
+    template_name = 'shop/product_list.html'
+    model = Product
+    paginate_by = 10
+
+    def get_queryset(self):
+        q = self.request.GET.get('q') or None
+        return Product.objects.filter( Q(name__icontains=q) | Q(name_en__icontains=q)).order_by('name')
