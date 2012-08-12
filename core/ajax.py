@@ -13,12 +13,14 @@ from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.views.generic.base import View
 from django.views.generic.edit import FormMixin
-from nnmware.apps.ajax.views import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file, make_thumbnail
+
+class AccessError(Exception):
+    pass
 
 def AjaxAnswer(payload):
     return HttpResponse(json.dumps(payload), content_type='application/json')
