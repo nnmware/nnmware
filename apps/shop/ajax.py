@@ -73,6 +73,7 @@ def add_basket(request, object_id):
         else:
             b = Basket(user=request.user,product=p)
             b.quantity = 1
+        b.save()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
