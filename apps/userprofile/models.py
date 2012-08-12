@@ -118,10 +118,11 @@ class Profile(models.Model):
         return reverse("user_detail", args=[self.user.username])
 
     def basket_sum(self):
-        try:
-            return Basket.objects.filter(user=self.user).count()
-        except :
-            return None
+        basket_user = Basket.objects.filter(user=self.user)
+        all_sum = 0
+        for item in basket_user:
+            all_sum += item.sum
+        return "%0.2f" % (all_sum,)
 
 
     @property
