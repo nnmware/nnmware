@@ -34,7 +34,11 @@ def add_param(request,object_id):
         param.parameter = get_object_or_404(ProductParameter,pk=int(request.REQUEST['param']))
         param.value = request.REQUEST['value']
         param.save()
-        payload = {'success': True, 'name':param.parameter.name, 'unit':param.parameter.unit,
+        try:
+            unit = param.parameter.unit.name
+        except :
+            unit = ''
+        payload = {'success': True, 'name':param.parameter.name, 'unit':unit,
                    'value':param.value}
 #    except AccessError:
 #        payload = {'success': False}
