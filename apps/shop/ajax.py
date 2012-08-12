@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import make_thumbnail
+from nnmware.core.exceptions import AccessError
 
 
 def autocomplete_search(request,size=16):
@@ -22,7 +23,9 @@ def autocomplete_search(request,size=16):
     return AjaxLazyAnswer(payload)
 
 def add_param(request,object_id):
-    if 1>0: #try:
+    try:
+        if not request.user.is_superuser():
+           raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
         ctype = ContentType.objects.get_for_model(Product)
         param = ProductParameterValue()
@@ -33,7 +36,8 @@ def add_param(request,object_id):
         param.save()
         payload = {'success': True, 'name':param.parameter.name, 'unit':param.parameter.unit.name,
                    'value':param.value}
-#    except :
-#        payload = {'success': False}
-
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
