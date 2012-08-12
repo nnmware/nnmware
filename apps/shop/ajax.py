@@ -38,7 +38,7 @@ def add_param(request,object_id):
             unit = param.parameter.unit.name
         except :
             unit = ''
-        payload = {'success': True, 'name':param.parameter.name, 'unit':unit, id: param.pk,
+        payload = {'success': True, 'name':param.parameter.name, 'unit':unit, id: str(param.pk),
                    'value':param.value}
     except AccessError:
         payload = {'success': False}
