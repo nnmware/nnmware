@@ -192,6 +192,7 @@ class MetaName(models.Model):
     order_in_list = models.IntegerField(_('Order in list'), default=0)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
+    comments = models.IntegerField(blank=True, null=True)
 
 
     class Meta:
