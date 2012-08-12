@@ -47,6 +47,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
         on_delete=models.SET_NULL)
+    avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
 
     class Meta:
         verbose_name = _("Product")
