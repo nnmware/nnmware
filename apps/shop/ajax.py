@@ -14,7 +14,7 @@ def autocomplete_search(request,width=16):
     for r in search_qs:
         url = reverse('product_detail', args=[r.pk])
         userstring = {'name': r.name, 'path': url,
-                      'img': make_thumbnail(r.main_image.url,width=width),
+                      'img': make_thumbnail(r.main_image,width=width),
                       'slug': r.slug, 'amount':r.amount }
         results.append(userstring)
     payload = {'answer': results}
