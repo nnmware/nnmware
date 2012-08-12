@@ -364,14 +364,6 @@ class Room(MetaName):
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
 
-    @property
-    def main_image(self):
-        try:
-            pics = Pic.objects.metalinks_for_object(self).order_by('-primary')
-            return pics[0].pic.url
-        except :
-            return None
-
     def date_place_count(self,date):
         try:
             places = SettlementVariant.objects.filter(room=self,enabled=True).order_by('-settlement')

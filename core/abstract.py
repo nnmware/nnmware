@@ -190,6 +190,9 @@ class MetaName(models.Model):
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
+    docs = models.IntegerField(blank=True, null=True)
+    pics = models.IntegerField(blank=True, null=True)
+
 
     class Meta:
         ordering = ['name', ]
@@ -220,12 +223,12 @@ class MetaName(models.Model):
     @property
     def main_image(self):
         try:
-            return self.pics[0].pic.url
+            return self.allpics[0].pic.url
         except :
             return None
 
     @property
-    def pics(self):
+    def allpics(self):
         from nnmware.core.models import Pic
         return Pic.objects.metalinks_for_object(self).order_by('-primary')
 

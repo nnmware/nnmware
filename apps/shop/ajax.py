@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from nnmware.apps.shop.models import Product
-from nnmware.core.ajax import AjaxLazyAnswer, AjaxAnswer
+from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.imgutil import make_thumbnail
 
 
