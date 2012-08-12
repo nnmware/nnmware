@@ -60,3 +60,17 @@ def param_value_delete(request, object_id):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def add_basket(request, object_id):
+    # Link used when User add to basket
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        p = Product.objects.get(pk=int(object_id))
+
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
