@@ -22,7 +22,7 @@ def autocomplete_search(request,size=16):
     return AjaxLazyAnswer(payload)
 
 def add_param(request,object_id):
-    try:
+    if 1>0: #try:
         p = get_object_or_404(Product,pk=int(object_id))
         ctype = ContentType.objects.get_for_model(Product)
         param = ProductParameterValue()
@@ -32,7 +32,7 @@ def add_param(request,object_id):
         param.value = request.META['value']
         param.save()
         payload = {'success': True}
-    except :
-        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
 
     return AjaxLazyAnswer(payload)
