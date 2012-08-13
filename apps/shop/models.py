@@ -48,6 +48,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
         on_delete=models.SET_NULL)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
+    latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
 
     class Meta:
         verbose_name = _("Product")

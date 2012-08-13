@@ -10,13 +10,13 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
         parent_slugs = obj.kwargs['parent_slugs']
         parent = cat_obj.objects.all().filter(slug=parent_slugs[:-1])[0].id
         q = cat_obj.objects.filter(parent=parent).filter(slug=slug)
-        child = q[0].get_all_children()
-        if not child:
-            child = q[0].id
-            res = main_obj.objects.select_related()
-            return res.filter(category=child).order_by(order)
     else:
-        child = cat_obj.objects.filter(slug=slug)[0].get_all_children()
+        q = cat_obj.objects.filter(slug=slug)
+    child = q[0].get_all_children()
+    if not child:
+        child = q[0].id
+        res = main_obj.objects.select_related()
+        return res.filter(category=child).order_by(order)
     res = main_obj.objects.select_related()
     return res.filter(category__in=child).order_by(order)
 
