@@ -49,6 +49,7 @@ class Product(MetaName, MoneyBase, MetaDate):
         on_delete=models.SET_NULL)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
+    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Product")

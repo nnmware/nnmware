@@ -25,6 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
             ('color',"created_date",'updated_date'),
             ('shop_pn','vendor_pn'),
             ('order_in_list'),
+            ('teaser'),
         ]}),
         )
 
