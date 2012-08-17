@@ -89,7 +89,7 @@ def room_rates(request):
         for k in discount:
             try:
                 discount_on_date = int(json_data[k][i])
-                if 1 > discount_on_date > 99:
+                if discount_on_date < 1 or discount_on_date > 99 :
                     raise ValueError
                 d, created = Discount.objects.get_or_create(date=on_date, room=room)
                 d.discount = discount_on_date
