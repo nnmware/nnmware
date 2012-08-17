@@ -18,6 +18,7 @@ from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.jcomments import get_image_attach_url
 from nnmware.core.utils import convert_to_date
 from nnmware.core.ajax import AjaxLazyAnswer
+from django.views.decorators.cache import never_cache
 
 class UserNotAllowed(Exception):
     pass
@@ -56,6 +57,7 @@ def room_rate(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+@never_cache
 def room_rates(request):
     if request.method == 'POST':
         json_data = json.loads(request.raw_post_data)
