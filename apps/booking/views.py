@@ -481,6 +481,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             else:
                 date_period.append(i)
         context['dates'] = date_period
+        context['days_of_week'] = days_of_week
         return context
 
 class CabinetDiscount(CabinetRates):
