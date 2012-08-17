@@ -476,7 +476,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         date_period = []
         for i in date_gen:
             if days_of_week is not None:
-                if i.isoweekday() in days_of_week:
+                if str(i.isoweekday()) in days_of_week:
                     date_period.append(i)
             else:
                 date_period.append(i)
