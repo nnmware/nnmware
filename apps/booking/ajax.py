@@ -64,7 +64,7 @@ def room_rates(request):
         raise UserNotAllowed
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
-        placecount = int(json_data['dates'][i])
+        placecount = int(json_data['placecount'][i])
 
         try:
             availability = Availability.objects.get(date=on_date, room=room)
