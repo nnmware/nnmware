@@ -74,8 +74,10 @@ def room_rates(request):
                 except ValueError:
                     pass
         payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False}
     except :
-        payload = {'success': True}
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
