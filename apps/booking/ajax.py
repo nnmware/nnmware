@@ -75,7 +75,6 @@ def room_rates(request):
             all_settlements.append(k)
         elif k[:8] == 'discount':
             discount.append(k)
-    raise ValueError, discount
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
         if 'placecount' in json_data.keys():
