@@ -73,7 +73,7 @@ def room_rates(request):
     for k in json_data.keys():
         if k[0] == 's':
             all_settlements.append(k)
-        elif k[0] == 'd':
+        elif k[:8] == 'discount':
             discount.append(k)
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
