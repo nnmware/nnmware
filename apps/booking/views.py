@@ -448,6 +448,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        days_of_week = self.request.GET.getlist('days_of_week') or None
         # Call the base implementation first to get a context
         context = super(CabinetRates, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -474,7 +475,11 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             date_gen = daterange(from_date, from_date+timedelta(days=14))
         date_period = []
         for i in date_gen:
-            date_period.append(i)
+            if days_of_week is not None:
+                if i.isoweekday() in days_of_week:
+                    date_period.append(i)
+            else:
+                date_period.append(i)
         context['dates'] = date_period
         return context
 
