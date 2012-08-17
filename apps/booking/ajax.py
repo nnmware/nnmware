@@ -62,6 +62,7 @@ def room_rates(request):
     room = Room.objects.get(id=int(json_data['room_id']))
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
+    unicode(json_data)
     payload = {'success': True}
     return AjaxLazyAnswer(payload)
 
