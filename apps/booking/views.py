@@ -27,11 +27,12 @@ from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
 from nnmware.core.decorators import ssl_required
-
+from django.views.decorators.cache import never_cache
 
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
     @method_decorator(ssl_required)
+    @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         city = get_object_or_404(City, slug=kwargs['city'])
         obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
