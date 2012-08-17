@@ -69,7 +69,7 @@ def room_rates(request):
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
     # find settlements keys in data
-    all_settlements = discount = []
+    all_settlements, discount = [],[]
     for k in json_data.keys():
         if k[0] == 's':
             all_settlements.append(k)
