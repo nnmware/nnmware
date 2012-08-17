@@ -26,88 +26,56 @@ class UserNotAllowed(Exception):
 class RatesError(Exception):
     pass
 
-def room_rate(request):
-    try:
-        room = Room.objects.get(id=request.REQUEST['room_id'])
-        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
-            raise UserNotAllowed
-        currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
-        value = int(request.REQUEST['value'])
-        on_date = request.REQUEST['on_date'][1:]
-        on_date = datetime.fromtimestamp(time.mktime(time.strptime(on_date, "%d%m%Y")))
-        row_id = request.REQUEST['row']
-        if row_id == 'placecount':
-            try:
-                availability = Availability.objects.get(date=on_date, room=room)
-            except :
-                availability = Availability(date=on_date, room=room)
-            availability.placecount = value
-            availability.save()
-        else:
-            settlement_id = int(row_id[1:])
-            settlement = SettlementVariant.objects.get(id=settlement_id)
-            try:
-                placeprice = PlacePrice.objects.get(date=on_date,settlement=settlement)
-            except :
-                placeprice = PlacePrice(date=on_date,settlement=settlement)
-            placeprice.amount = value
-            placeprice.currency = currency
-            placeprice.save()
-        payload = {'success': True}
-    except UserNotAllowed:
-        payload = {'success': False, 'error_msg':_('You are not allowed change room rates.')}
-    except :
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
-
 @never_cache
 def room_rates(request):
-#    if request.method == 'POST':
-    json_data = json.loads(request.raw_post_data)
-    currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
-    room = Room.objects.get(id=int(json_data['room_id']))
-    if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
-        raise UserNotAllowed
-    # find settlements keys in data
-    all_settlements, discount = [],[]
-    for k in json_data.keys():
-        if k[0] == 's':
-            all_settlements.append(k)
-        elif k == 'discount':
-            discount.append(k)
-    for i, v in enumerate(json_data['dates']):
-        on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
-        if 'placecount' in json_data.keys():
-            try:
-                placecount = int(json_data['placecount'][i])
-                # store availability
-                availability, created = Availability.objects.get_or_create(date=on_date, room=room)
-                availability.placecount = placecount
-                availability.save()
-            except ValueError:
-                pass
-        for k in discount:
-            try:
-                discount_on_date = int(json_data[k][i])
-                if discount_on_date < 1 or discount_on_date > 99 :
-                    raise ValueError
-                d, created = Discount.objects.get_or_create(date=on_date, room=room)
-                d.discount = discount_on_date
-                d.save()
-            except ValueError:
-                pass
-        for k in all_settlements:
-            try:
-                settlement_id = int(k[1:])
-                settlement = SettlementVariant.objects.get(id=settlement_id)
-                price = int(json_data[k][i])
-                placeprice, created = PlacePrice.objects.get_or_create(date=on_date,settlement=settlement)
-                placeprice.amount = price
-                placeprice.currency = currency
-                placeprice.save()
-            except ValueError:
-                pass
-    payload = {'success': True}
+    try:
+        json_data = json.loads(request.raw_post_data)
+        currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
+        room = Room.objects.get(id=int(json_data['room_id']))
+        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
+            raise UserNotAllowed
+        # find settlements keys in data
+        all_settlements, discount = [],[]
+        for k in json_data.keys():
+            if k[0] == 's':
+                all_settlements.append(k)
+            elif k == 'discount':
+                discount.append(k)
+        for i, v in enumerate(json_data['dates']):
+            on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
+            if 'placecount' in json_data.keys():
+                try:
+                    placecount = int(json_data['placecount'][i])
+                    # store availability
+                    availability, created = Availability.objects.get_or_create(date=on_date, room=room)
+                    availability.placecount = placecount
+                    availability.save()
+                except ValueError:
+                    pass
+            for k in discount:
+                try:
+                    discount_on_date = int(json_data[k][i])
+                    if discount_on_date < 1 or discount_on_date > 99 :
+                        raise ValueError
+                    d, created = Discount.objects.get_or_create(date=on_date, room=room)
+                    d.discount = discount_on_date
+                    d.save()
+                except ValueError:
+                    pass
+            for k in all_settlements:
+                try:
+                    settlement_id = int(k[1:])
+                    settlement = SettlementVariant.objects.get(id=settlement_id)
+                    price = int(json_data[k][i])
+                    placeprice, created = PlacePrice.objects.get_or_create(date=on_date,settlement=settlement)
+                    placeprice.amount = price
+                    placeprice.currency = currency
+                    placeprice.save()
+                except ValueError:
+                    pass
+        payload = {'success': True}
+    except :
+        payload = {'success': True}
     return AjaxLazyAnswer(payload)
 
 
