@@ -23,6 +23,9 @@ from django.views.decorators.cache import never_cache
 class UserNotAllowed(Exception):
     pass
 
+class RatesError(Exception):
+    pass
+
 def room_rate(request):
     try:
         room = Room.objects.get(id=request.REQUEST['room_id'])
@@ -73,25 +76,25 @@ def room_rates(request):
 
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
-        placecount = int(json_data['placecount'][i])
-        # store availability
         try:
-            availability = Availability.objects.get(date=on_date, room=room)
-        except :
-            availability = Availability(date=on_date, room=room)
-        availability.placecount = placecount
-        availability.save()
+            placecount = int(json_data['placecount'][i])
+            # store availability
+            availability, created = Availability.objects.get_or_create(date=on_date, room=room)
+            availability.placecount = placecount
+            availability.save()
+        except ValueError:
+            pass
         for k in all_settlements:
-            settlement_id = int(k[1:])
-            settlement = SettlementVariant.objects.get(id=settlement_id)
-            price = int(json_data[k][i])
             try:
-                placeprice = PlacePrice.objects.get(date=on_date,settlement=settlement)
-            except :
-                placeprice = PlacePrice(date=on_date,settlement=settlement)
-            placeprice.amount = price
-            placeprice.currency = currency
-            placeprice.save()
+                settlement_id = int(k[1:])
+                settlement = SettlementVariant.objects.get(id=settlement_id)
+                price = int(json_data[k][i])
+                placeprice, created = PlacePrice.objects.get_or_create(date=on_date,settlement=settlement)
+                placeprice.amount = price
+                placeprice.currency = currency
+                placeprice.save()
+            except ValueError:
+                pass
     payload = {'success': True}
     return AjaxLazyAnswer(payload)
 
