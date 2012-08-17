@@ -351,6 +351,12 @@ class Room(MetaName):
                     result = s_min_price
         return result
 
+    def discount_on_date(self, date):
+        try:
+            return Discount.objects.get(room=self,date=date).discount
+        except :
+            return None
+
     def amount_on_date_guest_variant(self, date, guests):
         # Find all settlement variants for room
         try:
@@ -546,7 +552,7 @@ class Availability(models.Model):
 class Discount(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     date = models.DateField(verbose_name=_("On date"))
-    discount = models.SmallIntegerField(verbose_name=_('Discount'))
+    discount = models.SmallIntegerField(verbose_name=_('Discount'), default=0)
 
     class Meta:
         verbose_name = _("Discount")

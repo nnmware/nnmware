@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking, PaymentMethod
+from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, Review, Booking, PaymentMethod, Discount
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
@@ -69,7 +69,7 @@ def room_rates(request):
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
     # find settlements keys in data
-    all_settlements, discount = []
+    all_settlements = discount = []
     for k in json_data.keys():
         if k[0] == 's':
             all_settlements.append(k)
@@ -86,7 +86,16 @@ def room_rates(request):
                 availability.save()
             except ValueError:
                 pass
-
+        for k in discount:
+            try:
+                discount_on_date = int(json_data[k][i])
+                if 1 > discount_on_date > 99:
+                    raise ValueError
+                d, created = Discount.objects.get_or_create(date=on_date, room=room)
+                d.discount = discount_on_date
+                d.save()
+            except ValueError:
+                pass
         for k in all_settlements:
             try:
                 settlement_id = int(k[1:])
