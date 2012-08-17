@@ -318,7 +318,10 @@ class Room(MetaName):
     objects = Manager()
 
     def __unicode__(self):
-        return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
+        try:
+            return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
+        except :
+            return self.name
 
     @property
     def min_current_amount(self):
