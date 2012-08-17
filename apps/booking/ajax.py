@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
 from exceptions import ValueError, Exception
+import json
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
@@ -54,6 +55,16 @@ def room_rate(request):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def room_rates(request):
+    if request.method == 'POST':
+        json_data = json.loads(request.raw_post_data)
+    room = Room.objects.get(id=int(json_data['room_id']))
+    if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
+        raise UserNotAllowed
+    payload = {'success': True}
+    return AjaxLazyAnswer(payload)
+
 
 def room_variants(request):
     try:
