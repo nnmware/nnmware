@@ -61,20 +61,37 @@ def room_rate(request):
 def room_rates(request):
     if request.method == 'POST':
         json_data = json.loads(request.raw_post_data)
+    currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
     room = Room.objects.get(id=int(json_data['room_id']))
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
+    all_settlements = []
+    # find settlements keys in data
+    for k in json_data.keys():
+        if k[0] == 's':
+            all_settlements.append(k)
+
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
         placecount = int(json_data['placecount'][i])
-
+        # store availability
         try:
             availability = Availability.objects.get(date=on_date, room=room)
         except :
             availability = Availability(date=on_date, room=room)
         availability.placecount = placecount
         availability.save()
-
+        for k in all_settlements:
+            settlement_id = int(k[1:])
+            settlement = SettlementVariant.objects.get(id=settlement_id)
+            price = int(json_data[k][i])
+            try:
+                placeprice = PlacePrice.objects.get(date=on_date,settlement=settlement)
+            except :
+                placeprice = PlacePrice(date=on_date,settlement=settlement)
+            placeprice.amount = price
+            placeprice.currency = currency
+            placeprice.save()
     payload = {'success': True}
     return AjaxLazyAnswer(payload)
 
