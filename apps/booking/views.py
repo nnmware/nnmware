@@ -478,6 +478,14 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         context['dates'] = date_period
         return context
 
+class CabinetDiscount(CabinetRates):
+    template_name = "cabinet/discount.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CabinetDiscount, self).get_context_data(**kwargs)
+        context['discount'] = True
+        return context
+
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
     model = Bill
     form_class = CabinetEditBillForm
