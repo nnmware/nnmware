@@ -62,7 +62,17 @@ def room_rates(request):
     room = Room.objects.get(id=int(json_data['room_id']))
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
-    raise Exception, room
+    for i, v in enumerate(json_data['dates']):
+        on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
+        placecount = int(json_data['dates'][i])
+
+        try:
+            availability = Availability.objects.get(date=on_date, room=room)
+        except :
+            availability = Availability(date=on_date, room=room)
+        availability.placecount = placecount
+        availability.save()
+
     payload = {'success': True}
     return AjaxLazyAnswer(payload)
 
