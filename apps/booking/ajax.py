@@ -62,28 +62,31 @@ def room_rate(request):
 
 @never_cache
 def room_rates(request):
-    if request.method == 'POST':
-        json_data = json.loads(request.raw_post_data)
+#    if request.method == 'POST':
+    json_data = json.loads(request.raw_post_data)
     currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
     room = Room.objects.get(id=int(json_data['room_id']))
     if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
         raise UserNotAllowed
-    all_settlements = []
     # find settlements keys in data
+    all_settlements, discount = []
     for k in json_data.keys():
         if k[0] == 's':
             all_settlements.append(k)
-
+        elif k[0] == 'd':
+            discount.append(k)
     for i, v in enumerate(json_data['dates']):
         on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
-        try:
-            placecount = int(json_data['placecount'][i])
-            # store availability
-            availability, created = Availability.objects.get_or_create(date=on_date, room=room)
-            availability.placecount = placecount
-            availability.save()
-        except ValueError:
-            pass
+        if 'placecount' in json_data.keys():
+            try:
+                placecount = int(json_data['placecount'][i])
+                # store availability
+                availability, created = Availability.objects.get_or_create(date=on_date, room=room)
+                availability.placecount = placecount
+                availability.save()
+            except ValueError:
+                pass
+
         for k in all_settlements:
             try:
                 settlement_id = int(k[1:])

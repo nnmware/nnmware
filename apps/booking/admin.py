@@ -158,7 +158,11 @@ class AgentPercentAdmin(admin.ModelAdmin):
         return '%s' % obj.hotel.city
     city_of_hotel.short_description = _('City')
 
-
+class DiscountAdmin(admin.ModelAdmin):
+    list_display = ('room','date','discount')
+    search_fields = ('date',)
+    fieldsets = (
+        (_("Discount"), {"fields": [("room",'date','discount'),]}),)
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
@@ -198,6 +202,7 @@ admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
 admin.site.register(SettlementVariant, SettlementVariantAdmin)
 admin.site.register(PlacePrice, PlacePriceAdmin)
 admin.site.register(PaymentMethod, PaymentMethodAdmin)
+admin.site.register(Discount, DiscountAdmin)
 
 
 

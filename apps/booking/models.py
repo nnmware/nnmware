@@ -540,6 +540,23 @@ class Availability(models.Model):
                  'count': self.placecount
                }
 
+class Discount(models.Model):
+    room = models.ForeignKey(Room, verbose_name=_('Room'))
+    date = models.DateField(verbose_name=_("On date"))
+    discount = models.SmallIntegerField(verbose_name=_('Discount'))
+
+    class Meta:
+        verbose_name = _("Discount")
+        verbose_name_plural = _("Discounts")
+
+    def __unicode__(self):
+        return _("Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> %(discount)s")  %\
+               { 'place': self.room.name,
+                 'hotel': self.room.hotel.name,
+                 'date': self.date,
+                 'discount': self.discount
+               }
+
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
