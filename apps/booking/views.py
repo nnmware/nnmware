@@ -501,7 +501,7 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         # Call the base implementation first to get a context
         context = super(CabinetBillEdit, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.target.city).count()
-        context['tab'] = 'bills'
+        context['tab'] = 'reports'
         context['hotel'] = self.object.target
         context['title_line'] = _('private cabinet')
         return context
@@ -910,7 +910,7 @@ class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['hotel'] = self.object.hotel
         context['title_line'] = _('Booking ID')+' '+self.object.uuid
-        context['tab'] = 'booking'
+        context['tab'] = 'reports'
         return context
 
 class BookingAdminDetail(CurrentUserSuperuser, DetailView):
