@@ -489,6 +489,7 @@ class CabinetDiscount(CabinetRates):
     def get_context_data(self, **kwargs):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
         context['discount'] = True
+        context['tab'] = 'discounts'
         return context
 
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):

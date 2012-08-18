@@ -29,7 +29,7 @@ class RatesError(Exception):
 @never_cache
 def room_rates(request):
     try:
-        json_data = json.loads(request.raw_post_data)
+        json_data = json.loads(request.body)
         currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
         room = Room.objects.get(id=int(json_data['room_id']))
         if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
