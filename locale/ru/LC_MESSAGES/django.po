@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-18 01:16+1100\n"
+"POT-Creation-Date: 2012-08-19 14:50+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,7 +219,8 @@ msgid "ArticleCategories"
 msgstr "Категории статей"
 
 #: apps/article/models.py:17 apps/board/models.py:17
-#: apps/booking/models.py:270 apps/shop/models.py:41 apps/topic/models.py:20
+#: apps/booking/models.py:270 apps/shop/models.py:41 apps/shop/models.py:76
+#: apps/topic/models.py:20
 msgid "Category"
 msgstr "Категория"
 
@@ -390,23 +391,19 @@ msgstr "Наличие"
 msgid "Place Price"
 msgstr "Стоимость места"
 
-#: apps/booking/ajax.py:58
-msgid "You are not allowed change room rates."
-msgstr "Вы не имеете прав изменять тарифы номера"
-
-#: apps/booking/ajax.py:125 apps/booking/ajax.py:138 apps/booking/ajax.py:151
+#: apps/booking/ajax.py:95 apps/booking/ajax.py:108 apps/booking/ajax.py:121
 msgid "You are not allowed change room variants."
 msgstr "Вы не имеете прав изменять варианты номера"
 
-#: apps/booking/ajax.py:215
+#: apps/booking/ajax.py:185
 msgid "You are not allowed add hotel."
 msgstr "Вы не имеете прав"
 
-#: apps/booking/ajax.py:223
+#: apps/booking/ajax.py:193
 msgid "You are superuser and may add review."
 msgstr "Вы суперпользователь и можете добавлять отзыв"
 
-#: apps/booking/ajax.py:225
+#: apps/booking/ajax.py:195
 msgid "Thanks for you review!"
 msgstr "Спасибо за Ваш отзыв!"
 
@@ -728,7 +725,7 @@ msgid "Completed"
 msgstr "Завершено"
 
 #: apps/booking/models.py:443 apps/booking/models.py:588
-#: apps/money/models.py:74 apps/money/models.py:123 apps/shop/models.py:93
+#: apps/money/models.py:74 apps/money/models.py:123 apps/shop/models.py:101
 #: core/models.py:432
 msgid "User"
 msgstr "Пользователь"
@@ -865,6 +862,7 @@ msgid "Discounts"
 msgstr "Скидки"
 
 #: apps/booking/models.py:562
+#, python-format
 msgid ""
 "Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> "
 "%(discount)s"
@@ -919,85 +917,85 @@ msgstr "администратор отелей"
 
 #: apps/booking/views.py:357 apps/booking/views.py:374
 #: apps/booking/views.py:403 apps/booking/views.py:423
-#: apps/booking/views.py:456 apps/booking/views.py:492
-#: apps/booking/views.py:680
+#: apps/booking/views.py:457 apps/booking/views.py:506
+#: apps/booking/views.py:694
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:510 apps/booking/views.py:700
+#: apps/booking/views.py:524 apps/booking/views.py:714
 msgid "bookings"
 msgstr "бронирования"
 
-#: apps/booking/views.py:537
+#: apps/booking/views.py:551
 msgid "bills"
 msgstr "счета"
 
-#: apps/booking/views.py:561
+#: apps/booking/views.py:575
 msgid "request for add hotel"
 msgstr "заявка на добавление отеля"
 
-#: apps/booking/views.py:584
+#: apps/booking/views.py:598
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:608 apps/booking/views.py:870
+#: apps/booking/views.py:622 apps/booking/views.py:884
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:618 apps/booking/views.py:655
+#: apps/booking/views.py:632 apps/booking/views.py:669
 msgid "site reports"
 msgstr "отчеты сайта"
 
-#: apps/booking/views.py:628
+#: apps/booking/views.py:642
 msgid "Error"
 msgstr "Ошибка"
 
-#: apps/booking/views.py:632
+#: apps/booking/views.py:646
 msgid "All hotels in system"
 msgstr "Все отели в системе"
 
-#: apps/booking/views.py:635
+#: apps/booking/views.py:649
 msgid "Hotels without payment methods"
 msgstr "Отели, с неуказанными методами оплаты"
 
-#: apps/booking/views.py:638
+#: apps/booking/views.py:652
 msgid "Hotels with payment methods"
 msgstr "Отели, с установленными методами оплаты"
 
-#: apps/booking/views.py:641
+#: apps/booking/views.py:655
 msgid "Hotels without admins"
 msgstr "Отели без администраторов"
 
-#: apps/booking/views.py:644
+#: apps/booking/views.py:658
 msgid "Hotels with admins"
 msgstr "Отели с администраторами"
 
-#: apps/booking/views.py:724 apps/booking/views.py:898
-#: apps/booking/views.py:910
+#: apps/booking/views.py:738 apps/booking/views.py:912
+#: apps/booking/views.py:924
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:774
+#: apps/booking/views.py:788
 msgid "booking"
 msgstr "бронирование"
 
-#: apps/booking/views.py:799
+#: apps/booking/views.py:813
 msgid "Card number is wrong."
 msgstr "Неверный номер карты"
 
-#: apps/booking/views.py:810
+#: apps/booking/views.py:824
 msgid "Card CVV2 is wrong."
 msgstr "Неверный CVV2 код карты"
 
-#: apps/booking/views.py:813
+#: apps/booking/views.py:827
 msgid "You enter not all data of card."
 msgstr "Вы ввели не все данные кредитной карты"
 
-#: apps/booking/views.py:816
+#: apps/booking/views.py:830
 msgid "You are not select payment method."
 msgstr "Вы не выбрали вариант платежа"
 
-#: apps/booking/views.py:885
+#: apps/booking/views.py:899
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
 
@@ -1116,11 +1114,11 @@ msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(target)s :: Сумма: "
 "%(amount)s %(currency)s"
 
-#: apps/shop/admin.py:21 apps/shop/models.py:55 apps/shop/models.py:95
+#: apps/shop/admin.py:21 apps/shop/models.py:55 apps/shop/models.py:103
 msgid "Product"
 msgstr "Товар"
 
-#: apps/shop/admin.py:40 apps/shop/models.py:33 apps/shop/models.py:48
+#: apps/shop/admin.py:43 apps/shop/models.py:33 apps/shop/models.py:48
 msgid "Vendor"
 msgstr "Производитель"
 
@@ -1149,7 +1147,7 @@ msgstr "Описание производителя"
 msgid "Vendors"
 msgstr "Производители"
 
-#: apps/shop/models.py:43 apps/shop/models.py:94
+#: apps/shop/models.py:43 apps/shop/models.py:102
 msgid "Quantity"
 msgstr "Количество"
 
@@ -1181,47 +1179,59 @@ msgstr "Тизер"
 msgid "Products"
 msgstr "Товары"
 
-#: apps/shop/models.py:69 core/abstract.py:53
+#: apps/shop/models.py:69
+msgid "Category of parameter"
+msgstr "Категория параметра"
+
+#: apps/shop/models.py:72
+msgid "Category of product parameter"
+msgstr "Категория параметра товара"
+
+#: apps/shop/models.py:73
+msgid "Categories of product parameters"
+msgstr "Категории параметров товара"
+
+#: apps/shop/models.py:77 core/abstract.py:53
 msgid "Unit"
 msgstr "Единица измерения"
 
-#: apps/shop/models.py:72
+#: apps/shop/models.py:80
 msgid "Product parameter"
 msgstr "Параметр товара"
 
-#: apps/shop/models.py:73
+#: apps/shop/models.py:81
 msgid "Product parameters"
 msgstr "Параметры товаров"
 
-#: apps/shop/models.py:76 core/abstract.py:64
+#: apps/shop/models.py:84 core/abstract.py:64
 msgid "Parameter"
 msgstr "Параметр"
 
-#: apps/shop/models.py:77
+#: apps/shop/models.py:85
 msgid "Value of parameter"
 msgstr "Значение параметра"
 
-#: apps/shop/models.py:78 core/abstract.py:192
+#: apps/shop/models.py:86 core/abstract.py:192
 msgid "Order in list"
 msgstr "Очередность в списке"
 
-#: apps/shop/models.py:79
+#: apps/shop/models.py:87
 msgid "In key params"
 msgstr "В ключевых параметрах"
 
-#: apps/shop/models.py:82
+#: apps/shop/models.py:90
 msgid "Product parameter value"
 msgstr "Значение параметра товара"
 
-#: apps/shop/models.py:83
+#: apps/shop/models.py:91
 msgid "Product parameters values"
 msgstr "Значения параметров товара"
 
-#: apps/shop/models.py:99
+#: apps/shop/models.py:107
 msgid "Basket"
 msgstr "Корзина"
 
-#: apps/shop/models.py:100
+#: apps/shop/models.py:108
 msgid "Baskets"
 msgstr "Корзины"
 
@@ -2045,6 +2055,9 @@ msgstr "Удалить"
 #: core/templatetags/booking_tags.py:216
 msgid "rub"
 msgstr "руб"
+
+#~ msgid "You are not allowed change room rates."
+#~ msgstr "Вы не имеете прав изменять тарифы номера"
 
 #~ msgid "Publish date"
 #~ msgstr "Дата публикации"
