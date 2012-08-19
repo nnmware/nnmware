@@ -34,7 +34,7 @@ class ProductCategoryAdmin(TreeAdmin):
     list_display = ("name", "_parents_repr")
 
 class ProductParameterAdmin(admin.ModelAdmin):
-    list_display = ("name", "unit")
+    list_display = ("name",'category' ,"unit")
 
 class ProductParameterCategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)

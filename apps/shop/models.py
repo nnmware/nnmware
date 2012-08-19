@@ -72,6 +72,9 @@ class ProductParameterCategory(models.Model):
         verbose_name = _("Category of product parameter")
         verbose_name_plural = _("Categories of product parameters")
 
+    def __str__(self):
+        return self.name
+
 class ProductParameter(Parameter):
     category = models.ForeignKey(ProductParameterCategory, verbose_name=_('Category'), related_name='category', null=True, blank=True)
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
