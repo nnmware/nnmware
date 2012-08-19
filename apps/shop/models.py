@@ -65,7 +65,15 @@ class Product(MetaName, MoneyBase, MetaDate):
 class ParameterUnit(Unit):
     pass
 
+class ProductParameterCategory(models.Model):
+    value = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
+
+    class Meta:
+        verbose_name = _("Category of product parameter")
+        verbose_name_plural = _("Categories of product parameters")
+
 class ProductParameter(Parameter):
+    category = models.ForeignKey(ProductParameterCategory, verbose_name=_('Category'), related_name='category', null=True, blank=True)
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
 
     class Meta:
