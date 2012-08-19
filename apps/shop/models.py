@@ -66,7 +66,7 @@ class ParameterUnit(Unit):
     pass
 
 class ProductParameterCategory(models.Model):
-    value = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
+    name = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
 
     class Meta:
         verbose_name = _("Category of product parameter")
