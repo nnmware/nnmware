@@ -72,7 +72,7 @@ class ProductParameterCategory(models.Model):
         verbose_name = _("Category of product parameter")
         verbose_name_plural = _("Categories of product parameters")
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 class ProductParameter(Parameter):
