@@ -253,6 +253,10 @@ def rbtruncatechars(value, arg):
         result = result[:-1]
     return result+'...'
 
+@register.filter
+def min_3_days(d):
+    return d-timedelta(days=1)
+
 @register.simple_tag
 def hotels_spb_count():
     city = City.objects.get(slug='spb')
