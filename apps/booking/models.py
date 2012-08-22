@@ -449,7 +449,7 @@ STATUS_CHOICES = (
 class Booking(MoneyBase, MetaIP):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
-    system_id = models.IntegerField(_("ID in system"), default=0)
+#    system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True, on_delete=models.SET_NULL)
