@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from decimal import Decimal
 from uuid import uuid4
+import random
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
@@ -448,6 +449,7 @@ STATUS_CHOICES = (
 class Booking(MoneyBase, MetaIP):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
+    system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True, on_delete=models.SET_NULL)
@@ -500,6 +502,11 @@ class Booking(MoneyBase, MetaIP):
     def save(self, *args, **kwargs):
         if not self.uuid:
             self.uuid = uuid4()
+        if self.system_id < 1:
+            new_id = random.randint(100000000, 999999999)
+            while Booking.objects.filter(system_id=new_id).count() > 0:
+                new_id = random.randint(100000000, 999999999)
+            self.system_id = new_id
         super(Booking, self).save(*args, **kwargs)
 
 
