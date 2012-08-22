@@ -255,7 +255,7 @@ def rbtruncatechars(value, arg):
 
 @register.filter
 def min_3_days(d):
-    return d-timedelta(days=1)
+    return d-timedelta(days=3)
 
 @register.simple_tag
 def hotels_spb_count():
