@@ -12,7 +12,7 @@ def get_queryset_category(obj, main_obj, cat_obj):
         parent = cat_obj.objects.all().filter(slug=parent_slugs[:-1])[0].id
         q = cat_obj.objects.get(parent=parent,slug=slug)
     else:
-        q = cat_obj.objects.get(slug=slug,parent=None)
+        q = cat_obj.objects.get(slug=slug,parent__isnull=True)
     array_child = [q.id]
     children = q.get_all_children()
     for child in children:
