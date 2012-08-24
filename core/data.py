@@ -13,7 +13,7 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
         q = cat_obj.objects.get(parent=parent,slug=slug)
     else:
         q = cat_obj.objects.get(slug=slug,parent=None)
-    child = q[0].id
+    child = q.id
     res = main_obj.objects.select_related()
     return res.filter(category=child).order_by(order)
 
