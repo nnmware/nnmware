@@ -5,7 +5,7 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 from django.db.models import Q
 
 
-def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
+def get_queryset_category(obj, main_obj, cat_obj, order='-category'):
     slug = obj.kwargs['slug']
     if obj.kwargs['parent_slugs']:
         parent_slugs = obj.kwargs['parent_slugs']
@@ -18,7 +18,7 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
     children = q.get_all_children()
     for child in children:
         array_child.append(child.pk)
-    return res.filter(category__in=array_child).order_by(category__pk,order)
+    return res.filter(category__in=array_child).order_by(order)
 
 
 def recurse_for_children(current_node, parent_node, show_empty=True):
