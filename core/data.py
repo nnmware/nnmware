@@ -13,10 +13,10 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
     else:
         q = cat_obj.objects.filter(slug=slug)
     child = q[0].get_all_children()
-    if not child:
-        child = q[0].id
-        res = main_obj.objects.select_related()
-        return res.filter(category__in=child).order_by(order)
+#    if not child:
+#        child = q[0].id
+#        res = main_obj.objects.select_related()
+#        return res.filter(category__in=child).order_by(order)
     res = main_obj.objects.select_related()
     return res.filter(category__in=child).order_by(order)
 
