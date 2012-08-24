@@ -186,6 +186,9 @@ def no_end_slash(value):
 
 @register.assignment_tag(takes_context=True)
 def basket(context):
+    user = context['user']
+    if user.is_authenticated():
+        return Basket.objects.filter(user=user)
     request = context['request']
     if hasattr(request, 'session') and request.session.session_key:
         # use the current session key if we can
