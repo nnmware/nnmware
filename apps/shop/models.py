@@ -52,6 +52,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
 
     class Meta:
+        ordering = ['category', 'order_in_list','name']
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
 
