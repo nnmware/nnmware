@@ -188,7 +188,7 @@ def no_end_slash(value):
 def basket(context):
     user = context['user']
     if user.is_authenticated():
-        return list(Basket.objects.filter(user=user))
+        return Basket.objects.filter(user=user)
     request = context['request']
     if hasattr(request, 'session') and request.session.session_key:
         # use the current session key if we can
