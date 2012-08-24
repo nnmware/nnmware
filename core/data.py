@@ -14,11 +14,10 @@ def get_queryset_category(obj, main_obj, cat_obj):
     else:
         q = cat_obj.objects.get(slug=slug,parent=None)
     array_child = [q.id]
-    res = main_obj.objects.select_related()
     children = q.get_all_children()
     for child in children:
         array_child.append(child.pk)
-    return res.filter(category__in=array_child) #.order_by('category__name').order_by('name')
+    return main_obj.objects.select_related().filter(category__in=array_child)
 
 
 def recurse_for_children(current_node, parent_node, show_empty=True):
