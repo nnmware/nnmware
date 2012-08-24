@@ -32,9 +32,9 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
         counter = current_node.product_set.count()
         for child in current_node.get_all_children():
             counter += child.product_set.count()
-#        if current_node.product_set.count() > 0:
-        count_txt = SubElement(temp_parent, 'sup', {'class':'amount'})
-        count_txt.text = str(counter)
+        if counter > 0:
+            count_txt = SubElement(temp_parent, 'sup', {'class':'amount'})
+            count_txt.text = str(counter)
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul')
             children = current_node.children.all()
