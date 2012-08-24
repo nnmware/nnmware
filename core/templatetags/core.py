@@ -184,7 +184,7 @@ def no_end_slash(value):
     else:
         return value
 
-@register.assignment_tag(takes_context=True)
+@register.tag(takes_context=True)
 def basket(context):
     user = context['user']
     if user.is_authenticated():
