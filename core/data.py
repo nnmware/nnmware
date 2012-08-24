@@ -18,7 +18,7 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
     child = q[0].id
     res = main_obj.objects.select_related()
 #    return res.filter(category=child).order_by(order)
-    return res.objects.filter(Q(category=child) | Q(parent=child)).order_by(order)
+    return res.filter(Q(category=child) | Q(parent=child)).order_by(order)
 
 #    res = main_obj.objects.select_related()
 #    return res.filter(category__in=child).order_by(order)
