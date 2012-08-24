@@ -3,6 +3,7 @@ from django import template
 from django.contrib.auth.models import User
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
+from nnmware.apps.shop.models import Basket
 from nnmware.apps.video.models import Video
 from nnmware.core.models import Tag
 
@@ -182,3 +183,15 @@ def no_end_slash(value):
         return value[:-1]
     else:
         return value
+
+@register.assignment_tag(takes_context=True)
+def basket(context):
+    request = context['request']
+    if hasattr(request, 'session') and request.session.session_key:
+        # use the current session key if we can
+        session_key = request.session.session_key
+    else:
+        # otherwise just fake a session key
+        session_key = '%s:%s' % (request.META.get('REMOTE_ADDR',''), request.META.get('HTTP_USER_AGENT', '')[:255])
+        session_key = session_key[:40]
+    return Basket.objects.filter(session_key=session_key)

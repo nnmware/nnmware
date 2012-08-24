@@ -102,10 +102,10 @@ class ProductParameterValue(MetaContent):
 
 
 class Basket(MetaDate):
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='basket')
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='basket',blank=True, null=True)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
-
+    session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
 
     class Meta:
         verbose_name = _("Basket")
