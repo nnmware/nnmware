@@ -30,7 +30,7 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
         link = SubElement(temp_parent, 'a', attrs)
         link.text = current_node.name
         count_txt = SubElement(temp_parent, 'sup')
-        count_txt.text = current_node.product_set.count()
+        count_txt.text = str(current_node.product_set.count())
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul')
             children = current_node.children.all()
