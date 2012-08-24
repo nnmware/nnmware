@@ -18,7 +18,7 @@ def get_queryset_category(obj, main_obj, cat_obj, order='-created_date'):
     children = q.get_all_children()
     for child in children:
         array_child.append(child.pk)
-    return res.filter(category__in=array_child).order_by(parent,order)
+    return res.filter(category__in=array_child).order_by(category__pk,order)
 
 
 def recurse_for_children(current_node, parent_node, show_empty=True):
