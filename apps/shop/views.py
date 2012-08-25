@@ -13,6 +13,7 @@ from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
+from nnmware.core.templatetags.core import basket
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 
 
@@ -50,7 +51,7 @@ class BasketView(ListView):
     template_name = 'shop/basket.html'
 
     def get_queryset(self):
-        return Basket.objects.filter(user=self.request.user)
+        return basket(self.request) #Basket.objects.filter(user=self.request.user)
 
 class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
     model = Product
