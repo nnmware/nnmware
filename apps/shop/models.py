@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.address.models import Country
+from nnmware.apps.address.models import Country, City, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
 from nnmware.core.abstract import MetaDate, Color, Unit, Parameter
@@ -168,3 +168,18 @@ class OrderItem(MoneyBase):
             return self.product.get_name
         except :
             return self.product_name
+
+class DeliveryAddress(models.Model):
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='user')
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True)
+    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True )
+    city = models.ForeignKey(City, verbose_name=_('City'))
+    street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True)
+    house_number = models.IntegerField(_('Number of house'), blank=True, null=True)
+    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True)
+    flat_number = models.IntegerField(_('Number of flat'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Delivery Address")
+        verbose_name_plural = _("Delivery Addresses")
