@@ -185,11 +185,22 @@ def no_end_slash(value):
     else:
         return value
 
-@register.assignment_tag(takes_context=True)
-def basket(context):
-    user = context['user']
-    if user.is_authenticated():
-        return Basket.objects.filter(user=user)
-    request = context['request']
+
+def _get_basket(request):
+    if request.user.is_authenticated():
+        return Basket.objects.filter(user=request.user)
     session_key = get_session_from_request(request)
     return Basket.objects.filter(session_key=session_key)
+
+@register.assignment_tag(takes_context=True)
+def basket(context):
+    request = context['request']
+    return _get_basket(request)
+
+@register.assignment_tag(takes_context=True)
+def basket_sum(context):
+    result = basket(context)
+    all_sum = 0
+    for item in result:
+        all_sum += item.sum
+    return all_sum
