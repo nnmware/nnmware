@@ -152,7 +152,7 @@ class Order(MetaDate, MoneyBase):
         if self.name <> '':
             return self.name
         else:
-            return self.pk
+            return "%s" % self.pk
 
 class OrderItem(MoneyBase):
     """
