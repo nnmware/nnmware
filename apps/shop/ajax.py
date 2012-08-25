@@ -102,10 +102,11 @@ def add_basket(request, object_id):
 def delete_basket(request, object_id):
     # Link used when User delete the item from basket
     try:
-        if not request.user.is_authenticated():
-            raise AccessError
         Basket.objects.get(pk=int(object_id)).delete()
-        basket_user = Basket.objects.filter(user=request.user)
+        if request.user.is_authenticated():
+            basket_user = Basket.objects.filter(user=request.user)
+        else:
+            basket_user = Basket.objects.filter(session_key=get_session_from_request(request))
         basket_count = basket_user.count()
         all_sum = 0
         for item in basket_user:
