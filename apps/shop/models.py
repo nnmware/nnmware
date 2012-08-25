@@ -171,13 +171,13 @@ class OrderItem(MoneyBase):
 
 class DeliveryAddress(models.Model):
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True)
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True)
-    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True )
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
+    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
     city = models.ForeignKey(City, verbose_name=_('City'))
-    street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True)
+    street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True, null=True)
     house_number = models.IntegerField(_('Number of house'), blank=True, null=True)
-    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True)
+    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)
     flat_number = models.IntegerField(_('Number of flat'), blank=True, null=True)
 
     class Meta:
