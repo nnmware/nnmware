@@ -4,6 +4,7 @@ from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket
 from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 
@@ -64,24 +65,32 @@ def param_value_delete(request, object_id):
 def add_basket(request, object_id):
     # Link used when User add to basket
     try:
-        if not request.user.is_authenticated():
-            raise AccessError
         p = Product.objects.get(pk=int(object_id))
         if not p.avail or p.quantity < 1 or p.amount <= 0 :
             raise AccessError
-        if Basket.objects.filter(user=request.user, product=p).count() >0 :
-            b = Basket.objects.get(user=request.user, product=p)
-            b.quantity += 1
+        if not request.user.is_authenticated():
+            session_key = get_session_from_request(request)
+            if Basket.objects.filter(session_key=session_key, product=p).count() >0 :
+                b = Basket.objects.get(session_key=session_key, product=p)
+                b.quantity += 1
+            else:
+                b = Basket(session_key=session_key,product=p)
+                b.quantity = 1
+            b.save()
+            basket_user = Basket.objects.filter(session_key=session_key)
         else:
-            b = Basket(user=request.user,product=p)
-            b.quantity = 1
-        b.save()
-        basket_user = Basket.objects.filter(user=request.user)
+            if Basket.objects.filter(user=request.user, product=p).count() >0 :
+                b = Basket.objects.get(user=request.user, product=p)
+                b.quantity += 1
+            else:
+                b = Basket(user=request.user,product=p)
+                b.quantity = 1
+            b.save()
+            basket_user = Basket.objects.filter(user=request.user)
         basket_count = basket_user.count()
         all_sum = 0
         for item in basket_user:
             all_sum += item.sum
-
         payload = {'success': True, 'basket_count':basket_count,
                    'basket_sum':"%0.2f" % (all_sum,)}
     except AccessError:
