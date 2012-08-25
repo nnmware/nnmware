@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
+from nnmware.core.utils import get_session_from_request
 
 class AjaxMessagingMiddleware(object):
     def process_response(self, request, response):
@@ -51,14 +52,7 @@ class VisitorHitMiddleware(object):
             v.user = request.user
         v.user_agent = user_agent
         v.ip_address = request.META.get('REMOTE_ADDR','')
-        if hasattr(request, 'session') and request.session.session_key:
-            # use the current session key if we can
-            session_key = request.session.session_key
-        else:
-            # otherwise just fake a session key
-            session_key = '%s:%s' % (v.ip_address, v.user_agent)
-            session_key = session_key[:40]
-        v.session_key = session_key
+        v.session_key = get_session_from_request(request)
         v.secure = request.is_secure()
         v.referrer = request.META.get('HTTP_REFERRER','')
         v.hostname = request.META.get('REMOTE_HOST','')[:100]
