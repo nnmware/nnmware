@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-26 04:57+1100\n"
+"POT-Creation-Date: 2012-08-26 06:20+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,7 @@ msgstr ""
 
 #: apps/address/admin.py:10 apps/address/models.py:81
 #: apps/address/models.py:119 apps/booking/admin.py:159
-#: apps/booking/models.py:603
+#: apps/booking/models.py:603 apps/shop/models.py:177
 msgid "City"
 msgstr "Город"
 
@@ -77,13 +77,13 @@ msgstr "Город"
 msgid "English"
 msgstr "Английский"
 
-#: apps/address/admin.py:23 apps/address/models.py:57
+#: apps/address/admin.py:23 apps/address/models.py:57 apps/shop/models.py:175
 msgid "Region"
 msgstr "Регион"
 
 #: apps/address/admin.py:35 apps/address/models.py:36
 #: apps/address/models.py:167 apps/address/models.py:188
-#: apps/money/models.py:18 apps/shop/models.py:28
+#: apps/money/models.py:18 apps/shop/models.py:28 apps/shop/models.py:174
 msgid "Country"
 msgstr "Страна"
 
@@ -726,7 +726,7 @@ msgstr "Завершено"
 
 #: apps/booking/models.py:450 apps/booking/models.py:601
 #: apps/money/models.py:74 apps/money/models.py:123 apps/shop/models.py:105
-#: apps/shop/models.py:142 core/models.py:432
+#: apps/shop/models.py:142 apps/shop/models.py:173 core/models.py:432
 msgid "User"
 msgstr "Пользователь"
 
@@ -1130,6 +1130,10 @@ msgstr "Производитель"
 msgid "Order"
 msgstr "Заказ"
 
+#: apps/shop/admin.py:70 apps/shop/models.py:184
+msgid "Delivery Address"
+msgstr "Адрес доставки"
+
 #: apps/shop/models.py:18
 msgid "Product Category"
 msgstr "Категория товара"
@@ -1155,7 +1159,7 @@ msgstr "Описание производителя"
 msgid "Vendors"
 msgstr "Производители"
 
-#: apps/shop/models.py:43 apps/shop/models.py:106 apps/shop/models.py:161
+#: apps/shop/models.py:43 apps/shop/models.py:106 apps/shop/models.py:164
 msgid "Quantity"
 msgstr "Количество"
 
@@ -1287,9 +1291,33 @@ msgstr "Статус"
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/shop/models.py:160
+#: apps/shop/models.py:163
 msgid "Product Name"
 msgstr "Название товара"
+
+#: apps/shop/models.py:176
+msgid "Zipcode"
+msgstr "Индекс"
+
+#: apps/shop/models.py:178
+msgid "Street"
+msgstr "Улица"
+
+#: apps/shop/models.py:179
+msgid "Number of house"
+msgstr "Номер дома"
+
+#: apps/shop/models.py:180
+msgid "Building"
+msgstr "Строение"
+
+#: apps/shop/models.py:181
+msgid "Number of flat"
+msgstr "Номер квартиры"
+
+#: apps/shop/models.py:185
+msgid "Delivery Addresses"
+msgstr "Адреса доставки"
 
 #: apps/shop/views.py:66
 msgid "edit form"
