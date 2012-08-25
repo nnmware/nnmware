@@ -58,8 +58,7 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [ OrderItemInline, ]
     fieldsets = (
         (_("Order"), {"fields": [('user','name'),
-            ('status',),
-            ('amount','quantity'),
+            ('status','amount'),
             ("created_date",'updated_date'),
             ('comment'),
         ]}),
