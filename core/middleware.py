@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
-from nnmware.core.utils import get_session_from_request
+from nnmware.core.http import get_session_from_request
 
 class AjaxMessagingMiddleware(object):
     def process_response(self, request, response):

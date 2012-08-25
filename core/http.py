@@ -56,3 +56,12 @@ def redirect(request):
         else:
             return request.META.get('HTTP_REFERER', '/')
 
+def get_session_from_request(request):
+    if hasattr(request, 'session') and request.session.session_key:
+    # use the current session key if we can
+        session_key = request.session.session_key
+    else:
+    # otherwise just fake a session key
+        session_key = '%s:%s' % (request.META.get('REMOTE_ADDR',''), request.META.get('HTTP_USER_AGENT', '')[:255])
+        session_key = session_key[:40]
+    return session_key

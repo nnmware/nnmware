@@ -6,7 +6,7 @@ from django.db.models import Count, Sum
 from nnmware.apps.shop.models import Basket
 from nnmware.apps.video.models import Video
 from nnmware.core.models import Tag
-from nnmware.core.utils import get_session_from_request
+from nnmware.core.http import get_session_from_request
 
 
 register = template.Library()
