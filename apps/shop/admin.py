@@ -47,7 +47,7 @@ class VendorAdmin(admin.ModelAdmin):
 class BasketAdmin(admin.ModelAdmin):
     list_display = ("user", "product",'quantity','created_date','updated_date')
 
-class OrderItemInline(generic.GenericStackedInline):
+class OrderItemInline(admin.StackedInline):
     model = OrderItem
     extra = 0
     fields = (('product','product_name','quantity','amount'),)
