@@ -50,8 +50,9 @@ class BasketView(ListView):
     model = Basket
     template_name = 'shop/basket.html'
 
-    def get_queryset(self):
-        return basket(self.request) #Basket.objects.filter(user=self.request.user)
+#    def get_queryset(self):
+#        if self.request.user.is_authen
+#        return basket(self.request) #Basket.objects.filter(user=self.request.user)
 
 class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
     model = Product
