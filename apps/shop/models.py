@@ -149,7 +149,10 @@ class Order(MetaDate, MoneyBase):
         verbose_name_plural = _('Orders')
 
     def __unicode__(self):
-        return self.name
+        if self.name <> '':
+            return self.name
+        else:
+            return self.pk
 
 class OrderItem(MoneyBase):
     """
