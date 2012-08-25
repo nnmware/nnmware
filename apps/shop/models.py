@@ -139,7 +139,7 @@ class Order(MetaDate, MoneyBase):
     """
     Definition of orders.
     """
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='user')
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='orders')
     name = models.CharField(verbose_name=_('Name'), max_length=80, blank=True, null=True)
     comment = models.TextField(verbose_name=_('Shipping comment'), blank=True, default='')
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
@@ -170,7 +170,7 @@ class OrderItem(MoneyBase):
             return self.product_name
 
 class DeliveryAddress(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='user')
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True)
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True )
