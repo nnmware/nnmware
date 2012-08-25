@@ -189,8 +189,8 @@ def no_end_slash(value):
 def _get_basket(request):
     if request.user.is_authenticated():
         return Basket.objects.filter(user=request.user)
-    session_key = get_session_from_request(request)
-    return Basket.objects.filter(session_key=session_key)
+    else:
+        return Basket.objects.filter(session_key=get_session_from_request(request))
 
 @register.assignment_tag(takes_context=True)
 def basket(context):

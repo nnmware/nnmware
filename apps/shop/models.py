@@ -114,3 +114,54 @@ class Basket(MetaDate):
     @property
     def sum(self):
         return self.quantity*self.product.amount
+
+STATUS_UNKNOWN = 0
+STATUS_WAIT = 1
+STATUS_PROCESS = 2
+STATUS_SENT = 3
+STATUS_CANCEL = 4
+STATUS_CLOSED = 5
+STATUS_UNDO = 6
+STATUS_SHIPPING = 7
+
+STATUS_ORDER = (
+        (STATUS_UNKNOWN, _('Unknown')),
+        (STATUS_WAIT, _('Wait')),
+        (STATUS_PROCESS, _('Process')),
+        (STATUS_SENT, _('Sent')),
+        (STATUS_CANCEL, _('Cancel')),
+        (STATUS_CLOSED, _('Closed')),
+        (STATUS_UNDO, _('Undo')),
+        (STATUS_SHIPPING, _('Shipping')),
+        )
+
+class Order(MetaDate, MoneyBase):
+    """
+    Definition of orders.
+    """
+    user = models.ForeignKey(User, verbose_name=_('User'), related_name='user')
+    name = models.CharField(verbose_name=_('Name'), max_length=80, blank=True, null=True)
+    comment = models.TextField(verbose_name=_('Shipping comment'), blank=True, default='')
+    status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
+
+    class Meta:
+        verbose_name = _('Order')
+        verbose_name_plural = _('Orders')
+
+    def __unicode__(self):
+        return self.name
+
+class OrderItem(MoneyBase):
+    """
+    Definition of order's details.
+    """
+    order = models.ForeignKey(Order)
+    product = models.ForeignKey(Product, blank=True, null=True)
+    product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, blank=True, null=True)
+    quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
+
+    def __unicode__(self):
+        try:
+            return self.product.get_name
+        except :
+            return self.product_name
