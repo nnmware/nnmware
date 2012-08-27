@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-28 00:59+1100\n"
+"POT-Creation-Date: 2012-08-28 01:00+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1028,14 +1028,8 @@ msgid "New status: "
 msgstr "Новый статус: "
 
 #: apps/booking/views.py:955
-#, fuzzy
 msgid "Description: "
-msgstr "Описание"
-
-#: apps/booking/views.py:956
-#, python-format
-msgid "IP: %s USER-AGENT: %s"
-msgstr ""
+msgstr "Описание: "
 
 #: apps/money/admin.py:13 apps/money/models.py:91
 msgid "Transaction"
