@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-28 00:24+1100\n"
+"POT-Creation-Date: 2012-08-28 00:59+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1003,29 +1003,39 @@ msgstr "Вы не выбрали вариант платежа"
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
 
-#: apps/booking/views.py:947
+#: apps/booking/views.py:948
 msgid "Changed status of booking"
 msgstr "Изменен статус бронирования"
 
-#: apps/booking/views.py:948
+#: apps/booking/views.py:949
 msgid "Hotel: "
 msgstr "Отель: "
 
-#: apps/booking/views.py:949
+#: apps/booking/views.py:950
 msgid "Booking: "
 msgstr "Бронирование: "
 
-#: apps/booking/views.py:950
+#: apps/booking/views.py:951
 msgid "Booking link: "
 msgstr "Ссылка на бронирование: "
 
-#: apps/booking/views.py:951
+#: apps/booking/views.py:952
 msgid "Old status: "
 msgstr "Старый статус: "
 
-#: apps/booking/views.py:952
+#: apps/booking/views.py:953
 msgid "New status: "
 msgstr "Новый статус: "
+
+#: apps/booking/views.py:955
+#, fuzzy
+msgid "Description: "
+msgstr "Описание"
+
+#: apps/booking/views.py:956
+#, python-format
+msgid "IP: %s USER-AGENT: %s"
+msgstr ""
 
 #: apps/money/admin.py:13 apps/money/models.py:91
 msgid "Transaction"
