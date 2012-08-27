@@ -941,4 +941,4 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_terms', args=[self.object.city.slug, self.object.slug])
+        return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])
