@@ -929,7 +929,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
     model = Booking
     slug_field = 'uuid'
     form_class = BookingStatusForm
-    template_name = "cabinet/booking.html"
+    template_name = "cabinet/booking_status.html"
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
