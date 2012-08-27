@@ -114,3 +114,9 @@ class BookingStatusForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('status',)
+
+    def clean(self):
+        if 'status' in self.changed_data:
+            return self.cleaned_data
+        else:
+            raise forms.ValidationError(_('Field not changed'))
