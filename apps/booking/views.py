@@ -944,12 +944,17 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         booking = get_object_or_404(Booking, uuid=self.kwargs['slug'])
         self.object = form.save(commit=False)
         if self.object.status <> booking.status:
+            desc = self.request.POST.get('description') or None
             subject = _("Changed status of booking")
             message = _("Hotel: ") + self.object.hotel.get_name + "\n"
             message += _("Booking: ") + str(self.object.system_id) + "\n"
             message += _("Booking link: ") + self.object.get_absolute_url() + "\n"
             message += _("Old status: ") + booking.get_status_display() + "\n"
             message += _("New status: ") + self.object.get_status_display() + "\n"
+            if desc is not None:
+                message += _("Description: ") + desc + "\n"
+            message += '\n'+_('IP: ') + self.request.META.get('REMOTE_ADDR')
+            message += _('User-Agent: ') + self.request.META.get('HTTP_USER_AGENT', '')[:255] + '\n'
             mail_managers(subject, message)
             self.object.save()
         return super(BookingStatusChange, self).form_valid(form)
