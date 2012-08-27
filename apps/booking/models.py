@@ -103,7 +103,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
     website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)
-    contact_email = models.EmailField(verbose_name=_("Contact Email"), blank=True)
+    contact_email = models.EmailField(verbose_name=_("Contact Email"), blank=True, max_length=254)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
