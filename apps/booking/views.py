@@ -941,7 +941,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         return context
 
     def form_valid(self, form):
-        booking = get_object_or_404(Booking, slug=self.kwargs['slug'])
+        booking = get_object_or_404(Booking, uuid=self.kwargs['slug'])
         self.object = form.save(commit=False)
         if self.object.status <> booking.status:
             subject  = "Partner updated profile information"
