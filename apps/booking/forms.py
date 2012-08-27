@@ -3,6 +3,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import AdminTimeWidget
+from django.core.mail import mail_managers
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
@@ -117,6 +118,9 @@ class BookingStatusForm(forms.ModelForm):
 
     def clean(self):
         if 'status' in self.changed_data:
+            subject  = "Partner updated profile information"
+            message  = "Partner: " + self.object.hotel.get_name + " "
+            mail_managers(subject, message)
             return self.cleaned_data
         else:
             raise forms.ValidationError(_('Field not changed'))
