@@ -99,11 +99,11 @@ HOTEL_CHOICES = (
 
 class Hotel(MetaName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
-    email = models.EmailField(verbose_name=_("Email"), blank=True, max_length=254)
+    email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
     website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)
-    contact_email = models.EmailField(verbose_name=_("Contact Email"), blank=True, max_length=254)
+    contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
@@ -459,7 +459,7 @@ class Booking(MoneyBase, MetaIP):
     middle_name = models.CharField(verbose_name=_("Middle name"), max_length=100, blank=True)
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
-    email = models.EmailField(_('E-mail'), blank=True, max_length=254)
+    email = models.CharField(_('E-mail'), blank=True, max_length=75)
     uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True, editable=False)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
