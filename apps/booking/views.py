@@ -953,7 +953,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
             message += _("New status: ") + self.object.get_status_display() + "\n"
             if desc is not None:
                 message += _("Description: ") + desc + "\n"
-            message += '\n'+_('IP: ') + self.request.META.get('REMOTE_ADDR','')
+            message += '\n'+_('IP: ') + str(self.request.META.get('REMOTE_ADDR',''))
             message += _('User-Agent: ') + self.request.META.get('HTTP_USER_AGENT', '')[:255] + '\n'
             mail_managers(subject, message)
             self.object.save()
