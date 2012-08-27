@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-26 06:20+1100\n"
+"POT-Creation-Date: 2012-08-28 00:24+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,19 +407,19 @@ msgstr "Вы суперпользователь и можете добавлят
 msgid "Thanks for you review!"
 msgstr "Спасибо за Ваш отзыв!"
 
-#: apps/booking/forms.py:71 apps/userprofile/forms.py:26
+#: apps/booking/forms.py:72 apps/userprofile/forms.py:26
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:72 apps/userprofile/forms.py:27
+#: apps/booking/forms.py:73 apps/userprofile/forms.py:27
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:75 apps/userprofile/forms.py:282
+#: apps/booking/forms.py:76 apps/userprofile/forms.py:282
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: apps/booking/forms.py:110
+#: apps/booking/forms.py:111
 msgid "No valid payment method."
 msgstr "Нет доступного метода оплаты"
 
@@ -975,7 +975,7 @@ msgid "Hotels with admins"
 msgstr "Отели с администраторами"
 
 #: apps/booking/views.py:738 apps/booking/views.py:912
-#: apps/booking/views.py:924
+#: apps/booking/views.py:924 apps/booking/views.py:939
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
@@ -1002,6 +1002,30 @@ msgstr "Вы не выбрали вариант платежа"
 #: apps/booking/views.py:899
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
+
+#: apps/booking/views.py:947
+msgid "Changed status of booking"
+msgstr "Изменен статус бронирования"
+
+#: apps/booking/views.py:948
+msgid "Hotel: "
+msgstr "Отель: "
+
+#: apps/booking/views.py:949
+msgid "Booking: "
+msgstr "Бронирование: "
+
+#: apps/booking/views.py:950
+msgid "Booking link: "
+msgstr "Ссылка на бронирование: "
+
+#: apps/booking/views.py:951
+msgid "Old status: "
+msgstr "Старый статус: "
+
+#: apps/booking/views.py:952
+msgid "New status: "
+msgstr "Новый статус: "
 
 #: apps/money/admin.py:13 apps/money/models.py:91
 msgid "Transaction"
