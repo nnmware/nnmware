@@ -944,8 +944,11 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         booking = get_object_or_404(Booking, uuid=self.kwargs['slug'])
         self.object = form.save(commit=False)
         if self.object.status <> booking.status:
-            subject  = "Partner updated profile information"
-            message  = "Partner: " + self.object.hotel.get_name + " "
+            subject = _("Changed status of booking")
+            message = _("Hotel: ") + self.object.hotel.get_name + "\n\n"
+            message += _("Booking: ") + self.object.hotel.get_name + "\n\n"
+            message += _("Old status: ") + booking.get_status_display() + "\n\n"
+            message += _("New status: ") + self.object.get_status_display() + "\n\n"
             mail_managers(subject, message)
             self.object.save()
         return super(BookingStatusChange, self).form_valid(form)
