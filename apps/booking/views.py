@@ -945,10 +945,11 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         self.object = form.save(commit=False)
         if self.object.status <> booking.status:
             subject = _("Changed status of booking")
-            message = _("Hotel: ") + self.object.hotel.get_name + "\n\n"
-            message += _("Booking: ") + self.object.hotel.get_name + "\n\n"
-            message += _("Old status: ") + booking.get_status_display() + "\n\n"
-            message += _("New status: ") + self.object.get_status_display() + "\n\n"
+            message = _("Hotel: ") + self.object.hotel.get_name + "\n"
+            message += _("Booking: ") + self.object.system_id + "\n"
+            message += _("Booking link: ") + self.object.get_absolute_url + "\n"
+            message += _("Old status: ") + booking.get_status_display() + "\n"
+            message += _("New status: ") + self.object.get_status_display() + "\n"
             mail_managers(subject, message)
             self.object.save()
         return super(BookingStatusChange, self).form_valid(form)
