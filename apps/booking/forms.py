@@ -108,3 +108,9 @@ class BookingAddForm(forms.ModelForm):
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
             return payment_method
         raise forms.ValidationError(_("No valid payment method."))
+
+class BookingStatusForm(forms.ModelForm):
+
+    class Meta:
+        model = Booking
+        fields = ('status',)

@@ -924,3 +924,21 @@ class BookingAdminDetail(CurrentUserSuperuser, DetailView):
         context['title_line'] = _('Booking ID')+' '+self.object.uuid
         context['tab'] = 'bookings'
         return context
+
+class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
+    model = Booking
+    slug_field = 'uuid'
+    form_class = BookingStatusForm
+    template_name = "cabinet/booking.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(BookingStatusChange, self).get_context_data(**kwargs)
+        context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
+        context['hotel'] = self.object.hotel
+        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['tab'] = 'reports'
+        return context
+
+    def get_success_url(self):
+        return reverse('cabinet_terms', args=[self.object.city.slug, self.object.slug])

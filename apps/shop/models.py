@@ -183,3 +183,6 @@ class DeliveryAddress(models.Model):
     class Meta:
         verbose_name = _("Delivery Address")
         verbose_name_plural = _("Delivery Addresses")
+
+#    def __unicode__(self):
+#        return "%s - %s "
