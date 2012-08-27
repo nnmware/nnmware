@@ -940,5 +940,16 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         context['tab'] = 'reports'
         return context
 
+    def form_valid(self, form):
+        booking = get_object_or_404(Booking, slug=self.kwargs['uuid'])
+        self.object = form.save(commit=False)
+        if self.object.status <> booking.status:
+            subject  = "Partner updated profile information"
+            message  = "Partner: " + self.object.hotel.get_name + " "
+            mail_managers(subject, message)
+            self.object.save()
+        return super(BookingStatusChange, self).form_valid(form)
+
+
     def get_success_url(self):
         return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])

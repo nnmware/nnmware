@@ -115,12 +115,3 @@ class BookingStatusForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('status',)
-
-    def clean(self):
-        if 'status' in self.changed_data:
-            subject  = "Partner updated profile information"
-            message  = "Partner: " + self.object.hotel.get_name + " "
-            mail_managers(subject, message)
-            return self.cleaned_data
-        else:
-            raise forms.ValidationError(_('Field not changed'))
