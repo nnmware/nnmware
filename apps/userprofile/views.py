@@ -33,8 +33,6 @@ from nnmware.apps.userprofile.models import Profile, EmailValidation
 from nnmware.apps.userprofile.forms import *
 from nnmware.core.imgutil import fit
 
-
-
 class UserList(ListView):
     model = User
     context_object_name = "object_list"
@@ -208,6 +206,23 @@ class SignupView(AjaxFormMixin, FormView):
         body = 'registration/activation.txt'
         send_template_mail(subject,body,mail_dict,[e.email])
         return super(SignupView, self).form_valid(form)
+
+class EmailQuickRegisterView(AjaxFormMixin, FormView):
+    form_class = EmailQuickRegisterForm
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        username = email
+        password = form.cleaned_data.get('password')
+        u = User(username=username,email=email)
+        u.set_password(password)
+        u.is_active = True
+        u.save()
+        user = authenticate(username=e.username, password=e.password)
+        self.user = user
+        login(self.request, user)
+        return super(EmailQuickRegisterView, self).form_valid(form)
+
 
 class LoginView(AjaxFormMixin, FormView):
     form_class = LoginForm

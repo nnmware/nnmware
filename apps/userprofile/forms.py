@@ -95,8 +95,6 @@ class SignupForm(UserCreationForm):
             except EmailValidation.DoesNotExist:
                 return email
 
-
-
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if not password1:
@@ -111,6 +109,30 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(_("PASSWORDS ARE MISMATCH"))
         return password2
 
+class EmailQuickRegisterForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('email','password')
+
+    def clean_email(self):
+        """
+        Verify that the email exists
+        """
+        email = self.cleaned_data.get("email")
+        if not email:
+            raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
+        try:
+            User.objects.get(email=email)
+            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
+        except User.DoesNotExist:
+            return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if not password:
+            raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
+        return password
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_(u'Username'), max_length=30)
