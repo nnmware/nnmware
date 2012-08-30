@@ -218,7 +218,7 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         u.set_password(password)
         u.is_active = True
         u.save()
-        user = authenticate(username=e.username, password=e.password)
+        user = authenticate(username=username, password=password)
         self.user = user
         login(self.request, user)
         return super(EmailQuickRegisterView, self).form_valid(form)
