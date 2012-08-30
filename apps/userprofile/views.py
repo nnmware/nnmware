@@ -209,6 +209,7 @@ class SignupView(AjaxFormMixin, FormView):
 
 class EmailQuickRegisterView(AjaxFormMixin, FormView):
     form_class = EmailQuickRegisterForm
+    success_url = "/"
 
     def form_valid(self, form):
         email = form.cleaned_data.get('email')
