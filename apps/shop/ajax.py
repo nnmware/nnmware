@@ -124,7 +124,7 @@ def add_address(request):
     """
     Its Ajax add address in basket
     """
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
         address = DeliveryAddress()
@@ -146,8 +146,8 @@ def add_address(request):
 #                   'username_url':msg.sender.get_profile().get_absolute_url(),
 #                   'message_subject':msg.subject, 'avatar_id':avatar_id,
 #                   'message_date': message_date, 'message_body':msg.body }
-    except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add address')}
-    except :
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False, 'error':_('You are not allowed for add address')}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
