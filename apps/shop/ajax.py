@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from nnmware.apps.address.models import Country, Region, City
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, STATUS_WAIT
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -182,14 +182,22 @@ def delete_address(request, object_id):
 
 def new_order(request):
     # Link used when User make order
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
-        addr = request.POST.get('addr') or None
-        DeliveryAddress.objects.get(user=request.user, pk=int(addr))
-        payload = {'success': True,'id':int(addr)}
-    except AccessError:
-        payload = {'success': False}
-    except:
-        payload = {'success': False}
+        addr = request.POST.get('addr')
+        address = DeliveryAddress.objects.get(user=request.user, pk=int(addr))
+        order = Order()
+        order.address = str(address)
+        order.user = request.user
+        order.name = ''
+        order.comment = ''
+        order.status = STATUS_WAIT
+        order.save()
+
+        payload = {'success': True,'id':order.pk}
+#    except AccessError:
+#        payload = {'success': False}
+#    except:
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
