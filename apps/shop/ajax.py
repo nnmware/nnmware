@@ -169,13 +169,12 @@ def delete_address(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def new_order(request, object_id):
+def new_order(request):
     # Link used when User make order
     try:
         if not request.user.is_authenticated():
             raise AccessError
-
-        DeliveryAddress.objects.get(pk=int(object_id)).delete()
+        DeliveryAddress.objects.get(pk=int(object_id))
         payload = {'success': True,'id':int(object_id)}
     except AccessError:
         payload = {'success': False}
