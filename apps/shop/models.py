@@ -179,6 +179,7 @@ class DeliveryAddress(models.Model):
     house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
     building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True, null=True )
     flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
+    fio = models.CharField(max_length=100, verbose_name=_('Name of order receiver'), default='',blank=True,null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")
@@ -202,4 +203,6 @@ class DeliveryAddress(models.Model):
             result += _(', building ') + self.building
         if self.flat_number <> '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
+        if self.fio <> '' and self.fio is not None:
+            result += ', ' + self.fio
         return result

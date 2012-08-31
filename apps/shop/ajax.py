@@ -156,6 +156,9 @@ def add_address(request):
         flat_number = request.POST.get('flat_number') or None
         if flat_number is not None:
             address.flat_number = flat_number
+        fio = request.POST.get('fio') or None
+        if fio is not None:
+            address.fio = fio
         address.save()
         payload = {'success': True}
     except AccessError:
