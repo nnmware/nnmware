@@ -120,7 +120,7 @@ def delete_basket(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def add_address(request, object_id):
+def add_address(request):
     """
     Its Ajax add address in basket
     """
