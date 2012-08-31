@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import permalink
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, City, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
