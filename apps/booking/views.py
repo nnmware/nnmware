@@ -327,7 +327,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
         context = super(RoomDetail, self).get_context_data(**kwargs)
-        context['city'] = self.object.hotel.city
+        try:
+            context['city'] = self.object.hotel.city
+        except :
+            pass
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['tab'] = 'description'
         context['title_line'] = self.object.hotel.get_name
