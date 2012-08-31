@@ -140,8 +140,8 @@ class Order(MetaDate, MoneyBase):
     Definition of orders.
     """
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='orders')
-    name = models.CharField(verbose_name=_('Name'), max_length=80, blank=True, null=True)
-    comment = models.TextField(verbose_name=_('Shipping comment'), blank=True, default='')
+    name = models.CharField(verbose_name=_('Name'), max_length=80, default='')
+    comment = models.TextField(verbose_name=_('Shipping comment'), default='')
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
 
     class Meta:
@@ -160,7 +160,7 @@ class OrderItem(MoneyBase):
     """
     order = models.ForeignKey(Order)
     product = models.ForeignKey(Product, blank=True, null=True)
-    product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, blank=True, null=True)
+    product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, default='')
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 
     def __unicode__(self):
@@ -186,13 +186,8 @@ class DeliveryAddress(models.Model):
 
     def __unicode__(self):
         result = ''
-        if self.country is not None:
-            result += self.country.name +' '
-        if self.zipcode is not None:
-            result += self.zipcode +' '
-        if self.region is not None:
-            result += self.region.name +' '
-        if self.city is not None:
-            result += self.city.name +' '
-
+        for i in [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
+                  self.building, self.flat_number]:
+            if i is not None:
+                result += i +', '
         return result
