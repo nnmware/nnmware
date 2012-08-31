@@ -102,6 +102,6 @@ class OrdersView(ListView):
 class OrderView(DetailView):
     model = Order
     pk_url_kwarg = 'pk'
-    template_name = 'shop/order_list.html'
+    template_name = 'shop/order.html'
 
 
