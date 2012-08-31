@@ -174,7 +174,7 @@ class DeliveryAddress(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
-    city = models.ForeignKey(City, verbose_name=_('City'))
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
     street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True, null=True)
     house_number = models.IntegerField(_('Number of house'), blank=True, null=True)
     building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)

@@ -2,7 +2,8 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket
+from nnmware.apps.address.models import Country
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -119,3 +120,34 @@ def delete_basket(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def add_address(request, object_id):
+    """
+    Its Ajax add address in basket
+    """
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        address = DeliveryAddress()
+        address.user = request.user
+        country_new = request.POST.get('country') or None
+        if country_new is not None:
+            country = Country.get_or_create(name=country_new)
+            address.country = country
+
+#        msg.subject = request.POST.get('message_subject') or None
+#        msg.body = request.POST.get('message_body') or None
+#        msg.sender = request.user
+#        msg.recipient = User.objects.get(id=object_id)
+#        msg.sent_at = datetime.now()
+
+        address.save()
+        payload = {'success': True}
+#        , 'id':msg.pk, 'username':msg.sender.get_profile().get_name,
+#                   'username_url':msg.sender.get_profile().get_absolute_url(),
+#                   'message_subject':msg.subject, 'avatar_id':avatar_id,
+#                   'message_date': message_date, 'message_body':msg.body }
+    except AccessError:
+        payload = {'success': False, 'error':_('You are not allowed for add address')}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
