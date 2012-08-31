@@ -174,8 +174,9 @@ def new_order(request):
     try:
         if not request.user.is_authenticated():
             raise AccessError
-        DeliveryAddress.objects.get(pk=int(object_id))
-        payload = {'success': True,'id':int(object_id)}
+        addr = request.POST.get('addr') or None
+        DeliveryAddress.objects.get(user=request.user, pk=int(addr))
+        payload = {'success': True,'id':int(addr)}
     except AccessError:
         payload = {'success': False}
     except:
