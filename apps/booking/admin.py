@@ -186,6 +186,7 @@ class PlacePriceAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Place Price"), {"fields": [("settlement",'date'),
             ('amount','currency')]}),)
+    ordering = ('amount',)
 
 
 admin.site.register(Hotel, HotelAdmin)

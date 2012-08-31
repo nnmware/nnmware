@@ -118,3 +118,4 @@ def delete_basket(request, object_id):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+

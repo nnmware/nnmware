@@ -185,7 +185,6 @@ def no_end_slash(value):
     else:
         return value
 
-
 def _get_basket(request):
     if request.user.is_authenticated():
         Basket.objects.filter(session_key=get_session_from_request(request)).update(user=request.user)

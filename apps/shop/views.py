@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket
@@ -87,3 +87,6 @@ class SearchView(ListView):
     def get_queryset(self):
         q = self.request.GET.get('q') or None
         return Product.objects.filter( Q(name__icontains=q) | Q(name_en__icontains=q)).order_by('name')
+
+class AddDeliveryAddressView(AjaxFormMixin, CreateView):
+    pass
