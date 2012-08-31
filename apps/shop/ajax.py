@@ -131,7 +131,7 @@ def add_address(request):
         address.user = request.user
         country_new = request.POST.get('country') or None
         if country_new is not None:
-            country, created = Country.get_or_create(name=country_new)
+            country, created = Country.objects.get_or_create(name=country_new)
             address.country = country
 
 #        msg.subject = request.POST.get('message_subject') or None
