@@ -184,5 +184,5 @@ class DeliveryAddress(models.Model):
         verbose_name = _("Delivery Address")
         verbose_name_plural = _("Delivery Addresses")
 
-#    def __unicode__(self):
-#        return "%s - %s "
+    def __unicode__(self):
+        return self.country.name + '' + self.region.name + '' + self.city.name
