@@ -173,22 +173,33 @@ class DeliveryAddress(models.Model):
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
-    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
+    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), default='')
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
-    street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True, null=True)
-    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), blank=True, null=True)
-    building = models.CharField(max_length=25,verbose_name=_('Building'), blank=True, null=True)
-    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), blank=True, null=True)
+    street = models.CharField(max_length=100, verbose_name=_('Street'), default='')
+    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='')
+    building = models.CharField(max_length=25,verbose_name=_('Building'), default='')
+    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='')
 
     class Meta:
         verbose_name = _("Delivery Address")
         verbose_name_plural = _("Delivery Addresses")
 
     def __unicode__(self):
-#        result = ''
-        address_list = [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
-                  self.building, self.flat_number]
-        result = ','.join([x for x in map(lambda x: str(x),address_list) if x is not None])
-#            if i is not None:
-#                result += `i` +', '
+        result = ''
+        if self.zipcode <> '':
+            result += self.zipcode
+        if self.country is not None:
+            result += ', ' + self.country.name
+        if self.region is not None:
+            result += ', ' + self.region.name
+        if self.city is not None:
+            result += ', ' + self.city.name
+        if self.street <> '':
+            result += ', ' + self.street
+        if self.house_number <> '':
+            result += ', ' + self.house_number
+        if self.building <> '':
+            result += ', ' + self.building
+        if self.flat_number <> '':
+            result += ', ' + self.flat_number
         return result
