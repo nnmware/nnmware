@@ -143,6 +143,8 @@ class Order(MetaDate, MoneyBase):
     name = models.CharField(verbose_name=_('Name'), max_length=80, default='')
     comment = models.TextField(verbose_name=_('Shipping comment'), default='')
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
+    address = models.CharField(verbose_name=_('Shipping address'), max_length=255, default='')
+
 
     class Meta:
         verbose_name = _('Order')
@@ -159,15 +161,16 @@ class OrderItem(MoneyBase):
     Definition of order's details.
     """
     order = models.ForeignKey(Order)
-    product = models.ForeignKey(Product, blank=True, null=True)
+    product_pn = models.CharField(verbose_name=_('Product PartNumber'), max_length=250, default='')
     product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, default='')
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 
     def __unicode__(self):
-        try:
-            return self.product.get_name
-        except :
-            return self.product_name
+        return self.product_name
+
+    @property
+    def fullamount(self):
+        return self.quantity*self.amount
 
 class DeliveryAddress(models.Model):
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
