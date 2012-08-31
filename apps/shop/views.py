@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
@@ -90,3 +90,14 @@ class SearchView(ListView):
 
 class AddDeliveryAddressView(AjaxFormMixin, CreateView):
     pass
+
+class OrdersView(ListView):
+    template_name = 'shop/order_list.html'
+    model = Order
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+
+
