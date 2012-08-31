@@ -54,11 +54,10 @@ class OrderItemInline(admin.StackedInline):
 
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date','updated_date')
-    list_display = ("user", "name", 'status',"fullamount")
+    list_display = ("user", "created_date", 'status',"fullamount")
     inlines = [ OrderItemInline, ]
     fieldsets = (
-        (_("Order"), {"fields": [('user','name'),
-            ('status','amount'),
+        (_("Order"), {"fields": [('user','status'),
             ("created_date",'updated_date'),
             ('address'),
             ('comment'),

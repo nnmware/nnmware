@@ -135,12 +135,11 @@ STATUS_ORDER = (
         (STATUS_SHIPPING, _('Shipping')),
         )
 
-class Order(MetaDate, MoneyBase):
+class Order(MetaDate):
     """
     Definition of orders.
     """
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='orders')
-    name = models.CharField(verbose_name=_('Name'), max_length=80, default='', blank=True)
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
     address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
@@ -150,10 +149,7 @@ class Order(MetaDate, MoneyBase):
         verbose_name_plural = _('Orders')
 
     def __unicode__(self):
-        if self.name <> '':
-            return self.name
-        else:
-            return "%s" % self.pk
+        return "%s" % self.pk
 
     @property
     def fullamount(self):
