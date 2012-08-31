@@ -159,6 +159,10 @@ class Order(MetaDate):
             result += i.fullamount
         return result
 
+    @permalink
+    def get_absolute_url(self):
+        return "order_view", (), {'pk':self.pk}
+
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
