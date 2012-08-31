@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from nnmware.apps.address.models import Country, Region, City
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, STATUS_WAIT
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, STATUS_WAIT, OrderItem
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -194,6 +194,13 @@ def new_order(request):
         order.comment = ''
         order.status = STATUS_WAIT
         order.save()
+        for item in Basket.objects.filter(user=request.user):
+            order_item = OrderItem()
+            order_item.order = order
+            order_item.product_name = item.product.name
+            order_item.product_pn = item.product.shop_pn
+            order_item.quantity = item.quantity
+            order_item.save()
 
         payload = {'success': True,'id':order.pk}
 #    except AccessError:
