@@ -63,6 +63,8 @@ class OrderAdmin(admin.ModelAdmin):
             ('comment'),
         ]}),
         )
+    ordering = ('user','fullamount')
+
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number')
