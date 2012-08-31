@@ -2,7 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from nnmware.apps.address.models import Country
+from nnmware.apps.address.models import Country, Region
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
@@ -133,8 +133,16 @@ def add_address(request):
         if country_new is not None:
             country, created = Country.objects.get_or_create(name=country_new)
             address.country = country
+        region_new = request.POST.get('region') or None
+        if region_new is not None:
+            region, created = Region.objects.get_or_create(name=region_new)
+            address.region = region
+        zipcode = request.POST.get('zipcode') or None
+        if zipcode is not None:
+            address.zipcode = zipcode
 
-#        msg.subject = request.POST.get('message_subject') or None
+
+        #        msg.subject = request.POST.get('message_subject') or None
 #        msg.body = request.POST.get('message_body') or None
 #        msg.sender = request.user
 #        msg.recipient = User.objects.get(id=object_id)
