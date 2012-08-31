@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-28 01:00+1100\n"
+"POT-Creation-Date: 2012-09-01 05:45+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,19 +407,19 @@ msgstr "Вы суперпользователь и можете добавлят
 msgid "Thanks for you review!"
 msgstr "Спасибо за Ваш отзыв!"
 
-#: apps/booking/forms.py:72 apps/userprofile/forms.py:26
+#: apps/booking/forms.py:71 apps/userprofile/forms.py:26
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:73 apps/userprofile/forms.py:27
+#: apps/booking/forms.py:72 apps/userprofile/forms.py:27
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:76 apps/userprofile/forms.py:282
+#: apps/booking/forms.py:75 apps/userprofile/forms.py:304
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: apps/booking/forms.py:111
+#: apps/booking/forms.py:110
 msgid "No valid payment method."
 msgstr "Нет доступного метода оплаты"
 
@@ -750,7 +750,7 @@ msgstr "До"
 msgid "Booking status"
 msgstr "Статус бронирования"
 
-#: apps/booking/models.py:458 apps/userprofile/forms.py:244
+#: apps/booking/models.py:458 apps/userprofile/forms.py:266
 msgid "First name"
 msgstr "Имя"
 
@@ -911,123 +911,123 @@ msgstr "Заявка на добавление отеля"
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
-#: apps/booking/views.py:213 apps/booking/views.py:243
+#: apps/booking/views.py:214 apps/booking/views.py:244
 msgid "list of hotels"
 msgstr "список отелей"
 
-#: apps/booking/views.py:244
+#: apps/booking/views.py:245
 msgid "admin of hotels"
 msgstr "администратор отелей"
 
-#: apps/booking/views.py:357 apps/booking/views.py:374
-#: apps/booking/views.py:403 apps/booking/views.py:423
-#: apps/booking/views.py:457 apps/booking/views.py:506
-#: apps/booking/views.py:694
+#: apps/booking/views.py:361 apps/booking/views.py:378
+#: apps/booking/views.py:407 apps/booking/views.py:427
+#: apps/booking/views.py:461 apps/booking/views.py:510
+#: apps/booking/views.py:698
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:524 apps/booking/views.py:714
+#: apps/booking/views.py:528 apps/booking/views.py:718
 msgid "bookings"
 msgstr "бронирования"
 
-#: apps/booking/views.py:551
+#: apps/booking/views.py:555
 msgid "bills"
 msgstr "счета"
 
-#: apps/booking/views.py:575
+#: apps/booking/views.py:579
 msgid "request for add hotel"
 msgstr "заявка на добавление отеля"
 
-#: apps/booking/views.py:598
+#: apps/booking/views.py:602
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:622 apps/booking/views.py:884
+#: apps/booking/views.py:626 apps/booking/views.py:888
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:632 apps/booking/views.py:669
+#: apps/booking/views.py:636 apps/booking/views.py:673
 msgid "site reports"
 msgstr "отчеты сайта"
 
-#: apps/booking/views.py:642
+#: apps/booking/views.py:646
 msgid "Error"
 msgstr "Ошибка"
 
-#: apps/booking/views.py:646
+#: apps/booking/views.py:650
 msgid "All hotels in system"
 msgstr "Все отели в системе"
 
-#: apps/booking/views.py:649
+#: apps/booking/views.py:653
 msgid "Hotels without payment methods"
 msgstr "Отели, с неуказанными методами оплаты"
 
-#: apps/booking/views.py:652
+#: apps/booking/views.py:656
 msgid "Hotels with payment methods"
 msgstr "Отели, с установленными методами оплаты"
 
-#: apps/booking/views.py:655
+#: apps/booking/views.py:659
 msgid "Hotels without admins"
 msgstr "Отели без администраторов"
 
-#: apps/booking/views.py:658
+#: apps/booking/views.py:662
 msgid "Hotels with admins"
 msgstr "Отели с администраторами"
 
-#: apps/booking/views.py:738 apps/booking/views.py:912
-#: apps/booking/views.py:924 apps/booking/views.py:939
+#: apps/booking/views.py:742 apps/booking/views.py:916
+#: apps/booking/views.py:928 apps/booking/views.py:943
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:788
+#: apps/booking/views.py:792
 msgid "booking"
 msgstr "бронирование"
 
-#: apps/booking/views.py:813
+#: apps/booking/views.py:817
 msgid "Card number is wrong."
 msgstr "Неверный номер карты"
 
-#: apps/booking/views.py:824
+#: apps/booking/views.py:828
 msgid "Card CVV2 is wrong."
 msgstr "Неверный CVV2 код карты"
 
-#: apps/booking/views.py:827
+#: apps/booking/views.py:831
 msgid "You enter not all data of card."
 msgstr "Вы ввели не все данные кредитной карты"
 
-#: apps/booking/views.py:830
+#: apps/booking/views.py:834
 msgid "You are not select payment method."
 msgstr "Вы не выбрали вариант платежа"
 
-#: apps/booking/views.py:899
+#: apps/booking/views.py:903
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
 
-#: apps/booking/views.py:948
+#: apps/booking/views.py:952
 msgid "Changed status of booking"
 msgstr "Изменен статус бронирования"
 
-#: apps/booking/views.py:949
+#: apps/booking/views.py:953
 msgid "Hotel: "
 msgstr "Отель: "
 
-#: apps/booking/views.py:950
+#: apps/booking/views.py:954
 msgid "Booking: "
 msgstr "Бронирование: "
 
-#: apps/booking/views.py:951
+#: apps/booking/views.py:955
 msgid "Booking link: "
 msgstr "Ссылка на бронирование: "
 
-#: apps/booking/views.py:952
+#: apps/booking/views.py:956
 msgid "Old status: "
 msgstr "Старый статус: "
 
-#: apps/booking/views.py:953
+#: apps/booking/views.py:957
 msgid "New status: "
 msgstr "Новый статус: "
 
-#: apps/booking/views.py:955
+#: apps/booking/views.py:959
 msgid "Description: "
 msgstr "Описание: "
 
@@ -1161,6 +1161,10 @@ msgstr "Заказ"
 #: apps/shop/admin.py:70 apps/shop/models.py:184
 msgid "Delivery Address"
 msgstr "Адрес доставки"
+
+#: apps/shop/ajax.py:154
+msgid "You are not allowed for add address"
+msgstr "Вы не имеете прав для добавление адреса"
 
 #: apps/shop/models.py:18
 msgid "Product Category"
@@ -1347,6 +1351,30 @@ msgstr "Номер квартиры"
 msgid "Delivery Addresses"
 msgstr "Адреса доставки"
 
+#: apps/shop/models.py:194
+msgid ", region "
+msgstr ", область"
+
+#: apps/shop/models.py:196
+msgid ", city "
+msgstr ", город"
+
+#: apps/shop/models.py:198
+msgid ", street "
+msgstr ", улица"
+
+#: apps/shop/models.py:200
+msgid ", house "
+msgstr ", дом"
+
+#: apps/shop/models.py:202
+msgid ", building "
+msgstr ", cтроение"
+
+#: apps/shop/models.py:204
+msgid ", flat "
+msgstr ", квартира"
+
 #: apps/shop/views.py:66
 msgid "edit form"
 msgstr "форма редактирования"
@@ -1459,7 +1487,7 @@ msgstr "Основная"
 msgid "E-mail is required."
 msgstr "Email обязателен"
 
-#: apps/userprofile/forms.py:41 apps/userprofile/forms.py:225
+#: apps/userprofile/forms.py:41 apps/userprofile/forms.py:247
 msgid "That e-mail is already used."
 msgstr "Адрес уже используется"
 
@@ -1479,11 +1507,11 @@ msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ ОБЯЗАТЕЛЬНО"
 msgid "THAT USERNAME IS ALREADY USED"
 msgstr "ЭТО ИМЯ ПОЛЬЗОВАТЕЛЯ УЖЕ ПОДТВЕРЖДЕНО"
 
-#: apps/userprofile/forms.py:86
+#: apps/userprofile/forms.py:86 apps/userprofile/forms.py:124
 msgid "E-MAIL IS REQUIRED"
 msgstr "ТРЕБУЕТСЯ АДРЕС ЭЛ.ПОЧТЫ"
 
-#: apps/userprofile/forms.py:90
+#: apps/userprofile/forms.py:90 apps/userprofile/forms.py:127
 msgid "THAT E-MAIL IS ALREADY USED"
 msgstr "ЭТОТ АДРЕС УЖЕ ИСПОЛЬЗУЕТСЯ"
 
@@ -1491,76 +1519,77 @@ msgstr "ЭТОТ АДРЕС УЖЕ ИСПОЛЬЗУЕТСЯ"
 msgid "THAT E-MAIL IS ALREADY CONFIRMED"
 msgstr "ЭТОТ АДРЕС УЖЕ ПОДТВЕРЖДЕН"
 
-#: apps/userprofile/forms.py:103 apps/userprofile/forms.py:109
+#: apps/userprofile/forms.py:101 apps/userprofile/forms.py:107
+#: apps/userprofile/forms.py:134
 msgid "PASSWORD IS REQUIRED"
 msgstr "ПАРОЛЬ ТРЕБУЕТСЯ"
 
-#: apps/userprofile/forms.py:111
+#: apps/userprofile/forms.py:109
 msgid "PASSWORDS ARE MISMATCH"
 msgstr "ПАРОЛИ НЕ СООТВЕТСТВУЮТ"
 
-#: apps/userprofile/forms.py:116
+#: apps/userprofile/forms.py:138
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: apps/userprofile/forms.py:117
+#: apps/userprofile/forms.py:139
 msgid "Password"
 msgstr "Пароль"
 
-#: apps/userprofile/forms.py:137
+#: apps/userprofile/forms.py:159
 msgid "THE USER IS DISABLED"
 msgstr "ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН"
 
-#: apps/userprofile/forms.py:143
+#: apps/userprofile/forms.py:165
 msgid "THIS PASSWORD IS INCORRECT"
 msgstr "НЕВЕРНЫЙ ПАРОЛЬ"
 
-#: apps/userprofile/forms.py:147
+#: apps/userprofile/forms.py:169
 msgid "Old password"
 msgstr "Старый пароль"
 
-#: apps/userprofile/forms.py:148
+#: apps/userprofile/forms.py:170
 msgid "New password"
 msgstr "Новый пароль"
 
-#: apps/userprofile/forms.py:149
+#: apps/userprofile/forms.py:171
 msgid "New password confirmation"
 msgstr "Подтверждение нового пароля"
 
-#: apps/userprofile/forms.py:161
+#: apps/userprofile/forms.py:183
 msgid "Old password is wrong."
 msgstr "Старый пароль не соответствует"
 
-#: apps/userprofile/forms.py:169
+#: apps/userprofile/forms.py:191
 msgid "Passwords mismatch."
 msgstr "Пароли не соответствуют"
 
-#: apps/userprofile/forms.py:174
+#: apps/userprofile/forms.py:196
 msgid "Old and new passwords are equal."
 msgstr "Старый и новый пароли одинаковы."
 
-#: apps/userprofile/forms.py:188
+#: apps/userprofile/forms.py:210
 msgid "You must enter one of the options"
 msgstr "Вы должны ввести одну из опций"
 
-#: apps/userprofile/forms.py:208
+#: apps/userprofile/forms.py:230
 msgid "You must select a portion of the image with a minimum of 4x4 pixels."
 msgstr ""
 "Вам необходимо выбрать часть изображения с размером минимум 4x4 пикселя."
 
-#: apps/userprofile/forms.py:240
+#: apps/userprofile/forms.py:262
 msgid "That e-mail isn't registered."
 msgstr "Данный адрес эл.почты не зарегистрирован"
 
-#: apps/userprofile/forms.py:245
+#: apps/userprofile/forms.py:267
 msgid "Last Name"
 msgstr "Фамилия"
 
-#: apps/userprofile/forms.py:246
+#: apps/userprofile/forms.py:268
 msgid "Site-only email"
 msgstr "Приватная почта для регистрационных данных"
 
-#: apps/userprofile/forms.py:281
+#: apps/userprofile/forms.py:303
 msgid "Old Password"
 msgstr "Старый пароль"
 
@@ -1674,11 +1703,11 @@ msgstr "Почтовые подтверждения"
 msgid "Email validation process for %(user)s"
 msgstr "Адрес эл.почты в процессе проверки для %(user)s"
 
-#: apps/userprofile/views.py:171 apps/userprofile/views.py:188
+#: apps/userprofile/views.py:169 apps/userprofile/views.py:186
 msgid "YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL"
 msgstr ""
 
-#: apps/userprofile/views.py:216
+#: apps/userprofile/views.py:232
 msgid "YOU SUCCESSFULLY SIGN IN"
 msgstr "ВЫ УСПЕШНО ЗАРЕГИСТРИРОВАНЫ"
 
