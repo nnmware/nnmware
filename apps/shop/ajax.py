@@ -124,7 +124,7 @@ def add_address(request):
     """
     Its Ajax add address in basket
     """
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
         address = DeliveryAddress()
@@ -150,10 +150,10 @@ def add_address(request):
         address.flat_number = request.POST.get('flat_number') or None
         address.save()
         payload = {'success': True}
-    except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add address')}
-    except :
-        payload = {'success': False}
+#    except AccessError:
+#        payload = {'success': False, 'error':_('You are not allowed for add address')}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 def delete_address(request, object_id):
