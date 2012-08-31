@@ -161,7 +161,7 @@ class OrderItem(MoneyBase):
     Definition of order's details.
     """
     order = models.ForeignKey(Order)
-    product_pn = models.CharField(verbose_name=_('Product PartNumber'), max_length=250, default='')
+    product_pn = models.CharField(verbose_name=_('Shop part number'), max_length=250, default='')
     product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, default='')
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 

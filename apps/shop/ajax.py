@@ -194,14 +194,15 @@ def new_order(request):
         order.comment = ''
         order.status = STATUS_WAIT
         order.save()
-        for item in Basket.objects.filter(user=request.user):
+        basket = Basket.objects.filter(user=request.user)
+        for item in basket:
             order_item = OrderItem()
             order_item.order = order
             order_item.product_name = item.product.name
             order_item.product_pn = item.product.shop_pn
             order_item.quantity = item.quantity
             order_item.save()
-
+        basket.delete()
         payload = {'success': True,'id':order.pk}
 #    except AccessError:
 #        payload = {'success': False}
