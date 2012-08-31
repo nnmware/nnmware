@@ -99,5 +99,9 @@ class OrdersView(ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
+class OrderView(DetailView):
+    model = Order
+    pk_url_kwarg = 'pk'
+    template_name = 'shop/order_list.html'
 
 
