@@ -186,7 +186,7 @@ class DeliveryAddress(models.Model):
 
     def __unicode__(self):
         result = ''
-        if self.zipcode <> '':
+        if self.zipcode <> '' and self.zipcode is not None:
             result += self.zipcode
         if self.country is not None:
             result += ', ' + self.country.name
@@ -194,12 +194,12 @@ class DeliveryAddress(models.Model):
             result += _(', region ') + self.region.name
         if self.city is not None:
             result += _(', city ') + self.city.name
-        if self.street <> '':
+        if self.street <> '' and self.street is not None:
             result += _(', street ') +' '+ self.street
-        if self.house_number <> '':
+        if self.house_number <> '' and self.house_number is not None:
             result += _(', house ') + self.house_number
-        if self.building <> '':
+        if self.building <> '' and self.building is not None:
             result += _(', building ') + self.building
-        if self.flat_number <> '':
+        if self.flat_number <> '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
         return result
