@@ -140,11 +140,10 @@ class Order(MetaDate, MoneyBase):
     Definition of orders.
     """
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='orders')
-    name = models.CharField(verbose_name=_('Name'), max_length=80, default='')
-    comment = models.TextField(verbose_name=_('Shipping comment'), default='')
+    name = models.CharField(verbose_name=_('Name'), max_length=80, default='', blank=True)
+    comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
-    address = models.CharField(verbose_name=_('Shipping address'), max_length=255, default='')
-
+    address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
 
     class Meta:
         verbose_name = _('Order')
