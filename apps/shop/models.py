@@ -156,6 +156,13 @@ class Order(MetaDate, MoneyBase):
         else:
             return "%s" % self.pk
 
+    @property
+    def fullamount(self):
+        result = 0
+        for i in self.orderitem_set.all:
+            result += i.fullamount
+        return result
+
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
