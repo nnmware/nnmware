@@ -1353,27 +1353,27 @@ msgstr "Адреса доставки"
 
 #: apps/shop/models.py:194
 msgid ", region "
-msgstr ", область"
+msgstr ", область "
 
 #: apps/shop/models.py:196
 msgid ", city "
-msgstr ", город"
+msgstr ", город "
 
 #: apps/shop/models.py:198
 msgid ", street "
-msgstr ", улица"
+msgstr ", улица "
 
 #: apps/shop/models.py:200
 msgid ", house "
-msgstr ", дом"
+msgstr ", дом "
 
 #: apps/shop/models.py:202
 msgid ", building "
-msgstr ", cтроение"
+msgstr ", cтроение "
 
 #: apps/shop/models.py:204
 msgid ", flat "
-msgstr ", квартира"
+msgstr ", квартира "
 
 #: apps/shop/views.py:66
 msgid "edit form"
