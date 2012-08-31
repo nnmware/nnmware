@@ -185,9 +185,10 @@ class DeliveryAddress(models.Model):
         verbose_name_plural = _("Delivery Addresses")
 
     def __unicode__(self):
-        result = ''
-        for i in [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
-                  self.building, self.flat_number]:
-            if i is not None:
-                result += `i` +', '
+#        result = ''
+        address_list = [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
+                  self.building, self.flat_number]
+        result = ','.join([x for x in address_list if x is not None])
+#            if i is not None:
+#                result += `i` +', '
         return result
