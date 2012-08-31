@@ -188,7 +188,7 @@ class DeliveryAddress(models.Model):
 #        result = ''
         address_list = [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
                   self.building, self.flat_number]
-        result = ','.join([x for x in address_list if x is not None])
+        result = ','.join([x for x in map(lambda x: str(x),address_list) if x is not None])
 #            if i is not None:
 #                result += `i` +', '
         return result
