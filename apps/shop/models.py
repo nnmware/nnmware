@@ -159,7 +159,7 @@ class Order(MetaDate, MoneyBase):
     @property
     def fullamount(self):
         result = 0
-        for i in self.orderitem_set.all:
+        for i in self.orderitem_set.all():
             result += i.fullamount
         return result
 
