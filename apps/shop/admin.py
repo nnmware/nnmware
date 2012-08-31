@@ -60,6 +60,7 @@ class OrderAdmin(admin.ModelAdmin):
         (_("Order"), {"fields": [('user','name'),
             ('status','amount'),
             ("created_date",'updated_date'),
+            ('address'),
             ('comment'),
         ]}),
         )
