@@ -144,10 +144,18 @@ def add_address(request):
         if city_new is not None:
             city, created = City.objects.get_or_create(name=city_new)
             address.city = city
-        address.street = request.POST.get('street') or None
-        address.house_number = request.POST.get('house_number') or None
-        address.building = request.POST.get('building') or None
-        address.flat_number = request.POST.get('flat_number') or None
+        street = request.POST.get('street') or None
+        if street is not None:
+            address.street = street
+        house_number = request.POST.get('house_number') or None
+        if house_number is not None:
+            address.house_number = house_number
+        building = request.POST.get('building') or None
+        if building is not None:
+            address.building = building
+        flat_number = request.POST.get('flat_number') or None
+        if flat_number is not None:
+            address.flat_number = flat_number
         address.save()
         payload = {'success': True}
 #    except AccessError:

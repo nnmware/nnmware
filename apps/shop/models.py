@@ -177,7 +177,7 @@ class DeliveryAddress(models.Model):
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
     street = models.CharField(max_length=100, verbose_name=_('Street'), default='',blank=True,null=True)
     house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
-    building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True,null=True )
+    building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True, null=True )
     flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
 
     class Meta:
