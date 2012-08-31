@@ -173,12 +173,12 @@ class DeliveryAddress(models.Model):
     user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
-    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), default='')
+    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), default='',blank=True,null=True)
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
-    street = models.CharField(max_length=100, verbose_name=_('Street'), default='')
-    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='')
-    building = models.CharField(max_length=25,verbose_name=_('Building'), default='')
-    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='')
+    street = models.CharField(max_length=100, verbose_name=_('Street'), default='',blank=True,null=True)
+    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
+    building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True,null=True )
+    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")
