@@ -145,7 +145,7 @@ class Order(MetaDate):
     address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
 
     class Meta:
-        ordering = ['created_date']
+        ordering = ['-created_date']
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
 
