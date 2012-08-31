@@ -189,5 +189,5 @@ class DeliveryAddress(models.Model):
         for i in [self.zipcode, self.country, self.region, self.city, self.street, self.house_number, \
                   self.building, self.flat_number]:
             if i is not None:
-                result += str(i) +', '
+                result += `i` +', '
         return result
