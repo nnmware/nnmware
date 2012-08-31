@@ -191,11 +191,11 @@ class DeliveryAddress(models.Model):
         if self.country is not None:
             result += ', ' + self.country.name
         if self.region is not None:
-            result += ', ' + self.region.name
+            result += ', ' + self.region.name + _('region')
         if self.city is not None:
             result += ', ' + self.city.name
         if self.street <> '':
-            result += ', ' + self.street
+            result += ', ' + _('street') + self.street
         if self.house_number <> '':
             result += ', ' + self.house_number
         if self.building <> '':
