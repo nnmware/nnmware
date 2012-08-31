@@ -176,9 +176,9 @@ class DeliveryAddress(models.Model):
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
     street = models.CharField(max_length=100, verbose_name=_('Street'), blank=True, null=True)
-    house_number = models.IntegerField(_('Number of house'), blank=True, null=True)
-    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)
-    flat_number = models.IntegerField(_('Number of flat'), blank=True, null=True)
+    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), blank=True, null=True)
+    building = models.CharField(max_length=25,verbose_name=_('Building'), blank=True, null=True)
+    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")

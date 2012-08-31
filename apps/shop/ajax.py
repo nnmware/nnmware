@@ -2,7 +2,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
-from nnmware.apps.address.models import Country, Region
+from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
@@ -140,14 +140,14 @@ def add_address(request):
         zipcode = request.POST.get('zipcode') or None
         if zipcode is not None:
             address.zipcode = zipcode
-
-
-        #        msg.subject = request.POST.get('message_subject') or None
-#        msg.body = request.POST.get('message_body') or None
-#        msg.sender = request.user
-#        msg.recipient = User.objects.get(id=object_id)
-#        msg.sent_at = datetime.now()
-
+        city_new = request.POST.get('city') or None
+        if city_new is not None:
+            city, created = City.objects.get_or_create(name=city_new)
+            address.city = city
+        address.street = request.POST.get('street') or None
+        address.house_number = request.POST.get('house_number') or None
+        address.building = request.POST.get('building') or None
+        address.flat_number = request.POST.get('flat_number') or None
         address.save()
         payload = {'success': True}
 #        , 'id':msg.pk, 'username':msg.sender.get_profile().get_name,
