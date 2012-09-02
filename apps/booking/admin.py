@@ -13,6 +13,10 @@ class HotelAdminForm(forms.ModelForm):
             'time_off':AdminTimeWidget()
             }
 
+class AgentPercentInline(admin.StackedInline):
+    model = AgentPercent
+    extra = 0
+    fields = (('date','percent'),)
 
 class HotelAdmin(admin.ModelAdmin):
     form = HotelAdminForm
@@ -147,11 +151,6 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
             ('phone','fax'),
             ('email','contact_email'),
             ('website','rooms_count')]}),)
-
-class AgentPercentInline(admin.StackedInline):
-    model = AgentPercent
-    extra = 0
-    fields = (('date','percent'),)
 
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('hotel','city_of_hotel','date','percent')
