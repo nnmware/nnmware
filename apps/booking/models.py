@@ -96,6 +96,29 @@ HOTEL_CHOICES = (
     (HOTEL_FLAT, _("Flat")),
     )
 
+TYPEFOOD_RO = 0
+TYPEFOOD_BB = 1
+TYPEFOOD_CB = 2
+TYPEFOOD_HB = 3
+TYPEFOOD_FB = 4
+TYPEFOOD_AI = 5
+TYPEFOOD_AC = 6
+TYPEFOOD_EB = 7
+TYPEFOOD_HBPLUS = 8
+TYPEFOOD_FBPLUS = 9
+
+TYPEFOOD = (
+    (TYPEFOOD_RO, _("RO - Without breakfast")),
+    (TYPEFOOD_BB, _("BB - Breakfast")),
+    (TYPEFOOD_CB, _("CB - Continental breakfast")),
+    (TYPEFOOD_HB, _("HB - Half board (breakfast and lunch/dinner")),
+    (TYPEFOOD_FB, _("FB - Full board (breakfast, lunch, dinner)")),
+    (TYPEFOOD_AI, _("AI - All included")),
+    (TYPEFOOD_AC, _("AC - A la carte (on menu)")),
+    (TYPEFOOD_EB, _("EB - English breakfast")),
+    (TYPEFOOD_HBPLUS, _("HB+ - Half board + local drinks")),
+    (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
+    )
 
 class Hotel(MetaName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now())
@@ -109,6 +132,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
+    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)

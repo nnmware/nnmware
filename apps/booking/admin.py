@@ -29,7 +29,7 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
             ('room_count','starcount'),('best_offer','in_top10'),
-            ('longitude','latitude'),
+            ('typefood','longitude','latitude'),
             ('schema_transit')
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
