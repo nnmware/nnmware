@@ -19,6 +19,7 @@ class HotelAdmin(admin.ModelAdmin):
     list_display = ('name','register_date','city','address','contact_email','contact_name','room_count','starcount','enabled','point')
     list_filter = ('name','starcount','city')
     search_fields = ('name',)
+    inlines = [ AgentPercentInline, ]
     filter_horizontal = ['option','admins']
     fieldsets = (
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
@@ -147,6 +148,10 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
             ('email','contact_email'),
             ('website','rooms_count')]}),)
 
+class AgentPercentInline(admin.StackedInline):
+    model = AgentPercent
+    extra = 0
+    fields = (('date','percent'),)
 
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('hotel','city_of_hotel','date','percent')
