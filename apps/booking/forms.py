@@ -21,7 +21,7 @@ class CabinetInfoForm(forms.ModelForm):
         model = Hotel
         fields = ('name', 'description', 'schema_transit', 'option','typefood')
         widgets = {
-            'typefood': forms.RadioSelect(),
+            'typefood': forms.RadioSelect(attrs={'class' : 'uniform'}),
             }
 
 class CabinetTermsForm(forms.ModelForm):
