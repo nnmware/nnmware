@@ -16,11 +16,13 @@ class CabinetInfoForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
     schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-    typefood = forms.ChoiceField(widget=forms.RadioSelect)
 
     class Meta:
         model = Hotel
         fields = ('name', 'description', 'schema_transit', 'option','typefood')
+        widgets = {
+            'typefood': forms.RadioSelect(),
+            }
 
 class CabinetTermsForm(forms.ModelForm):
     booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
