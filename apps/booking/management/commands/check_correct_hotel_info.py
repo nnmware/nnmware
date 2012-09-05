@@ -10,6 +10,6 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for hotel in Hotel.objects.all():
             for room in hotel.room_set.all():
-                avail = Availability.objects.filter(room=room,date__range=(datetime.now(), datetime.now()+timedelta(days=14))).count()
+                avail = Availability.objects.filter(room=room,date__range=(datetime.now(), datetime.now()+timedelta(days=13))).count()
                 print avail
 
