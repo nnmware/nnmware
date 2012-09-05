@@ -22,6 +22,6 @@ class Command(BaseCommand):
                     if settlement.current_amount() is 0:
                         settlement_err = [room.get_name,_('Not filled price for %s-placed settlement') % settlement.settlement  ]
                         result.append(settlement_err)
-                if len(result) > 0:
-                    for item in result:
-                        print item[0], item[1]
+            if len(result) > 0:
+                for item in result:
+                    print item[0], item[1]
