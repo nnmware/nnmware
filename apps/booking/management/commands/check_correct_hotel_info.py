@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta, datetime
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import activate
 
 from django.core.management.base import BaseCommand
