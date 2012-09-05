@@ -11,5 +11,5 @@ class Command(BaseCommand):
         for hotel in Hotel.objects.all():
             for room in hotel.room_set.all():
                 avail = Availability.objects.filter(room=room,date__range=(datetime.now(), datetime.now()+timedelta(days=13))).count()
-                print avail
+                print avail, room.get_name
 
