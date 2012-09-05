@@ -28,7 +28,7 @@ class RatesError(Exception):
 
 @never_cache
 def room_rates(request):
-    try:
+    if 1>0: #try:
         json_data = json.loads(request.body)
         currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
         room = Room.objects.get(id=int(json_data['room_id']))
@@ -74,10 +74,10 @@ def room_rates(request):
                 except ValueError:
                     pass
         payload = {'success': True}
-    except UserNotAllowed:
-        payload = {'success': False}
-    except :
-        payload = {'success': False}
+#    except UserNotAllowed:
+#        payload = {'success': False}
+#    except :
+#        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
