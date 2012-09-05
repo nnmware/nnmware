@@ -48,5 +48,3 @@ def request_add_hotel_mail(req_add):
 
 
 
-
-
