@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta, datetime
 from django.utils.translation import ugettext as _
+from django.utils.translation import activate
 
 from django.core.management.base import BaseCommand
 from nnmware.apps.booking.models import Hotel, Availability, SettlementVariant
@@ -9,6 +10,7 @@ class Command(BaseCommand):
     help = 'Check correct info in hotel cabinet'
 
     def handle(self, *args, **options):
+        activate('ru')
         for hotel in Hotel.objects.all():
             result = []
             for room in hotel.room_set.all():
