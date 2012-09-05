@@ -18,12 +18,10 @@ class Command(BaseCommand):
                 if avail < 14:
                     avail_err = [room.get_name, _('Not filled availability')]
                     result.append(avail_err)
-#                    print avail, room.get_name
                 for settlement in SettlementVariant.objects.filter(room=room, enabled=True):
                     if settlement.current_amount() is 0:
                         settlement_err = [room.get_name,_('Not filled price for %s-placed settlement') % settlement.settlement  ]
                         result.append(settlement_err)
-#                        print settlement.room.get_name, settlement.settlement
                 if len(result) > 0:
                     for item in result:
                         print item[0], item[1]
