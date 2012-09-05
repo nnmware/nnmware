@@ -26,10 +26,7 @@ class Command(BaseCommand):
                         result.append(settlement_err)
             if len(result) > 0:
                 recipients = settings.BOOKING_MANAGERS
-                mail_dict = {'hotel': hotel, 'site_name': settings.SITENAME,'items':result}
+                mail_dict = {'hotel_name': hotel.get_name, 'site_name': settings.SITENAME,'items':result}
                 subject = 'booking/err_hotel_subject.txt'
                 body = 'booking/err_hotel.txt'
                 send_template_mail(subject,body,mail_dict,recipients)
-#
-#        for item in result:
-#                    print item[0], item[1]
