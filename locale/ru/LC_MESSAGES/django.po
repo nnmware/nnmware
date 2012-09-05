@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-03 10:16+1100\n"
+"POT-Creation-Date: 2012-09-05 13:33+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,19 +407,19 @@ msgstr "Вы суперпользователь и можете добавлят
 msgid "Thanks for you review!"
 msgstr "Спасибо за Ваш отзыв!"
 
-#: apps/booking/forms.py:71 apps/userprofile/forms.py:26
+#: apps/booking/forms.py:74 apps/userprofile/forms.py:26
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:72 apps/userprofile/forms.py:27
+#: apps/booking/forms.py:75 apps/userprofile/forms.py:27
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:75 apps/userprofile/forms.py:304
+#: apps/booking/forms.py:78 apps/userprofile/forms.py:304
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: apps/booking/forms.py:110
+#: apps/booking/forms.py:113
 msgid "No valid payment method."
 msgstr "Нет доступного метода оплаты"
 
@@ -1074,6 +1074,15 @@ msgstr "Новый статус: "
 #: apps/booking/views.py:959
 msgid "Description: "
 msgstr "Описание: "
+
+#: apps/booking/management/commands/check_correct_hotel_info.py:17
+msgid "Not filled availability"
+msgstr "Не заполнено наличие мест"
+
+#: apps/booking/management/commands/check_correct_hotel_info.py:22
+#, python-format
+msgid "Not filled price for %s-placed settlement"
+msgstr "Не заполнена цена номера для %s-местного размещения"
 
 #: apps/money/admin.py:13 apps/money/models.py:91
 msgid "Transaction"
