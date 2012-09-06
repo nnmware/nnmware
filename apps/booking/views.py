@@ -329,9 +329,9 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         context = super(RoomDetail, self).get_context_data(**kwargs)
         try:
             context['city'] = self.object.hotel.city
+            context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         except :
             pass
-        context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['tab'] = 'description'
         context['title_line'] = self.object.hotel.get_name
         context['room_options'] = self.object.option.order_by('category','order_in_list','name')
