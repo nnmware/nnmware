@@ -19,6 +19,7 @@ class ProductCategory(Tree):
         verbose_name = _('Product Category')
         verbose_name_plural = _('Product Categories')
 
+    @property
     def _active_set(self):
         return Product.objects.active.filter(category=self)
 
