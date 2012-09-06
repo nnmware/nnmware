@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, City, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
-from nnmware.core.abstract import MetaDate, Color, Unit, Parameter
+from nnmware.core.abstract import MetaDate, Color, Unit, Parameter, MetaIP
 from nnmware.core.managers import ProductManager
 
 
@@ -222,3 +222,17 @@ class DeliveryAddress(models.Model):
         if self.fio <> '' and self.fio is not None:
             result += ', ' + self.fio
         return result
+
+class Feedback(MetaIP):
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+    email = models.CharField(max_length=255, verbose_name=_('Email'))
+    message = models.TextField(verbose_name=_("Message"))
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = _('Feedback')
+        verbose_name_plural = _('Feedbacks')
+
+    def __unicode__(self):
+        return "%s - %s" % (self.name, self.created_date)

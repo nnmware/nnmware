@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.shop.models import Product, ProductParameter, ProductColor, ProductParameterValue, \
     Vendor, ProductCategory, ParameterUnit, Basket, ProductParameterCategory
 from nnmware.core.admin import ColorAdmin
-from nnmware.apps.shop.models import OrderItem, Order, DeliveryAddress
+from nnmware.apps.shop.models import OrderItem, Order, DeliveryAddress, Feedback
 
 class ProductParameterValueInline(generic.GenericStackedInline):
     model = ProductParameterValue
@@ -76,6 +76,14 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
         ]}),
         )
 
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", 'created_date',"ip")
+    fieldsets = (
+        (_("Feedback"), {"fields": [('name','email'),('ip','user_agent'),
+            ('message',),]}),
+        )
+    ordering = ('-created_date','name','email')
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ParameterUnit, UnitAdmin)
@@ -86,3 +94,4 @@ admin.site.register(Basket, BasketAdmin)
 admin.site.register(ProductParameterCategory, ProductParameterCategoryAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(DeliveryAddress, DeliveryAddressAdmin)
+admin.site.register(Feedback, FeedbackAdmin)
