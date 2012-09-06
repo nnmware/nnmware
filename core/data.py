@@ -5,7 +5,7 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 from django.db.models import Q
 
 
-def get_queryset_category(obj, main_obj, cat_obj):
+def get_queryset_category(obj, main_obj, cat_obj, active=False):
     slug = obj.kwargs['slug']
     if obj.kwargs['parent_slugs']:
         parent_slugs = obj.kwargs['parent_slugs']
@@ -17,6 +17,8 @@ def get_queryset_category(obj, main_obj, cat_obj):
     children = q.get_all_children()
     for child in children:
         array_child.append(child.pk)
+    if active:
+        return main_obj.objects.active().select_related().filter(category__in=array_child)
     return main_obj.objects.select_related().filter(category__in=array_child)
 
 

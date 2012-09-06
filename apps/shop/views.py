@@ -22,7 +22,7 @@ class ShopCategory(ListView):
     model = Product
 
     def get_queryset(self):
-        result = get_queryset_category(self, Product, ProductCategory)
+        result = get_queryset_category(self, Product, ProductCategory, active=True)
         return result
 
 class ShopAllCategory(ListView):

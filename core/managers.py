@@ -223,3 +223,11 @@ class MessageManager(Manager):
             sender=user,
             sender_deleted_at__isnull=False,
         )
+
+class ProductManager(Manager):
+
+    def active(self):
+        """
+        Returns all available products
+        """
+        return self.filter(avail=True)

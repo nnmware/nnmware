@@ -8,6 +8,7 @@ from nnmware.apps.address.models import Country, City, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
 from nnmware.core.abstract import MetaDate, Color, Unit, Parameter
+from nnmware.core.managers import ProductManager
 
 
 class ProductCategory(Tree):
@@ -51,6 +52,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
 
+    objects = ProductManager()
     class Meta:
         ordering = ['category__name','order_in_list','name']
         verbose_name = _("Product")
