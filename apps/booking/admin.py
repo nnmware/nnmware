@@ -29,7 +29,7 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Hotel"), {"fields": [("name","slug"),('city','address'),
             ('description',),
             ('room_count','starcount'),('best_offer','in_top10'),
-            ('typefood','longitude','latitude'),
+            ('longitude','latitude'),
             ('schema_transit')
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'),('website','register_date'), ( 'contact_email','contact_name'),
@@ -65,6 +65,12 @@ class HotelOptionAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('name','places','hotel')
     search_fields = ('name',)
+    fieldsets = (
+        (_("Room"), {"fields": [("name",'hotel'),("typefood",'places'),
+                                        ('description',)]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en",),("description_en",) , ]}),)
+
 
 class RoomOptionAdmin(admin.ModelAdmin):
     list_display = ('name','category','order_in_list')

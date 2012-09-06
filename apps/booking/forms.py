@@ -19,7 +19,7 @@ class CabinetInfoForm(forms.ModelForm):
 
     class Meta:
         model = Hotel
-        fields = ('name', 'description', 'schema_transit', 'option','typefood')
+        fields = ('name', 'description', 'schema_transit', 'option')
         widgets = {
             'typefood': forms.RadioSelect(attrs={'class' : 'uniform'}),
             }
@@ -42,7 +42,10 @@ class CabinetRoomForm(forms.ModelForm):
 
     class Meta:
         model = Room
-        fields = ('name', 'description', 'option')
+        fields = ('name', 'description', 'option','typefood')
+        widgets = {
+            'typefood': forms.RadioSelect(attrs={'class' : 'uniform'}),
+            }
 
 class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}))

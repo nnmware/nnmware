@@ -132,7 +132,6 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
-    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
     admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
@@ -335,6 +334,7 @@ class Room(MetaName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
+    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
 
     class Meta:
         verbose_name = _("Room")
