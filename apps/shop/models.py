@@ -21,7 +21,7 @@ class ProductCategory(Tree):
 
     @property
     def _active_set(self):
-        return Product.objects.active.filter(category=self)
+        return Product.objects.active().filter(category=self)
 
 class ProductColor(Color):
     pass
