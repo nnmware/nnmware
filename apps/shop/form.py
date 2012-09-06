@@ -12,7 +12,7 @@ class EditProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('name','category','slug','amount','quantity','avail','description',
-            'shop_pn','vendor_pn','vendor','latest')
+            'shop_pn','vendor_pn','vendor','latest','teaser')
 
     def clean(self):
         return self.cleaned_data
