@@ -232,7 +232,7 @@ class Feedback(MetaIP):
     class Meta:
         ordering = ['-created_date']
         verbose_name = _('Feedback')
-        verbose_name_plural = _('Feedbacks')
+        verbose_name_plural = _('Feedback')
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.created_date)
