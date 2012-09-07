@@ -77,7 +77,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
         )
 
 class FeedbackAdmin(admin.ModelAdmin):
-    list_display = ("name", "email", 'created_date',"ip")
+    list_display = ("name", "email", 'created_date',"ip",'user_agent')
     fieldsets = (
         (_("Feedback"), {"fields": [('name','email'), ('message',),
             ('created_date','ip','user_agent'),]}),
