@@ -84,9 +84,9 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class ShopNewsAdmin(admin.ModelAdmin):
-    list_display = ("name", 'created_date')
+    list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Shop News"), {"fields": [('name',),('created_date','enabled'), ('teaser',),
+        (_("Shop News"), {"fields": [('title',),('created_date','enabled'), ('teaser',),
                                     ('content'),]}),
         )
     ordering = ('-created_date','name')

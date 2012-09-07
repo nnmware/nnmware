@@ -239,7 +239,7 @@ class Feedback(MetaIP):
 
 class ShopNews(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now())
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    title = models.CharField(max_length=255, verbose_name=_('Title'))
     teaser = models.TextField(verbose_name=_("Teaser"), null=True, blank=True)
     content = models.TextField(verbose_name=_("Content"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
