@@ -86,7 +86,7 @@ class FeedbackAdmin(admin.ModelAdmin):
 class ShopNewsAdmin(admin.ModelAdmin):
     list_display = ("name", 'created_date')
     fieldsets = (
-        (_("Shop News"), {"fields": [('name','created_date','enabled'), ('teaser',),
+        (_("Shop News"), {"fields": [('name',),('created_date','enabled'), ('teaser',),
                                     ('content'),]}),
         )
     ordering = ('-created_date','name')
