@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-07 11:15+1100\n"
+"POT-Creation-Date: 2012-09-07 14:33+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -225,7 +225,7 @@ msgstr "Категории статей"
 msgid "Category"
 msgstr "Категория"
 
-#: apps/article/models.py:18 core/admin.py:12
+#: apps/article/models.py:18 apps/shop/models.py:244 core/admin.py:12
 msgid "Content"
 msgstr "Содержание"
 
@@ -733,7 +733,7 @@ msgstr ""
 msgid "Settlement"
 msgstr "Заселения"
 
-#: apps/booking/models.py:419
+#: apps/booking/models.py:419 apps/shop/models.py:245
 msgid "Enabled"
 msgstr "Включено"
 
@@ -1201,27 +1201,31 @@ msgstr ""
 "Пользователь: %(user)s :: Дата: %(date)s :: Назначение: %(target)s :: Сумма: "
 "%(amount)s %(currency)s"
 
-#: apps/shop/admin.py:22 apps/shop/models.py:62 apps/shop/models.py:113
+#: apps/shop/admin.py:20 apps/shop/models.py:62 apps/shop/models.py:113
 msgid "Product"
 msgstr "Товар"
 
-#: apps/shop/admin.py:44 apps/shop/models.py:38 apps/shop/models.py:53
+#: apps/shop/admin.py:42 apps/shop/models.py:38 apps/shop/models.py:53
 msgid "Vendor"
 msgstr "Производитель"
 
-#: apps/shop/admin.py:60 apps/shop/models.py:155
+#: apps/shop/admin.py:58 apps/shop/models.py:155
 msgid "Order"
 msgstr "Заказ"
 
-#: apps/shop/admin.py:72 apps/shop/models.py:201
+#: apps/shop/admin.py:70 apps/shop/models.py:201
 msgid "Delivery Address"
 msgstr "Адрес доставки"
 
-#: apps/shop/admin.py:82 apps/shop/models.py:234 apps/shop/models.py:235
+#: apps/shop/admin.py:80 apps/shop/models.py:234 apps/shop/models.py:235
 msgid "Feedback"
 msgstr "Обратная связь"
 
-#: apps/shop/ajax.py:165
+#: apps/shop/admin.py:89
+msgid "Shop News"
+msgstr "Новости магазина"
+
+#: apps/shop/ajax.py:167
 msgid "You are not allowed for add address"
 msgstr "Вы не имеете прав для добавление адреса"
 
@@ -1274,7 +1278,7 @@ msgstr "Доступно для заказа"
 msgid "Latest product"
 msgstr "Новинка"
 
-#: apps/shop/models.py:57
+#: apps/shop/models.py:57 apps/shop/models.py:243
 msgid "Teaser"
 msgstr "Тизер"
 
@@ -1411,9 +1415,8 @@ msgid "Number of flat"
 msgstr "Номер квартиры"
 
 #: apps/shop/models.py:198
-#, fuzzy
 msgid "Name of order receiver"
-msgstr "Название параметра"
+msgstr "ФИО получателя заказа"
 
 #: apps/shop/models.py:202
 msgid "Delivery Addresses"
@@ -1443,13 +1446,21 @@ msgstr ", cтроение "
 msgid ", flat "
 msgstr ", квартира "
 
-#: apps/shop/models.py:227 core/abstract.py:43
+#: apps/shop/models.py:227 apps/shop/models.py:241 core/abstract.py:43
 msgid "Created date"
 msgstr "Дата создания"
 
 #: apps/shop/models.py:230 core/admin.py:177 core/models.py:351
 msgid "Message"
 msgstr "Сообщение"
+
+#: apps/shop/models.py:242 core/abstract.py:93
+msgid "Title"
+msgstr "Заголовок"
+
+#: apps/shop/models.py:249 apps/shop/models.py:250
+msgid "Shop news"
+msgstr "Новости магазина"
 
 #: apps/shop/views.py:69
 msgid "edit form"
@@ -1885,10 +1896,6 @@ msgstr "Приклеено"
 #: core/abstract.py:86
 msgid "Moderation"
 msgstr "Модерирование"
-
-#: core/abstract.py:93
-msgid "Title"
-msgstr "Заголовок"
 
 #: core/abstract.py:97 core/abstract.py:389
 msgid "Author"
