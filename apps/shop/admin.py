@@ -79,10 +79,11 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date',"ip")
     fieldsets = (
-        (_("Feedback"), {"fields": [('name','email'),('ip','user_agent'),
-            ('message',),]}),
+        (_("Feedback"), {"fields": [('name','email'), ('message',),
+            ('created_date','ip','user_agent'),]}),
         )
     ordering = ('-created_date','name','email')
+    readonly_fields = ('ip','user_agent','created_date')
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
