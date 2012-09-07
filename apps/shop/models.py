@@ -250,5 +250,5 @@ class ShopNews(models.Model):
         verbose_name_plural = _('Shop news')
 
     def __unicode__(self):
-        return self.name
+        return self.title
 
