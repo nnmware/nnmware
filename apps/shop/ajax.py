@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from nnmware.apps.address.models import Country, Region, City
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, STATUS_WAIT, OrderItem
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
+    STATUS_WAIT, OrderItem, Feedback
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -209,4 +211,21 @@ def new_order(request):
 #        payload = {'success': False}
 #    except:
 #        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def push_feedback(request):
+    """
+    Its Ajax posted feedback
+    """
+    try:
+        msg = Feedback()
+        msg.ip = request.META['REMOTE_ADDR']
+        msg.user_agent = request.META['HTTP_USER_AGENT']
+        msg.name = request.POST.get('name')
+        msg.email = request.POST.get('email')
+        msg.message = request.POST.get('message')
+        msg.save()
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
