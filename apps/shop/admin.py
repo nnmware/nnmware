@@ -2,10 +2,8 @@ from django.contrib import admin
 from django.contrib.contenttypes import generic
 from nnmware.core.admin import TreeAdmin, UnitAdmin
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.shop.models import Product, ProductParameter, ProductColor, ProductParameterValue, \
-    Vendor, ProductCategory, ParameterUnit, Basket, ProductParameterCategory
+from nnmware.apps.shop.models import *
 from nnmware.core.admin import ColorAdmin
-from nnmware.apps.shop.models import OrderItem, Order, DeliveryAddress, Feedback
 
 class ProductParameterValueInline(generic.GenericStackedInline):
     model = ProductParameterValue
@@ -85,6 +83,14 @@ class FeedbackAdmin(admin.ModelAdmin):
     ordering = ('-created_date','name','email')
     readonly_fields = ('ip','user_agent','created_date')
 
+class ShopNewsAdmin(admin.ModelAdmin):
+    list_display = ("name", 'created_date')
+    fieldsets = (
+        (_("Shop News"), {"fields": [('name','created_date','enabled'), ('teaser',),
+                                    ('content'),]}),
+        )
+    ordering = ('-created_date','name')
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ParameterUnit, UnitAdmin)
@@ -96,3 +102,4 @@ admin.site.register(ProductParameterCategory, ProductParameterCategoryAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(DeliveryAddress, DeliveryAddressAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
+admin.site.register(ShopNews, ShopNewsAdmin)

@@ -236,3 +236,19 @@ class Feedback(MetaIP):
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.created_date)
+
+class ShopNews(models.Model):
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
+    name = models.CharField(max_length=255, verbose_name=_('Name'))
+    teaser = models.TextField(verbose_name=_("Teaser"), null=True, blank=True)
+    content = models.TextField(verbose_name=_("Content"), null=True, blank=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = _('Shop news')
+        verbose_name_plural = _('Shop news')
+
+    def __unicode__(self):
+        return self.name
+
