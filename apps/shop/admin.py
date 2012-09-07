@@ -89,7 +89,7 @@ class ShopNewsAdmin(admin.ModelAdmin):
         (_("Shop News"), {"fields": [('title',),('created_date','enabled'), ('teaser',),
                                     ('content'),]}),
         )
-    ordering = ('-created_date','name')
+    ordering = ('-created_date','title')
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
