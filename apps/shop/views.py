@@ -8,7 +8,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
