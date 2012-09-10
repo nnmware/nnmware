@@ -190,7 +190,7 @@ def check_basket(user):
     if basket.count() < 1:
         return False
     for item in basket:
-        if item.quantity > item.product.quantity:
+        if item.quantity > item.product.quantity or item.product.avail is False:
             return False
     return True
 
