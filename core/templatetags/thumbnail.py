@@ -129,7 +129,7 @@ register.filter('image_height', image_height)
 def watermark(url, arg=''):
     if url is None:
         return None
-    if arg = 'center':
+    if arg == 'center':
         ret = make_watermark(url,align='center')
     else:
         ret = make_watermark(url)
