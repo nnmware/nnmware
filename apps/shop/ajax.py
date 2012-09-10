@@ -3,6 +3,7 @@ from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
+from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
     STATUS_WAIT, OrderItem, Feedback
