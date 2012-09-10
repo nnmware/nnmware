@@ -144,5 +144,5 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
     template_name = "shop/order_status.html"
 
     def get_success_url(self):
-        return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])
+        return reverse('order_view', args=[self.object.pk])
 
