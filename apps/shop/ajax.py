@@ -230,7 +230,7 @@ def push_feedback(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def product_delete(request, object_id):
+def delete_product(request, object_id):
     # Link used when User delete the product
     try:
         if not request.user.is_superuser:
