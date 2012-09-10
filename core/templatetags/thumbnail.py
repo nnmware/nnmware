@@ -126,10 +126,13 @@ Usage:
 
 register.filter('image_height', image_height)
 
-def watermark(url):
+def watermark(url, arg=''):
     if url is None:
         return None
-    ret = make_watermark(url)
+    if arg = 'center':
+        ret = make_watermark(url,align='center')
+    else:
+        ret = make_watermark(url)
     if ret is None:
         ret = url
     if not ret.startswith(settings.MEDIA_URL):

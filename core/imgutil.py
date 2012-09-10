@@ -268,7 +268,7 @@ def get_thumbnail_path(url,size):
     url_t = make_thumbnail(url, width=size)
     return get_path_from_url(url_t)
 
-def make_watermark(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
+def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ create watermark """
     photo_path = get_path_from_url(photo_url, root, url_root)
     watermark_path = settings.WATERMARK
@@ -285,6 +285,9 @@ def make_watermark(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
         logo_im = Image.open(watermark_path) #transparent image
     except IOError:
         return None
-    base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
+    if align = 'center':
+        base_im.paste(logo_im,(base_im.size[0]/2,base_im.size[1]/2),logo_im)
+    else:
+        base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
     base_im.save(wm_path,"PNG")
     return wm_url
