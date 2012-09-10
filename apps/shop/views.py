@@ -54,8 +54,9 @@ class BasketView(ListView):
     template_name = 'shop/basket.html'
 
 class AllProductsView(ListView,CurrentUserSuperuser):
+    paginate_by = 5
     model = Product
-    template_name = 'shop/product_list.html'
+    template_name = 'shop/adm_product_list.html'
 
 class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
     model = Product
