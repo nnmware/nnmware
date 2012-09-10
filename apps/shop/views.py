@@ -17,6 +17,13 @@ from nnmware.core.models import JComment
 from nnmware.core.templatetags.core import basket
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 
+class CurrentUserOrderAccess(object):
+    """ Generic update view that check request.user is author of object """
+    def dispatch(self, request, *args, **kwargs):
+        obj = get_object_or_404(Order, pk=kwargs['pk'])
+        if not request.user == obj.user and not request.user.is_superuser:
+            raise Http404
+        return super(CurrentUserOrderAccess, self).dispatch(request, *args, **kwargs)
 
 class ShopCategory(ListView):
     template_name = 'shop/product_list.html'
@@ -138,7 +145,7 @@ class AllOrdersView(ListView, CurrentUserSuperuser):
     def get_queryset(self):
         return Order.objects.all()
 
-class OrderView(DetailView):
+class OrderView(CurrentUserOrderAccess, DetailView):
     model = Order
     pk_url_kwarg = 'pk'
     template_name = 'shop/order.html'
