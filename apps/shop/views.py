@@ -58,6 +58,16 @@ class AllProductsView(ListView,CurrentUserSuperuser):
     model = Product
     template_name = 'shop/adm_product_list.html'
 
+class AvailProductsView(AllProductsView):
+
+    def get_queryset(self):
+        return Product.objects.filter(avail=True)
+
+class NotAvailProductsView(AllProductsView):
+
+    def get_queryset(self):
+        return Product.objects.filter(avail=False)
+
 class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
     model = Product
     pk_url_kwarg = 'pk'
