@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
@@ -64,6 +64,12 @@ class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
     model = Product
     template_name = 'shop/adm_product_list.html'
+
+class FeedbacksView(ListView,CurrentUserSuperuser):
+    paginate_by = 20
+    model = Feedback
+    template_name = 'shop/adm_feedback_list.html'
+
 
 class AvailProductsView(AllProductsView):
 
