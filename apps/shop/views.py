@@ -52,7 +52,7 @@ class ProductDetail(SingleObjectMixin, ListView):
         self.object = self.get_object()
         return JComment.public.get_tree(self.object)
 
-class BasketView(View):
+class BasketView(TemplateView):
     template_name = 'shop/basket.html'
 
 class AllProductsView(ListView,CurrentUserSuperuser):
