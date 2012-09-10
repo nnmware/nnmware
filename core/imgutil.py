@@ -286,7 +286,7 @@ def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=set
     except IOError:
         return None
     if align == 'center':
-        base_im.paste(logo_im,(base_im.size[0]/2,base_im.size[1]/2),logo_im)
+        base_im.paste(logo_im,((base_im.size[0]-logo_im.size[0])/2,(base_im.size[1]-logo_im.size[1])/2),logo_im)
     else:
         base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
     base_im.save(wm_path,"PNG")
