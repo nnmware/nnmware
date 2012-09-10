@@ -41,7 +41,7 @@ class ProductDetail(SingleObjectMixin, ListView):
     template_name = 'shop/product.html'
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Product, pk=self.kwargs['pk'])
+        return get_object_or_404(Product, pk=int(self.kwargs['pk']))
 
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
