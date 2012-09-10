@@ -11,6 +11,8 @@ from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 
+class BasketError(Exception):
+    pass
 
 def autocomplete_search(request,size=16):
     results = []
@@ -182,11 +184,22 @@ def delete_address(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def check_basket(user):
+    basket = Basket.objects.filter(user=user)
+    if basket.count() < 1:
+        return False
+    for item in basket:
+        if item.quantity > item.product.quantity:
+            return False
+    return True
+
 def new_order(request):
     # Link used when User make order
-    if 1>0: #try:
+    try:
         if not request.user.is_authenticated():
             raise AccessError
+        if not check_basket(request.user):
+            raise BasketError
         addr = request.POST.get('addr')
         address = DeliveryAddress.objects.get(user=request.user, pk=int(addr))
         order = Order()
@@ -205,12 +218,16 @@ def new_order(request):
             order_item.product_pn = item.product.shop_pn
             order_item.quantity = item.quantity
             order_item.save()
+            item.product.quantity -= item.quantity
+            item.product.save()
         basket.delete()
         payload = {'success': True,'id':order.pk}
-#    except AccessError:
-#        payload = {'success': False}
-#    except:
-#        payload = {'success': False}
+    except AccessError:
+        payload = {'success': False}
+    except BasketError:
+        payload = {'success': False, 'message':_('Product in basket not available')}
+    except:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 def push_feedback(request):
