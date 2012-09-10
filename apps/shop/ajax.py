@@ -222,7 +222,7 @@ def new_order(request):
             item.product.quantity -= item.quantity
             item.product.save()
         basket.delete()
-        payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url}
+        payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
     except AccessError:
         payload = {'success': False}
     except BasketError:
