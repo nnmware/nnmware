@@ -57,7 +57,7 @@ class BasketView(View):
 
     def dispatch(self, request, *args, **kwargs):
         if Basket.objects.filter(user=request.user).count() < 1 :
-            return HttpResponceRequest('/')
+            return HttpResponseRedirect('/')
         return super(BasketView, self).dispatch(request, *args, **kwargs)
 
 class AllProductsView(ListView,CurrentUserSuperuser):
