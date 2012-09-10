@@ -54,7 +54,7 @@ class BasketView(ListView):
     template_name = 'shop/basket.html'
 
 class AllProductsView(ListView,CurrentUserSuperuser):
-    paginate_by = 5
+    paginate_by = 20
     model = Product
     template_name = 'shop/adm_product_list.html'
 

@@ -229,3 +229,16 @@ def push_feedback(request):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def product_delete(request, object_id):
+    # Link used when User delete the product
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        Product.objects.get(pk=int(object_id)).delete()
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
