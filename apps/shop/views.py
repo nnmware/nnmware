@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
-from nnmware.apps.shop.form import EditProductForm
+from nnmware.apps.shop.form import EditProductForm, OrderStatusForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
@@ -19,6 +19,7 @@ from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFo
 
 class ShopCategory(ListView):
     template_name = 'shop/product_list.html'
+    paginate_by = 21
     model = Product
 
     def get_queryset(self):
@@ -28,6 +29,7 @@ class ShopCategory(ListView):
 class ShopAllCategory(ListView):
     template_name = 'shop/product_list.html'
     model = Product
+    paginate_by = 21
 
     def get_queryset(self):
         return Product.objects.active()
@@ -135,4 +137,12 @@ class NewsListView(ListView):
     model = ShopNews
     paginate_by = 10
 
+class OrderStatusChange(CurrentUserSuperuser, UpdateView):
+    model = Order
+    slug_field = 'pk'
+    form_class = OrderStatusForm
+    template_name = "shop/order_status.html"
+
+    def get_success_url(self):
+        return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])
 
