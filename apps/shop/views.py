@@ -55,11 +55,6 @@ class ProductDetail(SingleObjectMixin, ListView):
 class BasketView(View):
     template_name = 'shop/basket.html'
 
-    def dispatch(self, request, *args, **kwargs):
-        if Basket.objects.filter(user=request.user).count() < 1 :
-            return HttpResponseRedirect('/')
-        return super(BasketView, self).dispatch(request, *args, **kwargs)
-
 class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
     model = Product
