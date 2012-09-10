@@ -53,6 +53,10 @@ class BasketView(ListView):
     model = Basket
     template_name = 'shop/basket.html'
 
+class AllProductsView(ListView,CurrentUserSuperuser):
+    model = Product
+    template_name = 'shop/product_list.html'
+
 class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
     model = Product
     pk_url_kwarg = 'pk'
@@ -102,6 +106,13 @@ class OrdersView(ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
+class AllOrdersView(ListView, CurrentUserSuperuser):
+    template_name = 'shop/order_list.html'
+    model = Order
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Order.objects.all()
 
 class OrderView(DetailView):
     model = Order
