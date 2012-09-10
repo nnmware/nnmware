@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
@@ -52,8 +52,13 @@ class ProductDetail(SingleObjectMixin, ListView):
         self.object = self.get_object()
         return JComment.public.get_tree(self.object)
 
-class BasketView(TemplateView):
+class BasketView(View):
     template_name = 'shop/basket.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if Basket.objects.filter(user=request.user).count() < 1 :
+            raise Http404
+        return super(BasketView, self).dispatch(request, *args, **kwargs)
 
 class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
