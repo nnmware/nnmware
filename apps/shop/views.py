@@ -44,7 +44,6 @@ class ShopAllCategory(ListView):
 
 class ProductDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
-    paginate_by = 20
     template_name = 'shop/product.html'
 
     def get_object(self, queryset=None):
