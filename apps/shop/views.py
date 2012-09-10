@@ -159,3 +159,8 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
 
 class ProfileView(TemplateView):
     template_name = 'shop/profile.html'
+
+class FeedbackView(DetailView):
+    model = Feedback
+    pk_url_kwarg = 'pk'
+    template_name = 'shop/feedback.html'
