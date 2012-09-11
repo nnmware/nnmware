@@ -11,6 +11,7 @@ from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
+from nnmware.core.models import JComment
 
 class BasketError(Exception):
     pass
@@ -267,6 +268,19 @@ def delete_feedback(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         Feedback.objects.get(pk=int(object_id)).delete()
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def delete_comment(request, object_id):
+    # Link used when Admin delete the comment
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        JComment.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
