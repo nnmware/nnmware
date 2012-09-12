@@ -195,7 +195,9 @@ class DeliveryAddress(models.Model):
     house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
     building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True, null=True )
     flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
-    fio = models.CharField(max_length=100, verbose_name=_('Name of order receiver'), default='',blank=True,null=True)
+    first_name = models.CharField(max_length=255, verbose_name=_('First Name'), default='',blank=True,null=True)
+    middle_name = models.CharField(max_length=255, verbose_name=_('Middle Name'), default='',blank=True,null=True)
+    last_name = models.CharField(max_length=255, verbose_name=_('Last Name'), default='',blank=True,null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")
@@ -219,8 +221,12 @@ class DeliveryAddress(models.Model):
             result += _(', building ') + self.building
         if self.flat_number <> '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
-        if self.fio <> '' and self.fio is not None:
-            result += ', ' + self.fio
+        if self.last_name <> '' and self.last_name is not None:
+            result += ', ' + self.last_name
+        if self.first_name <> '' and self.first_name is not None:
+            result += ' ' + self.first_name
+        if self.middle_name <> '' and self.middle_name is not None:
+            result += ' ' + self.middle_name
         return result
 
 class Feedback(MetaIP):

@@ -162,9 +162,15 @@ def add_address(request):
         flat_number = request.POST.get('flat_number') or None
         if flat_number is not None:
             address.flat_number = flat_number
-        fio = request.POST.get('fio') or None
-        if fio is not None:
-            address.fio = fio
+        first_name = request.POST.get('first_name') or None
+        if first_name is not None:
+            address.first_name = first_name
+        middle_name = request.POST.get('middle_name') or None
+        if middle_name is not None:
+            address.middle_name = middle_name
+        last_name = request.POST.get('last_name') or None
+        if last_name is not None:
+            address.last_name = last_name
         address.save()
         payload = {'success': True}
     except AccessError:
