@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-07 14:33+1100\n"
+"POT-Creation-Date: 2012-09-12 16:59+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -225,7 +225,7 @@ msgstr "Категории статей"
 msgid "Category"
 msgstr "Категория"
 
-#: apps/article/models.py:18 apps/shop/models.py:244 core/admin.py:12
+#: apps/article/models.py:18 apps/shop/models.py:250 core/admin.py:12
 msgid "Content"
 msgstr "Содержание"
 
@@ -294,7 +294,7 @@ msgid "Boards"
 msgstr "Объявления"
 
 #: apps/board/models.py:26 apps/booking/models.py:125
-#: apps/booking/models.py:630 apps/shop/models.py:229
+#: apps/booking/models.py:630 apps/shop/models.py:235
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
@@ -733,7 +733,7 @@ msgstr ""
 msgid "Settlement"
 msgstr "Заселения"
 
-#: apps/booking/models.py:419 apps/shop/models.py:245
+#: apps/booking/models.py:419 apps/shop/models.py:251
 msgid "Enabled"
 msgstr "Включено"
 
@@ -936,7 +936,7 @@ msgstr ""
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:629 apps/money/models.py:19 apps/shop/models.py:228
+#: apps/booking/models.py:629 apps/money/models.py:19 apps/shop/models.py:234
 #: core/abstract.py:186 core/models.py:33
 msgid "Name"
 msgstr "Имя"
@@ -1213,21 +1213,25 @@ msgstr "Производитель"
 msgid "Order"
 msgstr "Заказ"
 
-#: apps/shop/admin.py:70 apps/shop/models.py:201
+#: apps/shop/admin.py:70 apps/shop/models.py:203
 msgid "Delivery Address"
 msgstr "Адрес доставки"
 
-#: apps/shop/admin.py:80 apps/shop/models.py:234 apps/shop/models.py:235
+#: apps/shop/admin.py:81 apps/shop/models.py:240 apps/shop/models.py:241
 msgid "Feedback"
 msgstr "Обратная связь"
 
-#: apps/shop/admin.py:89
+#: apps/shop/admin.py:90
 msgid "Shop News"
 msgstr "Новости магазина"
 
-#: apps/shop/ajax.py:167
+#: apps/shop/ajax.py:177
 msgid "You are not allowed for add address"
 msgstr "Вы не имеете прав для добавление адреса"
+
+#: apps/shop/ajax.py:236
+msgid "Product in basket not available"
+msgstr ""
 
 #: apps/shop/models.py:19
 msgid "Product Category"
@@ -1278,7 +1282,7 @@ msgstr "Доступно для заказа"
 msgid "Latest product"
 msgstr "Новинка"
 
-#: apps/shop/models.py:57 apps/shop/models.py:243
+#: apps/shop/models.py:57 apps/shop/models.py:249
 msgid "Teaser"
 msgstr "Тизер"
 
@@ -1415,58 +1419,66 @@ msgid "Number of flat"
 msgstr "Номер квартиры"
 
 #: apps/shop/models.py:198
-msgid "Name of order receiver"
-msgstr "ФИО получателя заказа"
+msgid "First Name"
+msgstr "Имя"
 
-#: apps/shop/models.py:202
+#: apps/shop/models.py:199
+msgid "Middle Name"
+msgstr "Отчество"
+
+#: apps/shop/models.py:200 apps/userprofile/forms.py:267
+msgid "Last Name"
+msgstr "Фамилия"
+
+#: apps/shop/models.py:204
 msgid "Delivery Addresses"
 msgstr "Адреса доставки"
 
-#: apps/shop/models.py:211
+#: apps/shop/models.py:213
 msgid ", region "
 msgstr ", область "
 
-#: apps/shop/models.py:213
+#: apps/shop/models.py:215
 msgid ", city "
 msgstr ", город "
 
-#: apps/shop/models.py:215
+#: apps/shop/models.py:217
 msgid ", street "
 msgstr ", улица "
 
-#: apps/shop/models.py:217
+#: apps/shop/models.py:219
 msgid ", house "
 msgstr ", дом "
 
-#: apps/shop/models.py:219
+#: apps/shop/models.py:221
 msgid ", building "
 msgstr ", cтроение "
 
-#: apps/shop/models.py:221
+#: apps/shop/models.py:223
 msgid ", flat "
 msgstr ", квартира "
 
-#: apps/shop/models.py:227 apps/shop/models.py:241 core/abstract.py:43
+#: apps/shop/models.py:233 apps/shop/models.py:247 core/abstract.py:43
 msgid "Created date"
 msgstr "Дата создания"
 
-#: apps/shop/models.py:230 core/admin.py:177 core/models.py:351
+#: apps/shop/models.py:236 core/admin.py:177 core/models.py:351
 msgid "Message"
 msgstr "Сообщение"
 
-#: apps/shop/models.py:242 core/abstract.py:93
+#: apps/shop/models.py:248 core/abstract.py:93
 msgid "Title"
 msgstr "Заголовок"
 
-#: apps/shop/models.py:249 apps/shop/models.py:250
+#: apps/shop/models.py:255 apps/shop/models.py:256
 msgid "Shop news"
 msgstr "Новости магазина"
 
-#: apps/shop/views.py:69
+#: apps/shop/views.py:103
 msgid "edit form"
 msgstr "форма редактирования"
 
-#: apps/shop/views.py:80
+#: apps/shop/views.py:114
 msgid "New product"
 msgstr "Новинка"
 
@@ -1667,10 +1679,6 @@ msgstr ""
 #: apps/userprofile/forms.py:262
 msgid "That e-mail isn't registered."
 msgstr "Данный адрес эл.почты не зарегистрирован"
-
-#: apps/userprofile/forms.py:267
-msgid "Last Name"
-msgstr "Фамилия"
 
 #: apps/userprofile/forms.py:268
 msgid "Site-only email"
@@ -2263,6 +2271,9 @@ msgstr "Удалить"
 #: core/templatetags/booking_tags.py:216
 msgid "rub"
 msgstr "руб"
+
+#~ msgid "Name of order receiver"
+#~ msgstr "ФИО получателя заказа"
 
 #~ msgid "You are not allowed change room rates."
 #~ msgstr "Вы не имеете прав изменять тарифы номера"
