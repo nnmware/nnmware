@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
-from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm
+from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
