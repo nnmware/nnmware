@@ -182,6 +182,18 @@ class Order(MetaDate):
     def get_absolute_url(self):
         return "order_view", (), {'pk':self.pk}
 
+    @property
+    def receiver(self):
+        result = ''
+        if self.last_name <> '' and self.last_name is not None:
+            result += self.last_name
+        if self.first_name <> '' and self.first_name is not None:
+            result += ' ' + self.first_name
+        if self.middle_name <> '' and self.middle_name is not None:
+            result += ' ' + self.middle_name
+        return result
+
+
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
