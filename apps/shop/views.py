@@ -14,7 +14,7 @@ from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
-from nnmware.core.templatetags.core import basket
+from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 
 class CurrentUserOrderAccess(object):
@@ -62,7 +62,7 @@ class BasketView(TemplateView):
     template_name = 'shop/basket.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if Basket.objects.filter(user=request.user).count() < 1 :
+        if _get_basket(request).count() < 1 :
             return HttpResponseRedirect('/')
         return super(BasketView, self).dispatch(request, *args, **kwargs)
 
