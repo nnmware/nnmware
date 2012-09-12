@@ -212,6 +212,9 @@ def new_order(request):
         address = DeliveryAddress.objects.get(user=request.user, pk=int(addr))
         order = Order()
         order.address = str(address)
+        order.first_name = address.first_name
+        order.middle_name = address.middle_name
+        order.last_name = address.last_name
         order.user = request.user
         order.name = ''
         order.comment = ''

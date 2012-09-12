@@ -163,6 +163,16 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
 
+class OrderTrackingChange(CurrentUserSuperuser, UpdateView):
+    model = Order
+    slug_field = 'pk'
+    form_class = OrderTrackingForm
+    template_name = "shop/order_tracking.html"
+
+    def get_success_url(self):
+        return reverse('order_view', args=[self.object.pk])
+
+
 class OrderCommentChange(CurrentUserOrderAccess, UpdateView):
     model = Order
     slug_field = 'pk'

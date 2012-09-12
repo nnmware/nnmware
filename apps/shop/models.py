@@ -41,6 +41,12 @@ class Vendor(models.Model):
     def __unicode__(self):
         return self.name
 
+class CargoService(Vendor):
+
+    class Meta:
+        ordering = ['name', 'website']
+        verbose_name = _("Cargo Service")
+        verbose_name_plural = _("Cargo Services")
 
 class Product(MetaName, MoneyBase, MetaDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
@@ -149,6 +155,13 @@ class Order(MetaDate):
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
     address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
+    tracknumber = models.CharField(verbose_name=_('Track number'), max_length=100,default='', blank=True)
+    cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
+        related_name='cargo', null=True, blank=True)
+    first_name = models.CharField(max_length=255, verbose_name=_('First Name'), default='',blank=True,null=True)
+    middle_name = models.CharField(max_length=255, verbose_name=_('Middle Name'), default='',blank=True,null=True)
+    last_name = models.CharField(max_length=255, verbose_name=_('Last Name'), default='',blank=True,null=True)
+
 
     class Meta:
         ordering = ['-created_date']
@@ -221,12 +234,12 @@ class DeliveryAddress(models.Model):
             result += _(', building ') + self.building
         if self.flat_number <> '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
-        if self.last_name <> '' and self.last_name is not None:
-            result += ', ' + self.last_name
-        if self.first_name <> '' and self.first_name is not None:
-            result += ' ' + self.first_name
-        if self.middle_name <> '' and self.middle_name is not None:
-            result += ' ' + self.middle_name
+#        if self.last_name <> '' and self.last_name is not None:
+#            result += ', ' + self.last_name
+#        if self.first_name <> '' and self.first_name is not None:
+#            result += ' ' + self.first_name
+#        if self.middle_name <> '' and self.middle_name is not None:
+#            result += ' ' + self.middle_name
         return result
 
 class Feedback(MetaIP):

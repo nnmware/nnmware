@@ -29,3 +29,8 @@ class OrderCommentForm(forms.ModelForm):
         model = Order
         fields = ('comment',)
 
+class OrderTrackingForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ('tracknumber','cargoservice')
