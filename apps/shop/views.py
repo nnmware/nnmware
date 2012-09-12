@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
-from nnmware.apps.shop.form import EditProductForm, OrderStatusForm
+from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
@@ -162,6 +162,16 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
 
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
+
+class OrderCommentChange(CurrentUserOrderAccess, UpdateView):
+    model = Order
+    slug_field = 'pk'
+    form_class = OrderCommentForm
+    template_name = "shop/order_comment.html"
+
+    def get_success_url(self):
+        return reverse('order_view', args=[self.object.pk])
+
 
 class ProfileView(TemplateView):
     template_name = 'shop/profile.html'

@@ -23,3 +23,9 @@ class OrderStatusForm(forms.ModelForm):
         model = Order
         fields = ('status',)
 
+class OrderCommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ('comment',)
+

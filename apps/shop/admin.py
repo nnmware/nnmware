@@ -65,7 +65,7 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
-    list_display = ("user", "zipcode", 'city',"street",'house_number')
+    list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
     fieldsets = (
         (_("Delivery Address"), {"fields": [('user',),
             ("last_name",'first_name','middle_name'),
