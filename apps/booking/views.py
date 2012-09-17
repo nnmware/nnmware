@@ -34,7 +34,7 @@ from django.views.decorators.cache import never_cache
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
     @method_decorator(ssl_required)
-#    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(ensure_csrf_cookie)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         city = get_object_or_404(City, slug=kwargs['city'])
@@ -47,7 +47,7 @@ class CurrentUserRoomAdmin(object):
     """ Generic update view that check request.user is author of object """
 
     @method_decorator(ssl_required)
-#    @method_decorator(ensure_csrf_cookie)
+    @method_decorator(ensure_csrf_cookie)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Room, pk=kwargs['pk'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
