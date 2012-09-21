@@ -231,3 +231,6 @@ class ProductManager(Manager):
         Returns all available products
         """
         return self.filter(avail=True)
+
+    def active_date_sort(self):
+        return self.filter(avail=True).order_by('-created_date')

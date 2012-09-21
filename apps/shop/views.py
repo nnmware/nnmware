@@ -40,7 +40,7 @@ class ShopAllCategory(ListView):
     paginate_by = 1000
 
     def get_queryset(self):
-        return Product.objects.active().order_by('-created_date')
+        return Product.objects.active_date_sort()
 
 class ProductDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
