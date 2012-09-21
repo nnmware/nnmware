@@ -171,6 +171,12 @@ def add_address(request):
         last_name = request.POST.get('last_name') or None
         if last_name is not None:
             address.last_name = last_name
+        phone = request.POST.get('phone') or None
+        if phone is not None:
+            address.phone = phone
+        skype = request.POST.get('skype') or None
+        if skype is not None:
+            address.skype = skype
         address.save()
         payload = {'success': True}
     except AccessError:
