@@ -254,6 +254,10 @@ class DeliveryAddress(models.Model):
             result += ' ' + self.first_name
         if self.middle_name <> '' and self.middle_name is not None:
             result += ' ' + self.middle_name
+        if self.phone <> '' and self.phone is not None:
+            result += _(', phone-') + self.phone
+        if self.skype <> '' and self.skype is not None:
+            result += _(', skype-') + self.skype
         return result
 
 class Feedback(MetaIP):
