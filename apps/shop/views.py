@@ -37,7 +37,7 @@ class ShopCategory(ListView):
 class ShopAllCategory(ListView):
     template_name = 'shop/product_list.html'
     model = Product
-    paginate_by = 21
+    paginate_by = 1000
 
     def get_queryset(self):
         return Product.objects.active()
