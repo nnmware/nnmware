@@ -232,5 +232,5 @@ class ProductManager(Manager):
         """
         return self.filter(avail=True)
 
-    def active_date_sort(self):
-        return self.filter(avail=True).order_by('-created_date')
+#    def active_date_sort(self):
+#        return self.filter(avail=True).order_by('-created_date')
