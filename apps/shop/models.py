@@ -248,12 +248,12 @@ class DeliveryAddress(models.Model):
             result += _(', building ') + self.building
         if self.flat_number <> '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
-#        if self.last_name <> '' and self.last_name is not None:
-#            result += ', ' + self.last_name
-#        if self.first_name <> '' and self.first_name is not None:
-#            result += ' ' + self.first_name
-#        if self.middle_name <> '' and self.middle_name is not None:
-#            result += ' ' + self.middle_name
+        if self.last_name <> '' and self.last_name is not None:
+            result += ', ' + self.last_name
+        if self.first_name <> '' and self.first_name is not None:
+            result += ' ' + self.first_name
+        if self.middle_name <> '' and self.middle_name is not None:
+            result += ' ' + self.middle_name
         return result
 
 class Feedback(MetaIP):
