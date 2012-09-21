@@ -223,6 +223,8 @@ class DeliveryAddress(models.Model):
     first_name = models.CharField(max_length=255, verbose_name=_('First Name'), default='',blank=True,null=True)
     middle_name = models.CharField(max_length=255, verbose_name=_('Middle Name'), default='',blank=True,null=True)
     last_name = models.CharField(max_length=255, verbose_name=_('Last Name'), default='',blank=True,null=True)
+    phone = models.CharField(max_length=20,verbose_name=_('Phone'), default='',blank=True,null=True)
+    skype = models.CharField(max_length=50,verbose_name=_('Skype'), default='',blank=True,null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")

@@ -74,6 +74,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
             ('country','region'),
             ("zipcode",'city','street'),
             ('house_number','building','flat_number'),
+            ('phone','skype'),
         ]}),
         )
 
