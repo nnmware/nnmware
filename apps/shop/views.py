@@ -9,7 +9,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
@@ -152,6 +152,11 @@ class OrderView(CurrentUserOrderAccess, DetailView):
 class NewsListView(ListView):
     template_name = 'shop/news_list.html'
     model = ShopNews
+    paginate_by = 10
+
+class ArticleListView(ListView):
+    template_name = 'shop/article_list.html'
+    model = ShopArticle
     paginate_by = 10
 
 class OrderStatusChange(CurrentUserSuperuser, UpdateView):

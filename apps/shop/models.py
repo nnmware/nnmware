@@ -292,3 +292,9 @@ class ShopNews(models.Model):
     def __unicode__(self):
         return self.title
 
+class ShopArticle(ShopNews):
+
+    class Meta:
+        verbose_name = _('Shop article')
+        verbose_name_plural = _('Shop articles')
+
