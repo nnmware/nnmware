@@ -95,6 +95,15 @@ class ShopNewsAdmin(admin.ModelAdmin):
         )
     ordering = ('-created_date','title')
 
+class ShopArticleAdmin(admin.ModelAdmin):
+    list_display = ("title", 'created_date')
+    fieldsets = (
+        (_("Shop Articles"), {"fields": [('title',),('created_date','enabled'), ('teaser',),
+                                     ('content'),]}),
+        )
+    ordering = ('-created_date','title')
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
 admin.site.register(ParameterUnit, UnitAdmin)
@@ -108,3 +117,4 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(DeliveryAddress, DeliveryAddressAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(ShopNews, ShopNewsAdmin)
+admin.site.register(ShopArticle, ShopArticleAdmin)
