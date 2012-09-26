@@ -61,6 +61,8 @@ class Product(MetaName, MoneyBase, MetaDate):
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
+    bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
+    discount = models.BooleanField(verbose_name=_("Discount"), default=False)
 
     objects = ProductManager()
     class Meta:
