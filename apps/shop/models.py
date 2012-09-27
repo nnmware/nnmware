@@ -301,10 +301,10 @@ class ShopNews(ShopText):
         verbose_name = _('Shop news')
         verbose_name_plural = _('Shop news')
 
-#class ShopArticle(ShopText):
-#    pass
-#
-#    class Meta:
-#        verbose_name = _('Shop article')
-#        verbose_name_plural = _('Shop articles')
+class ShopArticle(ShopText):
+    pass
+
+    class Meta:
+        verbose_name = _('Shop article')
+        verbose_name_plural = _('Shop articles')
 
