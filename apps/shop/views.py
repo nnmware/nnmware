@@ -55,7 +55,7 @@ class ProductDetail(SingleObjectMixin, ListView):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
         object_type = ContentType.objects.get_for_model(self.object)
-        param = ProductParameterValue.objects.filter(content_type__pk=object_type.id, object_id=obj.id).order_by('parameter__category')
+        param = ProductParameterValue.objects.filter(content_type__pk=object_type.id, object_id=self.object.id).order_by('parameter__category')
         context['parameters'] = param
         return context
 
