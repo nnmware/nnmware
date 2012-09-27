@@ -10,7 +10,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
@@ -53,7 +53,7 @@ class ProductDetail(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
-        context['parameters'] = self.object.parameters.order_by('category')
+        context['parameters'] = ProductParameterValue.filter(content_object=self.object).order_by('parameter__category')
         return context
 
     def get_queryset(self):
