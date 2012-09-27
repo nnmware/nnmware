@@ -295,12 +295,14 @@ class ShopText(models.Model):
 
 
 class ShopNews(ShopText):
+    pass
 
     class Meta:
         verbose_name = _('Shop news')
         verbose_name_plural = _('Shop news')
 
 class ShopArticle(ShopText):
+    pass
 
     class Meta:
         verbose_name = _('Shop article')
