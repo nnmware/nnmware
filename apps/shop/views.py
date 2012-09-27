@@ -53,7 +53,7 @@ class ProductDetail(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
-        context['parameters'] = ProductParameterValue.filter(content_object=self.object).order_by('parameter__category')
+        context['parameters'] = ProductParameterValue.objects.filter(content_object=self.object).order_by('parameter__category')
         return context
 
     def get_queryset(self):
