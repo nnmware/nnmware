@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __builtin__ import int, super, object
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
@@ -52,6 +53,7 @@ class ProductDetail(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
+        context['parameters'] = self.object.parameters.order_by('category')
         return context
 
     def get_queryset(self):
