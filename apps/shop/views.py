@@ -17,6 +17,7 @@ from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
 from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
+from django.contrib.contenttypes.models import ContentType
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check request.user is author of object """
@@ -53,7 +54,9 @@ class ProductDetail(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
-        context['parameters'] = ProductParameterValue.objects.filter(content_object=self.object).order_by('parameter__category')
+        object_type = ContentType.objects.get_for_model(self.object)
+        param = ProductParameterValue.objects.filter(content_type__pk=object_type.id, object_id=obj.id).order_by('parameter__category')
+        context['parameters'] = param
         return context
 
     def get_queryset(self):
