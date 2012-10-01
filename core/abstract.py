@@ -40,7 +40,7 @@ class MetaContent(models.Model):
 
 
 class MetaDate(models.Model):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
+    created_date = models.DateTimeField(_("Created date"), auto_now_add=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
 
     class Meta:
