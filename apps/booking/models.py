@@ -121,7 +121,7 @@ TYPEFOOD = (
     )
 
 class Hotel(MetaName, MetaGeo, HotelPoints):
-    register_date = models.DateTimeField(_("Register from"), default=datetime.now())
+    register_date = models.DateTimeField(_("Register from"), default=datetime.now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
@@ -472,7 +472,7 @@ STATUS_CHOICES = (
 
 class Booking(MoneyBase, MetaIP):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
@@ -555,7 +555,7 @@ class AgentPercent(models.Model):
 class Review(MetaIP, HotelPoints):
     user = models.ForeignKey(User)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
-    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now())
+    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
     review = models.TextField(verbose_name=_("Review"),blank=True)
 
     class Meta:
@@ -623,7 +623,7 @@ class PlacePrice(MoneyBase):
 
 class RequestAddHotel(MetaIP):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
-    register_date = models.DateTimeField(_("Register date"), default=datetime.now())
+    register_date = models.DateTimeField(_("Register date"), default=datetime.now)
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
     name = models.CharField(verbose_name=_("Name"), max_length=100, null=True, blank=True)

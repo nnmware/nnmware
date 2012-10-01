@@ -264,7 +264,7 @@ class DeliveryAddress(models.Model):
         return result
 
 class Feedback(MetaIP):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     email = models.CharField(max_length=255, verbose_name=_('Email'))
     message = models.TextField(verbose_name=_("Message"))
@@ -278,7 +278,7 @@ class Feedback(MetaIP):
         return "%s - %s" % (self.name, self.created_date)
 
 class ShopText(models.Model):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now())
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
     teaser = models.TextField(verbose_name=_("Teaser"), null=True, blank=True)
     content = models.TextField(verbose_name=_("Content"), null=True, blank=True)

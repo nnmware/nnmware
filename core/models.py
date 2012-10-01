@@ -430,7 +430,7 @@ signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_
 
 class VisitorHit(models.Model):
     user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now())
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
     ip_address = models.CharField(max_length=20, verbose_name=_('IP'))
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
