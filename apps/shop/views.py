@@ -45,7 +45,7 @@ class ShopAllCategory(ListView):
         return Product.objects.active()
 
 class SaleView(ListView):
-    template_name = 'shop/product_list.html'
+    template_name = 'shop/sale_list.html'
     model = Product
     paginate_by = 1000
 
