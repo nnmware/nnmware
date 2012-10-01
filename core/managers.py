@@ -232,5 +232,12 @@ class ProductManager(Manager):
         """
         return self.filter(avail=True)
 
+    def sale(self):
+        """
+        Returns all available products
+        """
+        return self.filter(avail=True, discount=True)
+
+
 #    def active_date_sort(self):
 #        return self.filter(avail=True).order_by('-created_date')

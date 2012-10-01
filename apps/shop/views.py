@@ -44,6 +44,15 @@ class ShopAllCategory(ListView):
     def get_queryset(self):
         return Product.objects.active()
 
+class SaleView(ListView):
+    template_name = 'shop/product_list.html'
+    model = Product
+    paginate_by = 1000
+
+    def get_queryset(self):
+        return Product.objects.sale()
+
+
 class ProductDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
     template_name = 'shop/product.html'
