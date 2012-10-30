@@ -57,7 +57,7 @@ class Tag(models.Model):
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
         users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
-        return User.objects.filter(pk__in=users)
+        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)
 
     @permalink
     def get_absolute_url(self):
@@ -202,7 +202,7 @@ class JComment(MetaLink, MetaIP, MetaDate):
     # Hierarchy Field
     parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children')
     # User Field
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     # Meat n' Potatoes
     comment = models.TextField(_('comment'))
     # Status Fields
@@ -253,7 +253,7 @@ class Follow(models.Model):
     """
     Lets a user follow the activities of any specific actor
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=255)
@@ -290,7 +290,7 @@ class Notice(MetaLink, MetaIP):
     """
     User notification model
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     notice_type = models.IntegerField(_("Notice Type"), choices=NOTICE_CHOICES, default=NOTICE_UNKNOWN)
     sender = models.ForeignKey(User, related_name='notice_sender')
     verb = models.CharField(max_length=255)
@@ -308,8 +308,8 @@ class Message(MetaIP):
     """
     subject = models.CharField(_("Subject"), max_length=120, blank=True, null=True)
     body = models.TextField(_("Body"))
-    sender = models.ForeignKey(User, related_name='sent_messages', verbose_name=_("Sender"))
-    recipient = models.ForeignKey(User, related_name='received_messages', null=True, blank=True, verbose_name=_("Recipient"))
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_messages', verbose_name=_("Sender"))
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_messages', null=True, blank=True, verbose_name=_("Recipient"))
     parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name=_("Parent message"))
     sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
     read_at = models.DateTimeField(_("read at"), null=True, blank=True)
@@ -372,7 +372,7 @@ class Action(MetaLink,MetaIP):
     """
     Model Activity of User
     """
-    user = models.ForeignKey(User, related_name='actions')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='actions')
     action_type = models.IntegerField(_("Action Type"), choices=ACTION_CHOICES, default=ACTION_UNKNOWN)
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -429,7 +429,7 @@ signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id
 signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
 
 class VisitorHit(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
     ip_address = models.CharField(max_length=20, verbose_name=_('IP'))

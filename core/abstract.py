@@ -2,6 +2,7 @@
 # Base abstract classed nnmware(c)2012
 
 from datetime import datetime
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -108,7 +109,7 @@ class MetaData(MetaDate):
     slug = models.SlugField(_("URL"), max_length=256, blank=True, unique_for_date="created_date")
     description = models.TextField(_("Description"), blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("Author"), related_name="%(app_label)s_%(class)s_user")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(app_label)s_%(class)s_user")
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
     allow_comments = models.BooleanField(_("allow comments"), default=True)
     allow_pics = models.BooleanField(_("allow pics"), default=False)
@@ -400,7 +401,7 @@ DOC_TYPE = (
 
 
 class MetaFile(MetaDate):
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("Author"), related_name="%(class)s_user")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(class)s_user")
     description = models.CharField(verbose_name=_("Description"), max_length=256, blank=True)
     size = models.IntegerField(editable=False, null=True, blank=True)
     ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))

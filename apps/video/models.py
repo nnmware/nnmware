@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.comments.models import Comment
 from django.contrib.contenttypes import generic
@@ -11,7 +12,7 @@ from nnmware.core.abstract import MetaDate
 
 class Video(MetaDate):
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)
     project_url = models.URLField(max_length=255, verbose_name=_(u'Project URL'), blank=True)
     video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
