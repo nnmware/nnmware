@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from decimal import Decimal
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
@@ -71,7 +71,7 @@ class Transaction(MoneyBase):
     """
     Transaction(no more words)
     """
-    user = models.ForeignKey(User, verbose_name=_("User"))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"))
 
     actor_ctype = models.ForeignKey(ContentType, verbose_name=_("Object Content Type"), null=True, blank=True,
         related_name='transaction_object', on_delete=models.SET_NULL)
@@ -120,7 +120,7 @@ class Bill(MoneyBase):
     """
     Financial account
     """
-    user = models.ForeignKey(User, verbose_name=_("User"), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True)
     date = models.DateField(verbose_name=_("Date"), default=datetime.now())
     date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.now())
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)

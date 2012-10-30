@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from django import template
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from nnmware.apps.shop.models import Basket
@@ -55,7 +55,7 @@ def tags_step2():
 def users_step2(context):
     request = context['request']
     # Return most popular 6 users
-    return User.objects.exclude(username=request.user.username).annotate(video_count=Count('video')).order_by('-video_count')[:6]
+    return settings.AUTH_USER_MODEL.objects.exclude(username=request.user.username).annotate(video_count=Count('video')).order_by('-video_count')[:6]
 
 
 @register.simple_tag

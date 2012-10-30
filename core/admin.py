@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 from django.forms.fields import ChoiceField
@@ -149,7 +150,7 @@ class MessageAdminForm(ModelForm):
     Custom AdminForm to enable messages to groups and all users.
     """
     recipient = ModelChoiceField(
-        label=_('Recipient'), queryset=User.objects.all(), required=True)
+        label=_('Recipient'), queryset=settings.AUTH_USER_MODEL.objects.all(), required=True)
 
     group = ChoiceField(label=_('group'), required=False,
         help_text=_('Creates the message optionally for all users or a group of users.'))
@@ -196,7 +197,7 @@ class MessageAdmin(admin.ModelAdmin):
 
         if form.cleaned_data['group'] == 'all':
             # send to all users
-            recipients = User.objects.exclude(pk=obj.recipient.pk)
+            recipients = settings.AUTH_USER_MODEL.objects.exclude(pk=obj.recipient.pk)
         else:
             # send to a group of users
             recipients = []

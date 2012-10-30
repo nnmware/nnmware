@@ -35,7 +35,7 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, unique=True, related_name='user_profile')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, unique=True, related_name='user_profile')
     fullname = models.CharField(max_length=100, verbose_name=_(u'Full Name'), blank=True)
     birthdate = models.DateField(verbose_name=_(u'Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
@@ -87,14 +87,14 @@ class Profile(models.Model):
             return self.user.username
 
     def _ctype(self):
-        return ContentType.objects.get_for_model(User)
+        return ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
 
     def followers_count(self):
         return Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).count()
 
     def followers(self):
         users = Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).values_list('user',flat=True)
-        return User.objects.filter(pk__in=users)
+        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)
 
     def follow_tags_count(self):
         ctype = ContentType.objects.get_for_model(Tag)
@@ -140,7 +140,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-post_save.connect(create_user_profile, sender=User)
+post_save.connect(create_user_profile, sender=settings.AUTH_USER_MODEL)
 
 class EmailValidationManager(models.Manager):
     """
@@ -173,7 +173,7 @@ class EmailValidationManager(models.Manager):
         Add a new validation process entry
         """
         while True:
-            key = User.objects.make_random_password(70)
+            key = settings.AUTH_USER_MODEL.objects.make_random_password(70)
             try:
                 EmailValidation.objects.get(key=key)
             except EmailValidation.DoesNotExist:
@@ -190,7 +190,7 @@ class EmailValidationManager(models.Manager):
             subject = subject.render(Context(locals())).strip()
             send_mail(subject=subject, message=body, from_email=None,
                 recipient_list=[email])
-            user = User.objects.get(username=str(user))
+            user = settings.AUTH_USER_MODEL.objects.get(username=str(user))
             self.filter(user=user).delete()
         return self.create(user=user, key=key, email=email)
 

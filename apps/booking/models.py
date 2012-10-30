@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 from decimal import Decimal
 from uuid import uuid4
 import random
-from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
 from django.db.models import permalink, signals, Avg
@@ -132,7 +131,7 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
-    admins = models.ManyToManyField(User, verbose_name=_('Hotel Admins'), null=True, blank=True)
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Hotel Admins'), null=True, blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
@@ -471,7 +470,7 @@ STATUS_CHOICES = (
     )
 
 class Booking(MoneyBase, MetaIP):
-    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
@@ -553,7 +552,7 @@ class AgentPercent(models.Model):
 
 
 class Review(MetaIP, HotelPoints):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
     review = models.TextField(verbose_name=_("Review"),blank=True)
@@ -622,7 +621,7 @@ class PlacePrice(MoneyBase):
 
 
 class RequestAddHotel(MetaIP):
-    user = models.ForeignKey(User, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     register_date = models.DateTimeField(_("Register date"), default=datetime.now)
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)

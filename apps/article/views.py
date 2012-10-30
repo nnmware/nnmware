@@ -113,7 +113,7 @@ class ArticleAuthor(ListView):
     model = Article
 
     def get_queryset(self):
-        author = get_object_or_404(User, username__iexact=self.kwargs['username'])
+        author = get_object_or_404(settings.AUTH_USER_MODEL, username__iexact=self.kwargs['username'])
         result = Article.objects.filter(user=author)
         messages.add_message(self.request, messages.INFO, _(u'For this author found- %(len)s results ') % {'len': len(result)})
         return result

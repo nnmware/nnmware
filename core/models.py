@@ -7,7 +7,6 @@ from StringIO import StringIO
 from datetime import datetime
 import os
 import Image
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
@@ -292,7 +291,7 @@ class Notice(MetaLink, MetaIP):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     notice_type = models.IntegerField(_("Notice Type"), choices=NOTICE_CHOICES, default=NOTICE_UNKNOWN)
-    sender = models.ForeignKey(User, related_name='notice_sender')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender')
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(default=datetime.now)

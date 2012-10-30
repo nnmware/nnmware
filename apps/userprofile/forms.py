@@ -18,7 +18,7 @@ class RegistrationForm(UserCreationForm):
     """
 
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
         fields = ('username', 'email')
 
     def __init__(self, *args, **kwargs):
@@ -37,9 +37,9 @@ class RegistrationForm(UserCreationForm):
             raise forms.ValidationError(_("E-mail is required."))
 
         try:
-            User.objects.get(email=email)
+            settings.AUTH_USER_MODEL.objects.get(email=email)
             raise forms.ValidationError(_("That e-mail is already used."))
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             try:
                 EmailValidation.objects.get(email=email)
                 raise forms.ValidationError(_("That e-mail is already "
@@ -63,7 +63,7 @@ class SignupForm(UserCreationForm):
     """
 #    email = forms.EmailField(label='Email address', max_length=75)
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
         fields = ('username', 'email')
 
     def clean_username(self):
@@ -71,7 +71,7 @@ class SignupForm(UserCreationForm):
         if not username:
             raise forms.ValidationError(_("USERNAME IS REQUIRED"))
         try:
-            User.objects.get(username=username)
+            settings.AUTH_USER_MODEL.objects.get(username=username)
             raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
         except:
             return username
@@ -86,9 +86,9 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
 
         try:
-            User.objects.get(email=email)
+            settings.AUTH_USER_MODEL.objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             try:
                 EmailValidation.objects.get(email=email)
                 raise forms.ValidationError(_("THAT E-MAIL IS ALREADY CONFIRMED"))
@@ -123,9 +123,9 @@ class EmailQuickRegisterForm(forms.ModelForm):
         if not email:
             raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
         try:
-            User.objects.get(email=email)
+            settings.AUTH_USER_MODEL.objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             return email
 
     def clean_password(self):
@@ -146,12 +146,12 @@ class LoginForm(forms.Form):
         if not username:
             raise forms.ValidationError("THIS FIELD IS REQUIRED")
         try:
-            user = User.objects.get(username=username)
+            user = settings.AUTH_USER_MODEL.objects.get(username=username)
             if not user.is_active: raise UserIsDisabled
             return username
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             try:
-                user = User.objects.get(email=username)
+                user = settings.AUTH_USER_MODEL.objects.get(email=username)
                 if not user.is_active: raise UserIsDisabled
                 return username
             except UserIsDisabled: raise UserIsDisabled
@@ -240,7 +240,7 @@ class EmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if not (User.objects.filter(email=email) or
+        if not (settings.AUTH_USER_MODEL.objects.filter(email=email) or
                 EmailValidation.objects.filter(email=email)):
             return email
 
@@ -255,7 +255,7 @@ class ResendEmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if User.objects.filter(email=email) or \
+        if settings.AUTH_USER_MODEL.objects.filter(email=email) or \
            EmailValidation.objects.filter(email=email):
             return email
 
@@ -314,5 +314,5 @@ class EditForm(forms.ModelForm):
     """Form for editing user userprofile"""
 
     class Meta:
-        model = User
+        model = settings.AUTH_USER_MODEL
         fields = ('first_name', 'last_name', 'email')

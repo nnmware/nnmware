@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 from datetime import datetime
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
@@ -162,7 +163,7 @@ class TagSubscribers(TagDetail):
 class UserPathMixin(object):
 
     def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs['username'])
+        return get_object_or_404(settings.AUTH_USER_MODEL, username=self.kwargs['username'])
 
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
@@ -194,7 +195,7 @@ class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserVideoAdded, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         context['tab'] = 'added'
         context['tab_message'] = 'VIDEO ADDED THIS USER:'
         return context
@@ -211,7 +212,7 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserVideoLoved, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         context['tab'] = 'loved'
         context['tab_message'] = 'LOVED VIDEOS:'
         return context
@@ -230,7 +231,7 @@ class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowTags, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         context['tab'] = 'follow_tags'
         context['tab_message'] = 'USER FOLLOW THIS TAGS:'
         return context
@@ -248,15 +249,15 @@ class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         context['tab'] = 'follow_users'
         context['tab_message'] = 'USER FOLLOW THIS USERS:'
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(User)).values_list('object_id',flat=True)
-        return User.objects.filter(id__in=follow)
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('object_id',flat=True)
+        return settings.AUTH_USER_MODEL.objects.filter(id__in=follow)
 
 class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -266,12 +267,12 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowerUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         context['tab'] = 'follower_users'
         context['tab_message'] = 'USERS FOLLOW ON THIS USER:'
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(User)).values_list('user',flat=True)
-        return User.objects.filter(id__in=followers)
+        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('user',flat=True)
+        return settings.AUTH_USER_MODEL.objects.filter(id__in=followers)

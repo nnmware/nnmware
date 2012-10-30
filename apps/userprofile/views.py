@@ -34,27 +34,27 @@ from nnmware.apps.userprofile.forms import *
 from nnmware.core.imgutil import fit
 
 class UserList(ListView):
-    model = User
+    model = settings.AUTH_USER_MODEL
     context_object_name = "object_list"
     template_name = "user/users_list.html"
 
     def get_queryset(self):
-        return User.objects.order_by("-date_joined")
+        return settings.AUTH_USER_MODEL.objects.order_by("-date_joined")
 
 
 class UserMenList(UserList):
     def get_queryset(self):
-        return User.objects.filter(profile__gender='M')
+        return settings.AUTH_USER_MODEL.objects.filter(profile__gender='M')
 
 
 class UserWomenList(UserList):
     def get_queryset(self):
-        return User.objects.filter(profile__gender='F')
+        return settings.AUTH_USER_MODEL.objects.filter(profile__gender='F')
 
 
 class UserDateTemplate(object):
     template_name = 'user/users_list.html'
-    model = User
+    model = settings.AUTH_USER_MODEL
     date_field = 'date_joined'
     context_object_name = "object_list"
     make_object_list = True
@@ -74,14 +74,14 @@ class UserDayList(UserDateTemplate, DayArchiveView):
 
 
 class UserDetail(DetailView):
-    model = User
+    model = settings.AUTH_USER_MODEL
     slug_field = 'username'
     template_name = "user/user_detail.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserDetail,self).get_context_data(**kwargs)
-        context['ctype'] = ContentType.objects.get_for_model(User)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         return context
 
 
@@ -154,12 +154,12 @@ class UserSettings(UpdateView):
 
 
 class UserSearch(ListView):
-    model = User
+    model = settings.AUTH_USER_MODEL
     template_name = "user/users_list.html"
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        return User.objects.filter(username__icontains=query)
+        return settings.AUTH_USER_MODEL.objects.filter(username__icontains=query)
 
 
 class RegisterView(AjaxFormMixin, FormView):
@@ -173,7 +173,7 @@ class RegisterView(AjaxFormMixin, FormView):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         email = form.cleaned_data.get('email')
-        newuser = User.objects.create_user(username=username, email=email, password=password)
+        newuser = settings.AUTH_USER_MODEL.objects.create_user(username=username, email=email, password=password)
         newuser.is_active = False
         EmailValidation.objects.add(user=newuser, email=newuser.email)
         newuser.save()
@@ -215,7 +215,7 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         email = form.cleaned_data.get('email')
         username = email
         password = form.cleaned_data.get('password')
-        u = User(username=username,email=email)
+        u = settings.AUTH_USER_MODEL(username=username,email=email)
         u.set_password(password)
         u.is_active = True
         u.save()
@@ -272,7 +272,7 @@ class ActivateView(View):
         key = self.kwargs['activation_key']
         try:
             e = EmailValidation.objects.get(key=key)
-            u = User(username=e.username,email=e.email)
+            u = settings.AUTH_USER_MODEL(username=e.username,email=e.email)
             u.set_password(e.password)
             u.is_active = True
             u.save()
@@ -291,7 +291,7 @@ class PassRecoveryView(View):
         key = self.kwargs['activation_key']
         try:
             e = EmailValidation.objects.get(key=key)
-            u = User.objects.get(username=e.username)
+            u = settings.AUTH_USER_MODEL.objects.get(username=e.username)
             u.set_password(e.password)
             u.save()
             user = authenticate(username=u.username, password=e.password)

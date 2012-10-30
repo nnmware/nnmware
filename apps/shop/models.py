@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext as _
@@ -117,7 +117,7 @@ class ProductParameterValue(MetaContent):
 
 
 class Basket(MetaDate):
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='basket',blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
@@ -154,7 +154,7 @@ class Order(MetaDate):
     """
     Definition of orders.
     """
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='orders')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders')
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
     address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
@@ -214,7 +214,7 @@ class OrderItem(MoneyBase):
         return self.quantity*self.amount
 
 class DeliveryAddress(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('User'), related_name='deliveryaddr')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), default='',blank=True,null=True)

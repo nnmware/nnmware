@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.template import Library, Node, TemplateSyntaxError
 from django.template.defaulttags import url
 from django.contrib.auth.models import User
@@ -6,7 +7,7 @@ register = Library()
 
 
 def _link(object, anchor=u''):
-    if isinstance(object, User):
+    if isinstance(object, settings.AUTH_USER_MODEL):
         url = object.get_profile().url
         anchor = object.username
     else:

@@ -26,17 +26,17 @@ class EmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         """ Authenticate a user based on email address as the user name. """
         try:
-            user = User.objects.get(email=username)
+            user = settings.AUTH_USER_MODEL.objects.get(email=username)
             if user.check_password(password):
                 return user
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             return None 
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return settings.AUTH_USER_MODEL.objects.get(pk=user_id)
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             return None
 
 class UsernameOrEmailAuthBackend(object):
@@ -47,17 +47,17 @@ class UsernameOrEmailAuthBackend(object):
         else:
             kwargs = {'username': username}
         try:
-            user = User.objects.get(**kwargs)
+            user = settings.AUTH_USER_MODEL.objects.get(**kwargs)
             if user.check_password(password):
                 return user
-        except User.DoesNotExist:
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             return None
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
-            return User.objects.get(pk=user_id)
-        except User.DoesNotExist:
+            return settings.AUTH_USER_MODEL.objects.get(pk=user_id)
+        except settings.AUTH_USER_MODEL.DoesNotExist:
             return None
 
 

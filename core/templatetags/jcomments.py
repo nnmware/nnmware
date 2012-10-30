@@ -1,7 +1,6 @@
 import re
 from django import template
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe

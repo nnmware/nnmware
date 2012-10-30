@@ -27,7 +27,7 @@ class Video(MetaDate):
     embedcode = models.TextField(verbose_name=_(u'Embed code'), blank=True)
     publish = models.BooleanField(_("Published"), default=False)
     tags = models.ManyToManyField(Tag)
-    users_viewed = models.ManyToManyField(User, related_name='view_this_video')
+    users_viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='view_this_video')
     comments = models.IntegerField(blank=True, default=0)
 
 
@@ -54,7 +54,7 @@ class Video(MetaDate):
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
         users = Follow.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
-        return User.objects.filter(pk__in=users)
+        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)
 
     @permalink
     def get_absolute_url(self):
@@ -66,4 +66,4 @@ class Video(MetaDate):
     def users_commented(self):
         ctype = ContentType.objects.get_for_model(self)
         users = JComment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
-        return User.objects.filter(pk__in=users)
+        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)

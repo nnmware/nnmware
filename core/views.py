@@ -2,7 +2,6 @@
 from datetime import datetime
 import Image
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Sum
@@ -30,7 +29,7 @@ from nnmware.core.abstract import STATUS_DELETE
 class UserPathMixin(object):
 
     def get_object(self, queryset=None):
-        return get_object_or_404(User, username=self.kwargs['username'])
+        return get_object_or_404(settings.AUTH_USER_MODEL, username=self.kwargs['username'])
 
 
 def _adjust_max_comment_length(form):

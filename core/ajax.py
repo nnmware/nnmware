@@ -167,7 +167,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 except :
                     pass
                 new = Pic()
-                new.content_type = ContentType.objects.get_for_model(User)
+                new.content_type = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
                 new.object_id = request.user.pk
                 new.description = self.extra_context['oldname']
                 new.user = request.user

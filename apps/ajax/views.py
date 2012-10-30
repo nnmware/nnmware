@@ -4,7 +4,6 @@ import os
 import Image
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
@@ -63,7 +62,7 @@ def push_video(request, object_id):
             if unfollow(request.user, video):
 #                action.send(request.user, verb=_('disliked the video'), target=video)
                 if request.user.get_profile().followers_count:
-                    for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                    for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                         notice.send(request.user, user=u, verb=_('now disliked'), target=video)
         else:
             if follow(request.user, video):
@@ -71,7 +70,7 @@ def push_video(request, object_id):
                 action.send(request.user, verb=_('liked the video'), action_type=ACTION_LIKED,
                     target=video, request=request)
                 if request.user.get_profile().followers_count:
-                    for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                    for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                         if u.follow_set.filter(content_type=ctype, object_id=video.pk).count:
                             notice.send(request.user, user=u, verb=_('also now liked'), target=video)
                         else:
@@ -93,7 +92,7 @@ def push_tag(request, object_id):
             unfollow(request.user, tag)
             action.send(request.user, verb=_('unfollow the tag'), target=tag)
             if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                     notice.send(request.user, user=u, verb=_('now follow'), target=tag)
         else:
             follow(request.user, tag)
@@ -101,7 +100,7 @@ def push_tag(request, object_id):
             action.send(request.user, verb=_('follow the tag'), action_type=ACTION_FOLLOWED, target=tag,
                 request=request)
             if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                     if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
                         notice.send(request.user, user=u, verb=_('also now follow'), target=tag)
                     else:
@@ -131,23 +130,23 @@ def push_notify(request):
 def push_user(request, object_id):
     # Link used for User press button in user panel
     try:
-        user = User.objects.get(id=object_id)
+        user = settings.AUTH_USER_MODEL.objects.get(id=object_id)
         if request.user == user:
             raise AccessError
-        ctype = ContentType.objects.get_for_model(User)
+        ctype = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
         status = False
         if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
             unfollow(request.user, user)
             action.send(request.user, verb=_('unfollow the user'), target=user)
             if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                     notice.send(request.user, user=u, verb=_('now unfollow'), target=user)
         else:
             follow(request.user, user)
             status = True
             action.send(request.user, verb=_('follow the user'), target=user)
             if request.user.get_profile().followers_count:
-                for u in User.objects.filter(pk__in=request.user.get_profile().followers):
+                for u in settings.AUTH_USER_MODEL.objects.filter(pk__in=request.user.get_profile().followers):
                     if u.follow_set.filter(content_type=ctype, object_id=user.pk).count:
                         notice.send(request.user, user=u, verb=_('also now follow'), target=user)
                     else:
@@ -195,7 +194,7 @@ def unfollow_object(request, content_type_id, object_id):
 
 
 def autocomplete_users(request):
-    search_qs = User.objects.filter(username__icontains=request.REQUEST['q'])
+    search_qs = settings.AUTH_USER_MODEL.objects.filter(username__icontains=request.REQUEST['q'])
     results = []
     for r in search_qs:
         userstring = {'name': r.username, 'fullname': r.get_profile().fullname }
@@ -268,7 +267,7 @@ def message_add(request):
     recipients = filter(None, recipients)  # Remove empty values
     try:
         for u in recipients:
-            user = User.objects.get(username=u)
+            user = settings.AUTH_USER_MODEL.objects.get(username=u)
             if user and (user != request.user):
                 m = Message()
                 m.recipient = user
@@ -284,7 +283,7 @@ def message_add(request):
     return AjaxLazyAnswer(payload)
 
 def message_user_add(request):
-    user = get_object_or_404(User,username=request.REQUEST['user'])
+    user = get_object_or_404(settings.AUTH_USER_MODEL,username=request.REQUEST['user'])
     result = dict()
     result['fullname'] = user.get_profile().get_name()
     result['url'] = user.get_absolute_url()
@@ -456,7 +455,7 @@ def push_message(request, object_id):
         msg.subject = request.POST.get('message_subject') or None
         msg.body = request.POST.get('message_body') or None
         msg.sender = request.user
-        msg.recipient = User.objects.get(id=object_id)
+        msg.recipient = settings.AUTH_USER_MODEL.objects.get(id=object_id)
         msg.sent_at = datetime.now()
         msg.save()
         try:
