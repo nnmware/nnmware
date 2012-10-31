@@ -1,6 +1,7 @@
+
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
 from django.forms.fields import ChoiceField
 from django.forms.models import ModelForm, ModelChoiceField
 from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit
@@ -145,34 +146,12 @@ class NoticeAdmin(admin.ModelAdmin):
     list_display = ('user', 'timestamp', 'verb', 'sender','ip','user_agent')
     list_filter = ('user',)
 
-class MessageAdminForm(ModelForm):
-    """
-    Custom AdminForm to enable messages to groups and all users.
-    """
-    recipient = ModelChoiceField(
-        label=_('Recipient'), queryset=settings.AUTH_USER_MODEL.objects.all(), required=True)
-
-    group = ChoiceField(label=_('group'), required=False,
-        help_text=_('Creates the message optionally for all users or a group of users.'))
-
-    def __init__(self, *args, **kwargs):
-        super(MessageAdminForm, self).__init__(*args, **kwargs)
-        self.fields['group'].choices = self._get_group_choices()
-
-    def _get_group_choices(self):
-        return [('', u'---------'), ('all', _('All users'))] +\
-               [(group.pk, group.name) for group in Group.objects.all()]
-
-    class Meta:
-        model = Message
-
 class MessageAdmin(admin.ModelAdmin):
-    form = MessageAdminForm
     fieldsets = (
         (_('Main'), {
             'fields': (
                 'sender',
-                ('recipient', 'group'),
+                ('recipient', ),
                 ),
             }),
         (_("Message"), {"classes": ("grp-collapse grp-closed",), "fields": [('subject',),('body',),
