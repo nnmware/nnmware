@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.managers import MetaLinkManager
 
-GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)
+GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
 TZ_CHOICES = [(float(x[0]), x[1]) for x in (
     (-12, '-12'), (-11, '-11'), (-10, '-10'), (-9.5, '-09.5'), (-9, '-09'),
