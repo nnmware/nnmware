@@ -50,14 +50,14 @@ class UsernameOrEmailAuthBackend(object):
             user = settings.AUTH_USER_MODEL.objects.get(**kwargs)
             if user.check_password(password):
                 return user
-        except settings.AUTH_USER_MODEL.DoesNotExist:
+        except eval(settings.AUTH_USER_MODEL).DoesNotExist:
             return None
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
             return settings.AUTH_USER_MODEL.objects.get(pk=user_id)
-        except settings.AUTH_USER_MODEL.DoesNotExist:
+        except eval(settings.AUTH_USER_MODEL).DoesNotExist:
             return None
 
 
