@@ -10,6 +10,7 @@ from nnmware.core.abstract import MetaName
 class Address(MetaName):
     name_add = models.CharField(max_length=100, blank=True)
     name_add_en = models.CharField(max_length=100, blank=True)
+    objects = models.Manager()
 
     class Meta:
         ordering = ['name']
@@ -73,7 +74,6 @@ class City(Address):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
 
-    objects = models.Manager()
     class Meta:
         unique_together = (('name', 'region'),)
         verbose_name = _("City")
