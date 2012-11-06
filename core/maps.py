@@ -29,10 +29,9 @@ class Geocoder(object):
 
     def parse_json(self, data):
         try:
-            data = json.loads(data)
+            return json.loads(data)
         except:
-            data = []
-        return data
+            return []
 
 STATIC_MAPS_URL = 'http://static-maps.yandex.ru/1.x/?'
 GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'

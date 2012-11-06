@@ -36,9 +36,6 @@ class Country(Address):
         verbose_name = _("Country")
         verbose_name_plural = _("Countries")
 
-    def __unicode__(self):
-        return self.name
-
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.pk:
@@ -76,13 +73,14 @@ class City(Address):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
 
+    objects = models.Manager()
     class Meta:
         unique_together = (('name', 'region'),)
         verbose_name = _("City")
         verbose_name_plural = _("Cities")
 
     def fulladdress(self):
-        return u"%s" % self.name
+        return self.name
 
     def get_absolute_url(self):
         return 'city_detail', [self.slug]
@@ -99,10 +97,7 @@ class City(Address):
             if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         if not self.latitude and not self.longitude:
-            try:
-                self.fill_osm_data()
-            except:
-                pass
+            self.fill_osm_data()
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
