@@ -16,6 +16,7 @@ class Address(MetaName):
         ordering = ['name']
         abstract = True
 
+
     def __unicode__(self):
         return self.name
 

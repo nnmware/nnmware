@@ -210,7 +210,7 @@ class MetaName(models.Model):
 
 
     class Meta:
-        ordering = ['name', ]
+        ordering = ['-order_in_list', 'name' ]
         abstract = True
 
     def __unicode__(self):
