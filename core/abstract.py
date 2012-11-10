@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.apps.address.models import Country, City, StationMetro
 from nnmware.core.managers import MetaLinkManager
-from contur.models import std_text_field
+from nnmware.core.fields import std_text_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
