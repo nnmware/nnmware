@@ -427,7 +427,7 @@ class MetaContact(models.Model):
     publicmail = models.EmailField(_('Public email'), blank=True, null=True)
     privatemail = models.EmailField(_('Private email'), blank=True, null=True)
     website = std_url_field(_(u'Website'))
-    personal_website = (_(u'Personal Website'))
+    personal_website = std_url_field(_(u'Personal Website'))
     facebook = std_url_field(_(u'Facebook'))
     googleplus = std_url_field(_(u'Google+'))
     twitter = std_url_field(_(u'Twitter'))
