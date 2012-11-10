@@ -207,6 +207,6 @@ def basket_sum(context):
     return all_sum
 
 @register.filter
-def phone_number(vaue):
-    num = re.sub("[^0-9]", "", vaue)
+def phone_number(value):
+    num = re.sub("[^0-9]", "", value)
     return '+'+num[:3] + '(' + num[3:6] + ')' + num[6:]
