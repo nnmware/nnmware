@@ -8,6 +8,7 @@ from nnmware.apps.address.models import Country, City, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
 from nnmware.core.abstract import MetaDate, Color, Unit, Parameter, MetaIP
+from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
 
 
@@ -28,7 +29,7 @@ class ProductColor(Color):
 
 class Vendor(models.Model):
     name = models.CharField(_("Name of vendor"),max_length=200)
-    website = models.URLField(_("URL"), blank=True)
+    website = std_url_field(_("URL"))
     description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
         on_delete=models.SET_NULL)
@@ -101,7 +102,7 @@ class ProductParameter(Parameter):
 
 class ProductParameterValue(MetaContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
-    value = models.CharField(max_length=255, verbose_name=_('Value of parameter'), blank=True)
+    value = std_text_field(_('Value of parameter'))
     order_in_list = models.IntegerField(_('Order in list'), default=0)
     keyparam = models.BooleanField(verbose_name=_("In key params"), default=False)
 
@@ -161,9 +162,9 @@ class Order(MetaDate):
     tracknumber = models.CharField(verbose_name=_('Track number'), max_length=100,default='', blank=True)
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
         related_name='cargo', null=True, blank=True)
-    first_name = models.CharField(max_length=255, verbose_name=_('First Name'), default='',blank=True,null=True)
-    middle_name = models.CharField(max_length=255, verbose_name=_('Middle Name'), default='',blank=True,null=True)
-    last_name = models.CharField(max_length=255, verbose_name=_('Last Name'), default='',blank=True,null=True)
+    first_name = std_text_field(_('First Name'))
+    middle_name = std_text_field(_('Middle Name'))
+    last_name = std_text_field(_('Last Name'))
 
 
     class Meta:
@@ -202,8 +203,8 @@ class OrderItem(MoneyBase):
     Definition of order's details.
     """
     order = models.ForeignKey(Order)
-    product_pn = models.CharField(verbose_name=_('Shop part number'), max_length=250, default='')
-    product_name = models.CharField(verbose_name=_('Product Name'), max_length=250, default='')
+    product_pn = std_text_field(_('Shop part number'))
+    product_name = std_text_field(_('Product Name'))
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 
     def __unicode__(self):
@@ -223,9 +224,9 @@ class DeliveryAddress(models.Model):
     house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
     building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True, null=True )
     flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
-    first_name = models.CharField(max_length=255, verbose_name=_('First Name'), default='',blank=True,null=True)
-    middle_name = models.CharField(max_length=255, verbose_name=_('Middle Name'), default='',blank=True,null=True)
-    last_name = models.CharField(max_length=255, verbose_name=_('Last Name'), default='',blank=True,null=True)
+    first_name = std_text_field(_('First Name'))
+    middle_name = std_text_field(_('Middle Name'))
+    last_name = std_text_field(_('Last Name'))
     phone = models.CharField(max_length=20,verbose_name=_('Phone'), default='',blank=True,null=True)
     skype = models.CharField(max_length=50,verbose_name=_('Skype'), default='',blank=True,null=True)
 
