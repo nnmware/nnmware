@@ -206,3 +206,6 @@ except :
 
 def std_text_field(verbose):
     return models.CharField(max_length=256, verbose_name=verbose, blank=True, default='')
+
+def std_url_field(verbose):
+    return models.URLField(max_length=150, verbose_name=verbose, blank=True, default='')

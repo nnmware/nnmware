@@ -34,7 +34,7 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
 
 
 class Color(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_('Color'))
+    name = std_text_field(_('Color'))
 
     class Meta:
         verbose_name = _("Color")
@@ -403,7 +403,7 @@ DOC_TYPE = (
 
 class MetaFile(MetaDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(class)s_user")
-    description = models.CharField(verbose_name=_("Description"), max_length=256, blank=True)
+    description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
     ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))
     locked = models.BooleanField(_('Is locked'), default=False)
@@ -428,15 +428,15 @@ class MetaContact(models.Model):
     jabber = models.CharField(max_length=50, verbose_name=_(u'Jabber'), blank=True, null=True)
     publicmail = models.EmailField(_('Public email'), blank=True, null=True)
     privatemail = models.EmailField(_('Private email'), blank=True, null=True)
-    website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True, null=True)
-    personal_website = models.URLField(max_length=150, verbose_name=_(u'Personal Website'), blank=True, null=True)
-    facebook = models.URLField(max_length=150, verbose_name=_(u'Facebook'), blank=True, null=True)
-    googleplus = models.URLField(max_length=150, verbose_name=_(u'Google+'), blank=True, null=True)
-    twitter = models.URLField(max_length=150, verbose_name=_(u'Twitter'), blank=True, null=True)
-    vkontakte = models.URLField(max_length=150, verbose_name=_(u'VKontakte'), blank=True, null=True)
-    odnoklassniki = models.URLField(max_length=150, verbose_name=_(u'Odnoklassniki'), blank=True, null=True)
-    moikrug = models.URLField(max_length=150, verbose_name=_(u'Moi krug'), blank=True, null=True)
-    other_social = models.URLField(max_length=150, verbose_name=_(u'Other social networks'), blank=True, null=True)
+    website = std_url_field(_(u'Website'))
+    personal_website = (_(u'Personal Website'))
+    facebook = std_url_field(_(u'Facebook'))
+    googleplus = std_url_field(_(u'Google+'))
+    twitter = std_url_field(_(u'Twitter'))
+    vkontakte = std_url_field(_(u'VKontakte'))
+    odnoklassniki = std_url_field(_(u'Odnoklassniki'))
+    moikrug = std_url_field(_(u'Moi krug'))
+    other_social = std_url_field(_(u'Other social networks'))
     hide_mobile_personal = models.BooleanField(_('Hide personal mobile phone'), default=False)
     hide_mobile_work = models.BooleanField(_('Hide work mobile phone'), default=False)
     hide_landline_personal = models.BooleanField(_('Hide personal landline phone'), default=False)

@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+from nnmware.core.fields import std_text_field
 from nnmware.core.maps import Geocoder
 from nnmware.core.abstract import MetaName
 
@@ -194,3 +195,18 @@ class StationMetro(Address, MetaGeo):
     def __unicode__(self):
         return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
 
+class MetaLocation(models.Model):
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
+    stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
+        null=True,blank=True, related_name='metro')
+    zipcode = models.CharField(max_length=6,verbose_name=_('Zipcode'), blank=True, null=True)
+    street = std_text_field(_('Street'))
+    house_number = models.IntegerField(_('Number of house'), blank=True, null=True)
+    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)
+    flat_number = models.IntegerField(_('Number of flat'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Location")
+        verbose_name_plural = _("Locations")
+        abstract = True
