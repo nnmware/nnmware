@@ -219,6 +219,6 @@ def icq_number(value):
         result += num[:3]
         num = num[3:]
         if len(num) > 3:
-            num += '-'
+            result += '-'
     result += num
     return result
