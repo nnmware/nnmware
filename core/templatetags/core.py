@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import re
 from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
@@ -204,3 +205,8 @@ def basket_sum(context):
     for item in result:
         all_sum += item.sum
     return all_sum
+
+@register.filter
+def phone_number(vaue):
+    num = re.sub("[^0-9]", "", vaue)
+    return '+'+num[:3] + '(' + num[3:6] + ')' + num[6:]
