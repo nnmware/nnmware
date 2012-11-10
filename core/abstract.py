@@ -415,3 +415,47 @@ class MetaIP(models.Model):
 
     class Meta:
         abstract = True
+
+class MetaContact(models.Model):
+    mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, null=True)
+    mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, null=True)
+    landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, null=True)
+    landline_work = models.CharField(max_length=12, verbose_name=_(u'Work landline phone'), blank=True, null=True)
+    icq = models.CharField(max_length=30, verbose_name=_(u'ICQ'), blank=True, null=True)
+    skype = models.CharField(max_length=50, verbose_name=_(u'Skype'), blank=True, null=True)
+    jabber = models.CharField(max_length=50, verbose_name=_(u'Jabber'), blank=True, null=True)
+    publicmail = models.EmailField(_('Public email'), blank=True, null=True)
+    privatemail = models.EmailField(_('Private email'), blank=True, null=True)
+    website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True, null=True)
+    personal_website = models.URLField(max_length=150, verbose_name=_(u'Personal Website'), blank=True, null=True)
+    facebook = models.URLField(max_length=150, verbose_name=_(u'Facebook'), blank=True, null=True)
+    googleplus = models.URLField(max_length=150, verbose_name=_(u'Google+'), blank=True, null=True)
+    twitter = models.URLField(max_length=150, verbose_name=_(u'Twitter'), blank=True, null=True)
+    vkontakte = models.URLField(max_length=150, verbose_name=_(u'VKontakte'), blank=True, null=True)
+    odnoklassniki = models.URLField(max_length=150, verbose_name=_(u'Odnoklassniki'), blank=True, null=True)
+    moikrug = models.URLField(max_length=150, verbose_name=_(u'Moi krug'), blank=True, null=True)
+    other_social = models.URLField(max_length=150, verbose_name=_(u'Other social networks'), blank=True, null=True)
+    hide_mobile_personal = models.BooleanField(_('Hide personal mobile phone'), default=False)
+    hide_mobile_work = models.BooleanField(_('Hide work mobile phone'), default=False)
+    hide_landline_personal = models.BooleanField(_('Hide personal landline phone'), default=False)
+    hide_landline_work = models.BooleanField(_('Hide work landline phone'), default=False)
+    hide_icq = models.BooleanField(_('Hide icq'), default=False)
+    hide_skype = models.BooleanField(_('Hide skype'), default=False)
+    hide_jabber = models.BooleanField(_('Hide jabber'), default=False)
+    hide_publicmail = models.BooleanField(_('Hide publicmail'), default=False)
+    hide_privatemail = models.BooleanField(_('Hide privatemail'), default=False)
+    hide_website = models.BooleanField(_('Hide website'), default=False)
+    hide_personal_website = models.BooleanField(_('Hide personal website'), default=False)
+    hide_facebook = models.BooleanField(_('Hide facebook'), default=False)
+    hide_googleplus = models.BooleanField(_('Hide googleplus'), default=False)
+    hide_twitter = models.BooleanField(_('Hide twitter'), default=False)
+    hide_vkontakte = models.BooleanField(_('Hide vkontakte'), default=False)
+    hide_moikrug = models.BooleanField(_('Hide mokrug'), default=False)
+    hide_odnoklassniki = models.BooleanField(_('Hide odnoklassniki'), default=False)
+    hide_other_social = models.BooleanField(_('Hide other social networks'), default=False)
+    hide_address = models.BooleanField(_('Hide address'), default=False)
+
+    class Meta:
+        verbose_name = _("Contacts data")
+        verbose_name_plural = _("Contact data")
+        abstract = True
