@@ -209,7 +209,7 @@ def basket_sum(context):
 @register.filter
 def phone_number(value):
     num = re.sub("[^0-9]", "", value)
-    return '+'+num[:3] + '(' + num[3:6] + ')' + num[6:]
+    return '+'+num[:4] + '(' + num[4:7] + ')' + num[7:]
 
 @register.filter
 def icq_number(value):
