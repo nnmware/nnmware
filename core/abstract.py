@@ -7,7 +7,6 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-
 from django.db import models
 from django.db.models import permalink
 from django.db.models.manager import Manager
@@ -15,9 +14,8 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-#from nnmware.apps.address.models import Country, City, StationMetro
 from nnmware.core.managers import MetaLinkManager
-#from nnmware.core.fields import std_text_field
+from nnmware.core.fields import std_text_field, std_url_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
