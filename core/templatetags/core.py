@@ -223,6 +223,7 @@ def icq_number(value):
     result += num
     return result
 
+@mark_safe
 @register.filter
 def url_target_blank(text):
     return text.replace('<a ', '<a target="_blank" ')
