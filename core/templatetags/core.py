@@ -210,3 +210,15 @@ def basket_sum(context):
 def phone_number(value):
     num = re.sub("[^0-9]", "", value)
     return '+'+num[:3] + '(' + num[3:6] + ')' + num[6:]
+
+@register.filter
+def icq_number(value):
+    num = re.sub("[^0-9]", "", value)
+    result = ''
+    while len(num) > 3:
+        result += num[:3]
+        num = num[3:]
+        if len(num) > 3:
+            num += '-'
+    result += num
+    return result
