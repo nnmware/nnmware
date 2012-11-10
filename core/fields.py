@@ -203,3 +203,6 @@ try:
     add_introspection_rules([], ['^nnmware\.core\.fields\.JSONField'])
 except :
     pass
+
+def std_text_field(verbose):
+    return models.CharField(max_length=255, verbose_name=verbose, blank=True, default='')
