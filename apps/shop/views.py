@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __builtin__ import int, super, object
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
@@ -39,7 +40,7 @@ class ShopCategory(ListView):
 class ShopAllCategory(ListView):
     template_name = 'shop/product_list.html'
     model = Product
-    paginate_by = 1000
+    paginate_by = settings.PAGINATE_SHOP
 
     def get_queryset(self):
         return Product.objects.active()
@@ -47,7 +48,7 @@ class ShopAllCategory(ListView):
 class SaleView(ListView):
     template_name = 'shop/sale_list.html'
     model = Product
-    paginate_by = 1000
+    paginate_by = settings.PAGINATE_SHOP
 
     def get_queryset(self):
         return Product.objects.sale()
