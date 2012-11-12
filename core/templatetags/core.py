@@ -200,7 +200,7 @@ def basket(context):
 
 @register.assignment_tag
 def latest_products():
-    return Product.object.latest()
+    return Product.objects.latest()
 
 @register.assignment_tag(takes_context=True)
 def basket_sum(context):
