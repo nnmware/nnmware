@@ -263,7 +263,7 @@ class DeliveryAddress(MetaLocation):
             result += _(', phone-') + self.phone
         if self.skype <> '' and self.skype is not None:
             result += _(', skype-') + self.skype
-        return 'u' #"%s" % result
+        return u"%s" % result
 
 class Feedback(MetaIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
