@@ -271,6 +271,7 @@ class Feedback(MetaIP):
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     email = models.CharField(max_length=255, verbose_name=_('Email'))
     message = models.TextField(verbose_name=_("Message"))
+    answer = models.TextField(verbose_name=_("Answer"), null=True, blank=True)
 
     class Meta:
         ordering = ['-created_date']

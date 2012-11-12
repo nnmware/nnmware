@@ -81,7 +81,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date',"ip",'user_agent')
     fieldsets = (
-        (_("Feedback"), {"fields": [('name','email'), ('message',),
+        (_("Feedback"), {"fields": [('name','email'), ('message',),('answer',),
             ('created_date','ip','user_agent'),]}),
         )
     ordering = ('-created_date','name','email')
