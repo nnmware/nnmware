@@ -271,7 +271,9 @@ def delete_product(request, object_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        Product.objects.get(pk=int(object_id)).delete()
+        p = Product.objects.get(pk=int(object_id))
+        p.visible = False
+        p.save()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
