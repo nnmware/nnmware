@@ -1,5 +1,6 @@
 """Django ORM models for Social Auth"""
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.social.base import UserSocialAuthMixin, AssociationMixin, NonceMixin
@@ -7,7 +8,7 @@ from nnmware.core.fields import JSONField
 
 class UserSocialAuth(models.Model, UserSocialAuthMixin):
     """Social Auth association model"""
-    User = settings.AUTH_USER_MODEL
+    User = get_user_model()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='social_auth')
     provider = models.CharField(max_length=32)
     uid = models.CharField(max_length=255)
