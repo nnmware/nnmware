@@ -132,6 +132,10 @@ class Basket(MetaDate):
     def sum(self):
         return self.quantity*self.product.amount
 
+    def __unicode__(self):
+        return "%s" % self.user
+
+
 STATUS_UNKNOWN = 0
 STATUS_WAIT = 1
 STATUS_PROCESS = 2
@@ -259,7 +263,7 @@ class DeliveryAddress(MetaLocation):
             result += _(', phone-') + self.phone
         if self.skype <> '' and self.skype is not None:
             result += _(', skype-') + self.skype
-        return u"%" % result
+        return "%s" % result
 
 class Feedback(MetaIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
