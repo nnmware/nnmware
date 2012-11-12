@@ -3,7 +3,7 @@ from datetime import datetime
 import Image
 from django.contrib import messages
 from django.contrib.auth.decorators import permission_required, login_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
@@ -14,9 +14,10 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.userprofile.forms import PassChangeForm
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
@@ -551,3 +552,17 @@ class RedirectHttpView(object):
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
+class ChangePasswordView(AjaxFormMixin, FormView):
+    form_class = PassChangeForm
+    template_name = 'user/pwd_change.html'
+    success_url = reverse_lazy('password_change_done')
+
+    def get_form_kwargs(self):
+        kwargs = super(ChangePasswordView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def form_valid(self, form):
+        self.request.user.set_password(form.cleaned_data.get('new_password2'))
+        self.request.user.save()
+        return super(ChangePasswordView, self).form_valid(form)
