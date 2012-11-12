@@ -157,3 +157,4 @@ except ImportError:
     import sys
     sys.stderr.write('No addition site config found (nnmware_settings.py\n')
     sys.exit(1)
+
