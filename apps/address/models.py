@@ -193,7 +193,7 @@ class StationMetro(Address, MetaGeo):
         verbose_name_plural = _("Stations of metro")
 
     def __unicode__(self):
-        return u"%s :: %s :: %s" % (self.name, self.city, self.country.name)
+        return u"%s :: %s" % (self.name, self.city)
 
 class MetaLocation(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
