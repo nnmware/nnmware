@@ -232,7 +232,7 @@ class DeliveryAddress(MetaLocation):
         verbose_name_plural = _("Delivery Addresses")
 
     def __unicode__(self):
-        result = u''
+        result = ''
         if self.zipcode <> '' and self.zipcode is not None:
             result += self.zipcode
         if self.country is not None:
@@ -259,7 +259,7 @@ class DeliveryAddress(MetaLocation):
             result += _(', phone-') + self.phone
         if self.skype <> '' and self.skype is not None:
             result += _(', skype-') + self.skype
-        return result
+        return u"%" % result
 
 class Feedback(MetaIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
