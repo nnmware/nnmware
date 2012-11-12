@@ -141,3 +141,29 @@ class UploadPicForm(forms.Form):
                   u"maximum allowed is %(nb_max_pic)d.") %
                 {'nb_pic': count, 'nb_max_pic': settings.PIC_MAX_PER_OBJECT})
         return
+
+class EmailQuickRegisterForm(forms.ModelForm):
+
+    class Meta:
+        model = settings.AUTH_USER_MODEL
+        fields = ('email','password')
+
+    def clean_email(self):
+        """
+        Verify that the email exists
+        """
+        email = self.cleaned_data.get("email")
+        if not email:
+            raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
+        try:
+            settings.AUTH_USER_MODEL.objects.get(email=email)
+            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
+        except :
+            return email
+
+    def clean_password(self):
+        password = self.cleaned_data.get('password')
+        if not password:
+            raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
+        return password
+

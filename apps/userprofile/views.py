@@ -207,22 +207,6 @@ class SignupView(AjaxFormMixin, FormView):
         send_template_mail(subject,body,mail_dict,[e.email])
         return super(SignupView, self).form_valid(form)
 
-class EmailQuickRegisterView(AjaxFormMixin, FormView):
-    form_class = EmailQuickRegisterForm
-    success_url = "/"
-
-    def form_valid(self, form):
-        email = form.cleaned_data.get('email')
-        username = email
-        password = form.cleaned_data.get('password')
-        u = settings.AUTH_USER_MODEL(username=username,email=email)
-        u.set_password(password)
-        u.is_active = True
-        u.save()
-        user = authenticate(username=username, password=password)
-        self.user = user
-        login(self.request, user)
-        return super(EmailQuickRegisterView, self).form_valid(form)
 
 
 
