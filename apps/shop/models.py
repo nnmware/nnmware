@@ -64,6 +64,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
     bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
     discount = models.BooleanField(verbose_name=_("Discount"), default=False)
+    deleted = models.BooleanField(verbose_name=_("Is deleted"), default=False)
 
     objects = ProductManager()
     class Meta:

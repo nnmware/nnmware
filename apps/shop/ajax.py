@@ -231,6 +231,8 @@ def new_order(request):
             order_item = OrderItem()
             order_item.order = order
             order_item.product_name = item.product.name
+            order_item.product = item.product
+            order_item.product_url = item.product.get_absolute_url
             order_item.amount = item.product.amount
             order_item.product_pn = item.product.shop_pn
             order_item.quantity = item.quantity

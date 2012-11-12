@@ -4,7 +4,7 @@ from django import template
 from django.conf import settings
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
-from nnmware.apps.shop.models import Basket
+from nnmware.apps.shop.models import Basket, Product
 from nnmware.apps.video.models import Video
 from nnmware.core.models import Tag
 from nnmware.core.http import get_session_from_request
@@ -197,6 +197,10 @@ def _get_basket(request):
 def basket(context):
     request = context['request']
     return _get_basket(request)
+
+@register.simple_tag
+def latest_products():
+    return Product.object.latest()
 
 @register.assignment_tag(takes_context=True)
 def basket_sum(context):
