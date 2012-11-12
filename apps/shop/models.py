@@ -133,7 +133,7 @@ class Basket(MetaDate):
         return self.quantity*self.product.amount
 
     def __unicode__(self):
-        return "%s" % self.user
+        return "%s" % self.user.username
 
 
 STATUS_UNKNOWN = 0
