@@ -207,7 +207,7 @@ class OrderItem(MoneyBase):
     product_pn = std_text_field(_('Shop part number'))
     product_name = std_text_field(_('Product Name'))
     product_url = std_url_field(_('Product URL'))
-    product = models.ForeignKey(Product, null=True, blank=True)
+    product_origin = models.ForeignKey(Product, null=True, blank=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 
     def __unicode__(self):
