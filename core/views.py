@@ -2,7 +2,7 @@
 from datetime import datetime
 import Image
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
@@ -589,7 +589,7 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         email = form.cleaned_data.get('email')
         username = email
         password = form.cleaned_data.get('password')
-        u = settings.AUTH_USER_MODEL(username=username,email=email)
+        u = get_user_model()(username=username,email=email)
         u.set_password(password)
         u.is_active = True
         u.save()

@@ -1,11 +1,11 @@
 import datetime
+from django.contrib.auth import get_user_model
 
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
@@ -87,14 +87,14 @@ class Profile(models.Model):
             return self.user.username
 
     def _ctype(self):
-        return ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        return ContentType.objects.get_for_model(get_user_model())
 
     def followers_count(self):
         return Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).count()
 
     def followers(self):
         users = Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).values_list('user',flat=True)
-        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)
+        return get_user_model().objects.filter(pk__in=users)
 
     def follow_tags_count(self):
         ctype = ContentType.objects.get_for_model(Tag)
@@ -140,7 +140,7 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
 
-post_save.connect(create_user_profile, sender=settings.AUTH_USER_MODEL)
+post_save.connect(create_user_profile, sender=get_user_model())
 
 class EmailValidationManager(models.Manager):
     """
@@ -173,7 +173,7 @@ class EmailValidationManager(models.Manager):
         Add a new validation process entry
         """
         while True:
-            key = settings.AUTH_USER_MODEL.objects.make_random_password(70)
+            key = get_user_model().objects.make_random_password(70)
             try:
                 EmailValidation.objects.get(key=key)
             except EmailValidation.DoesNotExist:
@@ -190,7 +190,7 @@ class EmailValidationManager(models.Manager):
             subject = subject.render(Context(locals())).strip()
             send_mail(subject=subject, message=body, from_email=None,
                 recipient_list=[email])
-            user = settings.AUTH_USER_MODEL.objects.get(username=str(user))
+            user = get_user_model().objects.get(username=str(user))
             self.filter(user=user).delete()
         return self.create(user=user, key=key, email=email)
 
