@@ -238,7 +238,7 @@ class DeliveryAddress(MetaLocation):
     def __unicode__(self):
         result = ''
         if self.zipcode <> '' and self.zipcode is not None:
-            result += self.zipcode
+            result += str(self.zipcode)
         if self.country is not None:
             result += ', ' + self.country.name
         if self.region is not None:
@@ -248,11 +248,11 @@ class DeliveryAddress(MetaLocation):
         if self.street <> '' and self.street is not None:
             result += _(', street ') +' '+ self.street
         if self.house_number <> '' and self.house_number is not None:
-            result += _(', house ') + self.house_number
+            result += _(', house ') + str(self.house_number)
         if self.building <> '' and self.building is not None:
-            result += _(', building ') + self.building
+            result += _(', building ') + str(self.building)
         if self.flat_number <> '' and self.flat_number is not None:
-            result += _(', flat ') + self.flat_number
+            result += _(', flat ') + str(self.flat_number)
         if self.last_name <> '' and self.last_name is not None:
             result += ', ' + self.last_name
         if self.first_name <> '' and self.first_name is not None:
@@ -263,7 +263,7 @@ class DeliveryAddress(MetaLocation):
             result += _(', phone-') + self.phone
         if self.skype <> '' and self.skype is not None:
             result += _(', skype-') + self.skype
-        return u"%s" % result
+        return result
 
 class Feedback(MetaIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
