@@ -230,13 +230,13 @@ class ProductManager(Manager):
         """
         Returns all available products
         """
-        return self.filter(avail=True,deleted=False)
+        return self.filter(avail=True,visible=True)
 
     def sale(self):
         """
         Returns all available products
         """
-        return self.filter(avail=True, discount=True,deleted=False)
+        return self.filter(avail=True, discount=True,visible=True)
 
 
 #    def active_date_sort(self):
@@ -246,4 +246,4 @@ class ProductManager(Manager):
         """
         Returns all available products
         """
-        return self.filter(avail=True,deleted=False,latest=True)
+        return self.filter(avail=True,deleted=False,visible=True)
