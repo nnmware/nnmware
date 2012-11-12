@@ -212,5 +212,3 @@ class FeedbackView(CurrentUserSuperuser, DetailView):
     pk_url_kwarg = 'pk'
     template_name = 'shop/feedback.html'
 
-class FeedbackAnswerView(CurrentUserSuperuser, UpdateView):
-    model = Feedback

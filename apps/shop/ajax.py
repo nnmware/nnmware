@@ -266,6 +266,18 @@ def push_feedback(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def push_answer(request,object_id):
+    try:
+        msg = Feedback.objects.get(pk=object_id)
+        msg.answer = request.POST.get('answer')
+        msg.save()
+        payload = {'success': True, 'location': msg.get_absolute_url}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+
 def delete_product(request, object_id):
     # Link used when User delete the product
     try:
