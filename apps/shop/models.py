@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext as _
-from nnmware.apps.address.models import Country, City, Region
+from nnmware.apps.address.models import Country, City, Region, MetaLocation
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, MetaName, MetaContent
 from nnmware.core.abstract import MetaDate, Color, Unit, Parameter, MetaIP
@@ -217,16 +217,10 @@ class OrderItem(MoneyBase):
     def fullamount(self):
         return self.quantity*self.amount
 
-class DeliveryAddress(models.Model):
+
+class DeliveryAddress(MetaLocation):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
-    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), default='',blank=True,null=True)
-    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
-    street = models.CharField(max_length=100, verbose_name=_('Street'), default='',blank=True,null=True)
-    house_number = models.CharField(max_length=5, verbose_name=_('Number of house'), default='',blank=True,null=True)
-    building = models.CharField(max_length=25,verbose_name=_('Building'), default='',blank=True, null=True )
-    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), default='',blank=True,null=True)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
