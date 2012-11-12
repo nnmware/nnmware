@@ -202,9 +202,9 @@ class MetaLocation(models.Model):
         null=True,blank=True, related_name='metro')
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
     street = std_text_field(_('Street'))
-    house_number = models.CharField(_('Number of house'),max_length=5, blank=True, null=True)
+    house_number = models.CharField(verbose_name=_('Number of house'),max_length=5, blank=True, null=True)
     building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)
-    flat_number = models.CharField(max_length=5, _('Number of flat'), blank=True, null=True)
+    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Location")
