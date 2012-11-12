@@ -225,18 +225,6 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         return super(EmailQuickRegisterView, self).form_valid(form)
 
 
-class LoginView(AjaxFormMixin, FormView):
-    form_class = LoginForm
-    template_name = 'user/login.html'
-    success_url = "/"
-    status = _("YOU SUCCESSFULLY SIGN IN")
-
-    def form_valid(self, form):
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        login(self.request, user)
-        return super(LoginView, self).form_valid(form)
 
 
 

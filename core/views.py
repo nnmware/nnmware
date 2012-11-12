@@ -2,6 +2,7 @@
 from datetime import datetime
 import Image
 from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
@@ -17,7 +18,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.userprofile.forms import PassChangeForm
+from nnmware.apps.userprofile.forms import PassChangeForm, LoginForm
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
@@ -566,3 +567,16 @@ class ChangePasswordView(AjaxFormMixin, FormView):
         self.request.user.set_password(form.cleaned_data.get('new_password2'))
         self.request.user.save()
         return super(ChangePasswordView, self).form_valid(form)
+
+class LoginView(AjaxFormMixin, FormView):
+    form_class = LoginForm
+    template_name = 'user/login.html'
+    success_url = "/"
+    status = _("YOU SUCCESSFULLY SIGN IN")
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+        return super(LoginView, self).form_valid(form)
