@@ -67,6 +67,7 @@ class Product(MetaName, MoneyBase, MetaDate):
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
 
     objects = ProductManager()
+
     class Meta:
 #        ordering = ['category__name','order_in_list','name']
         ordering = ['-created_date']

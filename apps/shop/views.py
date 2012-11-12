@@ -30,7 +30,7 @@ class CurrentUserOrderAccess(object):
 
 class ShopCategory(ListView):
     template_name = 'shop/product_list.html'
-    paginate_by = 21
+    paginate_by = settings.PAGINATE_SHOP
     model = Product
 
     def get_queryset(self):
