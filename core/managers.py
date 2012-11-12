@@ -246,4 +246,4 @@ class ProductManager(Manager):
         """
         Returns all available products
         """
-        return self.filter(avail=True,deleted=False,visible=True)
+        return self.filter(avail=True,latest=True,visible=True)
