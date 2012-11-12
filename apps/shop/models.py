@@ -238,7 +238,7 @@ class DeliveryAddress(MetaLocation):
     def __unicode__(self):
         result = ''
         if self.zipcode <> '' and self.zipcode is not None:
-            result += str(self.zipcode)
+            result += self.zipcode
         if self.country is not None:
             result += ', ' + self.country.name
         if self.region is not None:
