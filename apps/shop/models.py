@@ -248,11 +248,11 @@ class DeliveryAddress(MetaLocation):
         if self.street <> '' and self.street is not None:
             result += _(', street ') +' '+ self.street
         if self.house_number <> '' and self.house_number is not None:
-            result += _(', house ') + str(self.house_number)
+            result += _(', house ') + self.house_number
         if self.building <> '' and self.building is not None:
-            result += _(', building ') + str(self.building)
+            result += _(', building ') + self.building
         if self.flat_number <> '' and self.flat_number is not None:
-            result += _(', flat ') + str(self.flat_number)
+            result += _(', flat ') + self.flat_number
         if self.last_name <> '' and self.last_name is not None:
             result += ', ' + self.last_name
         if self.first_name <> '' and self.first_name is not None:
