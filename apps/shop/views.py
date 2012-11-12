@@ -135,7 +135,7 @@ def add_product(request):
 class SearchView(ListView):
     template_name = 'shop/product_list.html'
     model = Product
-    paginate_by = 10
+    paginate_by = 20
 
     def get_queryset(self):
         q = self.request.GET.get('q') or None
@@ -147,7 +147,7 @@ class AddDeliveryAddressView(AjaxFormMixin, CreateView):
 class OrdersView(ListView):
     template_name = 'shop/order_list.html'
     model = Order
-    paginate_by = 10
+    paginate_by = 25
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
@@ -155,7 +155,7 @@ class OrdersView(ListView):
 class AllOrdersView(ListView, CurrentUserSuperuser):
     template_name = 'shop/order_list.html'
     model = Order
-    paginate_by = 10
+    paginate_by = 25
 
     def get_queryset(self):
         return Order.objects.all()
