@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
@@ -280,6 +281,11 @@ class Feedback(MetaIP):
 
     def __unicode__(self):
         return "%s - %s" % (self.name, self.created_date)
+
+    @property
+    def get_absolute_url(self):
+        return reverse('feedback_detail', args=[self.pk])
+
 
 class ShopText(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
