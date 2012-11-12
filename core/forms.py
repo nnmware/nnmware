@@ -3,7 +3,7 @@ import os
 
 from django import forms
 from django.conf import settings
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.forms.widgets import RadioSelect
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
@@ -147,7 +147,7 @@ class UploadPicForm(forms.Form):
 class EmailQuickRegisterForm(forms.ModelForm):
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = get_user_model()
         fields = ('email','password')
 
     def clean_email(self):
@@ -158,7 +158,7 @@ class EmailQuickRegisterForm(forms.ModelForm):
         if not email:
             raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
         try:
-            settings.AUTH_USER_MODEL.objects.get(email=email)
+            get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
         except :
             return email

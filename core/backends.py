@@ -8,7 +8,8 @@ from urlparse import urlparse
 import Image
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.models import User, check_password
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import check_password
 
 from nnmware.core.imgutil import fit, aspect_ratio
 from nnmware.core.utils import get_date_directory
@@ -26,7 +27,7 @@ class EmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         """ Authenticate a user based on email address as the user name. """
         try:
-            user = settings.AUTH_USER_MODEL.objects.get(email=username)
+            user = get_user_model().objects.get(email=username)
             if user.check_password(password):
                 return user
         except:
@@ -35,7 +36,7 @@ class EmailAuthBackend(object):
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
-            return settings.AUTH_USER_MODEL.objects.get(pk=user_id)
+            return get_user_model().objects.get(pk=user_id)
         except:
             return None
 
@@ -47,7 +48,7 @@ class UsernameOrEmailAuthBackend(object):
         else:
             kwargs = {'username': username}
         try:
-            user = settings.AUTH_USER_MODEL.objects.get(**kwargs)
+            user = get_user_model().objects.get(**kwargs)
             if user.check_password(password):
                 return user
         except:
@@ -56,7 +57,7 @@ class UsernameOrEmailAuthBackend(object):
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
         try:
-            return settings.AUTH_USER_MODEL.objects.get(pk=user_id)
+            return get_user_model().objects.get(pk=user_id)
         except:
             return None
 
