@@ -232,7 +232,7 @@ class DeliveryAddress(MetaLocation):
         verbose_name_plural = _("Delivery Addresses")
 
     def __unicode__(self):
-        result = ''
+        result = u''
         if self.zipcode <> '' and self.zipcode is not None:
             result += self.zipcode
         if self.country is not None:
