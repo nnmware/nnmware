@@ -212,12 +212,12 @@ class LoginForm(forms.Form):
         if not username:
             raise forms.ValidationError("THIS FIELD IS REQUIRED")
         try:
-            user = settings.AUTH_USER_MODEL.objects.get(username=username)
+            user = get_user_model().objects.get(username=username)
             if not user.is_active: raise UserIsDisabled
             return username
-        except settings.AUTH_USER_MODEL.DoesNotExist:
+        except get_user_model().DoesNotExist:
             try:
-                user = settings.AUTH_USER_MODEL.objects.get(email=username)
+                user = get_user_model().objects.get(email=username)
                 if not user.is_active: raise UserIsDisabled
                 return username
             except UserIsDisabled: raise UserIsDisabled
