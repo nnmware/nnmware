@@ -198,7 +198,7 @@ def basket(context):
     request = context['request']
     return _get_basket(request)
 
-@register.simple_tag
+@register.assignment_tag
 def latest_products():
     return Product.object.latest()
 
