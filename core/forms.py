@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import JComment, Pic, Tag, Doc
 from nnmware.core.utils import tags_normalize
 from nnmware.core.widgets import AutocompleteWidget
+from nnmware.core.exceptions import UserIsDisabled
 
 DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
 DEFAULT_MAX_JCOMMENT_DEPTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_DEPTH', 8)
