@@ -9,8 +9,6 @@ from nnmware.core.fields import ReCaptchaField
 
 from nnmware.apps.userprofile.models import Profile, EmailValidation
 
-class UserIsDisabled(Exception):
-    pass
 
 class RegistrationForm(UserCreationForm):
     """
@@ -110,67 +108,7 @@ class SignupForm(UserCreationForm):
         return password2
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(label=_(u'Username'), max_length=30)
-    password = forms.CharField(label=_(u'Password'), max_length=30)
 
-    class Meta:
-        widgets = dict(password=forms.PasswordInput)
-
-    def clean_username(self):
-        username = self.cleaned_data["username"]
-        if not username:
-            raise forms.ValidationError("THIS FIELD IS REQUIRED")
-        try:
-            user = settings.AUTH_USER_MODEL.objects.get(username=username)
-            if not user.is_active: raise UserIsDisabled
-            return username
-        except settings.AUTH_USER_MODEL.DoesNotExist:
-            try:
-                user = settings.AUTH_USER_MODEL.objects.get(email=username)
-                if not user.is_active: raise UserIsDisabled
-                return username
-            except UserIsDisabled: raise UserIsDisabled
-            except: raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
-        except UserIsDisabled: raise forms.ValidationError(_("THE USER IS DISABLED"))
-
-    def clean_password(self):
-        username = self.cleaned_data.get('username')
-        password = self.cleaned_data.get('password')
-        user = authenticate(username=username, password=password)
-        if not user: raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
-        return password
-
-class PassChangeForm(forms.Form):
-    old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
-    new_password1 = forms.CharField(label=_("New password"), widget=forms.PasswordInput)
-    new_password2 = forms.CharField(label=_("New password confirmation"), widget=forms.PasswordInput)
-
-    class Meta:
-        fields = ('old_password', 'new_password1', 'new_password2')
-
-    def __init__(self, *args, **kwargs):
-        self.current_user = kwargs.pop('user')
-        super(PassChangeForm, self).__init__(*args, **kwargs)
-
-    def clean_old_password(self):
-        old_password = self.cleaned_data["old_password"]
-        if not self.current_user.check_password(old_password):
-            raise forms.ValidationError(_("Old password is wrong."))
-        return old_password
-
-    def clean_new_password2(self):
-        password1 = self.cleaned_data.get('new_password1')
-        password2 = self.cleaned_data.get('new_password2')
-        if password1 and password2:
-            if password1 != password2:
-                raise forms.ValidationError(_("Passwords mismatch."))
-        return password2
-
-    def clean(self):
-        if  self.cleaned_data.get('old_password') == self.cleaned_data.get('new_password2'):
-            raise forms.ValidationError(_("Old and new passwords are equal."))
-        return self.cleaned_data
 
 
 class AvatarForm(forms.ModelForm):

@@ -18,7 +18,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.userprofile.forms import PassChangeForm, LoginForm
+from nnmware.apps.userprofile.forms import PassChangeForm, LoginForm, EmailQuickRegisterForm
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
