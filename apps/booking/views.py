@@ -4,7 +4,7 @@ from datetime import date, timedelta, datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.http import Http404, get_host, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie

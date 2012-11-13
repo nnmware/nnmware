@@ -12,6 +12,7 @@ from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
+from nnmware.core.utils import send_template_mail
 
 class BasketError(Exception):
     pass
@@ -267,16 +268,20 @@ def push_feedback(request):
     return AjaxLazyAnswer(payload)
 
 def push_answer(request,object_id):
-    if 1>0:#try:
-        msg = Feedback.objects.get(pk=int(object_id))
-        msg.answer = request.POST.get('answer')
-        msg.save()
-        payload = {'success': True, 'location': msg.get_absolute_url()}
-#    except :
-#        payload = {'success': False}
+    try:
+        f = Feedback.objects.get(pk=int(object_id))
+        f.answer = request.POST.get('answer')
+#        recipients = [f.email]
+        recipients = ['tech@rusbooking.com']
+        mail_dict = {'feedback': f}
+        subject = 'crm/feedback_answer_subject.txt'
+        body = 'crm/feedback_answer_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+        f.save()
+        payload = {'success': True, 'location': f.get_absolute_url()}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
-
-
 
 def delete_product(request, object_id):
     # Link used when User delete the product
