@@ -282,7 +282,6 @@ class Feedback(MetaIP):
     def __unicode__(self):
         return "%s - %s" % (self.name, self.created_date)
 
-    @property
     def get_absolute_url(self):
         return reverse('feedback_detail', args=[self.pk])
 

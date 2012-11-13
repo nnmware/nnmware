@@ -271,7 +271,7 @@ def push_answer(request,object_id):
         msg = Feedback.objects.get(pk=int(object_id))
         msg.answer = request.POST.get('answer')
         msg.save()
-        payload = {'success': True, 'location': msg.get_absolute_url}
+        payload = {'success': True, 'location': msg.get_absolute_url()}
 #    except :
 #        payload = {'success': False}
     return AjaxLazyAnswer(payload)
