@@ -13,6 +13,7 @@ from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
 from nnmware.core.utils import send_template_mail
+import settings
 
 class BasketError(Exception):
     pass
@@ -241,6 +242,11 @@ def new_order(request):
             item.product.quantity -= item.quantity
             item.product.save()
         basket.delete()
+        recipients = [settings.SHOP_MANAGER]
+        mail_dict = {'order': order}
+        subject = 'emails/neworder_admin_subject.txt'
+        body = 'emails/neworder_admin_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
         payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
     except AccessError:
         payload = {'success': False}
