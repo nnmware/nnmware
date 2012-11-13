@@ -268,19 +268,18 @@ def push_feedback(request):
     return AjaxLazyAnswer(payload)
 
 def push_answer(request,object_id):
-    if 1>0: #try:
+    try:
         f = Feedback.objects.get(pk=int(object_id))
         f.answer = request.POST.get('answer')
-#        recipients = [f.email]
-        recipients = ['tech@rusbooking.com']
+        recipients = [f.email]
         mail_dict = {'feedback': f}
         subject = 'emails/feedback_answer_subject.txt'
         body = 'emails/feedback_answer_body.txt'
         send_template_mail(subject,body,mail_dict,recipients)
         f.save()
         payload = {'success': True, 'location': f.get_absolute_url()}
-#    except :
-#        payload = {'success': False}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 def delete_product(request, object_id):
