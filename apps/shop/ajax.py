@@ -274,8 +274,8 @@ def push_answer(request,object_id):
 #        recipients = [f.email]
         recipients = ['tech@rusbooking.com']
         mail_dict = {'feedback': f}
-        subject = 'crm/feedback_answer_subject.txt'
-        body = 'crm/feedback_answer_body.txt'
+        subject = 'emails/feedback_answer_subject.txt'
+        body = 'emails/feedback_answer_body.txt'
         send_template_mail(subject,body,mail_dict,recipients)
         f.save()
         payload = {'success': True, 'location': f.get_absolute_url()}
