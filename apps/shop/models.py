@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.address.models import Country, City, Region, MetaLocation
+from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent
 from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP
@@ -224,7 +224,7 @@ class OrderItem(MoneyBase):
         return self.quantity*self.amount
 
 
-class DeliveryAddress(MetaLocation):
+class DeliveryAddress(AbstractLocation):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
     first_name = std_text_field(_('First Name'))

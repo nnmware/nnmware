@@ -195,7 +195,7 @@ class StationMetro(Address, MetaGeo):
     def __unicode__(self):
         return u"%s :: %s" % (self.name, self.city)
 
-class MetaLocation(models.Model):
+class AbstractLocation(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
     stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
