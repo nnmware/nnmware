@@ -8,9 +8,9 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.models import Tag, Follow, JComment
-from nnmware.core.abstract import MetaDate
+from nnmware.core.abstract import AbstractDate
 
-class Video(MetaDate):
+class Video(AbstractDate):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)

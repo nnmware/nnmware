@@ -1,14 +1,14 @@
 from django.contrib import admin
-from nnmware.core.admin import TreeAdmin, MetaDataAdmin
+from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
 
 from nnmware.apps.topic.models import Topic, Category
 from copy import deepcopy
 
-topic_fieldsets = deepcopy(MetaDataAdmin.fieldsets)
+topic_fieldsets = deepcopy(AbstractDataAdmin.fieldsets)
 topic_fieldsets[0][1]["fields"].append(("category"), )
 
 
-class TopicAdmin(MetaDataAdmin):
+class TopicAdmin(AbstractDataAdmin):
     """
     Admin class for topics.
     """

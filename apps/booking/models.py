@@ -14,7 +14,7 @@ from nnmware.apps.address.models import MetaGeo
 from nnmware.core.models import Pic
 from nnmware.apps.money.models import MoneyBase
 from nnmware.apps.address.models import Tourism
-from nnmware.core.abstract import MetaIP, MetaName
+from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
 
 class HotelPoints(models.Model):
@@ -28,7 +28,7 @@ class HotelPoints(models.Model):
         abstract = True
 
 
-class HotelOptionCategory(MetaName):
+class HotelOptionCategory(AbstractName):
     icon = models.ImageField(upload_to="ico/", blank=True, null=True)
 
     class Meta:
@@ -36,7 +36,7 @@ class HotelOptionCategory(MetaName):
         verbose_name_plural = _("Hotel Option Categories")
         ordering = ['order_in_list',]
 
-class HotelOption(MetaName):
+class HotelOption(AbstractName):
     category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
     sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False)
@@ -52,7 +52,7 @@ class HotelOption(MetaName):
         else:
             return _("%(name)s") % { 'name': self.name}
 
-class PaymentMethod(MetaName):
+class PaymentMethod(AbstractName):
     use_card = models.BooleanField(verbose_name=_("Use credit card?"), default=False)
 
     class Meta:
@@ -119,7 +119,7 @@ TYPEFOOD = (
     (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
     )
 
-class Hotel(MetaName, MetaGeo, HotelPoints):
+class Hotel(AbstractName, MetaGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
@@ -283,13 +283,13 @@ class Hotel(MetaName, MetaGeo, HotelPoints):
         users_id = Booking.objects.filter(hotel=self).values_list('user',flat=True)
         return users_id
 
-class RoomOptionCategory(MetaName):
+class RoomOptionCategory(AbstractName):
 
     class Meta:
         verbose_name = _("Room Option Category")
         verbose_name_plural = _("Room Option Categories")
 
-class RoomOption(MetaName):
+class RoomOption(AbstractName):
     category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
 
@@ -329,7 +329,7 @@ PLACES_CHOICES = (
     )
 
 
-class Room(MetaName):
+class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
@@ -469,7 +469,7 @@ STATUS_CHOICES = (
     (STATUS_COMPLETED, _("Completed")),
     )
 
-class Booking(MoneyBase, MetaIP):
+class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     system_id = models.IntegerField(_("ID in system"), default=0)
@@ -551,7 +551,7 @@ class AgentPercent(models.Model):
                  'percent':self.percent }
 
 
-class Review(MetaIP, HotelPoints):
+class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
@@ -620,7 +620,7 @@ class PlacePrice(MoneyBase):
                }
 
 
-class RequestAddHotel(MetaIP):
+class RequestAddHotel(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     register_date = models.DateTimeField(_("Register date"), default=datetime.now)
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)

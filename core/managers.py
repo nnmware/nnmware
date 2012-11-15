@@ -6,7 +6,7 @@ from django.db.models import Manager
 from django.db.models import Q
 
 
-class MetaLinkManager(Manager):
+class AbstractLinkManager(Manager):
 
     def metalinks_for_object(self, obj):
         object_type = ContentType.objects.get_for_model(obj)

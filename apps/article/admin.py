@@ -1,15 +1,15 @@
 from django.contrib import admin
-from nnmware.core.admin import TreeAdmin, MetaDataAdmin
+from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
 
 from nnmware.apps.article.models import Article, Category
 from copy import deepcopy
 
-articlepost_fieldsets = deepcopy(MetaDataAdmin.fieldsets)
+articlepost_fieldsets = deepcopy(AbstractDataAdmin.fieldsets)
 articlepost_fieldsets[0][1]["fields"].append(("category"), )
 articlepost_fieldsets[0][1]["fields"].append("content")
 
 
-class ArticleAdmin(MetaDataAdmin):
+class ArticleAdmin(AbstractDataAdmin):
     """
      Admin class for blog posts.
      """

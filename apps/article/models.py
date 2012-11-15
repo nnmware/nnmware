@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.fields import RichTextField
-from nnmware.core.abstract import Tree, MetaData
+from nnmware.core.abstract import Tree, AbstractData
 
 
 class Category(Tree):
@@ -13,7 +13,7 @@ class Category(Tree):
         verbose_name_plural = _('ArticleCategories')
 
 
-class Article(MetaData):
+class Article(AbstractData):
     category = models.ForeignKey(Category, verbose_name=_('Category'), null=True, blank=True)
     content = RichTextField(_('Content'))
 

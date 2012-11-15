@@ -40,7 +40,7 @@ class TreeAdmin(admin.ModelAdmin):
         )
 
 
-class MetaDataAdmin(admin.ModelAdmin):
+class AbstractDataAdmin(admin.ModelAdmin):
     """
      Admin class for subclasses of the abstract ``Displayable`` model.
      """
@@ -64,14 +64,14 @@ class MetaDataAdmin(admin.ModelAdmin):
         obj = form.save(commit=False)
         if obj.user is None:
             obj.user = request.user
-        return super(MetaDataAdmin, self).save_form(request, form, change)
+        return super(AbstractDataAdmin, self).save_form(request, form, change)
 
     def queryset(self, request):
         """
           Filter the change list by currently logged in user if not a
           superuser.
           """
-        qs = super(MetaDataAdmin, self).queryset(request)
+        qs = super(AbstractDataAdmin, self).queryset(request)
         if request.user.is_superuser:
             return qs
         return qs.filter(user__id=request.user.id)

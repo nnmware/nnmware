@@ -14,7 +14,7 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.core.managers import MetaLinkManager
+from nnmware.core.managers import AbstractLinkManager
 from nnmware.core.fields import std_text_field, std_url_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
@@ -42,18 +42,18 @@ class Color(models.Model):
     def __unicode__(self):
         return self.name
 
-class MetaContent(models.Model):
+class AbstractContent(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
-    objects = MetaLinkManager()
+    objects = AbstractLinkManager()
 
     class Meta:
         abstract = True
 
 
-class MetaDate(models.Model):
+class AbstractDate(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
 
@@ -100,7 +100,7 @@ STATUS_CHOICES = (
     (STATUS_MODERATION, _("Moderation")),
     )
 
-class MetaData(MetaDate):
+class AbstractData(AbstractDate):
     """
     Abstract model that provides meta data for content.
     """
@@ -118,8 +118,8 @@ class MetaData(MetaDate):
     pics = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        verbose_name = _("MetaData")
-        verbose_name_plural = _("MetaDatas")
+        verbose_name = _("AbstractData")
+        verbose_name_plural = _("AbstractDatas")
         ordering = ("-created_date",)
         abstract = True
 
@@ -144,9 +144,9 @@ class MetaData(MetaDate):
         self.updated_date = datetime.now()
         if not self.slug:
             if not self.id:
-                super(MetaData, self).save(*args, **kwargs)
+                super(AbstractData, self).save(*args, **kwargs)
             self.slug = self.id
-        super(MetaData, self).save(*args, **kwargs)
+        super(AbstractData, self).save(*args, **kwargs)
 
     def description_from_content(self):
         """
@@ -196,7 +196,7 @@ class MetaData(MetaDate):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
-class MetaName(models.Model):
+class AbstractName(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
@@ -250,14 +250,14 @@ class MetaName(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.id:
-                super(MetaName, self).save(*args, **kwargs)
+                super(AbstractName, self).save(*args, **kwargs)
             self.slug = self.id
         else:
             self.slug = str(self.slug).strip().replace(' ','-')
-        super(MetaName, self).save(*args, **kwargs)
+        super(AbstractName, self).save(*args, **kwargs)
 
 
-class Tree(MetaName):
+class Tree(AbstractName):
     """
     Main nodes tree
     """
@@ -359,7 +359,7 @@ class Tree(MetaName):
         flat_list = self._flatten(children_list[ix:])
         return flat_list
 
-class MetaLink(models.Model):
+class AbstractLink(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
@@ -369,7 +369,7 @@ class MetaLink(models.Model):
     class Meta:
         abstract = True
 
-    objects = MetaLinkManager()
+    objects = AbstractLinkManager()
 
     def get_content_object(self):
         """
@@ -399,7 +399,7 @@ DOC_TYPE = (
     )
 
 
-class MetaFile(MetaDate):
+class AbstractFile(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(class)s_user")
     description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
@@ -409,7 +409,7 @@ class MetaFile(MetaDate):
     class Meta:
         abstract = True
 
-class MetaIP(models.Model):
+class AbstractIP(models.Model):
     ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
     user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
 

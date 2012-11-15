@@ -7,8 +7,8 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, MetaLocation
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import Tree, MetaName, MetaContent
-from nnmware.core.abstract import MetaDate, Color, Unit, Parameter, MetaIP
+from nnmware.core.abstract import Tree, AbstractName, AbstractContent
+from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
 
@@ -50,7 +50,7 @@ class CargoService(Vendor):
         verbose_name = _("Cargo Service")
         verbose_name_plural = _("Cargo Services")
 
-class Product(MetaName, MoneyBase, MetaDate):
+class Product(AbstractName, MoneyBase, AbstractDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
         on_delete=models.SET_NULL)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
@@ -103,7 +103,7 @@ class ProductParameter(Parameter):
         verbose_name = _("Product parameter")
         verbose_name_plural = _("Product parameters")
 
-class ProductParameterValue(MetaContent):
+class ProductParameterValue(AbstractContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = std_text_field(_('Value of parameter'))
     order_in_list = models.IntegerField(_('Order in list'), default=0)
@@ -120,7 +120,7 @@ class ProductParameterValue(MetaContent):
             return "%s: %s" % (self.parameter.name, self.value)
 
 
-class Basket(MetaDate):
+class Basket(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
@@ -158,7 +158,7 @@ STATUS_ORDER = (
         (STATUS_SHIPPING, _('Shipping')),
         )
 
-class Order(MetaDate):
+class Order(AbstractDate):
     """
     Definition of orders.
     """
@@ -267,7 +267,7 @@ class DeliveryAddress(MetaLocation):
             result += _(', skype-') + self.skype
         return result
 
-class Feedback(MetaIP):
+class Feedback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     email = models.CharField(max_length=255, verbose_name=_('Email'))

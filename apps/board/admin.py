@@ -1,16 +1,16 @@
 from django.contrib import admin
 from nnmware.apps.board.models import Board, Category
-from nnmware.core.admin import TreeAdmin, MetaDataAdmin
+from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
 from nnmware.core.fields import ImageWithThumbnailField
 from nnmware.core.widgets import AdminImageWithThumbnailWidget
 
 from copy import deepcopy
 
-board_fieldsets = deepcopy(MetaDataAdmin.fieldsets)
+board_fieldsets = deepcopy(AbstractDataAdmin.fieldsets)
 board_fieldsets[0][1]["fields"].append(("category"), )
 
 
-class BoardAdmin(MetaDataAdmin):
+class BoardAdmin(AbstractDataAdmin):
     """
     Admin class for boards.
     """

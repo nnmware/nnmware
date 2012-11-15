@@ -16,13 +16,13 @@ from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.core.abstract import MetaDate
-from nnmware.core.managers import MetaLinkManager, JCommentManager, PublicJCommentManager, \
+from nnmware.core.abstract import AbstractDate
+from nnmware.core.managers import AbstractLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
-from nnmware.core.abstract import MetaLink, MetaFile
-from nnmware.core.abstract import DOC_TYPE, DOC_FILE, MetaIP, STATUS_PUBLISHED, STATUS_CHOICES
+from nnmware.core.abstract import AbstractLink, AbstractFile
+from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
 
 
 class Tag(models.Model):
@@ -64,7 +64,7 @@ class Tag(models.Model):
 
 
 
-class Doc(MetaLink, MetaFile):
+class Doc(AbstractLink, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
     file = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
 
@@ -73,7 +73,7 @@ class Doc(MetaLink, MetaFile):
         verbose_name = _("Doc")
         verbose_name_plural = _("Docs")
 
-    objects = MetaLinkManager()
+    objects = AbstractLinkManager()
 
     def save(self, *args, **kwargs):
         try:
@@ -106,11 +106,11 @@ class Doc(MetaLink, MetaFile):
         return reverse("doc_edit", self.id)
 
 
-class Pic(MetaLink, MetaFile):
+class Pic(AbstractLink, AbstractFile):
     pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
 
-    objects = MetaLinkManager()
+    objects = AbstractLinkManager()
 
     class Meta:
         ordering = ['created_date', ]
@@ -188,7 +188,7 @@ class Pic(MetaLink, MetaFile):
         return reverse("pic_editor", self.pk)
 
 
-class JComment(MetaLink, MetaIP, MetaDate):
+class JComment(AbstractLink, AbstractIP, AbstractDate):
     """
     A threaded comment which must be associated with an instance of
     ``django.contrib.auth.models.User``.  It is given its hierarchy by
@@ -285,7 +285,7 @@ NOTICE_CHOICES = (
     )
 
 
-class Notice(MetaLink, MetaIP):
+class Notice(AbstractLink, AbstractIP):
     """
     User notification model
     """
@@ -301,7 +301,7 @@ class Notice(MetaLink, MetaIP):
         verbose_name = _("Notice")
         verbose_name_plural = _("Notices")
 
-class Message(MetaIP):
+class Message(AbstractIP):
     """
     A private message from user to user
     """
@@ -367,7 +367,7 @@ ACTION_CHOICES = (
     (ACTION_LIKED, _("Liked")),
     )
 
-class Action(MetaLink,MetaIP):
+class Action(AbstractLink,AbstractIP):
     """
     Model Activity of User
     """

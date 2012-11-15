@@ -6,9 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.fields import std_text_field
 from nnmware.core.maps import Geocoder
-from nnmware.core.abstract import MetaName
+from nnmware.core.abstract import AbstractName
 
-class Address(MetaName):
+class Address(AbstractName):
     name_add = models.CharField(max_length=100, blank=True)
     name_add_en = models.CharField(max_length=100, blank=True)
     objects = models.Manager()
@@ -153,7 +153,7 @@ class MetaGeo(models.Model):
 
 
 
-class TourismCategory(MetaName):
+class TourismCategory(AbstractName):
     icon = models.ImageField(upload_to="ico/", blank=True, null=True)
 
     class Meta:

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import signals
 from django.utils.translation import ugettext_lazy as _
 from django.core.cache import cache
-from nnmware.core.abstract import Tree, MetaData
+from nnmware.core.abstract import Tree, AbstractData
 
 
 class Category(Tree):
@@ -16,7 +16,7 @@ class Category(Tree):
         verbose_name_plural = _("TopicCategories")
 
 
-class Topic(MetaData):
+class Topic(AbstractData):
     category = models.ForeignKey(Category, verbose_name=_("Category"),
         null=True, blank=True, related_name="topic_category")
 
