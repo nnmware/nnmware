@@ -416,7 +416,7 @@ class AbstractIP(models.Model):
     class Meta:
         abstract = True
 
-class MetaContact(models.Model):
+class AbstractContact(models.Model):
     mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, null=True)
     mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, null=True)
     landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, null=True)
