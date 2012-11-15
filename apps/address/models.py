@@ -113,7 +113,7 @@ class City(Address):
 
 
 
-class MetaGeo(models.Model):
+class AbstractGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
     city = models.ForeignKey(City, verbose_name=_('City'))
@@ -145,7 +145,7 @@ class MetaGeo(models.Model):
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
             self.fill_osm_data()
-        super(MetaGeo, self).save(*args, **kwargs)
+        super(AbstractGeo, self).save(*args, **kwargs)
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
@@ -162,7 +162,7 @@ class TourismCategory(AbstractName):
         ordering = ['order_in_list',]
 
 
-class Tourism(Address, MetaGeo):
+class Tourism(Address, AbstractGeo):
     category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'))
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
 
@@ -184,7 +184,7 @@ class Tourism(Address, MetaGeo):
                 self.slug = self.pk
         super(Tourism, self).save(*args, **kwargs)
 
-class StationMetro(Address, MetaGeo):
+class StationMetro(Address, AbstractGeo):
     country = models.ForeignKey(Country, verbose_name=_('Country'))
 
     class Meta:

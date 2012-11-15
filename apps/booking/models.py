@@ -10,7 +10,7 @@ from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.apps.address.models import MetaGeo
+from nnmware.apps.address.models import AbstractGeo
 from nnmware.core.models import Pic
 from nnmware.apps.money.models import MoneyBase
 from nnmware.apps.address.models import Tourism
@@ -119,7 +119,7 @@ TYPEFOOD = (
     (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
     )
 
-class Hotel(AbstractName, MetaGeo, HotelPoints):
+class Hotel(AbstractName, AbstractGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
