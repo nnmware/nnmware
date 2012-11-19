@@ -26,6 +26,7 @@ from nnmware.core.imgutil import remove_thumbnails
 from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action
 from nnmware.core.forms import *
 from nnmware.core.abstract import STATUS_DELETE
+from nnmware.core.utils import send_template_mail
 
 
 class UserPathMixin(object):
@@ -564,8 +565,17 @@ class ChangePasswordView(AjaxFormMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        self.request.user.set_password(form.cleaned_data.get('new_password2'))
+        new_pw =form.cleaned_data.get('new_password2')
+        self.request.user.set_password(new_pw)
         self.request.user.save()
+        try:
+            recipients = [self.request.user.email]
+            mail_dict = {'new_pw': new_pw}
+            subject = 'emails/changepass_client_subject.txt'
+            body = 'emails/changepass_client_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
         return super(ChangePasswordView, self).form_valid(form)
 
 class LoginView(AjaxFormMixin, FormView):
@@ -596,4 +606,12 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         user = authenticate(username=username, password=password)
         self.user = user
         login(self.request, user)
+        try:
+            recipients = [email]
+            mail_dict = {'name': email, 'pw':password}
+            subject = 'emails/welcome_subject.txt'
+            body = 'emails/welcome_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
         return super(EmailQuickRegisterView, self).form_valid(form)

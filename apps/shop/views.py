@@ -11,12 +11,13 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
-from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue
+from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue, STATUS_PROCESS, STATUS_SENT
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
 from nnmware.core.templatetags.core import basket, _get_basket
+from nnmware.core.utils import send_template_mail
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
 
@@ -183,6 +184,24 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
 
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        try:
+            recipients = [self.request.user.email]
+            mail_dict = {'order': self.object}
+            if self.object.status == STATUS_PROCESS:
+                subject = 'emails/status_process_subject.txt'
+                body = 'emails/status_process_body.txt'
+            if self.object.status == STATUS_SENT:
+                subject = 'emails/status_sent_subject.txt'
+                body = 'emails/status_sent_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
+        return super(OrderStatusChange, self).form_valid(form)
+
 
 class OrderTrackingChange(CurrentUserSuperuser, UpdateView):
     model = Order

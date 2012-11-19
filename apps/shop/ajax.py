@@ -247,6 +247,14 @@ def new_order(request):
         subject = 'emails/neworder_admin_subject.txt'
         body = 'emails/neworder_admin_body.txt'
         send_template_mail(subject,body,mail_dict,recipients)
+        try:
+            recipients = [request.user.email]
+            mail_dict = {'order': order}
+            subject = 'emails/neworder_client_subject.txt'
+            body = 'emails/neworder_client_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
         payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
     except AccessError:
         payload = {'success': False}
