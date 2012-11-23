@@ -12,6 +12,15 @@ from contextlib import closing
 import httplib
 import json
 
+OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
+def osm_geocoder(q):
+    params = { 'q': q.encode('utf-8') }
+    url = OSM_URL % urllib.urlencode(params)
+    try:
+        return json.loads(urllib2.urlopen(url).read())
+    except:
+        return None
+
 class Geocoder(object):
     base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
 
