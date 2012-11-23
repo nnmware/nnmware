@@ -103,15 +103,11 @@ class City(Address):
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
-        try:
-            client = Geocoder()
-            response = client.geocode(self.geoaddress())[0]
+        client = Geocoder()
+        response = client.geocode(self.geoaddress())[0]
+        if response is not None:
             self.longitude = response['lon']
             self.latitude = response['lat']
-        except :
-            pass
-
-
 
 class AbstractGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
@@ -134,13 +130,11 @@ class AbstractGeo(models.Model):
         return u"%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        try:
-            client = Geocoder()
-            response = client.geocode(self.geoaddress())[0]
+        client = Geocoder()
+        response = client.geocode(self.geoaddress())[0]
+        if response is not None:
             self.longitude = response['lon']
             self.latitude = response['lat']
-        except :
-            pass
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
