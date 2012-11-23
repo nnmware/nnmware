@@ -82,6 +82,8 @@ class City(Address):
         verbose_name_plural = _("Cities")
 
     def fulladdress(self):
+        if self.country:
+            return "%s, %s" % self.name, self.country.name
         return self.name
 
     def get_absolute_url(self):
