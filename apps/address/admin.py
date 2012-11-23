@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('name','region','country','slug')
+    list_display = ('name','region','country','slug','lat','lon')
     search_fields = ('name',)
     fieldsets = (
         (_("City"), {"fields": [("name","slug"),
