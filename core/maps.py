@@ -33,7 +33,7 @@ def osm_geocoder(q):
 #    return json.loads(raw)
     socket.setdefaulttimeout(10)
     try:
-        response = urllib2.urlopen(req,timeout=10)
+        response = urllib2.urlopen(url,timeout=10)
     except urllib2.HTTPError, e:
         data = e.read()
     else:
