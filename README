@@ -44,6 +44,7 @@ support@nnmware.com
 required django-current, python-oauth2, south, unidecode, xlwt
 reccomended django-grappelli
 
+
 Working with OpenStreetMap and his geotargeting.
 
 Great thanks Python, Django, Linux and all OpenSource community.

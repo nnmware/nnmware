@@ -18,12 +18,10 @@ def osm_geocoder(q):
     url = OSM_URL % urllib.urlencode(params)
 
     proxy_support = urllib2.ProxyHandler({})
-    opener = self._urllib.build_opener(proxy_support)
+    opener = urllib2.build_opener(proxy_support)
     response = opener.open(url)
     raw = response.read()
     return json.loads(raw)
-
-
 
 #    try:
 #    return json.loads(urllib2.urlopen(url).read())
