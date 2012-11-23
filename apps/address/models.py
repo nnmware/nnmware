@@ -5,7 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.fields import std_text_field
-from nnmware.core.maps import Geocoder
+from nnmware.core.maps import Geocoder, osm_geocoder
 from nnmware.core.abstract import AbstractName
 
 class Address(AbstractName):
@@ -103,8 +103,9 @@ class City(Address):
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
-        client = Geocoder()
-        response = client.geocode(self.geoaddress())[0]
+        response = osm_geocoder(self.geoaddress())[0]
+#        client = Geocoder()
+#        response = client.geocode(self.geoaddress())[0]
         if response is not None:
             self.longitude = response['lon']
             self.latitude = response['lat']
