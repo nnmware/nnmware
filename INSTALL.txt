@@ -13,4 +13,5 @@ cd /usr/src/nnmware
 locate you browser at http://localhost:8080/admin/ ,
 login and enjoy.
 
+
 you may disable django-grappelli in settings.py
