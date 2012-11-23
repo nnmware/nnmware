@@ -101,7 +101,7 @@ class City(Address):
             if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         if not self.latitude and not self.longitude:
-            self.fill_osm_data()
+            pass #self.fill_osm_data()
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
