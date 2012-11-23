@@ -19,7 +19,13 @@ def osm_geocoder(q):
 
     proxy_support = urllib2.ProxyHandler({})
     opener = urllib2.build_opener(proxy_support)
-    response = opener.open(url)
+#    response = opener.open(url)
+    try:
+        response = opener.open(url)
+    except urllib2.HTTPError, e:
+        print 'Error code: ', e.code
+        print e.read()
+
     raw = response.read()
     return json.loads(raw)
 
