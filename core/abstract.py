@@ -417,13 +417,13 @@ class AbstractIP(models.Model):
         abstract = True
 
 class AbstractContact(models.Model):
-    mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, null=True)
-    mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, null=True)
-    landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, null=True)
-    landline_work = models.CharField(max_length=12, verbose_name=_(u'Work landline phone'), blank=True, null=True)
-    icq = models.CharField(max_length=30, verbose_name=_(u'ICQ'), blank=True, null=True)
-    skype = models.CharField(max_length=50, verbose_name=_(u'Skype'), blank=True, null=True)
-    jabber = models.CharField(max_length=50, verbose_name=_(u'Jabber'), blank=True, null=True)
+    mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, default='')
+    mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, default='')
+    landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, default='')
+    landline_work = models.CharField(max_length=12, verbose_name=_(u'Work landline phone'), blank=True, default='')
+    icq = models.CharField(max_length=30, verbose_name=_(u'ICQ'), blank=True, default='')
+    skype = models.CharField(max_length=50, verbose_name=_(u'Skype'), blank=True, default='')
+    jabber = models.CharField(max_length=50, verbose_name=_(u'Jabber'), blank=True, default='')
     publicmail = models.EmailField(_('Public email'), blank=True, null=True)
     privatemail = models.EmailField(_('Private email'), blank=True, null=True)
     website = std_url_field(_(u'Website'))
