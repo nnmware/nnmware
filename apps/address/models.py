@@ -104,8 +104,6 @@ class City(Address):
 
     def fill_osm_data(self):
         response = osm_geocoder(self.geoaddress())[0]
-#        client = Geocoder()
-#        response = client.geocode(self.geoaddress())[0]
         if response is not None:
             self.longitude = response['lon']
             self.latitude = response['lat']

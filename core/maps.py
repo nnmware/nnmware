@@ -17,29 +17,13 @@ OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addre
 def osm_geocoder(q):
     params = { 'q': q.encode('utf-8') }
     url = OSM_URL % urllib.urlencode(params)
-
-#    proxy_support = urllib2.ProxyHandler({})
-#    opener = urllib2.build_opener(proxy_support)
-##    response = opener.open(url)
-#
-#    raise url
-#    try:
-#        response = opener.open(url)
-#    except urllib2.HTTPError, e:
-#        print 'Error code: ', e.code
-#        print e.read()
-#
-#    raw = response.read()
-#    return json.loads(raw)
     socket.setdefaulttimeout(10)
     try:
         response = urllib2.urlopen(url,timeout=10)
-    except urllib2.HTTPError, e:
-        data = e.read()
+    except:
+        return []
     else:
-        date = response.read()
-    if data is None:
-        return None
+        data = response.read()
     try:
         return json.loads(data)
     except:
