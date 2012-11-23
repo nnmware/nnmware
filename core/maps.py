@@ -20,12 +20,12 @@ class Geocoder(object):
         params = { 'q': q.encode('utf-8') }
 
         url = self.base_url % urllib.urlencode(params)
-        try:
+        if 1>0: #try:
             data = urllib2.urlopen(url)
             response = data.read()
             return self.parse_json(response)
-        except :
-            return None
+#        except :
+#            return None
 
     def parse_json(self, data):
         try:
