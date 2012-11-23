@@ -16,9 +16,9 @@ OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addre
 def osm_geocoder(q):
     params = { 'q': q.encode('utf-8') }
     url = OSM_URL % urllib.urlencode(params)
-    raise url
+
 #    try:
-    return json.loads(urllib2.urlopen(url).read())
+    return json.loads(urllib.urlopen(url).read())
 #    except:
 #        return None
 
