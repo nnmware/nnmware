@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
@@ -16,7 +16,7 @@ class RegistrationForm(UserCreationForm):
     """
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = get_user_model()
         fields = ('username', 'email')
 
     def __init__(self, *args, **kwargs):
@@ -61,7 +61,7 @@ class SignupForm(UserCreationForm):
     """
 #    email = forms.EmailField(label='Email address', max_length=75)
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = get_user_model()
         fields = ('username', 'email')
 
     def clean_username(self):
@@ -69,7 +69,7 @@ class SignupForm(UserCreationForm):
         if not username:
             raise forms.ValidationError(_("USERNAME IS REQUIRED"))
         try:
-            settings.AUTH_USER_MODEL.objects.get(username=username)
+            get_user_model().objects.get(username=username)
             raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
         except:
             return username
@@ -84,9 +84,9 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
 
         try:
-            settings.AUTH_USER_MODEL.objects.get(email=email)
+            get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
-        except settings.AUTH_USER_MODEL.DoesNotExist:
+        except get_user_model().DoesNotExist:
             try:
                 EmailValidation.objects.get(email=email)
                 raise forms.ValidationError(_("THAT E-MAIL IS ALREADY CONFIRMED"))
@@ -154,7 +154,7 @@ class EmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if not (settings.AUTH_USER_MODEL.objects.filter(email=email) or
+        if not (get_user_model().objects.filter(email=email) or
                 EmailValidation.objects.filter(email=email)):
             return email
 
@@ -169,7 +169,7 @@ class ResendEmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if settings.AUTH_USER_MODEL.objects.filter(email=email) or \
+        if get_user_model().objects.filter(email=email) or \
            EmailValidation.objects.filter(email=email):
             return email
 
@@ -228,5 +228,5 @@ class EditForm(forms.ModelForm):
     """Form for editing user userprofile"""
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = get_user_model()
         fields = ('first_name', 'last_name', 'email')
