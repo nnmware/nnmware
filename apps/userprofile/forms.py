@@ -59,7 +59,6 @@ class SignupForm(UserCreationForm):
     """
     Form for registering a new user userprofile.
     """
-#    email = forms.EmailField(label='Email address', max_length=75)
     class Meta:
         model = get_user_model()
         fields = ('username', 'email')
@@ -71,7 +70,7 @@ class SignupForm(UserCreationForm):
         try:
             get_user_model().objects.get(username=username)
             raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
-        except:
+        except :
             return username
 
     def clean_email(self):
