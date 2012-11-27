@@ -239,9 +239,9 @@ class UserSettingsForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = (
-            'fullname', 'publicmail', 'location', 'website',
-            'facebook','googleplus','twitter', 'about', 'oldpassword', 'newpassword', 'subscribe')
+        fields = ('oldpassword', 'newpassword')
+#            'fullname', 'publicmail', 'location', 'website',
+#            'facebook','googleplus','twitter', 'about', 'oldpassword', 'newpassword', 'subscribe')
 
 class RegistrationForm(UserCreationForm):
     """
