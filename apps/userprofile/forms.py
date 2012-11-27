@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.fields import ReCaptchaField
 
 from nnmware.apps.userprofile.models import Profile
-from nnmware.core.models import import EmailValidation
+from nnmware.core.models import EmailValidation
 
 
 class RegistrationForm(UserCreationForm):
