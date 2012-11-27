@@ -136,11 +136,11 @@ class Profile(models.Model):
         super(Profile, self).save(*args, **kwargs)
 
 
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-post_save.connect(create_user_profile, sender=get_user_model())
+#def create_user_profile(sender, instance, created, **kwargs):
+#    if created:
+#        Profile.objects.create(user=instance)
+#
+#post_save.connect(create_user_profile, sender=get_user_model())
 
 class EmailValidationManager(models.Manager):
     """

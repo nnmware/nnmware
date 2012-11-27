@@ -724,7 +724,6 @@ class ReportView(CurrentUserSuperuser, ListView):
 
 
 class UserCabinet(CurrentUserCabinetAccess, UpdateView):
-    model = Profile
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
@@ -735,7 +734,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
 
     def get_object(self, queryset=None):
         user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
-        return user.get_profile()
+        return user
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

@@ -3,11 +3,11 @@
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import AdminTimeWidget
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
-from nnmware.apps.userprofile.models import Profile
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.utils import convert_to_date
 
@@ -81,7 +81,7 @@ class UserCabinetInfoForm(forms.ModelForm):
     password = forms.CharField(label=_(u'New Password'), max_length=30, required=False)
 
     class Meta:
-        model = Profile
+        model = get_user_model()
         fields = (
             'fullname', 'publicmail', 'password', 'subscribe')
 
