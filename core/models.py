@@ -7,13 +7,17 @@ from StringIO import StringIO
 from datetime import datetime
 import os
 import Image
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.db import models
 from django.db.models import permalink, signals, Manager
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
+from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from nnmware.core.abstract import AbstractDate
@@ -442,3 +446,98 @@ class VisitorHit(models.Model):
         ordering = ['-date']
         verbose_name = _("Visitor hit")
         verbose_name_plural = _("Visitors hits")
+
+
+class EmailValidationManager(models.Manager):
+    """
+    Email validation manager
+    """
+
+    def verify(self, key):
+        try:
+            verify = self.get(key=key)
+            if not verify.is_expired():
+                verify.user.email = verify.email
+                verify.user.is_active = True
+                verify.user.save()
+                verify.delete()
+                return True
+            else:
+                verify.delete()
+                return False
+        except:
+            return False
+
+    def getuser(self, key):
+        try:
+            return self.get(key=key).user
+        except:
+            return False
+
+    def add(self, user, email):
+        """
+        Add a new validation process entry
+        """
+        while True:
+            key = get_user_model().objects.make_random_password(70)
+            try:
+                EmailValidation.objects.get(key=key)
+            except EmailValidation.DoesNotExist:
+                self.key = key
+                break
+
+        if settings.REQUIRE_EMAIL_CONFIRMATION:
+            template_body = "userprofile/email/validation.txt"
+            template_subject = "userprofile/email/validation_subject.txt"
+            site_name, domain = Site.objects.get_current().name,\
+                                Site.objects.get_current().domain
+            body = loader.get_template(template_body).render(Context(locals()))
+            subject = loader.get_template(template_subject)
+            subject = subject.render(Context(locals())).strip()
+            send_mail(subject=subject, message=body, from_email=None,
+                recipient_list=[email])
+            user = get_user_model().objects.get(username=str(user))
+            self.filter(user=user).delete()
+        return self.create(user=user, key=key, email=email)
+
+
+class EmailValidation(models.Model):
+    """
+    Email Validation model
+    """
+    username = models.CharField(max_length=30, unique=True)
+    email = models.EmailField(verbose_name=_('E-mail'))
+    password = models.CharField(max_length=30)
+    key = models.CharField(max_length=70, unique=True, db_index=True)
+    created = models.DateTimeField(auto_now_add=True)
+    objects = EmailValidationManager()
+
+    class Meta:
+        ordering = ['username', 'created']
+        verbose_name = _("Email Validation")
+        verbose_name_plural = _("Email Validations")
+
+    def __unicode__(self):
+        return _("Email validation process for %(user)s") % {'user': self.username}
+
+    def is_expired(self):
+        return (datetime.datetime.today() - self.created).days > 7
+
+    def resend(self):
+        """
+        Resend validation email
+        """
+        template_body = "userprofile/email/validation.txt"
+        template_subject = "userprofile/email/validation_subject.txt"
+        site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
+        key = self.key
+        body = loader.get_template(template_body).render(Context(locals()))
+        subject = loader.get_template(template_subject)
+        subject = subject.render(Context(locals())).strip()
+        try:
+            send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
+        except:
+            pass
+        self.created = datetime.datetime.now()
+        self.save()
+        return True

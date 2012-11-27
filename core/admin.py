@@ -2,10 +2,9 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from django.forms.fields import ChoiceField
-from django.forms.models import ModelForm, ModelChoiceField
 from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit
 from django.utils.translation import ugettext_lazy as _
+from nnmware.core.models import EmailValidation
 
 
 class JCommentAdmin(admin.ModelAdmin):
@@ -191,6 +190,11 @@ class MessageAdmin(admin.ModelAdmin):
             obj.recipient = user
             obj.save()
 
+class EmailValidationAdmin(admin.ModelAdmin):
+    list_display = ('__unicode__',)
+    search_fields = ('username', 'email')
+
+admin.site.register(EmailValidation, EmailValidationAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Doc, DocAdmin)
 admin.site.register(Pic, PicAdmin)

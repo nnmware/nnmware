@@ -15,10 +15,6 @@ class ProfileAdmin(admin.ModelAdmin):
             ('facebook', 'googleplus', 'twitter','avatar'),
             ]}),)
 
-
-class EmailValidationAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
-    search_fields = ('username', 'email')
-
 admin.site.register(Profile, ProfileAdmin)
-admin.site.register(EmailValidation, EmailValidationAdmin)
+
+
