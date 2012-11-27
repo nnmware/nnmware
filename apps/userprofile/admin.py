@@ -1,5 +1,5 @@
 from django.contrib import admin
-from nnmware.apps.userprofile.models import Profile, EmailValidation
+from nnmware.apps.userprofile.models import Profile
 from django.utils.translation import ugettext_lazy as _
 
 

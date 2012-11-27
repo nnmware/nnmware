@@ -53,7 +53,7 @@ class NnmwareDashboard(Dashboard):
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
                     models=( 'django.contrib.auth.*', 'nnmware.apps.userprofile.models.Profile',
-                	    'nnmware.apps.userprofile.models.EmailValidation',
+                	    'nnmware.core.models.EmailValidation',
                 	    'django.contrib.sites.models.Site',
                 	    'django.contrib.flatpages.models.FlatPage','nnmware.apps.social.models.UserSocialAuth',
                 	    ),
