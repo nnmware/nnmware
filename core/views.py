@@ -2,15 +2,13 @@
 from datetime import datetime
 import Image
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response, get_object_or_404
-from django.template.base import Template
-from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
@@ -18,15 +16,14 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.forms import PassChangeForm, LoginForm, EmailQuickRegisterForm
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
-from nnmware.core.imgutil import remove_thumbnails
-from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action
+from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
+from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation
 from nnmware.core.forms import *
 from nnmware.core.abstract import STATUS_DELETE
-from nnmware.core.utils import send_template_mail
+from nnmware.core.utils import send_template_mail, make_key
 
 
 class UserPathMixin(object):
@@ -615,3 +612,222 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         except:
             pass
         return super(EmailQuickRegisterView, self).form_valid(form)
+
+class ActivateView(View):
+    template_name = 'user/logged_out.html'
+
+    def get_success_url(self):
+        return reverse('user_profile', args=[self.user.pk])
+
+    def get(self, request, *args, **kwargs):
+        key = self.kwargs['activation_key']
+        try:
+            e = EmailValidation.objects.get(key=key)
+            u = get_user_model()(username=e.username,email=e.email)
+            u.set_password(e.password)
+            u.is_active = True
+            u.save()
+            e.delete()
+            user = authenticate(username=e.username, password=e.password)
+            self.user = user
+            login(self.request, user)
+        except :
+            raise Http404
+        return HttpResponseRedirect(self.get_success_url())
+
+class PassRecoveryView(View):
+    template_name = 'user/logged_out.html'
+
+    def get(self, request, *args, **kwargs):
+        key = self.kwargs['activation_key']
+        try:
+            e = EmailValidation.objects.get(key=key)
+            u = get_user_model().objects.get(username=e.username)
+            u.set_password(e.password)
+            u.save()
+            user = authenticate(username=u.username, password=e.password)
+            e.delete()
+            login(self.request, user)
+        except :
+            raise Http404
+        return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
+
+class LogoutView(TemplateView):
+    template_name = 'user/logged_out.html'
+
+    def get(self, request, *args, **kwargs):
+        logout(self.request)
+        return super(LogoutView, self).get(request, *args, **kwargs)
+
+
+class UserSettings(UpdateView):
+    form_class = UserSettingsForm
+    template_name = "user/settings.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user.get_profile()
+
+    def get_success_url(self):
+        return reverse('user_detail', args=[self.request.user.username])
+
+
+class UserSearch(ListView):
+    model = get_user_model()
+    template_name = "user/users_list.html"
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        return get_user_model().objects.filter(username__icontains=query)
+
+
+class RegisterView(AjaxFormMixin, FormView):
+    form_class = RegistrationForm
+    template_name = 'user/registration.html'
+    success_url = "/users"
+    status = _("YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL")
+
+
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        email = form.cleaned_data.get('email')
+        newuser = get_user_model().objects.create_user(username=username, email=email, password=password)
+        newuser.is_active = False
+        EmailValidation.objects.add(user=newuser, email=newuser.email)
+        newuser.save()
+        return super(RegisterView, self).form_valid(form)
+
+class SignupView(AjaxFormMixin, FormView):
+    form_class = SignupForm
+    template_name = 'registration/signup.html'
+    success_url = "/"
+    status = _("YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL")
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password2')
+        try:
+            e = EmailValidation.objects.get(email=email)
+        except :
+            e = EmailValidation()
+            e.username = username
+            e.email = email
+            e.password = password
+            e.created = datetime.now()
+            e.key = make_key(username)
+            e.save()
+        mail_dict = {'key': e.key,
+                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                     'site_name': settings.SITENAME, 'email': email}
+        subject = 'registration/activation_subject.txt'
+        body = 'registration/activation.txt'
+        send_template_mail(subject,body,mail_dict,[e.email])
+        return super(SignupView, self).form_valid(form)
+
+class UserList(ListView):
+    model = get_user_model()
+    context_object_name = "object_list"
+    template_name = "user/users_list.html"
+
+    def get_queryset(self):
+        return get_user_model().objects.order_by("-date_joined")
+
+
+class UserMenList(UserList):
+    def get_queryset(self):
+        return get_user_model().objects.filter(profile__gender='M')
+
+
+class UserWomenList(UserList):
+    def get_queryset(self):
+        return get_user_model().objects.filter(profile__gender='F')
+
+
+class UserDateTemplate(object):
+    template_name = 'user/users_list.html'
+    model = get_user_model()
+    date_field = 'date_joined'
+    context_object_name = "object_list"
+    make_object_list = True
+    allow_empty = True
+
+
+class UserYearList(UserDateTemplate, YearArchiveView):
+    pass
+
+
+class UserMonthList(UserDateTemplate, MonthArchiveView):
+    pass
+
+
+class UserDayList(UserDateTemplate, DayArchiveView):
+    pass
+
+
+class UserDetail(DetailView):
+    model = get_user_model()
+    slug_field = 'username'
+    template_name = "user/user_detail.html"
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(UserDetail,self).get_context_data(**kwargs)
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        return context
+
+
+
+class ProfileEdit(AjaxFormMixin, UpdateView):
+    form_class = ProfileForm
+    template_name = "user/profile_edit.html"
+
+    def get_object(self, queryset=None):
+        return self.request.user.get_profile()
+
+    def get_success_url(self):
+        return reverse('user_detail', args=[self.request.user.username])
+
+class AvatarEdit(UpdateView):
+    model = get_user_model()
+    form_class = AvatarForm
+    template_name = "user/settings.html"
+    success_url = reverse_lazy('user_settings')
+
+    def form_valid(self, form):
+        avatar_path = self.object.avatar.url
+        remove_thumbnails(avatar_path)
+        remove_file(avatar_path)
+        self.object = form.save(commit=False)
+        self.object.avatar_complete = False
+        self.object.save()
+        resize_image(self.object.avatar.url)
+        return super(AvatarEdit, self).form_valid(form)
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
+class AvatarCrop(UpdateView):
+    form_class = AvatarCropForm
+    template_name = "user/settings.html"
+    success_url = reverse_lazy('user_settings')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        top = int(form.cleaned_data.get('top'))
+        left = int(form.cleaned_data.get('left'))
+        right = int(form.cleaned_data.get('right'))
+        bottom = int(form.cleaned_data.get('bottom'))
+        image = Image.open(self.object.avatar.path)
+        box = [left, top, right, bottom]
+        image = image.crop(box)
+        if image.mode not in ('L', 'RGB'):
+            image = image.convert('RGB')
+        image = fit(image, 120)
+        image.save(self.object.avatar.path)
+        self.object.avatar_complete = True
+        self.object.save()
+        return super(AvatarCrop, self).form_valid(form)
