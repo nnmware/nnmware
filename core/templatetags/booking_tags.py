@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from django.db.models import Min, Max
 from django.template import Library
 from django.template.defaultfilters import stringfilter
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, \
     HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, Discount
