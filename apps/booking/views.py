@@ -744,7 +744,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse('user_profile', args=[self.object.user.username])
+        return reverse('user_profile', args=[self.object.username])
 
 class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
     paginate_by = 5
