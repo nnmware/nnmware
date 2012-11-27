@@ -29,7 +29,8 @@ from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file
 from nnmware.core.utils import make_key, send_template_mail
 from nnmware.core.views import AjaxFormMixin
 
-from nnmware.apps.userprofile.models import Profile, EmailValidation
+from nnmware.apps.userprofile.models import Profile
+from nnmware.core.models import EmailValidation
 from nnmware.apps.userprofile.forms import *
 from nnmware.core.imgutil import fit
 
