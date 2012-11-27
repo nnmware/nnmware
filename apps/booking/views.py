@@ -2,6 +2,7 @@
 
 from datetime import date, timedelta, datetime
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
 from django.http import Http404, HttpResponseRedirect
@@ -90,7 +91,7 @@ class CurrentUserCabinetAccess(object):
 
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(settings.AUTH_USER_MODEL, username=kwargs['username'])
+        obj = get_object_or_404(get_user_model(), username=kwargs['username'])
         if not (request.user == obj) and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
@@ -330,15 +331,13 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
         context = super(RoomDetail, self).get_context_data(**kwargs)
-        try:
+        if self.object.hotel is not None:
             context['city'] = self.object.hotel.city
+            context['title_line'] = self.object.hotel.get_name
             context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        except :
-            pass
+            context['search_url'] = self.object.hotel.get_absolute_url()
         context['tab'] = 'description'
-        context['title_line'] = self.object.hotel.get_name
         context['room_options'] = self.object.option.order_by('category','order_in_list','name')
-        context['search_url'] = self.object.hotel.get_absolute_url()
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
@@ -469,7 +468,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
                 context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
             except IndexError:
                 pass
-        if f_date and t_date:
+        if f_date is not None and t_date is not None:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
@@ -479,7 +478,14 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             date_gen = daterange(from_date, to_date+timedelta(days=1))
         else :
             from_date = datetime.now()
-            date_gen = daterange(from_date, from_date+timedelta(days=14))
+            to_date = from_date+timedelta(days=14)
+            date_gen = daterange(from_date, to_date)
+            f_date = datetime.strftime(from_date,"%d.%m.%Y")
+            t_date = datetime.strftime(to_date,"%d.%m.%Y")
+        if from_date < to_date:
+            context['search_dates'] = {'from_date':f_date, 'to_date':t_date}
+        else:
+            context['search_dates'] = {'from_date':t_date, 'to_date':f_date}
         date_period = []
         for i in date_gen:
             if days_of_week:
@@ -517,9 +523,9 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         return reverse('cabinet_bills', args=[self.object.target.city.slug,self.object.target.slug])
 
 class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
-#    model = Hotel
     paginate_by = 20
     template_name = "cabinet/bookings.html"
+    search_dates = dict()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -529,24 +535,36 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
         context['tab'] = 'reports'
         context['hotel'] = self.object
         context['title_line'] = _('bookings')
+        context['search_dates'] = self.search_dates
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        try:
-            f_date = self.request.GET.get('from')
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        if f_date is not None and t_date is not None:
             from_date = convert_to_date(f_date)
-            t_date = self.request.GET.get('to')
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
-        except :
-            return Booking.objects.filter(hotel=self.object)
+            if (to_date-from_date).days > 365:
+                to_date = from_date+timedelta(days=365)
+        else :
+            from_date = datetime.now()
+            to_date = from_date+timedelta(days=14)
+            f_date = datetime.strftime(from_date,"%d.%m.%Y")
+            t_date = datetime.strftime(to_date,"%d.%m.%Y")
+        if from_date < to_date:
+            self.search_dates = {'from_date':f_date, 'to_date':t_date}
+        else:
+            from_date, to_date = to_date, from_date
+            self.search_dates = {'from_date':t_date, 'to_date':f_date}
+        return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
 
 class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
 #    model = Hotel
     template_name = "cabinet/bills.html"
+    search_dates = dict()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -556,10 +574,30 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
         context['tab'] = 'reports'
         context['hotel'] = self.object
         context['title_line'] = _('bills')
+        context['search_dates'] = self.search_dates
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        if f_date is not None and t_date is not None:
+            from_date = convert_to_date(f_date)
+            to_date = convert_to_date(t_date)
+            if from_date > to_date:
+                from_date, to_date = to_date, from_date
+            if (to_date-from_date).days > 365:
+                to_date = from_date+timedelta(days=365)
+        else :
+            from_date = datetime.now()
+            to_date = from_date+timedelta(days=14)
+            f_date = datetime.strftime(from_date,"%d.%m.%Y")
+            t_date = datetime.strftime(to_date,"%d.%m.%Y")
+        if from_date < to_date:
+            self.search_dates = {'from_date':f_date, 'to_date':t_date}
+        else:
+            from_date, to_date = to_date, from_date
+            self.search_dates = {'from_date':t_date, 'to_date':f_date}
         return Bill.objects.for_object(self.object)
 
 class RequestAddHotelView(CreateView):
@@ -597,12 +635,14 @@ class BookingsList(CurrentUserSuperuser, ListView):
     model = Booking
     paginate_by = 20
     template_name = "sysadm/bookings.html"
+    search_dates = dict()
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(BookingsList, self).get_context_data(**kwargs)
         context['tab'] = 'bookings'
         context['title_line'] = _('booking list')
+        context['search_dates'] = self.search_dates
         return context
 
     def get_queryset(self):
@@ -613,6 +653,9 @@ class BookingsList(CurrentUserSuperuser, ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
+                self.search_dates = {'from_date':t_date, 'to_date':f_date}
+            else:
+                self.search_dates = {'from_date':f_date, 'to_date':t_date}
             return Booking.objects.filter(date__range=(from_date, to_date))
         except :
             return Booking.objects.all()
@@ -691,7 +734,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
         return kwargs
 
     def get_object(self, queryset=None):
-        user = get_object_or_404(settings.AUTH_USER_MODEL, username=self.kwargs['username'])
+        user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
         return user.get_profile()
 
     def get_context_data(self, **kwargs):
@@ -705,13 +748,12 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
         return reverse('user_profile', args=[self.object.user.username])
 
 class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
-#    model = Profile
     paginate_by = 5
     template_name = "usercabinet/bookings.html"
 
     def get_object(self, queryset=None):
-        user = get_object_or_404(settings.AUTH_USER_MODEL, username=self.kwargs['username'])
-        return user.get_profile()
+        user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
+        return user
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -730,9 +772,9 @@ class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            return Booking.objects.filter(user=self.object.user, date__range=(from_date, to_date))
+            return Booking.objects.filter(user=self.object, date__range=(from_date, to_date))
         except :
-            return Booking.objects.filter(user=self.object.user)
+            return Booking.objects.filter(user=self.object)
 
 class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     model = Booking
