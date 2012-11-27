@@ -665,7 +665,7 @@ class UserSettings(UpdateView):
     template_name = "user/settings.html"
 
     def get_object(self, queryset=None):
-        return self.request.user.get_profile()
+        return self.request.user
 
     def get_success_url(self):
         return reverse('user_detail', args=[self.request.user.username])
