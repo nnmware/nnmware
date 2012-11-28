@@ -11,7 +11,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.template import loader, Context
 from nnmware.apps.shop.models import Basket
-from nnmware.apps.video.models import Video
 from nnmware.core.models import Follow, Tag, Pic, Message
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),)
@@ -103,10 +102,6 @@ class Profile(models.Model):
         ctype = ContentType.objects.get_for_model(Tag)
         tags_ids = self.user.follow_set.filter(content_type=ctype).values_list('object_id',flat=True)
         return map(lambda x: int(x), tags_ids)
-
-    def loved_video_count(self):
-        ctype = ContentType.objects.get_for_model(Video)
-        return self.user.follow_set.filter(content_type=ctype).count()
 
     def follow_count(self):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
