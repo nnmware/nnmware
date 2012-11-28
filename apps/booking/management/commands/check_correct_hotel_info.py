@@ -13,7 +13,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         activate('ru')
-        for hotel in Hotel.objects.all():
+        for hotel in Hotel.objects.exclude(admins=None):
             result = []
             for room in hotel.room_set.all():
                 avail = Availability.objects.filter(room=room,date__range=(datetime.now(), datetime.now()+timedelta(days=13))).count()
