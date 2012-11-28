@@ -21,7 +21,6 @@ from django.core.files.base import ContentFile
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.apps.shop.models import Basket
 from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, TZ_CHOICES
 from nnmware.core.managers import AbstractLinkManager, JCommentManager, PublicJCommentManager, \
     FollowManager, MessageManager
@@ -683,6 +682,7 @@ class NnmwareUser(AbstractUser):
         return reverse("user_detail", args=[self.user.username])
 
     def basket_sum(self):
+        from nnmware.apps.shop.models import Basket
         basket_user = Basket.objects.filter(user=self.user)
         all_sum = 0
         for item in basket_user:
