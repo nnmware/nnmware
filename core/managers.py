@@ -1,9 +1,15 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.sites.models import Site
+from django.core.mail import send_mail
 from django.db.models import Manager
 from django.db.models import Q
+from django.template import Context
+from nnmware.core import loader
+from nnmware.core.models import EmailValidation
 
 
 class AbstractLinkManager(Manager):
@@ -247,3 +253,55 @@ class ProductManager(Manager):
         Returns all available products
         """
         return self.filter(avail=True,latest=True,visible=True)
+
+class EmailValidationManager(Manager):
+    """
+    Email validation manager
+    """
+
+    def verify(self, key):
+        try:
+            verify = self.get(key=key)
+            if not verify.is_expired():
+                verify.user.email = verify.email
+                verify.user.is_active = True
+                verify.user.save()
+                verify.delete()
+                return True
+            else:
+                verify.delete()
+                return False
+        except:
+            return False
+
+    def getuser(self, key):
+        try:
+            return self.get(key=key).user
+        except:
+            return False
+
+    def add(self, user, email):
+        """
+        Add a new validation process entry
+        """
+        while True:
+            key = get_user_model().objects.make_random_password(70)
+            try:
+                EmailValidation.objects.get(key=key)
+            except EmailValidation.DoesNotExist:
+                self.key = key
+                break
+
+        if settings.REQUIRE_EMAIL_CONFIRMATION:
+            template_body = "userprofile/email/validation.txt"
+            template_subject = "userprofile/email/validation_subject.txt"
+            site_name, domain = Site.objects.get_current().name,\
+                                Site.objects.get_current().domain
+            body = loader.get_template(template_body).render(Context(locals()))
+            subject = loader.get_template(template_subject)
+            subject = subject.render(Context(locals())).strip()
+            send_mail(subject=subject, message=body, from_email=None,
+                recipient_list=[email])
+            user = get_user_model().objects.get(username=str(user))
+            self.filter(user=user).delete()
+        return self.create(user=user, key=key, email=email)

@@ -10,7 +10,7 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
 
 from nnmware.core.fields import ReCaptchaField
-from nnmware.core.models import JComment, Pic, Tag, Doc, EmailValidation, Video
+from nnmware.core.models import Pic, Tag, Doc, EmailValidation, Video
 from nnmware.core.utils import tags_normalize
 from nnmware.core.exceptions import UserIsDisabled
 
