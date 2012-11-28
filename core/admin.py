@@ -2,9 +2,8 @@
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import Group
-from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit
+from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import EmailValidation
 
 
 class JCommentAdmin(admin.ModelAdmin):
@@ -194,6 +193,22 @@ class EmailValidationAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('username', 'email')
 
+class VideoAdmin(admin.ModelAdmin):
+    list_display = ('project_name','user','slug','description' )
+    list_filter = ('user','project_name')
+    search_fields = ('user__username', 'user__first_name')
+    filter_horizontal = ['tags','users_viewed']
+    fieldsets = (
+        (_("Main"), {"fields": [("user", "project_name"),
+                                ('project_url', 'video_url')]}),
+        (_("Addons"), {"fields": [('description'), ('login_required', 'slug'),
+                                  ('thumbnail')]}),
+        (_("Tags"), {"classes": ("grp-collapse grp-closed",), "fields": [
+            ('tags')]}),
+        (_("Users viewed"), {"classes": ("grp-collapse grp-closed",), "fields": [
+            ('users_viewed')]}),
+        )
+
 admin.site.register(EmailValidation, EmailValidationAdmin)
 admin.site.register(Message, MessageAdmin)
 admin.site.register(Doc, DocAdmin)
@@ -203,3 +218,4 @@ admin.site.register(Action, ActionAdmin)
 admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(VisitorHit, VisitorHitAdmin)
+admin.site.register(Video, VideoAdmin)

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+from datetime import datetime, timedelta
 import Image
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
@@ -16,20 +16,27 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
+from nnmware.core import oembed
+from nnmware.core.backends import image_from_url
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
-from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation
+from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
 from nnmware.core.abstract import STATUS_DELETE
-from nnmware.core.utils import send_template_mail, make_key
-
+from nnmware.core.signals import action
+from nnmware.core.utils import send_template_mail, make_key, get_oembed_end_point, get_video_provider_from_link, gen_shortcut, update_video_size
 
 class UserPathMixin(object):
 
     def get_object(self, queryset=None):
         return get_object_or_404(get_user_model(), username=self.kwargs['username'])
+
+    def get_context_data(self, **kwargs):
+        kwargs['object'] = self.object
+        return super(UserPathMixin, self).get_context_data(**kwargs)
+
 
 
 def _adjust_max_comment_length(form):
@@ -222,7 +229,6 @@ class DocDelete(DeleteView):
 
 class PicDelete(DeleteView):
     model = Pic
-    #form_class = JDocDeleteForm
     template_name = "upload/pic_delete.html"
 
     def get_success_url(self):
@@ -831,3 +837,253 @@ class AvatarCrop(UpdateView):
         self.object.avatar_complete = True
         self.object.save()
         return super(AvatarCrop, self).form_valid(form)
+
+class VideoAdd(AjaxFormMixin, FormView):
+    model = Video
+    form_class = VideoAddForm
+    template_name = "video/add.html"
+    #    success_url = "/_video"
+
+    def form_valid(self, form):
+        link = form.cleaned_data.get('video_url')
+        if not link[:7] == 'http://':
+            link = 'http://%s' % link
+        if link.find(u'youtu.be') != -1:
+            link = link.replace('youtu.be/','www.youtube.com/watch?v=')
+        consumer = oembed.OEmbedConsumer()
+        # TODO: more code security here - big chance to get fatal error
+        endpoint = get_oembed_end_point(link)
+        #
+        consumer.addEndpoint(endpoint)
+        response = consumer.embed(link)
+        result = response.getData()
+        obj = Video()
+        obj.embedcode = result['html']
+        obj.thumbnail = image_from_url(result['thumbnail_url'])
+        if result.has_key('duration'):
+            obj.duration = result['duration']
+        obj.user = self.request.user
+        obj.project_name = form.cleaned_data.get('project_name')
+        obj.project_url = form.cleaned_data.get('project_url')
+        obj.video_provider = get_video_provider_from_link(form.cleaned_data.get('video_url'))
+        obj.publish = True
+        obj.description = form.cleaned_data.get('description')
+        obj.video_url = link
+        obj.save()
+        obj.slug = gen_shortcut(obj.id)
+        tags = form.cleaned_data.get('tags')
+        alltags = Tag.objects.all().filter(name__in=tags)
+        for tag in tags:
+            obj.tags.add(alltags.get(name=tag))
+            obj.save()
+        self.success_url = obj.get_absolute_url()
+        action.send(self.request.user, verb=_('added the video'), action_type=ACTION_ADDED, target=obj,
+            request=self.request)
+        return super(VideoAdd, self).form_valid(form)
+
+class VideoDetail(SingleObjectMixin, ListView):
+    # For case-sensitive need UTF8_BIN collation in Slug_Field
+    paginate_by = 20
+    template_name = "video/detail.html"
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Video, slug=self.kwargs['slug'])
+
+    def get_context_data(self, **kwargs):
+        kwargs['object'] = self.object
+        context = super(VideoDetail, self).get_context_data(**kwargs)
+        context['object'].embedcode = update_video_size(context['object'].embedcode,640,363)
+        context['ctype'] = ContentType.objects.get_for_model(Video)
+        self.object.viewcount += 1
+        if self.request.user.is_authenticated():
+            if self.request.user not in self.object.users_viewed.all():
+                self.object.users_viewed.add(self.request.user)
+        self.object.save()
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return JComment.public.get_tree(self.object)
+
+class VideoTimelineFeed(ListView):
+    paginate_by = 5
+    model = Video
+    template_name = "video/timeline.html"
+
+    def get_queryset(self):
+        ctype = ContentType.objects.get_for_model(Tag)
+        tags_id = Follow.objects.filter(user=self.request.user,content_type=ctype).values_list('object_id',flat=True)
+        tags = Tag.objects.filter(pk__in=tags_id)
+        return Video.objects.filter(tags__in=tags).order_by('-created_date').distinct()
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(VideoTimelineFeed, self).get_context_data(**kwargs)
+        context['tab'] = 'timeline'
+        context['tab_message'] = 'TODAY:'
+        return context
+
+
+class VideoPopularFeed(ListView):
+    paginate_by = 12
+    model = Video
+    template_name = "video/feed.html"
+
+    def get_queryset(self):
+        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(VideoPopularFeed, self).get_context_data(**kwargs)
+        context['tab'] = 'popular'
+        context['tab_message'] = 'POPULAR AT 24 HOURS AND MAX VIEWS:'
+        return context
+
+
+class VideoLatestFeed(ListView):
+    model = Video
+    paginate_by = 12
+    template_name = "video/feed.html"
+
+    def get_queryset(self):
+        return Video.objects.order_by('-created_date')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(VideoLatestFeed, self).get_context_data(**kwargs)
+        context['tab'] = 'latest'
+        context['tab_message'] = 'ALL LATEST VIDEOS:'
+        return context
+
+
+class VideoLovedFeed(ListView):
+    paginate_by = 12
+    model = Video
+    template_name = "video/feed.html"
+
+    def get_queryset(self):
+        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super(VideoLovedFeed, self).get_context_data(**kwargs)
+        context['tab'] = 'loved'
+        context['tab_message'] = 'LOVED ON 24 HOURS:'
+        return context
+
+class TagSubscribers(TagDetail):
+    template_name = "tag/subscribers.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TagSubscribers, self).get_context_data(**kwargs)
+        context['tab'] = 'subscribers'
+        return context
+
+
+class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/activity.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserActivity, self).get_context_data(**kwargs)
+        #        ctype = ContentType.objects.get_for_model(User)
+        context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
+        context['tab'] = 'activity'
+        context['tab_message'] = 'THIS USER ACTIVITY:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Action.objects.filter(user=self.object) #.filter(action_type__gt=1)
+
+
+class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 12
+    template_name = "user/added_video.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserVideoAdded, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['tab'] = 'added'
+        context['tab_message'] = 'VIDEO ADDED THIS USER:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Video.objects.filter(user=self.object).order_by('-created_date')
+
+class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 12
+    template_name = "user/loved_video.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserVideoLoved, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['tab'] = 'loved'
+        context['tab_message'] = 'LOVED VIDEOS:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list('object_id',flat=True)
+        return Video.objects.filter(id__in=follow)
+
+
+class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/follow_tags.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowTags, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['tab'] = 'follow_tags'
+        context['tab_message'] = 'USER FOLLOW THIS TAGS:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list('object_id',flat=True)
+        return Tag.objects.filter(id__in=follow)
+
+class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/user_follow_list.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowUsers, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['tab'] = 'follow_users'
+        context['tab_message'] = 'USER FOLLOW THIS USERS:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('object_id',flat=True)
+        return settings.AUTH_USER_MODEL.objects.filter(id__in=follow)
+
+class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
+    template_name = "user/user_follow_list.html"
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(UserFollowerUsers, self).get_context_data(**kwargs)
+        context['added'] = Video.objects.filter(user=self.object).count()
+        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['tab'] = 'follower_users'
+        context['tab_message'] = 'USERS FOLLOW ON THIS USER:'
+        return context
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('user',flat=True)
+        return settings.AUTH_USER_MODEL.objects.filter(id__in=followers)

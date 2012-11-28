@@ -8,11 +8,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import RadioSelect
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.fields import ReCaptchaField
 
-from nnmware.core.models import JComment, Pic, Tag, Doc, EmailValidation
+from nnmware.core.fields import ReCaptchaField
+from nnmware.core.models import JComment, Pic, Tag, Doc, EmailValidation, Video
 from nnmware.core.utils import tags_normalize
-from nnmware.core.widgets import AutocompleteWidget
 from nnmware.core.exceptions import UserIsDisabled
 
 DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
@@ -448,3 +447,10 @@ class EditForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ('first_name', 'last_name', 'email')
+
+class VideoAddForm(TagsMixinForm):
+
+    class Meta:
+        model = Video
+        fields = ('project_url','project_name', 'video_url' ,'tags','description')
+        widgets = dict(description=forms.Textarea)
