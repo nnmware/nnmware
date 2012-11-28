@@ -604,7 +604,7 @@ class NnmwareUser(AbstractUser):
     birthdate = models.DateField(verbose_name=_(u'Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     about = models.TextField(verbose_name=_(u'About'), help_text=_(u'Little words about you'), blank=True)
-    date_modified = models.DateTimeField(default=datetime.datetime.now, editable=False)
+    date_modified = models.DateTimeField(default=datetime.now, editable=False)
     website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)
     facebook = models.URLField(max_length=150, verbose_name=_(u'Facebook'), blank=True)
     googleplus = models.URLField(max_length=150, verbose_name=_(u'Google+'), blank=True)
