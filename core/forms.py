@@ -416,7 +416,7 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'email', 'gender', 'birthdate')
+        fields = ('first_name', 'last_name', 'email', 'birthdate')
 #            'first_name', 'last_name', 'email', 'gender', 'birthdate',
 #            'website', 'icq', 'skype', 'jabber', 'mobile', 'workphone',
 #            'facebook','googleplus','twitter',
