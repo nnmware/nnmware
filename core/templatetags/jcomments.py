@@ -5,7 +5,6 @@ from django.core.urlresolvers import reverse
 from django.utils.encoding import smart_str, force_unicode
 from django.utils.safestring import mark_safe
 from nnmware.core.models import JComment
-from nnmware.core.forms import JCommentForm
 
 # Regular expressions for getting rid of newlines and witespace
 inbetween = re.compile('>[ \r\n]+<')
