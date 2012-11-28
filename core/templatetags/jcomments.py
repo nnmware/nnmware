@@ -1,17 +1,12 @@
-import re
+# -*- coding: utf-8 -*-
+
 from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from django.utils.encoding import smart_str, force_unicode
-from django.utils.safestring import mark_safe
+
 from nnmware.core.models import JComment
 
-# Regular expressions for getting rid of newlines and witespace
-inbetween = re.compile('>[ \r\n]+<')
-newlines = re.compile('\r|\n')
-
 register = template.Library()
-
 
 def get_contenttype_kwargs(content_object):
     """
@@ -23,17 +18,17 @@ def get_contenttype_kwargs(content_object):
         }
     return kwargs
 
-
+@register.simple_tag
 def get_file_attach_url(content_object):
     kwargs = get_contenttype_kwargs(content_object)
     return reverse('doc_ajax', kwargs=kwargs)
 
-
+@register.simple_tag
 def get_image_attach_url(content_object):
     kwargs = get_contenttype_kwargs(content_object)
     return reverse('pic_ajax', kwargs=kwargs)
 
-
+@register.simple_tag
 def get_comment_url(content_object, parent=None):
     """
     Given an object and an optional parent, this tag gets the URL to POST to for the
@@ -48,8 +43,8 @@ def get_comment_url(content_object, parent=None):
     else:
         return reverse('jcomment_add', kwargs=kwargs)
 
-
-def do_get_j_comment_tree(parser, token):
+@register.tag
+def get_j_comment_tree(parser, token):
     """
     Gets a tree (list of objects ordered by preorder tree traversal, and with an
     additional ``depth`` integer attribute annotated onto each ``ThreadedComment``.
@@ -91,8 +86,8 @@ class CommentTreeNode(template.Node):
         context[self.context_name] = JComment.public.get_tree(content_object, root=tree_root)
         return ''
 
-
-def do_get_comment_count(parser, token):
+@register.tag
+def get_comment_count(parser, token):
     """
     Gets a count of how many ThreadedComment objects are attached to the given
     object.
@@ -119,21 +114,12 @@ class JCommentCountNode(template.Node):
         return ''
 
 
-def oneline(value):
-    """
-    Takes some HTML and gets rid of newlines and spaces between tags, rendering
-    the result all on one line.
-    """
-    try:
-        return mark_safe(newlines.sub('', inbetween.sub('><', value)))
-    except:
-        return value
-
 @register.filter
 def nerd_comment(value):
     return 59*value
 
-def do_get_latest_comments(parser, token):
+@register.tag
+def get_latest_comments(parser, token):
     """
     Gets the latest comments by date_submitted.
     """
@@ -160,8 +146,8 @@ class LatestCommentsNode(template.Node):
         context[self.context_name] = comments
         return ''
 
-
-def do_get_user_comments(parser, token):
+@register.tag
+def get_user_comments(parser, token):
     """
     Gets all comments submitted by a particular user.
     """
@@ -186,8 +172,8 @@ class UserCommentsNode(template.Node):
         context[self.context_name] = user.jcomment_set.all()
         return ''
 
-
-def do_get_user_comment_count(parser, token):
+@register.tag
+def get_user_comment_count(parser, token):
     """
     Gets the count of all comments submitted by a particular user.
     """
@@ -211,15 +197,3 @@ class UserCommentCountNode(template.Node):
         user = self.user.resolve(context)
         context[self.context_name] = user.jcomment_set.all().count()
         return ''
-
-register.simple_tag(get_comment_url)
-register.simple_tag(get_file_attach_url)
-register.simple_tag(get_image_attach_url)
-
-register.filter('oneline', oneline)
-
-register.tag('get_j_comment_tree', do_get_j_comment_tree)
-register.tag('get_comment_count', do_get_comment_count)
-register.tag('get_latest_comments', do_get_latest_comments)
-register.tag('get_user_comments', do_get_user_comments)
-register.tag('get_user_comment_count', do_get_user_comment_count)
