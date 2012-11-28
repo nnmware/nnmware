@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-28 02:23+1100\n"
+"POT-Creation-Date: 2012-11-28 11:17+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -444,15 +444,15 @@ msgstr "Вы суперпользователь и можете добавлят
 msgid "Thanks for you review!"
 msgstr "Спасибо за Ваш отзыв!"
 
-#: apps/booking/forms.py:77 apps/userprofile/forms.py:25
+#: apps/booking/forms.py:77 core/forms.py:257
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:78 apps/userprofile/forms.py:26
+#: apps/booking/forms.py:78 core/forms.py:258
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:81 apps/userprofile/forms.py:218
+#: apps/booking/forms.py:81 core/forms.py:238
 msgid "New Password"
 msgstr "Новый пароль"
 
@@ -826,7 +826,7 @@ msgstr "До"
 msgid "Booking status"
 msgstr "Статус бронирования"
 
-#: apps/booking/models.py:481 apps/userprofile/forms.py:180
+#: apps/booking/models.py:481 core/forms.py:407
 msgid "First name"
 msgstr "Имя"
 
@@ -1456,8 +1456,7 @@ msgstr "Имя"
 msgid "Middle Name"
 msgstr "Отчество"
 
-#: apps/shop/models.py:175 apps/shop/models.py:233
-#: apps/userprofile/forms.py:181
+#: apps/shop/models.py:175 apps/shop/models.py:233 core/forms.py:408
 msgid "Last Name"
 msgstr "Фамилия"
 
@@ -1657,72 +1656,6 @@ msgstr "Найдено %(len)s удаленных топиков "
 msgid "Main"
 msgstr "Основная"
 
-#: apps/userprofile/forms.py:36
-msgid "E-mail is required."
-msgstr "Email обязателен"
-
-#: apps/userprofile/forms.py:40 apps/userprofile/forms.py:161
-msgid "That e-mail is already used."
-msgstr "Адрес уже используется"
-
-#: apps/userprofile/forms.py:44
-msgid "That e-mail is already being confirmed."
-msgstr "Данный адрес эл.почты уже используется."
-
-#: apps/userprofile/forms.py:57
-msgid "The passwords inserted are different."
-msgstr "Введенные пароли не соответствуют."
-
-#: apps/userprofile/forms.py:70
-msgid "USERNAME IS REQUIRED"
-msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ ОБЯЗАТЕЛЬНО"
-
-#: apps/userprofile/forms.py:73
-msgid "THAT USERNAME IS ALREADY USED"
-msgstr "ЭТО ИМЯ ПОЛЬЗОВАТЕЛЯ УЖЕ ПОДТВЕРЖДЕНО"
-
-#: apps/userprofile/forms.py:84 core/forms.py:159
-msgid "E-MAIL IS REQUIRED"
-msgstr "ТРЕБУЕТСЯ АДРЕС ЭЛ.ПОЧТЫ"
-
-#: apps/userprofile/forms.py:88 core/forms.py:162
-msgid "THAT E-MAIL IS ALREADY USED"
-msgstr "ЭТОТ АДРЕС УЖЕ ИСПОЛЬЗУЕТСЯ"
-
-#: apps/userprofile/forms.py:92
-msgid "THAT E-MAIL IS ALREADY CONFIRMED"
-msgstr "ЭТОТ АДРЕС УЖЕ ПОДТВЕРЖДЕН"
-
-#: apps/userprofile/forms.py:99 apps/userprofile/forms.py:105
-#: core/forms.py:169
-msgid "PASSWORD IS REQUIRED"
-msgstr "ПАРОЛЬ ТРЕБУЕТСЯ"
-
-#: apps/userprofile/forms.py:107
-msgid "PASSWORDS ARE MISMATCH"
-msgstr "ПАРОЛИ НЕ СООТВЕТСТВУЮТ"
-
-#: apps/userprofile/forms.py:124
-msgid "You must enter one of the options"
-msgstr "Вы должны ввести одну из опций"
-
-#: apps/userprofile/forms.py:144
-msgid "You must select a portion of the image with a minimum of 4x4 pixels."
-msgstr ""
-"Вам необходимо выбрать часть изображения с размером минимум 4x4 пикселя."
-
-#: apps/userprofile/forms.py:176
-msgid "That e-mail isn't registered."
-msgstr "Данный адрес эл.почты не зарегистрирован"
-
-#: apps/userprofile/forms.py:182
-msgid "Site-only email"
-msgstr "Приватная почта для регистрационных данных"
-
-#: apps/userprofile/forms.py:217
-msgid "Old Password"
-msgstr "Старый пароль"
-
 #: apps/userprofile/models.py:17 core/abstract.py:20
 msgid "Female"
 msgstr "Женский"
@@ -1816,11 +1749,7 @@ msgstr "Профили пользователей"
 msgid "%s's userprofile"
 msgstr "%s профиль"
 
-#: apps/userprofile/views.py:170 apps/userprofile/views.py:187
-msgid "YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL"
-msgstr ""
-
-#: apps/video/admin.py:16 core/forms.py:21 core/models.py:44
+#: apps/video/admin.py:16 core/forms.py:23 core/models.py:44
 msgid "Tags"
 msgstr "Тэги"
 
@@ -2192,86 +2121,151 @@ msgstr "Вы не имеете прав вращать данное изобра
 msgid "Invalid captcha"
 msgstr "Неверная каптча"
 
-#: core/forms.py:30
+#: core/forms.py:32
 #, python-format
 msgid "Max number or tags - %s."
 msgstr "Максимальное количество тегов - %s."
 
-#: core/forms.py:44 core/forms.py:58 core/forms.py:73 core/models.py:210
+#: core/forms.py:46 core/forms.py:60 core/forms.py:75 core/models.py:210
 msgid "comment"
 msgstr "Комментарий"
 
-#: core/forms.py:98
+#: core/forms.py:100
 msgid "Rotate 90"
 msgstr "Вращать на 90 градусов"
 
-#: core/forms.py:98
+#: core/forms.py:100
 msgid "Rotate 270"
 msgstr "Вращать на 270 градусов"
 
-#: core/forms.py:99
+#: core/forms.py:101
 msgid "Resize"
 msgstr "Изменить размер"
 
-#: core/forms.py:129
+#: core/forms.py:131
 #, python-format
 msgid ""
 "%(ext)s is an invalid file extension. Authorized extensions are : "
 "%(valid_exts_list)s"
 msgstr ""
 
-#: core/forms.py:135
+#: core/forms.py:137
 #, python-format
 msgid ""
 "Your file is too big (%(size)s), the maximum allowed size is "
 "%(max_valid_size)s"
 msgstr ""
 
-#: core/forms.py:142
+#: core/forms.py:144
 #, python-format
 msgid ""
 "You already have %(nb_pic)d image, and the maximum allowed is %(nb_max_pic)d."
 msgstr ""
 
-#: core/forms.py:173
+#: core/forms.py:161 core/forms.py:316
+msgid "E-MAIL IS REQUIRED"
+msgstr "ТРЕБУЕТСЯ АДРЕС ЭЛ.ПОЧТЫ"
+
+#: core/forms.py:164 core/forms.py:320
+msgid "THAT E-MAIL IS ALREADY USED"
+msgstr "ЭТОТ АДРЕС УЖЕ ИСПОЛЬЗУЕТСЯ"
+
+#: core/forms.py:171 core/forms.py:331 core/forms.py:337
+msgid "PASSWORD IS REQUIRED"
+msgstr "ПАРОЛЬ ТРЕБУЕТСЯ"
+
+#: core/forms.py:175
 msgid "Old password"
 msgstr "Старый пароль"
 
-#: core/forms.py:174
+#: core/forms.py:176
 msgid "New password"
 msgstr "Новый пароль"
 
-#: core/forms.py:175
+#: core/forms.py:177
 msgid "New password confirmation"
 msgstr "Подтверждение нового пароля"
 
-#: core/forms.py:187
+#: core/forms.py:189
 msgid "Old password is wrong."
 msgstr "Старый пароль не соответствует"
 
-#: core/forms.py:195
+#: core/forms.py:197
 msgid "Passwords mismatch."
 msgstr "Пароли не соответствуют"
 
-#: core/forms.py:200
+#: core/forms.py:202
 msgid "Old and new passwords are equal."
 msgstr "Старый и новый пароли одинаковы."
 
-#: core/forms.py:204
+#: core/forms.py:206
 msgid "Username"
 msgstr "Имя пользователя"
 
-#: core/forms.py:205
+#: core/forms.py:207
 msgid "Password"
 msgstr "Пароль"
 
-#: core/forms.py:225
+#: core/forms.py:227
 msgid "THE USER IS DISABLED"
 msgstr "ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН"
 
-#: core/forms.py:231
+#: core/forms.py:233
 msgid "THIS PASSWORD IS INCORRECT"
 msgstr "НЕВЕРНЫЙ ПАРОЛЬ"
+
+#: core/forms.py:237
+msgid "Old Password"
+msgstr "Старый пароль"
+
+#: core/forms.py:268
+msgid "E-mail is required."
+msgstr "Email обязателен"
+
+#: core/forms.py:272 core/forms.py:388
+msgid "That e-mail is already used."
+msgstr "Адрес уже используется"
+
+#: core/forms.py:276
+msgid "That e-mail is already being confirmed."
+msgstr "Данный адрес эл.почты уже используется."
+
+#: core/forms.py:289
+msgid "The passwords inserted are different."
+msgstr "Введенные пароли не соответствуют."
+
+#: core/forms.py:302
+msgid "USERNAME IS REQUIRED"
+msgstr "ИМЯ ПОЛЬЗОВАТЕЛЯ ОБЯЗАТЕЛЬНО"
+
+#: core/forms.py:305
+msgid "THAT USERNAME IS ALREADY USED"
+msgstr "ЭТО ИМЯ ПОЛЬЗОВАТЕЛЯ УЖЕ ПОДТВЕРЖДЕНО"
+
+#: core/forms.py:324
+msgid "THAT E-MAIL IS ALREADY CONFIRMED"
+msgstr "ЭТОТ АДРЕС УЖЕ ПОДТВЕРЖДЕН"
+
+#: core/forms.py:339
+msgid "PASSWORDS ARE MISMATCH"
+msgstr "ПАРОЛИ НЕ СООТВЕТСТВУЮТ"
+
+#: core/forms.py:357
+msgid "You must select a portion of the image with a minimum of 4x4 pixels."
+msgstr ""
+"Вам необходимо выбрать часть изображения с размером минимум 4x4 пикселя."
+
+#: core/forms.py:371
+msgid "You must enter one of the options"
+msgstr "Вы должны ввести одну из опций"
+
+#: core/forms.py:403
+msgid "That e-mail isn't registered."
+msgstr "Данный адрес эл.почты не зарегистрирован"
+
+#: core/forms.py:409
+msgid "Site-only email"
+msgstr "Приватная почта для регистрационных данных"
 
 #: core/models.py:43 core/models.py:286
 msgid "Tag"
@@ -2443,13 +2437,17 @@ msgstr "Почтовые подтверждения"
 msgid "Email validation process for %(user)s"
 msgstr "Адрес эл.почты в процессе проверки для %(user)s"
 
-#: core/views.py:375
+#: core/views.py:372
 msgid "Successfully uploaded a new image."
 msgstr "Новая картинка успешно загружена"
 
-#: core/views.py:585
+#: core/views.py:582
 msgid "YOU SUCCESSFULLY SIGN IN"
 msgstr "ВЫ УСПЕШНО ЗАРЕГИСТРИРОВАНЫ"
+
+#: core/views.py:687 core/views.py:704
+msgid "YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL"
+msgstr ""
 
 #: core/widgets.py:48 core/widgets.py:78
 msgid "Change:"
@@ -2459,7 +2457,7 @@ msgstr "Изменить:"
 msgid "Delete"
 msgstr "Удалить"
 
-#: core/templatetags/booking_tags.py:216
+#: core/templatetags/booking_tags.py:215
 msgid "rub"
 msgstr "руб"
 
