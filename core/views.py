@@ -29,7 +29,7 @@ from nnmware.core.utils import send_template_mail, make_key
 class UserPathMixin(object):
 
     def get_object(self, queryset=None):
-        return get_object_or_404(settings.AUTH_USER_MODEL, username=self.kwargs['username'])
+        return get_object_or_404(get_user_model(), username=self.kwargs['username'])
 
 
 def _adjust_max_comment_length(form):
@@ -773,7 +773,7 @@ class UserDetail(DetailView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(UserDetail,self).get_context_data(**kwargs)
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         return context
 
 
@@ -783,7 +783,7 @@ class ProfileEdit(AjaxFormMixin, UpdateView):
     template_name = "user/profile_edit.html"
 
     def get_object(self, queryset=None):
-        return self.request.user.get_profile()
+        return self.request.user
 
     def get_success_url(self):
         return reverse('user_detail', args=[self.request.user.username])

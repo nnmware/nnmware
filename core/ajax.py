@@ -5,22 +5,19 @@ import Image
 import json
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.middleware import http
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
-from django.views.generic.base import View
-from django.views.generic.edit import FormMixin
+from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
 from nnmware.core.imgutil import resize_image, remove_thumbnails, remove_file, make_thumbnail
 
-class AccessError(Exception):
-    pass
 
 def AjaxAnswer(payload):
     return HttpResponse(json.dumps(payload), content_type='application/json')
@@ -163,19 +160,19 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 self.pic_id = None
             if self.success:
                 try:
-                    request.user.get_profile().avatar.delete()
+                    request.user.avatar.delete()
                 except :
                     pass
                 new = Pic()
-                new.content_type = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+                new.content_type = ContentType.objects.get_for_model(get_user_model())
                 new.object_id = request.user.pk
                 new.description = self.extra_context['oldname']
                 new.user = request.user
                 new.created_date = datetime.now()
                 new.pic = self.extra_context['path']
                 new.save()
-                request.user.get_profile().avatar = new
-                request.user.get_profile().save()
+                request.user.avatar = new
+                request.user.save()
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
             payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
@@ -247,3 +244,20 @@ def img_rotate(request):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+@login_required
+def avatardelete(request):
+    if request.is_ajax():
+        try:
+            u = request.user
+            remove_thumbnails(u.avatar.path)
+            remove_file(u.avatar.path)
+            u.avatar_complete = False
+            u.avatar = None
+            u.save()
+            payload = {'success': True}
+        except:
+            payload = {'success': False}
+        return AjaxLazyAnswer(payload)
+    else:
+        raise Http404()
