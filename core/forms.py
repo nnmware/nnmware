@@ -14,10 +14,6 @@ from nnmware.core.models import JComment, Pic, Tag, Doc, EmailValidation, Video
 from nnmware.core.utils import tags_normalize
 from nnmware.core.exceptions import UserIsDisabled
 
-DEFAULT_MAX_JCOMMENT_LENGTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_LENGTH', 1000)
-DEFAULT_MAX_JCOMMENT_DEPTH = getattr(settings, 'DEFAULT_MAX_JCOMMENT_DEPTH', 8)
-
-
 class TagsMixinForm(forms.ModelForm):
     tags = forms.CharField(label=_(u"Tags"))  #, widget=AutocompleteWidget(choices_url='autocomplete_tags'))
 
@@ -34,55 +30,6 @@ class TagsMixinForm(forms.ModelForm):
             if tag not in alltags:
                 Tag(name=tag).save()
         return tags
-
-class JCommentForm(forms.ModelForm):
-    """
-    Form which can be used to validate data for a new ThreadedComment.
-    It consists of just two fields: ``comment``, and ``markup``.
-    The ``comment`` field is the only one which is required.
-    """
-
-    comment = forms.CharField(label=_('comment', ), max_length=DEFAULT_MAX_JCOMMENT_LENGTH, widget=forms.Textarea)
-
-    class Meta:
-        model = JComment
-        fields = ('comment',)
-
-
-class JCommentStatusForm(forms.ModelForm):
-    class Meta:
-        model = JComment
-        fields = ('status', 'created_date')
-
-
-class JCommentEditorForm(forms.ModelForm):
-    comment = forms.CharField(label=_('comment', ),
-        max_length=DEFAULT_MAX_JCOMMENT_LENGTH, widget=forms.Textarea)
-
-    class Meta:
-        model = JComment
-        fields = ('comment',)
-
-
-class JCommentEditorStatusForm(forms.ModelForm):
-    class Meta:
-        model = JComment
-        fields = ('status', 'created_date')
-
-
-class JCommentAdminForm(forms.ModelForm):
-    comment = forms.CharField(label=_('comment', ),
-        max_length=DEFAULT_MAX_JCOMMENT_LENGTH, widget=forms.Textarea)
-
-    class Meta:
-        model = JComment
-        fields = ('comment',)
-
-
-class JCommentAdminStatusForm(forms.ModelForm):
-    class Meta:
-        model = JComment
-        fields = ('status', 'created_date')
 
 
 class DocForm(forms.ModelForm):
@@ -108,9 +55,7 @@ class PicEditorForm(forms.ModelForm):
     left = forms.IntegerField()
     right = forms.IntegerField()
     bottom = forms.IntegerField()
-    editor_action = \
-        forms.ChoiceField(widget=RadioSelect, choices=EDITOR_ACTION)
-
+    editor_action = forms.ChoiceField(widget=RadioSelect, choices=EDITOR_ACTION)
 
 class UploadPicForm(forms.Form):
 
