@@ -22,7 +22,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from nnmware.core.abstract import AbstractDate
 from nnmware.core.managers import AbstractLinkManager, JCommentManager, PublicJCommentManager, \
-    FollowManager, MessageManager, EmailValidationManager
+    FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
 from nnmware.core.abstract import AbstractLink, AbstractFile
