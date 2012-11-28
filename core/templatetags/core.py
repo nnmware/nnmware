@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import re
 from django import template
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
+
 from nnmware.apps.shop.models import Basket, Product
-from nnmware.apps.video.models import Video
-from nnmware.core.models import Tag
+from nnmware.core.models import Tag, Video
 from nnmware.core.http import get_session_from_request
 
 
@@ -56,7 +58,7 @@ def tags_step2():
 def users_step2(context):
     request = context['request']
     # Return most popular 6 users
-    return settings.AUTH_USER_MODEL.objects.exclude(username=request.user.username).annotate(video_count=Count('video')).order_by('-video_count')[:6]
+    return get_user_model().objects.exclude(username=request.user.username).annotate(video_count=Count('video')).order_by('-video_count')[:6]
 
 
 @register.simple_tag
