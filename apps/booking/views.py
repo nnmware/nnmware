@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from datetime import date, timedelta, datetime
+from decimal import Decimal
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
@@ -14,16 +15,14 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import FormView, UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.booking.models import *
+from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, STATUS_ACCEPTED
 from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
-from nnmware.apps.userprofile.models import Profile
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
-import time
 from nnmware.core.utils import date_range, convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
