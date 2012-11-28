@@ -416,11 +416,11 @@ class ProfileForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = (
-            'first_name', 'last_name', 'email', 'gender', 'birthdate',
-            'website', 'icq', 'skype', 'jabber', 'mobile', 'workphone',
-            'facebook','googleplus','twitter',
-            'publicmail', 'signature', 'time_zone', 'show_signatures', 'about')
+        fields = ('first_name', 'last_name', 'email', 'gender', 'birthdate')
+#            'first_name', 'last_name', 'email', 'gender', 'birthdate',
+#            'website', 'icq', 'skype', 'jabber', 'mobile', 'workphone',
+#            'facebook','googleplus','twitter',
+#            'publicmail', 'signature', 'time_zone', 'show_signatures', 'about')
 
     def __init__(self, *args, **kwargs):
         self.profile = kwargs.get('instance', None)
