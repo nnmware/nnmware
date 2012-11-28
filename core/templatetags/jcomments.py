@@ -50,88 +50,6 @@ def get_comment_url(content_object, parent=None):
         return reverse('jcomment_add', kwargs=kwargs)
 
 
-def get_comment_url_ajax(content_object, parent=None, ajax_type='json'):
-    """
-    Given an object and an optional parent, this tag gets the URL to POST to for the
-    creation of new ``JComment`` objects.  It returns the latest created object
-    in the AJAX form of the user's choosing (json or xml).
-    """
-    kwargs = get_contenttype_kwargs(content_object)
-    kwargs.update({'ajax': ajax_type})
-    if parent:
-        if not isinstance(parent, JComment):
-            raise template.TemplateSyntaxError, "get_comment_url_ajax requires its parent object to be of type ThreadedComment"
-        kwargs.update({'parent_id': getattr(parent, 'pk', getattr(parent, 'id'))})
-        return reverse('tc_comment_parent_ajax', kwargs=kwargs)
-    else:
-        return reverse('tc_comment_ajax', kwargs=kwargs)
-
-
-def get_comment_url_json(content_object, parent=None):
-    """
-    Wraps ``get_comment_url_ajax`` with ``ajax_type='json'``
-    """
-    try:
-        return get_comment_url_ajax(content_object, parent, ajax_type="json")
-    except template.TemplateSyntaxError:
-        raise template.TemplateSyntaxError, "get_comment_url_json requires its parent object to be of type ThreadedComment"
-
-
-def get_comment_url_xml(content_object, parent=None):
-    """
-    Wraps ``get_comment_url_ajax`` with ``ajax_type='xml'``
-    """
-    try:
-        return get_comment_url_ajax(content_object, parent, ajax_type="xml")
-    except template.TemplateSyntaxError:
-        raise template.TemplateSyntaxError, "get_comment_url_xml requires its parent object to be of type ThreadedComment"
-
-
-def auto_transform_comment(comment):
-    """
-    Given a comment ``JComment`` , this tag
-    looks up the markup type of the comment and formats the output accordingly.
-    It can also output the formatted content to a context variable, if a context name is
-    specified.
-    """
-    try:
-        from django.utils.html import escape
-        from nnmware.core.txtutil import smiles
-
-        return smiles(comment.comment)
-    except ImportError:
-        # Not marking safe, in case tag fails and users input malicious code.
-        return force_unicode(comment.comment)
-
-
-def do_auto_transform_comment(parser, token):
-    try:
-        split = token.split_contents()
-    except ValueError:
-        raise template.TemplateSyntaxError, "%r tag must be of format {%% %r COMMENT %%} or of format {%% %r COMMENT as CONTEXT_VARIABLE %%}" % (
-            token.contents.split()[0], token.contents.split()[0], token.contents.split()[0])
-    if len(split) == 2:
-        return AutoTransformCommentNode(split[1])
-    elif len(split) == 4:
-        return AutoTransformCommentNode(split[1], context_name=split[3])
-    else:
-        raise template.TemplateSyntaxError, "Invalid number of arguments for tag %r" % split[0]
-
-
-class AutoTransformCommentNode(template.Node):
-    def __init__(self, comment, context_name=None):
-        self.comment = template.Variable(comment)
-        self.context_name = context_name
-
-    def render(self, context):
-        comment = self.comment.resolve(context)
-        if self.context_name:
-            context[self.context_name] = auto_transform_comment(comment)
-            return ''
-        else:
-            return auto_transform_comment(comment)
-
-
 def do_get_j_comment_tree(parser, token):
     """
     Gets a tree (list of objects ordered by preorder tree traversal, and with an
@@ -216,33 +134,6 @@ def oneline(value):
 def nerd_comment(value):
     return 59*value
 
-def do_get_j_comment_form(parser, token):
-    """
-    Gets a FreeThreadedCommentForm and inserts it into the context.
-    """
-    error_message = "%r tag must be of format {%% %r as CONTEXT_VARIABLE %%}" % (
-        token.contents.split()[0], token.contents.split()[0])
-    try:
-        split = token.split_contents()
-    except ValueError:
-        raise template.TemplateSyntaxError, error_message
-    if split[1] != 'as':
-        raise template.TemplateSyntaxError, error_message
-    if len(split) != 3:
-        raise template.TemplateSyntaxError, error_message
-    return JCommentFormNode(split[2])
-
-
-class JCommentFormNode(template.Node):
-    def __init__(self, context_name, free=False):
-        self.context_name = context_name
-
-    def render(self, context):
-        form = JCommentForm()
-        context[self.context_name] = form
-        return ''
-
-
 def do_get_latest_comments(parser, token):
     """
     Gets the latest comments by date_submitted.
@@ -325,15 +216,11 @@ class UserCommentCountNode(template.Node):
 register.simple_tag(get_comment_url)
 register.simple_tag(get_file_attach_url)
 register.simple_tag(get_image_attach_url)
-register.simple_tag(get_comment_url_json)
-register.simple_tag(get_comment_url_xml)
 
 register.filter('oneline', oneline)
 
-register.tag('auto_transform_comment', do_auto_transform_comment)
 register.tag('get_j_comment_tree', do_get_j_comment_tree)
 register.tag('get_comment_count', do_get_comment_count)
-register.tag('get_j_comment_form', do_get_j_comment_form)
 register.tag('get_latest_comments', do_get_latest_comments)
 register.tag('get_user_comments', do_get_user_comments)
 register.tag('get_user_comment_count', do_get_user_comment_count)
