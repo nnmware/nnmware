@@ -131,10 +131,11 @@ class AbstractGeo(models.Model):
         return u"%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        response = osm_geocoder(self.geoaddress())[0]
-        if response is not None:
-            self.longitude = response['lon']
-            self.latitude = response['lat']
+        raise UnboundLocalError, osm_geocoder(self.geoaddress())
+#        response = osm_geocoder(self.geoaddress())[0]
+#        if response is not None:
+#            self.longitude = response['lon']
+#            self.latitude = response['lat']
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
