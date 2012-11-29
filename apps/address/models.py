@@ -107,8 +107,8 @@ class City(Address):
     def fill_osm_data(self):
         response = osm_geocoder(self.geoaddress())
         if response is not None:
-            self.longitude = response[0]['lon']
-            self.latitude = response[0]['lat']
+            self.longitude = response['lon']
+            self.latitude = response['lat']
 
 class AbstractGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
@@ -133,9 +133,8 @@ class AbstractGeo(models.Model):
     def fill_osm_data(self):
         response = osm_geocoder(self.geoaddress())
         if response is not None:
-            raise UnboundLocalError, response
-            self.longitude = response[0]['lon']
-            self.latitude = response[0]['lat']
+            self.longitude = response['lon']
+            self.latitude = response['lat']
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:

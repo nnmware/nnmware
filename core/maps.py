@@ -23,7 +23,7 @@ def osm_geocoder(q):
         data = response.read()
         if data is None:
             return None
-        return json.loads(data)
+        return json.loads(data)[0]
     except:
         return None
 
