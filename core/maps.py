@@ -21,6 +21,8 @@ def osm_geocoder(q):
     try:
         response = urllib2.urlopen(url,timeout=10)
         data = response.read()
+        if data is None:
+            return None
         return json.loads(data)
     except:
         return None
