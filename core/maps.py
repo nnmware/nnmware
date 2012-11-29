@@ -13,6 +13,7 @@ import httplib
 import json
 import socket
 
+# OpenStreetMap
 OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
 def osm_geocoder(q):
     params = { 'q': q.encode('utf-8') }
@@ -27,31 +28,10 @@ def osm_geocoder(q):
     except:
         return None
 
-class Geocoder(object):
-    base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
 
-    def geocode(self, q):
-
-        params = { 'q': q.encode('utf-8') }
-
-        url = self.base_url % urllib.urlencode(params)
-        if 1>0: #try:
-            data = urllib2.urlopen(url)
-            response = data.read()
-            return self.parse_json(response)
-#        except :
-#            return None
-
-    def parse_json(self, data):
-        try:
-            return json.loads(data)
-        except:
-            return []
-
+# Yandex maps
 STATIC_MAPS_URL = 'http://static-maps.yandex.ru/1.x/?'
 GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'
-
-
 
 def request(method, url, data=None, headers=None, timeout=None):
     host_port = url.split('/')[2]
