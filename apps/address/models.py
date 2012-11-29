@@ -131,8 +131,7 @@ class AbstractGeo(models.Model):
         return u"%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        client = Geocoder()
-        response = client.geocode(self.geoaddress())[0]
+        response = osm_geocoder(self.geoaddress())[0]
         if response is not None:
             self.longitude = response['lon']
             self.latitude = response['lat']
