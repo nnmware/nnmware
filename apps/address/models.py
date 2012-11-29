@@ -101,7 +101,7 @@ class City(Address):
             if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         if not self.latitude and not self.longitude:
-            pass #self.fill_osm_data()
+            self.fill_osm_data()
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
@@ -131,11 +131,10 @@ class AbstractGeo(models.Model):
         return u"%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        raise UnboundLocalError, osm_geocoder(self.geoaddress())
-#        response = osm_geocoder(self.geoaddress())[0]
-#        if response is not None:
-#            self.longitude = response['lon']
-#            self.latitude = response['lat']
+        response = osm_geocoder(self.geoaddress())[0]
+        if response is not None:
+            self.longitude = response['lon']
+            self.latitude = response['lat']
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
