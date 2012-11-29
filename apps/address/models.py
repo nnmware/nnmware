@@ -131,9 +131,6 @@ class AbstractGeo(models.Model):
         return "%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        a = osm_geocoder(self.geoaddress())
-#        b = a[0]
-        raise UnboundLocalError, len(a)
         response = osm_geocoder(self.geoaddress())[0]
         if response is not None:
             self.longitude = response['lon']
