@@ -139,7 +139,7 @@ class AbstractGeo(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
-            self.fill_osm_data()
+            pass #self.fill_osm_data()
         super(AbstractGeo, self).save(*args, **kwargs)
 
     def fulladdress(self):
