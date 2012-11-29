@@ -169,7 +169,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         if get_language() == 'en':
             if self.description_en:
                 r = self.description_en
-        return r.split('.')[0]+'.'
+        return r.split('. ')[0]+'.'
 
     def get_count_stars_hotels(self):
         qs = Hotel.objects.filter(city=self.city)
@@ -361,7 +361,7 @@ class Room(AbstractName):
         if get_language() == 'en':
             if self.description_en:
                 r = self.description_en
-        return r.split('.')[0]+'.'
+        return r.split('. ')[0]+'.'
 
     @property
     def min_current_amount(self):
