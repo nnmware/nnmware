@@ -599,7 +599,6 @@ class Video(AbstractDate):
         return get_user_model().objects.filter(pk__in=users)
 
 class NnmwareUser(AbstractUser):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, unique=True, related_name='user_profile')
     fullname = models.CharField(max_length=100, verbose_name=_(u'Full Name'), blank=True)
     birthdate = models.DateField(verbose_name=_(u'Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
