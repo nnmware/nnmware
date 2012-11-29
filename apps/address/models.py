@@ -98,7 +98,7 @@ class City(MetaGeo, Address):
 
     def fulladdress(self):
         if self.country:
-            return "%s, %s" % self.name, self.country.name
+            return "%s, %s" % (self.name, self.country.name)
         return self.name
 
     def get_absolute_url(self):
