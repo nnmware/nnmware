@@ -68,11 +68,26 @@ class Region(Address):
                 self.slug = self.pk
         super(Region, self).save(*args, **kwargs)
 
-
-
-class City(Address):
+class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
+
+    class Meta:
+        abstract = True
+
+    def fill_osm_data(self):
+        response = osm_geocoder(self.geoaddress())
+        if response is not None:
+            self.longitude = response['lon']
+            self.latitude = response['lat']
+
+    def save(self, *args, **kwargs):
+        if not self.latitude and not self.longitude:
+            self.fill_osm_data()
+        super(MetaGeo, self).save(*args, **kwargs)
+
+
+class City(MetaGeo, Address):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
 
@@ -100,19 +115,9 @@ class City(Address):
         else:
             if City.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
-        if not self.latitude and not self.longitude:
-            self.fill_osm_data()
         super(City, self).save(*args, **kwargs)
 
-    def fill_osm_data(self):
-        response = osm_geocoder(self.geoaddress())
-        if response is not None:
-            self.longitude = response['lon']
-            self.latitude = response['lat']
-
-class AbstractGeo(models.Model):
-    longitude = models.FloatField(_('Longitude'), default=0.0)
-    latitude = models.FloatField(_('Latitude'), default=0.0)
+class AbstractGeo(MetaGeo):
     city = models.ForeignKey(City, verbose_name=_('City'))
     address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
     address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
@@ -129,17 +134,6 @@ class AbstractGeo(models.Model):
         except :
             pass
         return "%s, %s" % (result, self.city)
-
-    def fill_osm_data(self):
-        response = osm_geocoder(self.geoaddress())
-        if response is not None:
-            self.longitude = response['lon']
-            self.latitude = response['lat']
-
-    def save(self, *args, **kwargs):
-        if not self.latitude and not self.longitude:
-            self.fill_osm_data()
-        super(AbstractGeo, self).save(*args, **kwargs)
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
