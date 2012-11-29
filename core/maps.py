@@ -20,19 +20,10 @@ def osm_geocoder(q):
     socket.setdefaulttimeout(10)
     try:
         response = urllib2.urlopen(url,timeout=10)
-    except:
-        return []
-    else:
         data = response.read()
-    try:
         return json.loads(data)
     except:
         return []
-
-#    try:
-#        return json.loads(urllib2.urlopen(url).read())
-#    except:
-#        return None
 
 class Geocoder(object):
     base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"

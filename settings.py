@@ -136,8 +136,6 @@ INSTALLED_APPS = (
     'django.contrib.syndication',
     'south',
     'nnmware.core',
-    'nnmware.apps.userprofile',
-    'nnmware.apps.video',
     'nnmware.apps.social',
     'nnmware.apps.money',
     'nnmware.apps.booking',

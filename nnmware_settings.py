@@ -42,7 +42,7 @@ SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/welcome/step1/'
 # Site account settings
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
-AUTH_PROFILE_MODULE = "userprofile.profile"
+AUTH_USER_MODEL = "core.NnmwareUser"
 PROFILE_DEFAULT_TIME_ZONE = 10
 ACCOUNT_ACTIVATION_DAYS = 7
 SITENAME = 'NNMWARE.COM'
