@@ -87,7 +87,7 @@ class MetaGeo(models.Model):
         super(MetaGeo, self).save(*args, **kwargs)
 
 
-class City(MetaGeo, Address):
+class City(Address, MetaGeo):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
 
