@@ -164,8 +164,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     @property
     def metadesc(self):
         r = self.description
-        if get_language() == 'en':
-            if self.description_en:
+        if get_language() == 'en' and self.description_en:
                 r = self.description_en
         return r.split('. ')[0]+'.'
 
@@ -356,8 +355,7 @@ class Room(AbstractName):
     @property
     def metadesc(self):
         r = self.description
-        if get_language() == 'en':
-            if self.description_en:
+        if get_language() == 'en'and self.description_en:
                 r = self.description_en
         return r.split('. ')[0]+'.'
 
