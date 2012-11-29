@@ -10,10 +10,8 @@ from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.apps.address.models import AbstractGeo
-from nnmware.core.models import Pic
+from nnmware.apps.address.models import AbstractGeo, Tourism
 from nnmware.apps.money.models import MoneyBase
-from nnmware.apps.address.models import Tourism
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
 
