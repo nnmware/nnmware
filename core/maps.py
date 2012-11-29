@@ -18,12 +18,12 @@ def osm_geocoder(q):
     params = { 'q': q.encode('utf-8') }
     url = OSM_URL % urllib.urlencode(params)
     socket.setdefaulttimeout(10)
-    if 1>0: #try:
+    try:
         response = urllib2.urlopen(url,timeout=10)
         data = response.read()
         return json.loads(data)
-#    except:
-#        return []
+    except:
+        return None
 
 class Geocoder(object):
     base_url = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"

@@ -105,10 +105,10 @@ class City(Address):
         super(City, self).save(*args, **kwargs)
 
     def fill_osm_data(self):
-        response = osm_geocoder(self.geoaddress())[0]
+        response = osm_geocoder(self.geoaddress())
         if response is not None:
-            self.longitude = response['lon']
-            self.latitude = response['lat']
+            self.longitude = response[0]['lon']
+            self.latitude = response[0]['lat']
 
 class AbstractGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
@@ -131,10 +131,10 @@ class AbstractGeo(models.Model):
         return "%s, %s" % (result, self.city)
 
     def fill_osm_data(self):
-        response = osm_geocoder(self.geoaddress())[0]
+        response = osm_geocoder(self.geoaddress())
         if response is not None:
-            self.longitude = response['lon']
-            self.latitude = response['lat']
+            self.longitude = response[0]['lon']
+            self.latitude = response[0]['lat']
 
     def save(self, *args, **kwargs):
         if not self.latitude and not self.longitude:
@@ -143,8 +143,6 @@ class AbstractGeo(models.Model):
 
     def fulladdress(self):
         return u"%s, %s" % (self.address, self.city)
-
-
 
 
 class TourismCategory(AbstractName):
