@@ -163,6 +163,14 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                 return self.address
         return self.address
 
+    @property
+    def metadesc(self):
+        r = self.description
+        if get_language() == 'en':
+            if self.description_en:
+                r = self.description_en
+        return r.split('.')[0]+'.'
+
     def get_count_stars_hotels(self):
         qs = Hotel.objects.filter(city=self.city)
         two = qs(starcount=TWO_STAR).count()
@@ -346,6 +354,14 @@ class Room(AbstractName):
             return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
         except :
             return self.name
+
+    @property
+    def metadesc(self):
+        r = self.description
+        if get_language() == 'en':
+            if self.description_en:
+                r = self.description_en
+        return r.split('.')[0]+'.'
 
     @property
     def min_current_amount(self):
