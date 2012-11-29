@@ -97,7 +97,7 @@ class City(Address, MetaGeo):
         verbose_name_plural = _("Cities")
 
     def fulladdress(self):
-        if self.country:
+        if self.country is not None:
             return "%s, %s" % (self.name, self.country.name)
         return self.name
 
