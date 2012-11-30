@@ -162,7 +162,7 @@ def hotel_add(request):
         starcount = request.REQUEST['starcount']
         try:
             city = City.objects.get(name=c)
-        except ObjectDoesNotExist:
+        except :
             city = City()
             city.name = c
             city.save()
