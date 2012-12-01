@@ -163,8 +163,7 @@ def hotel_add(request):
         try:
             city = City.objects.get(name=c)
         except :
-            city = City()
-            city.name = c
+            city = City(name=c)
             city.save()
         hotel = Hotel()
         hotel.name = name
