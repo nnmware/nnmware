@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 
-from nnmware.apps.shop.models import Basket, Product
+from nnmware.apps.shop.models import Basket, Product, Order
 from nnmware.core.models import Tag, Video
 from nnmware.core.http import get_session_from_request
 
@@ -234,3 +234,13 @@ def icq_number(value):
 def url_target_blank(text):
     return text.replace('<a ', '<a target="_blank" ')
 url_target_blank.is_safe = True
+
+@register.filter
+def order_date_sum(value):
+    result = 0.0
+    on_day = Order.objects.active.filter(created_date__eq=value)
+    for item in on_day:
+        result += item.fullamount
+    return result
+
+
