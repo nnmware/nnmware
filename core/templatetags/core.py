@@ -235,9 +235,9 @@ def url_target_blank(text):
 url_target_blank.is_safe = True
 
 @register.simple_tag
-def order_date_sum(value):
+def order_date_sum(on_date):
     result = 0
-    on_day = Order.objects.filter(created_date=value)
+    on_day = Order.objects.filter(created_date=on_date)
     for item in on_day:
         result += item.fullamount
     return result
