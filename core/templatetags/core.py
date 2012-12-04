@@ -235,7 +235,7 @@ def url_target_blank(text):
     return text.replace('<a ', '<a target="_blank" ')
 url_target_blank.is_safe = True
 
-@register.filter
+@register.simple_tag
 def order_date_sum(value):
     result = 0.0
     on_day = Order.objects.active().filter(created_date__eq=value)
