@@ -9,6 +9,7 @@ from django.db.models.aggregates import Sum
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response, get_object_or_404
+from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
@@ -875,7 +876,7 @@ class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserVideoAdded, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         context['tab'] = 'added'
         context['tab_message'] = 'VIDEO ADDED THIS USER:'
         return context
@@ -892,7 +893,7 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserVideoLoved, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         context['tab'] = 'loved'
         context['tab_message'] = 'LOVED VIDEOS:'
         return context
@@ -911,7 +912,7 @@ class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowTags, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         context['tab'] = 'follow_tags'
         context['tab_message'] = 'USER FOLLOW THIS TAGS:'
         return context
@@ -929,15 +930,15 @@ class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         context['tab'] = 'follow_users'
         context['tab_message'] = 'USER FOLLOW THIS USERS:'
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('object_id',flat=True)
-        return settings.AUTH_USER_MODEL.objects.filter(id__in=follow)
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(get_user_model())).values_list('object_id',flat=True)
+        return get_user_model().objects.filter(id__in=follow)
 
 class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -947,12 +948,20 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserFollowerUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
-        context['ctype'] = ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)
+        context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         context['tab'] = 'follower_users'
         context['tab_message'] = 'USERS FOLLOW ON THIS USER:'
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(settings.AUTH_USER_MODEL)).values_list('user',flat=True)
-        return settings.AUTH_USER_MODEL.objects.filter(id__in=followers)
+        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(get_user_model())).values_list('user',flat=True)
+        return get_user_model().objects.filter(id__in=followers)
+
+def redirect_page_not_found(request):
+    response = render_to_response('errors/404.html', {}, context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+def redirect_500_error(request):
+    return render_to_response('errors/500.html', {}, context_instance=RequestContext(request))
