@@ -6,7 +6,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
-
 from nnmware.apps.shop.models import Basket, Product, Order
 from nnmware.core.models import Tag, Video
 from nnmware.core.http import get_session_from_request
@@ -238,7 +237,7 @@ url_target_blank.is_safe = True
 @register.simple_tag
 def order_date_sum(value):
     result = 0
-    on_day = Order.objects.all().filter(created_date=value)
+    on_day = Order.objects.active().filter(created_date=value)
     for item in on_day:
         result += item.fullamount
     return result
