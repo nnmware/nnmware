@@ -169,7 +169,7 @@ class SumOrdersView(ListView, CurrentUserSuperuser):
     paginate_by = 25
 
     def get_queryset(self):
-        return Order.objects.all().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(order_sum=Sum('fullamount'))
+        return Order.objects.all().extra({'date_created' : "date(created_date)"}).values('date_created') #.annotate(order_sum=Sum('fullamount'))
 
 
 class OrderView(CurrentUserOrderAccess, DetailView):
