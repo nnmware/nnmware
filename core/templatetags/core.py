@@ -4,6 +4,7 @@ import re
 from django import template
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.template.defaultfilters import floatformat
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from nnmware.apps.shop.models import Basket, Product, Order
@@ -240,4 +241,4 @@ def order_date_sum(on_date):
     on_day = Order.objects.active().filter(created_date__range=(on_date,on_date+timedelta(days=1)))
     for item in on_day:
         result += item.fullamount
-    return result
+    return floatformat(result, 0)
