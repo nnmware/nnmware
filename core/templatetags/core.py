@@ -237,7 +237,7 @@ url_target_blank.is_safe = True
 @register.simple_tag
 def order_date_sum(on_date):
     result = 0
-    on_day = Order.objects.filter(created_date__range=(on_date,on_date+timedelta(days=1)))
+    on_day = Order.objects.active().filter(created_date__range=(on_date,on_date+timedelta(days=1)))
     for item in on_day:
         result += item.fullamount
     return result
