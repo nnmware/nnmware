@@ -4,7 +4,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
-from nnmware.apps.shop.models import STATUS_PROCESS, STATUS_CLOSED, STATUS_SENT, STATUS_SHIPPING, STATUS_WAIT
 
 
 class AbstractLinkManager(Manager):
@@ -249,7 +248,3 @@ class ProductManager(Manager):
         """
         return self.filter(avail=True,latest=True,visible=True)
 
-class OrdersManager(Manager):
-
-    def active(self):
-        return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )

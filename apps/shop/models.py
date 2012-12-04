@@ -159,6 +159,12 @@ STATUS_ORDER = (
         (STATUS_SHIPPING, _('Shipping')),
         )
 
+class OrdersManager(Manager):
+
+    def active(self):
+        return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )
+
+
 class Order(AbstractDate):
     """
     Definition of orders.
@@ -174,6 +180,7 @@ class Order(AbstractDate):
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
 
+    objects = OrdersManager()
 
     class Meta:
         ordering = ['-created_date']
