@@ -238,7 +238,7 @@ url_target_blank.is_safe = True
 def order_date_sum(value):
     result = 0
     value = datetime.now()-timedelta(days=2)
-    on_day = Order.objects.active.filter(created_date=value)
+    on_day = Order.active().filter(created_date=value)
     for item in on_day:
         result += item.fullamount
     return result
