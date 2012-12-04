@@ -19,7 +19,7 @@ from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import JComment
 from nnmware.core.templatetags.core import basket, _get_basket
-from nnmware.core.utils import send_template_mail
+from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
 
@@ -174,7 +174,7 @@ class SumOrdersView(ListView, CurrentUserSuperuser):
 class DateOrdersView(AllOrdersView):
 
     def get_queryset(self):
-        on_date = self.kwargs['on_date']
+        on_date = convert_to_date(self.kwargs['on_date'])
         return Order.objects.filter(created_date__range=(on_date,on_date+timedelta(days=1)))
 
 class OrderView(CurrentUserOrderAccess, DetailView):
