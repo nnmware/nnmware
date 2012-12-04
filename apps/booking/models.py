@@ -668,4 +668,3 @@ def update_hotel_point(sender, instance, **kwargs):
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 
-
