@@ -61,7 +61,7 @@ class Tag(models.Model):
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
         users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
-        return settings.AUTH_USER_MODEL.objects.filter(pk__in=users)
+        return get_user_model().objects.filter(pk__in=users)
 
     @permalink
     def get_absolute_url(self):

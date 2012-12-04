@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.template import Library
 from django.template.base import Template
 from django.template.loader import render_to_string
@@ -48,7 +49,7 @@ def category_tree_series():
 @register.simple_tag
 def menu_user(app=None):
     if app == 'users':
-        Alldata = settings.AUTH_USER_MODEL
+        Alldata = get_user_model()
     query = Alldata.objects.all().order_by('-date_joined')
     objects_years_dict = create_userdate_list(query)
     html = Element("ul")

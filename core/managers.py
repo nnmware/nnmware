@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
@@ -181,7 +182,7 @@ class MessageManager(Manager):
             Q(sender=user, sender_deleted_at__isnull=True))
         senders = messages.values_list('sender',flat=True)
         recipients = messages.values_list('recipient',flat=True)
-        return settings.AUTH_USER_MODEL.objects.exclude(pk=user.pk).filter(
+        return get_user_model().objects.exclude(pk=user.pk).filter(
             Q(pk__in=senders) | Q(pk__in=recipients)).order_by('username')
 
     def concrete_user(self, user, recipient):

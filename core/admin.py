@@ -1,6 +1,7 @@
 
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
 from django.utils.translation import ugettext_lazy as _
@@ -174,7 +175,7 @@ class MessageAdmin(admin.ModelAdmin):
 
         if form.cleaned_data['group'] == 'all':
             # send to all users
-            recipients = settings.AUTH_USER_MODEL.objects.exclude(pk=obj.recipient.pk)
+            recipients = get_user_model().objects.exclude(pk=obj.recipient.pk)
         else:
             # send to a group of users
             recipients = []
