@@ -3,7 +3,7 @@ from __builtin__ import int, super, object
 from datetime import date
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -169,7 +169,7 @@ class SumOrdersView(ListView, CurrentUserSuperuser):
     paginate_by = 25
 
     def get_queryset(self):
-        return Order.objects.all().extra({'date_created' : "date(created_date)"}).values('date_created') #.annotate(order_sum=Sum('fullamount'))
+        return Order.objects.all().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(orders=Count('id'))
 
 
 class OrderView(CurrentUserOrderAccess, DetailView):
