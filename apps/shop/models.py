@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
+from django.db.models import permalink, Q
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
@@ -159,11 +159,10 @@ STATUS_ORDER = (
         (STATUS_SHIPPING, _('Shipping')),
         )
 
-class OrdersManager(Manager):
+class OrdersManager(models.Manager):
 
     def active(self):
         return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )
-
 
 class Order(AbstractDate):
     """
