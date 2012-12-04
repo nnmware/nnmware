@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __builtin__ import int, super, object
-from datetime import date
+from datetime import date, timedelta
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db.models import Sum, Count
@@ -171,6 +171,11 @@ class SumOrdersView(ListView, CurrentUserSuperuser):
     def get_queryset(self):
         return Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(orders=Count('id'))
 
+class DateOrdersView(AllOrdersView):
+
+    def get_queryset(self):
+        on_date = self.kwargs['on_date']
+        return Order.objects.filter(created_date__range=(on_date,on_date+timedelta(days=1)))
 
 class OrderView(CurrentUserOrderAccess, DetailView):
     model = Order
