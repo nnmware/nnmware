@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __builtin__ import int, super, object
+from datetime import date
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.db.models import Sum
 from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -160,6 +162,15 @@ class AllOrdersView(ListView, CurrentUserSuperuser):
 
     def get_queryset(self):
         return Order.objects.all()
+
+class SumOrdersView(ListView, CurrentUserSuperuser):
+    template_name = 'shop/order_list_sum.html'
+    model = Order
+    paginate_by = 25
+
+    def get_queryset(self):
+        return Order.objects.all().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(order_sum=Sum('fullamount'))
+
 
 class OrderView(CurrentUserOrderAccess, DetailView):
     model = Order
