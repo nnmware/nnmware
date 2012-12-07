@@ -46,9 +46,15 @@ def room_rates(request):
             if 'placecount' in json_data.keys():
                 try:
                     placecount = int(json_data['placecount'][i])
+                    try:
+                        min_days = int(json_data['min_days'][i])
+                    except:
+                        min_days = None
                     # store availability
                     availability, created = Availability.objects.get_or_create(date=on_date, room=room)
                     availability.placecount = placecount
+                    if min_days is not None:
+                        availability.min_days = min_days
                     availability.save()
                 except ValueError:
                     pass
