@@ -296,9 +296,11 @@ def room_availability_on_date(room,date):
 def room_min_days_on_date(room,date):
     try:
         result = Availability.objects.get(room=room,date=date).min_days
+        if result is None:
+            return 1
+        return result
     except :
-        result = ''
-    return result
+        return ''
 
 @register.simple_tag
 def today_visitor_count():
