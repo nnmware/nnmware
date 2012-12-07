@@ -293,6 +293,14 @@ def room_availability_on_date(room,date):
     return result
 
 @register.simple_tag
+def room_min_days_on_date(room,date):
+    try:
+        result = Availability.objects.get(room=room,date=date).min_days
+    except :
+        result = ''
+    return result
+
+@register.simple_tag
 def today_visitor_count():
     result = set(VisitorHit.objects.values_list('session_key', flat=True))
 #    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
