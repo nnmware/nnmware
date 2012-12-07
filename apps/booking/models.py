@@ -584,6 +584,7 @@ class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("On date"))
     placecount = models.IntegerField(verbose_name=_('Count of places'), default=0)
+    min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Availability Place")
