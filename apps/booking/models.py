@@ -14,6 +14,7 @@ from nnmware.apps.address.models import AbstractGeo, Tourism
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
+from nnmware.core.utils import daterange
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
@@ -215,17 +216,18 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def free_room(self, from_date, to_date, roomcount):
         result = []
         for room in self.room_set.all():
-            check_date = from_date
-            avail = None
-            while check_date < to_date:
-                places = room.date_place_count(check_date)
-                if places < roomcount:
-                    avail = None
-                    break
-                avail = 1
-                check_date +=timedelta(days=1)
-            if avail:
-                result.append(room)
+            if room.check_min_days(from_date, to_date):
+                check_date = from_date
+                avail = None
+                while check_date < to_date:
+                    places = room.date_place_count(check_date)
+                    if places < roomcount:
+                        avail = None
+                        break
+                    avail = 1
+                    check_date +=timedelta(days=1)
+                if avail:
+                    result.append(room)
         return result
 
 
@@ -417,6 +419,14 @@ class Room(AbstractName):
             return places_max*availability
         except :
             return None
+
+    def check_min_days(self, from_date, to_date):
+        need_days = (to_date-from_date).days
+        date_gen = daterange(from_date, to_date)
+        for d in date_gen:
+            if Availability.objects.get(room=self,date=d).min_days > need_days:
+                return False
+        return True
 
     @permalink
     def get_absolute_url(self):
