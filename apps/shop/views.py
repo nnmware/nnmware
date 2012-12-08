@@ -152,18 +152,18 @@ class OrdersView(ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user)
 
-class AllOrdersView(ListView, CurrentUserSuperuser):
+class BaseOrdersView(ListView, CurrentUserSuperuser):
     template_name = 'shop/order_list.html'
     model = Order
     paginate_by = 25
 
+class AllOrdersView(BaseOrdersView):
+
     def get_queryset(self):
         return Order.objects.all()
 
-class SumOrdersView(ListView, CurrentUserSuperuser):
+class SumOrdersView(BaseOrdersView):
     template_name = 'shop/order_list_sum.html'
-    model = Order
-    paginate_by = 25
 
     def get_queryset(self):
         return Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(orders=Count('id'))
