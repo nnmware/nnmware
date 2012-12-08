@@ -4,7 +4,7 @@ import os
 from django import forms
 from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.forms.widgets import RadioSelect
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
@@ -399,3 +399,21 @@ class VideoAddForm(TagsMixinForm):
         model = Video
         fields = ('project_url','project_name', 'video_url' ,'tags','description')
         widgets = dict(description=forms.Textarea)
+
+class CoreUserChangeForm(UserChangeForm):
+
+    class Meta:
+        model = get_user_model()
+
+class CoreUserCreationForm(UserCreationForm):
+
+    class Meta:
+        model = get_user_model()
+
+    def clean_username(self):
+        username = self.cleaned_data["username"]
+        try:
+            get_user_model().objects.get(username=username)
+        except get_user_model().DoesNotExist:
+            return username
+        raise forms.ValidationError(self.error_messages['duplicate_username'])
