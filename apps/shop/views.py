@@ -31,27 +31,24 @@ class CurrentUserOrderAccess(object):
             raise Http404
         return super(CurrentUserOrderAccess, self).dispatch(request, *args, **kwargs)
 
-class ShopCategory(ListView):
+class ShopBaseView(ListView):
     template_name = 'shop/product_list.html'
     paginate_by = settings.PAGINATE_SHOP
     model = Product
+
+class ShopCategory(ShopBaseView):
 
     def get_queryset(self):
         result = get_queryset_category(self, Product, ProductCategory, active=True)
         return result
 
-class ShopAllCategory(ListView):
-    template_name = 'shop/product_list.html'
-    model = Product
-    paginate_by = settings.PAGINATE_SHOP
+class ShopAllCategory(ShopBaseView):
 
     def get_queryset(self):
         return Product.objects.active()
 
-class SaleView(ListView):
+class SaleView(ShopBaseView):
     template_name = 'shop/sale_list.html'
-    model = Product
-    paginate_by = settings.PAGINATE_SHOP
 
     def get_queryset(self):
         return Product.objects.sale()
