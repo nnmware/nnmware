@@ -173,7 +173,7 @@ class PieProductListView(BaseOrdersView):
 
     def get_queryset(self):
         active = Order.objects.active()
-        result = OrderItem.objects.filter(order__pk__in=active).annotate(Count("product_pn"))
+        result = OrderItem.objects.filter(order__pk__in=active).annotate(productvalue=Count("product_pn"))
         return result
 
 class DateOrdersView(AllOrdersView):
