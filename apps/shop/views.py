@@ -175,8 +175,8 @@ class PieProductListView(ListView, CurrentUserSuperuser):
 
     def get_queryset(self):
         active = Order.objects.active()
-        products = OrderItem.objects.filter(order__in=active).values_list('product_name',flat=True)
-        result = OrderItem.objects.filter(product_name__in=products).annotate(productvalue=Count("quantity")).order_by()
+        products = OrderItem.objects.filter(order__in=active).values_list('product_origin__pk',flat=True)
+        result = Product.objects.filter(pk__in=products)
         return result
 
 class DateOrdersView(AllOrdersView):

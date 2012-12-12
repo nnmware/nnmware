@@ -3,7 +3,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink, Q
+from django.db.models import permalink, Q, Count
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
@@ -82,6 +82,10 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     @permalink
     def get_absolute_url(self):
         return "product_detail", (), {'pk': self.pk}
+
+    @property
+    def allcount(self):
+        return OrderItem.objects.filter(product_origin=self).annotate(allc=Count('quantity'))[0].allc
 
 class ParameterUnit(Unit):
     pass
