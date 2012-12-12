@@ -87,6 +87,15 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     def allcount(self):
         return OrderItem.objects.filter(product_origin=self).annotate(allc=Sum('quantity'))[0].allc
 
+    @property
+    def fullmoney(self):
+        active = Order.objects.active()
+        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
+        result = 0
+        for item in allitems:
+            result += item.fullamount
+        return result
+
 class ParameterUnit(Unit):
     pass
 
