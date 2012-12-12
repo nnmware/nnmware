@@ -168,12 +168,15 @@ class SumOrdersView(BaseOrdersView):
     def get_queryset(self):
         return Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created').annotate(orders=Count('id'))
 
+
+
 class PieProductListView(ListView, CurrentUserSuperuser):
     template_name = 'shop/pie.html'
 
     def get_queryset(self):
         active = Order.objects.active()
-        result = OrderItem.objects.filter(order__pk__in=active).annotate(productvalue=Count("product_name"))
+        products = OrderItem.objects.filter(order__in=active).values_list('pk',flat=True)
+        result = OrderItem.objects.filter(pk__in=products).annotate(productvalue=Count("product_name"))
         return result
 
 class DateOrdersView(AllOrdersView):
