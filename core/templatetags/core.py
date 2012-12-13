@@ -136,6 +136,10 @@ def short_urlize(url):
 def sort_counter_quantity(val):
     return sorted(val,key=lambda x: x.allcount)
 
+@register.filter
+def sort_counter_money(val):
+    return sorted(val,key=lambda x: x.fullmoney)
+
 register.tag('get_tree_path', do_get_tree_path)
 
 LEADING_PAGE_RANGE_DISPLAYED = TRAILING_PAGE_RANGE_DISPLAYED = 10
