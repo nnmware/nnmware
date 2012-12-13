@@ -86,11 +86,11 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     @property
     def allcount(self):
         active = Order.objects.active()
-        allitems = OrderItem.objects.filter(order__in=active, product_origin=self).annotate(allc=Sum('quantity'))[0].allc
-#        result = 0
-#        for item in allitems:
-#            result += item.quantity
-        return allitems #result
+        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
+        result = 0
+        for item in allitems:
+            result += item.quantity
+        return result
 
     @property
     def fullmoney(self):
