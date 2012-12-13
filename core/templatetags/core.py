@@ -114,14 +114,14 @@ def inline_word(value, size):
 inline_word.is_safe = True
 
 
-@register.filter("latestdates")
+@register.filter
 def latestdates(date):
     if datetime.now() - date < timedelta(hours=24):
         return 'red'
     else:
         return 'normal'
 
-@register.filter("short_urlize")
+@register.filter
 def short_urlize(url):
     if 'http://www.' in url:
         url_short = url[11:-1]
@@ -132,6 +132,9 @@ def short_urlize(url):
     result = "<a href='%s' target='_blank' >%s</a>" % (url,url_short)
     return mark_safe(result)
 
+@register.filter
+def sort_counter_quantity(val):
+    return sorted(val,key=lambda x: x.allcount)
 
 register.tag('get_tree_path', do_get_tree_path)
 
