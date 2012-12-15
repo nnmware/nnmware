@@ -108,8 +108,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     @property
     def allorders(self):
         allitems = OrderItem.objects.filter(product_origin=self).values_list('order__pk',flat=True)
-        return Order.objects.active().dates('created_date', 'day')
-        #.filter(pk__in=allitems).extra({'date_created' : "date(created_date)"}).values('date_created').annotate(orders=Count('id'))
+        return Order.objects.active().filter(pk__in=allitems).dates('created_date', 'day')
 
 class ParameterUnit(Unit):
     pass
