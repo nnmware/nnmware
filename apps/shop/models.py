@@ -107,7 +107,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
     @property
     def allorders(self):
-        items = self.allitems().values_list('order__pk',flat=True)
+        items = self.allitems.values_list('order__pk',flat=True)
         return Order.objects.active.filter(pk__in=items).extra({'date_created' : "date(created_date)"}).values('date_created')
 
 class ParameterUnit(Unit):
