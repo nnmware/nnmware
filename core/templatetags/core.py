@@ -263,14 +263,14 @@ def order_date_avg(on_date):
         result += item.fullamount
     return floatformat(result/on_day.count(), 0)
 
-@register.simple_tag
-def sales_sum(product_pk):
-    result = []
-    p = Product.objects.get(pk=product_pk)
-    active = Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created')
-    allitems = OrderItem.objects.filter(order__in=active, product_origin=p)
-
-    on_day = Order.objects.active().filter(created_date__range=(on_date,on_date+timedelta(days=1)))
-    for item in on_day:
-        result += item.fullamount
-    return floatformat(result/on_day.count(), 0)
+#@register.simple_tag
+#def sales_sum(product_pk):
+#    result = []
+#    p = Product.objects.get(pk=product_pk)
+#    active = Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created')
+#    allitems = OrderItem.objects.filter(order__in=active, product_origin=p)
+#
+#    on_day = Order.objects.active().filter(created_date__range=(on_date,on_date+timedelta(days=1)))
+#    for item in on_day:
+#        result += item.fullamount
+#    return floatformat(result/on_day.count(), 0)

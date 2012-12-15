@@ -83,21 +83,21 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     def get_absolute_url(self):
         return "product_detail", (), {'pk': self.pk}
 
+    def allitems(self):
+        active = Order.objects.active()
+        return OrderItem.objects.filter(order__in=active, product_origin=self)
+
     @property
     def allcount(self):
-        active = Order.objects.active()
-        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
         result = 0
-        for item in allitems:
+        for item in self.allitems():
             result += item.quantity
         return result
 
     @property
     def fullmoney(self):
-        active = Order.objects.active()
-        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
         result = 0
-        for item in allitems:
+        for item in self.allitems():
             result += item.fullamount
         return result
 
@@ -107,9 +107,8 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
     @property
     def allorders(self):
-        active = Order.objects.active()
-        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
-        return active.filter(orderitem__set=allitems)
+        items = self.allitems().values_list('order__pk',flat=True)
+        return Order.objects.active().filter(pk__in=items).extra({'date_created' : "date(created_date)"}).values('date_created')
 
 class ParameterUnit(Unit):
     pass
