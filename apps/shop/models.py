@@ -105,6 +105,12 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     def effect(self):
         return self.fullmoney/(datetime.now()-self.created_date).days
 
+    @property
+    def allorders(self):
+        active = Order.objects.active()
+        allitems = OrderItem.objects.filter(order__in=active, product_origin=self)
+        return active.filter(orderitem__set=allitems)
+
 class ParameterUnit(Unit):
     pass
 

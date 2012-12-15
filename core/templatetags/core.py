@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.template.defaultfilters import floatformat
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
-from nnmware.apps.shop.models import Basket, Product, Order
+from nnmware.apps.shop.models import Basket, Product, Order, OrderItem
 from nnmware.core.models import Tag, Video
 from nnmware.core.http import get_session_from_request
 
@@ -263,3 +263,14 @@ def order_date_avg(on_date):
         result += item.fullamount
     return floatformat(result/on_day.count(), 0)
 
+@register.simple_tag
+def sales_sum(product_pk):
+    result = []
+    p = Product.objects.get(pk=product_pk)
+    active = Order.objects.active().extra({'date_created' : "date(created_date)"}).values('date_created')
+    allitems = OrderItem.objects.filter(order__in=active, product_origin=p)
+
+    on_day = Order.objects.active().filter(created_date__range=(on_date,on_date+timedelta(days=1)))
+    for item in on_day:
+        result += item.fullamount
+    return floatformat(result/on_day.count(), 0)
