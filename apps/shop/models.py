@@ -101,6 +101,10 @@ class Product(AbstractName, MoneyBase, AbstractDate):
             result += item.fullamount
         return result
 
+    @property
+    def effect(self):
+        return self.fullmoney/(datetime.now()-self.created_date).days
+
 class ParameterUnit(Unit):
     pass
 

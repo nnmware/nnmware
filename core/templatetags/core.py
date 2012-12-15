@@ -140,6 +140,11 @@ def sort_counter_quantity(val):
 def sort_counter_money(val):
     return sorted(val,key=lambda x: x.fullmoney)
 
+@register.filter
+def sort_counter_effect(val):
+    return sorted(val,key=lambda x: x.effect)
+
+
 register.tag('get_tree_path', do_get_tree_path)
 
 LEADING_PAGE_RANGE_DISPLAYED = TRAILING_PAGE_RANGE_DISPLAYED = 10
