@@ -242,7 +242,7 @@ class Order(AbstractDate):
     def fio(self):
         result = ''
         if self.last_name <> '' and self.last_name is not None:
-            result += self.last_name
+            result += self.last_name[0]
         if self.first_name <> '' and self.first_name is not None:
             result += ' ' + self.first_name[0]
         if self.middle_name <> '' and self.middle_name is not None:
