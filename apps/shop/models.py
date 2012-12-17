@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+import re
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -248,6 +249,16 @@ class Order(AbstractDate):
         if self.middle_name <> '' and self.middle_name is not None:
             result += ' ' + self.middle_name[0]
         return result
+
+    def email(self):
+        # regex = whoEver@wHerever.xxx
+        r = re.compile(r'(\b[\w.]+@+[\w.]+.+[\w.]\b)')
+        results = r.findall(self.address)
+
+        emails = ""
+        for x in results:
+            emails += str(x)+"\n"
+        return None
 
 
 class OrderItem(MoneyBase):
