@@ -244,9 +244,9 @@ class Order(AbstractDate):
         if self.last_name <> '' and self.last_name is not None:
             result += self.last_name.split(' ')[0]
         if self.first_name <> '' and self.first_name is not None:
-            result += ' ' + self.first_name.split(' ')[0]
+            result += ' ' + self.first_name[0]
         if self.middle_name <> '' and self.middle_name is not None:
-            result += ' ' + self.middle_name.split(' ')[0]
+            result += ' ' + self.middle_name[0]
         return result
 
 
