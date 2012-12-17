@@ -250,17 +250,6 @@ class Order(AbstractDate):
             result += ' ' + self.middle_name[0]
         return result
 
-    def email(self):
-        # regex = whoEver@wHerever.xxx
-        r = re.compile(r'(\b[\w.]+@+[\w.]+.+[\w.]\b)')
-        results = r.findall(self.address)
-
-        emails = ""
-        for x in results:
-            emails += str(x)+"\n"
-        return None
-
-
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
