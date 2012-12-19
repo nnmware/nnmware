@@ -14,6 +14,7 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.managers import AbstractLinkManager
 from nnmware.core.fields import std_text_field, std_url_field
 
@@ -204,6 +205,7 @@ class AbstractName(models.Model):
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
     comments = models.IntegerField(blank=True, null=True)
@@ -460,3 +462,44 @@ class AbstractContact(models.Model):
         verbose_name_plural = _("Contact data")
         abstract = True
 
+class AbstractOrder(models.Model):
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    name_en = std_text_field(_('English name'))
+
+    class Meta:
+        ordering = ['-order_in_list',]
+        abstract = True
+
+    def delete(self, *args, **kwargs):
+        remove_thumbnails(self.img.path)
+        remove_file(self.img.path)
+        super(AbstractOrder, self).delete(*args, **kwargs)
+
+    @property
+    def get_picture(self):
+        try:
+            return self.img.url
+        except :
+            return settings.DEFAULT_AVATAR
+
+SKILL_UNKNOWN = 0
+SKILL_FAN = 1
+SKILL_PRO = 2
+
+SKILL_CHOICES = (
+    (SKILL_UNKNOWN, _("Unknown")),
+    (SKILL_FAN, _("Fan")),
+    (SKILL_PRO, _("Pro")),
+    )
+
+
+class AbstractSkill(AbstractOrder):
+    level = models.IntegerField(_('Level'), choices=SKILL_CHOICES, blank=True, null=True, default=SKILL_UNKNOWN)
+    addon = std_text_field(_('Add-on'))
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+        return "%s :: %s -> %s" % (self.skill.name, self.addon, self.level)
