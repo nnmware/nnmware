@@ -196,3 +196,14 @@ class AbstractLocation(models.Model):
         verbose_name = _("Location")
         verbose_name_plural = _("Locations")
         abstract = True
+
+class Institution(AbstractName):
+    city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city',null=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'),related_name='edu_country',null=True)
+
+    class Meta:
+        verbose_name = _("Institution")
+        verbose_name_plural = _("Institutions")
+
+    def __unicode__(self):
+        return "%s" % self.name

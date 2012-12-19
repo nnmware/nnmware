@@ -6,6 +6,12 @@ from django.contrib.auth.models import Group
 from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
 from django.utils.translation import ugettext_lazy as _
 
+class TypeBaseAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    list_filter = ('name',)
+    search_fields = ('name',)
+    ordering = ('name',)
+
 
 class JCommentAdmin(admin.ModelAdmin):
     fieldsets = (
