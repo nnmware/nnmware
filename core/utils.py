@@ -331,3 +331,7 @@ def setting(name, default=None):
     """Return setting value for given name or default value."""
     return getattr(settings, name, default)
 
+def tuplify(x):
+    return (x,x) # str(x) if needed
+
+current_year = datetime.now().year
