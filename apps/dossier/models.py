@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 from django.db import models
 from nnmware.apps.address.models import Institution
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import tuplify, current_year
+from nnmware.core.utils import tuplify, current_year
 
 EDUCATION_END = map(tuplify, range(current_year-55, current_year+1))
 

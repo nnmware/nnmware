@@ -15,6 +15,7 @@ class Command(BaseCommand):
         activate('ru')
         for hotel in Hotel.objects.exclude(admins=None):
             result = []
+            all_users = []
             for room in hotel.room_set.all():
                 avail = Availability.objects.filter(room=room,date__range=(datetime.now(), datetime.now()+timedelta(days=13))).count()
                 if avail < 14:
@@ -25,7 +26,11 @@ class Command(BaseCommand):
                         settlement_err = [room.get_name,_('Not filled price for %s-placed settlement') % settlement.settlement  ]
                         result.append(settlement_err)
             if len(result) > 0:
-                recipients = settings.BOOKING_MANAGERS
+                if len(hotel.email) > 0:
+                    all_users.append(hotel.email)
+                if len(hotel.contact_email) > 0:
+                    all_users.append(hotel.contact_email)
+                recipients = all_users #settings.BOOKING_MANAGERS
                 mail_dict = {'hotel_name': hotel.get_name, 'site_name': settings.SITENAME,'items':result}
                 subject = 'booking/err_hotel_subject.txt'
                 body = 'booking/err_hotel.txt'
