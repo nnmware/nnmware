@@ -603,7 +603,7 @@ class NnmwareUser(AbstractUser):
     img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
 
     class Meta:
-        ordering = ['user', ]
+        ordering = ['username', ]
         verbose_name = _(" User")
         verbose_name_plural = _("Users")
         abstract =  True
