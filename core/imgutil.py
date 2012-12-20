@@ -139,6 +139,15 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
         except OSError:
             pass
 
+def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
+    if not f_url:
+        return   # empty url
+    file_name = get_path_from_url(f_url, root, url_root)
+    try:
+        os.remove(file_name)
+    except:
+        print >> sys.stderr, "Could not delete file: %s" % file_name
+
 
 def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     file_name = get_path_from_url(img_url, root, url_root)
@@ -148,14 +157,6 @@ def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_r
     im.save(file_name, "JPEG", quality=88 )
 
 
-def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
-    if not f_url:
-        return   # empty url
-    file_name = get_path_from_url(f_url, root, url_root)
-    try:
-        os.remove(file_name)
-    except:
-        print >> sys.stderr, "Could not delete file: %s" % file_name
 
 
 def make_admin_thumbnail(url):

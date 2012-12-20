@@ -1,7 +1,7 @@
 from django.contrib import admin
 from nnmware.apps.dossier.models import *
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.admin import TypeBaseAdmin
+from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
 class AppearanceTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of appearance"), {"fields": [('name'),]}),)
@@ -59,20 +59,70 @@ class CreativeActivityAdmin(TypeBaseAdmin):
         (_("CreativeActivity"), {"fields": [('name','order_in_list'),
                                             ]}),)
 
-class EventAddonAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Event addon"), {"fields": [('name','order_in_list'),
-                                       ]}),)
+class LanguageSkillInline(BaseSkillInline):
+    model = LanguageSkill
+    fields = (('speak','level'),)
 
-class EventCategoryAdmin(TypeBaseAdmin):
+class LanguageSpeakAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Event category"), {"fields": [('name','order_in_list'),
+        (_("Language speak"), {"fields": [('name'),
                                           ]}),)
 
+class TypeDanceAdmin(TypeBaseAdmin):
+    fieldsets = (
+        (_("Type of dance"), {"fields": [('name'),
+                                         ]}),)
+
+class TypeVocalAdmin(TypeBaseAdmin):
+    fieldsets = (
+        (_("Type of vocal"), {"fields": [('name'),
+                                         ]}),)
+
+class TypeMusicInstrumentAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of music instrument"), {"fields": [('name'),]}),)
+
+class TypeDriveAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of driving"), {"fields": [('name'),]}),)
+
+class TypeSportAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of sport"), {"fields": [('name'),]}),)
+
+class TypeSpecialSkillAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of special skill"), {"fields": [('name'),]}),)
+
+class TypeOtherSkillAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of other skill"), {"fields": [('name'),]}),)
+
+class DanceSkillInline(BaseSkillInline):
+    model = DanceSkill
+
+class VocalSkillInline(BaseSkillInline):
+    model = VocalSkill
+
+class MusicSkillInline(BaseSkillInline):
+    model = MusicSkill
+
+class DriveSkillInline(BaseSkillInline):
+    model = DriveSkill
+
+class SportSkillInline(BaseSkillInline):
+    model = SportSkill
+
+class SpecialSkillInline(BaseSkillInline):
+    model = SpecialSkill
+
+class OtherSkillInline(BaseSkillInline):
+    model = OtherSkill
 
 
-
-
+admin.site.register(TypeDance, TypeDanceAdmin)
+admin.site.register(TypeVocal, TypeVocalAdmin)
+admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
+admin.site.register(TypeDrive, TypeDriveAdmin)
+admin.site.register(TypeSport, TypeSportAdmin)
+admin.site.register(TypeSpecialSkill, TypeSpecialSkillAdmin)
+admin.site.register(TypeOtherSkill, TypeOtherSkillAdmin)
+admin.site.register(LanguageSpeak, LanguageSpeakAdmin)
 admin.site.register(NationalType, NationalTypeAdmin)
 admin.site.register(BodyType, BodyTypeAdmin)
 admin.site.register(AppearanceType, AppearanceTypeAdmin)

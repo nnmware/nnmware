@@ -225,28 +225,6 @@ class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
         self.updated_date = datetime.now()
         super(Nnmcomment, self).save(**kwargs)
 
-    def get_base_data(self, show_dates=True):
-        """
-        Outputs a Python dictionary representing the most useful bits of
-        information about this particular object instance.
-        This is mostly useful for testing purposes, as the output from the
-        serializer changes from run to run.  However, this may end up being
-        useful for JSON and/or XML data exchange going forward and as the
-        serializer system is changed.
-        """
-        to_return = {
-            'content_object': self.content_object,
-            'parent': self.parent,
-            'user': self.user,
-            'comment': self.comment,
-            'status': self.status,
-            'ip_address': self.ip_address,
-            }
-        if show_dates:
-            to_return['created_date'] = self.created_date
-            to_return['updated_date'] = self.updated_date
-        return to_return
-
     class Meta:
         ordering = ('-created_date',)
         verbose_name = _("Threaded Comment")

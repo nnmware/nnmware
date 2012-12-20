@@ -12,6 +12,9 @@ class TypeBaseAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     ordering = ('name',)
 
+class BaseSkillInline(admin.StackedInline):
+    fields = (('skill','level','addon'),)
+
 
 class NnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
