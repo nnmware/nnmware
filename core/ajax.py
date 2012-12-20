@@ -18,7 +18,7 @@ from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
-from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, JComment, ACTION_COMMENTED
+from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED
 from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
@@ -199,7 +199,7 @@ def img_setmain(request, object_id):
     # Link used for User press SetMain for Image
     pic = get_object_or_404(Pic, id=int(object_id))
     if img_check_rights(request,pic):
-        all_pics =Pic.objects.metalinks_for_object(pic.content_object)
+        all_pics =Pic.objects.for_object(pic.content_object)
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
@@ -553,7 +553,7 @@ def pic_setmain(request, object_id):
     # Link used for User press SetMain for Image
     try:
         pic = Pic.objects.get(id=int(object_id))
-        all_pics =Pic.objects.metalinks_for_object(pic.content_object)
+        all_pics =Pic.objects.for_object(pic.content_object)
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
@@ -646,7 +646,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
     try:
         if not request.user.is_authenticated():
             raise AccessError
-        comment = JComment()
+        comment = Nnmcomment()
         comment.user = request.user
         comment.content_type = get_object_or_404(ContentType, id=int(content_type))
         comment.object_id = int(object_id)

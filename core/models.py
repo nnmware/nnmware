@@ -22,11 +22,11 @@ from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, TZ_CHOICES
-from nnmware.core.managers import AbstractLinkManager, JCommentManager, PublicJCommentManager, \
+from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
-from nnmware.core.abstract import AbstractLink, AbstractFile
+from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
 
 
@@ -38,6 +38,7 @@ class Tag(models.Model):
     slug = models.SlugField(_("URL"), max_length=40, unique=True)
     follow = models.PositiveIntegerField(default=0, editable=False)
 
+    objects = Manager()
 
     class Meta:
         ordering = ('name',)
@@ -69,7 +70,7 @@ class Tag(models.Model):
 
 
 
-class Doc(AbstractLink, AbstractFile):
+class Doc(AbstractContent, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
     file = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
 
@@ -78,11 +79,11 @@ class Doc(AbstractLink, AbstractFile):
         verbose_name = _("Doc")
         verbose_name_plural = _("Docs")
 
-    objects = AbstractLinkManager()
+    objects = AbstractContentManager()
 
     def save(self, *args, **kwargs):
         try:
-            docs = Doc.objects.metalinks_for_object(self.content_object)
+            docs = Doc.objects.for_object(self.content_object)
             if self.pk:
                 docs = docs.exclude(pk=self.pk)
             if settings.DOC_MAX_PER_OBJECT > 1:
@@ -111,11 +112,11 @@ class Doc(AbstractLink, AbstractFile):
         return reverse("doc_edit", self.id)
 
 
-class Pic(AbstractLink, AbstractFile):
+class Pic(AbstractContent, AbstractFile):
     pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
 
-    objects = AbstractLinkManager()
+    objects = AbstractContentManager()
 
     class Meta:
         ordering = ['created_date', ]
@@ -129,7 +130,7 @@ class Pic(AbstractLink, AbstractFile):
         return os.path.join(settings.MEDIA_URL, self.pic.url)
 
     def save(self, *args, **kwargs):
-        pics = Pic.objects.metalinks_for_object(self.content_object)
+        pics = Pic.objects.for_object(self.content_object)
         if self.pk:
             pics = pics.exclude(pk=self.pk)
         if settings.PIC_MAX_PER_OBJECT > 1:
@@ -193,7 +194,7 @@ class Pic(AbstractLink, AbstractFile):
         return reverse("pic_editor", self.pk)
 
 
-class JComment(AbstractLink, AbstractIP, AbstractDate):
+class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
     """
     A threaded comment which must be associated with an instance of
     ``django.contrib.auth.models.User``.  It is given its hierarchy by
@@ -212,8 +213,8 @@ class JComment(AbstractLink, AbstractIP, AbstractDate):
     # Status Fields
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
 
-    objects = JCommentManager()
-    public = PublicJCommentManager()
+    objects = NnmcommentManager()
+    public = PublicNnmcommentManager()
 
     def __unicode__(self):
         if len(self.comment) > 50:
@@ -222,7 +223,7 @@ class JComment(AbstractLink, AbstractIP, AbstractDate):
 
     def save(self, **kwargs):
         self.updated_date = datetime.now()
-        super(JComment, self).save(**kwargs)
+        super(Nnmcomment, self).save(**kwargs)
 
     def get_base_data(self, show_dates=True):
         """
@@ -261,7 +262,7 @@ class Follow(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     object_id = models.CharField(max_length=255)
-    actor = GenericForeignKey()
+    content_object = GenericForeignKey('content_type', 'object_id')
 
     objects = FollowManager()
 
@@ -271,7 +272,7 @@ class Follow(models.Model):
         verbose_name_plural = _("Follows")
 
     def __unicode__(self):
-        return u'%s -> %s' % (self.user, self.actor)
+        return u'%s -> %s' % (self.user, self.content_object)
 
 NOTICE_UNKNOWN = 0
 NOTICE_SYSTEM = 1
@@ -290,7 +291,7 @@ NOTICE_CHOICES = (
     )
 
 
-class Notice(AbstractLink, AbstractIP):
+class Notice(AbstractContent, AbstractIP):
     """
     User notification model
     """
@@ -372,7 +373,7 @@ ACTION_CHOICES = (
     (ACTION_LIKED, _("Liked")),
     )
 
-class Action(AbstractLink,AbstractIP):
+class Action(AbstractContent,AbstractIP):
     """
     Model Activity of User
     """
@@ -409,24 +410,24 @@ class Action(AbstractLink,AbstractIP):
 
 def update_comment_count(sender, instance, **kwargs):
     what = instance.get_content_object()
-    what.comments = JComment.public.all_for_object(what).count()
+    what.comments = Nnmcomment.public.all_for_object(what).count()
     what.updated_date = datetime.now()
     what.save()
 
 
 def update_pic_count(sender, instance, **kwargs):
     what = instance.get_content_object()
-    what.pics = Pic.objects.metalinks_for_object(what).count()
+    what.pics = Pic.objects.for_object(what).count()
     what.save()
 
 
 def update_doc_count(sender, instance, **kwargs):
     what = instance.get_content_object()
-    what.docs = Doc.objects.metalinks_for_object(what).count()
+    what.docs = Doc.objects.for_object(what).count()
     what.save()
 
-signals.post_save.connect(update_comment_count, sender=JComment, dispatch_uid="nnmware_id")
-signals.post_delete.connect(update_comment_count, sender=JComment, dispatch_uid="nnmware_id")
+signals.post_save.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
+signals.post_delete.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
 signals.post_save.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
 signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
@@ -595,7 +596,7 @@ class Video(AbstractDate):
 
     def users_commented(self):
         ctype = ContentType.objects.get_for_model(self)
-        users = JComment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
+        users = Nnmcomment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
 class NnmwareUser(AbstractUser):
@@ -621,25 +622,28 @@ class NnmwareUser(AbstractUser):
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
-    avatar = models.ForeignKey(Pic, blank=True, null=True)
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
 
     class Meta:
         ordering = ['user', ]
-        verbose_name = _(" User Profile")
-        verbose_name_plural = _("Users Profiles")
+        verbose_name = _(" User")
+        verbose_name_plural = _("Users")
         abstract =  True
 
     def delete(self, *args, **kwargs):
         self.avatar.delete()
         super(NnmwareUser, self).delete(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("user_detail", args=[self.username])
+
     def __unicode__(self):
-        return _("%s's userprofile") % self.user
+        return "%s" % self.username
 
     @property
-    def get_avatar(self):
+    def ava(self):
         try:
-            return self.avatar.pic.url
+            return self.img.url
         except :
             return settings.DEFAULT_AVATAR
 
@@ -698,3 +702,4 @@ class NnmwareUser(AbstractUser):
     def save(self, *args, **kwargs):
         self.date_modified = datetime.datetime.now()
         super(NnmwareUser, self).save(*args, **kwargs)
+

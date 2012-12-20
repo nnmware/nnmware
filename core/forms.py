@@ -82,7 +82,7 @@ class UploadPicForm(forms.Form):
                   u"the maximum allowed size is %(max_valid_size)s") %
                 {'size': filesizeformat(data.size),
                  'max_valid_size': filesizeformat(settings.AVATAR_MAX_SIZE)})
-        count = Pic.objects.metalinks_for_object(self.target).count()
+        count = Pic.objects.for_object(self.target).count()
         if count >= settings.PIC_MAX_PER_OBJECT > 1:
             raise forms.ValidationError(
                 _(u"You already have %(nb_pic)d image, and the "

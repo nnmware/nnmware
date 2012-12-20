@@ -145,5 +145,5 @@ class Bill(MoneyBase):
                  'currency': self.currency}
 
     def docs(self):
-        return Doc.objects.metalinks_for_object(self)
+        return Doc.objects.for_object(self)
 

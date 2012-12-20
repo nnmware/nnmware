@@ -15,7 +15,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.imgutil import remove_thumbnails, remove_file
-from nnmware.core.managers import AbstractLinkManager
+from nnmware.core.managers import AbstractContentManager
 from nnmware.core.fields import std_text_field, std_url_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
@@ -42,17 +42,6 @@ class Color(models.Model):
 
     def __unicode__(self):
         return self.name
-
-class AbstractContent(models.Model):
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = GenericForeignKey("content_type", "object_id")
-
-    objects = AbstractLinkManager()
-
-    class Meta:
-        abstract = True
-
 
 class AbstractDate(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
@@ -197,7 +186,26 @@ class AbstractData(AbstractDate):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
-class AbstractName(models.Model):
+class AbstractImg(models.Model):
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def ava(self):
+        try:
+            return self.img.url
+        except :
+            return settings.DEFAULT_IMG
+
+    def delete(self, *args, **kwargs):
+        remove_thumbnails(self.img.path)
+        remove_file(self.img.path)
+        super(AbstractImg, self).delete(*args, **kwargs)
+
+
+class AbstractName(AbstractImg):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
@@ -205,11 +213,9 @@ class AbstractName(models.Model):
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
     comments = models.IntegerField(blank=True, null=True)
-
 
     class Meta:
         ordering = ['-order_in_list', 'name' ]
@@ -244,10 +250,11 @@ class AbstractName(models.Model):
         except :
             return None
 
+
     @property
     def allpics(self):
         from nnmware.core.models import Pic
-        return Pic.objects.metalinks_for_object(self).order_by('-primary')
+        return Pic.objects.for_object(self).order_by('-primary')
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -257,6 +264,7 @@ class AbstractName(models.Model):
         else:
             self.slug = str(self.slug).strip().replace(' ','-')
         super(AbstractName, self).save(*args, **kwargs)
+
 
 
 class Tree(AbstractName):
@@ -361,7 +369,7 @@ class Tree(AbstractName):
         flat_list = self._flatten(children_list[ix:])
         return flat_list
 
-class AbstractLink(models.Model):
+class AbstractContent(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
@@ -371,26 +379,13 @@ class AbstractLink(models.Model):
     class Meta:
         abstract = True
 
-    objects = AbstractLinkManager()
-
-    def get_content_object(self):
-        """
-        Wrapper around the GenericForeignKey due to compatibility reasons
-        and due to ``list_display`` limitations.
-        """
-        return self.content_object
+    objects = AbstractContentManager()
 
     def __unicode__(self):
-        if len(self.description) > 50:
-            return self.description[:50] + "..."
-        return self.description[:50]
-
-    def admin_link(self):
-        return "<a href='%s'>%s</a>" % (self.get_absolute_url(), _("View on site"))
-
-    admin_link.allow_tags = True
-    admin_link.short_description = ""
-
+        try:
+            return "%s - %s " % (self.content_object.get_name, self.pk)
+        except:
+            return None
 
 DOC_FILE = 0
 DOC_IMAGE = 1
@@ -418,7 +413,7 @@ class AbstractIP(models.Model):
     class Meta:
         abstract = True
 
-class AbstractContact(models.Model):
+class AbstractContact(AbstractImg):
     mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, default='')
     mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, default='')
     landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, default='')
@@ -462,26 +457,16 @@ class AbstractContact(models.Model):
         verbose_name_plural = _("Contact data")
         abstract = True
 
-class AbstractOrder(models.Model):
+class AbstractOrder(AbstractImg):
     order_in_list = models.IntegerField(_('Order in list'), default=0)
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     name_en = std_text_field(_('English name'))
 
     class Meta:
         ordering = ['-order_in_list',]
         abstract = True
 
-    def delete(self, *args, **kwargs):
-        remove_thumbnails(self.img.path)
-        remove_file(self.img.path)
-        super(AbstractOrder, self).delete(*args, **kwargs)
-
-    @property
-    def get_picture(self):
-        try:
-            return self.img.url
-        except :
-            return settings.DEFAULT_AVATAR
+    def __unicode__(self):
+        return "%s" % self.name
 
 SKILL_UNKNOWN = 0
 SKILL_FAN = 1
@@ -503,3 +488,43 @@ class AbstractSkill(AbstractOrder):
 
     def __unicode__(self):
         return "%s :: %s -> %s" % (self.skill.name, self.addon, self.level)
+
+class AbstractNnmwareProfile(AbstractDate, AbstractImg):
+    main = models.BooleanField(_('Main profile'), default=False)
+    first_name = models.CharField(max_length=50, verbose_name=_('First Name'), blank=True, default='')
+    middle_name = models.CharField(max_length=50, verbose_name=_('Middle Name'), blank=True, default='')
+    last_name = models.CharField(max_length=50, verbose_name=_('Last Name'), blank=True, default='')
+    viewcount = models.PositiveIntegerField(default=0, editable=False)
+    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+    is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
+    is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
+
+
+    def save(self, *args, **kwargs):
+        if self.main:
+            AbstractNnmwareProfile.objects.filter(user=self.user).update(main=False)
+        super(AbstractNnmwareProfile, self).save(*args, **kwargs)
+
+    @property
+    def events_count(self):
+        return self.events.count()
+
+    @property
+    def get_name(self):
+        if self.first_name and self.last_name:
+            return self.first_name + ' ' + self.last_name
+        else:
+            return self.user.username
+
+
+    def __unicode__(self):
+        return "%s %s" % (self.last_name, self.first_name)
+
+    class Meta:
+        verbose_name = _("Profile")
+        verbose_name_plural = _("Profiles")
+        abstract =  True
+
+    @permalink
+    def get_absolute_url(self):
+        return "employer_view", (), {'pk': self.pk}

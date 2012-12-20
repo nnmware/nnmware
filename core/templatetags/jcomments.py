@@ -4,7 +4,7 @@ from django import template
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 
-from nnmware.core.models import JComment
+from nnmware.core.models import Nnmcomment
 
 register = template.Library()
 
@@ -36,8 +36,8 @@ def get_comment_url(content_object, parent=None):
     """
     kwargs = get_contenttype_kwargs(content_object)
     if parent:
-        if not isinstance(parent, JComment):
-            raise template.TemplateSyntaxError, "get_comment_url requires its parent object to be of type JComment"
+        if not isinstance(parent, Nnmcomment):
+            raise template.TemplateSyntaxError, "get_comment_url requires its parent object to be of type Nnmcomment"
         kwargs.update({'parent_id': getattr(parent, 'pk', getattr(parent, 'id'))})
         return reverse('jcomment_parent_add', kwargs=kwargs)
     else:
@@ -83,7 +83,7 @@ class CommentTreeNode(template.Node):
                     tree_root = int(self.tree_root_str)
                 except ValueError:
                     tree_root = self.tree_root_str
-        context[self.context_name] = JComment.public.get_tree(content_object, root=tree_root)
+        context[self.context_name] = Nnmcomment.public.get_tree(content_object, root=tree_root)
         return ''
 
 @register.tag
@@ -100,17 +100,17 @@ def get_comment_count(parser, token):
         raise template.TemplateSyntaxError, error_message
     if split[1] != 'for' or split[3] != 'as':
         raise template.TemplateSyntaxError, error_message
-    return JCommentCountNode(split[2], split[4])
+    return NnmcommentCountNode(split[2], split[4])
 
 
-class JCommentCountNode(template.Node):
+class NnmcommentCountNode(template.Node):
     def __init__(self, content_object, context_name):
         self.content_object = template.Variable(content_object)
         self.context_name = context_name
 
     def render(self, context):
         content_object = self.content_object.resolve(context)
-        context[self.context_name] = JComment.public.all_for_object(content_object).count()
+        context[self.context_name] = Nnmcomment.public.all_for_object(content_object).count()
         return ''
 
 
@@ -142,7 +142,7 @@ class LatestCommentsNode(template.Node):
         self.context_name = context_name
 
     def render(self, context):
-        comments = JComment.objects.order_by('-created_date')[:self.num]
+        comments = Nnmcomment.objects.order_by('-created_date')[:self.num]
         context[self.context_name] = comments
         return ''
 

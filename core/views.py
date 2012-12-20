@@ -23,7 +23,7 @@ from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
 from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
-from nnmware.core.models import JComment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
+from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
 from nnmware.core.abstract import STATUS_DELETE
 from nnmware.core.signals import action
@@ -304,7 +304,7 @@ class AttachedImagesMixin(object):
         # Call the base implementation first to get a context
         context = super(AttachedImagesMixin, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the images
-        pics = Pic.objects.metalinks_for_object(self.object)
+        pics = Pic.objects.for_object(self.object)
         pics_size = pics.aggregate(Sum('size'))['size__sum']
         context['pics'] = pics
         context['pics_size'] = pics_size
@@ -315,7 +315,7 @@ class AttachedFilesMixin(object):
         # Call the base implementation first to get a context
         context = super(AttachedFilesMixin, self).get_context_data(**kwargs)
         # Add in a QuerySet of all the docs and files
-        docs = Doc.objects.metalinks_for_object(self.object)
+        docs = Doc.objects.for_object(self.object)
         docs_size = docs.aggregate(Sum('size'))['size__sum']
         context['docs'] = docs
         context['docs_size'] = docs_size
@@ -773,7 +773,7 @@ class VideoDetail(SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        return JComment.public.get_tree(self.object)
+        return Nnmcomment.public.get_tree(self.object)
 
 class VideoTimelineFeed(ListView):
     paginate_by = 5

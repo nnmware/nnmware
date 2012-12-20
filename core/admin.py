@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from nnmware.core.models import JComment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
+from nnmware.core.models import Nnmcomment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
 from django.utils.translation import ugettext_lazy as _
 
 class TypeBaseAdmin(admin.ModelAdmin):
@@ -13,7 +13,7 @@ class TypeBaseAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 
-class JCommentAdmin(admin.ModelAdmin):
+class NnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('nnmware'), {'fields': [('parent', 'content_type', 'object_id')]}),
         (_('Content'), {'fields': [('comment', 'user', 'status')]}),
@@ -26,7 +26,7 @@ class JCommentAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
 
-admin.site.register(JComment, JCommentAdmin)
+admin.site.register(Nnmcomment, NnmcommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):

@@ -6,9 +6,9 @@ from django.db.models import Manager
 from django.db.models import Q
 
 
-class AbstractLinkManager(Manager):
+class AbstractContentManager(Manager):
 
-    def metalinks_for_object(self, obj):
+    def for_object(self, obj):
         object_type = ContentType.objects.get_for_model(obj)
         return self.filter(content_type__pk=object_type.id, object_id=obj.id)
 
@@ -27,7 +27,7 @@ def dfs(node, all_nodes, depth):
     return to_return
 
 
-class JCommentManager(Manager):
+class NnmcommentManager(Manager):
     """
      A ``Manager`` which will be attached to each comment model.  It helps to facilitate
      the retrieval of comments in tree form and also has utility methods for
@@ -103,7 +103,7 @@ class JCommentManager(Manager):
         return self.filter(**self._generate_object_kwarg_dict(content_object, **kwargs))
 
 
-class PublicJCommentManager(JCommentManager):
+class PublicNnmcommentManager(NnmcommentManager):
     """
      A ``Manager`` which borrows all of the same methods from ``ThreadedCommentManager``,
      but which also restricts the queryset to only the published methods
@@ -113,29 +113,21 @@ class PublicJCommentManager(JCommentManager):
     def get_query_set(self):
         from nnmware.core.abstract import STATUS_PUBLISHED, STATUS_STICKY
 
-        return super(JCommentManager, self).get_query_set().filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
+        return super(NnmcommentManager, self).get_query_set().filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
 
-class FollowManager(Manager):
+class FollowManager(AbstractContentManager):
     """
     Manager for Follow model.
     """
 
-    def for_object(self, instance):
+    def is_following(self, user, obj):
         """
-        Filter to a specific instance.
-        """
-
-        content_type = ContentType.objects.get_for_model(instance).pk
-        return self.filter(content_type=content_type, object_id=instance.pk)
-
-    def is_following(self, user, instance):
-        """
-        Check if a user is following an instance.
+        Check if a user is following an object.
         """
         if not user:
             return False
-        queryset = self.for_object(instance)
+        queryset = self.for_object(obj)
         return queryset.filter(user=user).exists()
 
 #    def users(self, user):

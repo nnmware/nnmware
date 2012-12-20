@@ -11,7 +11,7 @@ from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
-from nnmware.core.models import JComment
+from nnmware.core.models import Nnmcomment
 from nnmware.core.utils import send_template_mail
 import settings
 
@@ -329,7 +329,7 @@ def delete_comment(request, object_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        JComment.objects.get(pk=int(object_id)).delete()
+        Nnmcomment.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}

@@ -78,7 +78,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
         verbose_name_plural = _("Products")
 
     def parameters(self):
-        return ProductParameterValue.objects.metalinks_for_object(self)
+        return ProductParameterValue.objects.for_object(self)
 
     @permalink
     def get_absolute_url(self):

@@ -17,7 +17,7 @@ from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, Sh
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
-from nnmware.core.models import JComment
+from nnmware.core.models import Nnmcomment
 from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
@@ -72,7 +72,7 @@ class ProductDetail(SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        return JComment.public.get_tree(self.object)
+        return Nnmcomment.public.get_tree(self.object)
 
 class BasketView(TemplateView):
     template_name = 'shop/basket.html'
