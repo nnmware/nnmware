@@ -408,6 +408,41 @@ class AbstractVehicle(AbstractName):
     def __unicode__(self):
         return "%s :: %s" % (self.name, self.ttype.name)
 
+class SurveyObjectType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Survey object type")
+        verbose_name_plural = _("Surver object types")
+
+class AbstractSurveyObject(AbstractName):
+    stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
+
+    class Meta:
+        verbose_name = _("Survey object")
+        verbose_name_plural = _("Survey objects")
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.name, self.stype.name)
+
+class SurveySuitType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Survey suit type")
+        verbose_name_plural = _("Survey suits types")
+
+class AbstractSurveySuit(AbstractName):
+    stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
+
+    class Meta:
+        verbose_name = _("Survey type")
+        verbose_name_plural = _("Survey types")
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.name, self.stype.name)
+
+
 YEARS_FOREIGN_PASSPORT = map(tuplify, range(current_year, current_year + 10))
 
 class AbstractPersonalData(models.Model):

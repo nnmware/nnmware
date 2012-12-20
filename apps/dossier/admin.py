@@ -127,6 +127,12 @@ class AnimalTypeAdmin(TypeBaseAdmin):
 class AnimalKindAdmin(TypeBaseAdmin):
     fieldsets = ((_("Kind of animal"), {"fields": [('name'),]}),)
 
+class SurveyObjectTypeAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of survey object"), {"fields": [('name'),]}),)
+
+class SurveySuitTypeAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of survey suit"), {"fields": [('name'),]}),)
+
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
 admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
@@ -154,3 +160,5 @@ admin.site.register(TransportType, TTypeAdmin)
 admin.site.register(TransportMark, TMarkAdmin)
 admin.site.register(AnimalType, AnimalTypeAdmin)
 admin.site.register(AnimalKind, AnimalKindAdmin)
+admin.site.register(SurveyObjectType, SurveyObjectTypeAdmin)
+admin.site.register(SurveySuitType, SurveySuitTypeAdmin)
