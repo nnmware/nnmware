@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 20:01+1100\n"
+"POT-Creation-Date: 2012-12-20 20:10+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,30 +40,38 @@ msgid "Booking"
 msgstr "Бронирование"
 
 #: dashboard.py:52
+msgid "Dossier"
+msgstr "Досье"
+
+#: dashboard.py:58
+msgid "Business"
+msgstr "Бизнес"
+
+#: dashboard.py:64
 msgid "Administration Module"
 msgstr "Административный модуль"
 
-#: dashboard.py:66
+#: dashboard.py:78
 msgid "Recent Actions"
 msgstr "Последние Действия"
 
-#: dashboard.py:74
+#: dashboard.py:86
 msgid "nnmware.example"
 msgstr "nnmware демо"
 
-#: dashboard.py:78
+#: dashboard.py:90
 msgid "Main Page"
 msgstr "Главная страница"
 
-#: dashboard.py:83
+#: dashboard.py:95
 msgid "Admin page"
 msgstr "Административная страница"
 
-#: dashboard.py:93
+#: dashboard.py:105
 msgid "Engine Support"
 msgstr "Поддержка движка"
 
-#: dashboard.py:97
+#: dashboard.py:109
 msgid "support@nnmware.com"
 msgstr ""
 
