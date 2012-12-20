@@ -219,18 +219,6 @@ class VideoAdmin(admin.ModelAdmin):
             ('users_viewed')]}),
         )
 
-class GlavTopicAdmin(admin.ModelAdmin):
-    fieldsets = (
-        (_('Topic'), {'fields': [('user', 'enabled','category')]}),
-        (_('Content'), {'fields': [('name',),('description',)]}),
-        (_('Meta'), {'fields': [('created_date', 'updated_date')]}),
-        )
-    list_display = ('user', 'created_date', 'name')
-    list_filter = ('created_date',)
-    date_hierarchy = 'created_date'
-    search_fields = ('name', 'user__username')
-    readonly_fields = ('created_date','updated_date')
-
 
 admin.site.register(EmailValidation, EmailValidationAdmin)
 admin.site.register(Message, MessageAdmin)
@@ -242,5 +230,3 @@ admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(VisitorHit, VisitorHitAdmin)
 admin.site.register(Video, VideoAdmin)
-admin.site.register(GlavTopic, GlavTopicAdmin)
-admin.site.register(GlavTopicCategory, TreeAdmin)
