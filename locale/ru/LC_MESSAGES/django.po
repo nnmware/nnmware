@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-21 05:35+1100\n"
+"POT-Creation-Date: 2012-12-21 06:24+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1296,6 +1296,16 @@ msgstr "Тип танца"
 msgid "Kind of animal"
 msgstr ""
 
+#: apps/dossier/admin.py:131
+#, fuzzy
+msgid "Type of survey object"
+msgstr "Типы съемок"
+
+#: apps/dossier/admin.py:134
+#, fuzzy
+msgid "Type of survey suit"
+msgstr "Типы съемок"
+
 #: apps/dossier/models.py:23
 msgid "End of education"
 msgstr "Окончание обучения"
@@ -1724,48 +1734,84 @@ msgstr "Транспортное средство"
 msgid "Vehicles"
 msgstr "Транспортные средства"
 
-#: apps/dossier/models.py:414
+#: apps/dossier/models.py:415
+msgid "Survey object type"
+msgstr "Тип объекта съемки"
+
+#: apps/dossier/models.py:416
+msgid "Surver object types"
+msgstr "Типы объекта съемок"
+
+#: apps/dossier/models.py:419 apps/dossier/models.py:436
+msgid "Type"
+msgstr "Тип"
+
+#: apps/dossier/models.py:422
+msgid "Survey object"
+msgstr "Объект съемки"
+
+#: apps/dossier/models.py:423
+msgid "Survey objects"
+msgstr "Объекты съемок"
+
+#: apps/dossier/models.py:432
+msgid "Survey suit type"
+msgstr "Тип места съемки"
+
+#: apps/dossier/models.py:433
+msgid "Survey suits types"
+msgstr "Типы мест съемок"
+
+#: apps/dossier/models.py:439
+msgid "Survey type"
+msgstr "Тип съемки"
+
+#: apps/dossier/models.py:440
+msgid "Survey types"
+msgstr "Типы съемок"
+
+#: apps/dossier/models.py:449
 msgid "Russia citizenship"
 msgstr "Российское гражданство"
 
-#: apps/dossier/models.py:415
+#: apps/dossier/models.py:450
 msgid "Citizenship"
 msgstr "Гражданство"
 
-#: apps/dossier/models.py:416
+#: apps/dossier/models.py:451
 msgid "Foreign passport"
-msgstr ""
+msgstr "Загранпаспорт"
 
-#: apps/dossier/models.py:417
+#: apps/dossier/models.py:452
 msgid "Foreign passport expired"
 msgstr ""
 
-#: apps/dossier/models.py:419
+#: apps/dossier/models.py:454
 msgid "INN"
-msgstr ""
+msgstr "ИНН"
 
-#: apps/dossier/models.py:420
+#: apps/dossier/models.py:455
 msgid "Certificate of insurance"
 msgstr ""
 
-#: apps/dossier/models.py:421
+#: apps/dossier/models.py:456
 msgid "Passport series and number"
-msgstr ""
+msgstr "Серия и номер паспорта"
 
-#: apps/dossier/models.py:422
+#: apps/dossier/models.py:457
 #, fuzzy
 msgid "Passport issued"
 msgstr "Пароль"
 
-#: apps/dossier/models.py:423
+#: apps/dossier/models.py:458
 msgid "Date of passport issued"
 msgstr ""
 
-#: apps/dossier/models.py:424
+#: apps/dossier/models.py:459
 msgid "Passport registration"
 msgstr ""
 
-#: apps/dossier/models.py:427 apps/dossier/models.py:428
+#: apps/dossier/models.py:462 apps/dossier/models.py:463
 #, fuzzy
 msgid "Personal Data"
 msgstr "Личный вебсайт\n"
