@@ -500,7 +500,7 @@ class EmailValidation(models.Model):
         return _("Email validation process for %(user)s") % {'user': self.username}
 
     def is_expired(self):
-        return (datetime.datetime.today() - self.created).days > 7
+        return (datetime.today() - self.created).days > 7
 
     def resend(self):
         """
@@ -517,7 +517,7 @@ class EmailValidation(models.Model):
             send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
         except:
             pass
-        self.created = datetime.datetime.now()
+        self.created = datetime.now()
         self.save()
         return True
 
@@ -678,6 +678,6 @@ class NnmwareUser(AbstractUser):
         return None
 
     def save(self, *args, **kwargs):
-        self.date_modified = datetime.datetime.now()
+        self.date_modified = datetime.now()
         super(NnmwareUser, self).save(*args, **kwargs)
 
