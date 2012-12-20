@@ -543,7 +543,6 @@ class Video(AbstractDate, AbstractImg):
         verbose_name = _("Video")
         verbose_name_plural = _("Videos")
         ordering = ("-created_date",)
-        abstract = True
 
     def __unicode__(self):
         return _("%s") % self.project_name
