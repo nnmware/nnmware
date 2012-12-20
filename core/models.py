@@ -604,7 +604,7 @@ class NnmwareUser(AbstractUser):
 
     class Meta:
         ordering = ['username', ]
-        verbose_name = _(" User")
+        verbose_name = _("User")
         verbose_name_plural = _("Users")
         abstract =  True
 
