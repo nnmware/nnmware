@@ -384,7 +384,7 @@ class TransportType(AbstractName):
         verbose_name_plural = _("Transport types")
 
 class TransportMark(AbstractImg):
-    t_type = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
+    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
     name = std_text_field(_('Name'))
     description = models.TextField(_("Description"), blank=True)
     name_en = std_text_field(_('English name'))
@@ -394,7 +394,7 @@ class TransportMark(AbstractImg):
         verbose_name_plural = _("Transport mark")
 
     def __unicode__(self):
-        return "%s :: %s" % (self.t_type.name, self.name)
+        return "%s :: %s" % (self.ttype.name, self.name)
 
 class AbstractVehicle(AbstractName):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
