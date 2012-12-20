@@ -535,6 +535,18 @@ class LogoutView(TemplateView):
         logout(self.request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
+class AjaxLogoutView(TemplateView):
+
+    def post(self, request, *args, **kwargs):
+        self.success = True
+        location = None
+        try:
+            logout(self.request)
+            location = '/'
+        except :
+            self.success = False
+        payload = {'success': self.success, 'location': location}
+        return AjaxLazyAnswer(payload)
 
 class UserSettings(UpdateView):
     form_class = UserSettingsForm
