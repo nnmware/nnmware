@@ -14,7 +14,7 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from nnmware.core.imgutil import remove_thumbnails, remove_file
+from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
 from nnmware.core.fields import std_text_field, std_url_field
 
@@ -203,6 +203,16 @@ class AbstractImg(models.Model):
         remove_thumbnails(self.img.path)
         remove_file(self.img.path)
         super(AbstractImg, self).delete(*args, **kwargs)
+
+    def slide_thumbnail(self):
+        if self.img:
+            path = self.img.url
+            tmb = make_thumbnail(path, width=100, height=100, aspect=1)
+        else:
+            tmb = '/static/img/icon-no.gif"'
+            path = '/static/img/icon-no.gif"'
+        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
+    slide_thumbnail.allow_tags = True
 
 
 class AbstractName(AbstractImg):

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-20 20:10+1100\n"
+"POT-Creation-Date: 2012-12-20 21:24+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -189,7 +189,7 @@ msgstr "Строение"
 msgid "Number of flat"
 msgstr "Номер квартиры"
 
-#: apps/address/models.py:196 core/models.py:590
+#: apps/address/models.py:196 core/models.py:581
 msgid "Location"
 msgstr "Местоположение"
 
@@ -288,7 +288,7 @@ msgstr "Объявления"
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
-#: apps/board/models.py:27 core/abstract.py:421 core/models.py:591
+#: apps/board/models.py:27 core/abstract.py:421 core/models.py:582
 msgid "ICQ"
 msgstr "Аська"
 
@@ -576,7 +576,7 @@ msgid "Fax"
 msgstr "Факс"
 
 #: apps/booking/models.py:126 apps/booking/models.py:656 core/abstract.py:426
-#: core/models.py:586
+#: core/models.py:577
 msgid "Website"
 msgstr "Вебсайт"
 
@@ -765,7 +765,7 @@ msgstr "Завершено"
 #: apps/booking/models.py:495 apps/booking/models.py:647
 #: apps/money/models.py:74 apps/money/models.py:123 apps/shop/models.py:153
 #: apps/shop/models.py:199 apps/shop/models.py:273 core/models.py:415
-#: core/models.py:607
+#: core/models.py:598
 msgid "User"
 msgstr "Пользователь"
 
@@ -2217,7 +2217,7 @@ msgstr "Удалено"
 msgid "Locked"
 msgstr "Заблокировано"
 
-#: core/abstract.py:88 core/models.py:538
+#: core/abstract.py:88 core/models.py:537
 msgid "Published"
 msgstr "Опубликовано"
 
@@ -2233,11 +2233,11 @@ msgstr "Модерирование"
 msgid "Author"
 msgstr "Автор"
 
-#: core/abstract.py:102 core/abstract.py:277 core/models.py:532
+#: core/abstract.py:102 core/abstract.py:277 core/models.py:531
 msgid "Login required"
 msgstr "Требуется регистрация"
 
-#: core/abstract.py:102 core/abstract.py:277 core/models.py:532
+#: core/abstract.py:102 core/abstract.py:277 core/models.py:531
 msgid "Enable this if users must login before access with this objects."
 msgstr ""
 "Включите это, если пользователи должны зарегистрироваться для доступа к "
@@ -2268,7 +2268,7 @@ msgid "View on site"
 msgstr "Смотреть на сайте"
 
 #: core/abstract.py:190 core/abstract.py:395 core/models.py:116
-#: core/models.py:603
+#: core/models.py:594
 msgid "Image"
 msgstr "Изображение"
 
@@ -2364,7 +2364,7 @@ msgstr "Рабочий стационарный телефон"
 msgid "Jabber"
 msgstr "Джаббер"
 
-#: core/abstract.py:424 core/models.py:596
+#: core/abstract.py:424 core/models.py:587
 msgid "Public email"
 msgstr "Публичный email"
 
@@ -2376,15 +2376,15 @@ msgstr "Личный email"
 msgid "Personal Website"
 msgstr "Личный вебсайт\n"
 
-#: core/abstract.py:428 core/models.py:587
+#: core/abstract.py:428 core/models.py:578
 msgid "Facebook"
 msgstr "Фейсбук"
 
-#: core/abstract.py:429 core/models.py:588
+#: core/abstract.py:429 core/models.py:579
 msgid "Google+"
 msgstr ""
 
-#: core/abstract.py:430 core/models.py:589
+#: core/abstract.py:430 core/models.py:580
 msgid "Twitter"
 msgstr "Твиттер"
 
@@ -2514,7 +2514,7 @@ msgstr "Аккаунт работодателя"
 
 #: core/abstract.py:500
 msgid "Account is public"
-msgstr ""
+msgstr "Публичный аккаунт"
 
 #: core/abstract.py:524 core/models.py:268
 msgid "Profile"
@@ -2533,7 +2533,6 @@ msgid "Meta"
 msgstr "Мета"
 
 #: core/admin.py:44 core/admin.py:63 core/admin.py:159 core/admin.py:212
-#, fuzzy
 msgid "Main"
 msgstr "Основная"
 
@@ -2825,7 +2824,7 @@ msgstr "Следования"
 msgid "System"
 msgstr "Система"
 
-#: core/models.py:265 core/models.py:544
+#: core/models.py:265 core/models.py:543
 msgid "Video"
 msgstr "Видео"
 
@@ -2966,80 +2965,80 @@ msgstr "URL Видео"
 msgid "Video Provider"
 msgstr "Видеопровайдер"
 
-#: core/models.py:533
+#: core/models.py:532
 msgid "Slug"
 msgstr "Краткий линк"
 
-#: core/models.py:537
+#: core/models.py:536
 msgid "Embed code"
 msgstr "Код внедрения"
 
-#: core/models.py:545
+#: core/models.py:544
 msgid "Videos"
 msgstr "Видео"
 
-#: core/models.py:549
+#: core/models.py:548
 #, python-format
 msgid "%s"
 msgstr ""
 
-#: core/models.py:581
+#: core/models.py:572
 msgid "Full Name"
 msgstr "Полное имя"
 
-#: core/models.py:582
+#: core/models.py:573
 msgid "Date birth"
 msgstr "Дата рождения"
 
-#: core/models.py:583
+#: core/models.py:574
 msgid "Gender"
 msgstr "Пол"
 
-#: core/models.py:584
+#: core/models.py:575
 msgid "About"
 msgstr "Информация"
 
-#: core/models.py:584
+#: core/models.py:575
 msgid "Little words about you"
 msgstr "Несколько слов о Вас"
 
-#: core/models.py:592
+#: core/models.py:583
 msgid "skype"
 msgstr "скайп"
 
-#: core/models.py:593
+#: core/models.py:584
 msgid "jabber"
 msgstr "джаббер"
 
-#: core/models.py:594
+#: core/models.py:585
 msgid "mobile phone"
 msgstr "мобильный телефон"
 
-#: core/models.py:595
+#: core/models.py:586
 msgid "work phone"
 msgstr "рабочий телефон"
 
-#: core/models.py:597
+#: core/models.py:588
 msgid "Signature"
 msgstr "Подпись"
 
-#: core/models.py:598
+#: core/models.py:589
 msgid "Time zone"
 msgstr "Временная зона"
 
-#: core/models.py:600
+#: core/models.py:591
 msgid "Show signatures"
 msgstr "Показывать подписи"
 
-#: core/models.py:601
+#: core/models.py:592
 msgid "Post count"
 msgstr "Количество постов"
 
-#: core/models.py:602
+#: core/models.py:593
 msgid "Subscribe for news and updates"
 msgstr "Подписаться на новости и обновления"
 
-#: core/models.py:608
+#: core/models.py:599
 msgid "Users"
 msgstr "Пользователи"
 

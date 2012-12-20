@@ -521,14 +521,13 @@ class EmailValidation(models.Model):
         self.save()
         return True
 
-class Video(AbstractDate):
+class Video(AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)
     project_url = models.URLField(max_length=255, verbose_name=_(u'Project URL'), blank=True)
     video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
     video_provider = models.CharField(max_length=150, verbose_name=_(u'Video Provider'), blank=True)
     description = models.TextField(verbose_name=_(u'Description'), blank=True)
-    thumbnail = models.ImageField(upload_to="video/%Y/%b/%d", blank=True)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
     slug = models.SlugField(_("Slug"), max_length=255, blank=True)
     duration = models.PositiveIntegerField(null=True,blank=True,editable=False)
@@ -547,14 +546,6 @@ class Video(AbstractDate):
 
     def __unicode__(self):
         return _("%s") % self.project_name
-
-    def delete(self, *args, **kwargs):
-        try:
-            remove_thumbnails(self.thumbnail.path)
-            remove_file(self.thumbnail.path)
-        except :
-            pass
-        super(Video, self).delete(*args, **kwargs)
 
     def followers_count(self):
         ctype = ContentType.objects.get_for_model(self)
