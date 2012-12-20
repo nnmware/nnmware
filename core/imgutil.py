@@ -10,10 +10,7 @@ from django.db.models.fields.files import ImageField
 from nnmware.core.txtutil import URLify
 from nnmware.core.file import get_path_from_url, get_url_from_path
 
-_THUMBNAIL_GLOB = '%s_t*%s'
-_THUMBNAIL_ASPECT = '%s_aspect*%s'
-_WATERMARK = '%s_wm*%s'
-
+TMB_MASKS = ['%s_t*%s','%s_aspect*%s','%s_wm*%s']
 
 def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=None):
     """ create thumbnail path from path and required width and/or height.
@@ -105,11 +102,8 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
             img = ImageOps.fit(img, size, Image.ANTIALIAS, (0.5, 0.5))
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(th_path, quality=settings.THUMBNAIL_QUALITY)
-    except Exception, err:
-        # this goes to webserver error log
-        print >> sys.stderr, '[MAKE THUMBNAIL] error %s for file %r' % (err, photo_url)
+    except :
         return photo_url
-
     return th_url
 
 
@@ -120,24 +114,13 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
     file_name = get_path_from_url(pic_url, root, url_root)
     base, ext = os.path.splitext(os.path.basename(file_name))
     basedir = os.path.dirname(file_name)
-    for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_GLOB % (base, ext)):
-        path = os.path.join(basedir, file)
-        try:
-            os.remove(path)
-        except OSError:
-            pass
-    for file in fnmatch.filter(os.listdir(str(basedir)), _THUMBNAIL_ASPECT % (base, ext)):
-        path = os.path.join(basedir, file)
-        try:
-            os.remove(path)
-        except OSError:
-            pass
-    for file in fnmatch.filter(os.listdir(str(basedir)), _WATERMARK % (base, ext)):
-        path = os.path.join(basedir, file)
-        try:
-            os.remove(path)
-        except OSError:
-            pass
+    for item in TMB_MASKS:
+        for file in fnmatch.filter(os.listdir(str(basedir)), item % (base, ext)):
+            path = os.path.join(basedir, file)
+            try:
+                os.remove(path)
+            except OSError:
+                pass
 
 def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     if not f_url:
@@ -195,7 +178,7 @@ def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
     path = get_path_from_url(photo_url, root, url_root)
     try:
         size = Image.open(path).size
-    except Exception, err:
+    except :
         # this goes to webserver error log
         import sys
         print >> sys.stderr, '[GET IMAGE SIZE] error %s for file %r' % (err, photo_url)
