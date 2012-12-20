@@ -219,7 +219,7 @@ class VideoAdmin(admin.ModelAdmin):
             ('users_viewed')]}),
         )
 
-class TopicAdmin(admin.ModelAdmin):
+class GlavTopicAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Topic'), {'fields': [('user', 'enabled','category')]}),
         (_('Content'), {'fields': [('name',),('description',)]}),
@@ -242,5 +242,5 @@ admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(VisitorHit, VisitorHitAdmin)
 admin.site.register(Video, VideoAdmin)
-admin.site.register(Topic, TopicAdmin)
-admin.site.register(TopicCategory, TreeAdmin)
+admin.site.register(GlavTopic, GlavTopicAdmin)
+admin.site.register(GlavTopicCategory, TreeAdmin)

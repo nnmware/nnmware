@@ -26,7 +26,7 @@ from nnmware.core.managers import AbstractContentManager, NnmcommentManager, Pub
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
-from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
+from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg, Tree
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
 
 
@@ -668,30 +668,4 @@ class NnmwareUser(AbstractUser):
         self.date_modified = datetime.now()
         super(NnmwareUser, self).save(*args, **kwargs)
 
-class TopicCategory(Tree):
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Topic Category Admins'), null=True, blank=True, related_name='cat_adm')
-    slug_detail = 'topics_category'
-
-    class Meta:
-        ordering = ['parent__id',]
-        verbose_name = _('Topic Category')
-        verbose_name_plural = _('Topic Categories')
-
-    @property
-    def _active_set(self):
-        return Topic.objects.filter(category=self)
-
-class Topic(MetaDate, MetaName):
-    category = models.ForeignKey(TopicCategory, verbose_name=_('Category'), null=True,on_delete=models.PROTECT)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
-
-    class Meta:
-        ordering = ['-created_date',]
-        verbose_name = _('Topic')
-        verbose_name_plural = _('Topics')
-
-    @permalink
-    def get_absolute_url(self):
-        return "topic_detail", (), {'pk': self.pk}
 
