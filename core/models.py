@@ -522,7 +522,7 @@ class EmailValidation(models.Model):
         return True
 
 class Video(AbstractDate, AbstractImg):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+#    user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)
     project_url = models.URLField(max_length=255, verbose_name=_(u'Project URL'), blank=True)
     video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
@@ -543,6 +543,7 @@ class Video(AbstractDate, AbstractImg):
         verbose_name = _("Video")
         verbose_name_plural = _("Videos")
         ordering = ("-created_date",)
+        abstract = True
 
     def __unicode__(self):
         return _("%s") % self.project_name

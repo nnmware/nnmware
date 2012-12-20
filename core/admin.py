@@ -212,7 +212,7 @@ class VideoAdmin(admin.ModelAdmin):
         (_("Main"), {"fields": [("user", "project_name"),
                                 ('project_url', 'video_url')]}),
         (_("Addons"), {"fields": [('description'), ('login_required', 'slug'),
-                                  ('thumbnail')]}),
+                                  ('img',)]}),
         (_("Tags"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('tags')]}),
         (_("Users viewed"), {"classes": ("grp-collapse grp-closed",), "fields": [
