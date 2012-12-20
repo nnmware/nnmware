@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from nnmware.apps.address.models import Institution
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill
+from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
 
@@ -343,3 +343,87 @@ class OtherSkill(AbstractSkill):
     class Meta:
         verbose_name = _("Other skill")
         verbose_name_plural = _("Other skills")
+
+class AnimalType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Animal type")
+        verbose_name_plural = _("Animals types")
+
+class AnimalKind(AbstractImg):
+    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind')
+    name = std_text_field(_('Name'))
+    description = models.TextField(_("Description"), blank=True)
+    name_en = std_text_field(_('English name'))
+
+    class Meta:
+        verbose_name = _("Animal kind")
+        verbose_name_plural = _("Animals kinds")
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.animal.name, self.name)
+
+class AbstractAnimal(AbstractName):
+    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
+    animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind', blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Animal")
+        verbose_name_plural = _("Animals")
+        abstract = True
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.name, self.animal.name)
+
+class TransportType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Transport type")
+        verbose_name_plural = _("Transport types")
+
+class TransportMark(AbstractImg):
+    t_type = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
+    name = std_text_field(_('Name'))
+    description = models.TextField(_("Description"), blank=True)
+    name_en = std_text_field(_('English name'))
+
+    class Meta:
+        verbose_name = _("Transport mark")
+        verbose_name_plural = _("Transport mark")
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.t_type.name, self.name)
+
+class AbstractVehicle(AbstractName):
+    t_type = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tvehicles')
+    t_mark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='mvehicles',blank=True,null=True)
+
+    class Meta:
+        verbose_name = _("Vehicle")
+        verbose_name_plural = _("Vehicles")
+        abstract = True
+
+    def __unicode__(self):
+        return "%s :: %s" % (self.name, self.t_type.name)
+
+YEARS_FOREIGN_PASSPORT = map(tuplify, range(current_year, current_year + 10))
+
+class AbstractPersonalData(models.Model):
+    citizen_of_russia = models.BooleanField(_('Russia citizenship'), default=True)
+    citizenship = models.CharField(max_length=30, verbose_name=_('Citizenship'), blank=True)
+    foreign_passport = models.BooleanField(_('Foreign passport'), default=True)
+    foreign_passport_expired = models.IntegerField(_('Foreign passport expired'),
+        blank=True, null=True, choices=YEARS_FOREIGN_PASSPORT ,default=None)
+    inn = models.CharField(max_length=12,verbose_name=_('INN'), blank=True)
+    insurance = models.CharField(max_length=12,verbose_name=_('Certificate of insurance'), blank=True)
+    passport_num = models.CharField(max_length=11,verbose_name=_('Passport series and number'), blank=True)
+    passport_issued = std_text_field(_('Passport issued'))
+    passport_date = models.DateField(verbose_name=_('Date of passport issued'), blank=True, null=True)
+    passport_registration = std_text_field(_('Passport registration'))
+
+    class Meta:
+        verbose_name = _("Personal Data")
+        verbose_name_plural = _("Personal Data")
+        abstract = True
