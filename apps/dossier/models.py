@@ -464,3 +464,9 @@ class AbstractPersonalData(models.Model):
         verbose_name = _("Personal Data")
         verbose_name_plural = _("Personal Data")
         abstract = True
+
+class Agency(AbstractName):
+
+    class Meta:
+        verbose_name = _("Agency")
+        verbose_name_plural = _("Agencies")
