@@ -19,7 +19,7 @@ from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED
-from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend
+from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
 from nnmware.core.utils import get_oembed_end_point, update_video_size
@@ -182,6 +182,40 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
             payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
+            if self.extra_context is not None:
+                payload.update(self.extra_context)
+            return AjaxAnswer(payload)
+
+class AjaxImgUploader(AjaxAbstractUploader):
+    def __init__(self, backend=None, **kwargs):
+        if backend is None:
+            backend = ImgUploadBackend
+        self.get_backend = lambda: backend(**kwargs)
+
+    def _ajax_upload(self, request, **kwargs):
+        if request.method == "POST":
+            self._upload_file(request, **kwargs)
+            fullpath = os.path.join(settings.MEDIA_ROOT,
+                self.extra_context['path'])
+            try:
+                i = Image.open(fullpath)
+            except:
+                messages.error(request, "File is not image format")
+                os.remove(fullpath)
+                self.success = False
+                self.pic_id = None
+            if self.success:
+                ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+                object_id = int(kwargs['object_id'])
+                for_obj = ctype.objects.get(pk=object_id)
+                try:
+                    for_obj.img.delete()
+                except :
+                    pass
+                for_obj.img = self.extra_context['path']
+                for_obj.save()
+                # let Ajax Upload know whether we saved it or not
+            payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             return AjaxAnswer(payload)
@@ -454,6 +488,7 @@ def autocomplete_tags(request):
 doc_uploader = AjaxFileUploader()
 pic_uploader = AjaxImageUploader()
 avatar_uploader = AjaxAvatarUploader()
+img_uploader = AjaxImgUploader()
 
 
 def notice_delete(request, object_id):

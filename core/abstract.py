@@ -192,6 +192,9 @@ class AbstractImg(models.Model):
     class Meta:
         abstract = True
 
+    def c_type(self):
+        return ContentType.objects.get_for_model(self)
+
     @property
     def ava(self):
         try:

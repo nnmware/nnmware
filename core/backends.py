@@ -128,7 +128,6 @@ class DocUploadBackend(AbstractUploadBackend):
     upload_dir = settings.DOC_UPLOAD_DIR
     upload_size = settings.DOC_UPLOAD_SIZE
 
-
 class PicUploadBackend(AbstractUploadBackend):
     upload_dir = settings.PIC_UPLOAD_DIR
     upload_size = settings.PIC_UPLOAD_SIZE
@@ -136,6 +135,10 @@ class PicUploadBackend(AbstractUploadBackend):
 class AvatarUploadBackend(AbstractUploadBackend):
     upload_dir = settings.AVATAR_UPLOAD_DIR
     upload_size = settings.AVATAR_UPLOAD_SIZE
+
+class ImgUploadBackend(AbstractUploadBackend):
+    upload_dir = settings.IMG_UPLOAD_DIR
+    upload_size = settings.IMG_UPLOAD_SIZE
 
 
 def image_from_url(url):
