@@ -308,10 +308,10 @@ class AvatarForm(forms.ModelForm):
     """
     class Meta:
         model = get_user_model()
-        fields = ('avatar',)
+        fields = ('img',)
 
     def clean(self):
-        if not (self.cleaned_data.get('avatar')):
+        if not (self.cleaned_data.get('img')):
             raise forms.ValidationError(_('You must enter one of the options'))
         return self.cleaned_data
 

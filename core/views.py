@@ -671,13 +671,13 @@ class AvatarEdit(UpdateView):
     success_url = reverse_lazy('user_settings')
 
     def form_valid(self, form):
-        avatar_path = self.object.avatar.url
+        avatar_path = self.object.img.url
         remove_thumbnails(avatar_path)
         remove_file(avatar_path)
         self.object = form.save(commit=False)
         self.object.avatar_complete = False
         self.object.save()
-        resize_image(self.object.avatar.url)
+        resize_image(self.object.img.url)
         return super(AvatarEdit, self).form_valid(form)
 
     def get_object(self, queryset=None):
@@ -697,13 +697,13 @@ class AvatarCrop(UpdateView):
         left = int(form.cleaned_data.get('left'))
         right = int(form.cleaned_data.get('right'))
         bottom = int(form.cleaned_data.get('bottom'))
-        image = Image.open(self.object.avatar.path)
+        image = Image.open(self.object.img.path)
         box = [left, top, right, bottom]
         image = image.crop(box)
         if image.mode not in ('L', 'RGB'):
             image = image.convert('RGB')
         image = fit(image, 120)
-        image.save(self.object.avatar.path)
+        image.save(self.object.img.path)
         self.object.avatar_complete = True
         self.object.save()
         return super(AvatarCrop, self).form_valid(form)

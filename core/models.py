@@ -608,10 +608,6 @@ class NnmwareUser(AbstractUser):
         verbose_name_plural = _("Users")
         abstract =  True
 
-    def delete(self, *args, **kwargs):
-        self.avatar.delete()
-        super(NnmwareUser, self).delete(*args, **kwargs)
-
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.username])
 

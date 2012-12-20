@@ -166,7 +166,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 self.pic_id = None
             if self.success:
                 try:
-                    request.user.avatar.delete()
+                    request.user.img.delete()
                 except :
                     pass
                 new = Pic()
@@ -177,7 +177,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 new.created_date = datetime.now()
                 new.pic = self.extra_context['path']
                 new.save()
-                request.user.avatar = new
+                request.user.img = new
                 request.user.save()
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
@@ -256,10 +256,10 @@ def avatardelete(request):
     if request.is_ajax():
         try:
             u = request.user
-            remove_thumbnails(u.avatar.path)
-            remove_file(u.avatar.path)
+            remove_thumbnails(u.img.path)
+            remove_file(u.img.path)
             u.avatar_complete = False
-            u.avatar = None
+            u.img = None
             u.save()
             payload = {'success': True}
         except:
@@ -489,9 +489,9 @@ def delete_message(request, object_id):
 def avatar_delete(request):
     try:
         u = request.user
-        remove_thumbnails(u.avatar.url)
-        remove_file(u.avatar.url)
-        u.avatar = ''
+        remove_thumbnails(u.img.url)
+        remove_file(u.img.url)
+        u.img = ''
         u.save()
         payload = {'success': True}
     except:
@@ -528,8 +528,8 @@ def message_user_add(request):
     result['url'] = user.get_absolute_url()
     result['username'] = user.username
     result['id'] = user.pk
-    if user.avatar:
-        result['avatar_url'] = user.avatar.url
+    if user.img:
+        result['avatar_url'] = user.img.url
     else:
         result['avatar_url'] = '/m/generic_t30.jpg'
     payload = {'success': True, 'data': result}
