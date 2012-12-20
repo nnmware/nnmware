@@ -180,8 +180,6 @@ def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
         size = Image.open(path).size
     except :
         # this goes to webserver error log
-        import sys
-        print >> sys.stderr, '[GET IMAGE SIZE] error %s for file %r' % (err, photo_url)
         return None, None
     return size
 

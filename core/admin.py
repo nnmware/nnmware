@@ -96,7 +96,7 @@ class DocAdmin(admin.ModelAdmin):
         (_('Meta'), {'fields': [('description', 'filetype')]}),
         )
     list_display = ("description", "file", "created_date", "user",
-            "locked", "size", "admin_link")
+            "locked", "size")
 
 
 class PicAdmin(admin.ModelAdmin):
