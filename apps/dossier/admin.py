@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from nnmware.apps.dossier.models import *
 from django.utils.translation import ugettext_lazy as _
@@ -114,6 +115,11 @@ class SpecialSkillInline(BaseSkillInline):
 class OtherSkillInline(BaseSkillInline):
     model = OtherSkill
 
+class TTypeAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of vehicle"), {"fields": [('name'),]}),)
+
+class TMarkAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Mark of vehicle"), {"fields": [('name'),]}),)
 
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
@@ -138,3 +144,5 @@ admin.site.register(TypeBrightAppearance, TypeBrightAppearanceAdmin)
 admin.site.register(TypeHistorical, TypeHistoricalAdmin)
 admin.site.register(CreativeActivity, CreativeActivityAdmin)
 admin.site.register(TypeSurvey, TypeSurveyAdmin)
+admin.site.register(TransportType, TTypeAdmin)
+admin.site.register(TransportMark, TMarkAdmin)

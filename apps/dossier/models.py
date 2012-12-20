@@ -397,8 +397,8 @@ class TransportMark(AbstractImg):
         return "%s :: %s" % (self.t_type.name, self.name)
 
 class AbstractVehicle(AbstractName):
-    t_type = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tvehicles')
-    t_mark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='mvehicles',blank=True,null=True)
+    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
+    tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles',blank=True,null=True)
 
     class Meta:
         verbose_name = _("Vehicle")
@@ -406,7 +406,7 @@ class AbstractVehicle(AbstractName):
         abstract = True
 
     def __unicode__(self):
-        return "%s :: %s" % (self.name, self.t_type.name)
+        return "%s :: %s" % (self.name, self.ttype.name)
 
 YEARS_FOREIGN_PASSPORT = map(tuplify, range(current_year, current_year + 10))
 
