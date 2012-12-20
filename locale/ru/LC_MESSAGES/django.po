@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-21 04:25+1100\n"
+"POT-Creation-Date: 2012-12-21 05:35+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1285,6 +1285,15 @@ msgstr "Тип вокала"
 
 #: apps/dossier/admin.py:122
 msgid "Mark of vehicle"
+msgstr ""
+
+#: apps/dossier/admin.py:125
+#, fuzzy
+msgid "Type of animal"
+msgstr "Тип танца"
+
+#: apps/dossier/admin.py:128
+msgid "Kind of animal"
 msgstr ""
 
 #: apps/dossier/models.py:23
