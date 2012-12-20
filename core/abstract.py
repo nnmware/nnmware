@@ -509,6 +509,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
 
+    objects = Manager()
 
     def save(self, *args, **kwargs):
         if self.main:
