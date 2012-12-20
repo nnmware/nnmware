@@ -146,7 +146,7 @@ class ColorAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'user', 'actor')
+    list_display = ('__unicode__', 'user', 'content_object')
     list_editable = ('user',)
     list_filter = ('user',)
 
