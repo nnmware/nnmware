@@ -33,7 +33,7 @@ admin.site.register(Nnmcomment, NnmcommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
-    list_display = ('name', '_parents_repr', 'status', 'rootnode')
+    list_display = ('name', '_parents_repr', 'enabled', 'rootnode')
     list_display_links = ("name",)
     list_filter = ("name",)
     ordering = ['parent__id', 'name']
@@ -218,7 +218,6 @@ class VideoAdmin(admin.ModelAdmin):
         (_("Users viewed"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('users_viewed')]}),
         )
-
 
 admin.site.register(EmailValidation, EmailValidationAdmin)
 admin.site.register(Message, MessageAdmin)
