@@ -1677,15 +1677,15 @@ msgstr "Английское название"
 
 #: apps/dossier/models.py:361
 msgid "Animal kind"
-msgstr "Порода"
+msgstr "Порода животного"
 
 #: apps/dossier/models.py:362
 msgid "Animals kinds"
-msgstr "Породы"
+msgstr "Породы животных"
 
 #: apps/dossier/models.py:369
 msgid "Kind"
-msgstr "Порода"
+msgstr "Порода животного"
 
 #: apps/dossier/models.py:373
 msgid "Animals"
