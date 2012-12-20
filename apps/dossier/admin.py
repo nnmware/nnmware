@@ -121,6 +121,12 @@ class TTypeAdmin(TypeBaseAdmin):
 class TMarkAdmin(TypeBaseAdmin):
     fieldsets = ((_("Mark of vehicle"), {"fields": [('name'),]}),)
 
+class AnimalTypeAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of animal"), {"fields": [('name'),]}),)
+
+class AnimalKindAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Kind of animal"), {"fields": [('name'),]}),)
+
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
 admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
@@ -146,3 +152,5 @@ admin.site.register(CreativeActivity, CreativeActivityAdmin)
 admin.site.register(TypeSurvey, TypeSurveyAdmin)
 admin.site.register(TransportType, TTypeAdmin)
 admin.site.register(TransportMark, TMarkAdmin)
+admin.site.register(AnimalType, AnimalTypeAdmin)
+admin.site.register(AnimalKind, AnimalKindAdmin)
