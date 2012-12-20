@@ -381,7 +381,7 @@ class Tree(AbstractName):
 
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
-    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name="%(class)s_cntype")
     object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     primary = models.BooleanField(_('Is primary'), default=False)
