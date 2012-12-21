@@ -42,7 +42,7 @@ class TypeEmployerSphere(AbstractName):
     def __unicode__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
-class AbstractEmployer(AbstractImg):
+class AbstractEmployer(models.Model):
     is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
     name = std_text_field(_('Company name'))
     position = std_text_field(_('Work position'))
