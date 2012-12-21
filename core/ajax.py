@@ -217,10 +217,12 @@ class AjaxImgUploader(AjaxAbstractUploader):
                 obj.img = self.extra_context['path']
                 obj.save()
                 # let Ajax Upload know whether we saved it or not
+                addons = {'tmb': make_thumbnail(obj.img.url,width=int(kwargs['width']),height=int(kwargs['height']))}
             payload = {'success': self.success, 'filename': self.filename}
-            payload['tmb'] = make_thumbnail(obj.img.url,width=int(kwargs['width']),height=int(kwargs['height'])),
             if self.extra_context is not None:
                 payload.update(self.extra_context)
+            if addons:
+                payload.update(addons)
             return AjaxAnswer(payload)
 
 
