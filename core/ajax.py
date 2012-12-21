@@ -207,13 +207,13 @@ class AjaxImgUploader(AjaxAbstractUploader):
             if self.success:
                 ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
                 object_id = int(kwargs['object_id'])
-                for_obj = ctype.objects.get(pk=object_id)
+                obj = ctype.get_object_for_this_type(pk=object_id)
                 try:
-                    for_obj.img.delete()
+                    obj.img.delete()
                 except :
                     pass
-                for_obj.img = self.extra_context['path']
-                for_obj.save()
+                obj.img = self.extra_context['path']
+                obj.save()
                 # let Ajax Upload know whether we saved it or not
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:

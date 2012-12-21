@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.syndication.views import Feed
 
 #from nnmware.core.models import model_stream, user_stream, action_object_stream
-from nnmware.core.models import action_object_stream
+#from nnmware.core.models import action_object_stream
 
 
 class AtomWithContentFeed(Atom1Feed):
