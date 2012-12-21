@@ -210,7 +210,7 @@ class AbstractImg(models.Model):
     def slide_thumbnail(self):
         if self.img:
             path = self.img.url
-            tmb = make_thumbnail(path, width=100, height=100, aspect=1)
+            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
         else:
             tmb = '/static/img/icon-no.gif"'
             path = '/static/img/icon-no.gif"'
