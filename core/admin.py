@@ -5,6 +5,9 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from nnmware.core.models import Nnmcomment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, EmailValidation
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.admin.util import flatten_fieldsets
+from django.core.exceptions import PermissionDenied
+from django.shortcuts import get_object_or_404
 
 class TypeBaseAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -229,3 +232,25 @@ admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(VisitorHit, VisitorHitAdmin)
 admin.site.register(Video, VideoAdmin)
+
+
+#class ReadOnlyAdmin(admin.UserAdmin):
+#    _readonly_fields = [] # Default fields that are readonly for everyone.
+#
+#    def get_readonly_fields(self, request, obj):
+#        readonly = list(self._readonly_fields)
+#        if request.user.is_staff and not request.user.is_superuser:
+#            if obj.is_superuser:
+#                # Prevent a staff user from editing anything of a superuser.
+#                readonly.extend(flatten_fieldsets(self.declared_fieldsets))
+#            else:
+#                # Prevent a non-superuser from editing sensitive security-related fields.
+#                readonly.extend(['is_staff', 'is_superuser', 'user_permissions', 'groups'])
+#        return readonly
+#
+#    def user_change_password(self, request, id):
+#        # Disallow a non-superuser from changing the password of a superuser.
+#        user = get_object_or_404(self.model, pk=id)
+#        if not request.user.is_superuser and user.is_superuser:
+#            raise PermissionDenied
+#        return super(ReadOnlyAdmin, self).user_change_password(request, id)

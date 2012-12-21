@@ -194,9 +194,9 @@ class AjaxImgUploader(AjaxAbstractUploader):
 
     def _ajax_upload(self, request, **kwargs):
         if request.method == "POST":
+            tmb = None
             self._upload_file(request, **kwargs)
-            fullpath = os.path.join(settings.MEDIA_ROOT,
-                self.extra_context['path'])
+            fullpath = os.path.join(settings.MEDIA_ROOT, self.extra_context['path'])
             try:
                 i = Image.open(fullpath)
             except:
@@ -209,6 +209,8 @@ class AjaxImgUploader(AjaxAbstractUploader):
                 object_id = int(kwargs['object_id'])
                 obj = ctype.get_object_for_this_type(pk=object_id)
                 try:
+                    remove_thumbnails(obj.img.path)
+                    remove_file(obj.img.path)
                     obj.img.delete()
                 except :
                     pass
@@ -216,6 +218,7 @@ class AjaxImgUploader(AjaxAbstractUploader):
                 obj.save()
                 # let Ajax Upload know whether we saved it or not
             payload = {'success': self.success, 'filename': self.filename}
+            payload['tmb'] = make_thumbnail(obj.img.url,width=int(kwargs['width']),height=int(kwargs['height'])),
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             return AjaxAnswer(payload)
