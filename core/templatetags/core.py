@@ -1,18 +1,30 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import re
-from django import template
+import os
+from xml.etree.ElementTree import Element, SubElement, tostring
+from django.template import Library, Node, Template, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import floatformat
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
+from django.contrib.contenttypes.models import ContentType
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from nnmware.apps.shop.models import Basket, Product, Order, OrderItem
-from nnmware.core.models import Tag, Video
+from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
+from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
+from nnmware.core.abstract import Tree
+from nnmware.core.data import *
+try:
+    from PIL import Image
+except ImportError:
+    import Image
 
+register = Library()
 
-register = template.Library()
 
 def video_links(context, mode='random'):
     user= context["user"]
@@ -65,6 +77,7 @@ def users_step2(context):
 def video_views():
     return Video.objects.aggregate(Sum('viewcount'))['viewcount__sum']
 
+@register.tag
 def do_get_tree_path(parser, token):
 #    name, link = content_object.get_full_path()
     result = ''
@@ -93,7 +106,6 @@ def inline_truncate(value, size):
         else:
             new += ' ' + w[0:size]
     return new
-
 inline_truncate.is_safe = True
 
 
@@ -110,7 +122,6 @@ def inline_word(value, size):
         else:
             new += ' ' + w
     return new
-
 inline_word.is_safe = True
 
 
@@ -144,8 +155,8 @@ def sort_counter_money(val):
 def sort_counter_effect(val):
     return sorted(val,key=lambda x: x.effect)
 
-
-register.tag('get_tree_path', do_get_tree_path)
+#######################################
+### PAGINATOR TAG
 
 LEADING_PAGE_RANGE_DISPLAYED = TRAILING_PAGE_RANGE_DISPLAYED = 10
 LEADING_PAGE_RANGE = TRAILING_PAGE_RANGE = 8
@@ -241,7 +252,6 @@ def icq_number(value):
     result += num
     return result
 
-#@mark_safe
 @register.filter
 def url_target_blank(text):
     return text.replace('<a ', '<a target="_blank" ')
@@ -272,3 +282,516 @@ def sales_sum(product_pk, on_date):
     for item in res:
         result += item.quantity
     return result
+
+def get_contenttype_kwargs(content_object):
+    """
+    Gets the basic kwargs necessary for almost all of the following tags.
+    """
+    kwargs = {
+        'content_type': ContentType.objects.get_for_model(content_object).id,
+        'object_id': getattr(content_object, 'pk', getattr(content_object, 'id')),
+        }
+    return kwargs
+
+@register.simple_tag
+def get_file_attach_url(content_object):
+    kwargs = get_contenttype_kwargs(content_object)
+    return reverse('doc_ajax', kwargs=kwargs)
+
+@register.simple_tag
+def get_image_attach_url(content_object):
+    kwargs = get_contenttype_kwargs(content_object)
+    return reverse('pic_ajax', kwargs=kwargs)
+
+@register.simple_tag
+def get_img_attach_url(content_object):
+    kwargs = get_contenttype_kwargs(content_object)
+    return reverse('img_ajax', kwargs=kwargs)
+
+@register.simple_tag
+def get_comment_url(content_object, parent=None):
+    """
+    Given an object and an optional parent, this tag gets the URL to POST to for the
+    creation of new ``ThreadedComment`` objects.
+    """
+    kwargs = get_contenttype_kwargs(content_object)
+    if parent:
+        if not isinstance(parent, Nnmcomment):
+            raise TemplateSyntaxError, "get_comment_url requires its parent object to be of type Nnmcomment"
+        kwargs.update({'parent_id': getattr(parent, 'pk', getattr(parent, 'id'))})
+        return reverse('comment_parent_add', kwargs=kwargs)
+    else:
+        return reverse('comment_add', kwargs=kwargs)
+
+@register.tag
+def get_j_comment_tree(parser, token):
+    """
+    Gets a tree (list of objects ordered by preorder tree traversal, and with an
+    additional ``depth`` integer attribute annotated onto each ``ThreadedComment``.
+    """
+    error_string = "%r tag must be of format {%% get_j_comment_tree for OBJECT [TREE_ROOT] as CONTEXT_VARIABLE %%}" %\
+                   token.contents.split()[0]
+
+    try:
+        split = token.split_contents()
+    except ValueError:
+        raise TemplateSyntaxError(error_string)
+    if len(split) == 5:
+        return CommentTreeNode(split[2], split[4], split[3])
+    elif len(split) == 6:
+        return CommentTreeNode(split[2], split[5], split[3])
+    else:
+        raise TemplateSyntaxError(error_string)
+
+
+class CommentTreeNode(Node):
+    def __init__(self, content_object, context_name, tree_root):
+        self.content_object = Variable(content_object)
+        self.tree_root = Variable(tree_root)
+        self.tree_root_str = tree_root
+        self.context_name = context_name
+
+    def render(self, context):
+        content_object = self.content_object.resolve(context)
+        try:
+            tree_root = self.tree_root.resolve(context)
+        except VariableDoesNotExist:
+            if self.tree_root_str == 'as':
+                tree_root = None
+            else:
+                try:
+                    tree_root = int(self.tree_root_str)
+                except ValueError:
+                    tree_root = self.tree_root_str
+        context[self.context_name] = Nnmcomment.public.get_tree(content_object, root=tree_root)
+        return ''
+
+@register.tag
+def get_comment_count(parser, token):
+    """
+    Gets a count of how many ThreadedComment objects are attached to the given
+    object.
+    """
+    error_message = "%r tag must be of format {%% %r for OBJECT as CONTEXT_VARIABLE %%}" % (
+        token.contents.split()[0], token.contents.split()[0])
+    try:
+        split = token.split_contents()
+    except ValueError:
+        raise TemplateSyntaxError, error_message
+    if split[1] != 'for' or split[3] != 'as':
+        raise TemplateSyntaxError, error_message
+    return NnmcommentCountNode(split[2], split[4])
+
+
+class NnmcommentCountNode(Node):
+    def __init__(self, content_object, context_name):
+        self.content_object = Variable(content_object)
+        self.context_name = context_name
+
+    def render(self, context):
+        content_object = self.content_object.resolve(context)
+        context[self.context_name] = Nnmcomment.public.all_for_object(content_object).count()
+        return ''
+
+
+@register.filter
+def nerd_comment(value):
+    return 59*value
+
+@register.tag
+def get_latest_comments(parser, token):
+    """
+    Gets the latest comments by date_submitted.
+    """
+    error_message = "%r tag must be of format {%% %r NUM_TO_GET as CONTEXT_VARIABLE %%}" % (
+        token.contents.split()[0], token.contents.split()[0])
+    try:
+        split = token.split_contents()
+    except ValueError:
+        raise TemplateSyntaxError, error_message
+    if len(split) != 4:
+        raise TemplateSyntaxError, error_message
+    if split[2] != 'as':
+        raise TemplateSyntaxError, error_message
+    return LatestCommentsNode(split[1], split[3])
+
+
+class LatestCommentsNode(Node):
+    def __init__(self, num, context_name):
+        self.num = num
+        self.context_name = context_name
+
+    def render(self, context):
+        comments = Nnmcomment.objects.order_by('-created_date')[:self.num]
+        context[self.context_name] = comments
+        return ''
+
+@register.tag
+def get_user_comments(parser, token):
+    """
+    Gets all comments submitted by a particular user.
+    """
+    error_message = "%r tag must be of format {%% %r for OBJECT as CONTEXT_VARIABLE %%}" % (
+        token.contents.split()[0], token.contents.split()[0])
+    try:
+        split = token.split_contents()
+    except ValueError:
+        raise TemplateSyntaxError, error_message
+    if len(split) != 5:
+        raise TemplateSyntaxError, error_message
+    return UserCommentsNode(split[2], split[4])
+
+
+class UserCommentsNode(Node):
+    def __init__(self, user, context_name):
+        self.user = Variable(user)
+        self.context_name = context_name
+
+    def render(self, context):
+        user = self.user.resolve(context)
+        context[self.context_name] = user.jcomment_set.all()
+        return ''
+
+@register.tag
+def get_user_comment_count(parser, token):
+    """
+    Gets the count of all comments submitted by a particular user.
+    """
+    error_message = "%r tag must be of format {%% %r for OBJECT as CONTEXT_VARIABLE %%}" % (
+        token.contents.split()[0], token.contents.split()[0])
+    try:
+        split = token.split_contents()
+    except ValueError:
+        raise TemplateSyntaxError, error_message
+    if len(split) != 5:
+        raise TemplateSyntaxError, error_message
+    return UserCommentCountNode(split[2], split[4])
+
+
+class UserCommentCountNode(Node):
+    def __init__(self, user, context_name):
+        self.user = Variable(user)
+        self.context_name = context_name
+
+    def render(self, context):
+        user = self.user.resolve(context)
+        context[self.context_name] = user.jcomment_set.all().count()
+        return ''
+
+##################################################
+## IMAGE RELATED FILTERS ##
+
+@register.filter
+def thumbnail(url, args=''):
+    """ Returns thumbnail URL and create it if not already exists.
+Usage::
+
+    {{ url|thumbnail:"width=10,height=20" }}
+    {{ url|thumbnail:"width=10" }}
+    {{ url|thumbnail:"height=20,aspect=1" }}
+
+Image is **proportionally** resized to dimension which is no greather than ``width x height``.
+
+Thumbnail file is saved in the same location as the original image
+and his name is constructed like this::
+
+    %(dirname)s/%(basename)s_t[_w%(width)d][_h%(height)d].%(extension)s
+
+or if only a width is requested (to be compatibile with admin interface)::
+
+    %(dirname)s/%(basename)s_t%(width)d.%(extension)s
+
+"""
+    if url is None:
+        return None
+    kwargs = {}
+    if args:
+        if ',' not in args:
+            # ensure at least one ','
+            args += ','
+        for arg in args.split(','):
+            arg = arg.strip()
+            if arg == '':
+                continue
+            kw, val = arg.split('=', 1)
+            kw = kw.lower().encode('ascii')
+            try:
+                val = int(val)  # convert all ints
+            except ValueError:
+                raise TemplateSyntaxError, "thumbnail filter: argument %r is invalid integer (%r)" % (kw, val)
+            kwargs[kw] = val
+
+    if ('width' not in kwargs) and ('height' not in kwargs):
+        raise TemplateSyntaxError, "thumbnail filter requires arguments (width and/or height)"
+
+    ret = make_thumbnail(url, **kwargs)
+    if ret is None:
+        ret = url
+
+    if not ret.startswith(settings.MEDIA_URL):
+        ret = settings.MEDIA_URL + ret
+
+    return ret
+
+
+@register.filter
+def image_width(url):
+    width, height = get_image_size(url)
+    return width
+
+@register.filter
+def image_height(url):
+    width, height = get_image_size(url)
+    return height
+
+@register.filter
+def watermark(url, arg=''):
+    if url is None:
+        return None
+    if arg == 'center':
+        ret = make_watermark(url,align='center')
+    else:
+        ret = make_watermark(url)
+    if ret is None:
+        ret = url
+    if not ret.startswith(settings.MEDIA_URL):
+        ret = settings.MEDIA_URL + ret
+    return ret
+
+######################################################
+###  MENU RELATED BLOCK
+
+#from nnmware.apps.forum.models import Category
+
+def recurse_for_children(current_node, parent_node, show_empty=True):
+    child_count = current_node.children.count()
+
+    if show_empty or child_count > 0:
+        temp_parent = SubElement(parent_node, 'li')
+        attrs = {'href': current_node.get_absolute_url()}
+        link = SubElement(temp_parent, 'a', attrs)
+        link.text = current_node.name
+        myval = SubElement(temp_parent, 'b')
+        myval.text = " %s/%s" % (current_node.get_updated_count, current_node.get_valid_count)
+        if child_count > 0:
+            new_parent = SubElement(temp_parent, 'ul')
+            children = current_node.children.all()
+            for child in children:
+                recurse_for_children(child, new_parent)
+
+
+#@register.simple_tag
+#def tree(app=None):
+#    exec("""from nnmware.apps.%s.models import Category""" % app)
+#    html = Element('root')
+#    for node in Category.objects.all():
+#        if not node.parent:
+#            recurse_for_children(node, html)
+#    return tostring(html, 'utf-8')
+
+#@register.simple_tag
+#def category_tree_series():
+#    root = Element("root")
+#    for cats in Category.objects.all().filter(slug='series'):
+#        if not cats.parent:
+#            recurse_for_children(cats, root)
+#    return tostring(root, 'utf-8')
+
+
+@register.simple_tag
+def menu(app=None):
+    if app == 'topic':
+        from nnmware.apps.topic.models import Category as Tree
+    elif app == 'board':
+        from nnmware.apps.board.models import Category as Tree
+    elif app == 'shop':
+        from nnmware.apps.shop.models import ProductCategory as Tree
+    elif app == 'article':
+        from nnmware.apps.article.models import Category as Tree
+    elif app == 'dashboard':
+        from nnmware.apps.dashboard.models import Category as Tree
+    else:
+        pass
+
+    if 1>0: #try:
+        html = Element("ul")
+        for node in Tree.objects.all():
+            if not node.parent:
+                recurse_for_children(node, html)
+        return tostring(html, 'utf-8')
+#    except:
+#        return 'error'
+
+
+@register.simple_tag
+def category_tree_series():
+    root = Element("ul")
+    for cats in Tree.objects.all().filter(slug='series'):
+        if not cats.parent:
+            recurse_for_children(cats, root)
+    return tostring(root, 'utf-8')
+
+
+@register.simple_tag
+def menu_user(app=None):
+    if app == 'users':
+        Alldata = get_user_model()
+    query = Alldata.objects.all().order_by('-date_joined')
+    objects_years_dict = create_userdate_list(query)
+    html = Element("ul")
+    keyList = objects_years_dict.keys()
+    for key in keyList:
+        recurse_for_date(app, key, objects_years_dict[key], html)
+    return tostring(html, 'utf-8')
+
+
+@register.simple_tag
+def menu_date(app=None):
+    if app == 'article':
+        from nnmware.apps.article.models import Article as Alldata
+    elif app == 'topic':
+        from nnmware.apps.topic.models import Topic as Alldata
+    elif app == 'pic':
+        from nnmware.core.models import Pic as Alldata
+    elif app == 'doc':
+        from nnmware.core.models import Doc as Alldata
+    query = Alldata.objects.all().order_by('-created_date')
+    objects_years_dict = create_archive_list(query)
+    html = Element("ul")
+    keyList = objects_years_dict.keys()
+    for key in keyList:
+        recurse_for_date(app, key, objects_years_dict[key], html)
+    return tostring(html, 'utf-8')
+
+r_nofollow = re.compile('<a (?![^>]*nofollow)')
+s_nofollow = '<a rel="nofollow" '
+
+@register.filter
+def nofollow(value):
+    return r_nofollow.sub(s_nofollow, value)
+
+if settings.DEBUG:
+    @register.inclusion_tag('core/debug.html')
+    def site_debug():
+        import re
+        from django.db import connection
+
+        queries = connection.queries
+        query_time = 0
+        query_count = 0
+        for query in queries:
+            query_time += float(query['time'])
+            query_count += int(1)
+        return {
+            'query_time': query_time,
+            'query_count': query_count}
+else:
+    @register.simple_tag
+    def site_debug():
+        return ''
+
+@register.filter
+def datelinks(value):
+    """
+    This filter formats date as "day.month.year" and sets links to
+    day/month/year-based archives.
+
+    For correct work there must be defined urls with names:
+        - day_archive
+        - month_archive
+        - year_archive
+    """
+    return get_links(value.strftime('%d'), value.strftime('%m'), value.year)
+
+
+@register.filter
+def datelinks_by_string(value):
+    """
+    This filter creates from date formatted as "day.month.year" string with
+    links to day/month/year-based archives.
+
+    For correct work there must be defined urls with names:
+        - day_archive
+        - month_archive
+        - year_archive
+    """
+    r = r'^(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})$'
+    try:
+        day, month, year = re.match(r, value).groups()
+    except AttributeError:
+        return value
+    return get_links(day, month, year)
+
+
+def get_links(day, month, year):
+    return mark_safe(loader.render_to_string('core/datelinks.html',
+        {'year': year, 'month': month, 'day': day}
+    ))
+
+
+@register.filter
+def get_month(date):
+    return date.strftime('%m')
+
+
+@register.filter
+def get_day(date):
+    return date.strftime('%d')
+
+
+@register.assignment_tag(takes_context=True)
+def inbox_count(context):
+    try:
+        user = context['user']
+        count = Message.objects.inbox_for(user).count()
+    except (KeyError, AttributeError):
+        count = ''
+    return "%s" % count
+
+@register.assignment_tag(takes_context=True)
+def inbox_unread(context):
+    try:
+        user = context['user']
+        count = user.received_messages.filter(read_at__isnull=True, recipient_deleted_at__isnull=True).count()
+    except (KeyError, AttributeError):
+        count = ''
+    return "%s" % count
+
+@register.assignment_tag(takes_context=True)
+def outbox_count(context):
+    try:
+        user = context['user']
+        count = Message.objects.outbox_for(user).count()
+    except (KeyError, AttributeError):
+        count = ''
+    return "%s" % count
+
+
+@register.assignment_tag(takes_context=True)
+def trash_count(context):
+    try:
+        user = context['user']
+        count = Message.objects.trash_for(user).count()
+    except (KeyError, AttributeError):
+        count = ''
+    return "%s" % count
+
+#####################################################
+### SMILES OLD
+
+EMOTICONS = {
+    u'O:-)': u'angel_mini',
+    u'@}-&gt;--': u'rose_mini',
+    u'*HEART*': u'heart_mini',
+    u'*OK*': u'music_mini2'}
+
+
+@register.filter
+def smiles(value):
+    """
+    Smiles library
+    """
+    for key, val in EMOTICONS.items():
+        value = value.replace(key, """<img src="/s/emo/%s.gif" />""" % val)
+    return value
+smiles.is_safe = True
