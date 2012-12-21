@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.abstract import AbstractName
+from nnmware.core.abstract import AbstractName, AbstractImg
 from nnmware.core.fields import std_text_field
 
 class TypeEmployer(AbstractName):
@@ -42,7 +42,7 @@ class TypeEmployerSphere(AbstractName):
     def __unicode__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
-class AbstractEmployer(models.Model):
+class AbstractEmployer(AbstractImg):
     is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
     name = std_text_field(_('Company name'))
     position = std_text_field(_('Work position'))
