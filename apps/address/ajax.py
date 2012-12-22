@@ -12,7 +12,7 @@ def autocomplete_city(request):
     for r in search_qs:
         userstring = {'name': r.get_name, 'slug': r.slug }
         results.append(userstring)
-    payload = {'city': results}
+    payload = {'answer': results}
     return AjaxLazyAnswer(payload)
 
 def autocomplete_country(request):
