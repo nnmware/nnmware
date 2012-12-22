@@ -23,5 +23,6 @@ def autocomplete_country(request):
     for r in search_qs:
         userstring = {'name': r.get_name, 'slug': r.slug }
         results.append(userstring)
-    payload = {'country': results}
+    payload = {'answer': results}
     return AjaxLazyAnswer(payload)
+
