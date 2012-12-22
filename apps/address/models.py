@@ -183,6 +183,7 @@ class StationMetro(Address, AbstractGeo):
 
 class AbstractLocation(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
     stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
         null=True,blank=True, related_name='metro')
