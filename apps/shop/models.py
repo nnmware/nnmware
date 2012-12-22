@@ -271,7 +271,6 @@ class OrderItem(MoneyBase):
 
 class DeliveryAddress(AbstractLocation):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
