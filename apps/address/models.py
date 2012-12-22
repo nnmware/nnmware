@@ -182,9 +182,9 @@ class StationMetro(Address, AbstractGeo):
         return u"%s :: %s" % (self.name, self.city)
 
 class AbstractLocation(models.Model):
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True)
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True)
-    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, related_name="%(class)s_cou")
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, related_name="%(class)s_cit")
     stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
         null=True,blank=True, related_name='metro')
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
