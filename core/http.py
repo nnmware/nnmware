@@ -65,3 +65,4 @@ def get_session_from_request(request):
         session_key = '%s:%s' % (request.META.get('REMOTE_ADDR',''), request.META.get('HTTP_USER_AGENT', '')[:255])
         session_key = session_key[:40]
     return session_key
+
