@@ -11,7 +11,7 @@ contains base for:
     User Notices
     User Messages
     Thread Comments 
-    ThreadCategories
+    Thread Categories
 
 [Address]
     Country
@@ -36,6 +36,9 @@ contains base for:
 
 [Shop]
     Shop application base 
+
+[Dossier]
+    Dossier base 
 
 Licensed under GPL3 
 
