@@ -258,8 +258,7 @@ class AbstractName(AbstractImg):
         try:
             return self.allpics[0].pic.url
         except :
-            return None
-
+            return settings.DEFAULT_IMG
 
     @property
     def allpics(self):
