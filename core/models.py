@@ -592,6 +592,8 @@ class NnmwareUser(AbstractUser):
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
     img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    balance = models.DecimalField(verbose_name=_('Balance'), default=0, max_digits=20, decimal_places=3)
+
 
     class Meta:
         ordering = ['username', ]
