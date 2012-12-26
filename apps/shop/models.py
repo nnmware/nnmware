@@ -331,6 +331,20 @@ class Feedback(AbstractIP):
     def get_absolute_url(self):
         return reverse('feedback_detail', args=[self.pk])
 
+class Review(AbstractIP):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders')
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    name = models.CharField(max_length=100, verbose_name=_('Name'))
+    message = models.TextField(verbose_name=_("Message"))
+    visible = models.BooleanField(verbose_name=_("Visible"), default=False)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = _('Review')
+        verbose_name_plural = _('Reviews')
+
+    def __unicode__(self):
+        return "%s - %s" % (self.name, self.created_date)
 
 class ShopText(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
