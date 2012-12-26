@@ -21,12 +21,11 @@ class ProductAdmin(admin.ModelAdmin):
         (_("Product"), {"fields": [('name','category'),
             ('slug','vendor','visible'),
             ('amount','quantity'),
-            ('discount','special_offer'),
             ('description',),
             ('color',"created_date",'updated_date'),
             ('shop_pn','vendor_pn'),
             ('order_in_list'),
-            ('teaser'),('discount','discount_percent'),
+            ('teaser'),('discount','discount_percent','special_offer'),
         ]}),
         )
 
