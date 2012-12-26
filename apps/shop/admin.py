@@ -19,7 +19,7 @@ class ProductAdmin(admin.ModelAdmin):
     inlines = [ ProductParameterValueInline, ]
     fieldsets = (
         (_("Product"), {"fields": [('name','category'),
-            ('slug','vendor','visible'),
+            ('slug','vendor','visible','avail'),
             ('amount','quantity'),
             ('description',),
             ('color',"created_date",'updated_date'),
