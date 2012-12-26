@@ -12,7 +12,7 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from nnmware.apps.shop.models import Basket, Product, Order, OrderItem
+from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
@@ -795,3 +795,7 @@ def smiles(value):
         value = value.replace(key, """<img src="/s/emo/%s.gif" />""" % val)
     return value
 smiles.is_safe = True
+
+@register.assignment_tag
+def shop_parent():
+    return ProductCategory.objects.filter(parent=None).order_by('-ordering')
