@@ -332,7 +332,7 @@ class Feedback(AbstractIP):
         return reverse('feedback_detail', args=[self.pk])
 
 class Review(AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews')
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     message = models.TextField(verbose_name=_("Message"))
