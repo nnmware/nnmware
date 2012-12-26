@@ -36,7 +36,7 @@ admin.site.register(Nnmcomment, NnmcommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
-    list_display = ('name', '_parents_repr', 'enabled', 'rootnode')
+    list_display = ('name', '_parents_repr', 'enabled', 'rootnode','ordering')
     list_display_links = ("name",)
     list_filter = ("name",)
     ordering = ['parent__id', 'name']
