@@ -68,6 +68,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
     discount = models.BooleanField(verbose_name=_("Discount"), default=False)
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
+    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, decimal_places=1, max_digits=4, default=0)
 
     objects = ProductManager()
 
