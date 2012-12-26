@@ -505,11 +505,12 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     middle_name = models.CharField(max_length=50, verbose_name=_('Middle Name'), blank=True, default='')
     last_name = models.CharField(max_length=50, verbose_name=_('Last Name'), blank=True, default='')
     viewcount = models.PositiveIntegerField(default=0, editable=False)
-    birthdate = models.DateField(verbose_name=_('Date of birth'), blank=True, null=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+    birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
-    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+
 
     @property
     def events_count(self):
