@@ -842,7 +842,7 @@ def shop_reviews():
     result = []
     try:
         vip = Review.objects.filter(vip=True).order_by('?')[0]
-        result.append(vip[0])
+        result.append(vip)
     except:
         pass
     user_review = Review.objects.filter(vip=False).order_by('?')[:10]
