@@ -536,6 +536,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         return "employer_view", (), {'pk': self.pk}
 
 class AbstractOffer(AbstractImg):
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     start_date = models.DateTimeField(_("Start date"), default=datetime.now)
     end_date = models.DateTimeField(_("End date"), default=datetime.now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
