@@ -93,10 +93,10 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ("user", 'name','slide_thumbnail','created_date','visible',"ip",'user_agent')
+    list_display = ('name','slide_thumbnail','created_date','visible',"ip",'user_agent',"user")
     fieldsets = (
-        (_("Review"), {"fields": [('user','visible'), ('message',),
-                                    ('created_date','ip','user_agent'),]}),
+        (_("Review"), {"fields": [('name','position','visible'),('vip','img'), ('message',),
+                                    ('created_date','ip','user_agent'),('user',)]}),
         )
     ordering = ('-created_date','user','visible')
     readonly_fields = ('ip','user_agent','created_date')
