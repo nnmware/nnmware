@@ -12,7 +12,7 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
-from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer
+from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
@@ -836,3 +836,20 @@ def shop_parent():
 @register.assignment_tag
 def special_offer():
     return SpecialOffer.objects.all().order_by('?')
+
+@register.assignment_tag
+def shop_reviews():
+    result = []
+    vip = Review.objects.filter(vip=True).order_by('?')
+    if vip is not None:
+        result.append(vip[0])
+    user_review = Review.objects.filter(vip=False).order_by('?')[:10]
+    result += user_review
+    return result
+
+
+
+
+
+
+
