@@ -580,6 +580,40 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
                 recurse_for_children(child, new_parent)
 
 
+@register.simple_tag
+def menu_shop():
+    if 1>0: #try:
+        html = Element("ul")
+        for node in ProductCategory.objects.all():
+            if not node.parent:
+                menu_recurse_shop(node, html)
+        return tostring(html, 'utf-8')
+#    except:
+#        return 'error'
+
+
+def menu_recurse_shop(current_node, parent_node, show_empty=True):
+    child_count = current_node.children.count()
+
+    if show_empty or child_count > 0:
+        temp_parent = SubElement(parent_node, 'li')
+        attrs = {'href': current_node.get_absolute_url(), 'id':'cat'+str(int(current_node.pk))}
+        link = SubElement(temp_parent, 'a', attrs)
+        cat_name = SubElement(link, 'span')
+        cat_name.text = current_node.get_name
+        counter = current_node._active_set.count()
+        for child in current_node.get_all_children():
+            counter += child._active_set.count()
+        if counter > 0:
+            count_txt = SubElement(link, 'sup')
+            count_txt.text = ' ' + str(counter)
+        if child_count > 0:
+            new_parent = SubElement(temp_parent, 'ul', {'class':'subcat'})
+            children = current_node.children.order_by('ordering','name')
+            for child in children:
+                recurse_for_children(child, new_parent)
+
+
 #@register.simple_tag
 #def tree(app=None):
 #    exec("""from nnmware.apps.%s.models import Category""" % app)
