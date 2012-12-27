@@ -269,8 +269,7 @@ class FeedbackView(CurrentUserSuperuser, DetailView):
 
 class SpecialOfferView(DetailView):
     model = SpecialOffer
-
     template_name = 'shop/offer.html'
 
-    def get_object(self, queryset=None):
-        return get_object_or_404(SpecialOffer,slug=self.kwargs['slug'])
+#    def get_object(self, queryset=None):
+#        return get_object_or_404(SpecialOffer,slug=self.kwargs['slug'])
