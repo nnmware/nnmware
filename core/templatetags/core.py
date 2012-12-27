@@ -611,7 +611,7 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
             new_parent = SubElement(temp_parent, 'ul', {'class':'subcat'})
             children = current_node.children.order_by('ordering','name')
             for child in children:
-                recurse_for_children(child, new_parent)
+                menu_recurse_shop(child, new_parent)
 
 
 #@register.simple_tag
