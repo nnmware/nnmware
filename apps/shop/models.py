@@ -336,7 +336,7 @@ class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True, blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = models.CharField(max_length=255, verbose_name=_('Name'))
-    position = models.CharField(max_length=255, verbose_name=_('Name'), blank=True, default='')
+    position = models.CharField(max_length=255, verbose_name=_('Position'), blank=True, default='')
     message = models.TextField(verbose_name=_("Message"), blank=True, default='')
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
     vip = models.BooleanField(verbose_name=_("Vip"), default=False)
