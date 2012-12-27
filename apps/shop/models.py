@@ -394,4 +394,4 @@ class SpecialOffer(AbstractOffer):
         super(SpecialOffer, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('special_offer', args=[self.slug])
+        return 'test' #reverse('special_offer', args=[self.slug])
