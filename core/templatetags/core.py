@@ -840,9 +840,11 @@ def special_offer():
 @register.assignment_tag
 def shop_reviews():
     result = []
-    vip = Review.objects.filter(vip=True).order_by('?')
-    if vip is not None:
+    try:
+        vip = Review.objects.filter(vip=True).order_by('?')[0]
         result.append(vip[0])
+    except:
+        pass
     user_review = Review.objects.filter(vip=False).order_by('?')[:10]
     result += user_review
     return result
