@@ -268,6 +268,8 @@ class FeedbackView(CurrentUserSuperuser, DetailView):
     template_name = 'shop/feedback.html'
 
 class SpecialOfferView(DetailView):
+    model = SpecialOffer
+
     template_name = 'shop/offer.html'
 
     def get_object(self, queryset=None):
