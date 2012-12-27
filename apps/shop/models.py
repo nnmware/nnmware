@@ -382,3 +382,16 @@ class ShopArticle(ShopText):
 
 class SpecialOffer(AbstractOffer):
     pass
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            if not self.pk:
+                super(SpecialOffer, self).save(*args, **kwargs)
+            self.slug = self.pk
+        else:
+            if SpecialOffer.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
+                self.slug = self.pk
+        super(SpecialOffer, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('special_offer', args=[self.slug])

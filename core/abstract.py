@@ -551,3 +551,4 @@ class AbstractOffer(AbstractImg):
         verbose_name = _('Special Offer')
         verbose_name_plural = _('Special Offers')
         abstract =  True
+
