@@ -335,6 +335,13 @@ class Tree(AbstractName):
         url_list.append(self.get_absolute_url())
         return zip(name_list, url_list)
 
+    @property
+    def get_all_ids(self):
+        id_list = []
+        for node in self._recurse_for_parents(self):
+            id_list.append(node.pk)
+        return id_list
+
     def __unicode__(self):
         name_list = [node.name for node in self._recurse_for_parents(self)]
         name_list.append(self.name)
