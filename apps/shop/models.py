@@ -403,7 +403,6 @@ class SpecialOffer(AbstractOffer):
         super(SpecialOffer, self).save(*args, **kwargs)
 
 
-#    @permalink
+    @permalink
     def get_absolute_url(self):
-#        return "special_offer", (), {'slug': self.slug}
-        return reverse("special_offer", kwargs={'slug': self.slug})
+        return "special_offer", (), {'pk':self.pk}
