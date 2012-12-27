@@ -37,15 +37,19 @@ class ShopBaseView(ListView):
     model = Product
 
 class ShopCategory(ShopBaseView):
-    cat_id = None
+    category = None
 
     def get_queryset(self):
-        result, self.cat_id = get_queryset_category(self, Product, ProductCategory, active=True)
+        result, self.category = get_queryset_category(self, Product, ProductCategory, active=True)
         return result
 
     def get_context_data(self, **kwargs):
         context = super(ShopCategory, self).get_context_data(**kwargs)
-        context['category_id'] = self.cat_id
+        context['category_id'] = self.category.pk
+        try:
+            context['parent_category_id'] = self.category.parent.pk
+        except:
+            pass
         return context
 
 class ShopAllCategory(ShopBaseView):

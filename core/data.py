@@ -18,8 +18,8 @@ def get_queryset_category(obj, main_obj, cat_obj, active=False):
     for child in children:
         array_child.append(child.pk)
     if active:
-        return main_obj.objects.active().select_related().filter(category__in=array_child), q.pk
-    return main_obj.objects.select_related().filter(category__in=array_child), q.pk
+        return main_obj.objects.active().select_related().filter(category__in=array_child), q
+    return main_obj.objects.select_related().filter(category__in=array_child), q
 
 
 def recurse_for_children(current_node, parent_node, show_empty=True):
