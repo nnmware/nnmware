@@ -604,9 +604,9 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
         counter = current_node._active_set.count()
         for child in current_node.get_all_children():
             counter += child._active_set.count()
-        if counter > 0:
-            count_txt = SubElement(link, 'sup')
-            count_txt.text = ' ' + str(counter)
+#        if counter > 0:
+#            count_txt = SubElement(link, 'sup')
+#            count_txt.text = ' ' + str(counter)
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul', {'class':'subcat'})
             children = current_node.children.order_by('ordering','name')
