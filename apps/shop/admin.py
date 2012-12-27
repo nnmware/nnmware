@@ -98,6 +98,9 @@ class ReviewAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class SpecialOfferAdmin(admin.ModelAdmin):
+    class Media:
+        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+              '/static/grappelli/tinymce_setup/tinymce_setup.js',]
     list_display = ("title", 'start_date','end_date','slide_thumbnail','enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date','end_date'),
