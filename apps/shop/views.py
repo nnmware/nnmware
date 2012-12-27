@@ -22,7 +22,7 @@ from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
-from apps.shop.models import SpecialOffer
+from nnmware.apps.shop.models import SpecialOffer
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check request.user is author of object """
