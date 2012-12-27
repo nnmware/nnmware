@@ -22,6 +22,7 @@ from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
+from apps.shop.models import SpecialOffer
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check request.user is author of object """
@@ -266,3 +267,8 @@ class FeedbackView(CurrentUserSuperuser, DetailView):
     pk_url_kwarg = 'pk'
     template_name = 'shop/feedback.html'
 
+class SpecialOfferView(DetailView):
+    template_name = 'shop/offer.html'
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(SpecialOffer,slug=self.kwargs['slug'])
