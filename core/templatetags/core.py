@@ -601,21 +601,19 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
 @register.simple_tag
 def menu(app=None):
     if app == 'topic':
-        from nnmware.apps.topic.models import Category as Tree
+        from nnmware.apps.topic.models import Category as MenuCategory
     elif app == 'board':
-        from nnmware.apps.board.models import Category as Tree
+        from nnmware.apps.board.models import Category as MenuCategory
     elif app == 'shop':
-        from nnmware.apps.shop.models import ProductCategory as Tree
+        from nnmware.apps.shop.models import ProductCategory as MenuCategory
     elif app == 'article':
-        from nnmware.apps.article.models import Category as Tree
-    elif app == 'dashboard':
-        from nnmware.apps.dashboard.models import Category as Tree
+        from nnmware.apps.article.models import Category as MenuCategory
     else:
         pass
 
     if 1>0: #try:
         html = Element("ul")
-        for node in Tree.objects.all():
+        for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children(node, html)
         return tostring(html, 'utf-8')
