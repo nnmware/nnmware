@@ -849,6 +849,10 @@ def shop_reviews():
     result += user_review
     return result
 
+@register.tag
+def sum_discount(amount, discount):
+    result =  amount*(100-discount)/100
+    return result
 
 
 
