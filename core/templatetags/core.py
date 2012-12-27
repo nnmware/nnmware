@@ -835,4 +835,4 @@ def shop_parent():
 
 @register.assignment_tag
 def special_offer():
-    return SpecialOffer.objects.all()
+    return SpecialOffer.objects.all().order_by('?')
