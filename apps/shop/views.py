@@ -46,6 +46,7 @@ class ShopCategory(ShopBaseView):
     def get_context_data(self, **kwargs):
         context = super(ShopCategory, self).get_context_data(**kwargs)
         context['category_id'] = self.category.pk
+        context['category'] = self.category
         try:
             context['parent_category_id'] = self.category.parent.pk
         except:
