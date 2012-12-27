@@ -101,7 +101,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     list_display = ("title", 'start_date','end_date','slide_thumbnail','enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date','end_date'),
-                                  ('enabled','slug','order_in_list'),('text',)]}),
+                                  ('enabled','slug','order_in_list'),('img',),('text',)]}),
         )
     ordering = ('-start_date','-end_date')
 
