@@ -393,5 +393,6 @@ class SpecialOffer(AbstractOffer):
                 self.slug = self.pk
         super(SpecialOffer, self).save(*args, **kwargs)
 
+    @permalink
     def get_absolute_url(self):
-        return 'test' #reverse('special_offer', args=[self.slug])
+        return "hotel_detail", (), {'slug': self.slug}
