@@ -89,13 +89,21 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ("user", 'created_date','visible',"ip",'user_agent')
+    list_display = ("user", 'name','slide_thumbnail','created_date','visible',"ip",'user_agent')
     fieldsets = (
         (_("Review"), {"fields": [('user','visible'), ('message',),
                                     ('created_date','ip','user_agent'),]}),
         )
     ordering = ('-created_date','user','visible')
     readonly_fields = ('ip','user_agent','created_date')
+
+class SpecialOfferAdmin(admin.ModelAdmin):
+    list_display = ("title", 'start_date','end_date','slide_thumbnail','enabled')
+    fieldsets = (
+        (_("SpecialOffer"), {"fields": [('title',), ('start_date','end_date'),
+                                  ('enabled','slug','order_in_list'),('text',)]}),
+        )
+    ordering = ('-start_date','-end_date')
 
 
 class ShopNewsAdmin(admin.ModelAdmin):
@@ -130,3 +138,4 @@ admin.site.register(Feedback, FeedbackAdmin)
 admin.site.register(ShopNews, ShopNewsAdmin)
 admin.site.register(ShopArticle, ShopArticleAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(SpecialOffer, SpecialOfferAdmin)

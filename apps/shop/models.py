@@ -8,8 +8,8 @@ from django.db.models import permalink, Q, Count, Sum
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import Tree, AbstractName, AbstractContent
-from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP
+from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer
+from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
 
@@ -236,6 +236,7 @@ class Order(AbstractDate):
         if self.last_name <> '' and self.last_name is not None:
             result += self.last_name
         if self.first_name <> '' and self.first_name is not None:
+
             result += ' ' + self.first_name
         if self.middle_name <> '' and self.middle_name is not None:
             result += ' ' + self.middle_name
@@ -331,12 +332,13 @@ class Feedback(AbstractIP):
     def get_absolute_url(self):
         return reverse('feedback_detail', args=[self.pk])
 
-class Review(AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews')
+class Review(AbstractIP, AbstractImg):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True, blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = models.CharField(max_length=100, verbose_name=_('Name'))
     message = models.TextField(verbose_name=_("Message"))
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
+    vip = models.BooleanField(verbose_name=_("Vip"), default=False)
 
     class Meta:
         ordering = ['-created_date']
@@ -377,3 +379,5 @@ class ShopArticle(ShopText):
         verbose_name = _('Shop article')
         verbose_name_plural = _('Shop articles')
 
+class SpecialOffer(AbstractOffer):
+    pass

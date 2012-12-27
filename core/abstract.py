@@ -534,3 +534,17 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     @permalink
     def get_absolute_url(self):
         return "employer_view", (), {'pk': self.pk}
+
+class AbstractOffer(AbstractImg):
+    start_date = models.DateTimeField(_("Start date"), default=datetime.now)
+    end_date = models.DateTimeField(_("End date"), default=datetime.now)
+    title = models.CharField(max_length=255, verbose_name=_('Title'))
+    text = models.TextField(verbose_name=_("Offer text"), null=True, blank=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
+
+    class Meta:
+        verbose_name = _('Special Offer')
+        verbose_name_plural = _('Special Offers')
+        abstract =  True
