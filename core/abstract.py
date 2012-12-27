@@ -32,17 +32,6 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
     )]
 
 
-class Color(models.Model):
-    name = std_text_field(_('Color'))
-
-    class Meta:
-        verbose_name = _("Color")
-        verbose_name_plural = _("Colors")
-        abstract = True
-
-    def __unicode__(self):
-        return self.name
-
 class AbstractDate(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
@@ -214,6 +203,16 @@ class AbstractImg(models.Model):
         return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
     slide_thumbnail.allow_tags = True
 
+class Color(AbstractImg):
+    name = std_text_field(_('Color'))
+
+    class Meta:
+        verbose_name = _("Color")
+        verbose_name_plural = _("Colors")
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
 
 class AbstractName(AbstractImg):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
