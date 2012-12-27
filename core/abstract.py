@@ -189,8 +189,11 @@ class AbstractImg(models.Model):
             return settings.DEFAULT_IMG
 
     def delete(self, *args, **kwargs):
-        remove_thumbnails(self.img.path)
-        remove_file(self.img.path)
+        try:
+            remove_thumbnails(self.img.path)
+            remove_file(self.img.path)
+        except:
+            pass
         super(AbstractImg, self).delete(*args, **kwargs)
 
     def slide_thumbnail(self):
