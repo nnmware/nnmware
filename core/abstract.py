@@ -340,7 +340,8 @@ class Tree(AbstractName):
         id_list = []
         for node in self._recurse_for_parents(self):
             id_list.append(node.pk)
-        return id_list.append(self.pk)
+        id_list.append(self.pk)
+        return id_list
 
     def __unicode__(self):
         name_list = [node.name for node in self._recurse_for_parents(self)]
