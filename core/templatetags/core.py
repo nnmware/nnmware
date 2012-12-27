@@ -598,7 +598,7 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
 
     if show_empty or child_count > 0:
         temp_parent = SubElement(parent_node, 'li')
-        attrs = {'href': current_node.get_absolute_url(), 'id':'cat'+str(int(current_node.pk))}
+        attrs = {'href': current_node.get_absolute_url(), 'class':'cat'+str(int(current_node.pk))}
         link = SubElement(temp_parent, 'a', attrs)
         cat_name = SubElement(link, 'span')
         cat_name.text = current_node.get_name
