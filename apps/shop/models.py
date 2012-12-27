@@ -5,6 +5,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import permalink, Q, Count, Sum
+from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
@@ -112,6 +113,15 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     def allorders(self):
         allitems = OrderItem.objects.filter(product_origin=self).values_list('order__pk',flat=True)
         return Order.objects.active().filter(pk__in=allitems).dates('created_date', 'day')
+
+    @property
+    def with_discount(self):
+        if self.discount:
+            result =  self.amount*(100-self.discount_percent)/100
+        else:
+            result = self.amount
+        return floatformat(result,0)
+
 
 class ParameterUnit(Unit):
     pass
