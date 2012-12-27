@@ -395,4 +395,4 @@ class SpecialOffer(AbstractOffer):
 
     @permalink
     def get_absolute_url(self):
-        return "hotel_detail", (), {'slug': self.slug}
+        return "special_offer", (), {'slug': self.slug}
