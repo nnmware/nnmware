@@ -58,6 +58,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
         on_delete=models.SET_NULL)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     color = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
+    related_products = models.ManyToManyField('self', verbose_name=_('Related products'), null=True, blank=True)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
@@ -67,6 +68,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
     bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
     discount = models.BooleanField(verbose_name=_("Discount"), default=False)
+    on_main = models.BooleanField(verbose_name=_("On main page"), default=False)
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
     special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
     discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, decimal_places=1, max_digits=4, default=0)
