@@ -856,7 +856,7 @@ def sum_discount(amount, discount):
 
 @register.simple_tag(takes_context=True)
 def get_paginator_value(context):
-    result =  context['request'].session.get('paginator', settings.PAGINATE_BY)
+    result =  context['request'].session.get('paginator', str(settings.PAGINATE_BY))
     return result
 
 
