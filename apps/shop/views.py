@@ -76,7 +76,8 @@ class ShopSearch(ShopBaseView):
         if q is not None:
             return Product.objects.filter(
                 Q(name__icontains=q) |
-                Q(description__icontains=q) |Q(teaser__icontains=q)).order_by('-created_date')
+                Q(description__icontains=q) |
+                Q(teaser__icontains=q)).order_by('-created_date')
         return Product.objects.active()
 
 
