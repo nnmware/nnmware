@@ -25,7 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
             ('color',"created_date",'updated_date'),
             ('shop_pn','vendor_pn'),
             ('order_in_list','enabled','on_main'),
-            ('teaser'),('discount','discount_percent','special_offer'),('related_product'),
+            ('teaser',),('discount','discount_percent','special_offer'),('related_products',),
         ]}),
         )
 
