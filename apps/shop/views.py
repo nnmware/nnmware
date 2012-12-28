@@ -44,7 +44,13 @@ class ShopCategory(ShopBaseView):
     category = None
 
     def get_queryset(self):
+        sort = self.request.GET.get('sort') or None
         result, self.category = get_queryset_category(self, Product, ProductCategory, active=True)
+        if sort is not None:
+            if sort == 'money':
+                result = result.order_by('-amount')
+            if sort == 'date':
+                result = result.order_by('-created_date')
         return result
 
     def get_context_data(self, **kwargs):
