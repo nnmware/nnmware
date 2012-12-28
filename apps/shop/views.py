@@ -37,6 +37,9 @@ class ShopBaseView(ListView):
     paginate_by = settings.PAGINATE_SHOP
     model = Product
 
+    def get_paginate_by(self, queryset):
+        return self.request.session.get('paginator', self.paginate_by)
+
 class ShopCategory(ShopBaseView):
     category = None
 
@@ -271,5 +274,3 @@ class SpecialOfferView(DetailView):
     model = SpecialOffer
     template_name = 'shop/offer.html'
 
-#    def get_object(self, queryset=None):
-#        return get_object_or_404(SpecialOffer,slug=self.kwargs['slug'])

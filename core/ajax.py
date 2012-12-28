@@ -750,3 +750,11 @@ def push_message(request, object_id):
         payload = {'success': False, 'error':_('You are not allowed for send message')}
     except :
         payload = {'success': False}
+
+def set_paginator(request, num):
+    try:
+        request.session['paginator'] = num
+        payload = {'success': True }
+    except :
+        payload = {'success': False}
+
