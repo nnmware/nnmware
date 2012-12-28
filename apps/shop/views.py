@@ -44,7 +44,7 @@ class ShopCategory(ShopBaseView):
     category = None
 
     def get_queryset(self):
-        sort = self.request.GET.get('sort') or None
+        sort = self.request.GET.get('order') or None
         result, self.category = get_queryset_category(self, Product, ProductCategory, active=True)
         if sort is not None:
             if sort == 'money':
