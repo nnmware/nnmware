@@ -756,8 +756,7 @@ def push_message(request, object_id):
 def set_paginator(request, num):
     try:
         request.session['paginator'] = num
-        url = request.path
-        payload = {'success': True, 'location': url }
+        payload = {'success': True}
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
