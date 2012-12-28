@@ -70,6 +70,17 @@ class ShopAllCategory(ShopBaseView):
     def get_queryset(self):
         return Product.objects.active()
 
+class ShopSearch(ShopBaseView):
+
+    def get_queryset(self):
+        q = self.request.GET.get('q') or None
+        if q is not None:
+            return Product.objects.active().filter(
+                Q(name__icontains=q) |
+                Q(description__icontains=q) |Q(teaser__icontains=q)).order_by('-created_date')
+        return Product.objects.active()
+
+
 class SaleView(ShopBaseView):
     template_name = 'shop/sale_list.html'
 
