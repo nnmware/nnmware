@@ -42,20 +42,27 @@ class ShopBaseView(ListView):
 
 class ShopCategory(ShopBaseView):
     category = None
+    sort = None
 
     def get_queryset(self):
         sort = self.request.GET.get('order') or None
         result, self.category = get_queryset_category(self, Product, ProductCategory, active=True)
         if sort is not None:
-            if sort == 'money':
+            self.sort = sort
+            if sort == 'money_up':
                 result = result.order_by('-amount')
-            if sort == 'date':
+            elif sort == 'money_down':
+                result = result.order_by('amount')
+            elif sort == 'date_up':
                 result = result.order_by('-created_date')
+            elif sort == 'date_down':
+                result = result.order_by('created_date')
         return result
 
     def get_context_data(self, **kwargs):
         context = super(ShopCategory, self).get_context_data(**kwargs)
         context['category'] = self.category
+        context['sort'] = self.sort
         return context
 
 class ShopAllCategory(ShopBaseView):
