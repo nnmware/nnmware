@@ -750,6 +750,8 @@ def push_message(request, object_id):
         payload = {'success': False, 'error':_('You are not allowed for send message')}
     except :
         payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
 
 def set_paginator(request, num):
     try:
@@ -757,4 +759,5 @@ def set_paginator(request, num):
         payload = {'success': True }
     except :
         payload = {'success': False}
+    return AjaxLazyAnswer(payload)
 
