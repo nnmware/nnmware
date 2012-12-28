@@ -854,7 +854,7 @@ def sum_discount(amount, discount):
     result =  amount*(100-discount)/100
     return result
 
-@register.simple_tag(takes_context=True)
+@register.assignment_tag(takes_context=True)
 def get_paginator_value(context):
     result =  context['request'].session.get('paginator', str(settings.PAGINATE_BY))
     return result
