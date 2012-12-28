@@ -14,7 +14,6 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue, STATUS_PROCESS, STATUS_SENT, OrderItem
-from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import Nnmcomment
