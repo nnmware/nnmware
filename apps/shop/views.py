@@ -70,6 +70,7 @@ class ShopAllCategory(ShopBaseView):
         return Product.objects.active()
 
 class ShopSearch(ShopBaseView):
+    template_name = 'shop/product_search.html'
 
     def get_queryset(self):
         q = self.request.GET.get('q') or None
