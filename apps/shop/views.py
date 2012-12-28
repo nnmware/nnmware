@@ -71,10 +71,12 @@ class ShopAllCategory(ShopBaseView):
 
 class ShopSearch(ShopBaseView):
     template_name = 'shop/product_search.html'
+    q = None
 
     def get_queryset(self):
         q = self.request.GET.get('q') or None
         if q is not None:
+            self.q = q
             return Product.objects.filter(
                 Q(name__icontains=q) |
                 Q(description__icontains=q) |
@@ -84,6 +86,8 @@ class ShopSearch(ShopBaseView):
     def get_context_data(self, **kwargs):
         context = super(ShopSearch, self).get_context_data(**kwargs)
         context['search'] = True
+        if self.q is not None:
+            context['search_string'] = self.q
         return context
 
 
