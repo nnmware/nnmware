@@ -80,6 +80,12 @@ class ShopSearch(ShopBaseView):
                 Q(teaser__icontains=q)).order_by('-created_date')
         return Product.objects.active()
 
+    def get_context_data(self, **kwargs):
+        context = super(ShopSearch, self).get_context_data(**kwargs)
+        context['search'] = True
+        return context
+
+
 
 class SaleView(ShopBaseView):
     template_name = 'shop/sale_list.html'
