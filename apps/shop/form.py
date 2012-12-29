@@ -21,6 +21,7 @@ class EditProductFurnitureForm(forms.ModelForm):
     colors = forms.ModelChoiceField(queryset=ProductColor.objects.all(), required=False)
     materials = forms.ModelChoiceField(queryset=ProductMaterial.objects.all(), required=False)
     category = forms.ModelChoiceField(queryset=ProductCategory.objects.exclude(rootnode=True))
+    related_products = forms.ModelChoiceField(queryset=Product.objects.all())
     class Meta:
         model = Product
         fields = ('name','category','slug','amount','discount_percent','avail','description',
