@@ -181,7 +181,7 @@ class Basket(AbstractDate):
 
     @property
     def sum(self):
-        return self.quantity*self.product.with_discount
+        return self.quantity*self.product.amount
 
     def __unicode__(self):
         return "%s" % self.user.username
