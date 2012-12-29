@@ -344,10 +344,12 @@ def add_color(request,object_id):
             raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
         color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        w = int(request.REQUEST['width'])
+        h = int(request.REQUEST['height'])
         p.color.add(color)
         p.save()
         payload = {'success': True, 'name':color.name, 'id': color.pk,
-                   'value':param.value}
+                   'src': make_thumbnail(color.img.url,width=w,height=h)}
     except AccessError:
         payload = {'success': False}
     except :
