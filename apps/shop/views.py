@@ -22,6 +22,7 @@ from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
 from nnmware.apps.shop.models import SpecialOffer
+from nnmware.apps.shop.form import EditProductFurnitureForm
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check request.user is author of object """
@@ -166,6 +167,26 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+class EditProductFurniture(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, UpdateView):
+    model = Product
+    pk_url_kwarg = 'pk'
+    form_class = EditProductFurnitureForm
+    template_name = "shop/edit_product.html"
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super(EditProductFurniture, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(EditProductFurniture, self).get_context_data(**kwargs)
+        context['title_line'] = _('edit form')
+        return context
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
 
 def add_product(request):
     # Link used when admin add product
