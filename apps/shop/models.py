@@ -9,7 +9,7 @@ from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, City, Region, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer
+from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material
 from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
@@ -29,6 +29,9 @@ class ProductCategory(Tree):
 
 
 class ProductColor(Color):
+    pass
+
+class ProductMaterial(Material):
     pass
 
 class Vendor(models.Model):
@@ -58,6 +61,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
         on_delete=models.SET_NULL)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     color = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
+    material = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
     related_products = models.ManyToManyField('self', verbose_name=_('Related products'), null=True, blank=True)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
@@ -72,6 +76,9 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
     special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
     discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, decimal_places=1, max_digits=4, default=0)
+    width = models.IntegerField(_('Width, sm'), default=0, blank=True)
+    height = models.IntegerField(_('Height, sm'), default=0, blank=True)
+    depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
 
     objects = ProductManager()
 

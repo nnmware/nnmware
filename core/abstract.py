@@ -217,6 +217,18 @@ class Color(AbstractImg):
     def __unicode__(self):
         return self.name
 
+class Material(AbstractImg):
+    name = std_text_field(_('Material'))
+
+    class Meta:
+        verbose_name = _("Material")
+        verbose_name_plural = _("Materials")
+        abstract = True
+
+    def __unicode__(self):
+        return self.name
+
+
 class AbstractName(AbstractImg):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
