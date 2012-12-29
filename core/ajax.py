@@ -234,7 +234,7 @@ def img_check_rights(request, obj):
         return True
     return False
 
-def img_setmain(request, object_id, img_w=64, img_h=64):
+def img_setmain(request, object_id, img_w='64', img_h='64'):
     # Link used for User press SetMain for Image
     pic = get_object_or_404(Pic, id=int(object_id))
     if img_check_rights(request,pic):
@@ -242,7 +242,7 @@ def img_setmain(request, object_id, img_w=64, img_h=64):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=img_w,height=img_h)}
+        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=int(img_w),height=int(img_h))}
     else :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
