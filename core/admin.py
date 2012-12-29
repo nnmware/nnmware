@@ -148,6 +148,10 @@ class ColorAdmin(admin.ModelAdmin):
     list_display = ('name','slide_thumbnail' )
     list_filter = ('name',)
 
+class MaterialAdmin(admin.ModelAdmin):
+    list_display = ('name','slide_thumbnail' )
+    list_filter = ('name',)
+
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'user', 'content_object')
     list_editable = ('user',)
