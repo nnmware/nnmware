@@ -859,8 +859,8 @@ def get_paginator_value(context):
     result =  context['request'].session.get('paginator', str(settings.PAGINATE_BY))
     return result
 
-
-
-
+@register.assignment_tag
+def shop_main_page():
+    return Product.objects.filter(on_main=True).order_by('-created_date')
 
 
