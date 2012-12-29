@@ -344,6 +344,8 @@ def add_color(request,object_id):
             raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
         color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        if color in p.colors.all:
+            raise AccessError
         w = int(request.REQUEST['width'])
         h = int(request.REQUEST['height'])
         p.colors.add(color)
