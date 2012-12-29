@@ -242,7 +242,7 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=int(img_w),height=int(img_h))}
+        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=int(img_w),height=int(img_h),aspect=1)}
     else :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
