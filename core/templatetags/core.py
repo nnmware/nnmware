@@ -233,7 +233,6 @@ def basket_sum(context):
     result = basket(context)
     all_sum = 0
     for item in result:
-        raise TypeError, item.sum
         all_sum += item.sum
     return all_sum
 
