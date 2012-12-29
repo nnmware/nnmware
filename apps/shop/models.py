@@ -60,8 +60,8 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
         on_delete=models.SET_NULL)
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
-    color = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
-    material = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
+    colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
+    materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
     related_products = models.ManyToManyField('self', verbose_name=_('Related products'), null=True, blank=True)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)

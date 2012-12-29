@@ -347,7 +347,7 @@ def add_color(request,object_id):
         w = int(request.REQUEST['width'])
         h = int(request.REQUEST['height'])
         p.color.add(color)
-#        p.save()
+        p.save()
         payload = {'success': True, 'name':color.name, 'id': color.pk,
                    'src': make_thumbnail(color.img.url,width=w,height=h)}
     except AccessError:
