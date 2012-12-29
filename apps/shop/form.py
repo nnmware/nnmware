@@ -24,7 +24,7 @@ class EditProductFurnitureForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('name','category','slug','amount','discount_percent','avail','description',
-                  'vendor','width','height','depth')
+                  'vendor','width','height','depth','on_main')
 
 class OrderStatusForm(forms.ModelForm):
 
