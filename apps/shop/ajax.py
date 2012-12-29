@@ -356,12 +356,12 @@ def add_color(request,object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def delete_color(request,object_id):
+def delete_color(request,object_id, color_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
-        color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        color = get_object_or_404(ProductColor,pk=int(color_id))
         p.colors.remove(color)
         p.save()
         payload = {'success': True}
