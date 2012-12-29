@@ -400,3 +400,33 @@ def delete_material(request,object_id, material_id):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def add_related_product(request,object_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        product = get_object_or_404(Product,pk=int(request.REQUEST['product']))
+        p.related_products.add(product)
+        p.save()
+        payload = {'success': True, 'name':product.name, 'id': product.pk}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def delete_related_product(request,object_id, product_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        product = get_object_or_404(Product,pk=int(product_id))
+        p.related_products.remove(product)
+        p.save()
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
