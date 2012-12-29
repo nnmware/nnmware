@@ -138,7 +138,8 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
                 addons = {'size':os.path.getsize(fullpath),
-                          'thumbnail':make_thumbnail(new.pic.url, width=settings.DEFAULT_UPLOAD_THUMBNAIL_SIZE)}
+                          'thumbnail':make_thumbnail(new.pic.url, width=settings.DEFAULT_THUMBNAIL_WIDTH,
+                              height=settings.DEFAULT_THUMBNAIL_SIZE,aspect=1)}
             payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
