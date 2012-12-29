@@ -344,14 +344,27 @@ def add_color(request,object_id):
             raise AccessError
         p = get_object_or_404(Product,pk=int(object_id))
         color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
-#        if color in p.colors.all:
-#            raise AccessError
         w = int(request.REQUEST['width'])
         h = int(request.REQUEST['height'])
         p.colors.add(color)
         p.save()
         payload = {'success': True, 'name':color.name, 'id': color.pk,
                    'src': make_thumbnail(color.img.url,width=w,height=h)}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def delete_color(request,object_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        p.colors.remove(color)
+        p.save()
+        payload = {'success': True}
     except AccessError:
         payload = {'success': False}
     except :
