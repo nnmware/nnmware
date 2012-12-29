@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
-    STATUS_WAIT, OrderItem, Feedback, ProductColor
+    STATUS_WAIT, OrderItem, Feedback, ProductColor, ProductMaterial
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -363,6 +363,36 @@ def delete_color(request,object_id, color_id):
         p = get_object_or_404(Product,pk=int(object_id))
         color = get_object_or_404(ProductColor,pk=int(color_id))
         p.colors.remove(color)
+        p.save()
+        payload = {'success': True}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def add_material(request,object_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        material = get_object_or_404(ProductMaterial,pk=int(request.REQUEST['material']))
+        p.materials.add(material)
+        p.save()
+        payload = {'success': True, 'name':material.name, 'id': material.pk}
+    except AccessError:
+        payload = {'success': False}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def delete_material(request,object_id, material_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        material = get_object_or_404(ProductMaterial,pk=int(material_id))
+        p.materials.remove(material)
         p.save()
         payload = {'success': True}
     except AccessError:
