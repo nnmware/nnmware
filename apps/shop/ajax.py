@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
-    STATUS_WAIT, OrderItem, Feedback
+    STATUS_WAIT, OrderItem, Feedback, ProductColor
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -334,5 +334,22 @@ def delete_comment(request, object_id):
     except AccessError:
         payload = {'success': False}
     except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+def add_color(request,object_id):
+    try:
+        if not request.user.is_superuser:
+            raise AccessError
+        p = get_object_or_404(Product,pk=int(object_id))
+        color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        p.color.add(color)
+        p.save()
+        payload = {'success': True, 'name':color.name, 'id': color.pk,
+                   'value':param.value}
+    except AccessError:
+        payload = {'success': False}
+    except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)

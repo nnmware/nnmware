@@ -145,7 +145,7 @@ class UnitAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 class ColorAdmin(admin.ModelAdmin):
-    list_display = ('name', )
+    list_display = ('name','slide_thumbnail' )
     list_filter = ('name',)
 
 class FollowAdmin(admin.ModelAdmin):
