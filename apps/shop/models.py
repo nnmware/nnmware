@@ -124,7 +124,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
     @property
     def with_discount(self):
-        if self.discount:
+        if self.discount_percent >0:
             result =  self.amount*(100-self.discount_percent)/100
         else:
             result = self.amount
