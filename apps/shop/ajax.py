@@ -410,7 +410,7 @@ def add_related_product(request,object_id):
         p.related_products.add(product)
         p.save()
         payload = {'success': True, 'name':product.name, 'id': product.pk, 'url':product.get_absolute_url(),
-                   'src': make_thumbnail(product.main_image,width=settings.RELATED_PRODUCT_WIDTH,height=settings.RELATED_PRODUCT_HEIGHT)}
+                   'src': make_thumbnail(product.main_image,width=settings.RELATED_PRODUCT_WIDTH,height=settings.RELATED_PRODUCT_HEIGHT, aspect=1)}
     except AccessError:
         payload = {'success': False}
     except :
