@@ -22,10 +22,10 @@ class ProductAdmin(admin.ModelAdmin):
             ('slug','vendor','visible','avail'),
             ('amount','quantity'),
             ('description',),
-            ('color',"created_date",'updated_date'),
+            ("created_date",'updated_date'),
             ('shop_pn','vendor_pn'),
             ('order_in_list','enabled','on_main'),
-            ('teaser',),('discount','discount_percent','special_offer'),('related_products',),
+            ('teaser',),('discount','discount_percent','special_offer'),('colors',),('materials',),('related_products',),
         ]}),
         )
 
