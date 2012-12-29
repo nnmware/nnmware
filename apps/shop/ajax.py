@@ -108,6 +108,44 @@ def add_basket(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def add_basket_lite(request, object_id):
+    # Link used when User add to basket
+    try:
+        p = Product.objects.get(pk=int(object_id))
+        if not p.avail or p.amount <= 0 :
+            raise AccessError
+        if not request.user.is_authenticated():
+            session_key = get_session_from_request(request)
+            if Basket.objects.filter(session_key=session_key, product=p).count() >0 :
+                b = Basket.objects.get(session_key=session_key, product=p)
+                b.quantity += 1
+            else:
+                b = Basket(session_key=session_key,product=p)
+                b.quantity = 1
+            b.save()
+            basket_user = Basket.objects.filter(session_key=session_key)
+        else:
+            if Basket.objects.filter(user=request.user, product=p).count() >0 :
+                b = Basket.objects.get(user=request.user, product=p)
+                b.quantity += 1
+            else:
+                b = Basket(user=request.user,product=p)
+                b.quantity = 1
+            b.save()
+            basket_user = Basket.objects.filter(user=request.user)
+        basket_count = basket_user.count()
+        all_sum = 0
+        for item in basket_user:
+            all_sum += item.sum
+        payload = {'success': True, 'basket_count':basket_count,
+                   'basket_sum':"%0.2f" % (all_sum,)}
+    except AccessError:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def delete_basket(request, object_id):
     # Link used when User delete the item from basket
     try:
