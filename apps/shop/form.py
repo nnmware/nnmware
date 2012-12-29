@@ -2,7 +2,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.shop.models import Product, ProductParameter, Order, ProductColor, ProductMaterial
+from nnmware.apps.shop.models import Product, ProductParameter, Order, ProductColor, ProductMaterial, ProductCategory
 
 class EditProductForm(forms.ModelForm):
     """
@@ -20,6 +20,7 @@ class EditProductForm(forms.ModelForm):
 class EditProductFurnitureForm(forms.ModelForm):
     colors = forms.ModelChoiceField(queryset=ProductColor.objects.all(), required=False)
     materials = forms.ModelChoiceField(queryset=ProductMaterial.objects.all(), required=False)
+    category = forms.ModelChoiceField(queryset=ProductCategory.objects.exclude(rootnode=True))
     class Meta:
         model = Product
         fields = ('name','category','slug','amount','discount_percent','avail','description',
