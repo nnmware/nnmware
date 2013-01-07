@@ -128,6 +128,12 @@ class BasketView(TemplateView):
             return HttpResponseRedirect('/')
         return super(BasketView, self).dispatch(request, *args, **kwargs)
 
+class BasketView2(TemplateView):
+    template_name = 'shop/basket2.html'
+
+
+
+
 class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
     model = Product
