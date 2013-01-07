@@ -212,13 +212,27 @@ class OrdersManager(models.Manager):
     def active(self):
         return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )
 
+DELIVERY_UNKNOWN = 0
+DELIVERY_COURIER = 1
+DELIVERY_SELF = 2
+DELIVERY_MAIL = 3
+
+DELIVERY_METHOD = (
+    (DELIVERY_UNKNOWN, _('Unknown')),
+    (DELIVERY_COURIER, _('Courier')),
+    (DELIVERY_SELF, _('Shipment at own expense')),
+    (DELIVERY_MAIL, _('Mail')),
+    )
+
 class Order(AbstractDate):
     """
     Definition of orders.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders', blank=True,
+        null=True, on_delete=models.SET_NULL)
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
+    delivery = models.IntegerField(verbose_name=_('Delivery method'), max_length=2, default=DELIVERY_UNKNOWN, choices=DELIVERY_METHOD)
     address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
     tracknumber = models.CharField(verbose_name=_('Track number'), max_length=100,default='', blank=True)
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
@@ -226,6 +240,11 @@ class Order(AbstractDate):
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
+    lite = models.BooleanField(verbose_name=_("Not register shop user"), default=True)
+    phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
+    email = models.EmailField(_('Email'), blank=True)
+    buyer_comment = models.CharField(max_length=255, verbose_name=_('Buyer comment'), blank=True)
+    seller_comment = models.CharField(max_length=255, verbose_name=_('Seller comment'), blank=True)
 
     objects = OrdersManager()
 
@@ -288,66 +307,6 @@ class OrderItem(MoneyBase):
     @property
     def fullamount(self):
         return self.quantity*self.amount
-
-class OrderLite(AbstractDate, AbstractIP):
-    """
-    Definition of orders of unregistered user.
-    """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders')
-    comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
-    status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
-    address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
-    tracknumber = models.CharField(verbose_name=_('Track number'), max_length=100,default='', blank=True)
-    cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
-        related_name='cargo', null=True, blank=True)
-    first_name = std_text_field(_('First Name'))
-    middle_name = std_text_field(_('Middle Name'))
-    last_name = std_text_field(_('Last Name'))
-
-    objects = OrdersManager()
-
-    class Meta:
-        ordering = ['-created_date']
-        verbose_name = _('Order')
-        verbose_name_plural = _('Orders')
-
-    def __unicode__(self):
-        return "%s" % self.pk
-
-    @property
-    def fullamount(self):
-        result = 0
-        for i in self.orderitem_set.all():
-            result += i.fullamount
-        return result
-
-    @permalink
-    def get_absolute_url(self):
-        return "order_view", (), {'pk':self.pk}
-
-    @property
-    def receiver(self):
-        result = ''
-        if self.last_name <> '' and self.last_name is not None:
-            result += self.last_name
-        if self.first_name <> '' and self.first_name is not None:
-
-            result += ' ' + self.first_name
-        if self.middle_name <> '' and self.middle_name is not None:
-            result += ' ' + self.middle_name
-        return result
-
-    @property
-    def fio(self):
-        result = ''
-        if self.last_name <> '' and self.last_name is not None:
-            result += self.last_name.split(' ')[0]
-        if self.first_name <> '' and self.first_name is not None:
-            result += ' ' + self.first_name[0]
-        if self.middle_name <> '' and self.middle_name is not None:
-            result += ' ' + self.middle_name[0]
-        return result
-
 
 
 class DeliveryAddress(AbstractLocation):
