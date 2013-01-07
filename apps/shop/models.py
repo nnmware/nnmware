@@ -174,6 +174,7 @@ class Basket(AbstractDate):
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
+    addon = models.CharField(max_length=255, verbose_name=_('Add-on text'), blank=True)
 
     class Meta:
         verbose_name = _("Basket")
