@@ -233,7 +233,7 @@ class Order(AbstractDate, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders', blank=True,
         null=True, on_delete=models.SET_NULL)
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
-    status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
+    status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=STATUS_UNKNOWN, choices=STATUS_ORDER)
     delivery = models.IntegerField(verbose_name=_('Delivery method'), max_length=2, default=DELIVERY_UNKNOWN, choices=DELIVERY_METHOD)
     address = std_text_field(_('Shipping address'))
     tracknumber = std_text_field(_('Track number'))
