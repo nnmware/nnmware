@@ -225,7 +225,7 @@ DELIVERY_METHOD = (
     (DELIVERY_MAIL, _('Mail')),
     )
 
-class Order(AbstractDate):
+class Order(AbstractDate, AbstractIP):
     """
     Definition of orders.
     """
