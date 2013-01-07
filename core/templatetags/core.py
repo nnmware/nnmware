@@ -236,6 +236,14 @@ def basket_sum(context):
         all_sum += item.sum
     return all_sum
 
+@register.assignment_tag(takes_context=True)
+def basket_count(context):
+    items = basket(context)
+    result = 0
+    for item in items:
+        result += item.quantity
+    return result
+
 @register.filter
 def phone_number(value):
     num = re.sub("[^0-9]", "", value)
