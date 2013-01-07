@@ -132,8 +132,6 @@ class BasketView2(TemplateView):
     template_name = 'shop/basket2.html'
 
 
-
-
 class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
     model = Product
