@@ -222,7 +222,11 @@ def _get_basket(request):
 @register.assignment_tag(takes_context=True)
 def basket(context):
     request = context['request']
-    return _get_basket(request)
+    items =  _get_basket(request)
+    result = 0
+    for item in items:
+        result += item.quantity
+    return result
 
 @register.assignment_tag
 def latest_products():
