@@ -170,11 +170,12 @@ class ProductParameterValue(AbstractContent):
 
 
 class Basket(AbstractDate):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True,
+        on_delete=models.SET_NULL)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
-    addon = models.CharField(max_length=255, verbose_name=_('Add-on text'), blank=True)
+    addon = std_text_field(_('Add-on text'))
 
     class Meta:
         verbose_name = _("Basket")
@@ -234,18 +235,18 @@ class Order(AbstractDate, AbstractIP):
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=0, choices=STATUS_ORDER)
     delivery = models.IntegerField(verbose_name=_('Delivery method'), max_length=2, default=DELIVERY_UNKNOWN, choices=DELIVERY_METHOD)
-    address = models.CharField(verbose_name=_('Shipping address'), max_length=255)
-    tracknumber = models.CharField(verbose_name=_('Track number'), max_length=100,default='', blank=True)
+    address = std_text_field(_('Shipping address'))
+    tracknumber = std_text_field(_('Track number'))
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
         related_name='cargo', null=True, blank=True)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
     lite = models.BooleanField(verbose_name=_("Not register shop user"), default=True)
-    phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
+    phone = std_text_field(_('Phone'))
     email = models.EmailField(_('Email'), blank=True)
-    buyer_comment = models.CharField(max_length=255, verbose_name=_('Buyer comment'), blank=True)
-    seller_comment = models.CharField(max_length=255, verbose_name=_('Seller comment'), blank=True)
+    buyer_comment = std_text_field(_('Buyer comment'))
+    seller_comment = std_text_field(_('Seller comment'))
 
     objects = OrdersManager()
 
@@ -274,7 +275,6 @@ class Order(AbstractDate, AbstractIP):
         if self.last_name <> '' and self.last_name is not None:
             result += self.last_name
         if self.first_name <> '' and self.first_name is not None:
-
             result += ' ' + self.first_name
         if self.middle_name <> '' and self.middle_name is not None:
             result += ' ' + self.middle_name
@@ -354,8 +354,8 @@ class DeliveryAddress(AbstractLocation):
 
 class Feedback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
-    name = models.CharField(max_length=100, verbose_name=_('Name'))
-    email = models.CharField(max_length=255, verbose_name=_('Email'))
+    name = std_text_field(_('Name'))
+    email = std_text_field(_('Email'))
     message = models.TextField(verbose_name=_("Message"))
     answer = models.TextField(verbose_name=_("Answer"), null=True, blank=True)
 
@@ -373,8 +373,8 @@ class Feedback(AbstractIP):
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True, blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
-    name = models.CharField(max_length=255, verbose_name=_('Name'))
-    position = models.CharField(max_length=255, verbose_name=_('Position'), blank=True, default='')
+    name = std_text_field(_('Name'))
+    position = std_text_field(_('Position'))
     message = models.TextField(verbose_name=_("Message"), blank=True, default='')
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
     vip = models.BooleanField(verbose_name=_("Vip"), default=False)
