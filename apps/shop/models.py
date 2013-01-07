@@ -247,6 +247,7 @@ class Order(AbstractDate, AbstractIP):
     email = models.EmailField(_('Email'), blank=True)
     buyer_comment = std_text_field(_('Buyer comment'))
     seller_comment = std_text_field(_('Seller comment'))
+    session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
 
     objects = OrdersManager()
 

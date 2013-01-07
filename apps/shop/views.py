@@ -16,6 +16,7 @@ from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommen
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue, STATUS_PROCESS, STATUS_SENT, OrderItem
 from nnmware.core.data import get_queryset_category
 from nnmware.core.exceptions import AccessError
+from nnmware.core.http import get_session_from_request
 from nnmware.core.models import Nnmcomment
 from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
@@ -25,11 +26,15 @@ from nnmware.apps.shop.models import SpecialOffer
 from nnmware.apps.shop.form import EditProductFurnitureForm
 
 class CurrentUserOrderAccess(object):
-    """ Generic update view that check request.user is author of object """
+    """ Generic update view that check user is author of object """
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Order, pk=kwargs['pk'])
-        if not request.user == obj.user and not request.user.is_superuser:
-            raise Http404
+        if not request.user.is_authenticated():
+            if obj.session_key <> get_session_from_request(request):
+                raise Http404
+        else:
+            if not request.user == obj.user and not request.user.is_superuser:
+                raise Http404
         return super(CurrentUserOrderAccess, self).dispatch(request, *args, **kwargs)
 
 class ShopBaseView(ListView):

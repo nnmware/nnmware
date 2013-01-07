@@ -456,6 +456,7 @@ def quick_order(request):
             order.buyer_comment = request.POST.get('buyer_comment')
             order.lite = True
             order.status = STATUS_WAIT
+            order.session_key = get_session_from_request(request)
             order.save()
             for item in basket:
                 order_item = OrderItem()
