@@ -17,6 +17,7 @@ from django.utils.translation.trans_real import get_language
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
 from nnmware.core.fields import std_text_field, std_url_field
+from django.utils.encoding import python_2_unicode_compatible
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
@@ -39,6 +40,7 @@ class AbstractDate(models.Model):
     class Meta:
         abstract = True
 
+@python_2_unicode_compatible
 class Unit(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of unit'))
 
@@ -47,9 +49,10 @@ class Unit(models.Model):
         verbose_name_plural = _("Units")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.name
 
+@python_2_unicode_compatible
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
 
@@ -58,7 +61,7 @@ class Parameter(models.Model):
         verbose_name_plural = _("Parameters")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             return "%s (%s)" % (self.name, self.unit.name)
         except :
@@ -122,9 +125,9 @@ class AbstractData(AbstractDate):
                 self.description = ""
         self.updated_date = datetime.now()
         if not self.slug:
-            if not self.id:
+            if not self.pk:
                 super(AbstractData, self).save(*args, **kwargs)
-            self.slug = self.id
+            self.slug = self.pk
         super(AbstractData, self).save(*args, **kwargs)
 
     def description_from_content(self):
@@ -206,6 +209,7 @@ class AbstractImg(models.Model):
         return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
     slide_thumbnail.allow_tags = True
 
+@python_2_unicode_compatible
 class Color(AbstractImg):
     name = std_text_field(_('Color'))
 
@@ -214,9 +218,10 @@ class Color(AbstractImg):
         verbose_name_plural = _("Colors")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
+@python_2_unicode_compatible
 class Material(AbstractImg):
     name = std_text_field(_('Material'))
 
@@ -225,10 +230,11 @@ class Material(AbstractImg):
         verbose_name_plural = _("Materials")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
+@python_2_unicode_compatible
 class AbstractName(AbstractImg):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, null=True)
@@ -245,7 +251,7 @@ class AbstractName(AbstractImg):
         ordering = ['-order_in_list', 'name' ]
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -290,6 +296,7 @@ class AbstractName(AbstractImg):
 
 
 
+@python_2_unicode_compatible
 class Tree(AbstractName):
     """
     Main nodes tree
@@ -355,7 +362,7 @@ class Tree(AbstractName):
         id_list.append(self.pk)
         return id_list
 
-    def __unicode__(self):
+    def __str__(self):
         name_list = [node.name for node in self._recurse_for_parents(self)]
         name_list.append(self.name)
         return self.get_separator().join(name_list)
@@ -400,6 +407,7 @@ class Tree(AbstractName):
         flat_list = self._flatten(children_list[ix:])
         return flat_list
 
+@python_2_unicode_compatible
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True, related_name="%(class)s_cntype")
@@ -412,7 +420,7 @@ class AbstractContent(models.Model):
 
     objects = AbstractContentManager()
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             return "%s - %s " % (self.content_object.get_name, self.pk)
         except:
@@ -445,24 +453,24 @@ class AbstractIP(models.Model):
         abstract = True
 
 class AbstractContact(AbstractImg):
-    mobile_personal = models.CharField(max_length=12, verbose_name=_(u'Personal mobile phone'), blank=True, default='')
-    mobile_work = models.CharField(max_length=12, verbose_name=_(u'Work mobile phone '), blank=True, default='')
-    landline_personal = models.CharField(max_length=12, verbose_name=_(u'Personal landline phone'), blank=True, default='')
-    landline_work = models.CharField(max_length=12, verbose_name=_(u'Work landline phone'), blank=True, default='')
-    icq = models.CharField(max_length=30, verbose_name=_(u'ICQ'), blank=True, default='')
-    skype = models.CharField(max_length=50, verbose_name=_(u'Skype'), blank=True, default='')
-    jabber = models.CharField(max_length=50, verbose_name=_(u'Jabber'), blank=True, default='')
+    mobile_personal = models.CharField(max_length=12, verbose_name=_('Personal mobile phone'), blank=True, default='')
+    mobile_work = models.CharField(max_length=12, verbose_name=_('Work mobile phone '), blank=True, default='')
+    landline_personal = models.CharField(max_length=12, verbose_name=_('Personal landline phone'), blank=True, default='')
+    landline_work = models.CharField(max_length=12, verbose_name=_('Work landline phone'), blank=True, default='')
+    icq = models.CharField(max_length=30, verbose_name=_('ICQ'), blank=True, default='')
+    skype = models.CharField(max_length=50, verbose_name=_('Skype'), blank=True, default='')
+    jabber = models.CharField(max_length=50, verbose_name=_('Jabber'), blank=True, default='')
     publicmail = models.EmailField(_('Public email'), blank=True, null=True)
     privatemail = models.EmailField(_('Private email'), blank=True, null=True)
-    website = std_url_field(_(u'Website'))
-    personal_website = std_url_field(_(u'Personal Website'))
-    facebook = std_url_field(_(u'Facebook'))
-    googleplus = std_url_field(_(u'Google+'))
-    twitter = std_url_field(_(u'Twitter'))
-    vkontakte = std_url_field(_(u'VKontakte'))
-    odnoklassniki = std_url_field(_(u'Odnoklassniki'))
-    moikrug = std_url_field(_(u'Moi krug'))
-    other_social = std_url_field(_(u'Other social networks'))
+    website = std_url_field(_('Website'))
+    personal_website = std_url_field(_('Personal Website'))
+    facebook = std_url_field(_('Facebook'))
+    googleplus = std_url_field(_('Google+'))
+    twitter = std_url_field(_('Twitter'))
+    vkontakte = std_url_field(_('VKontakte'))
+    odnoklassniki = std_url_field(_('Odnoklassniki'))
+    moikrug = std_url_field(_('Moi krug'))
+    other_social = std_url_field(_('Other social networks'))
     hide_mobile_personal = models.BooleanField(_('Hide personal mobile phone'), default=False)
     hide_mobile_work = models.BooleanField(_('Hide work mobile phone'), default=False)
     hide_landline_personal = models.BooleanField(_('Hide personal landline phone'), default=False)
@@ -488,6 +496,7 @@ class AbstractContact(AbstractImg):
         verbose_name_plural = _("Contact data")
         abstract = True
 
+@python_2_unicode_compatible
 class AbstractOrder(AbstractImg):
     order_in_list = models.IntegerField(_('Order in list'), default=0)
     name_en = std_text_field(_('English name'))
@@ -496,7 +505,7 @@ class AbstractOrder(AbstractImg):
         ordering = ['-order_in_list',]
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.name
 
 SKILL_UNKNOWN = 0
@@ -510,6 +519,7 @@ SKILL_CHOICES = (
     )
 
 
+@python_2_unicode_compatible
 class AbstractSkill(AbstractOrder):
     level = models.IntegerField(_('Level'), choices=SKILL_CHOICES, blank=True, null=True, default=SKILL_UNKNOWN)
     addon = std_text_field(_('Add-on'))
@@ -517,9 +527,10 @@ class AbstractSkill(AbstractOrder):
     class Meta:
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s -> %s" % (self.skill.name, self.addon, self.level)
 
+@python_2_unicode_compatible
 class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     main = models.BooleanField(_('Main profile'), default=False)
     first_name = models.CharField(max_length=50, verbose_name=_('First Name'), blank=True, default='')
@@ -545,7 +556,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
             return self.user.username
 
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s" % (self.last_name, self.first_name)
 
     class Meta:
@@ -566,6 +577,8 @@ class AbstractOffer(AbstractImg):
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
+
+    objects = Manager()
 
     class Meta:
         verbose_name = _('Special Offer')

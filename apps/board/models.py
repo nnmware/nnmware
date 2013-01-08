@@ -23,14 +23,14 @@ class Board(AbstractData):
 
     slug_detail = "board_detail"
 
-    email = models.EmailField(_(u'Email'), blank=True)
-    icq = models.DecimalField(_(u'ICQ'), max_digits=20, decimal_places=0,
+    email = models.EmailField(_('Email'), blank=True)
+    icq = models.DecimalField(_('ICQ'), max_digits=20, decimal_places=0,
         null=True, blank=True)
-    phone = models.DecimalField(_(u'Phone'), max_digits=20,
+    phone = models.DecimalField(_('Phone'), max_digits=20,
         decimal_places=0, null=True, blank=True)
-    contact = models.CharField(_(u'Contact'), max_length=150,
+    contact = models.CharField(_('Contact'), max_length=150,
         null=True, blank=True)
-    secured = models.BooleanField(verbose_name=_(u'Site-only contact'),
+    secured = models.BooleanField(verbose_name=_('Site-only contact'),
         default=False)
 
     def get_absolute_url(self):
@@ -49,6 +49,6 @@ class Board(AbstractData):
         return reverse("board_unlock", self.id)
 
     def view_link(self):
-        return u'<a href="%s">%s</a>' % (self.get_absolute_url(), _('view'))
+        return '<a href="%s">%s</a>' % (self.get_absolute_url(), _('view'))
 
     view_link.allow_tags = True

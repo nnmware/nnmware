@@ -3,29 +3,26 @@ from datetime import datetime, timedelta
 import Image
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
-from django.contrib.auth.decorators import permission_required, login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_object_or_404, render_to_response, get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import CreateView, UpdateView, BaseFormView, FormMixin, DeleteView, FormView
+from django.views.generic.edit import UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
-from nnmware.core.http import redirect
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
 from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
-from nnmware.core.abstract import STATUS_DELETE
 from nnmware.core.signals import action
 from nnmware.core.utils import send_template_mail, make_key, get_oembed_end_point, get_video_provider_from_link, gen_shortcut, update_video_size
 
@@ -730,7 +727,7 @@ class VideoAdd(AjaxFormMixin, FormView):
         link = form.cleaned_data.get('video_url')
         if not link[:7] == 'http://':
             link = 'http://%s' % link
-        if link.find(u'youtu.be') != -1:
+        if link.find('youtu.be') != -1:
             link = link.replace('youtu.be/','www.youtube.com/watch?v=')
         consumer = oembed.OEmbedConsumer()
         # TODO: more code security here - big chance to get fatal error

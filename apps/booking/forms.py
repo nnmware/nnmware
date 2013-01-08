@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.conf import settings
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.booking.models import Hotel, HotelOption, Room, PLACES_CHOICES, Booking
+from nnmware.apps.booking.models import Hotel, Room, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
-from nnmware.core.utils import convert_to_date
-
 
 class CabinetInfoForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
@@ -78,7 +75,7 @@ class RequestAddHotelForm(forms.ModelForm):
                                                                        'invalid' : _('Answer is wrong') })
 
 class UserCabinetInfoForm(forms.ModelForm):
-    password = forms.CharField(label=_(u'New Password'), max_length=30, required=False)
+    password = forms.CharField(label=_('New Password'), max_length=30, required=False)
 
     class Meta:
         model = get_user_model()

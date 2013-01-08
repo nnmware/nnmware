@@ -64,7 +64,7 @@ class NnmwareDashboard(Dashboard):
                     _('Administration Module'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'django.contrib.auth.*',
+                    models=( 'django.contrib.auth.*','nnmware.demo.*',
                 	    'django.contrib.sites.models.Site',
                 	    'django.contrib.flatpages.models.FlatPage','nnmware.apps.social.models.UserSocialAuth',
                 	    ),
@@ -106,8 +106,8 @@ class NnmwareDashboard(Dashboard):
             column=3,
             children=[
                 {
-                    'title': _('support@nnmware.com'),
-                    'url': 'mailto:support@nnmware.com',
+                    'title': _('nnmware@gmail.com'),
+                    'url': 'mailto:nnmware@gmail.com',
                     'external': True,
                 },
             ]

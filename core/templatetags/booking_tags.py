@@ -212,7 +212,7 @@ def client_currency(context):
     elif currency == 'GBP':
         return '£'
     else:
-        return _(u'rub')
+        return _('rub')
 
 @register.simple_tag(takes_context = True)
 def convert_to_client_currency(context, amount):

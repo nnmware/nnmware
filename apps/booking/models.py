@@ -15,6 +15,7 @@ from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
 from nnmware.core.utils import daterange
+from django.utils.encoding import python_2_unicode_compatible
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
@@ -35,6 +36,7 @@ class HotelOptionCategory(AbstractName):
         verbose_name_plural = _("Hotel Option Categories")
         ordering = ['order_in_list',]
 
+@python_2_unicode_compatible
 class HotelOption(AbstractName):
     category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
@@ -45,7 +47,7 @@ class HotelOption(AbstractName):
         verbose_name_plural = _("Hotel Options")
         ordering = ['category', 'order_in_list', 'name' ]
 
-    def __unicode__(self):
+    def __str__(self):
         if self.category:
             return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
         else:
@@ -123,7 +125,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
-    website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)
+    website = models.URLField(max_length=150, verbose_name=_('Website'), blank=True)
     contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
@@ -178,7 +180,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         return [two,three,four,five]
 
     def fulladdress(self):
-        return u"%s, %s" % (self.address, self.city.name)
+        return "%s, %s" % (self.address, self.city.name)
 
     def in_city(self):
         return Hotel.objects.filter(city=self.city).count()
@@ -296,6 +298,7 @@ class RoomOptionCategory(AbstractName):
         verbose_name = _("Room Option Category")
         verbose_name_plural = _("Room Option Categories")
 
+@python_2_unicode_compatible
 class RoomOption(AbstractName):
     category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
@@ -305,7 +308,7 @@ class RoomOption(AbstractName):
         verbose_name = _("Room Option")
         verbose_name_plural = _("Room Options")
 
-    def __unicode__(self):
+    def __str__(self):
         if self.category:
             return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
         else:
@@ -336,6 +339,7 @@ PLACES_CHOICES = (
     )
 
 
+@python_2_unicode_compatible
 class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
@@ -348,7 +352,7 @@ class Room(AbstractName):
 
     objects = Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
         except :
@@ -434,6 +438,7 @@ class Room(AbstractName):
 
 
 
+@python_2_unicode_compatible
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"))
@@ -443,7 +448,7 @@ class SettlementVariant(models.Model):
         verbose_name = _("Settlement Variant")
         verbose_name_plural = _("Settlements Variants")
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
             'settlement': self.settlement, 'room': self.room.get_name, 'places':self.room.places,
@@ -491,6 +496,7 @@ STATUS_CHOICES = (
     (STATUS_COMPLETED, _("Completed")),
     )
 
+@python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
@@ -519,8 +525,8 @@ class Booking(MoneyBase, AbstractIP):
         verbose_name = _("Booking")
         verbose_name_plural = _("Bookings")
 
-    def __unicode__(self):
-         return u"Booking - %s" % self.pk
+    def __str__(self):
+         return "Booking - %s" % self.pk
 
     @property
     def days(self):
@@ -555,6 +561,7 @@ class Booking(MoneyBase, AbstractIP):
         super(Booking, self).save(*args, **kwargs)
 
 
+@python_2_unicode_compatible
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel)
     date = models.DateField(verbose_name=_("From date"))
@@ -566,13 +573,14 @@ class AgentPercent(models.Model):
 
     objects = Manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return _("For %(hotel)s on date %(date)s percent is %(percent)s") % \
                { 'hotel': self.hotel.name,
                  'date':self.date,
                  'percent':self.percent }
 
 
+@python_2_unicode_compatible
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
@@ -584,12 +592,13 @@ class Review(AbstractIP, HotelPoints):
         verbose_name = _("Client review")
         verbose_name_plural = _("Client reviews")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Review client %(client)s for hotel %(hotel)s is -> %(review)s") % \
                { 'client': self.user.get_full_name(),
                  'hotel': self.hotel.name,
                  'review': self.review }
 
+@python_2_unicode_compatible
 class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.SET_NULL)
     date = models.DateField(verbose_name=_("On date"))
@@ -600,7 +609,7 @@ class Availability(models.Model):
         verbose_name = _("Availability Place")
         verbose_name_plural = _("Availabilities Places")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s")  % \
                 { 'place': self.room.name,
                  'hotel': self.room.hotel.name,
@@ -608,6 +617,7 @@ class Availability(models.Model):
                  'count': self.placecount
                }
 
+@python_2_unicode_compatible
 class Discount(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     date = models.DateField(verbose_name=_("On date"))
@@ -617,7 +627,7 @@ class Discount(models.Model):
         verbose_name = _("Discount")
         verbose_name_plural = _("Discounts")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> %(discount)s")  %\
                { 'place': self.room.name,
                  'hotel': self.room.hotel.name,
@@ -625,6 +635,7 @@ class Discount(models.Model):
                  'discount': self.discount
                }
 
+@python_2_unicode_compatible
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
@@ -633,7 +644,7 @@ class PlacePrice(MoneyBase):
         verbose_name = _("Place Price")
         verbose_name_plural = _("Places Prices")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s")  %\
                { 'settlement': self.settlement.settlement,
                  'hotel': self.settlement.room.hotel.name,

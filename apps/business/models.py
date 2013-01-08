@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.abstract import AbstractName, AbstractImg
 from nnmware.core.fields import std_text_field
+from django.utils.encoding import python_2_unicode_compatible
 
 class TypeEmployer(AbstractName):
     pass
@@ -21,6 +22,7 @@ class TypeEmployer(AbstractName):
         return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list','name')
 
 
+@python_2_unicode_compatible
 class TypeEmployerProfile(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer,verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
@@ -29,9 +31,10 @@ class TypeEmployerProfile(AbstractName):
         verbose_name = _("Type of employer profile")
         verbose_name_plural = _("Types of employers profiles")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
+@python_2_unicode_compatible
 class TypeEmployerSphere(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer,verbose_name=_('Type of employer'))
 
@@ -39,7 +42,7 @@ class TypeEmployerSphere(AbstractName):
         verbose_name = _("Type of sphere act. employer")
         verbose_name_plural = _("Types of sphere act. employers")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
 class AbstractEmployer(AbstractImg):

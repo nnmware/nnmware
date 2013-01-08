@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
-from nnmware.core.models import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, \
+from nnmware.core.abstract import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, \
     STATUS_PUBLISHED
 from nnmware.apps.topic.forms import TopicAddForm
 
@@ -28,7 +28,7 @@ class TopicUpdatedList(ListView):
     def get_queryset(self):
         result = Topic.objects.order_by("-updated_date")
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s results ') % {'len': len(result)})
+            _('Found %(len)s results ') % {'len': len(result)})
         return result
 
 
@@ -38,7 +38,7 @@ class TopicPopularList(ListView):
     def get_queryset(self):
         result = Topic.objects.order_by("-comments")
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s results ') % {'len': len(result)})
+            _('Found %(len)s results ') % {'len': len(result)})
         return result
 
 
@@ -48,7 +48,7 @@ class TopicUserList(ListView):
     def get_queryset(self):
         result = Topic.objects.filter(user=self.request.user)
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s results ') % {'len': len(result)})
+            _('Found %(len)s results ') % {'len': len(result)})
         return result
 
 
@@ -80,7 +80,7 @@ class TopicCategory(ListView):
     def get_queryset(self):
         result = get_queryset_category(self, Topic, Category)
         messages.info(self.request,
-            _(u'In this category found- %(len)s results ') %
+            _('In this category found- %(len)s results ') %
             {'len': len(result)})
         return result
 
@@ -191,7 +191,7 @@ class TopicSearch(ListView):
         messages.add_message(self.request, messages.INFO, 'Hello world.')
         result = Topic.objects.filter(qset)
         messages.add_message(self.request, messages.INFO,
-            _(u'On search "%(q)s" found- %(len)s ') %
+            _('On search "%(q)s" found- %(len)s ') %
             {'q': query, 'len': len(result)})
         return result
 
@@ -202,7 +202,7 @@ class TopicLockedList(CurrentUserAuthenticated, ListView):
     def get_queryset(self):
         result = Topic.objects.filter(status=STATUS_LOCKED)
         messages.add_message(self.request, messages.INFO,
-            _(u'You have %(len)s locked topics') % {'len': len(result)})
+            _('You have %(len)s locked topics') % {'len': len(result)})
         return result
 
 
@@ -212,7 +212,7 @@ class TopicModerationList(CurrentUserEditor, ListView):
     def get_queryset(self):
         result = Topic.objects.filter(status=STATUS_MODERATION)
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s topics on moderation') % {'len': len(result)})
+            _('Found %(len)s topics on moderation') % {'len': len(result)})
         return result
 
 
@@ -222,5 +222,5 @@ class TopicDeletedList(CurrentUserSuperuser, ListView):
     def get_queryset(self):
         result = Topic.objects.filter(status=STATUS_DELETE)
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s deleted topics') % {'len': len(result)})
+            _('Found %(len)s deleted topics') % {'len': len(result)})
         return result

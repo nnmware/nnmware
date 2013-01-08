@@ -14,7 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import permalink, signals, Manager
+from django.db.models import permalink, Manager
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
@@ -26,10 +26,12 @@ from nnmware.core.managers import AbstractContentManager, NnmcommentManager, Pub
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.core.file import get_path_from_url
-from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg, Tree
+from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class Tag(models.Model):
     """
     Model for Tags
@@ -52,7 +54,7 @@ class Tag(models.Model):
     def lettercount(self):
         return Tag.objects.filter(name__startswith=self.name[0]).count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def followers_count(self):
@@ -112,6 +114,7 @@ class Doc(AbstractContent, AbstractFile):
         return reverse("doc_edit", self.id)
 
 
+@python_2_unicode_compatible
 class Pic(AbstractContent, AbstractFile):
     pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
@@ -123,8 +126,8 @@ class Pic(AbstractContent, AbstractFile):
         verbose_name = _("Pic")
         verbose_name_plural = _("Pics")
 
-    def __unicode__(self):
-        return _(u'Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type), 'obj': unicode(self.content_object)}
+    def __str__(self):
+        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type), 'obj': unicode(self.content_object)}
 
     def get_file_link(self):
         return os.path.join(settings.MEDIA_URL, self.pic.url)
@@ -194,6 +197,7 @@ class Pic(AbstractContent, AbstractFile):
         return reverse("pic_editor", self.pk)
 
 
+@python_2_unicode_compatible
 class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
     """
     A threaded comment which must be associated with an instance of
@@ -216,7 +220,7 @@ class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
     objects = NnmcommentManager()
     public = PublicNnmcommentManager()
 
-    def __unicode__(self):
+    def __str__(self):
         if len(self.comment) > 50:
             return self.comment[:50] + "..."
         return self.comment[:50]
@@ -232,6 +236,7 @@ class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
         get_latest_by = "created_date"
 
 
+@python_2_unicode_compatible
 class Follow(models.Model):
     """
     Lets a user follow the activities of any specific actor
@@ -249,8 +254,8 @@ class Follow(models.Model):
         verbose_name = _("Follow")
         verbose_name_plural = _("Follows")
 
-    def __unicode__(self):
-        return u'%s -> %s' % (self.user, self.content_object)
+    def __str__(self):
+        return '%s -> %s' % (self.user, self.content_object)
 
 NOTICE_UNKNOWN = 0
 NOTICE_SYSTEM = 1
@@ -285,6 +290,7 @@ class Notice(AbstractContent, AbstractIP):
         verbose_name = _("Notice")
         verbose_name_plural = _("Notices")
 
+@python_2_unicode_compatible
 class Message(AbstractIP):
     """
     A private message from user to user
@@ -313,7 +319,7 @@ class Message(AbstractIP):
             return True
         return False
 
-    def __unicode__(self):
+    def __str__(self):
         if self.subject is not None:
             return self.subject
         if self.body is not None:
@@ -351,6 +357,7 @@ ACTION_CHOICES = (
     (ACTION_LIKED, _("Liked")),
     )
 
+@python_2_unicode_compatible
 class Action(AbstractContent,AbstractIP):
     """
     Model Activity of User
@@ -370,8 +377,8 @@ class Action(AbstractContent,AbstractIP):
     def target_type(self):
         return ContentType.objects.get_for_model(self.content_object).model
 
-    def __unicode__(self):
-        return u'%s %s %s ago' % (self.user, self.verb, self.timesince())
+    def __str__(self):
+        return '%s %s %s ago' % (self.user, self.verb, self.timesince())
 
 
     def timesince(self, now=None):
@@ -480,6 +487,7 @@ class EmailValidationManager(Manager):
         return self.create(user=user, key=key, email=email)
 
 
+@python_2_unicode_compatible
 class EmailValidation(models.Model):
     """
     Email Validation model
@@ -496,7 +504,7 @@ class EmailValidation(models.Model):
         verbose_name = _("Email Validation")
         verbose_name_plural = _("Email Validations")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("Email validation process for %(user)s") % {'user': self.username}
 
     def is_expired(self):
@@ -521,19 +529,20 @@ class EmailValidation(models.Model):
         self.save()
         return True
 
+@python_2_unicode_compatible
 class Video(AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    project_name = models.CharField(max_length=50, verbose_name=_(u'Project Name'), blank=True)
-    project_url = models.URLField(max_length=255, verbose_name=_(u'Project URL'), blank=True)
-    video_url = models.URLField(max_length=255, verbose_name=_(u'Video URL'))
-    video_provider = models.CharField(max_length=150, verbose_name=_(u'Video Provider'), blank=True)
-    description = models.TextField(verbose_name=_(u'Description'), blank=True)
+    project_name = models.CharField(max_length=50, verbose_name=_('Project Name'), blank=True)
+    project_url = models.URLField(max_length=255, verbose_name=_('Project URL'), blank=True)
+    video_url = models.URLField(max_length=255, verbose_name=_('Video URL'))
+    video_provider = models.CharField(max_length=150, verbose_name=_('Video Provider'), blank=True)
+    description = models.TextField(verbose_name=_('Description'), blank=True)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
     slug = models.SlugField(_("Slug"), max_length=255, blank=True)
     duration = models.PositiveIntegerField(null=True,blank=True,editable=False)
     viewcount = models.PositiveIntegerField(default=0, editable=False)
     liked = models.PositiveIntegerField(default=0, editable=False)
-    embedcode = models.TextField(verbose_name=_(u'Embed code'), blank=True)
+    embedcode = models.TextField(verbose_name=_('Embed code'), blank=True)
     publish = models.BooleanField(_("Published"), default=False)
     tags = models.ManyToManyField(Tag)
     users_viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='view_this_video')
@@ -544,7 +553,7 @@ class Video(AbstractDate, AbstractImg):
         verbose_name_plural = _("Videos")
         ordering = ("-created_date",)
 
-    def __unicode__(self):
+    def __str__(self):
         return _("%s") % self.project_name
 
     def followers_count(self):
@@ -568,22 +577,23 @@ class Video(AbstractDate, AbstractImg):
         users = Nnmcomment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
+@python_2_unicode_compatible
 class NnmwareUser(AbstractUser):
-    fullname = models.CharField(max_length=100, verbose_name=_(u'Full Name'), blank=True)
-    birthdate = models.DateField(verbose_name=_(u'Date birth'), blank=True, null=True)
+    fullname = models.CharField(max_length=100, verbose_name=_('Full Name'), blank=True)
+    birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
-    about = models.TextField(verbose_name=_(u'About'), help_text=_(u'Little words about you'), blank=True)
+    about = models.TextField(verbose_name=_('About'), help_text=_('Little words about you'), blank=True)
     date_modified = models.DateTimeField(default=datetime.now, editable=False)
-    website = models.URLField(max_length=150, verbose_name=_(u'Website'), blank=True)
-    facebook = models.URLField(max_length=150, verbose_name=_(u'Facebook'), blank=True)
-    googleplus = models.URLField(max_length=150, verbose_name=_(u'Google+'), blank=True)
-    twitter = models.URLField(max_length=150, verbose_name=_(u'Twitter'), blank=True)
-    location = models.CharField(max_length=100, verbose_name=_(u'Location'), blank=True)
-    icq = models.CharField(max_length=30, verbose_name=_(u'ICQ'), blank=True)
-    skype = models.CharField(max_length=100, verbose_name=_(u'skype'), blank=True)
-    jabber = models.CharField(max_length=100, verbose_name=_(u'jabber'), blank=True)
-    mobile = models.CharField(max_length=100, verbose_name=_(u'mobile phone'), blank=True)
-    workphone = models.CharField(max_length=100, verbose_name=_(u'work phone'), blank=True)
+    website = models.URLField(max_length=150, verbose_name=_('Website'), blank=True)
+    facebook = models.URLField(max_length=150, verbose_name=_('Facebook'), blank=True)
+    googleplus = models.URLField(max_length=150, verbose_name=_('Google+'), blank=True)
+    twitter = models.URLField(max_length=150, verbose_name=_('Twitter'), blank=True)
+    location = models.CharField(max_length=100, verbose_name=_('Location'), blank=True)
+    icq = models.CharField(max_length=30, verbose_name=_('ICQ'), blank=True)
+    skype = models.CharField(max_length=100, verbose_name=_('skype'), blank=True)
+    jabber = models.CharField(max_length=100, verbose_name=_('jabber'), blank=True)
+    mobile = models.CharField(max_length=100, verbose_name=_('mobile phone'), blank=True)
+    workphone = models.CharField(max_length=100, verbose_name=_('work phone'), blank=True)
     publicmail = models.EmailField(_('Public email'), blank=True)
     signature = models.CharField(max_length=100, verbose_name=_('Signature'), blank=True)
     time_zone = models.FloatField(_('Time zone'), choices=TZ_CHOICES, default=float(settings.PROFILE_DEFAULT_TIME_ZONE), null=True,
@@ -604,7 +614,7 @@ class NnmwareUser(AbstractUser):
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.username])
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.username
 
     @property

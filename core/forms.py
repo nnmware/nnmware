@@ -15,7 +15,7 @@ from nnmware.core.utils import tags_normalize
 from nnmware.core.exceptions import UserIsDisabled
 
 class TagsMixinForm(forms.ModelForm):
-    tags = forms.CharField(label=_(u"Tags"))  #, widget=AutocompleteWidget(choices_url='autocomplete_tags'))
+    tags = forms.CharField(label=_('Tags'))  #, widget=AutocompleteWidget(choices_url='autocomplete_tags'))
 
     def clean_tags(self):
         """
@@ -72,21 +72,21 @@ class UploadPicForm(forms.Form):
             (root, ext) = os.path.splitext(data.name.lower())
             if ext not in settings.PIC_ALLOWED_FILE_EXTS:
                 raise forms.ValidationError(
-                    _(u"%(ext)s is an invalid file extension. "
-                      u"Authorized extensions are : %(valid_exts_list)s") %
+                    _("%(ext)s is an invalid file extension. "
+                      "Authorized extensions are : %(valid_exts_list)s") %
                     {'ext': ext,
                      'valid_exts_list': ", ".join(settings.PIC_ALLOWED_FILE_EXTS)})
         if data.size > settings.PIC_MAX_SIZE:
             raise forms.ValidationError(
-                _(u"Your file is too big (%(size)s), "
-                  u"the maximum allowed size is %(max_valid_size)s") %
+                _("Your file is too big (%(size)s), "
+                  "the maximum allowed size is %(max_valid_size)s") %
                 {'size': filesizeformat(data.size),
                  'max_valid_size': filesizeformat(settings.AVATAR_MAX_SIZE)})
         count = Pic.objects.for_object(self.target).count()
         if count >= settings.PIC_MAX_PER_OBJECT > 1:
             raise forms.ValidationError(
-                _(u"You already have %(nb_pic)d image, and the "
-                  u"maximum allowed is %(nb_max_pic)d.") %
+                _("You already have %(nb_pic)d image, and the "
+                  "maximum allowed is %(nb_max_pic)d.") %
                 {'nb_pic': count, 'nb_max_pic': settings.PIC_MAX_PER_OBJECT})
         return
 
@@ -147,8 +147,8 @@ class PassChangeForm(forms.Form):
         return self.cleaned_data
 
 class LoginForm(forms.Form):
-    username = forms.CharField(label=_(u'Username'), max_length=30)
-    password = forms.CharField(label=_(u'Password'), max_length=30)
+    username = forms.CharField(label=_('Username'), max_length=30)
+    password = forms.CharField(label=_('Password'), max_length=30)
 
     class Meta:
         widgets = dict(password=forms.PasswordInput)
@@ -178,8 +178,8 @@ class LoginForm(forms.Form):
         return password
 
 class UserSettingsForm(forms.ModelForm):
-    oldpassword = forms.CharField(label=_(u'Old Password'), max_length=30, required=False)
-    newpassword = forms.CharField(label=_(u'New Password'), max_length=30, required=False)
+    oldpassword = forms.CharField(label=_('Old Password'), max_length=30, required=False)
+    newpassword = forms.CharField(label=_('New Password'), max_length=30, required=False)
 
     class Meta:
         model = get_user_model()
@@ -348,8 +348,8 @@ class ResendEmailValidationForm(forms.Form):
 
 
 class ProfileForm(forms.ModelForm):
-    first_name = forms.CharField(label=_(u'First name'), max_length=30)
-    last_name = forms.CharField(label=_(u'Last Name'), max_length=30)
+    first_name = forms.CharField(label=_('First name'), max_length=30)
+    last_name = forms.CharField(label=_('Last Name'), max_length=30)
     email = forms.EmailField(label=_("Site-only email"))
     birthdate = forms.DateField(('%d/%m/%Y',), label='Birth Date', required=False,
         widget=forms.DateTimeInput(format='%d/%m/%Y', attrs={

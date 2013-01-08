@@ -12,7 +12,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.db import models
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from nnmware.core import oembed
 import time
 import unidecode
@@ -32,26 +32,26 @@ def convert_to_date(d):
 def get_date_directory():
     return datetime.now().strftime("%Y/%m/%d/%H/%M/%S")
 
-def get_oembed_end_point(link = u""):
-    if link.find(u'youtube.com') != -1:
+def get_oembed_end_point(link = ''):
+    if link.find('youtube.com') != -1:
         return oembed.OEmbedEndpoint('http://www.youtube.com/oembed', ['http://*.youtube.com/*'])
-    elif link.find(u'vimeo.com') != -1:
+    elif link.find('vimeo.com') != -1:
         return oembed.OEmbedEndpoint('http://vimeo.com/api/oembed.json', ['http://vimeo.com/*'])
-    elif link.find(u'metacafe.com') != -1:
+    elif link.find('metacafe.com') != -1:
         return oembed.OEmbedEndpoint('http://api.embed.ly/v1/api/oembed', ['http://*.metacafe.com/*'])
-    elif link.find(u'dailymotion.com') != -1:
+    elif link.find('dailymotion.com') != -1:
         return oembed.OEmbedEndpoint('http://api.embed.ly/v1/api/oembed', ['http://*.dailymotion.com/*'])
     else:
         return None
 
 def get_video_provider_from_link(link):
-    if link.find(u'youtube.com') != -1:
+    if link.find('youtube.com') != -1:
         return "youtube.com"
-    elif link.find(u'vimeo.com') != -1:
+    elif link.find('vimeo.com') != -1:
         return "vimeo.com"
-    elif link.find(u'metacafe.com') != -1:
+    elif link.find('metacafe.com') != -1:
         return "metacafe.com"
-    elif link.find(u'dailymotion.com') != -1:
+    elif link.find('dailymotion.com') != -1:
         return "dailymotion.com"
     else:
         return None
@@ -101,7 +101,7 @@ def slugify(s):
     Adopted from https://github.com/mozilla/unicode-slugify/
     """
     chars = []
-    for char in smart_unicode(s):
+    for char in smart_text(s):
         cat = unicodedata.category(char)[0]
         if cat in "LN" or char in "-_~":
             chars.append(char)
@@ -239,8 +239,6 @@ def random_string(length, variable=False, charset=_LETTERS):
 def request_is_secure(request):
     if request.is_secure():
         return True
-
-    # Handle forwarded SSL (used at Webfaction)
     if 'HTTP_X_FORWARDED_SSL' in request.META:
         return request.META['HTTP_X_FORWARDED_SSL'] == 'on'
 
@@ -258,7 +256,6 @@ def trunc_decimal(val, places):
         try:
             val = Decimal(val)
         except InvalidOperation:
-            log.warn("invalid operation trying to convert '%s' to decimal, returning raw", val)
             return val
     return val.quantize(Decimal(roundfmt), ROUND_HALF_UP)
 

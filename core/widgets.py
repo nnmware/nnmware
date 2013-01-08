@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from decimal import Decimal
 import json
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -16,7 +15,7 @@ class ReCaptchaWidget(forms.widgets.Widget):
     recaptcha_response_name = 'recaptcha_response_field'
 
     def render(self, name, value, attrs=None):
-        return mark_safe(u'%s' % displayhtml(settings.RECAPTCHA_PUBLIC_KEY))
+        return mark_safe('%s' % displayhtml(settings.RECAPTCHA_PUBLIC_KEY))
 
     def value_from_datadict(self, data, files, name):
         return [data.get(self.recaptcha_challenge_name, None), data.get(self.recaptcha_response_name, None)]
@@ -47,9 +46,9 @@ class AdminImageWithThumbnailWidget(FileInput):
             output.append('<a href="%s"><img src="%s" /><br/>%s</a><br/> %s' %\
                           (value.url, thumb, value.url, _('Change:')))
         output.append(super(AdminImageWithThumbnailWidget, self).render(name, value, attrs))
-        output.append('<input type="checkbox" name="%s_delete"/> %s' % (name, _(u'Delete')))
+        output.append('<input type="checkbox" name="%s_delete"/> %s' % (name, _('Delete')))
 
-        return mark_safe(u''.join(output))
+        return mark_safe(''.join(output))
 
     def value_from_datadict(self, data, files, name):
         if not data.get('%s_delete' % name):
@@ -77,7 +76,7 @@ class ImageWithThumbnailWidget(FileInput):
             output.append('<img src="%s" /><br/><input type="checkbox" name="%s_delete"/>%s<br/> %s' %\
                           (thumb, name, _('Delete'), _('Change:')))
         output.append(super(ImageWithThumbnailWidget, self).render(name, value, attrs))
-        return mark_safe(u''.join(output))
+        return mark_safe(''.join(output))
 
     def value_from_datadict(self, data, files, name):
         if not data.get('%s_delete' % name):
@@ -168,16 +167,16 @@ class AutocompleteWidget(TextInput):
 
             for k, v in self.extra.items():
                 options = options.replace(json.dumps(v), v)
-                extra.append(u"function %s() { return $('#id_%s').val(); }\n" % (v, k))
+                extra.append("function %s() { return $('#id_%s').val(); }\n" % (v, k))
 
-            extra = u''.join(extra)
+            extra = ''.join(extra)
         else:
             extra, options = '', ''
 
         final_attrs = self.build_attrs(attrs)
         html_code += super(AutocompleteWidget, self).render(name, self.choice or value, attrs)
 
-        html_code += u"""
+        html_code += """
 <script type="text/javascript">
     $(document).ready(function(){
     %s$('#%s')

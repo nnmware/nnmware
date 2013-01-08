@@ -42,7 +42,7 @@ contains base for:
 
 Licensed under GPL3 
 
-support@nnmware.com
+nnmware@gmail.com
 
 required django-current, python-oauth2, south, unidecode, xlwt
 reccomended django-grappelli

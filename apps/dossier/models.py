@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
+from django.utils.encoding import python_2_unicode_compatible
 
 EDUCATION_END = map(tuplify, range(current_year-55, current_year+1))
 
@@ -153,6 +154,7 @@ class CreativeActivity(AbstractOrder):
         verbose_name = _("Creative activity")
         verbose_name_plural = _("Creative activities")
 
+@python_2_unicode_compatible
 class CreativeActivityPerson(AbstractOrder):
     activity = models.ForeignKey(CreativeActivity, verbose_name=_('Creative activity'))
     description = std_text_field(_('Description'))
@@ -161,7 +163,7 @@ class CreativeActivityPerson(AbstractOrder):
         verbose_name = _("Creative activity")
         verbose_name_plural = _("Creative activities")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.activity.name
 
 class AbstractBody(models.Model):
@@ -351,6 +353,7 @@ class AnimalType(AbstractName):
         verbose_name = _("Animal type")
         verbose_name_plural = _("Animals types")
 
+@python_2_unicode_compatible
 class AnimalKind(AbstractImg):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind')
     name = std_text_field(_('Name'))
@@ -361,9 +364,10 @@ class AnimalKind(AbstractImg):
         verbose_name = _("Animal kind")
         verbose_name_plural = _("Animals kinds")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.animal.name, self.name)
 
+@python_2_unicode_compatible
 class AbstractAnimal(AbstractName):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
     animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind', blank=True, null=True)
@@ -373,7 +377,7 @@ class AbstractAnimal(AbstractName):
         verbose_name_plural = _("Animals")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.name, self.animal.name)
 
 class TransportType(AbstractName):
@@ -383,6 +387,7 @@ class TransportType(AbstractName):
         verbose_name = _("Transport type")
         verbose_name_plural = _("Transport types")
 
+@python_2_unicode_compatible
 class TransportMark(AbstractImg):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
     name = std_text_field(_('Name'))
@@ -393,9 +398,10 @@ class TransportMark(AbstractImg):
         verbose_name = _("Transport mark")
         verbose_name_plural = _("Transport mark")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.ttype.name, self.name)
 
+@python_2_unicode_compatible
 class AbstractVehicle(AbstractName):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
     tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles',blank=True,null=True)
@@ -405,7 +411,7 @@ class AbstractVehicle(AbstractName):
         verbose_name_plural = _("Vehicles")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.name, self.ttype.name)
 
 class SurveyObjectType(AbstractName):
@@ -415,6 +421,7 @@ class SurveyObjectType(AbstractName):
         verbose_name = _("Survey object type")
         verbose_name_plural = _("Surver object types")
 
+@python_2_unicode_compatible
 class AbstractSurveyObject(AbstractName):
     stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
 
@@ -423,7 +430,7 @@ class AbstractSurveyObject(AbstractName):
         verbose_name_plural = _("Survey objects")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
 
 class SurveySuitType(AbstractName):
@@ -433,6 +440,7 @@ class SurveySuitType(AbstractName):
         verbose_name = _("Survey suit type")
         verbose_name_plural = _("Survey suits types")
 
+@python_2_unicode_compatible
 class AbstractSurveySuit(AbstractName):
     stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
 
@@ -441,7 +449,7 @@ class AbstractSurveySuit(AbstractName):
         verbose_name_plural = _("Survey types")
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
 
 

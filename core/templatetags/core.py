@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import re
-import os
 from xml.etree.ElementTree import Element, SubElement, tostring
-from django.template import Library, Node, Template, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
+from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.template.defaultfilters import floatformat
@@ -11,7 +10,6 @@ from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext as _
 from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
@@ -821,10 +819,10 @@ def trash_count(context):
 ### SMILES OLD
 
 EMOTICONS = {
-    u'O:-)': u'angel_mini',
-    u'@}-&gt;--': u'rose_mini',
-    u'*HEART*': u'heart_mini',
-    u'*OK*': u'music_mini2'}
+    'O:-)': 'angel_mini',
+    '@}-&gt;--': 'rose_mini',
+    '*HEART*': 'heart_mini',
+    '*OK*': 'music_mini2'}
 
 
 @register.filter

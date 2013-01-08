@@ -1,5 +1,4 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.views.generic import ListView, DateDetailView, YearArchiveView,\
     MonthArchiveView, DayArchiveView
@@ -8,7 +7,7 @@ from nnmware.core.data import get_queryset_category
 
 from nnmware.apps.article.forms import *
 from nnmware.core.views import *
-from nnmware.core.models import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
+from nnmware.core.abstract import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
 from nnmware.apps.article.models import *
 
 
@@ -27,7 +26,7 @@ class ArticleList(ListView):
             Q(status=STATUS_LOCKED)
             ).order_by('-created_date')
         messages.add_message(self.request, messages.INFO,
-            _(u'Found %(len)s articles') % {'len': len(result)})
+            _('Found %(len)s articles') % {'len': len(result)})
         return result
 
 
@@ -59,7 +58,7 @@ class ArticleMyList(CurrentUserAuthenticated, ListView):
         result = Article.objects.exclude(status=STATUS_LOCKED)
         result = result.filter(user=self.request.user)
         messages.add_message(self.request, messages.INFO,
-            _(u'You have %(len)s active articles') % {'len': len(result)})
+            _('You have %(len)s active articles') % {'len': len(result)})
         return result
 
 
@@ -68,7 +67,7 @@ class ArticleLockedList(CurrentUserAuthenticated, ListView):
 
     def get_queryset(self):
         result = Article.objects.filter(status=STATUS_LOCKED)
-        messages.add_message(self.request, messages.INFO, _(u'You have %(len)s locked articles') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('You have %(len)s locked articles') % {'len': len(result)})
         return result
 
 
@@ -77,7 +76,7 @@ class ArticleUpdatedList(ListView):
 
     def get_queryset(self):
         result = Article.objects.order_by('-updated_date')
-        messages.add_message(self.request, messages.INFO, _(u'Found %(len)s articles') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles') % {'len': len(result)})
         return result
 
 
@@ -86,7 +85,7 @@ class ArticlePopularList(ListView):
 
     def get_queryset(self):
         result = Article.objects.order_by('-comments')
-        messages.add_message(self.request, messages.INFO, _(u'Found %(len)s articles') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles') % {'len': len(result)})
         return result
 
 
@@ -95,7 +94,7 @@ class ArticleModerationList(CurrentUserEditor, ListView):
 
     def get_queryset(self):
         result = Article.objects.filter(status=STATUS_MODERATION)
-        messages.add_message(self.request, messages.INFO, _(u'Found %(len)s articles on moderation') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles on moderation') % {'len': len(result)})
         return result
 
 
@@ -104,7 +103,7 @@ class ArticleDeletedList(CurrentUserSuperuser, ListView):
 
     def get_queryset(self):
         result = Article.objects.filter(status=STATUS_DELETE)
-        messages.add_message(self.request, messages.INFO, _(u'Found %(len)s deleted articles') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s deleted articles') % {'len': len(result)})
         return result
 
 
@@ -115,7 +114,7 @@ class ArticleAuthor(ListView):
     def get_queryset(self):
         author = get_object_or_404(get_user_model(), username__iexact=self.kwargs['username'])
         result = Article.objects.filter(user=author)
-        messages.add_message(self.request, messages.INFO, _(u'For this author found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('For this author found- %(len)s results ') % {'len': len(result)})
         return result
 
 
@@ -125,7 +124,7 @@ class ArticleCategory(ListView):
 
     def get_queryset(self):
         result = get_queryset_category(self, Article, Category)
-        messages.add_message(self.request, messages.INFO, _(u'It this category found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('It this category found- %(len)s results ') % {'len': len(result)})
         return result
 
 
@@ -135,7 +134,7 @@ class ArticleSearch(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         result = Article.objects.filter(content__icontains=query)
-        messages.add_message(self.request, messages.INFO, _(u'On search in articles found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('On search in articles found- %(len)s results ') % {'len': len(result)})
         return result
 
 

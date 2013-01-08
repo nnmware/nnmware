@@ -5,16 +5,18 @@ from datetime import datetime, timedelta
 from openid.association import Association as OIDAssociation
 from django.utils.timezone import utc
 from nnmware.core.utils import setting
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class UserSocialAuthMixin(object):
     User = None
     user = ''
     provider = ''
 
-    def __unicode__(self):
+    def __str__(self):
         """Return associated user unicode representation"""
-        return u'%s - %s' % (unicode(self.user), self.provider.title())
+        return '%s - %s' % (unicode(self.user), self.provider.title())
 
     @property
     def tokens(self):
@@ -145,17 +147,19 @@ class UserSocialAuthMixin(object):
                                            salt=salt)[1]
 
 
+@python_2_unicode_compatible
 class NonceMixin(object):
     """One use numbers"""
     server_url = ''
     timestamp = 0
     salt = ''
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation"""
         return self.server_url
 
 
+@python_2_unicode_compatible
 class AssociationMixin(object):
     """OpenId account association"""
     server_url = ''
@@ -165,6 +169,6 @@ class AssociationMixin(object):
     lifetime = 0
     assoc_type = ''
 
-    def __unicode__(self):
+    def __str__(self):
         """Unicode representation"""
         return '%s %s' % (self.handle, self.issued)

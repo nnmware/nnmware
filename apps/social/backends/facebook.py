@@ -155,7 +155,7 @@ class FacebookAuth(BaseOAuth2):
 
 
 def base64_url_decode(data):
-    data = data.encode(u'ascii')
+    data = data.encode('ascii')
     data += '=' * (4 - (len(data) % 4))
     return base64.urlsafe_b64decode(data)
 
@@ -166,9 +166,9 @@ def base64_url_encode(data):
 
 def load_signed_request(signed_request, api_secret=None):
     try:
-        sig, payload = signed_request.split(u'.', 1)
+        sig, payload = signed_request.split('.', 1)
         sig = base64_url_decode(sig)
-        data = simplejson.loads(base64_url_decode(payload))
+        data = json.loads(base64_url_decode(payload))
 
         expected_sig = hmac.new(api_secret or setting('FACEBOOK_API_SECRET'),
                                 msg=payload,
@@ -176,7 +176,7 @@ def load_signed_request(signed_request, api_secret=None):
 
         # allow the signed_request to function for upto 1 day
         if sig == expected_sig and \
-                data[u'issued_at'] > (time.time() - 86400):
+                data['issued_at'] > (time.time() - 86400):
             return data
     except ValueError:
         pass  # ignore if can't split on dot

@@ -36,7 +36,7 @@ LOCALE_PATHS = (
 
 
 TIME_ZONE = 'Europe/Moscow'
-LANGUAGE_CODE = 'en-en'
+LANGUAGE_CODE = 'ru-ru'
 SITE_ID = 1
 USE_I18N = False
 
@@ -141,7 +141,8 @@ INSTALLED_APPS = (
     'nnmware.apps.booking',
     'nnmware.apps.shop',
     'nnmware.apps.address',
-
+    'nnmware.apps.dossier',
+    'nnmware.demo',
     )
 
 ABSOLUTE_URL_OVERRIDES = {

@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-import re
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink, Q, Count, Sum
+from django.db.models import permalink, Q
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.address.models import Country, City, Region, AbstractLocation
+from nnmware.apps.address.models import Country, AbstractLocation
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material
 from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
+from django.utils.encoding import python_2_unicode_compatible
 
 
 class ProductCategory(Tree):
@@ -34,6 +34,7 @@ class ProductColor(Color):
 class ProductMaterial(Material):
     pass
 
+@python_2_unicode_compatible
 class Vendor(models.Model):
     name = models.CharField(_("Name of vendor"),max_length=200)
     website = std_url_field(_("URL"))
@@ -46,7 +47,7 @@ class Vendor(models.Model):
         verbose_name = _("Vendor")
         verbose_name_plural = _("Vendors")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class CargoService(Vendor):
@@ -134,6 +135,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 class ParameterUnit(Unit):
     pass
 
+@python_2_unicode_compatible
 class ProductParameterCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
 
@@ -141,7 +143,7 @@ class ProductParameterCategory(models.Model):
         verbose_name = _("Category of product parameter")
         verbose_name_plural = _("Categories of product parameters")
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 class ProductParameter(Parameter):
@@ -152,6 +154,7 @@ class ProductParameter(Parameter):
         verbose_name = _("Product parameter")
         verbose_name_plural = _("Product parameters")
 
+@python_2_unicode_compatible
 class ProductParameterValue(AbstractContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = std_text_field(_('Value of parameter'))
@@ -162,13 +165,14 @@ class ProductParameterValue(AbstractContent):
         verbose_name = _("Product parameter value")
         verbose_name_plural = _("Product parameters values")
 
-    def __unicode__(self):
+    def __str__(self):
         try:
             return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
         except :
             return "%s: %s" % (self.parameter.name, self.value)
 
 
+@python_2_unicode_compatible
 class Basket(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True,
         on_delete=models.SET_NULL)
@@ -185,7 +189,7 @@ class Basket(AbstractDate):
     def sum(self):
         return self.quantity*int(self.product.with_discount)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.user.username
 
 
@@ -226,6 +230,7 @@ DELIVERY_METHOD = (
     (DELIVERY_MAIL, _('Mail')),
     )
 
+@python_2_unicode_compatible
 class Order(AbstractDate, AbstractIP):
     """
     Definition of orders.
@@ -256,7 +261,7 @@ class Order(AbstractDate, AbstractIP):
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.pk
 
     @property
@@ -292,6 +297,7 @@ class Order(AbstractDate, AbstractIP):
             result += ' ' + self.middle_name[0]
         return result
 
+@python_2_unicode_compatible
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
@@ -303,7 +309,7 @@ class OrderItem(MoneyBase):
     product_origin = models.ForeignKey(Product, null=True, blank=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.product_name
 
     @property
@@ -311,6 +317,7 @@ class OrderItem(MoneyBase):
         return self.quantity*self.amount
 
 
+@python_2_unicode_compatible
 class DeliveryAddress(AbstractLocation):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
     first_name = std_text_field(_('First Name'))
@@ -323,7 +330,7 @@ class DeliveryAddress(AbstractLocation):
         verbose_name = _("Delivery Address")
         verbose_name_plural = _("Delivery Addresses")
 
-    def __unicode__(self):
+    def __str__(self):
         result = ''
         if self.zipcode <> '' and self.zipcode is not None:
             result += self.zipcode
@@ -353,6 +360,7 @@ class DeliveryAddress(AbstractLocation):
             result += _(', skype-') + self.skype
         return result
 
+@python_2_unicode_compatible
 class Feedback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = std_text_field(_('Name'))
@@ -365,12 +373,13 @@ class Feedback(AbstractIP):
         verbose_name = _('Feedback')
         verbose_name_plural = _('Feedback')
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s - %s" % (self.name, self.created_date)
 
     def get_absolute_url(self):
         return reverse('feedback_detail', args=[self.pk])
 
+@python_2_unicode_compatible
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True, blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
@@ -385,9 +394,10 @@ class Review(AbstractIP, AbstractImg):
         verbose_name = _('Review')
         verbose_name_plural = _('Reviews')
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s - %s" % (self.name, self.created_date)
 
+@python_2_unicode_compatible
 class ShopText(models.Model):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
@@ -401,7 +411,7 @@ class ShopText(models.Model):
         verbose_name_plural = _('Shop texts')
         abstract = True
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 

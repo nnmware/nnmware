@@ -8,7 +8,7 @@ from django.db.models.fields import TextField
 from django.db.models.fields.files import ImageField
 from django.core.exceptions import ValidationError
 from django.db.models.fields.subclassing import SubfieldBase
-from django.utils.encoding import smart_unicode
+from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.imgutil import rename_by_field
 from nnmware.core.widgets import ImageWithThumbnailWidget, CLEditorWidget
@@ -17,7 +17,7 @@ from nnmware.core.captcha import submit
 
 class ReCaptchaField(forms.CharField):
 
-    default_error_messages = { 'captcha_invalid': _(u'Invalid captcha')}
+    default_error_messages = { 'captcha_invalid': _('Invalid captcha')}
 
     def __init__(self, *args, **kwargs):
         self.widget = ReCaptchaWidget
@@ -26,8 +26,8 @@ class ReCaptchaField(forms.CharField):
 
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
-        recaptcha_challenge_value = smart_unicode(values[0])
-        recaptcha_response_value = smart_unicode(values[1])
+        recaptcha_challenge_value = smart_text(values[0])
+        recaptcha_response_value = smart_text(values[1])
         check_captcha = submit(recaptcha_challenge_value, recaptcha_response_value, settings.RECAPTCHA_PRIVATE_KEY, {})
         if not check_captcha.is_valid:
             raise forms.util.ValidationError(self.error_messages['captcha_invalid'])
@@ -191,7 +191,7 @@ class JSONField(models.TextField):
 
     def value_to_string(self, obj):
         """Return value from object converted to string properly"""
-        return smart_unicode(self.get_prep_value(self._get_val_from_obj(obj)))
+        return smart_text(self.get_prep_value(self._get_val_from_obj(obj)))
 
     def value_from_object(self, obj):
         """Return value dumped to string."""

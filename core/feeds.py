@@ -13,7 +13,7 @@ class AtomWithContentFeed(Atom1Feed):
     def add_item_elements(self, handler, item):
         super(AtomWithContentFeed, self).add_item_elements(handler, item)
         if 'content' in item:
-            handler.addQuickElement(u"content", item['content'],
+            handler.addQuickElement("content", item['content'],
                 {'type': 'html'})
 
 
@@ -39,11 +39,11 @@ class ObjectActivityFeed(Feed):
     def description(self, obj):
         return 'Activity for %s' % obj
 
-    def items(self, obj):
-        i = action_object_stream(obj)
-        if i:
-            return i[:30]
-        return []
+#    def items(self, obj):
+#        i = action_object_stream(obj)
+#        if i:
+#            return i[:30]
+#        return []
 
     def item_extra_kwargs(self, obj):
         return  {
@@ -71,7 +71,7 @@ class ActivityStreamsFeed(AtomWithContentFeed):
 
     def add_item_elements(self, handler, item):
         super(ActivityStreamsFeed, self).add_item_elements(handler, item)
-        handler.addQuickElement(u"activity: verb", item['verb'])
+        handler.addQuickElement("activity: verb", item['verb'])
 
         if 'actor' in item:
             handler.startElement('author', {})
@@ -174,11 +174,11 @@ class ModelActivityFeed(Feed):
     def description(self, model):
         return 'Public activities of %s' % model
 
-    def items(self, model):
-        i = model_stream(model)
-        if i:
-            return i[:30]
-        return []
+#    def items(self, model):
+#        i = model_stream(model)
+#        if i:
+#            return i[:30]
+#        return []
 
 
 class AtomModelActivityFeed(ModelActivityFeed):
@@ -206,11 +206,11 @@ class UserActivityFeed(Feed):
     def description(self, user):
         return 'Public activities of actors you follow'
 
-    def items(self, user):
-        i = user_stream(user)
-        if i:
-            return i[:30]
-        return []
+#    def items(self, user):
+#        i = user_stream(user)
+#        if i:
+#            return i[:30]
+#        return []
 
 
 class AtomUserActivityFeed(UserActivityFeed):

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.fields import std_text_field
 from nnmware.core.maps import osm_geocoder
 from nnmware.core.abstract import AbstractName
+from django.utils.encoding import python_2_unicode_compatible
 
+@python_2_unicode_compatible
 class Address(AbstractName):
     name_add = models.CharField(max_length=100, blank=True)
     name_add_en = models.CharField(max_length=100, blank=True)
@@ -18,7 +19,7 @@ class Address(AbstractName):
         abstract = True
 
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     @property
@@ -136,7 +137,7 @@ class AbstractGeo(MetaGeo):
         return "%s, %s" % (result, self.city)
 
     def fulladdress(self):
-        return u"%s, %s" % (self.address, self.city)
+        return "%s, %s" % (self.address, self.city)
 
 
 class TourismCategory(AbstractName):
@@ -148,6 +149,7 @@ class TourismCategory(AbstractName):
         ordering = ['order_in_list',]
 
 
+@python_2_unicode_compatible
 class Tourism(Address, AbstractGeo):
     category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'))
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
@@ -157,8 +159,8 @@ class Tourism(Address, AbstractGeo):
         verbose_name = _("Tourism")
         verbose_name_plural = _("Tourism")
 
-    def __unicode__(self):
-        return u"%s :: %s" % (self.name, self.country)
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.country)
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -170,6 +172,7 @@ class Tourism(Address, AbstractGeo):
                 self.slug = self.pk
         super(Tourism, self).save(*args, **kwargs)
 
+@python_2_unicode_compatible
 class StationMetro(Address, AbstractGeo):
     country = models.ForeignKey(Country, verbose_name=_('Country'))
 
@@ -178,8 +181,8 @@ class StationMetro(Address, AbstractGeo):
         verbose_name = _("Station of metro")
         verbose_name_plural = _("Stations of metro")
 
-    def __unicode__(self):
-        return u"%s :: %s" % (self.name, self.city)
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.city)
 
 class AbstractLocation(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, related_name="%(class)s_cou")
@@ -198,6 +201,7 @@ class AbstractLocation(models.Model):
         verbose_name_plural = _("Locations")
         abstract = True
 
+@python_2_unicode_compatible
 class Institution(AbstractName):
     city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city',null=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'),related_name='edu_country',null=True)
@@ -206,5 +210,5 @@ class Institution(AbstractName):
         verbose_name = _("Institution")
         verbose_name_plural = _("Institutions")
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.name

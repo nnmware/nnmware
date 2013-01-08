@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime
-from decimal import Decimal
 from django.conf import settings
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from nnmware.apps.address.models import Country
-from nnmware.core.config import CURRENCY, OFFICIAL_RATE
 from nnmware.core.managers import FinancialManager
 from nnmware.core.models import Doc
+from django.utils.encoding import python_2_unicode_compatible
 
 #---------------------------------------------------------------------------
+@python_2_unicode_compatible
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
     country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
@@ -24,10 +24,11 @@ class Currency(models.Model):
         verbose_name = _("Currency")
         verbose_name_plural = _("Currencies")
 
-    def __unicode__(self):
-        return u"%s :: %s" % (self.code, self.name)
+    def __str__(self):
+        return "%s :: %s" % (self.code, self.name)
 
 #---------------------------------------------------------------------------
+@python_2_unicode_compatible
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(verbose_name=_('On date'))
@@ -42,8 +43,8 @@ class ExchangeRate(models.Model):
         verbose_name = _("Exchange Rate")
         verbose_name_plural = _("Exchange Rates")
 
-    def __unicode__(self):
-        return u"%s :: %s :: %s :: %s" % (self.currency, self.date, self.official_rate, self.rate)
+    def __str__(self):
+        return "%s :: %s :: %s :: %s" % (self.currency, self.date, self.official_rate, self.rate)
 
 
 #---------------------------------------------------------------------------
@@ -67,6 +68,7 @@ TRANSACTION_STATUS = (
     )
 
 #---------------------------------------------------------------------------
+@python_2_unicode_compatible
 class Transaction(MoneyBase):
     """
     Transaction(no more words)
@@ -92,9 +94,9 @@ class Transaction(MoneyBase):
         verbose_name_plural = _("Transactions")
 
 #    def __unicode__(self):
-#        return u'%s -> %s' % (self.user, self.date)
+#        return '%s -> %s' % (self.user, self.date)
 
-    def __unicode__(self):
+    def __str__(self):
         return _("User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s %(currency)s") %\
                    { 'user': self.user.username,
                      'date': self.date,
@@ -116,6 +118,7 @@ BILL_STATUS = (
     )
 
 
+@python_2_unicode_compatible
 class Bill(MoneyBase):
     """
     Financial account
@@ -136,7 +139,7 @@ class Bill(MoneyBase):
         verbose_name = _("Bill")
         verbose_name_plural = _("Bills")
 
-    def __unicode__(self):
+    def __str__(self):
         return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\
                { 'user': self.user,
                  'date': self.date,
