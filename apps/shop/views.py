@@ -26,6 +26,7 @@ from django.contrib.contenttypes.models import ContentType
 from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT
 from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousOrderAddForm
 from nnmware.apps.shop.utils import make_order_from_basket
+from nnmware.apps.shop.utils import send_new_order_seller, send_new_order_buyer
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check user is author of object """
@@ -354,19 +355,8 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         if success_add_items is not True:
             self.object.delete()
             return super(AnonymousUserAddOrderView, self).form_invalid(form)
-        recipients = [settings.SHOP_MANAGER]
-        mail_dict = {'order': self.object}
-        subject = 'emails/neworder_admin_subject.txt'
-        body = 'emails/neworder_admin_body.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
-        if 1>0: #try:
-            recipients = [self.object.email]
-            mail_dict = {'order': self.object}
-            subject = 'emails/neworder_client_subject.txt'
-            body = 'emails/neworder_client_body.txt'
-            send_template_mail(subject,body,mail_dict,recipients)
-#        except:
-#            pass
+        send_new_order_seller(self.object)
+        send_new_order_buyer(self.object,[self.object.email] )
         return super(AnonymousUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):

@@ -317,11 +317,13 @@ def daterange(start_date, end_date):
         yield start_date + timedelta(n)
 
 def send_template_mail(subject,body,mail_dict, recipients):
-    subject = render_to_string(subject, mail_dict)
-    subject = ''.join(subject.splitlines())
-    body = render_to_string(body, mail_dict)
-    send_mail(subject=subject, message=body, from_email=settings.EMAIL_HOST_USER,
-        recipient_list=recipients)
+    try:
+        subject = render_to_string(subject, mail_dict)
+        subject = ''.join(subject.splitlines())
+        body = render_to_string(body, mail_dict)
+        send_mail(subject=subject, message=body, from_email=settings.EMAIL_HOST_USER, recipient_list=recipients)
+    except:
+        pass
 
 def setting(name, default=None):
     """Return setting value for given name or default value."""
