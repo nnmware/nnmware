@@ -133,10 +133,6 @@ class BasketView(TemplateView):
             return HttpResponseRedirect('/')
         return super(BasketView, self).dispatch(request, *args, **kwargs)
 
-class BasketView2(TemplateView):
-    template_name = 'shop/basket2.html'
-
-
 class AllProductsView(ListView,CurrentUserSuperuser):
     paginate_by = 20
     model = Product
@@ -337,7 +333,7 @@ class SpecialOfferView(DetailView):
 class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
     form_class = AnonymousOrderAddForm
-    template_name = 'shop/basket2.html'
+    template_name = 'shop/quick_order.html'
 
     def form_valid(self, form):
 
