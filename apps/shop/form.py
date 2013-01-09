@@ -47,7 +47,7 @@ class OrderTrackingForm(forms.ModelForm):
         fields = ('tracknumber','cargoservice')
 
 class AnonymousOrderAddForm(forms.ModelForm):
-    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all(), required=False)
+    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all())
 
     class Meta:
         model = Order
@@ -83,8 +83,3 @@ class AnonymousOrderAddForm(forms.ModelForm):
             return address
         raise forms.ValidationError(_("Required field"))
 
-    def clean_delivery(self):
-        delivery = self.cleaned_data['delivery']
-        if delivery:
-            return delivery
-        raise forms.ValidationError(_("Required field"))
