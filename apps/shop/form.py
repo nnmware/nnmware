@@ -3,6 +3,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 
 from nnmware.apps.shop.models import Product, ProductParameter, Order, ProductColor, ProductMaterial, ProductCategory
+from nnmware.apps.shop.models import DeliveryMethod
 
 class EditProductForm(forms.ModelForm):
     """
@@ -46,6 +47,7 @@ class OrderTrackingForm(forms.ModelForm):
         fields = ('tracknumber','cargoservice')
 
 class AnonymousOrderAddForm(forms.ModelForm):
+    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all())
 
     class Meta:
         model = Order

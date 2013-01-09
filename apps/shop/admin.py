@@ -129,6 +129,13 @@ class ShopArticleAdmin(admin.ModelAdmin):
         )
     ordering = ('-created_date','title')
 
+class DeliveryMethodAdmin(admin.ModelAdmin):
+    list_display = ("name", "amount", 'enabled_for_registered','enabled_for_unregistered','order_in_list')
+    fieldsets = (
+        (_("Delivery Method"), {"fields": [('name','amount'), ('enabled_for_registered','enabled_for_unregistered'),
+                                    ('order_in_list',),]}),
+        )
+    ordering = ('-order_in_list','name')
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
@@ -147,3 +154,4 @@ admin.site.register(ShopNews, ShopNewsAdmin)
 admin.site.register(ShopArticle, ShopArticleAdmin)
 admin.site.register(Review, ReviewAdmin)
 admin.site.register(SpecialOffer, SpecialOfferAdmin)
+admin.site.register(DeliveryMethod, DeliveryMethodAdmin)
