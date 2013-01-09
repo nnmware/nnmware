@@ -349,10 +349,10 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         self.object.status = STATUS_WAIT
         self.object.lite = True
         self.object.save()
-        success_add_items = make_order_from_basket(self.object, basket)
-        if not success_add_items:
-            self.object.delete()
-            return super(AnonymousUserAddOrderView, self).form_invalid(form)
+#        success_add_items = make_order_from_basket(self.object, basket)
+#        if not success_add_items:
+#            self.object.delete()
+#            return super(AnonymousUserAddOrderView, self).form_invalid(form)
         recipients = [settings.SHOP_MANAGER]
         mail_dict = {'order': self.object}
         subject = 'emails/neworder_admin_subject.txt'
