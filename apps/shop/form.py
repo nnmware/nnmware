@@ -46,10 +46,13 @@ class OrderTrackingForm(forms.ModelForm):
         fields = ('tracknumber','cargoservice')
 
 class AnonymousOrderAddForm(forms.ModelForm):
-#    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-#    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-#    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
 
     class Meta:
         model = Order
         fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment')
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        if first_name:
+            return first_name
+        raise forms.ValidationError(_("First name is required"))
