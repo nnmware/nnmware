@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
     STATUS_WAIT, OrderItem, Feedback, ProductColor, ProductMaterial
+from nnmware.apps.shop.utils import get_basket
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -380,11 +381,6 @@ def basket_avail(user):
     return True
 
 
-def get_basket(request):
-    if not request.user.is_authenticated():
-        session_key = get_session_from_request(request)
-        return Basket.objects.filter(session_key=session_key)
-    return Basket.objects.filter(user=request.user)
 
 def new_order(request):
     # Link used when User make order

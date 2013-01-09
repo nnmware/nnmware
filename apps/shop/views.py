@@ -12,6 +12,7 @@ from django.views.generic import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
+from nnmware.apps.shop.utils import get_basket
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
 from nnmware.apps.shop.models import Product, ProductCategory, Basket, Order, ShopNews, Feedback, ShopArticle, ProductParameterValue, STATUS_PROCESS, STATUS_SENT, OrderItem
 from nnmware.core.data import get_queryset_category
@@ -22,8 +23,9 @@ from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
-from nnmware.apps.shop.models import SpecialOffer
+from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT
 from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousOrderAddForm
+from nnmware.apps.shop.utils import make_order_from_basket
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check user is author of object """
@@ -336,8 +338,33 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     template_name = 'shop/quick_order.html'
 
     def form_valid(self, form):
-
-#        p_m = self.request.REQUEST.get('payment_method') or None
+        if not self.request.user.is_authenticated() and not settings.SHOP_ANONYMOUS_ORDERS:
+            return super(AnonymousUserAddOrderView, self).form_invalid(form)
+        basket = get_basket(self.request)
+        if basket.count < 1:
+            return super(AnonymousUserAddOrderView, self).form_invalid(form)
+        self.object = form.save(commit=False)
+        self.object.ip = self.request.META['REMOTE_ADDR']
+        self.object.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.status = STATUS_WAIT
+        self.object.lite = True
+        self.object.save()
+        if not make_order_from_basket(self.object, basket):
+            self.object.delete()
+            return super(AnonymousUserAddOrderView, self).form_invalid(form)
+        recipients = [settings.SHOP_MANAGER]
+        mail_dict = {'order': self.object}
+        subject = 'emails/neworder_admin_subject.txt'
+        body = 'emails/neworder_admin_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+        try:
+            recipients = [self.object.email]
+            mail_dict = {'order': self.object}
+            subject = 'emails/neworder_client_subject.txt'
+            body = 'emails/neworder_client_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
         return super(AnonymousUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):

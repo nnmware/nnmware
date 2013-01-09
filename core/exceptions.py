@@ -5,3 +5,6 @@ class AccessError(Exception):
 
 class UserIsDisabled(Exception):
     pass
+
+class ShopError(Exception):
+    pass

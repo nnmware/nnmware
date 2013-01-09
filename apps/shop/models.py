@@ -313,6 +313,7 @@ class OrderItem(MoneyBase):
     product_url = std_text_field(_('Product URL'))
     product_origin = models.ForeignKey(Product, null=True, blank=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
+    addon = std_text_field(_('Add-on text'))
 
     def __str__(self):
         return self.product_name
