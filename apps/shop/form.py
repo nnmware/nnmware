@@ -56,3 +56,27 @@ class AnonymousOrderAddForm(forms.ModelForm):
         if first_name:
             return first_name
         raise forms.ValidationError(_("First name is required"))
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        if last_name:
+            return last_name
+        raise forms.ValidationError(_("Last name is required"))
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email:
+            return email
+        raise forms.ValidationError(_("Email is required"))
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone:
+            return phone
+        raise forms.ValidationError(_("Phone is required"))
+
+    def clean_address(self):
+        address = self.cleaned_data.get('address')
+        if address:
+            return address
+        raise forms.ValidationError(_("Address is required"))
