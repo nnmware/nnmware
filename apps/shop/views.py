@@ -362,7 +362,8 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     def get_success_url(self):
         return self.object.get_absolute_url()
 
-class RegisterUserAddOrderView(AnonymousUserAddOrderView):
+class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
+    model = Order
     template_name = 'shop/new_order.html'
     form_class = RegisterUserOrderAddForm
 
@@ -390,3 +391,5 @@ class RegisterUserAddOrderView(AnonymousUserAddOrderView):
         send_new_order_buyer(self.object,[self.request.user.email] )
         return super(RegisterUserAddOrderView, self).form_valid(form)
 
+    def get_success_url(self):
+        return self.object.get_absolute_url()
