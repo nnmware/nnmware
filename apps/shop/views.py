@@ -337,6 +337,7 @@ class SpecialOfferView(DetailView):
 class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
     form_class = AnonymousOrderAddForm
+    template_name = 'shop/basket2.html'
 
     def form_valid(self, form):
 
