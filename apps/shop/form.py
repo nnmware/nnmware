@@ -57,28 +57,37 @@ class AnonymousOrderAddForm(forms.ModelForm):
         first_name = self.cleaned_data.get('first_name')
         if first_name:
             return first_name
-        raise forms.ValidationError(_("First name is required"))
+        raise forms.ValidationError(_("Required field"))
 
     def clean_last_name(self):
         last_name = self.cleaned_data.get('last_name')
         if last_name:
             return last_name
-        raise forms.ValidationError(_("Last name is required"))
+        raise forms.ValidationError(_("Required field"))
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if email:
             return email
-        raise forms.ValidationError(_("Email is required"))
+        raise forms.ValidationError(_("Required field"))
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
         if phone:
             return phone
-        raise forms.ValidationError(_("Phone is required"))
+        raise forms.ValidationError(_("Required field"))
 
     def clean_address(self):
         address = self.cleaned_data.get('address')
         if address:
             return address
-        raise forms.ValidationError(_("Address is required"))
+        raise forms.ValidationError(_("Required field"))
+
+    def clean_delivery(self):
+        delivery = self.cleaned_data.get('delivery')
+        if delivery:
+            try:
+                return DeliveryMethod.objects.get(pk=delivery)
+            except:
+                raise forms.ValidationError(_("Incorrect value"))
+        raise forms.ValidationError(_("Required field"))
