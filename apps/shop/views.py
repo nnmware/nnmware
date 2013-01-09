@@ -334,7 +334,7 @@ class SpecialOfferView(DetailView):
     model = SpecialOffer
     template_name = 'shop/offer.html'
 
-class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
+class AnonymousUserAddOrderView(CreateView, AjaxFormMixin):
     model = Order
     form_class = AnonymousOrderAddForm
     template_name = 'shop/basket2.html'
