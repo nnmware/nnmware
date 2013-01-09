@@ -51,7 +51,7 @@ class AnonymousOrderAddForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment')
+        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment', 'delivery')
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get('first_name')
