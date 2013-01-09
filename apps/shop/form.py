@@ -47,11 +47,16 @@ class OrderTrackingForm(forms.ModelForm):
         fields = ('tracknumber','cargoservice')
 
 class AnonymousOrderAddForm(forms.ModelForm):
-    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all(), required=False)
+#    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all(), required=False)
 
     class Meta:
         model = Order
-        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment')
+        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment', 'delivery')
+
+    def __init__(self, *args, **kwargs):
+        super(AnonymousOrderAddForm, self).__init__(*args, **kwargs)
+        self.fields['delivery'].queryset = DeliveryMethod.objects.all()
+
 
     def clean_first_name(self):
         first_name =  self.cleaned_data['first_name']
