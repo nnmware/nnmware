@@ -13,8 +13,9 @@ def get_basket(request):
 def make_order_from_basket(order, basket):
     if 1>0: #try:
         for item in basket:
-            if settings.SHOP_CHECK_QUANTITY and item.quantity > item.product.quantity:
-                raise ShopError
+            if settings.SHOP_CHECK_QUANTITY:
+                if item.quantity > item.product.quantity:
+                    raise ShopError
             order_item = OrderItem()
             order_item.order = order
             order_item.product_name = item.product.name
