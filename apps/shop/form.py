@@ -87,7 +87,7 @@ class AnonymousOrderAddForm(forms.ModelForm):
         delivery = self.cleaned_data.get('delivery')
         if delivery:
             try:
-                return DeliveryMethod.objects.get(pk=delivery)
+                return DeliveryMethod.objects.get(pk=int(delivery))
             except:
                 raise forms.ValidationError(_("Incorrect value"))
         raise forms.ValidationError(_("Required field"))
