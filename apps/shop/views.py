@@ -344,4 +344,4 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         return super(AnonymousUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('order_view', args=[self.object.pk])
+        return reverse('order_view', args=[self.object.get_absolute_url()])
