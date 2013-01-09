@@ -219,24 +219,15 @@ class MessageManager(Manager):
 class ProductManager(Manager):
 
     def active(self):
-        """
-        Returns all available products
-        """
         return self.filter(avail=True,visible=True)
 
     def sale(self):
-        """
-        Returns all available products
-        """
-        return self.filter(avail=True, discount=True,visible=True)
+        return self.active().filter(discount=True)
 
 
-#    def active_date_sort(self):
-#        return self.filter(avail=True).order_by('-created_date')
+    #    def active_date_sort(self):
+    #        return self.filter(avail=True).order_by('-created_date')
 
     def latest(self):
-        """
-        Returns all available products
-        """
-        return self.filter(avail=True,latest=True,visible=True)
+        return self.active().filter(latest=True)
 

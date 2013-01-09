@@ -131,7 +131,6 @@ class Product(AbstractName, MoneyBase, AbstractDate):
             result = self.amount
         return floatformat(result,0)
 
-
 class ParameterUnit(Unit):
     pass
 
