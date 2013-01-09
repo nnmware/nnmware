@@ -56,7 +56,6 @@ class AnonymousOrderAddForm(forms.ModelForm):
         super(AnonymousOrderAddForm, self).__init__(*args, **kwargs)
         self.fields['delivery'].queryset = DeliveryMethod.objects.all()
 
-
     def clean_first_name(self):
         first_name =  self.cleaned_data['first_name']
         if first_name:

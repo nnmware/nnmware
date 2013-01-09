@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.shop.models import Basket, OrderItem
 from nnmware.core.http import get_session_from_request
 from nnmware.core.exceptions import ShopError
@@ -30,6 +31,14 @@ def make_order_from_basket(order, basket):
                 item.product.quantity -= item.quantity
                 item.product.save()
         basket.delete()
+        order_item = OrderItem()
+        order_item.order = order
+        order_item.product_name = order.delivery.name
+        order_item.amount = order.delivery.amount
+        order_item.quantity = 1
+        order_item.addon = _('Delivery')
+        order_item.save()
+
         return True
     except ShopError:
         return False

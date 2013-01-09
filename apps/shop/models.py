@@ -314,6 +314,7 @@ class OrderItem(MoneyBase):
     product_origin = models.ForeignKey(Product, null=True, blank=True)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
     addon = std_text_field(_('Add-on text'))
+    is_delivery = models.BooleanField(verbose_name=_("Delivery flag"), default=False)
 
     def __str__(self):
         return self.product_name

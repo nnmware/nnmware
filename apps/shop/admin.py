@@ -54,7 +54,7 @@ class BasketAdmin(admin.ModelAdmin):
 class OrderItemInline(admin.StackedInline):
     model = OrderItem
     extra = 0
-    fields = (('product_pn','product_name'),('quantity','amount'),('product_url','product_origin'))
+    fields = (('product_pn','product_name'),('quantity','amount'),('product_url','product_origin'),('is_delivery',))
 
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date','updated_date')
