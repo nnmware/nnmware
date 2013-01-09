@@ -47,7 +47,7 @@ class OrderTrackingForm(forms.ModelForm):
         fields = ('tracknumber','cargoservice')
 
 class AnonymousOrderAddForm(forms.ModelForm):
-    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all())
+    delivery = forms.ModelChoiceField(queryset=DeliveryMethod.objects.all(), required=False)
 
     class Meta:
         model = Order
