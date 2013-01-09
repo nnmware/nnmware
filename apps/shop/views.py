@@ -342,3 +342,6 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
 
 #        p_m = self.request.REQUEST.get('payment_method') or None
         return super(AnonymousUserAddOrderView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('order_view', args=[self.object.pk])
