@@ -11,7 +11,7 @@ def get_basket(request):
     return Basket.objects.filter(user=request.user)
 
 def make_order_from_basket(order, basket):
-    if 1>0: #try:
+    try:
         for item in basket:
             if settings.SHOP_CHECK_QUANTITY:
                 if item.quantity > item.product.quantity:
@@ -31,7 +31,7 @@ def make_order_from_basket(order, basket):
                 item.product.save()
         basket.delete()
         return True
-#    except ShopError:
-#        return False
-#    except:
-#        return False
+    except ShopError:
+        return False
+    except:
+        return False

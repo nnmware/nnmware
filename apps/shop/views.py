@@ -348,6 +348,7 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.status = STATUS_WAIT
         self.object.lite = True
+        self.object.session_key = get_session_from_request(self.request)
         self.object.save()
         success_add_items = make_order_from_basket(self.object, basket)
         if success_add_items is not True:
