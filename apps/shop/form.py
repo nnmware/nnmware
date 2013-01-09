@@ -46,14 +46,14 @@ class OrderTrackingForm(forms.ModelForm):
         model = Order
         fields = ('tracknumber','cargoservice')
 
-class AnonymousOrderAddForm(forms.ModelForm):
+class AnonymousUserOrderAddForm(forms.ModelForm):
 
     class Meta:
         model = Order
         fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment', 'delivery')
 
     def __init__(self, *args, **kwargs):
-        super(AnonymousOrderAddForm, self).__init__(*args, **kwargs)
+        super(AnonymousUserOrderAddForm, self).__init__(*args, **kwargs)
         self.fields['delivery'].queryset = DeliveryMethod.objects.all()
 
     def clean_first_name(self):
@@ -85,6 +85,22 @@ class AnonymousOrderAddForm(forms.ModelForm):
         if address:
             return address
         raise forms.ValidationError(_("Required field"))
+
+    def clean_delivery(self):
+        delivery = self.cleaned_data['delivery']
+        if delivery:
+            return delivery
+        raise forms.ValidationError(_("Required field"))
+
+class RegisterUserOrderAddForm(forms.ModelForm):
+
+    class Meta:
+        model = Order
+        fields = ('buyer_comment', 'delivery')
+
+    def __init__(self, *args, **kwargs):
+        super(RegisterUserOrderAddForm, self).__init__(*args, **kwargs)
+        self.fields['delivery'].queryset = DeliveryMethod.objects.all()
 
     def clean_delivery(self):
         delivery = self.cleaned_data['delivery']

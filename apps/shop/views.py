@@ -23,8 +23,8 @@ from nnmware.core.templatetags.core import basket, _get_basket
 from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
-from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT
-from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousOrderAddForm
+from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT, DeliveryAddress
+from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousUserOrderAddForm, RegisterUserOrderAddForm
 from nnmware.apps.shop.utils import make_order_from_basket
 from nnmware.apps.shop.utils import send_new_order_seller, send_new_order_buyer
 
@@ -335,7 +335,7 @@ class SpecialOfferView(DetailView):
 
 class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
-    form_class = AnonymousOrderAddForm
+    form_class = AnonymousUserOrderAddForm
     template_name = 'shop/quick_order.html'
 
     def form_valid(self, form):
@@ -361,3 +361,32 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
 
     def get_success_url(self):
         return self.object.get_absolute_url()
+
+class RegisterUserAddOrderView(AnonymousUserAddOrderView):
+    template_name = 'shop/new_order.html'
+    form_class = RegisterUserOrderAddForm
+
+    def form_valid(self, form):
+        if not self.request.user.is_authenticated():
+            return super(RegisterUserAddOrderView, self).form_invalid(form)
+        basket = get_basket(self.request)
+        if basket.count() < 1:
+            return super(RegisterUserAddOrderView, self).form_invalid(form)
+        addr = self.request.POST.get('addr')
+        address = DeliveryAddress.objects.get(user=self.request.user, pk=int(addr))
+        self.object = form.save(commit=False)
+        self.object.address = str(address)
+        self.object.ip = self.request.META['REMOTE_ADDR']
+        self.object.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.status = STATUS_WAIT
+        self.object.lite = False
+        self.object.user = self.request.user
+        self.object.save()
+        success_add_items = make_order_from_basket(self.object, basket)
+        if success_add_items is not True:
+            self.object.delete()
+            return super(RegisterUserAddOrderView, self).form_invalid(form)
+        send_new_order_seller(self.object)
+        send_new_order_buyer(self.object,[self.request.user.email] )
+        return super(RegisterUserAddOrderView, self).form_valid(form)
+
