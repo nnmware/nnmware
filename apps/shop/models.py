@@ -218,17 +218,22 @@ class OrdersManager(models.Manager):
     def active(self):
         return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )
 
-DELIVERY_UNKNOWN = 0
-DELIVERY_COURIER = 1
-DELIVERY_SELF = 2
-DELIVERY_MAIL = 3
+@python_2_unicode_compatible
+class DeliveryMethod(MoneyBase):
+    name = std_text_field(_("Name of delivery method"))
+    name_en = std_text_field(_("Name of delivery method(English)"))
+    description = models.TextField(_("Description of delivery method"), default='', blank=True)
+    description_en = models.TextField(_("Description of delivery method(English)"), default='', blank=True)
+    enabled_for_registered = models.BooleanField(verbose_name=_("Enabled for registered users"), default=False)
+    enabled_for_unregistered = models.BooleanField(verbose_name=_("Enabled for unregistered users"), default=False)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
 
-DELIVERY_METHOD = (
-    (DELIVERY_UNKNOWN, _('Unknown')),
-    (DELIVERY_COURIER, _('Courier')),
-    (DELIVERY_SELF, _('Shipment at own expense')),
-    (DELIVERY_MAIL, _('Mail')),
-    )
+    class Meta:
+        verbose_name = _("Delivery method")
+        verbose_name_plural = _("Delivery methods")
+
+    def __str__(self):
+        return self.name
 
 @python_2_unicode_compatible
 class Order(AbstractDate, AbstractIP):
@@ -239,7 +244,8 @@ class Order(AbstractDate, AbstractIP):
         null=True, on_delete=models.SET_NULL)
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=STATUS_UNKNOWN, choices=STATUS_ORDER)
-    delivery = models.IntegerField(verbose_name=_('Delivery method'), max_length=2, default=DELIVERY_UNKNOWN, choices=DELIVERY_METHOD)
+    delivery = models.ForeignKey(DeliveryMethod, verbose_name=_('Delivery method'), blank=True,
+        null=True, on_delete=models.SET_NULL)
     address = std_text_field(_('Shipping address'))
     tracknumber = std_text_field(_('Track number'))
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
