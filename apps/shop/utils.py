@@ -20,7 +20,7 @@ def make_order_from_basket(order, basket):
             order_item.order = order
             order_item.product_name = item.product.name
             order_item.product_origin = item.product
-            order_item.product_url = item.product.get_absolute_url
+            order_item.product_url = item.product.get_absolute_url()
             order_item.amount = item.product.with_discount
             order_item.product_pn = item.product.shop_pn
             order_item.quantity = item.quantity
