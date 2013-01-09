@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-09 16:11+1100\n"
+"POT-Creation-Date: 2013-01-09 16:15+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1961,7 +1961,6 @@ msgid "Shop Articles"
 msgstr "Статьи магазина"
 
 #: apps/shop/admin.py:135
-#, fuzzy
 msgid "Delivery Method"
 msgstr "Метод доставки"
 
@@ -1973,30 +1972,14 @@ msgstr "Вы не имеете прав для добавление адреса
 msgid "Product in basket not available"
 msgstr "Товар в корзине недоступен"
 
-#: apps/shop/form.py:60
-#, fuzzy
-msgid "First name is required"
-msgstr "Поле обязательно"
+#: apps/shop/form.py:60 apps/shop/form.py:66 apps/shop/form.py:72
+#: apps/shop/form.py:78 apps/shop/form.py:84 apps/shop/form.py:93
+msgid "Required field"
+msgstr "Обязательное поле"
 
-#: apps/shop/form.py:66
-#, fuzzy
-msgid "Last name is required"
-msgstr "Поле обязательно"
-
-#: apps/shop/form.py:72
-#, fuzzy
-msgid "Email is required"
-msgstr "Email обязателен"
-
-#: apps/shop/form.py:78
-#, fuzzy
-msgid "Phone is required"
-msgstr "Поле обязательно"
-
-#: apps/shop/form.py:84
-#, fuzzy
-msgid "Address is required"
-msgstr "Поле обязательно"
+#: apps/shop/form.py:92
+msgid "Incorrect value"
+msgstr "Неверное значение"
 
 #: apps/shop/models.py:23
 msgid "Product Category"
@@ -2197,41 +2180,36 @@ msgid "Shipping"
 msgstr "Доставка"
 
 #: apps/shop/models.py:223
-#, fuzzy
 msgid "Name of delivery method"
-msgstr "Метод доставки"
+msgstr "Название способа доставки"
 
 #: apps/shop/models.py:224
 msgid "Name of delivery method(English)"
-msgstr ""
+msgstr "Название способа доставки(Англ)"
 
 #: apps/shop/models.py:225
-#, fuzzy
 msgid "Description of delivery method"
-msgstr "Описание производителя"
+msgstr "Описание способа доставки"
 
 #: apps/shop/models.py:226
-#, fuzzy
 msgid "Description of delivery method(English)"
-msgstr "Описание(Английский)"
+msgstr "Описание способа доставки(Английский)"
 
 #: apps/shop/models.py:227
-#, fuzzy
 msgid "Enabled for registered users"
-msgstr "Незарегистрированый пользователь магазина"
+msgstr "Включено для зарегистрированых пользователей магазина"
 
 #: apps/shop/models.py:228
 msgid "Enabled for unregistered users"
-msgstr ""
+msgstr "Включено для незарегистрированых пользователей магазина"
 
 #: apps/shop/models.py:232 apps/shop/models.py:247
 msgid "Delivery method"
-msgstr "Метод доставки"
+msgstr "Способ доставки"
 
 #: apps/shop/models.py:233
-#, fuzzy
 msgid "Delivery methods"
-msgstr "Метод доставки"
+msgstr "Способы доставки"
 
 #: apps/shop/models.py:245
 msgid "Shipping comment"
@@ -3401,25 +3379,14 @@ msgid "rub"
 msgstr "руб"
 
 #: demo/admin.py:46
-#, fuzzy
 msgid "Personal info"
 msgstr "Личные данные"
 
 #: demo/admin.py:47
-#, fuzzy
 msgid "Permissions"
-msgstr "Комиссия"
+msgstr "Разрешения"
 
 #: demo/admin.py:49
-#, fuzzy
 msgid "Important dates"
-msgstr "Дата начала"
+msgstr "Важные даты"
 
-#~ msgid "Courier"
-#~ msgstr "Курьер"
-
-#~ msgid "Shipment at own expense"
-#~ msgstr "Самовывоз"
-
-#~ msgid "Mail"
-#~ msgstr "Почта"
