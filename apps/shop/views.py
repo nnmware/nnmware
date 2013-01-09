@@ -23,7 +23,7 @@ from nnmware.core.utils import send_template_mail, convert_to_date
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
 from nnmware.apps.shop.models import SpecialOffer
-from nnmware.apps.shop.form import EditProductFurnitureForm
+from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousOrderAddForm
 
 class CurrentUserOrderAccess(object):
     """ Generic update view that check user is author of object """
@@ -334,3 +334,11 @@ class SpecialOfferView(DetailView):
     model = SpecialOffer
     template_name = 'shop/offer.html'
 
+class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
+    model = Order
+    form_class = AnonymousOrderAddForm
+
+    def form_valid(self, form):
+
+#        p_m = self.request.REQUEST.get('payment_method') or None
+        return super(AnonymousUserAddOrderView, self).form_valid(form)

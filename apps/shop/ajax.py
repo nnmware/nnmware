@@ -201,69 +201,6 @@ def delete_address(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def check_basket(user):
-    basket = Basket.objects.filter(user=user)
-    if basket.count() < 1:
-        return False
-    for item in basket:
-        if item.quantity > item.product.quantity or item.product.avail is False:
-            return False
-    return True
-
-def new_order(request):
-    # Link used when User make order
-    try:
-        if not request.user.is_authenticated():
-            raise AccessError
-        if not check_basket(request.user):
-            raise BasketError
-        addr = request.POST.get('addr')
-        address = DeliveryAddress.objects.get(user=request.user, pk=int(addr))
-        order = Order()
-        order.address = str(address)
-        order.first_name = address.first_name
-        order.middle_name = address.middle_name
-        order.last_name = address.last_name
-        order.user = request.user
-        order.name = ''
-        order.comment = ''
-        order.status = STATUS_WAIT
-        order.save()
-        basket = Basket.objects.filter(user=request.user)
-        for item in basket:
-            order_item = OrderItem()
-            order_item.order = order
-            order_item.product_name = item.product.name
-            order_item.product_origin = item.product
-            order_item.product_url = item.product.get_absolute_url
-            order_item.amount = item.product.amount
-            order_item.product_pn = item.product.shop_pn
-            order_item.quantity = item.quantity
-            order_item.save()
-            item.product.quantity -= item.quantity
-            item.product.save()
-        basket.delete()
-        recipients = [settings.SHOP_MANAGER]
-        mail_dict = {'order': order}
-        subject = 'emails/neworder_admin_subject.txt'
-        body = 'emails/neworder_admin_body.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
-        try:
-            recipients = [request.user.email]
-            mail_dict = {'order': order}
-            subject = 'emails/neworder_client_subject.txt'
-            body = 'emails/neworder_client_body.txt'
-            send_template_mail(subject,body,mail_dict,recipients)
-        except:
-            pass
-        payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
-    except AccessError:
-        payload = {'success': False}
-    except BasketError:
-        payload = {'success': False, 'message':_('Product in basket not available')}
-    except:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
 
 def push_feedback(request):
     """
@@ -433,21 +370,34 @@ def delete_related_product(request,object_id, product_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+def basket_avail(user):
+    basket = Basket.objects.filter(user=user)
+    if basket.count() < 1:
+        return False
+    for item in basket:
+        if item.quantity > item.product.quantity or item.product.avail is False:
+            return False
+    return True
 
-def basket_shop(request):
+
+def get_basket(request):
     if not request.user.is_authenticated():
         session_key = get_session_from_request(request)
         return Basket.objects.filter(session_key=session_key)
     return Basket.objects.filter(user=request.user)
 
-def quick_order(request):
-    # Link used when Anonymous User make order
+def new_order(request):
+    # Link used when User make order
     if 1>0: #try:
-        basket = basket_shop(request)
+        if not request.user.is_authenticated() and not settings.SHOP_ANONYMOUS_ORDERS:
+            raise BasketError
+        basket = get_basket(request)
         if basket.count < 1:
             raise BasketError
+        order = Order()
+        order.status = STATUS_WAIT
+
         if not request.user.is_authenticated():
-            order = Order()
             order.first_name = request.POST.get('first_name')
             order.last_name = request.POST.get('last_name')
             order.phone = request.POST.get('phone')
@@ -455,40 +405,96 @@ def quick_order(request):
             order.address = request.POST.get('address')
             order.buyer_comment = request.POST.get('buyer_comment')
             order.lite = True
-            order.status = STATUS_WAIT
             order.session_key = get_session_from_request(request)
-            order.save()
-            for item in basket:
-                order_item = OrderItem()
-                order_item.order = order
-                order_item.product_name = item.product.name
-                order_item.product_origin = item.product
-                order_item.product_url = item.product.get_absolute_url
-                order_item.amount = item.product.amount
-                order_item.product_pn = item.product.shop_pn
-                order_item.quantity = item.quantity
-                order_item.save()
-                item.product.quantity -= item.quantity
-                item.product.save()
-            basket.delete()
-            recipients = [settings.SHOP_MANAGER]
+        else:
+
+            pass
+        order.save()
+        for item in basket:
+            order_item = OrderItem()
+            order_item.order = order
+            order_item.product_name = item.product.name
+            order_item.product_origin = item.product
+            order_item.product_url = item.product.get_absolute_url
+            order_item.amount = item.product.amount
+            order_item.product_pn = item.product.shop_pn
+            order_item.quantity = item.quantity
+            order_item.save()
+            item.product.quantity -= item.quantity
+            item.product.save()
+        basket.delete()
+        recipients = [settings.SHOP_MANAGER]
+        mail_dict = {'order': order}
+        subject = 'emails/neworder_admin_subject.txt'
+        body = 'emails/neworder_admin_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+        try:
+            recipients = [request.user.email]
             mail_dict = {'order': order}
-            subject = 'emails/neworder_admin_subject.txt'
-            body = 'emails/neworder_admin_body.txt'
+            subject = 'emails/neworder_client_subject.txt'
+            body = 'emails/neworder_client_body.txt'
             send_template_mail(subject,body,mail_dict,recipients)
-            try:
-                recipients = [request.user.email]
-                mail_dict = {'order': order}
-                subject = 'emails/neworder_client_subject.txt'
-                body = 'emails/neworder_client_body.txt'
-                send_template_mail(subject,body,mail_dict,recipients)
-            except:
-                pass
-            payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
+        except:
+            pass
+        payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
 #    except AccessError:
 #        payload = {'success': False}
 #    except BasketError:
 #        payload = {'success': False, 'message':_('Product in basket not available')}
-        else:
-            payload = {'success': False}
+    else:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def new_order_old(request):
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        if not get_basket(request):
+            raise BasketError
+        addr = request.POST.get('addr')
+        address = DeliveryAddress.objects.get(user=request.user, pk=int(addr))
+        order = Order()
+        order.address = str(address)
+        order.first_name = address.first_name
+        order.middle_name = address.middle_name
+        order.last_name = address.last_name
+        order.user = request.user
+        order.name = ''
+        order.comment = ''
+        order.status = STATUS_WAIT
+        order.save()
+        basket = Basket.objects.filter(user=request.user)
+        for item in basket:
+            order_item = OrderItem()
+            order_item.order = order
+            order_item.product_name = item.product.name
+            order_item.product_origin = item.product
+            order_item.product_url = item.product.get_absolute_url
+            order_item.amount = item.product.amount
+            order_item.product_pn = item.product.shop_pn
+            order_item.quantity = item.quantity
+            order_item.save()
+            item.product.quantity -= item.quantity
+            item.product.save()
+        basket.delete()
+        recipients = [settings.SHOP_MANAGER]
+        mail_dict = {'order': order}
+        subject = 'emails/neworder_admin_subject.txt'
+        body = 'emails/neworder_admin_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+        try:
+            recipients = [request.user.email]
+            mail_dict = {'order': order}
+            subject = 'emails/neworder_client_subject.txt'
+            body = 'emails/neworder_client_body.txt'
+            send_template_mail(subject,body,mail_dict,recipients)
+        except:
+            pass
+        payload = {'success': True,'id':order.pk, 'location':order.get_absolute_url()}
+    except AccessError:
+        payload = {'success': False}
+    except BasketError:
+        payload = {'success': False, 'message':_('Product in basket not available')}
+    except:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)

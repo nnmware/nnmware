@@ -44,3 +44,12 @@ class OrderTrackingForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ('tracknumber','cargoservice')
+
+class AnonymousOrderAddForm(forms.ModelForm):
+#    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+#    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+#    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+
+    class Meta:
+        model = Order
+        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment')
