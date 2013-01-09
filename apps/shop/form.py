@@ -51,40 +51,40 @@ class AnonymousOrderAddForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment','delivery')
+        fields = ('first_name', 'last_name','email', 'phone','address','buyer_comment')
 
     def clean_first_name(self):
-        first_name = self.cleaned_data.get('first_name')
+        first_name =  self.cleaned_data['first_name']
         if first_name:
             return first_name
         raise forms.ValidationError(_("Required field"))
 
     def clean_last_name(self):
-        last_name = self.cleaned_data.get('last_name')
+        last_name = self.cleaned_data['last_name']
         if last_name:
             return last_name
         raise forms.ValidationError(_("Required field"))
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data['email']
         if email:
             return email
         raise forms.ValidationError(_("Required field"))
 
     def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
+        phone = self.cleaned_data['phone']
         if phone:
             return phone
         raise forms.ValidationError(_("Required field"))
 
     def clean_address(self):
-        address = self.cleaned_data.get('address')
+        address = self.cleaned_data['address']
         if address:
             return address
         raise forms.ValidationError(_("Required field"))
 
     def clean_delivery(self):
-        delivery = self.cleaned_data.get('delivery')
+        delivery = self.cleaned_data['delivery']
         if delivery:
             try:
                 return DeliveryMethod.objects.get(pk=int(delivery))
