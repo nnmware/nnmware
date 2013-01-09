@@ -341,7 +341,7 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         if not self.request.user.is_authenticated() and not settings.SHOP_ANONYMOUS_ORDERS:
             return super(AnonymousUserAddOrderView, self).form_invalid(form)
         basket = get_basket(self.request)
-        if basket.count < 1:
+        if basket.count() < 1:
             return super(AnonymousUserAddOrderView, self).form_invalid(form)
         self.object = form.save(commit=False)
         self.object.ip = self.request.META['REMOTE_ADDR']
