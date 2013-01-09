@@ -359,14 +359,14 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         subject = 'emails/neworder_admin_subject.txt'
         body = 'emails/neworder_admin_body.txt'
         send_template_mail(subject,body,mail_dict,recipients)
-        try:
+        if 1>0: #try:
             recipients = [self.object.email]
             mail_dict = {'order': self.object}
             subject = 'emails/neworder_client_subject.txt'
             body = 'emails/neworder_client_body.txt'
             send_template_mail(subject,body,mail_dict,recipients)
-        except:
-            pass
+#        except:
+#            pass
         return super(AnonymousUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):
