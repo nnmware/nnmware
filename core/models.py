@@ -672,9 +672,7 @@ class NnmwareUser(AbstractUser):
     @property
     def unread_msg_count(self):
         result = Message.objects.unread(self.user).count()
-        if result > 0:
-            return result
-        return None
+        return result or None
 
     def save(self, *args, **kwargs):
         self.date_modified = datetime.now()
