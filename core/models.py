@@ -14,7 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import permalink, Manager
+from django.db.models import permalink, Manager, Sum
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
@@ -663,10 +663,11 @@ class NnmwareUser(AbstractUser):
 
     def basket_sum(self):
         from nnmware.apps.shop.models import Basket
-        basket_user = Basket.objects.filter(user=self.user)
-        all_sum = 0
-        for item in basket_user:
-            all_sum += item.sum
+        all_sum =  Basket.objects.filter(user=self).aggregate(Sum('sum'))
+#        basket_user = Basket.objects.filter(user=self.user)
+#        all_sum = 0
+#        for item in basket_user:
+#            all_sum += item.sum
         return "%0.2f" % (all_sum,)
 
     @property
