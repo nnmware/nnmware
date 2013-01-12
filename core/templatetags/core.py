@@ -867,6 +867,7 @@ def get_paginator_value(context):
 
 @register.assignment_tag
 def shop_main_page():
-    return Product.objects.filter(on_main=True).order_by('-created_date')
+    return Product.objects.on_main()
+
 
 
