@@ -231,3 +231,5 @@ class ProductManager(Manager):
     def latest(self):
         return self.active().filter(latest=True)
 
+    def on_main(self):
+        return self.filter(enabled=True).order_by('category')
