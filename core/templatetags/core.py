@@ -866,7 +866,7 @@ def get_paginator_value(context):
     return result
 
 @register.assignment_tag
-def main_page_product():
+def main_page_products():
     return Product.objects.on_main()
 
 
