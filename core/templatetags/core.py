@@ -872,5 +872,9 @@ def main_page_products():
 @register.assignment_tag(takes_context=True)
 def shop_compare(context):
     request = context['request']
-    return len(request.session['shop_compare']) or 0
+    try:
+        return len(request.session['shop_compare'])
+    except:
+        return 0
+
 
