@@ -885,3 +885,11 @@ def shop_compare_list(context):
     except:
         return []
 
+@register.assignment_tag(takes_context=True)
+def compare_products(context):
+    request = context['request']
+    try:
+        compare = request.session['shop_compare']
+        return Product.objects.filter(pk__in=compare)
+    except:
+        return None
