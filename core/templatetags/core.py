@@ -869,5 +869,8 @@ def get_paginator_value(context):
 def main_page_products():
     return Product.objects.on_main()
 
-
+@register.assignment_tag(takes_context=True)
+def shop_compare(context):
+    request = context['request']
+    return len(request.session['shop_compare']) or 0
 
