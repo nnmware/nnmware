@@ -380,3 +380,17 @@ def basket_avail(user):
             return False
     return True
 
+def add_compare_product(request,object_id):
+    try:
+        compare = request.session['shop_compare']
+    except:
+        compare = []
+    product_id = int(object_id)
+    if product_id not in compare:
+        compare.append(product_id)
+    try:
+        request.session['shop_compare'] = compare
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
