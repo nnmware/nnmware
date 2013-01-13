@@ -877,4 +877,11 @@ def shop_compare(context):
     except:
         return 0
 
+@register.assignment_tag(takes_context=True)
+def shop_compare_list(context):
+    request = context['request']
+    try:
+        return request.session['shop_compare']
+    except:
+        return []
 

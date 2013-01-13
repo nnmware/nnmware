@@ -394,3 +394,18 @@ def add_compare_product(request,object_id):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def del_compare_product(request,object_id):
+    try:
+        compare = request.session['shop_compare']
+    except:
+        compare = []
+    product_id = int(object_id)
+    if product_id in compare:
+        compare.remove(product_id)
+    try:
+        request.session['shop_compare'] = compare
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
