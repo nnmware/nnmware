@@ -76,7 +76,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     on_main = models.BooleanField(verbose_name=_("On main page"), default=False)
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
     special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
-    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, decimal_places=1, max_digits=4, default=0)
+    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, null=True, decimal_places=1, max_digits=4, default=0)
     width = models.IntegerField(_('Width, sm'), default=0, blank=True)
     height = models.IntegerField(_('Height, sm'), default=0, blank=True)
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
