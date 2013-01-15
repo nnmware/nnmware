@@ -16,9 +16,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
-from nnmware.core.fields import std_text_field, std_url_field
+from nnmware.core.fields import std_text_field, std_url_field, std_email_field
 from django.utils.encoding import python_2_unicode_compatible
-from core.fields import std_email_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
