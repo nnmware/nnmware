@@ -120,8 +120,8 @@ class City(Address, MetaGeo):
 
 class AbstractGeo(MetaGeo):
     city = models.ForeignKey(City, verbose_name=_('City'))
-    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
-    address_en = models.CharField(verbose_name=_("Address(English)"), max_length=100, blank=True)
+    address = std_text_field(_("Address"), max_length=100)
+    address_en = std_text_field(_("Address(English)"), max_length=100)
 
     class Meta:
         abstract = True
@@ -192,9 +192,9 @@ class AbstractLocation(models.Model):
         null=True,blank=True, related_name='metro')
     zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
     street = std_text_field(_('Street'))
-    house_number = models.CharField(verbose_name=_('Number of house'),max_length=5, blank=True, null=True)
-    building = models.CharField(max_length=5,verbose_name=_('Building'), blank=True, null=True)
-    flat_number = models.CharField(max_length=5, verbose_name=_('Number of flat'), blank=True, null=True)
+    house_number = std_text_field(_('Number of house'),max_length=5)
+    building = std_text_field(_('Building'), max_length=5)
+    flat_number = std_text_field(_('Number of flat'), max_length=5)
 
     class Meta:
         verbose_name = _("Location")

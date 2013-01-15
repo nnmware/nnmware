@@ -18,6 +18,7 @@ from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
 from nnmware.core.fields import std_text_field, std_url_field
 from django.utils.encoding import python_2_unicode_compatible
+from core.fields import std_email_field
 
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
 
@@ -453,15 +454,15 @@ class AbstractIP(models.Model):
         abstract = True
 
 class AbstractContact(AbstractImg):
-    mobile_personal = models.CharField(max_length=12, verbose_name=_('Personal mobile phone'), blank=True, default='')
-    mobile_work = models.CharField(max_length=12, verbose_name=_('Work mobile phone '), blank=True, default='')
-    landline_personal = models.CharField(max_length=12, verbose_name=_('Personal landline phone'), blank=True, default='')
-    landline_work = models.CharField(max_length=12, verbose_name=_('Work landline phone'), blank=True, default='')
-    icq = models.CharField(max_length=30, verbose_name=_('ICQ'), blank=True, default='')
-    skype = models.CharField(max_length=50, verbose_name=_('Skype'), blank=True, default='')
-    jabber = models.CharField(max_length=50, verbose_name=_('Jabber'), blank=True, default='')
-    publicmail = models.EmailField(_('Public email'), blank=True, default='')
-    privatemail = models.EmailField(_('Private email'), blank=True, default='')
+    mobile_personal = std_text_field(_('Personal mobile phone'), max_length=12)
+    mobile_work = std_text_field(_('Work mobile phone '), max_length=12)
+    landline_personal = std_text_field(_('Personal landline phone'), max_length=12)
+    landline_work = std_text_field(_('Work landline phone'), max_length=12)
+    icq = std_text_field(_('ICQ'), max_length=30)
+    skype = std_text_field(_('Skype'), max_length=30)
+    jabber = std_text_field(_('Jabber'), max_length=50)
+    publicmail = std_email_field(_('Public email'))
+    privatemail = std_email_field(_('Private email'))
     website = std_url_field(_('Website'))
     personal_website = std_url_field(_('Personal Website'))
     facebook = std_url_field(_('Facebook'))
@@ -533,16 +534,15 @@ class AbstractSkill(AbstractOrder):
 @python_2_unicode_compatible
 class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     main = models.BooleanField(_('Main profile'), default=False)
-    first_name = models.CharField(max_length=50, verbose_name=_('First Name'), blank=True, default='')
-    middle_name = models.CharField(max_length=50, verbose_name=_('Middle Name'), blank=True, default='')
-    last_name = models.CharField(max_length=50, verbose_name=_('Last Name'), blank=True, default='')
+    first_name = std_text_field(_('First Name'), max_length=50)
+    middle_name = std_text_field(_('Middle Name'), max_length=50)
+    last_name = std_text_field(_('Last Name'), max_length=50)
     viewcount = models.PositiveIntegerField(default=0, editable=False)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
-
 
     @property
     def events_count(self):
@@ -572,7 +572,7 @@ class AbstractOffer(AbstractImg):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     start_date = models.DateTimeField(_("Start date"), default=datetime.now)
     end_date = models.DateTimeField(_("End date"), default=datetime.now)
-    title = models.CharField(max_length=255, verbose_name=_('Title'))
+    title = std_text_field(_('Title'))
     text = models.TextField(verbose_name=_("Offer text"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)

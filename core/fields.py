@@ -204,8 +204,11 @@ try:
 except :
     pass
 
-def std_text_field(verbose):
-    return models.CharField(max_length=256, verbose_name=verbose, blank=True, default='')
+def std_text_field(verbose, max_length=256):
+    return models.CharField(verbose_name=verbose,max_length=max_length ,blank=True, default='')
 
-def std_url_field(verbose):
-    return models.URLField(max_length=150, verbose_name=verbose, blank=True, default='')
+def std_url_field(verbose, max_length=150):
+    return models.URLField(verbose_name=verbose,max_length=max_length,  blank=True, default='')
+
+def std_email_field(verbose):
+    return models.EmailField(verbose_name=verbose)
