@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db.models.query_utils import Q
-from nnmware.apps.address.models import City, Country, Region
+from nnmware.apps.address.models import City, Country, Region, StationMetro
 from nnmware.core.ajax import AjaxLazyAnswer
 
 def base_autocomplete(obj, request):
@@ -23,3 +23,5 @@ def autocomplete_country(request):
 def autocomplete_region(request):
     return base_autocomplete(Region, request)
 
+def autocomplete_stationmetro(request):
+    return base_autocomplete(StationMetro, request)
