@@ -57,6 +57,7 @@ class OrderItemInline(admin.StackedInline):
     fields = (('product_pn','product_name'),('quantity','amount'),('product_url','product_origin'),('is_delivery',))
 
 class OrderAdmin(admin.ModelAdmin):
+    change_form_template = 'admin_form/change_form.html'
     readonly_fields = ('created_date','updated_date')
     list_display = ("number_order","user", "created_date", 'status',"amount_order",'address','last_name','first_name')
     list_filter = ('user','id','status')
@@ -78,9 +79,6 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.fullamount
     amount_order.short_description = _('Amount')
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        self.model._meta.verbose_name = _('Order')+' '+object_id
-        return super(OrderAdmin,self).change_view(request, object_id, form_url='', extra_context=None)
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
