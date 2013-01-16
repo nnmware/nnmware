@@ -78,7 +78,7 @@ class OrderAdmin(admin.ModelAdmin):
     def amount_order(self, obj):
         return obj.fullamount
     amount_order.short_description = _('Amount')
-    readonly_fields = ('amount_order',)
+    readonly_fields = ('amount_order','updated_date')
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
