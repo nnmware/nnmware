@@ -63,8 +63,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('user','id','status')
     inlines = [ OrderItemInline, ]
     fieldsets = (
-        (_("Order"), {"fields": [('user','status'),
-            ("last_name",'first_name','middle_name'),
+        (_("Order"), {"fields": [('user','status','phone'),
+            ("last_name",'first_name'),('middle_name','email'),
             ("created_date",'updated_date'),
             ('address','delivery'),
             ('buyer_comment','seller_comment'),
