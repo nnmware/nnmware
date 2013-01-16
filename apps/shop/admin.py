@@ -58,7 +58,7 @@ class OrderItemInline(admin.StackedInline):
 
 class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date','updated_date')
-    list_display = ("id","user", "created_date", 'status',"fullamount",'address','last_name','first_name')
+    list_display = ("number_order","user", "created_date", 'status',"fullamount",'address','last_name','first_name')
     list_filter = ('user','id','status')
     inlines = [ OrderItemInline, ]
     fieldsets = (
@@ -71,6 +71,10 @@ class OrderAdmin(admin.ModelAdmin):
         ]}),
         )
     ordering = ('-created_date','user')
+    def number_order(self, obj):
+        return obj.pk
+    number_order.short_description = _('Order number')
+
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
