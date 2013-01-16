@@ -71,7 +71,6 @@ class OrderAdmin(admin.ModelAdmin):
         ]}),
         )
     ordering = ('-created_date','user')
-    id.short_description = _('Order number')
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
