@@ -78,6 +78,9 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.fullamount
     amount_order.short_description = _('Amount')
 
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        self.model._meta.verbose_name += ' '+object_id
+        return super(OrderAdmin,self).change_view(request, object_id, form_url='', extra_context=None)
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
