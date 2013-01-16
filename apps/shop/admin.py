@@ -70,7 +70,7 @@ class OrderAdmin(admin.ModelAdmin):
             ('comment'),
         ]}),
         )
-    ordering = ('-created_date','user','address')
+    ordering = ('-created_date','user')
 
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
