@@ -15,7 +15,7 @@ from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Ava
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
-from nnmware.core.templatetags.jcomments import get_image_attach_url
+from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date
 from nnmware.core.ajax import AjaxLazyAnswer
 from django.views.decorators.cache import never_cache
