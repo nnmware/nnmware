@@ -129,7 +129,7 @@ class HotelList(RedirectHttpView, ListView):
 
         if (notknowndates and self.city ) or (f_date and t_date and self.city):
             result = []
-            if 1>0: #try:
+            try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
@@ -142,8 +142,8 @@ class HotelList(RedirectHttpView, ListView):
                     if hotel.free_room(from_date,to_date,guests):
                         result.append(hotel.pk)
                 search_hotel = Hotel.objects.filter(pk__in=result)
-#            except :
-#                search_hotel = hotels
+            except :
+                search_hotel = hotels
             self.search = 1
         else :
             self.search = 0
