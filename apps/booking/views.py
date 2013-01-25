@@ -272,19 +272,24 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.order_by('category','order_in_list','name')
         context['search_url'] = self.object.get_absolute_url()
-        try:
-            from_date = convert_to_date(f_date)
-            to_date = convert_to_date(t_date)
-            if from_date > to_date:
-                from_date, to_date = to_date, from_date
-                f_date, t_date = t_date, f_date
-            context['free_room'] = self.object.free_room(from_date,to_date,guests)
-            search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests, 'city':self.object.city}
-            context['search'] = 1
-            context['search_data'] = search_data
-            context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
-        except :
-            pass
+        if f_date is not None and t_date is not None and guests is not None:
+            try:
+                from_date = convert_to_date(f_date)
+                to_date = convert_to_date(t_date)
+                if from_date > to_date:
+                    from_date, to_date = to_date, from_date
+                    f_date, t_date = t_date, f_date
+                context['free_room'] = self.object.free_room(from_date,to_date,guests)
+            except:
+                context['free_room'] = None
+            finally:
+                search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests, 'city':self.object.city}
+                context['search'] = 1
+                context['search_data'] = search_data
+            try:
+                context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
+            except :
+                pass
         return context
 
 class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
