@@ -428,7 +428,11 @@ class Room(AbstractName):
         need_days = (to_date-from_date).days
         date_gen = daterange(from_date, to_date)
         for d in date_gen:
-            if Availability.objects.get(room=self,date=d).min_days > need_days:
+            try:
+                min_days = Availability.objects.get(room=self,date=d).min_days
+            except:
+                return False
+            if min_days > need_days:
                 return False
         return True
 
