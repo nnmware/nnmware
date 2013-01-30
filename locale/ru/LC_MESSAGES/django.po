@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 23:21+1100\n"
+"POT-Creation-Date: 2013-01-30 23:23+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3032,6 +3032,14 @@ msgstr "Имя пользователя"
 #: core/forms.py:151
 msgid "Password"
 msgstr "Пароль"
+
+#: core/forms.py:159
+msgid "THIS FIELD IS REQUIRED"
+msgstr "ОБЯЗАТЕЛЬНОЕ ПОЛЕ"
+
+#: core/forms.py:170
+msgid "THIS EMAIL IS NOT REGISTERED"
+msgstr "АДРЕС НЕ ЗАРЕГИСТРИРОВАН"
 
 #: core/forms.py:171
 msgid "THE USER IS DISABLED"
