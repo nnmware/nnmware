@@ -156,7 +156,7 @@ class LoginForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data["username"]
         if not username:
-            raise forms.ValidationError("THIS FIELD IS REQUIRED")
+            raise forms.ValidationError(_("THIS FIELD IS REQUIRED"))
         try:
             user = get_user_model().objects.get(username=username)
             if not user.is_active: raise UserIsDisabled
@@ -167,7 +167,7 @@ class LoginForm(forms.Form):
                 if not user.is_active: raise UserIsDisabled
                 return username
             except UserIsDisabled: raise UserIsDisabled
-            except: raise forms.ValidationError("THIS EMAIL IS NOT REGISTERED")
+            except: raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"))
         except UserIsDisabled: raise forms.ValidationError(_("THE USER IS DISABLED"))
 
     def clean_password(self):
