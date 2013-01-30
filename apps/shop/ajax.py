@@ -422,12 +422,17 @@ def push_shopcallback(request):
     Its Ajax posted shop callback
     """
     try:
-        msg = ShopCallback()
-        msg.ip = request.META['REMOTE_ADDR']
-        msg.user_agent = request.META['HTTP_USER_AGENT']
-        msg.clientname = request.POST.get('clientname')
-        msg.clientphone = request.POST.get('clientphone')
-        msg.save()
+        cb = ShopCallback()
+        cb.ip = request.META['REMOTE_ADDR']
+        cb.user_agent = request.META['HTTP_USER_AGENT']
+        cb.clientname = request.POST.get('clientname')
+        cb.clientphone = request.POST.get('clientphone')
+        cb.save()
+        mail_dict = {'callback': cb}
+        recipients = [settings.SHOP_MANAGER]
+        subject = 'emails/callback_answer_subject.txt'
+        body = 'emails/callback_answer_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
         payload = {'success': True}
     except :
         payload = {'success': False}
