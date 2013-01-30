@@ -78,22 +78,28 @@ def add_basket(request, object_id):
         p = Product.objects.get(pk=int(object_id))
         if not p.avail or p.quantity < 1 or p.amount <= 0 :
             raise AccessError
+        try:
+            color_id = request.REQUEST['color']
+            color = ProductColor.objects.get(pk=int(color_id))
+            addon_text = color.name
+        except:
+            addon_text = ''
         if not request.user.is_authenticated():
             session_key = get_session_from_request(request)
-            if Basket.objects.filter(session_key=session_key, product=p).count() >0 :
-                b = Basket.objects.get(session_key=session_key, product=p)
+            if Basket.objects.filter(session_key=session_key, product=p,addon=addon_text).count() >0 :
+                b = Basket.objects.get(session_key=session_key, product=p,addon=addon_text)
                 b.quantity += 1
             else:
-                b = Basket(session_key=session_key,product=p)
+                b = Basket(session_key=session_key,product=p,addon=addon_text)
                 b.quantity = 1
             b.save()
             basket_user = Basket.objects.filter(session_key=session_key)
         else:
-            if Basket.objects.filter(user=request.user, product=p).count() >0 :
-                b = Basket.objects.get(user=request.user, product=p)
+            if Basket.objects.filter(user=request.user, product=p,addon=addon_text).count() >0 :
+                b = Basket.objects.get(user=request.user, product=p,addon=addon_text)
                 b.quantity += 1
             else:
-                b = Basket(user=request.user,product=p)
+                b = Basket(user=request.user,product=p,addon=addon_text)
                 b.quantity = 1
             b.save()
             basket_user = Basket.objects.filter(user=request.user)
