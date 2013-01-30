@@ -867,7 +867,7 @@ def get_paginator_value(context):
 
 @register.assignment_tag
 def main_page_products():
-    return Product.objects.order_by('category')
+    return Product.objects.filter(enabled=True,on_main=True).order_by('category')
 
 @register.assignment_tag(takes_context=True)
 def shop_compare(context):
