@@ -14,6 +14,7 @@ from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import Nnmcomment
 from nnmware.core.utils import send_template_mail
+from nnmware.apps.shop.models import ShopCallback
 import settings
 
 class BasketError(Exception):
@@ -411,6 +412,22 @@ def del_compare_product(request,object_id):
         compare.remove(product_id)
     try:
         request.session['shop_compare'] = compare
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+def push_shopcallback(request):
+    """
+    Its Ajax posted shop callback
+    """
+    try:
+        msg = ShopCallback()
+        msg.ip = request.META['REMOTE_ADDR']
+        msg.user_agent = request.META['HTTP_USER_AGENT']
+        msg.clientname = request.POST.get('clientname')
+        msg.clientphone = request.POST.get('clientphone')
+        msg.save()
         payload = {'success': True}
     except :
         payload = {'success': False}
