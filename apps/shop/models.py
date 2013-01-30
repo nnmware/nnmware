@@ -59,7 +59,7 @@ class CargoService(Vendor):
 
 class Product(AbstractName, MoneyBase, AbstractDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
-        on_delete=models.SET_NULL)
+        on_delete=models.SET_NULL, related_name='shopcat')
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
     materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
