@@ -54,7 +54,8 @@ class BasketAdmin(admin.ModelAdmin):
 class OrderItemInline(admin.StackedInline):
     model = OrderItem
     extra = 0
-    fields = (('product_pn','product_name'),('quantity','amount'),('product_url','product_origin'),('is_delivery',))
+    fields = (('product_pn','product_name'),('quantity','amount'),('product_url','product_origin'),('is_delivery','addon'))
+
 
 class OrderAdmin(admin.ModelAdmin):
     change_form_template = 'admin_form/change_form.html'
