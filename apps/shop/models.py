@@ -453,3 +453,19 @@ class SpecialOffer(AbstractOffer):
     @permalink
     def get_absolute_url(self):
         return "special_offer", (), {'pk':self.pk}
+
+@python_2_unicode_compatible
+class ShopCallback(AbstractIP):
+    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    clientname = std_text_field(_('Client Name'))
+    clientphone = std_text_field(_('Client Phone'))
+    description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
+    closed = models.BooleanField(verbose_name=_("Closed"), default=False)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = _('Shop Callback')
+        verbose_name_plural = _('Shop Callbacks')
+
+    def __str__(self):
+        return "%s - %s" % (self.clientname, self.created_date)
