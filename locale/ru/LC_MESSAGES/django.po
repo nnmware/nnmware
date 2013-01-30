@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-30 23:23+1100\n"
+"POT-Creation-Date: 2013-01-31 00:10+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -859,7 +859,7 @@ msgstr "Для %(hotel)s на дату %(date)s процент - %(percent)s"
 msgid "Published by"
 msgstr "Опубликовано"
 
-#: apps/booking/models.py:592 apps/shop/admin.py:108 apps/shop/models.py:401
+#: apps/booking/models.py:592 apps/shop/admin.py:118 apps/shop/models.py:401
 msgid "Review"
 msgstr "Отзыв"
 
@@ -1423,9 +1423,9 @@ msgid "Creative activities"
 msgstr "Творческие деятельности"
 
 #: apps/dossier/models.py:160 apps/dossier/models.py:360
-#: apps/dossier/models.py:394 apps/money/models.py:134 core/abstract.py:91
-#: core/abstract.py:242 core/abstract.py:440 core/admin.py:49 core/admin.py:67
-#: core/models.py:539
+#: apps/dossier/models.py:394 apps/money/models.py:134 apps/shop/models.py:462
+#: core/abstract.py:91 core/abstract.py:242 core/abstract.py:440
+#: core/admin.py:49 core/admin.py:67 core/models.py:539
 msgid "Description"
 msgstr "Описание"
 
@@ -1952,19 +1952,23 @@ msgstr "Адрес доставки"
 msgid "Feedback"
 msgstr "Обратная связь"
 
-#: apps/shop/admin.py:120
+#: apps/shop/admin.py:108 apps/shop/models.py:467
+msgid "Shop Callback"
+msgstr "Обратный звонок магазина"
+
+#: apps/shop/admin.py:130
 msgid "SpecialOffer"
 msgstr "Специальное Предложение"
 
-#: apps/shop/admin.py:129
+#: apps/shop/admin.py:139
 msgid "Shop News"
 msgstr "Новости магазина"
 
-#: apps/shop/admin.py:137
+#: apps/shop/admin.py:147
 msgid "Shop Articles"
 msgstr "Статьи магазина"
 
-#: apps/shop/admin.py:145
+#: apps/shop/admin.py:155
 msgid "Delivery Method"
 msgstr "Метод доставки"
 
@@ -2164,7 +2168,7 @@ msgstr "Отправлено"
 msgid "Cancel"
 msgstr "Отменено"
 
-#: apps/shop/models.py:210
+#: apps/shop/models.py:210 apps/shop/models.py:463
 msgid "Closed"
 msgstr "Завершено"
 
@@ -2311,7 +2315,7 @@ msgid ", skype-"
 msgstr ", скайп-"
 
 #: apps/shop/models.py:372 apps/shop/models.py:392 apps/shop/models.py:409
-#: core/abstract.py:37 core/abstract.py:571
+#: apps/shop/models.py:459 core/abstract.py:37 core/abstract.py:571
 msgid "Created date"
 msgstr "Дата создания"
 
@@ -2360,10 +2364,21 @@ msgstr "Статья магазина"
 msgid "Shop articles"
 msgstr "Статьи магазина"
 
+#: apps/shop/models.py:460
+msgid "Client Name"
+msgstr "Имя клиента"
+
+#: apps/shop/models.py:461
+msgid "Client Phone"
+msgstr "Телефон клиента"
+
+#: apps/shop/models.py:468
+msgid "Shop Callbacks"
+msgstr "Обратные звонки магазина"
+
 #: apps/shop/utils.py:53
-#, fuzzy
 msgid "Delivery"
-msgstr "Метод доставки"
+msgstr "Доставка"
 
 #: apps/shop/views.py:173 apps/shop/views.py:192
 msgid "edit form"
