@@ -122,9 +122,9 @@ class ReviewAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class ShopSliderAdmin(admin.ModelAdmin):
-    list_display = ('pk','slide_thumbnail','visible')
+    list_display = ('pk','slide_thumbnail','slider_link','visible')
     fieldsets = (
-        (_("ShopSlider"), {"fields": [('img',),('visible','product_link')]}),
+        (_("ShopSlider"), {"fields": [('img',),('visible','slider_link')]}),
         )
     ordering = ('visible',)
 
