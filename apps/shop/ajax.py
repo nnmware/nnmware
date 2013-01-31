@@ -421,7 +421,7 @@ def push_shopcallback(request):
     """
     Its Ajax posted shop callback
     """
-    if 1>0: #try:
+    try:
         cb = ShopCallback()
         cb.ip = request.META['REMOTE_ADDR']
         cb.user_agent = request.META['HTTP_USER_AGENT']
@@ -430,10 +430,10 @@ def push_shopcallback(request):
         cb.save()
         mail_dict = {'callback': cb}
         recipients = [settings.SHOP_MANAGER]
-        subject = 'emails/callback_answer_subject.txt'
-        body = 'emails/callback_answer_body.txt'
+        subject = 'emails/callback_admin_subject.txt'
+        body = 'emails/callback_admin_body.txt'
         send_template_mail(subject,body,mail_dict,recipients)
         payload = {'success': True}
-#    except :
-#        payload = {'success': False}
+    except :
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
