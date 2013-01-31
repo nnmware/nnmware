@@ -381,6 +381,11 @@ class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.status = STATUS_WAIT
         self.object.lite = False
+        self.object.first_name = address.first_name
+        self.object.middle_name = address.middle_name
+        self.object.last_name = address.last_name
+        self.object.phone = address.phone
+        self.object.email = self.request.user.email
         self.object.user = self.request.user
         self.object.save()
         success_add_items = make_order_from_basket(self.object, basket)
