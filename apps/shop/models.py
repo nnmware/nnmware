@@ -470,6 +470,9 @@ class ShopCallback(AbstractIP):
     clientphone = std_text_field(_('Client Phone'))
     description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
     closed = models.BooleanField(verbose_name=_("Closed"), default=False)
+    quickorder = models.BooleanField(verbose_name=_("Quick order"), default=False)
+    product_origin = models.ForeignKey(Product, null=True, blank=True)
+
 
     class Meta:
         ordering = ['-created_date']

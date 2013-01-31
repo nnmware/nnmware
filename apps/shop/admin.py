@@ -103,9 +103,10 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip','user_agent','created_date')
 
 class ShopCallbackAdmin(admin.ModelAdmin):
-    list_display = ("clientname", "clientphone", 'created_date','closed',"ip",'user_agent')
+    list_display = ("clientname", "clientphone", 'created_date','closed','quickorder',"ip",'user_agent')
     fieldsets = (
-        (_("Shop Callback"), {"fields": [('clientname','clientphone'),('created_date','closed'), ('description',),
+        (_("Shop Callback"), {"fields": [('clientname','clientphone'),('created_date','closed'),
+        ('quickorder','product_origin'),('description',),
                                     ('ip','user_agent'),]}),
         )
     ordering = ('-created_date','clientname','clientphone')
