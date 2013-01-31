@@ -81,6 +81,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     height = models.IntegerField(_('Height, sm'), default=0, blank=True)
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
     maincat = std_text_field(_('Main category'))
+    maincatid = models.IntegerField(_('Main category id'), default=0, blank=True)
 
     objects = ProductManager()
 
@@ -134,7 +135,8 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
     def save(self, *args, **kwargs):
         if self.slug is not None:
-            self.maincat = self.category.get_url_name()[0][0]
+            self.maincat = self.category.get_root_catid()[0]
+            self.maincatid = self.category.get_root_catid()[1]
         super(Product, self).save(*args, **kwargs)
 
 

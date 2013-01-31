@@ -354,6 +354,10 @@ class Tree(AbstractName):
         url_list.append(self.get_absolute_url())
         return zip(name_list, url_list)
 
+    def get_root_catid(self):
+        for node in self._recurse_for_parents(self):
+            return [node.name, node.ordering]
+
     @property
     def get_all_ids(self):
         id_list = []
