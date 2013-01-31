@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-31 19:31+1100\n"
+"POT-Creation-Date: 2013-01-31 21:45+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1956,19 +1956,23 @@ msgstr "Обратная связь"
 msgid "Shop Callback"
 msgstr "Обратный звонок магазина"
 
-#: apps/shop/admin.py:130
+#: apps/shop/admin.py:127 apps/shop/models.py:491
+msgid "ShopSlider"
+msgstr "Слайдер магазина"
+
+#: apps/shop/admin.py:137
 msgid "SpecialOffer"
 msgstr "Специальное Предложение"
 
-#: apps/shop/admin.py:139
+#: apps/shop/admin.py:146
 msgid "Shop News"
 msgstr "Новости магазина"
 
-#: apps/shop/admin.py:147
+#: apps/shop/admin.py:154
 msgid "Shop Articles"
 msgstr "Статьи магазина"
 
-#: apps/shop/admin.py:155
+#: apps/shop/admin.py:162
 msgid "Delivery Method"
 msgstr "Метод доставки"
 
@@ -2059,7 +2063,7 @@ msgstr "Хит продаж"
 msgid "On main page"
 msgstr "На главное странице"
 
-#: apps/shop/models.py:77 apps/shop/models.py:405
+#: apps/shop/models.py:77 apps/shop/models.py:405 apps/shop/models.py:486
 msgid "Visible"
 msgstr "Видимо"
 
@@ -2386,6 +2390,14 @@ msgstr "Быстрая покупка"
 #: apps/shop/models.py:478
 msgid "Shop Callbacks"
 msgstr "Обратные звонки магазина"
+
+#: apps/shop/models.py:487
+msgid "Slider_link"
+msgstr "Линк слайдера"
+
+#: apps/shop/models.py:492
+msgid "ShopSliders"
+msgstr "Слайдеры магазина"
 
 #: apps/shop/utils.py:53
 msgid "Delivery"
