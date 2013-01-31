@@ -479,3 +479,18 @@ class ShopCallback(AbstractIP):
 
     def __str__(self):
         return "%s - %s" % (self.clientname, self.created_date)
+
+
+@python_2_unicode_compatible
+class ShopSlider(AbstractImg):
+    visible = models.BooleanField(verbose_name=_("Visible"), default=False)
+    slider_link = std_text_field(_('Slider_link'))
+
+    class Meta:
+        ordering = ['visible']
+        verbose_name = _('ShopSlider')
+        verbose_name_plural = _('ShopSliders')
+
+    def __str__(self):
+        return "Slider Image - %s" % self.pk
+

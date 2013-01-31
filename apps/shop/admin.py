@@ -121,6 +121,13 @@ class ReviewAdmin(admin.ModelAdmin):
     ordering = ('-created_date','user','visible')
     readonly_fields = ('ip','user_agent','created_date')
 
+class ShopSliderAdmin(admin.ModelAdmin):
+    list_display = ('pk','slide_thumbnail','visible')
+    fieldsets = (
+        (_("ShopSlider"), {"fields": [('img','visible')]}),
+        )
+    ordering = ('visible',)
+
 class SpecialOfferAdmin(admin.ModelAdmin):
     class Media:
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
@@ -176,3 +183,4 @@ admin.site.register(Review, ReviewAdmin)
 admin.site.register(SpecialOffer, SpecialOfferAdmin)
 admin.site.register(DeliveryMethod, DeliveryMethodAdmin)
 admin.site.register(ShopCallback, ShopCallbackAdmin)
+admin.site.register(ShopSlider, ShopSliderAdmin)
