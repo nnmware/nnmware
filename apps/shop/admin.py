@@ -124,7 +124,7 @@ class ReviewAdmin(admin.ModelAdmin):
 class ShopSliderAdmin(admin.ModelAdmin):
     list_display = ('pk','slide_thumbnail','visible')
     fieldsets = (
-        (_("ShopSlider"), {"fields": [('img','visible')]}),
+        (_("ShopSlider"), {"fields": [('img',),('visible','product_link')]}),
         )
     ordering = ('visible',)
 
