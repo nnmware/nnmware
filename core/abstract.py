@@ -355,12 +355,10 @@ class Tree(AbstractName):
         return zip(name_list, url_list)
 
     def get_root_catid(self):
-        catidlist = self._recurse_for_parents(self)
-        if catidlist == []:
-            return [self.name, self.ordering]
-        else:
-            for node in self._recurse_for_parents(self):
-                return [node.name, node.ordering]
+        if self.parent_id:
+            catidlist = self._recurse_for_parents(self)
+            return [catidlist[0].name,catidlist[0].ordering]
+        return [self.name, self.ordering]
 
     @property
     def get_all_ids(self):
