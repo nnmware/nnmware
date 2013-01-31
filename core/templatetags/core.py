@@ -10,7 +10,7 @@ from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review
+from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review, ShopSlider
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
@@ -893,3 +893,7 @@ def compare_products(context):
         return Product.objects.filter(pk__in=compare)
     except:
         return None
+
+@register.assignment_tag
+def shop_slider():
+    return ShopSlider.objects.filter(visible=True)
