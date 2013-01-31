@@ -437,3 +437,26 @@ def push_shopcallback(request):
     except :
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+def push_quickorder(request):
+    """
+    Its Ajax posted shop quick order
+    """
+    try:
+        cb = ShopCallback()
+        cb.ip = request.META['REMOTE_ADDR']
+        cb.user_agent = request.META['HTTP_USER_AGENT']
+        cb.clientname = request.POST.get('clientname')
+        cb.clientphone = request.POST.get('clientphone')
+        cb.description = request.POST.get('product_url')
+        cb.quickorder = True
+        cb.save()
+        mail_dict = {'callback': cb}
+        recipients = [settings.SHOP_MANAGER]
+        subject = 'emails/quickorder_admin_subject.txt'
+        body = 'emails/quickorder_admin_body.txt'
+        send_template_mail(subject,body,mail_dict,recipients)
+        payload = {'success': True}
+    except :
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
