@@ -80,6 +80,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     width = models.IntegerField(_('Width, sm'), default=0, blank=True)
     height = models.IntegerField(_('Height, sm'), default=0, blank=True)
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
+    maincat = std_text_field(_('Main category'))
 
     objects = ProductManager()
 
@@ -130,6 +131,12 @@ class Product(AbstractName, MoneyBase, AbstractDate):
         else:
             result = self.amount
         return floatformat(result,0)
+
+    def save(self, *args, **kwargs):
+        if self.slug is not None:
+            self.maincat = self.category.get_url_name()[0][0]
+        super(Product, self).save(*args, **kwargs)
+
 
 class ParameterUnit(Unit):
     pass
