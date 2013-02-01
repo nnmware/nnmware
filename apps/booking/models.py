@@ -342,7 +342,7 @@ PLACES_CHOICES = (
 @python_2_unicode_compatible
 class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
-    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.SET_NULL)
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
 
