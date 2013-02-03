@@ -198,7 +198,10 @@ class Basket(AbstractDate):
         return self.quantity*int(self.product.with_discount)
 
     def __str__(self):
-        return "%s" % self.user.username
+        try:
+            return "%s" % self.user.username
+        except:
+            return "%s" % self.pk
 
 
 STATUS_UNKNOWN = 0
