@@ -496,3 +496,20 @@ class Agency(AbstractName):
     class Meta:
         verbose_name = _("Agency")
         verbose_name_plural = _("Agencies")
+
+class AbstractTypeActor(models.Model):
+    type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'),
+        blank=True, null=True)
+    type_profession = models.ManyToManyField(TypeProfession, verbose_name=_('Type on profession'),
+        blank=True, null=True)
+    type_lifestyle = models.ManyToManyField(TypeLifestyle, verbose_name=_('Type on lifestyle'),
+        blank=True, null=True)
+    type_bright_appearance = models.ManyToManyField(TypeBrightAppearance,
+        verbose_name=_('Type on bright appearance'),blank=True, null=True)
+    type_historical = models.ManyToManyField(TypeHistorical,
+        verbose_name=_('Type in historical projects'),blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Type of actor")
+        verbose_name_plural = _("Types of actors")
+        abstract = True

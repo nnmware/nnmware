@@ -4,16 +4,16 @@ from nnmware.apps.dossier.models import *
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
-class AppearanceTypeAdmin(TypeBaseAdmin):
+class TypeAppearanceHumanAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of appearance"), {"fields": [('name'),]}),)
 
-class NationalTypeAdmin(TypeBaseAdmin):
+class TypeNationalHumanAdmin(TypeBaseAdmin):
     fieldsets = ((_("National type"), {"fields": [('name'),]}),)
 
-class BodyTypeAdmin(TypeBaseAdmin):
+class TypeBodyHumanAdmin(TypeBaseAdmin):
     fieldsets = ((_("Body Type"), {"fields": [('name'),]}),)
 
-class FeatureAppearanceAdmin(TypeBaseAdmin):
+class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
     fieldsets = ((_("Feature appearance"), {"fields": [('name'),]}),)
 
 class HairColorAdmin(TypeBaseAdmin):
@@ -141,10 +141,10 @@ admin.site.register(TypeSport, TypeSportAdmin)
 admin.site.register(TypeSpecialSkill, TypeSpecialSkillAdmin)
 admin.site.register(TypeOtherSkill, TypeOtherSkillAdmin)
 admin.site.register(LanguageSpeak, LanguageSpeakAdmin)
-admin.site.register(NationalType, NationalTypeAdmin)
-admin.site.register(BodyType, BodyTypeAdmin)
-admin.site.register(AppearanceType, AppearanceTypeAdmin)
-admin.site.register(FeatureAppearance, FeatureAppearanceAdmin)
+admin.site.register(TypeNationalHuman, TypeNationalHumanAdmin)
+admin.site.register(TypeBodyHuman, TypeBodyHumanAdmin)
+admin.site.register(TypeAppearanceHuman, TypeAppearanceHumanAdmin)
+admin.site.register(TypeFeatureAppearanceHuman, TypeFeatureAppearanceHumanAdmin)
 admin.site.register(HairColor, HairColorAdmin)
 admin.site.register(SkinColor, SkinColorAdmin)
 admin.site.register(HairLength, HairLengthAdmin)
