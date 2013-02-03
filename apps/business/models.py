@@ -75,3 +75,24 @@ class AbstractEmployer(AbstractImg):
     def radio_profiles(self):
         return self.employer_profile.filter(is_radio=True)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
