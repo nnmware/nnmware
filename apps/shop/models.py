@@ -292,6 +292,10 @@ class Order(AbstractDate, AbstractIP):
     def get_absolute_url(self):
         return "order_view", (), {'pk':self.pk}
 
+    @permalink
+    def get_complete_url(self):
+        return "order_complete", (), {'pk':self.pk}
+
     @property
     def receiver(self):
         result = ''

@@ -264,6 +264,11 @@ class OrderView(CurrentUserOrderAccess, DetailView):
     pk_url_kwarg = 'pk'
     template_name = 'shop/order.html'
 
+class OrderCompleteView(CurrentUserOrderAccess, DetailView):
+    model = Order
+    pk_url_kwarg = 'pk'
+    template_name = 'shop/order_complete.html'
+
 class NewsListView(ListView):
     template_name = 'shop/news_list.html'
     model = ShopNews
@@ -360,7 +365,7 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
         return super(AnonymousUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):
-        return self.object.get_absolute_url()
+        return self.object.get_complete_url()
 
 class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
@@ -397,4 +402,4 @@ class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
         return super(RegisterUserAddOrderView, self).form_valid(form)
 
     def get_success_url(self):
-        return self.object.get_absolute_url()
+        return self.object.get_complete_url()
