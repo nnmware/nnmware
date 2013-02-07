@@ -587,7 +587,7 @@ class AgentPercent(models.Model):
 @python_2_unicode_compatible
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    hotel = models.ForeignKey(Hotel, blank=True, null=True, on_delete=models.SET_NULL)
+    hotel = models.ForeignKey(Hotel, blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
     review = models.TextField(verbose_name=_("Review"),blank=True)
 
@@ -604,7 +604,7 @@ class Review(AbstractIP, HotelPoints):
 
 @python_2_unicode_compatible
 class Availability(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.SET_NULL)
+    room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True)
     date = models.DateField(verbose_name=_("On date"))
     placecount = models.IntegerField(verbose_name=_('Count of places'), default=0)
     min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True)
