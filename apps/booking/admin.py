@@ -45,7 +45,7 @@ class HotelAdmin(admin.ModelAdmin):
                         "fields": [("name_en","address_en"),("description_en",),
             ("schema_transit_en"),("booking_terms_en")
         ]}),)
-    ordering = ('register_date','name')
+    ordering = ('-register_date','name')
 
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name','category','in_search','sticky_in_search','order_in_list')
