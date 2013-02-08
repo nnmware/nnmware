@@ -120,6 +120,7 @@ TYPEFOOD = (
     (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
     )
 
+@python_2_unicode_compatible
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=datetime.now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
