@@ -10,12 +10,12 @@ class TypeEmployerProfileAdmin(TypeBaseAdmin):
     ordering = ('name',)
     fieldsets = ((_("Type of employer profile"), {"fields": [('name','employer_type','is_radio'),]}),)
 
-class TypeEmployerSphereAdmin(TypeBaseAdmin):
+class TypeEmployerOtherAdmin(TypeBaseAdmin):
     list_display = ('name','employer_type')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
-    fieldsets = ((_("Type of employer sphere"), {"fields": [('name','employer_type'),]}),)
+    fieldsets = ((_("Type of other employer sphere"), {"fields": [('name','employer_type'),]}),)
 
 class TypeEmployerAdmin(TypeBaseAdmin):
     list_display = ('name','order_in_list')
@@ -27,5 +27,5 @@ class TypeEmployerAdmin(TypeBaseAdmin):
 
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
 admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
-admin.site.register(TypeEmployerSphere, TypeEmployerSphereAdmin)
+admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
 
