@@ -292,6 +292,12 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         users_id = Booking.objects.filter(hotel=self).values_list('user',flat=True)
         return users_id
 
+    def __str__(self):
+        try:
+            return _("%(hotel)s :: %(city)s") % {'hotel':self.get_name, 'city':self.city.get_name, }
+        except :
+            return self.name
+
 class RoomOptionCategory(AbstractName):
 
     class Meta:
