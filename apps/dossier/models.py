@@ -18,15 +18,17 @@ HEAD_SIZE = map(tuplify, range(34, 63))
 AGE_SIZE = map(tuplify, range(1, 101))
 
 
-class Education(models.Model):
+class Education(AbstractImg):
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'),
         related_name='edu', blank=True, null=True)
     education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END,
         default=current_year)
-    master_course = models.CharField(max_length=50,verbose_name=_('Master of course'), blank=True,default='')
-    diploma_work = models.CharField(max_length=50, verbose_name=_('Diploma work'), blank=True, default='')
-    diploma_role = models.CharField(max_length=50, verbose_name=_('Role'), blank=True, default='')
-    specialty = models.CharField(max_length=50, verbose_name=_('Specialty'), blank=True, default='')
+    master_course = std_text_field(_('Master of course'))
+    diploma_work = std_text_field(_('Diploma work'))
+    diploma_role = std_text_field(_('Role'))
+    specialty = std_text_field(_('Specialty'))
+    prof_edu = models.BooleanField(_('Profile education'), default=False)
+    nonprof_name = std_text_field(_('Non-profile course name'))
 
     class Meta:
         verbose_name = _("Education")

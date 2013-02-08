@@ -35,12 +35,13 @@ class TypeEmployerProfile(AbstractName):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
 @python_2_unicode_compatible
-class TypeEmployerSphere(AbstractName):
+class TypeEmployerOther(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer,verbose_name=_('Type of employer'))
+    is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
 
     class Meta:
-        verbose_name = _("Type of sphere act. employer")
-        verbose_name_plural = _("Types of sphere act. employers")
+        verbose_name = _("Type of other sphere act. employer")
+        verbose_name_plural = _("Types of other sphere act. employers")
 
     def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
@@ -54,12 +55,8 @@ class AbstractEmployer(AbstractImg):
     work_off = models.TimeField(verbose_name=_('Work time to'),blank=True, null=True)
     phone_on = models.TimeField(verbose_name=_('Phone time from'),blank=True, null=True)
     phone_off = models.TimeField(verbose_name=_('Phone time to'),blank=True, null=True)
-    employer_profile = models.ManyToManyField(TypeEmployerProfile,
-        verbose_name=_('Types of employer profile'),blank=True, null=True)
-    employer_profile_other = std_text_field(_('Other employer profile'))
-    employer_type = models.ManyToManyField(TypeEmployer,
-        verbose_name=_('Types of employer'),blank=True, null=True)
-    employer_sphere_other = std_text_field(_('Other employer sphere'))
+    employer_profile = models.ManyToManyField(TypeEmployerProfile, verbose_name=_('Types of employer profile'),blank=True, null=True)
+    employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'),blank=True, null=True)
 
     class Meta:
         verbose_name = _("Employer")
@@ -74,25 +71,4 @@ class AbstractEmployer(AbstractImg):
     @property
     def radio_profiles(self):
         return self.employer_profile.filter(is_radio=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
