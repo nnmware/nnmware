@@ -510,7 +510,7 @@ class AbstractTypeActor(models.Model):
         verbose_name_plural = _("Types of actors")
         abstract = True
 
-class AbstractSkill(models.Model):
+class HumanSkill(models.Model):
     language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'),
         blank=True, null=True, related_name='lng_skill')
     dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'),
@@ -527,6 +527,10 @@ class AbstractSkill(models.Model):
         blank=True, null=True, related_name='spr_skill')
     special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'),
         blank=True, null=True, related_name='spc_skill')
+    music_addon = std_text_field(_('Owner of music instrument'))
+    drive_addon = std_text_field(_('Drive skill addon text'))
+    special_addon = std_text_field(_('Special skill addon text'))
+    other_addon = std_text_field(_('Special skill addon text'))
 
     class Meta:
         verbose_name = _("Skill")
