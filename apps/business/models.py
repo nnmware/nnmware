@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
+from nnmware.core.models import Pic
 
 class TypeEmployer(AbstractName):
     pass
@@ -72,3 +75,48 @@ class AbstractEmployer(AbstractImg):
     def radio_profiles(self):
         return self.employer_profile.filter(is_radio=True)
 
+class Agency(AbstractName):
+
+    class Meta:
+        verbose_name = _("Agency")
+        verbose_name_plural = _("Agencies")
+
+class InAgencyBase(models.Model):
+    name = std_text_field(_('Name'))
+    agency = models.ForeignKey(Agency, verbose_name=_('Agency'), related_name='agency_base', blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("In agency base")
+        verbose_name_plural = _("In agencies bases")
+
+
+class AbstractEmployee(AbstractImg):
+    agent_name = std_text_field(_('Agent name'))
+    agent_phone = models.CharField(max_length=20, verbose_name=_('Mobile phone of agent'), blank=True, default='')
+    agent_email = models.EmailField(verbose_name=_('Agent Email'), blank=True, null=True)
+    agent_avatar = models.ForeignKey(Pic, blank=True, null=True)
+    agent_contact_only = models.BooleanField(_('Contact only with agent'), default=False)
+    permanent_work = std_text_field(_('Permanent place of work'))
+    awards = std_text_field(_('Awards, achievements, titles'))
+    payment_from = models.IntegerField(verbose_name=_('Amount payment from'),null=True, blank=True)
+    payment_to = models.IntegerField(verbose_name=_('Amount payment to'),null=True, blank=True)
+    additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
+    source_about_resource = std_text_field(_('Source about our resource'))
+    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True, null=True, related_name='edu')
+    in_agency = models.ManyToManyField(InAgencyBase,verbose_name=_('In agency base'), blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Employee")
+        verbose_name_plural = _("Employees")
+        abstract = True
+
+    @property
+    def get_agent_avatar(self):
+        try:
+            return self.agent_avatar.pic.url
+        except :
+            return settings.DEFAULT_AVATAR
+
+    def delete(self, *args, **kwargs):
+        self.agent_avatar.delete()
+        super(AbstractEmployee, self).delete(*args, **kwargs)

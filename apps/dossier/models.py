@@ -493,12 +493,6 @@ class AbstractPersonalData(models.Model):
         verbose_name_plural = _("Personal Data")
         abstract = True
 
-class Agency(AbstractName):
-
-    class Meta:
-        verbose_name = _("Agency")
-        verbose_name_plural = _("Agencies")
-
 class AbstractTypeActor(models.Model):
     type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'),
         blank=True, null=True)
@@ -514,4 +508,27 @@ class AbstractTypeActor(models.Model):
     class Meta:
         verbose_name = _("Type of actor")
         verbose_name_plural = _("Types of actors")
+        abstract = True
+
+class AbstractSkill(models.Model):
+    language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'),
+        blank=True, null=True, related_name='lng_skill')
+    dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'),
+        blank=True, null=True, related_name='dnc_skill')
+    drive = models.ManyToManyField(DriveSkill, verbose_name=_('Drive skill'),
+        blank=True, null=True, related_name='drv_skill')
+    other = models.ManyToManyField(OtherSkill, verbose_name=_('Other skill'),
+        blank=True, null=True, related_name='oth_skill')
+    music = models.ManyToManyField(MusicSkill, verbose_name=_('Music skill'),
+        blank=True, null=True, related_name='msc_skill')
+    vocal = models.ManyToManyField(VocalSkill, verbose_name=_('Vocal skill'),
+        blank=True, null=True, related_name='vlc_skill')
+    sport = models.ManyToManyField(SportSkill, verbose_name=_('Sport skill'),
+        blank=True, null=True, related_name='spr_skill')
+    special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'),
+        blank=True, null=True, related_name='spc_skill')
+
+    class Meta:
+        verbose_name = _("Skill")
+        verbose_name_plural = _("Skills")
         abstract = True
