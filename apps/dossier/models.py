@@ -472,15 +472,12 @@ class AbstractSurveySuit(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
 
-
-YEARS_FOREIGN_PASSPORT = map(tuplify, range(current_year, current_year + 10))
-
 class AbstractPersonalData(models.Model):
     citizen_of_russia = models.BooleanField(_('Russia citizenship'), default=True)
     citizenship = models.CharField(max_length=30, verbose_name=_('Citizenship'), blank=True)
     foreign_passport = models.BooleanField(_('Foreign passport'), default=True)
     foreign_passport_expired = models.IntegerField(_('Foreign passport expired'),
-        blank=True, null=True, choices=YEARS_FOREIGN_PASSPORT ,default=None)
+        blank=True, null=True)
     inn = models.CharField(max_length=12,verbose_name=_('INN'), blank=True)
     insurance = models.CharField(max_length=12,verbose_name=_('Certificate of insurance'), blank=True)
     passport_num = models.CharField(max_length=11,verbose_name=_('Passport series and number'), blank=True)
