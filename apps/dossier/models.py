@@ -10,10 +10,10 @@ from django.utils.encoding import python_2_unicode_compatible
 
 EDUCATION_END = map(tuplify, range(current_year-55, current_year+1))
 
-GROWTH = map(tuplify, range(50, 215))
+GROWTH = map(tuplify, range(50, 221))
 WEIGHT = map(tuplify, range(1, 150))
-CLOTHING_SIZE = map(tuplify, range(16, 64, 2))
-SHOE_SIZE = map(tuplify, range(16, 47))
+CLOTHING_SIZE = map(tuplify, range(16, 74, 2))
+SHOE_SIZE = map(tuplify, range(16, 49))
 HEAD_SIZE = map(tuplify, range(34, 63))
 AGE_SIZE = map(tuplify, range(1, 101))
 
