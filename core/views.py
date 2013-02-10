@@ -35,6 +35,12 @@ class UserPathMixin(object):
         kwargs['object'] = self.object
         return super(UserPathMixin, self).get_context_data(**kwargs)
 
+class UserToFormMixin(object):
+
+    def get_form_kwargs(self):
+        kwargs = super(UserToFormMixin, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 class AjaxFormMixin(object):
 
