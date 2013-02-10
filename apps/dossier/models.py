@@ -222,7 +222,8 @@ class AbstractHumanAppearance(models.Model):
     which_structure_body = std_text_field(_('Which feature of structure body'))
     nonstandard_growth = models.BooleanField(_('Non-standard growth'), default=False)
     pregnant = models.BooleanField(_('Pregnant'), default=False)
-    another_feature_appearance = std_text_field(_('Another feature of appearance'))
+    another_feature = models.BooleanField(_('Another feature of appearance'), default=False)
+    another_feature_appearance = std_text_field(_('Text of Another feature of appearance'))
 
     similarity = models.BooleanField(_('Similarity with known person'), default=False)
     which_person_similarity = std_text_field(_('Which person similarity'))
