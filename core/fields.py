@@ -211,4 +211,4 @@ def std_url_field(verbose, max_length=150):
     return models.URLField(verbose_name=verbose,max_length=max_length,  blank=True, default='')
 
 def std_email_field(verbose):
-    return models.EmailField(verbose_name=verbose)
+    return models.EmailField(verbose_name=verbose,  blank=True, default='')
