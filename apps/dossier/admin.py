@@ -19,6 +19,9 @@ class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
 class HairColorAdmin(TypeBaseAdmin):
     fieldsets = ((_("Hair color"), {"fields": [('name'),]}),)
 
+class EyeColorAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Eye color"), {"fields": [('name'),]}),)
+
 class SkinColorAdmin(TypeBaseAdmin):
     fieldsets = ((_("Skin color"), {"fields": [('name'),]}),)
 
@@ -146,6 +149,7 @@ admin.site.register(TypeBodyHuman, TypeBodyHumanAdmin)
 admin.site.register(TypeAppearanceHuman, TypeAppearanceHumanAdmin)
 admin.site.register(TypeFeatureAppearanceHuman, TypeFeatureAppearanceHumanAdmin)
 admin.site.register(HairColor, HairColorAdmin)
+admin.site.register(EyeColor, EyeColorAdmin)
 admin.site.register(SkinColor, SkinColorAdmin)
 admin.site.register(HairLength, HairLengthAdmin)
 admin.site.register(HairTexture, HairTextureAdmin)
