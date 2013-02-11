@@ -263,7 +263,7 @@ class LanguageSkill(models.Model):
         verbose_name_plural = _("Language skills")
 
     def __str__(self):
-        return "%s - %s" % (self.speak.name, self.get_level_display)
+        return "%s - %s" % (self.speak.name, self.get_level_display())
 
 
 class TypeDance(AbstractName):
