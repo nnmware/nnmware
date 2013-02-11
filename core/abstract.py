@@ -528,13 +528,12 @@ SKILL_CHOICES = (
 @python_2_unicode_compatible
 class AbstractSkill(AbstractOrder):
     level = models.IntegerField(_('Level'), choices=SKILL_CHOICES, blank=True, null=True, default=SKILL_UNKNOWN)
-    addon = std_text_field(_('Add-on'))
 
     class Meta:
         abstract = True
 
     def __str__(self):
-        return "%s :: %s -> %s" % (self.skill.name, self.addon, self.level)
+        return "%s :: %s " % (self.skill.name, self.get_level_display())
 
 @python_2_unicode_compatible
 class AbstractNnmwareProfile(AbstractDate, AbstractImg):
