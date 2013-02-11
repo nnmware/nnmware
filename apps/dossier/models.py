@@ -252,6 +252,7 @@ LNG_SKILL_CHOICES = (
     (LNG_SKILL_CONVERSATIONAL, _("Conversational")),
     )
 
+@python_2_unicode_compatible
 class LanguageSkill(models.Model):
     speak = models.ForeignKey(LanguageSpeak, verbose_name=_('Language speak'),
         related_name='language_skill', blank=True, null=True)
@@ -260,6 +261,10 @@ class LanguageSkill(models.Model):
     class Meta:
         verbose_name = _("Language skill")
         verbose_name_plural = _("Language skills")
+
+    def __str__(self):
+        return "%s - %s" % (self.speak.name, self.get_level_display)
+
 
 class TypeDance(AbstractName):
     pass
