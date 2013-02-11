@@ -508,6 +508,25 @@ class AbstractTypeActor(models.Model):
         verbose_name_plural = _("Types of actors")
         abstract = True
 
+VOICE_UNKNOWN = 0
+VOICE_TENOR = 1
+VOICE_BARITONE = 2
+VOICE_MEZZO_SOPRANO = 3
+VOICE_VIOLA = 4
+VOICE_SOPRANO = 5
+VOICE_BASS = 6
+
+VOICE_CHOICES = (
+    (VOICE_UNKNOWN, _("Unknown")),
+    (VOICE_TENOR, _("Tenor")),
+    (VOICE_BARITONE, _("Baritone")),
+    (VOICE_MEZZO_SOPRANO, _("Mezzo soprano")),
+    (VOICE_VIOLA, _("Viola")),
+    (VOICE_SOPRANO, _("Soprano")),
+    (VOICE_BASS, _("Bass")),
+    )
+
+
 class HumanSkill(models.Model):
     language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'),
         blank=True, null=True, related_name='lng_skill')
@@ -525,10 +544,17 @@ class HumanSkill(models.Model):
         blank=True, null=True, related_name='spr_skill')
     special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'),
         blank=True, null=True, related_name='spc_skill')
-    music_addon = std_text_field(_('Owner of music instrument'))
+    language_addon = std_text_field(_('Language addon text'))
+    dance_addon = std_text_field(_('Dance addon text'))
     drive_addon = std_text_field(_('Drive skill addon text'))
-    special_addon = std_text_field(_('Special skill addon text'))
     other_addon = std_text_field(_('Special skill addon text'))
+    music_addon = std_text_field(_('Music addon text'))
+    vocal_addon = std_text_field(_('Vocal addon text'))
+    sport_addon = std_text_field(_('Sport addon text'))
+    special_addon = std_text_field(_('Special skill addon text'))
+    voice_tone = models.IntegerField(verbose_name=_('Voice tone'), choices=VOICE_CHOICES,
+        blank=True, null=True, default=VOICE_UNKNOWN)
+    spoken_dialect = std_text_field(_('Spoken dialect'))
 
     class Meta:
         verbose_name = _("Skill")
