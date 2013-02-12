@@ -8,7 +8,7 @@ from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
 from django.utils.encoding import python_2_unicode_compatible
 
-EDUCATION_END = map(tuplify, range(current_year-55, current_year+1))
+EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
 
 GROWTH = map(tuplify, range(50, 221))
 WEIGHT = map(tuplify, range(1, 150))
@@ -20,9 +20,9 @@ AGE_SIZE = map(tuplify, range(1, 101))
 
 class Education(AbstractImg):
     institution = models.ForeignKey(Institution, verbose_name=_('Institution'),
-        related_name='edu', blank=True, null=True)
+                                    related_name='edu', blank=True, null=True)
     education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END,
-        default=current_year)
+                                        default=current_year)
     master_course = std_text_field(_('Master of course'))
     diploma_work = std_text_field(_('Diploma work'))
     diploma_role = std_text_field(_('Role'))
@@ -34,12 +34,14 @@ class Education(AbstractImg):
         verbose_name = _("Education")
         verbose_name_plural = _("Educations")
 
+
 class TypeAppearanceHuman(AbstractOrder):
     name = std_text_field(_('Type of appearance'))
 
     class Meta:
         verbose_name = _("Type of appearance")
         verbose_name_plural = _("Types of appearance")
+
 
 class TypeNationalHuman(AbstractOrder):
     name = std_text_field(_('National Type'))
@@ -56,12 +58,14 @@ class TypeBodyHuman(AbstractOrder):
         verbose_name = _("Body Type")
         verbose_name_plural = _("Body Types")
 
+
 class TypeFeatureAppearanceHuman(AbstractOrder):
     name = std_text_field(_('Feature of appearance'))
 
     class Meta:
         verbose_name = _("Feature appearance type")
         verbose_name_plural = _("Feature appearances types")
+
 
 class HairColor(AbstractOrder):
     name = std_text_field(_('Hair color'))
@@ -70,12 +74,14 @@ class HairColor(AbstractOrder):
         verbose_name = _("Hair color")
         verbose_name_plural = _("Hair colors")
 
+
 class HairLength(AbstractOrder):
     name = std_text_field(_('Length of hair'))
 
     class Meta:
         verbose_name = _("Length of hair")
         verbose_name_plural = _("Length of hair")
+
 
 class HairTexture(AbstractOrder):
     name = std_text_field(_('Texture of hair'))
@@ -84,6 +90,7 @@ class HairTexture(AbstractOrder):
         verbose_name = _("Texture of hair")
         verbose_name_plural = _("Textures of hair")
 
+
 class EyeColor(AbstractOrder):
     name = std_text_field(_('Eye color'))
 
@@ -91,12 +98,14 @@ class EyeColor(AbstractOrder):
         verbose_name = _("Eye color")
         verbose_name_plural = _("Eyes colors")
 
+
 class SkinColor(AbstractOrder):
     name = std_text_field(_('Skin color'))
 
     class Meta:
         verbose_name = _("Color of skin")
         verbose_name_plural = _("Colors of skin")
+
 
 class ActorCategory(AbstractOrder):
     name = std_text_field(_('Category of actor'))
@@ -109,7 +118,7 @@ class ActorCategory(AbstractOrder):
     def get_random_img(self):
         all_actors = self.actor_set.order_by('?')
         for actor in all_actors:
-            if actor.ava <> settings.DEFAULT_AVATAR:
+            if actor.ava != settings.DEFAULT_AVATAR:
                 return actor.ava
         return settings.DEFAULT_AVATAR
 
@@ -121,12 +130,14 @@ class TypeNational(AbstractOrder):
         verbose_name = _("Type on national sign")
         verbose_name_plural = _("Types on national sign")
 
+
 class TypeProfession(AbstractOrder):
     name = std_text_field(_('Type on profession'))
 
     class Meta:
         verbose_name = _("Type on profession")
         verbose_name_plural = _("Types on profession")
+
 
 class TypeLifestyle(AbstractOrder):
     name = std_text_field(_('Type on lifestyle'))
@@ -135,12 +146,14 @@ class TypeLifestyle(AbstractOrder):
         verbose_name = _("Type on lifestyle")
         verbose_name_plural = _("Types on lifestyle")
 
+
 class TypeBrightAppearance(AbstractOrder):
     name = std_text_field(_('Type on bright appearance'))
 
     class Meta:
         verbose_name = _("Type on bright appearance")
         verbose_name_plural = _("Types on bright appearance")
+
 
 class TypeHistorical(AbstractOrder):
     name = std_text_field(_('Type in historical projects'))
@@ -149,6 +162,7 @@ class TypeHistorical(AbstractOrder):
         verbose_name = _("Type in historical projects")
         verbose_name_plural = _("Types in historical projects")
 
+
 class TypeSurvey(AbstractOrder):
     name = std_text_field(_('Type of survey'))
 
@@ -156,12 +170,14 @@ class TypeSurvey(AbstractOrder):
         verbose_name = _("Type of survey")
         verbose_name_plural = _("Types of surveys")
 
+
 class CreativeActivity(AbstractOrder):
     name = std_text_field(_('Creative activity'))
 
     class Meta:
         verbose_name = _("Creative activity")
         verbose_name_plural = _("Creative activities")
+
 
 @python_2_unicode_compatible
 class CreativeActivityPerson(AbstractOrder):
@@ -175,43 +191,40 @@ class CreativeActivityPerson(AbstractOrder):
     def __str__(self):
         return "%s" % self.activity.name
 
+
 class AbstractHumanAppearance(models.Model):
     appearance = models.ManyToManyField(TypeAppearanceHuman, verbose_name=_('Type of Appearance'),
-        related_name='appearance_human', blank=True, null=True)
+                                        related_name='appearance_human', blank=True, null=True)
     appearance_desc = std_text_field(_('Explain type of appearance'))
     national = models.ForeignKey(TypeNationalHuman, verbose_name=_('National Type'),
-        related_name='national_human', blank=True, null=True)
+                                 related_name='national_human', blank=True, null=True)
     national_desc = std_text_field(_('Explain national'))
     body = models.ForeignKey(TypeBodyHuman, verbose_name=_('Body Type'),
-        related_name='body_human', blank=True, null=True)
+                             related_name='body_human', blank=True, null=True)
     body_desc = std_text_field(_('Explain body'))
-    feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman,verbose_name=_('Feature appearance'),
-        blank=True, null=True)
+    feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
+                                                blank=True, null=True)
     feature_appearance_desc = std_text_field(_('Explain feature appearance'))
-
     growth = models.IntegerField(_('Growth'), choices=GROWTH, blank=True, null=True, default=None)
     weight = models.IntegerField(_('Weight'), choices=WEIGHT, blank=True, null=True, default=None)
     clothing_size = models.IntegerField(_('Clothing size'), choices=CLOTHING_SIZE, blank=True, null=True, default=None)
     shoe_size = models.IntegerField(_('Shoe size'), choices=SHOE_SIZE, blank=True, null=True, default=None)
     head_size = models.IntegerField(_('Head size'), choices=HEAD_SIZE, blank=True, null=True, default=None)
-
     hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'),
-        related_name='hair_color', blank=True, null=True)
+                                   related_name='hair_color', blank=True, null=True)
     natural_hair_color = models.BooleanField(_('Natural color of hair'), default=True)
     have_wig = models.BooleanField(_('Have wig'), default=False)
     hair_length = models.ForeignKey(HairLength, verbose_name=_('Length of hair'),
-        related_name='hair_length', blank=True, null=True)
+                                    related_name='hair_length', blank=True, null=True)
     hair_texture = models.ForeignKey(HairTexture, verbose_name=_('Texture of hair'),
-        related_name='hair_texture', blank=True, null=True)
-
+                                     related_name='hair_texture', blank=True, null=True)
     eye_color = models.ForeignKey(EyeColor, verbose_name=_('Eye color'),
-        related_name='eye_color', blank=True, null=True)
+                                  related_name='eye_color', blank=True, null=True)
     wear_glasses = models.BooleanField(_('Wear glasses'), default=False)
     wear_colour_lens = models.BooleanField(_('Wear colour lens'), default=False)
     have_glasses_collection = models.BooleanField(_('Have collection of glasses'), default=False)
-
     skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
-        related_name='color_skin', blank=True, null=True)
+                                   related_name='color_skin', blank=True, null=True)
     have_piercing = models.BooleanField(_('Have piercing'), default=False)
     where_piercing = std_text_field(_('Where piercing'))
     have_tattoo = models.BooleanField(_('Have tattoo'), default=False)
@@ -235,12 +248,14 @@ class AbstractHumanAppearance(models.Model):
         verbose_name_plural = _("Human appearances")
         abstract = True
 
+
 class LanguageSpeak(AbstractName):
     pass
 
     class Meta:
         verbose_name = _("Language")
         verbose_name_plural = _("Languages")
+
 
 LNG_SKILL_UNKNOWN = 0
 LNG_SKILL_BASE = 1
@@ -250,12 +265,13 @@ LNG_SKILL_CHOICES = (
     (LNG_SKILL_UNKNOWN, _("Unknown")),
     (LNG_SKILL_BASE, _("Base")),
     (LNG_SKILL_CONVERSATIONAL, _("Conversational")),
-    )
+)
+
 
 @python_2_unicode_compatible
 class LanguageSkill(models.Model):
     speak = models.ForeignKey(LanguageSpeak, verbose_name=_('Language speak'),
-        related_name='language_skill', blank=True, null=True)
+                              related_name='language_skill', blank=True, null=True)
     level = models.IntegerField(_('Level'), choices=LNG_SKILL_CHOICES, blank=True, null=True, default=LNG_SKILL_UNKNOWN)
 
     class Meta:
@@ -276,11 +292,12 @@ class TypeDance(AbstractName):
 
 class DanceSkill(AbstractSkill):
     skill = models.ForeignKey(TypeDance, verbose_name=_('Dance type'),
-        related_name='dance_skill')
+                              related_name='dance_skill')
 
     class Meta:
         verbose_name = _("Dance skill")
         verbose_name_plural = _("Dance skills")
+
 
 class TypeVocal(AbstractName):
     pass
@@ -289,13 +306,15 @@ class TypeVocal(AbstractName):
         verbose_name = _("Type of vocal")
         verbose_name_plural = _("Types of vocals")
 
+
 class VocalSkill(AbstractSkill):
     skill = models.ForeignKey(TypeVocal, verbose_name=_('Vocal type'),
-        related_name='vocal_skill')
+                              related_name='vocal_skill')
 
     class Meta:
         verbose_name = _("Vocal skill")
         verbose_name_plural = _("Vocal skills")
+
 
 class TypeMusicInstrument(AbstractName):
     pass
@@ -304,13 +323,15 @@ class TypeMusicInstrument(AbstractName):
         verbose_name = _("Type of music instrument")
         verbose_name_plural = _("Types of music instruments")
 
+
 class MusicSkill(AbstractSkill):
     skill = models.ForeignKey(TypeMusicInstrument, verbose_name=_('Music instrument type'),
-        related_name='music_skill')
+                              related_name='music_skill')
 
     class Meta:
         verbose_name = _("Music skill")
         verbose_name_plural = _("Music skills")
+
 
 class TypeDrive(AbstractName):
     pass
@@ -319,13 +340,15 @@ class TypeDrive(AbstractName):
         verbose_name = _("Type of driving")
         verbose_name_plural = _("Types of drivings")
 
+
 class DriveSkill(AbstractSkill):
     skill = models.ForeignKey(TypeDrive, verbose_name=_('Type of driving'),
-        related_name='drive_skill')
+                              related_name='drive_skill')
 
     class Meta:
         verbose_name = _("Driving skill")
         verbose_name_plural = _("Driving skills")
+
 
 class TypeSport(AbstractName):
     pass
@@ -334,13 +357,15 @@ class TypeSport(AbstractName):
         verbose_name = _("Type of sport")
         verbose_name_plural = _("Types of sport")
 
+
 class SportSkill(AbstractSkill):
     skill = models.ForeignKey(TypeSport, verbose_name=_('Type of sport'),
-        related_name='sport_skill')
+                              related_name='sport_skill')
 
     class Meta:
         verbose_name = _("Sport skill")
         verbose_name_plural = _("Sport skills")
+
 
 class TypeSpecialSkill(AbstractName):
     pass
@@ -349,13 +374,15 @@ class TypeSpecialSkill(AbstractName):
         verbose_name = _("Type of special skill")
         verbose_name_plural = _("Types of special skill")
 
+
 class SpecialSkill(AbstractSkill):
     skill = models.ForeignKey(TypeSpecialSkill, verbose_name=_('Type of special skill'),
-        related_name='special_skill')
+                              related_name='special_skill')
 
     class Meta:
         verbose_name = _("Special skill")
         verbose_name_plural = _("Special skills")
+
 
 class TypeOtherSkill(AbstractName):
     pass
@@ -364,13 +391,15 @@ class TypeOtherSkill(AbstractName):
         verbose_name = _("Type of other skill")
         verbose_name_plural = _("Types of other skills")
 
+
 class OtherSkill(AbstractSkill):
     skill = models.ForeignKey(TypeOtherSkill, verbose_name=_('Type of other skill'),
-        related_name='other_skill')
+                              related_name='other_skill')
 
     class Meta:
         verbose_name = _("Other skill")
         verbose_name_plural = _("Other skills")
+
 
 class AnimalType(AbstractName):
     pass
@@ -378,6 +407,7 @@ class AnimalType(AbstractName):
     class Meta:
         verbose_name = _("Animal type")
         verbose_name_plural = _("Animals types")
+
 
 @python_2_unicode_compatible
 class AnimalKind(AbstractImg):
@@ -393,6 +423,7 @@ class AnimalKind(AbstractImg):
     def __str__(self):
         return "%s :: %s" % (self.animal.name, self.name)
 
+
 @python_2_unicode_compatible
 class AbstractAnimal(AbstractName):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
@@ -406,12 +437,14 @@ class AbstractAnimal(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.name, self.animal.name)
 
+
 class TransportType(AbstractName):
     pass
 
     class Meta:
         verbose_name = _("Transport type")
         verbose_name_plural = _("Transport types")
+
 
 @python_2_unicode_compatible
 class TransportMark(AbstractImg):
@@ -427,10 +460,11 @@ class TransportMark(AbstractImg):
     def __str__(self):
         return "%s :: %s" % (self.ttype.name, self.name)
 
+
 @python_2_unicode_compatible
 class AbstractVehicle(AbstractName):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
-    tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles',blank=True,null=True)
+    tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles', blank=True, null=True)
 
     class Meta:
         verbose_name = _("Vehicle")
@@ -440,12 +474,14 @@ class AbstractVehicle(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.name, self.ttype.name)
 
+
 class SurveyObjectType(AbstractName):
     pass
 
     class Meta:
         verbose_name = _("Survey object type")
         verbose_name_plural = _("Surver object types")
+
 
 @python_2_unicode_compatible
 class AbstractSurveyObject(AbstractName):
@@ -459,12 +495,14 @@ class AbstractSurveyObject(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
 
+
 class SurveySuitType(AbstractName):
     pass
 
     class Meta:
         verbose_name = _("Survey suit type")
         verbose_name_plural = _("Survey suits types")
+
 
 @python_2_unicode_compatible
 class AbstractSurveySuit(AbstractName):
@@ -478,15 +516,16 @@ class AbstractSurveySuit(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
 
+
 class AbstractPersonalData(models.Model):
     citizen_of_russia = models.BooleanField(_('Russia citizenship'), default=True)
     citizenship = models.CharField(max_length=30, verbose_name=_('Citizenship'), blank=True)
     foreign_passport = models.BooleanField(_('Foreign passport'), default=True)
     foreign_passport_expired = models.DateField(verbose_name=_('Foreign passport expired'),
-        blank=True, null=True)
-    inn = models.CharField(max_length=12,verbose_name=_('INN'), blank=True)
-    insurance = models.CharField(max_length=12,verbose_name=_('Certificate of insurance'), blank=True)
-    passport_num = models.CharField(max_length=11,verbose_name=_('Passport series and number'), blank=True)
+                                                blank=True, null=True)
+    inn = models.CharField(max_length=12, verbose_name=_('INN'), blank=True)
+    insurance = models.CharField(max_length=12, verbose_name=_('Certificate of insurance'), blank=True)
+    passport_num = models.CharField(max_length=11, verbose_name=_('Passport series and number'), blank=True)
     passport_issued = std_text_field(_('Passport issued'))
     passport_date = models.DateField(verbose_name=_('Date of passport issued'), blank=True, null=True)
     passport_registration = std_text_field(_('Passport registration'))
@@ -496,22 +535,24 @@ class AbstractPersonalData(models.Model):
         verbose_name_plural = _("Personal Data")
         abstract = True
 
+
 class AbstractTypeActor(models.Model):
     type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'),
-        blank=True, null=True)
+                                           blank=True, null=True)
     type_profession = models.ManyToManyField(TypeProfession, verbose_name=_('Type on profession'),
-        blank=True, null=True)
+                                             blank=True, null=True)
     type_lifestyle = models.ManyToManyField(TypeLifestyle, verbose_name=_('Type on lifestyle'),
-        blank=True, null=True)
+                                            blank=True, null=True)
     type_bright_appearance = models.ManyToManyField(TypeBrightAppearance,
-        verbose_name=_('Type on bright appearance'),blank=True, null=True)
+                                                    verbose_name=_('Type on bright appearance'), blank=True, null=True)
     type_historical = models.ManyToManyField(TypeHistorical,
-        verbose_name=_('Type in historical projects'),blank=True, null=True)
+                                             verbose_name=_('Type in historical projects'), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Type of actor")
         verbose_name_plural = _("Types of actors")
         abstract = True
+
 
 VOICE_UNKNOWN = 0
 VOICE_TENOR = 1
@@ -529,26 +570,26 @@ VOICE_CHOICES = (
     (VOICE_VIOLA, _("Viola")),
     (VOICE_SOPRANO, _("Soprano")),
     (VOICE_BASS, _("Bass")),
-    )
+)
 
 
 class HumanSkill(models.Model):
     language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'),
-        blank=True, null=True, related_name='lng_skill')
+                                      blank=True, null=True, related_name='lng_skill')
     dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'),
-        blank=True, null=True, related_name='dnc_skill')
+                                   blank=True, null=True, related_name='dnc_skill')
     drive = models.ManyToManyField(DriveSkill, verbose_name=_('Drive skill'),
-        blank=True, null=True, related_name='drv_skill')
+                                   blank=True, null=True, related_name='drv_skill')
     other = models.ManyToManyField(OtherSkill, verbose_name=_('Other skill'),
-        blank=True, null=True, related_name='oth_skill')
+                                   blank=True, null=True, related_name='oth_skill')
     music = models.ManyToManyField(MusicSkill, verbose_name=_('Music skill'),
-        blank=True, null=True, related_name='msc_skill')
+                                   blank=True, null=True, related_name='msc_skill')
     vocal = models.ManyToManyField(VocalSkill, verbose_name=_('Vocal skill'),
-        blank=True, null=True, related_name='vlc_skill')
+                                   blank=True, null=True, related_name='vlc_skill')
     sport = models.ManyToManyField(SportSkill, verbose_name=_('Sport skill'),
-        blank=True, null=True, related_name='spr_skill')
+                                   blank=True, null=True, related_name='spr_skill')
     special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'),
-        blank=True, null=True, related_name='spc_skill')
+                                     blank=True, null=True, related_name='spc_skill')
     language_addon = std_text_field(_('Language addon text'))
     dance_addon = std_text_field(_('Dance addon text'))
     drive_addon = std_text_field(_('Drive skill addon text'))
@@ -558,7 +599,7 @@ class HumanSkill(models.Model):
     sport_addon = std_text_field(_('Sport addon text'))
     special_addon = std_text_field(_('Special skill addon text'))
     voice_tone = models.IntegerField(verbose_name=_('Voice tone'), choices=VOICE_CHOICES,
-        blank=True, null=True, default=VOICE_UNKNOWN)
+                                     blank=True, null=True, default=VOICE_UNKNOWN)
     spoken_dialect = std_text_field(_('Spoken dialect'))
 
     class Meta:
