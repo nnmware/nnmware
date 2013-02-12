@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.db import models
-from nnmware.apps.address.models import Institution
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
+
+from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
-from django.utils.encoding import python_2_unicode_compatible
 
 EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
 
