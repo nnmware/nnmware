@@ -24,11 +24,11 @@ class JSONResponse(HttpResponse):
     A simple subclass of ``HttpResponse`` which makes serializing to JSON easy.
     """
 
-    def __init__(self, object, is_iterable=True):
+    def __init__(self, obj, is_iterable=True):
         if is_iterable:
-            content = serialize('json', object)
+            content = serialize('json', obj)
         else:
-            content = json.dumps(object, cls=LazyEncoder)
+            content = json.dumps(obj, cls=LazyEncoder)
         super(JSONResponse, self).__init__(content,
             mimetype='application/json')
 
@@ -38,11 +38,11 @@ class XMLResponse(HttpResponse):
     A simple subclass of ``HttpResponse`` which makes serializing to XML easy.
     """
 
-    def __init__(self, object, is_iterable=True):
+    def __init__(self, obj, is_iterable=True):
         if is_iterable:
-            content = serialize('xml', object)
+            content = serialize('xml', obj)
         else:
-            content = object
+            content = obj
         super(XMLResponse, self).__init__(content, mimetype='application/xml')
 
 

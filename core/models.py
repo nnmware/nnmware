@@ -71,7 +71,6 @@ class Tag(models.Model):
         return "tag_detail", (), {'slug': self.slug}
 
 
-
 class Doc(AbstractContent, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
     file = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
@@ -94,7 +93,7 @@ class Doc(AbstractContent, AbstractFile):
                     docs.update(primary=False)
             else:
                 docs.delete()
-        except :
+        except:
             pass
         fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
         self.size = os.path.getsize(fullpath)

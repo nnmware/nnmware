@@ -115,8 +115,8 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
     base, ext = os.path.splitext(os.path.basename(file_name))
     basedir = os.path.dirname(file_name)
     for item in TMB_MASKS:
-        for file in fnmatch.filter(os.listdir(str(basedir)), item % (base, ext)):
-            path = os.path.join(basedir, file)
+        for f in fnmatch.filter(os.listdir(str(basedir)), item % (base, ext)):
+            path = os.path.join(basedir, f)
             try:
                 os.remove(path)
             except OSError:

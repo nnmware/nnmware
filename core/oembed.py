@@ -428,7 +428,7 @@ class OEmbedConsumer(object):
         
         return endpoint.get(url, **opt)
                     
-    def embed(self, url, format='json', **opt):
+    def embed(self, url, fmt='json', **opt):
         """
         Get an OEmbedResponse from one of the providers configured in this 
         consumer according to the resource url.
@@ -442,10 +442,10 @@ class OEmbedConsumer(object):
             OEmbedResponse object.
             
         """
-        if format not in ['json', 'xml']:
+        if fmt not in ['json', 'xml']:
             raise OEmbedInvalidRequest('Format must be json or xml')
         
-        opt['format'] = format
+        opt['format'] = fmt
                 
         return self._request(url, **opt)
 

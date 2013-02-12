@@ -1,140 +1,161 @@
-
 from django.contrib import admin
 from nnmware.apps.dossier.models import *
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
+
 class TypeAppearanceHumanAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of appearance"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of appearance"), {"fields": ['name', ]}),)
+
 
 class TypeNationalHumanAdmin(TypeBaseAdmin):
-    fieldsets = ((_("National type"), {"fields": [('name'),]}),)
+    fieldsets = ((_("National type"), {"fields": ['name', ]}),)
+
 
 class TypeBodyHumanAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Body Type"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Body Type"), {"fields": ['name', ]}),)
+
 
 class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Feature appearance"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Feature appearance"), {"fields": ['name', ]}),)
+
 
 class HairColorAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Hair color"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Hair color"), {"fields": ['name', ]}),)
+
 
 class EyeColorAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Eye color"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Eye color"), {"fields": ['name', ]}),)
+
 
 class SkinColorAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Skin color"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Skin color"), {"fields": ['name', ]}),)
+
 
 class HairLengthAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Hair length"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Hair length"), {"fields": ['name', ]}),)
+
 
 class HairTextureAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Hair texture"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Hair texture"), {"fields": ['name', ]}),)
+
 
 class TypeNationalAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type on national sign"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type on national sign"), {"fields": ['name', ]}),)
+
 
 class TypeProfessionAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type on profession"), {"fields": [('name'),
-                                              ]}),)
+    fieldsets = ((_("Type on profession"), {"fields": ['name', ]}),)
+
 
 class TypeLifestyleAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type on lifestyle"), {"fields": [('name'),
-                                             ]}),)
+    fieldsets = ((_("Type on lifestyle"), {"fields": ['name', ]}),)
+
 
 class TypeBrightAppearanceAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type on bright appearance"), {"fields": [('name','order_in_list'),
-                                                     ]}),)
+    fieldsets = ((_("Type on bright appearance"), {"fields": [('name', 'order_in_list'), ]}),)
+
 
 class TypeHistoricalAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type in historical projects"), {"fields": [('name','order_in_list'),
-                                                       ]}),)
+    fieldsets = ((_("Type in historical projects"), {"fields": [('name', 'order_in_list'), ]}),)
+
 
 class TypeSurveyAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of survey"), {"fields": [('name','order_in_list'),]}),)
+    fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
 class CreativeActivityAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("CreativeActivity"), {"fields": [('name','order_in_list'),
-                                            ]}),)
+    fieldsets = ((_("CreativeActivity"), {"fields": [('name', 'order_in_list'), ]}),)
+
 
 class LanguageSkillInline(BaseSkillInline):
     model = LanguageSkill
-    fields = (('speak','level'),)
+    fields = (('speak', 'level'),)
+
 
 class LanguageSpeakAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Language speak"), {"fields": [('name'),
-                                          ]}),)
+    fieldsets = ((_("Language speak"), {"fields": ['name', ]}),)
+
 
 class TypeDanceAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type of dance"), {"fields": [('name'),
-                                         ]}),)
+    fieldsets = ((_("Type of dance"), {"fields": ['name', ]}),)
+
 
 class TypeVocalAdmin(TypeBaseAdmin):
-    fieldsets = (
-        (_("Type of vocal"), {"fields": [('name'),
-                                         ]}),)
+    fieldsets = ((_("Type of vocal"), {"fields": ['name', ]}),)
+
 
 class TypeMusicInstrumentAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of music instrument"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of music instrument"), {"fields": ['name', ]}),)
+
 
 class TypeDriveAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of driving"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of driving"), {"fields": ['name', ]}),)
+
 
 class TypeSportAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of sport"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of sport"), {"fields": ['name', ]}),)
+
 
 class TypeSpecialSkillAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of special skill"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of special skill"), {"fields": ['name', ]}),)
+
 
 class TypeOtherSkillAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of other skill"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of other skill"), {"fields": ['name', ]}),)
+
 
 class DanceSkillInline(BaseSkillInline):
     model = DanceSkill
 
+
 class VocalSkillInline(BaseSkillInline):
     model = VocalSkill
+
 
 class MusicSkillInline(BaseSkillInline):
     model = MusicSkill
 
+
 class DriveSkillInline(BaseSkillInline):
     model = DriveSkill
+
 
 class SportSkillInline(BaseSkillInline):
     model = SportSkill
 
+
 class SpecialSkillInline(BaseSkillInline):
     model = SpecialSkill
+
 
 class OtherSkillInline(BaseSkillInline):
     model = OtherSkill
 
+
 class TTypeAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of vehicle"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of vehicle"), {"fields": ['name', ]}),)
+
 
 class TMarkAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Mark of vehicle"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Mark of vehicle"), {"fields": ['name', ]}),)
+
 
 class AnimalTypeAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of animal"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of animal"), {"fields": ['name', ]}),)
+
 
 class AnimalKindAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Kind of animal"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Kind of animal"), {"fields": ['name', ]}),)
+
 
 class SurveyObjectTypeAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of survey object"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of survey object"), {"fields": ['name', ]}),)
+
 
 class SurveySuitTypeAdmin(TypeBaseAdmin):
-    fieldsets = ((_("Type of survey suit"), {"fields": [('name'),]}),)
+    fieldsets = ((_("Type of survey suit"), {"fields": ['name', ]}),)
+
 
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
