@@ -327,6 +327,7 @@ class AttachedFilesMixin(object):
 class AttachedMixin(AttachedFilesMixin,AttachedImagesMixin):
     pass
 
+
 class TagDetail(DetailView):
     model = Tag
     slug_field = 'slug'
@@ -338,6 +339,7 @@ class TagDetail(DetailView):
         context['tab'] = 'all'
         context['ctype'] = ContentType.objects.get_for_model(Tag)
         return context
+
 
 class TagsView(ListView):
     paginate_by = 20
