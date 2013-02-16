@@ -19,7 +19,7 @@ from nnmware.core.managers import AbstractContentManager
 from nnmware.core.fields import std_text_field, std_url_field, std_email_field
 from django.utils.encoding import python_2_unicode_compatible
 
-GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')),('N', _('None')))
+GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')), ('N', _('None')))
 
 TZ_CHOICES = [(float(x[0]), x[1]) for x in (
     (-12, '-12'), (-11, '-11'), (-10, '-10'), (-9.5, '-09.5'), (-9, '-09'),
@@ -30,7 +30,7 @@ TZ_CHOICES = [(float(x[0]), x[1]) for x in (
     (5.5, '+05.5'), (6, '+06'), (6.5, '+06.5'), (7, '+07'), (8, '+08'),
     (9, '+09'), (9.5, '+09.5'), (10, '+10'), (10.5, '+10.5'), (11, '+11'),
     (11.5, '+11.5'), (12, '+12'), (13, '+13'), (14, '+14'),
-    )]
+)]
 
 
 class AbstractDate(models.Model):
@@ -39,6 +39,7 @@ class AbstractDate(models.Model):
 
     class Meta:
         abstract = True
+
 
 @python_2_unicode_compatible
 class Unit(models.Model):
@@ -52,6 +53,7 @@ class Unit(models.Model):
     def __str__(self):
         return "%s" % self.name
 
+
 @python_2_unicode_compatible
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
@@ -64,7 +66,7 @@ class Parameter(models.Model):
     def __str__(self):
         try:
             return "%s (%s)" % (self.name, self.unit.name)
-        except :
+        except:
             return "%s" % self.name
 
 
@@ -80,7 +82,8 @@ STATUS_CHOICES = (
     (STATUS_PUBLISHED, _("Published")),
     (STATUS_STICKY, _("Sticky")),
     (STATUS_MODERATION, _("Moderation")),
-    )
+)
+
 
 class AbstractData(AbstractDate):
     """
@@ -90,8 +93,10 @@ class AbstractData(AbstractDate):
     slug = models.SlugField(_("URL"), max_length=256, blank=True, unique_for_date="created_date")
     description = models.TextField(_("Description"), blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(app_label)s_%(class)s_user")
-    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
+                             related_name="%(app_label)s_%(class)s_user")
+    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
+        "Enable this if users must login before access with this objects."))
     allow_comments = models.BooleanField(_("allow comments"), default=True)
     allow_pics = models.BooleanField(_("allow pics"), default=False)
     allow_docs = models.BooleanField(_("allow docs"), default=False)
@@ -178,6 +183,7 @@ class AbstractData(AbstractDate):
     admin_link.allow_tags = True
     admin_link.short_description = ""
 
+
 class AbstractImg(models.Model):
     img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
 
@@ -188,7 +194,7 @@ class AbstractImg(models.Model):
     def ava(self):
         try:
             return self.img.url
-        except :
+        except:
             return settings.DEFAULT_IMG
 
     def delete(self, *args, **kwargs):
@@ -207,7 +213,9 @@ class AbstractImg(models.Model):
             tmb = '/static/img/icon-no.gif"'
             path = '/static/img/icon-no.gif"'
         return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
+
     slide_thumbnail.allow_tags = True
+
 
 @python_2_unicode_compatible
 class Color(AbstractImg):
@@ -220,6 +228,7 @@ class Color(AbstractImg):
 
     def __str__(self):
         return self.name
+
 
 @python_2_unicode_compatible
 class Material(AbstractImg):
@@ -248,7 +257,7 @@ class AbstractName(AbstractImg):
     comments = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ['-order_in_list', 'name' ]
+        ordering = ['-order_in_list', 'name']
         abstract = True
 
     def __str__(self):
@@ -261,7 +270,7 @@ class AbstractName(AbstractImg):
                 if self.name_en:
                     return self.name_en
             return self.name
-        except :
+        except:
             return self.name
 
     def get_description(self):
@@ -269,7 +278,7 @@ class AbstractName(AbstractImg):
             if get_language() == 'en':
                 if self.description_en:
                     return self.description_en
-        except :
+        except:
             pass
         return self.description
 
@@ -277,12 +286,13 @@ class AbstractName(AbstractImg):
     def main_image(self):
         try:
             return self.allpics[0].pic.url
-        except :
+        except:
             return settings.DEFAULT_IMG
 
     @property
     def allpics(self):
         from nnmware.core.models import Pic
+
         return Pic.objects.for_object(self).order_by('-primary')
 
     def save(self, *args, **kwargs):
@@ -291,9 +301,8 @@ class AbstractName(AbstractImg):
                 super(AbstractName, self).save(*args, **kwargs)
             self.slug = self.id
         else:
-            self.slug = str(self.slug).strip().replace(' ','-')
+            self.slug = str(self.slug).strip().replace(' ', '-')
         super(AbstractName, self).save(*args, **kwargs)
-
 
 
 @python_2_unicode_compatible
@@ -304,7 +313,8 @@ class Tree(AbstractName):
     parent = models.ForeignKey('self', verbose_name=_("Parent"), blank=True, null=True, related_name="children")
     ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in tree display"))
     rootnode = models.BooleanField(_('Root node'), default=False)
-    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
+    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
+        "Enable this if users must login before access with this objects."))
 
     class Meta:
         ordering = ['ordering', ]
@@ -332,7 +342,7 @@ class Tree(AbstractName):
         else:
             slug_list = ""
         return reverse(self.slug_detail,
-            kwargs={'parent_slugs': slug_list, 'slug': self.slug})
+                       kwargs={'parent_slugs': slug_list, 'slug': self.slug})
 
     def get_separator(self):
         return ' > '
@@ -357,7 +367,7 @@ class Tree(AbstractName):
     def get_root_catid(self):
         if self.parent_id:
             catidlist = self._recurse_for_parents(self)
-            return [catidlist[0].name,catidlist[0].ordering]
+            return [catidlist[0].name, catidlist[0].ordering]
         return [self.name, self.ordering]
 
     @property
@@ -386,7 +396,7 @@ class Tree(AbstractName):
         """
         Taken from a python newsgroup post
         """
-        if type(L) != type([]):
+        if not isinstance(L, list):
             return [L]
         if not L:
             return L
@@ -413,6 +423,7 @@ class Tree(AbstractName):
         flat_list = self._flatten(children_list[ix:])
         return flat_list
 
+
 @python_2_unicode_compatible
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
@@ -432,17 +443,19 @@ class AbstractContent(models.Model):
         except:
             return None
 
+
 DOC_FILE = 0
 DOC_IMAGE = 1
 
 DOC_TYPE = (
     (DOC_FILE, _("File")),
     (DOC_IMAGE, _("Image")),
-    )
+)
 
 
 class AbstractFile(AbstractDate):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"), related_name="%(class)s_f_user")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
+                             related_name="%(class)s_f_user")
     description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
     ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))
@@ -451,12 +464,14 @@ class AbstractFile(AbstractDate):
     class Meta:
         abstract = True
 
+
 class AbstractIP(models.Model):
     ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
     user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
 
     class Meta:
         abstract = True
+
 
 class AbstractContact(AbstractImg):
     mobile_personal = std_text_field(_('Personal mobile phone'), max_length=12)
@@ -502,17 +517,19 @@ class AbstractContact(AbstractImg):
         verbose_name_plural = _("Contact data")
         abstract = True
 
+
 @python_2_unicode_compatible
 class AbstractOrder(AbstractImg):
     order_in_list = models.IntegerField(_('Order in list'), default=0)
     name_en = std_text_field(_('English name'))
 
     class Meta:
-        ordering = ['-order_in_list',]
+        ordering = ['-order_in_list', ]
         abstract = True
 
     def __str__(self):
         return "%s" % self.name
+
 
 SKILL_UNKNOWN = 0
 SKILL_FAN = 1
@@ -522,7 +539,7 @@ SKILL_CHOICES = (
     (SKILL_UNKNOWN, _("Unknown")),
     (SKILL_FAN, _("Fan")),
     (SKILL_PRO, _("Pro")),
-    )
+)
 
 
 @python_2_unicode_compatible
@@ -534,6 +551,7 @@ class AbstractSkill(AbstractOrder):
 
     def __str__(self):
         return "%s :: %s " % (self.skill.name, self.get_level_display())
+
 
 @python_2_unicode_compatible
 class AbstractNnmwareProfile(AbstractDate, AbstractImg):
@@ -559,18 +577,18 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         else:
             return self.user.username
 
-
     def __str__(self):
         return "%s %s" % (self.last_name, self.first_name)
 
     class Meta:
         verbose_name = _("Profile")
         verbose_name_plural = _("Profiles")
-        abstract =  True
+        abstract = True
 
     @permalink
     def get_absolute_url(self):
         return "employer_view", (), {'pk': self.pk}
+
 
 class AbstractOffer(AbstractImg):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
@@ -587,39 +605,40 @@ class AbstractOffer(AbstractImg):
     class Meta:
         verbose_name = _('Special Offer')
         verbose_name_plural = _('Special Offers')
-        abstract =  True
+        abstract = True
+
 
 class AbstractWorkTime(models.Model):
-    mon_on = models.TimeField(verbose_name=_('Monday time from'),blank=True, null=True)
+    mon_on = models.TimeField(verbose_name=_('Monday time from'), blank=True, null=True)
     mon_on_any = models.BooleanField(verbose_name=_('Monday time from any'), default=False)
-    mon_off = models.TimeField(verbose_name=_('Monday time to'),blank=True, null=True)
+    mon_off = models.TimeField(verbose_name=_('Monday time to'), blank=True, null=True)
     mon_off_any = models.BooleanField(verbose_name=_('Monday time to any'), default=False)
-    tue_on = models.TimeField(verbose_name=_('Tuesday time from'),blank=True, null=True)
+    tue_on = models.TimeField(verbose_name=_('Tuesday time from'), blank=True, null=True)
     tue_on_any = models.BooleanField(verbose_name=_('Tuesday time from any'), default=False)
-    tue_off = models.TimeField(verbose_name=_('Tuesday time to'),blank=True, null=True)
+    tue_off = models.TimeField(verbose_name=_('Tuesday time to'), blank=True, null=True)
     tue_off_any = models.BooleanField(verbose_name=_('Tuesday time to any'), default=False)
-    wed_on = models.TimeField(verbose_name=_('Wednesday time from'),blank=True, null=True)
+    wed_on = models.TimeField(verbose_name=_('Wednesday time from'), blank=True, null=True)
     wed_on_any = models.BooleanField(verbose_name=_('Wednesday time from any'), default=False)
-    wed_off = models.TimeField(verbose_name=_('Wednesday time to'),blank=True, null=True)
+    wed_off = models.TimeField(verbose_name=_('Wednesday time to'), blank=True, null=True)
     wed_off_any = models.BooleanField(verbose_name=_('Wednesday time to any'), default=False)
-    thu_on = models.TimeField(verbose_name=_('Thursday time from'),blank=True, null=True)
+    thu_on = models.TimeField(verbose_name=_('Thursday time from'), blank=True, null=True)
     thu_on_any = models.BooleanField(verbose_name=_('Thursday time from any'), default=False)
-    thu_off = models.TimeField(verbose_name=_('Thursday time to'),blank=True, null=True)
+    thu_off = models.TimeField(verbose_name=_('Thursday time to'), blank=True, null=True)
     thu_off_any = models.BooleanField(verbose_name=_('Thursday time to any'), default=False)
-    fri_on = models.TimeField(verbose_name=_('Friday time from'),blank=True, null=True)
+    fri_on = models.TimeField(verbose_name=_('Friday time from'), blank=True, null=True)
     fri_on_any = models.BooleanField(verbose_name=_('Friday time from any'), default=False)
-    fri_off = models.TimeField(verbose_name=_('Friday time to'),blank=True, null=True)
+    fri_off = models.TimeField(verbose_name=_('Friday time to'), blank=True, null=True)
     fri_off_any = models.BooleanField(verbose_name=_('Friday time to any'), default=False)
-    sat_on = models.TimeField(verbose_name=_('Saturday time from'),blank=True, null=True)
+    sat_on = models.TimeField(verbose_name=_('Saturday time from'), blank=True, null=True)
     sat_on_any = models.BooleanField(verbose_name=_('Saturday time from any'), default=False)
-    sat_off = models.TimeField(verbose_name=_('Saturday time to'),blank=True, null=True)
+    sat_off = models.TimeField(verbose_name=_('Saturday time to'), blank=True, null=True)
     sat_off_any = models.BooleanField(verbose_name=_('Saturday time to any'), default=False)
-    sun_on = models.TimeField(verbose_name=_('Sunday time from'),blank=True, null=True)
+    sun_on = models.TimeField(verbose_name=_('Sunday time from'), blank=True, null=True)
     sun_on_any = models.BooleanField(verbose_name=_('Sunday time from any'), default=False)
-    sun_off = models.TimeField(verbose_name=_('Sunday time to'),blank=True, null=True)
+    sun_off = models.TimeField(verbose_name=_('Sunday time to'), blank=True, null=True)
     sun_off_any = models.BooleanField(verbose_name=_('Sunday time to any'), default=False)
 
     class Meta:
         verbose_name = _('Time of work')
         verbose_name_plural = _('Times of works')
-        abstract =  True
+        abstract = True
