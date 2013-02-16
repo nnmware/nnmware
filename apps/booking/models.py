@@ -17,6 +17,7 @@ from nnmware.core.maps import places_near_object
 from nnmware.core.utils import daterange
 from django.utils.encoding import python_2_unicode_compatible
 
+
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
     service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4)
@@ -34,24 +35,26 @@ class HotelOptionCategory(AbstractName):
     class Meta:
         verbose_name = _("Hotel Option Category")
         verbose_name_plural = _("Hotel Option Categories")
-        ordering = ['order_in_list',]
+        ordering = ['order_in_list', ]
+
 
 @python_2_unicode_compatible
 class HotelOption(AbstractName):
-    category = models.ForeignKey(HotelOptionCategory,verbose_name=_('Category option'))
+    category = models.ForeignKey(HotelOptionCategory, verbose_name=_('Category option'))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
     sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False)
 
     class Meta:
         verbose_name = _("Hotel Option")
         verbose_name_plural = _("Hotel Options")
-        ordering = ['category', 'order_in_list', 'name' ]
+        ordering = ['category', 'order_in_list', 'name']
 
     def __str__(self):
         if self.category:
-            return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+            return _("%(name)s :: %(category)s") % {'name': self.name, 'category': self.category.name}
         else:
-            return _("%(name)s") % { 'name': self.name}
+            return _("%(name)s") % {'name': self.name}
+
 
 class PaymentMethod(AbstractName):
     use_card = models.BooleanField(verbose_name=_("Use credit card?"), default=False)
@@ -80,7 +83,7 @@ STAR_CHOICES = (
     (THREE_STAR, _("Three star")),
     (FOUR_STAR, _("Four star")),
     (FIVE_STAR, _("Five star")),
-    )
+)
 
 HOTEL_UNKNOWN = 0
 HOTEL_HOTEL = 1
@@ -94,7 +97,7 @@ HOTEL_CHOICES = (
     (HOTEL_COTTAGE, _("Cottage")),
     (HOTEL_HOME, _("Home")),
     (HOTEL_FLAT, _("Flat")),
-    )
+)
 
 TYPEFOOD_RO = 0
 TYPEFOOD_BB = 1
@@ -118,7 +121,8 @@ TYPEFOOD = (
     (TYPEFOOD_EB, _("EB - English breakfast")),
     (TYPEFOOD_HBPLUS, _("HB+ - Half board + local drinks")),
     (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
-    )
+)
+
 
 @python_2_unicode_compatible
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
@@ -130,7 +134,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
-    option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'),blank=True,null=True)
+    option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'), blank=True, null=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Hotel Admins'), null=True, blank=True)
@@ -148,7 +152,6 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
-
 
     class Meta:
         verbose_name = _("Hotel")
@@ -169,8 +172,8 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def metadesc(self):
         r = self.description
         if get_language() == 'en' and self.description_en:
-                r = self.description_en
-        return r.split('. ')[0]+'.'
+            r = self.description_en
+        return r.split('. ')[0] + '.'
 
     def get_count_stars_hotels(self):
         qs = Hotel.objects.filter(city=self.city)
@@ -178,7 +181,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         three = qs(starcount=THREE_STAR).count()
         four = qs(starcount=FOUR_STAR).count()
         five = qs(starcount=FIVE_STAR).count()
-        return [two,three,four,five]
+        return [two, three, four, five]
 
     def fulladdress(self):
         return "%s, %s" % (self.address, self.city.name)
@@ -197,15 +200,15 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         elif not self.starcount:
             return 'mini'
         else:
-            return range(0,int(self.starcount))
+            return range(0, int(self.starcount))
 
     @permalink
     def get_absolute_url(self):
-        return "hotel_detail", (), {'city':self.city.slug ,'slug': self.slug}
+        return "hotel_detail", (), {'city': self.city.slug, 'slug': self.slug}
 
     @permalink
     def get_cabinet_url(self):
-        return "cabinet_info", (), {'city':self.city.slug ,'slug': self.slug}
+        return "cabinet_info", (), {'city': self.city.slug, 'slug': self.slug}
 
     def get_current_percent(self):
         try:
@@ -228,11 +231,10 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                         avail = None
                         break
                     avail = 1
-                    check_date +=timedelta(days=1)
+                    check_date += timedelta(days=1)
                 if avail:
                     result.append(room)
         return result
-
 
     @property
     def min_current_amount(self):
@@ -259,14 +261,13 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                     result = min_price
         return result
 
-
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.pk:
                 super(Hotel, self).save(*args, **kwargs)
             self.slug = self.pk
         else:
-            self.slug = self.slug.strip().replace(' ','-')
+            self.slug = self.slug.strip().replace(' ', '-')
             if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
                 self.slug = self.pk
         self.updated_date = datetime.now()
@@ -281,8 +282,8 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         self.save()
 
     def tourism_places(self):
-        places = Tourism.objects.raw(places_near_object(self,settings.TOURISM_PLACES_RADIUS,
-            'address_tourism'))
+        places = Tourism.objects.raw(places_near_object(self, settings.TOURISM_PLACES_RADIUS,
+                                                        'address_tourism'))
         all_places = []
         for p in places:
             all_places.append(p.id)
@@ -290,20 +291,21 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     def complete_booking_users_id(self):
         # TODO Check status of bookings
-        users_id = Booking.objects.filter(hotel=self).values_list('user',flat=True)
+        users_id = Booking.objects.filter(hotel=self).values_list('user', flat=True)
         return users_id
 
     def __str__(self):
         try:
-            return _("%(hotel)s :: %(city)s") % {'hotel':self.get_name, 'city':self.city.get_name, }
-        except :
+            return _("%(hotel)s :: %(city)s") % {'hotel': self.get_name, 'city': self.city.get_name, }
+        except:
             return self.name
 
-class RoomOptionCategory(AbstractName):
 
+class RoomOptionCategory(AbstractName):
     class Meta:
         verbose_name = _("Room Option Category")
         verbose_name_plural = _("Room Option Categories")
+
 
 @python_2_unicode_compatible
 class RoomOption(AbstractName):
@@ -311,16 +313,15 @@ class RoomOption(AbstractName):
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
 
     class Meta:
-        ordering = ['order_in_list', 'name' ]
+        ordering = ['order_in_list', 'name']
         verbose_name = _("Room Option")
         verbose_name_plural = _("Room Options")
 
     def __str__(self):
         if self.category:
-            return _("%(name)s :: %(category)s") % { 'name': self.name, 'category':self.category.name }
+            return _("%(name)s :: %(category)s") % {'name': self.name, 'category': self.category.name}
         else:
-            return _("%(name)s") % { 'name': self.name}
-
+            return _("%(name)s") % {'name': self.name}
 
 
 PLACES_UNKNOWN = 0
@@ -343,12 +344,12 @@ PLACES_CHOICES = (
     (PLACES_SIX, _("Six")),
     (PLACES_SEVEN, _("Seven")),
     (PLACES_EIGHT, _("Eight")),
-    )
+)
 
 
 @python_2_unicode_compatible
 class Room(AbstractName):
-    option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'),blank=True,null=True)
+    option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True, null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
@@ -361,16 +362,17 @@ class Room(AbstractName):
 
     def __str__(self):
         try:
-            return _("%(room)s :: %(places)s :: %(hotel)s") % { 'room': self.get_name, 'places':self.places, 'hotel':self.hotel.get_name }
-        except :
+            return _("%(room)s :: %(places)s :: %(hotel)s") % {'room': self.get_name, 'places': self.places,
+                                                               'hotel': self.hotel.get_name}
+        except:
             return self.name
 
     @property
     def metadesc(self):
         r = self.description
-        if get_language() == 'en'and self.description_en:
-                r = self.description_en
-        return r.split('. ')[0]+'.'
+        if get_language() == 'en' and self.description_en:
+            r = self.description_en
+        return r.split('. ')[0] + '.'
 
     @property
     def min_current_amount(self):
@@ -402,41 +404,41 @@ class Room(AbstractName):
 
     def discount_on_date(self, date):
         try:
-            return Discount.objects.get(room=self,date=date).discount
-        except :
+            return Discount.objects.get(room=self, date=date).discount
+        except:
             return None
 
     def amount_on_date_guest_variant(self, date, guests):
         # Find all settlement variants for room
         try:
             s = SettlementVariant.objects.filter(room=self, enabled=True, settlement=guests)[0]
-        except :
+        except:
             try:
                 s = SettlementVariant.objects.filter(room=self,
-                    enabled=True, settlement__gte=guests).order_by('settlement')[0]
-            except :
+                                                     enabled=True, settlement__gte=guests).order_by('settlement')[0]
+            except:
                 s = SettlementVariant.objects.filter(room=self,
-                    enabled=True, settlement__lte=guests).order_by('-settlement')[0]
-        return s.amount_on_date(date),s.settlement
+                                                     enabled=True, settlement__lte=guests).order_by('-settlement')[0]
+        return s.amount_on_date(date), s.settlement
 
     def active_settlements(self):
-        return SettlementVariant.objects.filter(room=self,enabled=True).order_by('settlement')
+        return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
 
-    def date_place_count(self,date):
+    def date_place_count(self, date):
         try:
-            places = SettlementVariant.objects.filter(room=self,enabled=True).order_by('-settlement')
+            places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
             places_max = places[0].settlement
-            availability = Availability.objects.get(room=self,date=date).placecount
-            return places_max*availability
-        except :
+            availability = Availability.objects.get(room=self, date=date).placecount
+            return places_max * availability
+        except:
             return None
 
     def check_min_days(self, from_date, to_date):
-        need_days = (to_date-from_date).days
+        need_days = (to_date - from_date).days
         date_gen = daterange(from_date, to_date)
         for d in date_gen:
             try:
-                min_days = Availability.objects.get(room=self,date=d).min_days
+                min_days = Availability.objects.get(room=self, date=d).min_days
             except:
                 return False
             if min_days > need_days:
@@ -445,8 +447,7 @@ class Room(AbstractName):
 
     @permalink
     def get_absolute_url(self):
-        return "room_detail", (), {'city':self.hotel.city.slug ,'slug': self.hotel.slug,'pk':self.pk}
-
+        return "room_detail", (), {'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk}
 
 
 @python_2_unicode_compatible
@@ -462,13 +463,12 @@ class SettlementVariant(models.Model):
     def __str__(self):
         try:
             return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-            'settlement': self.settlement, 'room': self.room.get_name, 'places':self.room.places,
-            'hotel':self.room.hotel.get_name }
-        except :
+                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+                'hotel': self.room.hotel.get_name}
+        except:
             return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-            'settlement': self.settlement, 'room': self.room.get_name, 'places':self.room.places,
-            'hotel':self.room.hotel }
-            
+                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+                'hotel': self.room.hotel}
 
     def current_amount(self):
         result = PlacePrice.objects.filter(settlement=self, date__lte=datetime.now()).order_by('-date')
@@ -505,7 +505,8 @@ STATUS_CHOICES = (
     (STATUS_PAID, _("Paid")),
     (STATUS_CANCELED, _("Cancelled")),
     (STATUS_COMPLETED, _("Completed")),
-    )
+)
+
 
 @python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
@@ -514,7 +515,8 @@ class Booking(MoneyBase, AbstractIP):
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
-    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True, on_delete=models.SET_NULL)
+    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True,
+                                   on_delete=models.SET_NULL)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
     first_name = models.CharField(verbose_name=_("First name"), max_length=100)
@@ -537,28 +539,27 @@ class Booking(MoneyBase, AbstractIP):
         verbose_name_plural = _("Bookings")
 
     def __str__(self):
-         return "Booking - %s" % self.pk
+        return "Booking - %s" % self.pk
 
     @property
     def days(self):
-        return (self.to_date-self.from_date).days
+        return (self.to_date - self.from_date).days
 
     @permalink
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
-        return 'booking_hotel_detail', (), { 'slug': self.uuid}
+        return 'booking_hotel_detail', (), {'slug': self.uuid}
 
     @permalink
     def get_client_url(self):
         if not self.uuid:
             self.save()
-        return 'booking_user_detail', (), { 'slug': self.uuid}
-
+        return 'booking_user_detail', (), {'slug': self.uuid}
 
     @property
     def days(self):
-        delta = self.to_date-self.from_date
+        delta = self.to_date - self.from_date
         return delta.days
 
     def save(self, *args, **kwargs):
@@ -585,10 +586,8 @@ class AgentPercent(models.Model):
     objects = Manager()
 
     def __str__(self):
-        return _("For %(hotel)s on date %(date)s percent is %(percent)s") % \
-               { 'hotel': self.hotel.name,
-                 'date':self.date,
-                 'percent':self.percent }
+        return _("For %(hotel)s on date %(date)s percent is %(percent)s") % dict(hotel=self.hotel.name, date=self.date,
+                                                                                 percent=self.percent)
 
 
 @python_2_unicode_compatible
@@ -596,7 +595,7 @@ class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel, blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
-    review = models.TextField(verbose_name=_("Review"),blank=True)
+    review = models.TextField(verbose_name=_("Review"), blank=True)
 
     class Meta:
         ordering = ['-date', ]
@@ -604,10 +603,9 @@ class Review(AbstractIP, HotelPoints):
         verbose_name_plural = _("Client reviews")
 
     def __str__(self):
-        return _("Review client %(client)s for hotel %(hotel)s is -> %(review)s") % \
-               { 'client': self.user.get_full_name(),
-                 'hotel': self.hotel.name,
-                 'review': self.review }
+        return _("Review client %(client)s for hotel %(hotel)s is -> %(review)s") % dict(
+            client=self.user.get_full_name(), hotel=self.hotel.name, review=self.review)
+
 
 @python_2_unicode_compatible
 class Availability(models.Model):
@@ -621,12 +619,9 @@ class Availability(models.Model):
         verbose_name_plural = _("Availabilities Places")
 
     def __str__(self):
-        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s")  % \
-                { 'place': self.room.name,
-                 'hotel': self.room.hotel.name,
-                 'date': self.date,
-                 'count': self.placecount
-               }
+        return _("Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> %(count)s") % dict(
+            place=self.room.name, hotel=self.room.hotel.name, date=self.date, count=self.placecount)
+
 
 @python_2_unicode_compatible
 class Discount(models.Model):
@@ -639,12 +634,9 @@ class Discount(models.Model):
         verbose_name_plural = _("Discounts")
 
     def __str__(self):
-        return _("Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> %(discount)s")  %\
-               { 'place': self.room.name,
-                 'hotel': self.room.hotel.name,
-                 'date': self.date,
-                 'discount': self.discount
-               }
+        return _("Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> %(discount)s") % dict(
+            place=self.room.name, hotel=self.room.hotel.name, date=self.date, discount=self.discount)
+
 
 @python_2_unicode_compatible
 class PlacePrice(MoneyBase):
@@ -656,13 +648,10 @@ class PlacePrice(MoneyBase):
         verbose_name_plural = _("Places Prices")
 
     def __str__(self):
-        return _("Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s")  %\
-               { 'settlement': self.settlement.settlement,
-                 'hotel': self.settlement.room.hotel.name,
-                 'date': self.date,
-                 'price': self.amount,
-                 'currency': self.currency.code
-               }
+        return _(
+            "Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s") % dict(
+                settlement=self.settlement.settlement, hotel=self.settlement.room.hotel.name, date=self.date,
+                price=self.amount, currency=self.currency.code)
 
 
 class RequestAddHotel(AbstractIP):
@@ -684,20 +673,20 @@ class RequestAddHotel(AbstractIP):
         verbose_name_plural = _("Requests for add hotels")
         ordering = ("-pk",)
 
+
 def update_hotel_point(sender, instance, **kwargs):
     hotel = instance.hotel
     all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
-        Avg('purity'), Avg('transport'), Avg('prices'))
+                                                              Avg('purity'), Avg('transport'), Avg('prices'))
     hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
     hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
     hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
     hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
     hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
-    h_point = (hotel.food+hotel.service+hotel.purity+hotel.transport+hotel.prices)/5
+    h_point = (hotel.food + hotel.service + hotel.purity + hotel.transport + hotel.prices) / 5
     hotel.point = h_point
     hotel.save()
 
 
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
-
