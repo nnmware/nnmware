@@ -19,7 +19,7 @@ from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED
-from nnmware.core.backends import PicUploadBackend,DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
+from nnmware.core.backends import PicUploadBackend, DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
 from nnmware.core.utils import get_oembed_end_point, update_video_size
@@ -28,8 +28,10 @@ from nnmware.core.utils import get_oembed_end_point, update_video_size
 def AjaxAnswer(payload):
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
+
 def AjaxLazyAnswer(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
+
 
 class AjaxAbstractUploader(object):
     def __call__(self, request, **kwargs):
@@ -96,11 +98,10 @@ class AjaxFileUploader(AjaxAbstractUploader):
                 new.file = self.extra_context['path']
                 new.filetype = 0
                 fullpath = os.path.join(settings.MEDIA_ROOT,
-                    new.file.field.upload_to, new.file.path)
+                                        new.file.field.upload_to, new.file.path)
                 new.size = os.path.getsize(fullpath)
                 new.save()
-                messages.success(request, _("File %s successfully uploaded") %
-                                          new.description)
+                messages.success(request, _("File %s successfully uploaded") % new.description)
                 # let Ajax Upload know whether we saved it or not
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
@@ -118,7 +119,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
         if request.method == "POST":
             self._upload_file(request, **kwargs)
             fullpath = os.path.join(settings.MEDIA_ROOT,
-                self.extra_context['path'])
+                                    self.extra_context['path'])
             try:
                 i = Image.open(fullpath)
             except:
@@ -132,20 +133,21 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 self._new_obj(new, request, **kwargs)
                 new.pic = self.extra_context['path']
                 fullpath = os.path.join(settings.MEDIA_ROOT,
-                    new.pic.field.upload_to, new.pic.path)
+                                        new.pic.field.upload_to, new.pic.path)
                 new.size = os.path.getsize(fullpath)
                 new.save()
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
-                addons = {'size':os.path.getsize(fullpath),
-                          'thumbnail':make_thumbnail(new.pic.url, width=settings.DEFAULT_THUMBNAIL_WIDTH,
-                              height=settings.DEFAULT_THUMBNAIL_HEIGHT,aspect=1)}
-            payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
+                addons = {'size': os.path.getsize(fullpath),
+                          'thumbnail': make_thumbnail(new.pic.url, width=settings.DEFAULT_THUMBNAIL_WIDTH,
+                                                      height=settings.DEFAULT_THUMBNAIL_HEIGHT, aspect=1)}
+            payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             if addons:
                 payload.update(addons)
             return AjaxAnswer(payload)
+
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
     def __init__(self, backend=None, **kwargs):
@@ -157,7 +159,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
         if request.method == "POST":
             self._upload_file(request, **kwargs)
             fullpath = os.path.join(settings.MEDIA_ROOT,
-                self.extra_context['path'])
+                                    self.extra_context['path'])
             try:
                 i = Image.open(fullpath)
             except:
@@ -168,7 +170,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
             if self.success:
                 try:
                     request.user.img.delete()
-                except :
+                except:
                     pass
                 new = Pic()
                 new.content_type = ContentType.objects.get_for_model(get_user_model())
@@ -182,10 +184,11 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 request.user.save()
                 self.pic_id = new.pk
                 # let Ajax Upload know whether we saved it or not
-            payload = {'success': self.success, 'filename': self.filename, 'id':self.pic_id}
+            payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
             return AjaxAnswer(payload)
+
 
 class AjaxImgUploader(AjaxAbstractUploader):
     def __init__(self, backend=None, **kwargs):
@@ -213,12 +216,13 @@ class AjaxImgUploader(AjaxAbstractUploader):
                     remove_thumbnails(obj.img.path)
                     remove_file(obj.img.path)
                     obj.img.delete()
-                except :
+                except:
                     pass
                 obj.img = self.extra_context['path']
                 obj.save()
                 # let Ajax Upload know whether we saved it or not
-                addons = {'tmb': make_thumbnail(obj.img.url,width=int(kwargs['width']),height=int(kwargs['height']),aspect=int(kwargs['aspect']))}
+                addons = {'tmb': make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
+                                                aspect=int(kwargs['aspect']))}
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
@@ -230,31 +234,34 @@ class AjaxImgUploader(AjaxAbstractUploader):
 def as_json(errors):
     return dict((k, map(unicode, v)) for k, v in errors.items())
 
+
 def img_check_rights(request, obj):
     if request.user.is_superuser:
         return True
     return False
 
+
 def img_setmain(request, object_id, img_w='64', img_h='64'):
     # Link used for User press SetMain for Image
     pic = get_object_or_404(Pic, id=int(object_id))
-    if img_check_rights(request,pic):
-        all_pics =Pic.objects.for_object(pic.content_object)
+    if img_check_rights(request, pic):
+        all_pics = Pic.objects.for_object(pic.content_object)
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = {'success': True, 'src': make_thumbnail(pic.pic.url,width=int(img_w),height=int(img_h),aspect=1)}
-    else :
+        payload = {'success': True, 'src': make_thumbnail(pic.pic.url, width=int(img_w), height=int(img_h), aspect=1)}
+    else:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def img_delete(request, object_id):
     # Link used for User press Delete for Image
     pic = get_object_or_404(Pic, id=int(object_id))
-    if img_check_rights(request,pic):
+    if img_check_rights(request, pic):
         pic.delete()
         payload = {'success': True}
-    else :
+    else:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -263,12 +270,11 @@ def img_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
-        payload = {'success': True,
-                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH),
-                   'id':pic.pk}
-    except :
-        payload = {'success': False}
+        payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
+    except:
+        payload = dict(success=False)
     return AjaxLazyAnswer(payload)
+
 
 def img_rotate(request):
     # Rotate image
@@ -284,12 +290,13 @@ def img_rotate(request):
             im = im.convert('RGB')
         im.save(img)
         pic.save()
-        payload = {'success': True, 'id':pic.pk}
+        payload = {'success': True, 'id': pic.pk}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed rotate this image')}
-    except :
+        payload = {'success': False, 'error': _('You are not allowed rotate this image')}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 @login_required
 def avatardelete(request):
@@ -308,27 +315,28 @@ def avatardelete(request):
     else:
         raise Http404()
 
+
 def get_video(request):
     link = request.REQUEST['link']
     if not link[:7] == 'http://':
         link = 'http://%s' % link
     if link.find('youtu.be') != -1:
-        link = link.replace('youtu.be/','www.youtube.com/watch?v=')
+        link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
     try:
         search_qs = Video.objects.filter(video_url=link)[0]
     except:
         search_qs = False
     if search_qs:
-        payload = {'success': False, 'location':search_qs.get_absolute_url()}
-    else:  #try:
+        payload = dict(success=False, location=search_qs.get_absolute_url())
+    else:  # try:
         consumer = oembed.OEmbedConsumer()
         endpoint = get_oembed_end_point(link)
         consumer.addEndpoint(endpoint)
         response = consumer.embed(link)
         result = response.getData()
-        result['html'] = update_video_size(result['html'],500,280)
+        result['html'] = update_video_size(result['html'], 500, 280)
         payload = {'success': True, 'data': result}
-    #    except:
+        #    except:
     #        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -339,7 +347,7 @@ def push_video(request, object_id):
         video = get_object_or_404(Video, id=int(object_id))
         ctype = ContentType.objects.get_for_model(Video)
         status = False
-        if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+        if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
             if unfollow(request.user, video):
             #                action.send(request.user, verb=_('disliked the video'), target=video)
                 if request.user.followers_count:
@@ -349,7 +357,7 @@ def push_video(request, object_id):
             if follow(request.user, video):
                 status = True
                 action.send(request.user, verb=_('liked the video'), action_type=ACTION_LIKED,
-                    target=video, request=request)
+                            target=video, request=request)
                 if request.user.followers_count:
                     for u in get_user_model().objects.filter(pk__in=request.user.followers):
                         if u.follow_set.filter(content_type=ctype, object_id=video.pk).count:
@@ -357,8 +365,8 @@ def push_video(request, object_id):
                         else:
                             notice.send(request.user, user=u, verb=_('now liked'), target=video)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': video.pk, 'status':status}
-    except :
+        payload = {'success': True, 'count': result, 'id': video.pk, 'status': status}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -369,7 +377,7 @@ def push_tag(request, object_id):
         tag = Tag.objects.get(id=object_id)
         ctype = ContentType.objects.get_for_model(Tag)
         status = False
-        if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+        if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
             unfollow(request.user, tag)
             action.send(request.user, verb=_('unfollow the tag'), target=tag)
             if request.user.followers_count:
@@ -379,7 +387,7 @@ def push_tag(request, object_id):
             follow(request.user, tag)
             status = True
             action.send(request.user, verb=_('follow the tag'), action_type=ACTION_FOLLOWED, target=tag,
-                request=request)
+                        request=request)
             if request.user.followers_count:
                 for u in get_user_model().objects.filter(pk__in=request.user.followers):
                     if u.follow_set.filter(content_type=ctype, object_id=tag.pk).count:
@@ -387,8 +395,8 @@ def push_tag(request, object_id):
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=tag)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': tag.pk, 'status':status}
-    except :
+        payload = {'success': True, 'count': result, 'id': tag.pk, 'status': status}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -402,7 +410,7 @@ def push_notify(request):
             u.subscribe = True
         u.save()
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -415,7 +423,7 @@ def push_user(request, object_id):
             raise AccessError
         ctype = ContentType.objects.get_for_model(get_user_model())
         status = False
-        if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+        if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
             unfollow(request.user, user)
             action.send(request.user, verb=_('unfollow the user'), target=user)
             if request.user.followers_count:
@@ -432,10 +440,10 @@ def push_user(request, object_id):
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': user.pk, 'status':status}
+        payload = {'success': True, 'count': result, 'id': user.pk, 'status': status}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -446,15 +454,16 @@ def follow_object(request, content_type_id, object_id):
     actor defined by ``content_type_id``, ``object_id``.
     """
     ctype = get_object_or_404(ContentType, id=content_type_id)
-    if not Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+    if not Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
         actor = ctype.get_object_for_this_type(id=object_id)
         follow(request.user, actor)
         success = True
     else:
         success = False
-    count = Follow.objects.filter(content_type=ctype,object_id=object_id).count()
+    count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
     payload = {'success': success, 'count': count}
     return AjaxLazyAnswer(payload)
+
 
 def unfollow_object(request, content_type_id, object_id):
     """
@@ -462,13 +471,13 @@ def unfollow_object(request, content_type_id, object_id):
     actor defined by ``content_type_id``, ``object_id``.
     """
     ctype = get_object_or_404(ContentType, id=content_type_id)
-    if Follow.objects.filter(user=request.user,content_type=ctype,object_id=object_id).count():
+    if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
         actor = ctype.get_object_for_this_type(id=object_id)
         unfollow(request.user, actor, send_action=True)
         success = True
     else:
         success = False
-    count = Follow.objects.filter(content_type=ctype,object_id=object_id).count()
+    count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
     payload = {'success': success, 'count': count}
     return AjaxLazyAnswer(payload)
 
@@ -477,7 +486,7 @@ def autocomplete_users(request):
     search_qs = get_user_model().objects.filter(username__icontains=request.REQUEST['q'])
     results = []
     for r in search_qs:
-        userstring = {'name': r.username, 'fullname': r.fullname }
+        userstring = {'name': r.username, 'fullname': r.fullname}
         results.append(userstring)
     payload = {'userlist': results}
     return AjaxLazyAnswer(payload)
@@ -491,6 +500,7 @@ def autocomplete_tags(request):
     payload = {'q': results}
     return AjaxLazyAnswer(payload)
 
+
 doc_uploader = AjaxFileUploader()
 pic_uploader = AjaxImageUploader()
 avatar_uploader = AjaxAvatarUploader()
@@ -499,30 +509,31 @@ img_uploader = AjaxImgUploader()
 
 def notice_delete(request, object_id):
     # Link used when User delete the notification
-    if Notice.objects.get(user=request.user,id=object_id):
-        Notice.objects.get(user=request.user,id=object_id).delete()
+    if Notice.objects.get(user=request.user, id=object_id):
+        Notice.objects.get(user=request.user, id=object_id).delete()
         result = Notice.objects.filter(user=request.user).count()
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+
 def delete_message(request, object_id):
     # Link used when User delete the Message
     msg = None
-    if Message.objects.filter(sender=request.user,id=object_id).count():
-        msg = Message.objects.get(sender=request.user,id=object_id)
+    if Message.objects.filter(sender=request.user, id=object_id).count():
+        msg = Message.objects.get(sender=request.user, id=object_id)
         another_user = msg.recipient
         msg.sender_deleted_at = datetime.now()
-    elif Message.objects.filter(recipient=request.user,id=object_id).count():
-        msg = Message.objects.get(recipient=request.user,id=object_id)
+    elif Message.objects.filter(recipient=request.user, id=object_id).count():
+        msg = Message.objects.get(recipient=request.user, id=object_id)
         another_user = msg.sender
         msg.recipient_deleted_at = datetime.now()
     if msg is not None:
         msg.save()
         result = Message.objects.concrete_user(request.user, another_user).count()
         payload = {'success': True, 'count': result}
-    else :
+    else:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -538,6 +549,7 @@ def avatar_delete(request):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def message_add(request):
     """
@@ -556,14 +568,15 @@ def message_add(request):
                 m.body = request.REQUEST['body']
                 m.save()
         success = True
-    except :
+    except:
         success = False
     location = reverse('user_messages')
-    payload = {'success': success, 'location':location}
+    payload = {'success': success, 'location': location}
     return AjaxLazyAnswer(payload)
 
+
 def message_user_add(request):
-    user = get_object_or_404(get_user_model(),username=request.REQUEST['user'])
+    user = get_object_or_404(get_user_model(), username=request.REQUEST['user'])
     result = dict()
     result['fullname'] = user.get_name()
     result['url'] = user.get_absolute_url()
@@ -585,21 +598,22 @@ def pic_delete(request, object_id):
     try:
         pic.delete()
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def pic_setmain(request, object_id):
     # TODO check user rights!!
     # Link used for User press SetMain for Image
     try:
         pic = Pic.objects.get(id=int(object_id))
-        all_pics =Pic.objects.for_object(pic.content_object)
+        all_pics = Pic.objects.for_object(pic.content_object)
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -610,20 +624,20 @@ def doc_delete(request, object_id):
     try:
         doc.delete()
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def pic_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
     try:
-        payload = {'success': True,
-                   'src': make_thumbnail(pic.pic.url,width=settings.MAX_IMAGE_CROP_WIDTH),
-                   'id':pic.pk}
-    except :
+        payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def AjaxGetThumbnail(request):
     img_pk = int(request.REQUEST['image_id'])
@@ -635,10 +649,8 @@ def AjaxGetThumbnail(request):
     if height:
         height = int(height)
     try:
-        payload = {'success': True,
-                   'src': make_thumbnail(pic.pic.url,width=width,height=height),
-                   'id':pic.pk}
-    except :
+        payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=width, height=height), id=pic.pk)
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -664,20 +676,19 @@ def ajax_image_crop(request):
         img = get_path_from_url(pic.pic.url)
         im = Image.open(img)
         if im.size[0] > settings.MAX_IMAGE_CROP_WIDTH:
-            aspect_c = float(im.size[0])/settings.MAX_IMAGE_CROP_WIDTH
-            box = map(lambda x: int(x*aspect_c), box)
+            aspect_c = float(im.size[0]) / settings.MAX_IMAGE_CROP_WIDTH
+            box = map(lambda x: int(x * aspect_c), box)
         im = im.crop(box)
         if im.mode not in ('L', 'RGB'):
             im = im.convert('RGB')
         im.save(img)
         pic.save()
-        payload = {'success': True, 'id':pic.pk}
+        payload = {'success': True, 'id': pic.pk}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed change this image')}
-    except :
+        payload = {'success': False, 'error': _('You are not allowed change this image')}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
-
 
 
 def comment_add(request, content_type, object_id, parent_id=None):
@@ -696,12 +707,12 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.comment = request.REQUEST['comment']
         if not len(comment.comment):
             raise AccessError
-        kwargs={'content_type': content_type, 'object_id': object_id}
+        kwargs = {'content_type': content_type, 'object_id': object_id}
         if parent_id is not None:
             comment.parent_id = int(parent_id)
         comment.save()
         action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
-            description= comment.comment, target=comment.content_object, request=request)
+                    description=comment.comment, target=comment.content_object, request=request)
         avatar_id = False
         kwargs['parent_id'] = comment.pk
         reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
@@ -709,18 +720,19 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment_date = comment.created_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
             avatar_id = comment.user.avatar.pk
-        except :
+        except:
             pass
-        payload = {'success': True, 'id':comment.pk, 'username':comment.user.get_name,
-                   'username_url':comment.get_absolute_url(),
-                   'comment':comment_text, 'avatar_id':avatar_id,
-                   'comment_date': comment_date, 'reply_link':reply_link,
-                   'object_comments':comment.content_object.comments }
+        payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
+                   'username_url': comment.get_absolute_url(),
+                   'comment': comment_text, 'avatar_id': avatar_id,
+                   'comment_date': comment_date, 'reply_link': reply_link,
+                   'object_comments': comment.content_object.comments}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add comment')}
-    except :
+        payload = {'success': False, 'error': _('You are not allowed for add comment')}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def push_message(request, object_id):
     """
@@ -740,16 +752,16 @@ def push_message(request, object_id):
         msg.save()
         try:
             avatar_id = request.user.avatar.pk
-        except :
+        except:
             avatar_id = False
         message_date = msg.sent_at.strftime(settings.COMMENT_DATE_FORMAT)
-        payload = {'success': True, 'id':msg.pk, 'username':msg.sender.get_name,
-                   'username_url':msg.sender.get_absolute_url(),
-                   'message_subject':msg.subject, 'avatar_id':avatar_id,
-                   'message_date': message_date, 'message_body':msg.body }
+        payload = {'success': True, 'id': msg.pk, 'username': msg.sender.get_name,
+                   'username_url': msg.sender.get_absolute_url(),
+                   'message_subject': msg.subject, 'avatar_id': avatar_id,
+                   'message_date': message_date, 'message_body': msg.body}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for send message')}
-    except :
+        payload = {'success': False, 'error': _('You are not allowed for send message')}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
@@ -758,7 +770,7 @@ def set_paginator(request, num):
     try:
         request.session['paginator'] = num
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
