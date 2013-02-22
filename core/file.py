@@ -20,6 +20,7 @@ def upload_to(instance, filename, prefix=None, unique=False):
         basedir = op.join(basedir, prefix)
     return op.join(basedir, filename[:2], filename[2:4], filename)
 
+
 def get_path_from_url(url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ make filesystem path from url """
     if url.startswith(url_root):

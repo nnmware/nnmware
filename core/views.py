@@ -24,10 +24,11 @@ from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, f
 from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
 from nnmware.core.signals import action
-from nnmware.core.utils import send_template_mail, make_key, get_oembed_end_point, get_video_provider_from_link, gen_shortcut, update_video_size
+from nnmware.core.utils import send_template_mail, make_key, get_oembed_end_point, get_video_provider_from_link, \
+    gen_shortcut, update_video_size
+
 
 class UserPathMixin(object):
-
     def get_object(self, queryset=None):
         return get_object_or_404(get_user_model(), username=self.kwargs['username'])
 
@@ -35,22 +36,22 @@ class UserPathMixin(object):
         kwargs['object'] = self.object
         return super(UserPathMixin, self).get_context_data(**kwargs)
 
-class UserToFormMixin(object):
 
+class UserToFormMixin(object):
     def get_form_kwargs(self):
         kwargs = super(UserToFormMixin, self).get_form_kwargs()
         kwargs.update({'user': self.request.user})
         return kwargs
 
-class AjaxFormMixin(object):
 
+class AjaxFormMixin(object):
     def form_valid(self, form):
         if self.request.is_ajax():
             self.success = True
-            payload = {'success': self.success, 'location': self.success_url or self.get_success_url()}
+            payload = dict(success=self.success, location=self.success_url or self.get_success_url())
             try:
                 payload['status_msg'] = self.status_msg
-            except :
+            except:
                 pass
             return AjaxLazyAnswer(payload)
         else:
@@ -65,9 +66,7 @@ class AjaxFormMixin(object):
         if self.request.is_ajax():
             return AjaxLazyAnswer(payload)
         else:
-            return super(AjaxFormMixin, self).form_invalid(
-                form, *args, **kwargs
-            )
+            return super(AjaxFormMixin, self).form_invalid(form, *args, **kwargs)
 
 
 class DocEdit(UpdateView):
@@ -313,6 +312,7 @@ class AttachedImagesMixin(object):
         context['pics_size'] = pics_size
         return context
 
+
 class AttachedFilesMixin(object):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -324,7 +324,8 @@ class AttachedFilesMixin(object):
         context['docs_size'] = docs_size
         return context
 
-class AttachedMixin(AttachedFilesMixin,AttachedImagesMixin):
+
+class AttachedMixin(AttachedFilesMixin, AttachedImagesMixin):
     pass
 
 
@@ -335,7 +336,7 @@ class TagDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(TagDetail,self).get_context_data(**kwargs)
+        context = super(TagDetail, self).get_context_data(**kwargs)
         context['tab'] = 'all'
         context['ctype'] = ContentType.objects.get_for_model(Tag)
         return context
@@ -375,12 +376,14 @@ class TagsCloudView(ListView):
     template_name = 'tag/tags_cloud.html'
     model = Tag
 
+
 class TagsLetterView(ListView):
     template_name = 'tag/tags_list.html'
     model = Tag
 
     def get_queryset(self):
         return Tag.objects.filter(name__startswith=self.kwargs['letter'])
+
 
 class NoticeView(ListView):
     paginate_by = 20
@@ -389,6 +392,7 @@ class NoticeView(ListView):
 
     def get_queryset(self):
         return Notice.objects.filter(user=self.request.user).order_by('-timestamp')
+
 
 class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -414,23 +418,24 @@ class MessageContactsView(ListView):
     paginate_by = 20
     model = Message
     template_name = "messages/userlist.html"
-#    context_object_name = "object_list"
+    #    context_object_name = "object_list"
     make_object_list = True
 
     def get_queryset(self):
         return Message.objects.users(self.request.user)
 
-class RedirectHttpsView(object):
 
+class RedirectHttpsView(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
 
-class RedirectHttpView(object):
 
+class RedirectHttpView(object):
     @method_decorator(ssl_not_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
+
 
 class ChangePasswordView(AjaxFormMixin, FormView):
     form_class = PassChangeForm
@@ -443,7 +448,7 @@ class ChangePasswordView(AjaxFormMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        new_pw =form.cleaned_data.get('new_password2')
+        new_pw = form.cleaned_data.get('new_password2')
         self.request.user.set_password(new_pw)
         self.request.user.save()
         try:
@@ -451,10 +456,11 @@ class ChangePasswordView(AjaxFormMixin, FormView):
             mail_dict = {'new_pw': new_pw}
             subject = 'emails/changepass_client_subject.txt'
             body = 'emails/changepass_client_body.txt'
-            send_template_mail(subject,body,mail_dict,recipients)
+            send_template_mail(subject, body, mail_dict, recipients)
         except:
             pass
         return super(ChangePasswordView, self).form_valid(form)
+
 
 class LoginView(AjaxFormMixin, FormView):
     form_class = LoginForm
@@ -469,6 +475,7 @@ class LoginView(AjaxFormMixin, FormView):
         login(self.request, user)
         return super(LoginView, self).form_valid(form)
 
+
 class EmailQuickRegisterView(AjaxFormMixin, FormView):
     form_class = EmailQuickRegisterForm
     success_url = "/"
@@ -477,7 +484,7 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         email = form.cleaned_data.get('email')
         username = email
         password = form.cleaned_data.get('password')
-        u = get_user_model()(username=username,email=email)
+        u = get_user_model()(username=username, email=email)
         u.set_password(password)
         u.is_active = True
         u.save()
@@ -486,13 +493,14 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         login(self.request, user)
         try:
             recipients = [email]
-            mail_dict = {'name': email, 'pw':password}
+            mail_dict = {'name': email, 'pw': password}
             subject = 'emails/welcome_subject.txt'
             body = 'emails/welcome_body.txt'
-            send_template_mail(subject,body,mail_dict,recipients)
+            send_template_mail(subject, body, mail_dict, recipients)
         except:
             pass
         return super(EmailQuickRegisterView, self).form_valid(form)
+
 
 class ActivateView(View):
     template_name = 'user/logged_out.html'
@@ -504,7 +512,7 @@ class ActivateView(View):
         key = self.kwargs['activation_key']
         try:
             e = EmailValidation.objects.get(key=key)
-            u = get_user_model()(username=e.username,email=e.email)
+            u = get_user_model()(username=e.username, email=e.email)
             u.set_password(e.password)
             u.is_active = True
             u.save()
@@ -512,9 +520,10 @@ class ActivateView(View):
             user = authenticate(username=e.username, password=e.password)
             self.user = user
             login(self.request, user)
-        except :
+        except:
             raise Http404
         return HttpResponseRedirect(self.get_success_url())
+
 
 class PassRecoveryView(View):
     template_name = 'user/logged_out.html'
@@ -529,9 +538,10 @@ class PassRecoveryView(View):
             user = authenticate(username=u.username, password=e.password)
             e.delete()
             login(self.request, user)
-        except :
+        except:
             raise Http404
         return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
+
 
 class LogoutView(TemplateView):
     template_name = 'user/logged_out.html'
@@ -540,18 +550,19 @@ class LogoutView(TemplateView):
         logout(self.request)
         return super(LogoutView, self).get(request, *args, **kwargs)
 
-class AjaxLogoutView(TemplateView):
 
+class AjaxLogoutView(TemplateView):
     def post(self, request, *args, **kwargs):
         self.success = True
         location = None
         try:
             logout(self.request)
             location = '/'
-        except :
+        except:
             self.success = False
         payload = {'success': self.success, 'location': location}
         return AjaxLazyAnswer(payload)
+
 
 class UserSettings(UpdateView):
     form_class = UserSettingsForm
@@ -579,7 +590,6 @@ class RegisterView(AjaxFormMixin, FormView):
     success_url = "/users"
     status = _("YOU GOT ON E-MAIL IS CONFIRMATION. CHECK EMAIL")
 
-
     def form_valid(self, form):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
@@ -589,6 +599,7 @@ class RegisterView(AjaxFormMixin, FormView):
         EmailValidation.objects.add(user=newuser, email=newuser.email)
         newuser.save()
         return super(RegisterView, self).form_valid(form)
+
 
 class SignupView(AjaxFormMixin, FormView):
     form_class = SignupForm
@@ -602,7 +613,7 @@ class SignupView(AjaxFormMixin, FormView):
         password = form.cleaned_data.get('password2')
         try:
             e = EmailValidation.objects.get(email=email)
-        except :
+        except:
             e = EmailValidation()
             e.username = username
             e.email = email
@@ -615,8 +626,9 @@ class SignupView(AjaxFormMixin, FormView):
                      'site_name': settings.SITENAME, 'email': email}
         subject = 'registration/activation_subject.txt'
         body = 'registration/activation.txt'
-        send_template_mail(subject,body,mail_dict,[e.email])
+        send_template_mail(subject, body, mail_dict, [e.email])
         return super(SignupView, self).form_valid(form)
+
 
 class UserList(ListView):
     model = get_user_model()
@@ -665,10 +677,9 @@ class UserDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(UserDetail,self).get_context_data(**kwargs)
+        context = super(UserDetail, self).get_context_data(**kwargs)
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())
         return context
-
 
 
 class ProfileEdit(AjaxFormMixin, UpdateView):
@@ -680,6 +691,7 @@ class ProfileEdit(AjaxFormMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('user_detail', args=[self.request.user.username])
+
 
 class AvatarEdit(UpdateView):
     model = get_user_model()
@@ -725,6 +737,7 @@ class AvatarCrop(UpdateView):
         self.object.save()
         return super(AvatarCrop, self).form_valid(form)
 
+
 class VideoAdd(AjaxFormMixin, FormView):
     model = Video
     form_class = VideoAddForm
@@ -736,7 +749,7 @@ class VideoAdd(AjaxFormMixin, FormView):
         if not link[:7] == 'http://':
             link = 'http://%s' % link
         if link.find('youtu.be') != -1:
-            link = link.replace('youtu.be/','www.youtube.com/watch?v=')
+            link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
         consumer = oembed.OEmbedConsumer()
         # TODO: more code security here - big chance to get fatal error
         endpoint = get_oembed_end_point(link)
@@ -765,8 +778,9 @@ class VideoAdd(AjaxFormMixin, FormView):
             obj.save()
         self.success_url = obj.get_absolute_url()
         action.send(self.request.user, verb=_('added the video'), action_type=ACTION_ADDED, target=obj,
-            request=self.request)
+                    request=self.request)
         return super(VideoAdd, self).form_valid(form)
+
 
 class VideoDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
@@ -779,7 +793,7 @@ class VideoDetail(SingleObjectMixin, ListView):
     def get_context_data(self, **kwargs):
         kwargs['object'] = self.object
         context = super(VideoDetail, self).get_context_data(**kwargs)
-        context['object'].embedcode = update_video_size(context['object'].embedcode,640,363)
+        context['object'].embedcode = update_video_size(context['object'].embedcode, 640, 363)
         context['ctype'] = ContentType.objects.get_for_model(Video)
         self.object.viewcount += 1
         if self.request.user.is_authenticated():
@@ -792,6 +806,7 @@ class VideoDetail(SingleObjectMixin, ListView):
         self.object = self.get_object()
         return Nnmcomment.public.get_tree(self.object)
 
+
 class VideoTimelineFeed(ListView):
     paginate_by = 5
     model = Video
@@ -799,7 +814,7 @@ class VideoTimelineFeed(ListView):
 
     def get_queryset(self):
         ctype = ContentType.objects.get_for_model(Tag)
-        tags_id = Follow.objects.filter(user=self.request.user,content_type=ctype).values_list('object_id',flat=True)
+        tags_id = Follow.objects.filter(user=self.request.user, content_type=ctype).values_list('object_id', flat=True)
         tags = Tag.objects.filter(pk__in=tags_id)
         return Video.objects.filter(tags__in=tags).order_by('-created_date').distinct()
 
@@ -817,7 +832,7 @@ class VideoPopularFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=datetime.now() - timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -849,7 +864,7 @@ class VideoLovedFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(created_date__gte=datetime.now()-timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=datetime.now() - timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -857,6 +872,7 @@ class VideoLovedFeed(ListView):
         context['tab'] = 'loved'
         context['tab_message'] = 'LOVED ON 24 HOURS:'
         return context
+
 
 class TagSubscribers(TagDetail):
     template_name = "tag/subscribers.html"
@@ -875,14 +891,14 @@ class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
     # Call the base implementation first to get a context
         context = super(UserActivity, self).get_context_data(**kwargs)
         #        ctype = ContentType.objects.get_for_model(User)
-        context['actions_list'] = Action.objects.filter(user=self.object) #actor_content_type=ctype, actor_object_id=self.object.id)
+        context['actions_list'] = Action.objects.filter(user=self.object)
         context['tab'] = 'activity'
         context['tab_message'] = 'THIS USER ACTIVITY:'
         return context
 
     def get_queryset(self):
         self.object = self.get_object()
-        return Action.objects.filter(user=self.object) #.filter(action_type__gt=1)
+        return Action.objects.filter(user=self.object)  # filter(action_type__gt=1)
 
 
 class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
@@ -902,6 +918,7 @@ class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
         self.object = self.get_object()
         return Video.objects.filter(user=self.object).order_by('-created_date')
 
+
 class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 12
     template_name = "user/loved_video.html"
@@ -917,7 +934,8 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list('object_id',flat=True)
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Video)).values_list(
+            'object_id', flat=True)
         return Video.objects.filter(id__in=follow)
 
 
@@ -936,8 +954,10 @@ class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list('object_id',flat=True)
+        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(Tag)).values_list(
+            'object_id', flat=True)
         return Tag.objects.filter(id__in=follow)
+
 
 class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -954,8 +974,10 @@ class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        follow = self.object.follow_set.filter(content_type=ContentType.objects.get_for_model(get_user_model())).values_list('object_id',flat=True)
+        follow = self.object.follow_set.filter(
+            content_type=ContentType.objects.get_for_model(get_user_model())).values_list('object_id', flat=True)
         return get_user_model().objects.filter(id__in=follow)
+
 
 class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -972,13 +994,17 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        followers = Follow.objects.filter(object_id=self.object.id, content_type=ContentType.objects.get_for_model(get_user_model())).values_list('user',flat=True)
+        followers = Follow.objects.filter(object_id=self.object.id,
+                                          content_type=ContentType.objects.get_for_model(get_user_model())).\
+            values_list('user', flat=True)
         return get_user_model().objects.filter(id__in=followers)
+
 
 def redirect_page_not_found(request):
     response = render_to_response('errors/404.html', {}, context_instance=RequestContext(request))
     response.status_code = 404
     return response
+
 
 def redirect_500_error(request):
     return render_to_response('errors/500.html', {}, context_instance=RequestContext(request))
