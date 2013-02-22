@@ -31,17 +31,20 @@ from nnmware.apps.address.models import City
 from nnmware.core.decorators import ssl_required
 from django.views.decorators.cache import never_cache
 
+
 class CurrentUserHotelAdmin(object):
     """ Generic update view that check request.user is author of object """
+
     @method_decorator(ssl_required)
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         city = get_object_or_404(City, slug=kwargs['city'])
-        obj = get_object_or_404(Hotel,city=city,slug=kwargs['slug'])
+        obj = get_object_or_404(Hotel, city=city, slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
+
 
 class CurrentUserRoomAdmin(object):
     """ Generic update view that check request.user is author of object """
@@ -65,6 +68,7 @@ class CurrentUserHotelBillAccess(object):
             raise Http404
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
 
+
 class CurrentUserHotelBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
@@ -75,6 +79,7 @@ class CurrentUserHotelBookingAccess(object):
             raise Http404
         return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
 
+
 class CurrentUserBookingAccess(object):
     """ Generic update view that check request.user may view bookings of hotel """
 
@@ -82,12 +87,12 @@ class CurrentUserBookingAccess(object):
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Booking, uuid=kwargs['slug'])
         if obj.user:
-            if (request.user <> obj.user) and not request.user.is_superuser:
+            if (request.user != obj.user) and not request.user.is_superuser:
                 raise Http404
         return super(CurrentUserBookingAccess, self).dispatch(request, *args, **kwargs)
 
-class CurrentUserCabinetAccess(object):
 
+class CurrentUserCabinetAccess(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(get_user_model(), username=kwargs['username'])
@@ -102,6 +107,7 @@ class HotelList(RedirectHttpView, ListView):
     template_name = "hotels/list.html"
 
     def get_queryset(self):
+        result = []
         self.search_data = dict()
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
@@ -120,32 +126,32 @@ class HotelList(RedirectHttpView, ListView):
         try:
             self.city = City.objects.get(slug=self.kwargs['slug'])
             hotels = Hotel.objects.filter(city=self.city).exclude(payment_method=None)
-        except :
+        except:
             self.city = None
             hotels = Hotel.objects.all()
-        self.tab = {'css_name':'asc','css_class':'desc','css_amount':'desc','css_review':'desc',
-                    'order_name':'desc','order_class':'desc','order_amount':'desc','order_review':'desc',
-                    'tab':'name'}
+        self.tab = {'css_name': 'asc', 'css_class': 'desc', 'css_amount': 'desc', 'css_review': 'desc',
+                    'order_name': 'desc', 'order_class': 'desc', 'order_amount': 'desc', 'order_review': 'desc',
+                    'tab': 'name'}
 
-        if (notknowndates and self.city ) or (f_date and t_date and self.city):
+        if (notknowndates and self.city) or (f_date and t_date and self.city):
             result = []
             try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
-                    self.search_data = {'from_date':t_date, 'to_date':f_date, 'guests':guests}
+                    self.search_data = {'from_date': t_date, 'to_date': f_date, 'guests': guests}
                     from_date, to_date = to_date, from_date
                 else:
-                    self.search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+                    self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
                 self.search_data['city'] = self.city
                 for hotel in hotels:
-                    if hotel.free_room(from_date,to_date,guests):
+                    if hotel.free_room(from_date, to_date, guests):
                         result.append(hotel.pk)
                 search_hotel = Hotel.objects.filter(pk__in=result)
-            except :
+            except:
                 search_hotel = hotels
             self.search = 1
-        else :
+        else:
             self.search = 0
             search_hotel = hotels
         if amount_max and amount_min:
@@ -227,6 +233,7 @@ class HotelList(RedirectHttpView, ListView):
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
         return context
 
+
 class HotelAdminList(ListView):
     model = Hotel
     paginate_by = 50
@@ -237,8 +244,8 @@ class HotelAdminList(ListView):
             if self.request.user.is_superuser:
                 result = Hotel.objects.all()
             else:
-                result = Hotel.objects.filter(admins = self.request.user)
-            return result.order_by('city__name','name')
+                result = Hotel.objects.filter(admins=self.request.user)
+            return result.order_by('city__name', 'name')
         raise Http404
 
     def get_context_data(self, **kwargs):
@@ -248,17 +255,16 @@ class HotelAdminList(ListView):
         context['tab'] = _('admin of hotels')
         return context
 
-class HotelPathMixin(object):
 
+class HotelPathMixin(object):
     def get_object(self, queryset=None):
         city = get_object_or_404(City, slug=self.kwargs['city'])
-        return get_object_or_404(Hotel,city=city,slug=self.kwargs['slug'])
+        return get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
 
 
 class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
     model = Hotel
     template_name = "hotels/detail.html"
-
 
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
@@ -270,7 +276,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
-        context['hotel_options'] = self.object.option.order_by('category','order_in_list','name')
+        context['hotel_options'] = self.object.option.order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
         if f_date is not None and t_date is not None and guests is not None:
             try:
@@ -279,21 +285,21 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 if from_date > to_date:
                     from_date, to_date = to_date, from_date
                     f_date, t_date = t_date, f_date
-                context['free_room'] = self.object.free_room(from_date,to_date,guests)
+                context['free_room'] = self.object.free_room(from_date, to_date, guests)
             except:
                 context['free_room'] = None
             finally:
-                search_data = {'from_date':f_date, 'to_date':t_date, 'guests':guests, 'city':self.object.city}
+                search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
                 context['search'] = 1
                 context['search_data'] = search_data
             try:
                 context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
-            except :
+            except:
                 pass
         return context
 
+
 class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
-#    model = Hotel
     slug_field = 'slug'
     template_name = "hotels/location.html"
 
@@ -306,6 +312,7 @@ class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['tab'] = 'location'
         return context
+
 
 class HotelReviews(HotelPathMixin, SingleObjectMixin, ListView):
     paginate_by = 5
@@ -326,6 +333,7 @@ class HotelReviews(HotelPathMixin, SingleObjectMixin, ListView):
         self.object = self.get_object()
         return self.object.review_set.all()
 
+
 class RoomDetail(AttachedImagesMixin, DetailView):
     model = Room
     template_name = 'hotels/room.html'
@@ -341,7 +349,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
             context['search_url'] = self.object.hotel.get_absolute_url()
         context['tab'] = 'description'
-        context['room_options'] = self.object.option.order_by('category','order_in_list','name')
+        context['room_options'] = self.object.option.order_by('category', 'order_in_list', 'name')
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
@@ -353,6 +361,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         return context
 
+
 class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
@@ -362,13 +371,14 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-        context['options_list'] = HotelOption.objects.order_by('category','order_in_list','name')
+        context['options_list'] = HotelOption.objects.order_by('category', 'order_in_list', 'name')
         context['tab'] = 'common'
         context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
+
 
 class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
     model = Hotel
@@ -407,15 +417,15 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
+        context['options_list'] = RoomOption.objects.order_by('category', 'order_in_list', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = hotel
         context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_room', args=[self.object.hotel.city.slug,self.object.hotel.slug,
-                                                 self.object.pk])
+        return reverse('cabinet_room', args=[self.object.hotel.city.slug, self.object.hotel.slug, self.object.pk])
+
 
 class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     model = Room
@@ -427,14 +437,14 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         # Call the base implementation first to get a context
         context = super(CabinetEditRoom, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category','order_in_list','name')
+        context['options_list'] = RoomOption.objects.order_by('category', 'order_in_list', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
         context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_rooms', args=[self.object.hotel.city.slug,self.object.hotel.slug])
+        return reverse('cabinet_rooms', args=[self.object.hotel.city.slug, self.object.hotel.slug])
 
     def form_valid(self, form):
         variants = self.request.POST.getlist('settlement')
@@ -446,8 +456,8 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
                 settlement = SettlementVariant.objects.get(room=self.object, settlement=variant)
                 settlement.enabled = True
                 settlement.save()
-            except :
-                SettlementVariant(room=self.object,settlement=variant, enabled=True).save()
+            except:
+                SettlementVariant(room=self.object, settlement=variant, enabled=True).save()
         return super(CabinetEditRoom, self).form_valid(form)
 
 
@@ -477,19 +487,19 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            if (to_date-from_date).days > 365:
-                to_date = from_date+timedelta(days=365)
-            date_gen = daterange(from_date, to_date+timedelta(days=1))
-        else :
-            from_date = datetime.now()
-            to_date = from_date+timedelta(days=14)
-            date_gen = daterange(from_date, to_date)
-            f_date = datetime.strftime(from_date,"%d.%m.%Y")
-            t_date = datetime.strftime(to_date,"%d.%m.%Y")
-        if from_date < to_date:
-            context['search_dates'] = {'from_date':f_date, 'to_date':t_date}
+            if (to_date - from_date).days > 365:
+                to_date = from_date + timedelta(days=365)
+            date_gen = daterange(from_date, to_date + timedelta(days=1))
         else:
-            context['search_dates'] = {'from_date':t_date, 'to_date':f_date}
+            from_date = datetime.now()
+            to_date = from_date + timedelta(days=14)
+            date_gen = daterange(from_date, to_date)
+            f_date = datetime.strftime(from_date, "%d.%m.%Y")
+            t_date = datetime.strftime(to_date, "%d.%m.%Y")
+        if from_date < to_date:
+            context['search_dates'] = {'from_date': f_date, 'to_date': t_date}
+        else:
+            context['search_dates'] = {'from_date': t_date, 'to_date': f_date}
         date_period = []
         for i in date_gen:
             if days_of_week:
@@ -501,13 +511,14 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         context['days_of_week'] = days_of_week
         return context
 
-class CabinetDiscount(CabinetRates):
 
+class CabinetDiscount(CabinetRates):
     def get_context_data(self, **kwargs):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
         context['discount'] = True
         context['tab'] = 'discounts'
         return context
+
 
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
     model = Bill
@@ -524,7 +535,8 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_bills', args=[self.object.target.city.slug,self.object.target.slug])
+        return reverse('cabinet_bills', args=[self.object.target.city.slug, self.object.target.slug])
+
 
 class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
     paginate_by = 20
@@ -551,22 +563,22 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            if (to_date-from_date).days > 365:
-                to_date = from_date+timedelta(days=365)
-        else :
+            if (to_date - from_date).days > 365:
+                to_date = from_date + timedelta(days=365)
+        else:
             from_date = datetime.now()
-            to_date = from_date+timedelta(days=14)
-            f_date = datetime.strftime(from_date,"%d.%m.%Y")
-            t_date = datetime.strftime(to_date,"%d.%m.%Y")
+            to_date = from_date + timedelta(days=14)
+            f_date = datetime.strftime(from_date, "%d.%m.%Y")
+            t_date = datetime.strftime(to_date, "%d.%m.%Y")
         if from_date < to_date:
-            self.search_dates = {'from_date':f_date, 'to_date':t_date}
+            self.search_dates = {'from_date': f_date, 'to_date': t_date}
         else:
             from_date, to_date = to_date, from_date
-            self.search_dates = {'from_date':t_date, 'to_date':f_date}
+            self.search_dates = {'from_date': t_date, 'to_date': f_date}
         return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
 
+
 class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
-#    model = Hotel
     template_name = "cabinet/bills.html"
     search_dates = dict()
 
@@ -590,19 +602,20 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            if (to_date-from_date).days > 365:
-                to_date = from_date+timedelta(days=365)
-        else :
+            if (to_date - from_date).days > 365:
+                to_date = from_date + timedelta(days=365)
+        else:
             from_date = datetime.now()
-            to_date = from_date+timedelta(days=14)
-            f_date = datetime.strftime(from_date,"%d.%m.%Y")
-            t_date = datetime.strftime(to_date,"%d.%m.%Y")
+            to_date = from_date + timedelta(days=14)
+            f_date = datetime.strftime(from_date, "%d.%m.%Y")
+            t_date = datetime.strftime(to_date, "%d.%m.%Y")
         if from_date < to_date:
-            self.search_dates = {'from_date':f_date, 'to_date':t_date}
+            self.search_dates = {'from_date': f_date, 'to_date': t_date}
         else:
             from_date, to_date = to_date, from_date
-            self.search_dates = {'from_date':t_date, 'to_date':f_date}
+            self.search_dates = {'from_date': t_date, 'to_date': f_date}
         return Bill.objects.for_object(self.object)
+
 
 class RequestAddHotelView(CreateView):
     model = RequestAddHotel
@@ -657,12 +670,13 @@ class BookingsList(CurrentUserSuperuser, ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-                self.search_dates = {'from_date':t_date, 'to_date':f_date}
+                self.search_dates = {'from_date': t_date, 'to_date': f_date}
             else:
-                self.search_dates = {'from_date':f_date, 'to_date':t_date}
+                self.search_dates = {'from_date': f_date, 'to_date': t_date}
             return Booking.objects.filter(date__range=(from_date, to_date))
-        except :
+        except:
             return Booking.objects.all()
+
 
 class RequestsList(CurrentUserSuperuser, ListView):
     paginate_by = 10
@@ -676,6 +690,7 @@ class RequestsList(CurrentUserSuperuser, ListView):
         context['title_line'] = _('request for add')
         return context
 
+
 class ReportsList(CurrentUserSuperuser, TemplateView):
     template_name = "sysadm/reports.html"
 
@@ -685,6 +700,7 @@ class ReportsList(CurrentUserSuperuser, TemplateView):
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
         return context
+
 
 class ReportView(CurrentUserSuperuser, ListView):
     paginate_by = 50
@@ -711,7 +727,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.exclude(admins=None)
             self.report_name = _('Hotels with admins')
         if result:
-            result = result.order_by('city__name','name')
+            result = result.order_by('city__name', 'name')
         self.result_count = len(result)
         self.report_arg = report_type
         return result
@@ -750,6 +766,7 @@ class UserCabinet(CurrentUserCabinetAccess, UpdateView):
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.username])
 
+
 class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
     paginate_by = 5
     template_name = "usercabinet/bookings.html"
@@ -776,8 +793,9 @@ class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
             return Booking.objects.filter(user=self.object, date__range=(from_date, to_date))
-        except :
+        except:
             return Booking.objects.filter(user=self.object)
+
 
 class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     model = Booking
@@ -787,7 +805,7 @@ class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(UserBookingDetail, self).get_context_data(**kwargs)
-        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
         return context
 
@@ -809,8 +827,8 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 room_id = int(self.kwargs['room'])
             except ValueError:
                 raise Http404
-            room = get_object_or_404(Room,id=room_id)
-            if room.hotel.payment_method.count() <1:
+            room = get_object_or_404(Room, id=room_id)
+            if room.hotel.payment_method.count() < 1:
                 raise Http404
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests > max(s):
@@ -818,20 +836,21 @@ class ClientBooking(RedirectHttpsView, DetailView):
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
-                f_date,t_date = t_date,f_date
-                from_date,to_date = to_date,from_date
-            if (from_date-datetime.now()).days < -1:
+                f_date, t_date = t_date, f_date
+                from_date, to_date = to_date, from_date
+            if (from_date - datetime.now()).days < -1:
                 raise Http404
-            avail_count = Availability.objects.filter(room=room,
-                date__range=(from_date, to_date-timedelta(days=1)),placecount__gt=0).count()
-            if avail_count <> (to_date-from_date).days:
+            avail_count = Availability.objects.filter(room=room, date__range=(from_date, to_date - timedelta(days=1)),
+                                                      placecount__gt=0).count()
+            if avail_count != (to_date - from_date).days:
                 raise Http404
-            settlement = SettlementVariant.objects.filter(room=room,
-                settlement__gte=guests, enabled=True).order_by('settlement')[0]
+            settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+                                                          enabled=True).order_by('settlement')[0]
             #settlement = get_object_or_404(SettlementVariant,room=room,settlement=guests,enabled=True)
             valid_price_count = PlacePrice.objects.filter(settlement=settlement,
-                date__range=(from_date, to_date-timedelta(days=1)),amount__gt=0).count()
-            if valid_price_count <> (to_date-from_date).days:
+                                                          date__range=(from_date, to_date - timedelta(days=1)),
+                                                          amount__gt=0).count()
+            if valid_price_count != (to_date - from_date).days:
                 raise Http404
             context = super(ClientBooking, self).get_context_data(**kwargs)
             context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
@@ -841,10 +860,11 @@ class ClientBooking(RedirectHttpsView, DetailView):
             context['room_id'] = room_id
             context['room'] = room
             context['settlements'] = s
-            context['search_data'] = {'from_date':f_date, 'to_date':t_date, 'guests':guests}
+            context['search_data'] = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
             return context
-        else :
+        else:
             raise Http404
+
 
 class ClientAddBooking(AjaxFormMixin, CreateView):
     model = Booking
@@ -862,7 +882,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             if payment_method.use_card:
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
-                        payload = {'success': False, 'engine_error':_('Card number is wrong.')}
+                        payload = {'success': False, 'engine_error': _('Card number is wrong.')}
                         return AjaxLazyAnswer(payload)
                     else:
                         use_card = True
@@ -873,20 +893,19 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
                                 raise ValueError
                             card_cvv2 = int(card_cvv2)
                         except ValueError:
-                            payload = {'success': False, 'engine_error':_('Card CVV2 is wrong.')}
+                            payload = {'success': False, 'engine_error': _('Card CVV2 is wrong.')}
                             return AjaxLazyAnswer(payload)
                 else:
-                    payload = {'success': False, 'engine_error':_('You enter not all data of card.')}
+                    payload = {'success': False, 'engine_error': _('You enter not all data of card.')}
                     return AjaxLazyAnswer(payload)
         else:
-            payload = {'success': False, 'engine_error':_('You are not select payment method.')}
+            payload = {'success': False, 'engine_error': _('You are not select payment method.')}
             return AjaxLazyAnswer(payload)
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
         room = Room.objects.get(id=form.cleaned_data.get('room_id'))
-        settlement = SettlementVariant.objects.get(room=room,
-            settlement=form.cleaned_data.get('settlement'))
+        settlement = SettlementVariant.objects.get(room=room, settlement=form.cleaned_data.get('settlement'))
         self.object.settlement = settlement
         self.object.hotel = settlement.room.hotel
         self.object.status = STATUS_ACCEPTED
@@ -897,14 +916,14 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         commission = Decimal(0)
         on_date = from_date
         while on_date < to_date:
-            price = PlacePrice.objects.get(settlement=settlement, date = on_date)
+            price = PlacePrice.objects.get(settlement=settlement, date=on_date)
             percent = self.object.hotel.get_percent_on_date(on_date)
-            commission += (price.amount*percent)/100
+            commission += (price.amount * percent) / 100
             all_amount += price.amount
-            avail = Availability.objects.get(room=room, date = on_date)
+            avail = Availability.objects.get(room=room, date=on_date)
             avail.placecount -= 1
             avail.save()
-            on_date = on_date+timedelta(days=1)
+            on_date = on_date + timedelta(days=1)
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
@@ -926,6 +945,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         booking_new_hotel_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
+
 class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
     template_name = 'sysadm/request.html'
 
@@ -936,6 +956,7 @@ class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
         context['title_line'] = _('request for add')
         context['request_hotel'] = RequestAddHotel.objects.get(id=self.kwargs['pk'])
         return context
+
 
 class HotelMainPage(TemplateView):
     template_name = 'hotels/intro.html'
@@ -951,6 +972,7 @@ class HotelMainPage(TemplateView):
         context['title_line'] = _('booking of russian hotels')
         return context
 
+
 class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
     model = Booking
     slug_field = 'uuid'
@@ -961,9 +983,10 @@ class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
         context = super(BookingHotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['hotel'] = self.object.hotel
-        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'reports'
         return context
+
 
 class BookingAdminDetail(CurrentUserSuperuser, DetailView):
     model = Booking
@@ -973,9 +996,10 @@ class BookingAdminDetail(CurrentUserSuperuser, DetailView):
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
         context = super(BookingAdminDetail, self).get_context_data(**kwargs)
-        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
         return context
+
 
 class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
     model = Booking
@@ -988,7 +1012,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         context = super(BookingStatusChange, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['hotel'] = self.object.hotel
-        context['title_line'] = _('Booking ID')+' '+self.object.uuid
+        context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'reports'
         return context
 
@@ -1005,12 +1029,11 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
             message += _("New status: ") + self.object.get_status_display() + "\n"
             if desc is not None:
                 message += _("Description: ") + desc + "\n"
-            message += '\n'+"IP: %s USER-AGENT: %s" % (self.request.META.get('REMOTE_ADDR',''),
-                self.request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
+            message += '\n' + "IP: %s USER-AGENT: %s" % (self.request.META.get('REMOTE_ADDR', ''),
+                                                         self.request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
             mail_managers(subject, message)
             self.object.save()
         return super(BookingStatusChange, self).form_valid(form)
-
 
     def get_success_url(self):
         return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])
