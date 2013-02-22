@@ -154,6 +154,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
+    work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False)
 
     class Meta:
         verbose_name = _("Hotel")
