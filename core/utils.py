@@ -2,12 +2,11 @@ import hashlib
 import re
 import unicodedata
 from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
-import logging
 import os
 import random
 import sys
 import types
-from datetime import datetime, date, timedelta
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.core.mail import send_mail
 from django.db import models
@@ -23,16 +22,19 @@ def make_key(name):
     salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
     if isinstance(name, unicode):
         name = name.encode('utf-8')
-    activation_key = hashlib.sha1(salt+name).hexdigest()
+    activation_key = hashlib.sha1(salt + name).hexdigest()
     return activation_key
+
 
 def convert_to_date(d):
     return datetime.fromtimestamp(time.mktime(time.strptime(d, "%d.%m.%Y")))
 
+
 def get_date_directory():
     return datetime.now().strftime("%Y/%m/%d/%H/%M/%S")
 
-def get_oembed_end_point(link = ''):
+
+def get_oembed_end_point(link=''):
     if link.find('youtube.com') != -1:
         return oembed.OEmbedEndpoint('http://www.youtube.com/oembed', ['http://*.youtube.com/*'])
     elif link.find('vimeo.com') != -1:
@@ -43,6 +45,7 @@ def get_oembed_end_point(link = ''):
         return oembed.OEmbedEndpoint('http://api.embed.ly/v1/api/oembed', ['http://*.dailymotion.com/*'])
     else:
         return None
+
 
 def get_video_provider_from_link(link):
     if link.find('youtube.com') != -1:
@@ -56,15 +59,17 @@ def get_video_provider_from_link(link):
     else:
         return None
 
-def update_video_size(html,w,h):
+
+def update_video_size(html, w, h):
     # Change parametrs in Iframe src of EOMBED
-    new_width = 'width="'+str(w)+'"'
-    new_height = 'height="'+str(h)+'"'
+    new_width = 'width="' + str(w) + '"'
+    new_height = 'height="' + str(h) + '"'
     patern1 = r'width="\d+"'
     patern2 = r'height="\d+"'
-    html = re.sub(patern1,new_width, html)
-    html = re.sub(patern2,new_height, html)
+    html = re.sub(patern1, new_width, html)
+    html = re.sub(patern2, new_height, html)
     return html
+
 
 def slug_tag(value):
     """
@@ -72,9 +77,10 @@ def slug_tag(value):
     and converts spaces to hyphens.
     """
     value = unicode(unidecode.unidecode(BeautifulSoup(value).contents[0]))
-#    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    #    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
     value = re.sub('[^\w\s-]', '', value).strip().title()
     return value
+
 
 def tags_normalize(s):
     return map(lambda x: slug_tag(x), s.split(','))
@@ -91,7 +97,6 @@ def gen_shortcut(num):
         num, remainder = divmod(num - 1, len(VALID))
         short += VALID[remainder]
     return short
-
 
 
 def slugify(s):
@@ -125,7 +130,6 @@ def is_editable(obj, request):
 
 def app_enabled(appname):
     """Check the app list to see if a named app is installed."""
-    all_apps = {}
     for app in models.get_apps():
         n = app.__name__.split('.')[-2]
         if n == appname:
@@ -211,6 +215,7 @@ def load_module(module):
         module = sys.modules[module]
     return module
 
+
 _MODULES = []
 
 
@@ -226,14 +231,6 @@ def normalize_dir(dir_name):
     if dir_name.endswith("/"):
         dir_name = dir_name[:-1]
     return dir_name
-
-_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-
-
-def random_string(length, variable=False, charset=_LETTERS):
-    if variable:
-        length = random.randrange(1, length + 1)
-    return ''.join([random.choice(charset) for x in xrange(length)])
 
 
 def request_is_secure(request):
@@ -301,22 +298,25 @@ def get_message_dict(message):
         'level': message.level,
         'text': message.message,
         'tags': message.tags,
-        }
+    }
     return message_dict
+
 
 def date_range(from_date, to_date):
     result = [from_date]
     d = from_date
     while d < to_date:
-        d = d+timedelta(days=1)
+        d = d + timedelta(days=1)
         result.append(d)
     return result
+
 
 def daterange(start_date, end_date):
     for n in range((end_date - start_date).days):
         yield start_date + timedelta(n)
 
-def send_template_mail(subject,body,mail_dict, recipients):
+
+def send_template_mail(subject, body, mail_dict, recipients):
     try:
         subject = render_to_string(subject, mail_dict)
         subject = ''.join(subject.splitlines())
@@ -325,11 +325,13 @@ def send_template_mail(subject,body,mail_dict, recipients):
     except:
         pass
 
+
 def setting(name, default=None):
     """Return setting value for given name or default value."""
     return getattr(settings, name, default)
 
+
 def tuplify(x):
-    return (x,x) # str(x) if needed
+    return x, x  # str(x) if needed
 
 current_year = datetime.now().year

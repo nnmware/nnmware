@@ -14,6 +14,7 @@ from django.contrib.auth.models import check_password
 from nnmware.core.imgutil import fit, aspect_ratio
 from nnmware.core.utils import get_date_directory
 
+
 class EmailAuthBackend(object):
     """
     Email Authentication Backend
@@ -31,7 +32,7 @@ class EmailAuthBackend(object):
             if user.check_password(password):
                 return user
         except:
-            return None 
+            return None
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
@@ -40,8 +41,8 @@ class EmailAuthBackend(object):
         except:
             return None
 
-class UsernameOrEmailAuthBackend(object):
 
+class UsernameOrEmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         if '@' in username:
             kwargs = {'email': username}
@@ -128,13 +129,16 @@ class DocUploadBackend(AbstractUploadBackend):
     upload_dir = settings.DOC_UPLOAD_DIR
     upload_size = settings.DOC_UPLOAD_SIZE
 
+
 class PicUploadBackend(AbstractUploadBackend):
     upload_dir = settings.PIC_UPLOAD_DIR
     upload_size = settings.PIC_UPLOAD_SIZE
 
+
 class AvatarUploadBackend(AbstractUploadBackend):
     upload_dir = settings.AVATAR_UPLOAD_DIR
     upload_size = settings.AVATAR_UPLOAD_SIZE
+
 
 class ImgUploadBackend(AbstractUploadBackend):
     upload_dir = settings.IMG_UPLOAD_DIR
@@ -162,11 +166,13 @@ def image_from_url(url):
     image.save(path, 'jpeg')
     return upload_dir + "/" + timedir + "/" + new_filename
 
+
 def upload_avatar_dir(instance, filename):
     upload_dir = settings.AVATARS_DIR
     new_filename = md5(filename.encode('utf8')).hexdigest() + os.path.splitext(filename)[1]
     timedir = get_date_directory()
     return upload_dir + "/" + timedir + "/" + new_filename
+
 
 def upload_media_dir(instance, filename):
     upload_dir = settings.MEDIAFILES

@@ -1,6 +1,7 @@
 from django.utils import unittest
 from .models import Tag
 
+
 class TagTestCase(unittest.TestCase):
     def setUp(self):
         self.tag1 = Tag.objects.create(name="linux")

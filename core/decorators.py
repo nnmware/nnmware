@@ -13,8 +13,6 @@ from nnmware.core.utils import setting
 from nnmware.core.http import JSONResponse
 
 
-
-
 def stream(func):
     """
     Stream decorator to be applied to methods of an ``ActionManager`` subclass
@@ -61,6 +59,7 @@ def ajax_request(func):
 
     return wrapper
 
+
 def ssl_required(view_func):
     def _checkssl(request, *args, **kwargs):
         if not request.is_secure() and not settings.DEBUG:
@@ -77,6 +76,7 @@ def ssl_required(view_func):
         return view_func(request, *args, **kwargs)
     return _checkssl
 
+
 def ssl_not_required(view_func):
     def _checkssl(request, *args, **kwargs):
         if request.is_secure():
@@ -88,8 +88,7 @@ def ssl_not_required(view_func):
 
 
 LOGIN_ERROR_URL = setting('LOGIN_ERROR_URL', setting('LOGIN_URL'))
-PROCESS_EXCEPTIONS = setting('SOCIAL_AUTH_PROCESS_EXCEPTIONS',
-    'social_auth.utils.log_exceptions_to_messages')
+PROCESS_EXCEPTIONS = setting('SOCIAL_AUTH_PROCESS_EXCEPTIONS', 'social_auth.utils.log_exceptions_to_messages')
 
 
 def dsa_view(redirect_name=None):
@@ -108,30 +107,23 @@ def dsa_view(redirect_name=None):
             backend = get_backend(backend, request, redirect)
 
             if not backend:
-                return HttpResponseServerError('Incorrect authentication ' +\
-                                               'service')
-
+                return HttpResponseServerError('Incorrect authentication service')
             RAISE_EXCEPTIONS = backend_setting(backend, 'SOCIAL_AUTH_RAISE_EXCEPTIONS', setting('DEBUG'))
             try:
                 return func(request, backend, *args, **kwargs)
             except Exception, e:  # some error ocurred
                 if RAISE_EXCEPTIONS:
                     raise
-                log('error', unicode(e), exc_info=True, extra={
-                    'request': request
-                })
-
+                log('error', unicode(e), exc_info=True, extra={'request': request})
                 mod, func_name = PROCESS_EXCEPTIONS.rsplit('.', 1)
                 try:
-                    process = getattr(import_module(mod), func_name,
-                        lambda *args: None)
+                    process = getattr(import_module(mod), func_name, lambda *args: None)
                 except ImportError:
                     pass
                 else:
                     process(request, backend, e)
 
-                url = backend_setting(backend, 'SOCIAL_AUTH_BACKEND_ERROR_URL',
-                    LOGIN_ERROR_URL)
+                url = backend_setting(backend, 'SOCIAL_AUTH_BACKEND_ERROR_URL', LOGIN_ERROR_URL)
                 return HttpResponseRedirect(url)
         return wrapper
     return dec

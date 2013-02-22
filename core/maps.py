@@ -15,12 +15,14 @@ import socket
 
 # OpenStreetMap
 OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addressdetails=1&%s"
+
+
 def osm_geocoder(q):
-    params = { 'q': q.encode('utf-8') }
+    params = {'q': q.encode('utf-8')}
     url = OSM_URL % urllib.urlencode(params)
     socket.setdefaulttimeout(10)
     try:
-        response = urllib2.urlopen(url,timeout=10)
+        response = urllib2.urlopen(url, timeout=10)
         data = response.read()
         if data is None:
             return None
@@ -33,11 +35,12 @@ def osm_geocoder(q):
 STATIC_MAPS_URL = 'http://static-maps.yandex.ru/1.x/?'
 GEOCODE_URL = 'http://geocode-maps.yandex.ru/1.x/?'
 
+
 def request(method, url, data=None, headers=None, timeout=None):
     host_port = url.split('/')[2]
     timeout_set = False
     try:
-        connection = httplib.HTTPConnection(host_port, timeout = timeout)
+        connection = httplib.HTTPConnection(host_port, timeout=timeout)
         timeout_set = True
     except TypeError:
         connection = httplib.HTTPConnection(host_port)
@@ -52,17 +55,19 @@ def request(method, url, data=None, headers=None, timeout=None):
         response = connection.getresponse()
         return response.status, response.read()
 
+
 def get_map_url(api_key, longitude, latitude, zoom, width, height):
     """ returns URL of static yandex map """
     params = [
-       'll=%0.7f,%0.7f' % (float(longitude), float(latitude),),
-       'size=%d,%d' % (width, height,),
-       'z=%d' % zoom,
-       'l=map',
-       'pt=%0.7f,%0.7f' % (float(longitude), float(latitude),),
-       'key=%s' % api_key
+        'll=%0.7f,%0.7f' % (float(longitude), float(latitude),),
+        'size=%d,%d' % (width, height,),
+        'z=%d' % zoom,
+        'l=map',
+        'pt=%0.7f,%0.7f' % (float(longitude), float(latitude),),
+        'key=%s' % api_key
     ]
     return STATIC_MAPS_URL + '&'.join(params)
+
 
 def geocode(api_key, address, timeout=2):
     """ returns (longtitude, latitude,) tuple for given address """
@@ -72,16 +77,19 @@ def geocode(api_key, address, timeout=2):
     except IOError:
         return None, None
 
+
 def _get_geocode_xml(api_key, address, timeout=2):
     url = _get_geocode_url(api_key, address)
     status_code, response = request('GET', url, timeout=timeout)
     return response
+
 
 def _get_geocode_url(api_key, address):
     if isinstance(address, unicode):
         address = address.encode('utf8')
     params = urllib.urlencode({'geocode': address, 'key': api_key})
     return GEOCODE_URL + params
+
 
 def _get_coords(response):
     try:
@@ -93,20 +101,20 @@ def _get_coords(response):
         return None, None
 
 
-RADIUS = 6371 #Earth's mean radius in km
+RADIUS = 6371  # Earth's mean radius in km
+
 
 def distance(origin, destiny):
     (latitude1, longitude1) = (origin[0], origin[1])
     (latitude2, longitude2) = (destiny[0], destiny[1])
-
     dLat = radians(latitude1 - latitude2)
     dLong = radians(longitude1 - longitude2)
-
     # matter of faith
-    a = sin(dLat/2)*sin(dLat/2)+cos(radians(latitude1))*cos(radians(latitude2))*sin(dLong/2)*sin(dLong/2)
-    c = 2*atan2(sqrt(a), sqrt(1-a))
+    a = sin(dLat / 2) * sin(dLat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(dLong / 2) * sin(
+        dLong / 2)
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return RADIUS * c
 
-    return RADIUS*c
 
 def distance_to_object(origin, destiny):
     (latitude1, longitude1) = (origin.latitude, origin.longitude)
@@ -116,17 +124,17 @@ def distance_to_object(origin, destiny):
     dLong = radians(longitude1 - longitude2)
 
     # matter of faith
-    a = sin(dLat/2)*sin(dLat/2)+cos(radians(latitude1))*cos(radians(latitude2))*sin(dLong/2)*sin(dLong/2)
-    c = 2*atan2(sqrt(a), sqrt(1-a))
+    a = sin(dLat / 2) * sin(dLat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(dLong / 2) * sin(
+        dLong / 2)
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
-    return RADIUS*c
+    return RADIUS * c
 
 
 def places_near_object(origin, radius, model_db_name):
-    query= """SELECT id, 3956 * 2 * ASIN(SQRT(POWER(SIN((%s - latitude) *
+    query = """SELECT id, 3956 * 2 * ASIN(SQRT(POWER(SIN((%s - latitude) *
         0.0174532925 / 2), 2) + COS(%s * 0.0174532925) * COS(latitude * 0.0174532925) *
         POWER(SIN((%s - longitude) * 0.0174532925 / 2), 2) )) as distance from %s
-        having distance < %s ORDER BY distance ASC """ % ( origin.latitude, origin.latitude,
-                    origin.longitude, model_db_name, radius)
+        having distance < %s ORDER BY distance ASC """ % (origin.latitude, origin.latitude, origin.longitude,
+                                                          model_db_name, radius)
     return query
-

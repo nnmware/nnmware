@@ -7,10 +7,10 @@ import Image
 import ImageOps
 from django.conf import settings
 from django.db.models.fields.files import ImageField
-from nnmware.core.txtutil import URLify
-from nnmware.core.file import get_path_from_url, get_url_from_path
+from nnmware.core.file import get_path_from_url
 
-TMB_MASKS = ['%s_t*%s','%s_aspect*%s','%s_wm*%s']
+TMB_MASKS = ['%s_t*%s', '%s_aspect*%s', '%s_wm*%s']
+
 
 def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=None):
     """ create thumbnail path from path and required width and/or height.
@@ -42,13 +42,14 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
 
     return urlparse.urljoin(basedir, th_name)
 
+
 def _has_thumbnail(photo_url, width=None, height=None,
                    root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL, aspect=None, watermark=None):
     # one of width/height is required
     assert (width is not None) or (height is not None) or (watermark is not None)
 
     return os.path.isfile(get_path_from_url(_get_thumbnail_path(photo_url,
-        width, height,aspect,watermark), root, url_root))
+                                                                width, height, aspect, watermark), root, url_root))
 
 
 def make_thumbnail(photo_url, width=None, height=None, aspect=None,
@@ -102,7 +103,7 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
             img = ImageOps.fit(img, size, Image.ANTIALIAS, (0.5, 0.5))
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(th_path, quality=settings.THUMBNAIL_QUALITY)
-    except :
+    except:
         return photo_url
     return th_url
 
@@ -122,9 +123,10 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
             except OSError:
                 pass
 
+
 def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     if not f_url:
-        return   # empty url
+        return  # empty url
     file_name = get_path_from_url(f_url, root, url_root)
     try:
         os.remove(file_name)
@@ -136,10 +138,8 @@ def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_r
     file_name = get_path_from_url(img_url, root, url_root)
     im = Image.open(file_name)
     if im.size[0] > width or im.size[1] > height:
-        im.thumbnail((width, height), Image.ANTIALIAS )
-    im.save(file_name, "JPEG", quality=88 )
-
-
+        im.thumbnail((width, height), Image.ANTIALIAS)
+    im.save(file_name, "JPEG", quality=88)
 
 
 def make_admin_thumbnail(url):
@@ -178,7 +178,7 @@ def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
     path = get_path_from_url(photo_url, root, url_root)
     try:
         size = Image.open(path).size
-    except :
+    except:
         # this goes to webserver error log
         return None, None
     return size
@@ -196,38 +196,6 @@ def _rename(old_name, new_name):
         return old_name
 
 
-def rename_by_field(file_path, req_name, add_path=None):
-    if file_path.strip() == '':
-        return ''   # no file uploaded
-
-    old_name = os.path.basename(file_path)
-    path = os.path.dirname(file_path)
-
-    media_root = os.path.normpath(settings.MEDIA_ROOT)
-    if path.startswith(media_root):
-        path = path[len(media_root):]
-    if path[0] == '/':
-        path = path[1:]
-
-    name, ext = os.path.splitext(old_name)
-    new_name = URLify(req_name) + ext
-
-    if (add_path is not None) and (add_path not in path):
-    # prevent adding if already here
-        dest_path = os.path.join(path, add_path)
-    else:
-        dest_path = path
-
-    if not os.path.isdir(os.path.join(media_root, dest_path)):
-        os.mkdir(os.path.join(media_root, dest_path))
-
-    dest_path = os.path.join(dest_path, new_name)
-
-    if file_path != dest_path:
-        return _rename(file_path, dest_path).replace('\\', '/')   # windows fix
-    else:
-        return file_path.replace('\\', '/')  # windows fix
-
 def fit(image, size):
     # Resize Image not more then SIZEpx width.. or Enlarge Image is smaller then SIZE
     wpercent = (size / float(image.size[0]))
@@ -235,20 +203,23 @@ def fit(image, size):
     image = image.resize((size, hsize), Image.ANTIALIAS)
     return image
 
+
 def aspect_ratio(image, w, h):
     # Function for make Aspect Ratio of Image(i.e 16:9)
-    imageWidth=image.size[0]
-    imageHeight=image.size[1]
-    newImageHeight = int((imageWidth/w) * h)
-    topCrop = int((imageHeight-newImageHeight)/2)
-    bottomCrop= imageHeight-topCrop
+    imageWidth = image.size[0]
+    imageHeight = image.size[1]
+    newImageHeight = int((imageWidth / w) * h)
+    topCrop = int((imageHeight - newImageHeight) / 2)
+    bottomCrop = imageHeight - topCrop
     box = (0, topCrop, imageWidth, bottomCrop)
     image = image.crop(box)
     return image
 
-def get_thumbnail_path(url,size):
+
+def get_thumbnail_path(url, size):
     url_t = make_thumbnail(url, width=size)
     return get_path_from_url(url_t)
+
 
 def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ create watermark """
@@ -258,18 +229,19 @@ def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=set
     wm_path = get_path_from_url(wm_url, root, url_root)
     if _has_thumbnail(photo_url, watermark=1):
         # thumbnail already exists
-        if not (os.path.getmtime(photo_path) > os.path.getmtime(wm_path)) and not \
-            (os.path.getmtime(watermark_path) > os.path.getmtime(wm_path)):
+        if not (os.path.getmtime(photo_path) > os.path.getmtime(wm_path)) and \
+                not (os.path.getmtime(watermark_path) > os.path.getmtime(wm_path)):
             # if photo mtime is newer than thumbnail recreate thumbnail
             return wm_url
     try:
         base_im = Image.open(photo_path)
-        logo_im = Image.open(watermark_path) #transparent image
+        logo_im = Image.open(watermark_path)  # transparent image
     except IOError:
         return None
     if align == 'center':
-        base_im.paste(logo_im,((base_im.size[0]-logo_im.size[0])/2,(base_im.size[1]-logo_im.size[1])/2),logo_im)
+        base_im.paste(logo_im, ((base_im.size[0] - logo_im.size[0]) / 2, (base_im.size[1] - logo_im.size[1]) / 2),
+                      logo_im)
     else:
-        base_im.paste(logo_im,(base_im.size[0]-logo_im.size[0],base_im.size[1]-logo_im.size[1]),logo_im)
-    base_im.save(wm_path,"PNG")
+        base_im.paste(logo_im, (base_im.size[0] - logo_im.size[0], base_im.size[1] - logo_im.size[1]), logo_im)
+    base_im.save(wm_path, "PNG")
     return wm_url
