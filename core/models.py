@@ -59,11 +59,11 @@ class Tag(models.Model):
 
     def followers_count(self):
         ctype = ContentType.objects.get_for_model(self)
-        return Follow.objects.filter(content_type=ctype,object_id=self.pk).count()
+        return Follow.objects.filter(content_type=ctype, object_id=self.pk).count()
 
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
-        users = Follow.objects.filter(content_type=ctype,object_id=self.pk).values_list('user',flat=True)
+        users = Follow.objects.filter(content_type=ctype, object_id=self.pk).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
     @permalink
@@ -126,7 +126,8 @@ class Pic(AbstractContent, AbstractFile):
         verbose_name_plural = _("Pics")
 
     def __str__(self):
-        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type), 'obj': unicode(self.content_object)}
+        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type),
+                                                 'obj': unicode(self.content_object)}
 
     def get_file_link(self):
         return os.path.join(settings.MEDIA_URL, self.pic.url)
@@ -184,7 +185,6 @@ class Pic(AbstractContent, AbstractFile):
 
     def get_del_url(self):
         return "pic_del", (), {'object_id': self.pk}
-        #return reverse("pic_del", self.id)
 
     def get_edit_url(self):
         return reverse("pic_edit", self.pk)
@@ -256,6 +256,7 @@ class Follow(models.Model):
     def __str__(self):
         return '%s -> %s' % (self.user, self.content_object)
 
+
 NOTICE_UNKNOWN = 0
 NOTICE_SYSTEM = 1
 NOTICE_VIDEO = 2
@@ -270,7 +271,7 @@ NOTICE_CHOICES = (
     (NOTICE_TAG, _("Tag")),
     (NOTICE_ACCOUNT, _("Account")),
     (NOTICE_PROFILE, _("Profile")),
-    )
+)
 
 
 class Notice(AbstractContent, AbstractIP):
@@ -289,6 +290,7 @@ class Notice(AbstractContent, AbstractIP):
         verbose_name = _("Notice")
         verbose_name_plural = _("Notices")
 
+
 @python_2_unicode_compatible
 class Message(AbstractIP):
     """
@@ -297,8 +299,10 @@ class Message(AbstractIP):
     subject = models.CharField(_("Subject"), max_length=120, blank=True, null=True)
     body = models.TextField(_("Body"))
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender_messages', verbose_name=_("Sender"), )
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='receiver_messages', null=True, blank=True, verbose_name=_("Recipient"))
-    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True, verbose_name=_("Parent message"))
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='receiver_messages', null=True, blank=True,
+                                  verbose_name=_("Recipient"))
+    parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True,
+                                   verbose_name=_("Parent message"))
     sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
     read_at = models.DateTimeField(_("read at"), null=True, blank=True)
     replied_at = models.DateTimeField(_("replied at"), null=True, blank=True)
@@ -327,6 +331,7 @@ class Message(AbstractIP):
 
     def get_absolute_url(self):
         return 'messages_detail', [self.id]
+
     get_absolute_url = models.permalink(get_absolute_url)
 
     def save(self, **kwargs):
@@ -354,10 +359,11 @@ ACTION_CHOICES = (
     (ACTION_COMMENTED, _("Commented")),
     (ACTION_FOLLOWED, _("Followed")),
     (ACTION_LIKED, _("Liked")),
-    )
+)
+
 
 @python_2_unicode_compatible
-class Action(AbstractContent,AbstractIP):
+class Action(AbstractContent, AbstractIP):
     """
     Model Activity of User
     """
@@ -379,18 +385,19 @@ class Action(AbstractContent,AbstractIP):
     def __str__(self):
         return '%s %s %s ago' % (self.user, self.verb, self.timesince())
 
-
     def timesince(self, now=None):
         """
         Shortcut for the ``django.utils.timesince.timesince`` function of the
         current timestamp.
         """
         from django.utils.timesince import timesince as timesince_
+
         return timesince_(self.timestamp, now)
 
     @models.permalink
     def get_absolute_url(self):
         return 'nnmware.core.views.detail', [self.pk]
+
 
 def update_comment_count(sender, instance, **kwargs):
     what = instance.get_content_object()
@@ -417,6 +424,7 @@ def update_doc_count(sender, instance, **kwargs):
 #signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
 #signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
 
+
 class VisitorHit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
@@ -432,6 +440,7 @@ class VisitorHit(models.Model):
         ordering = ['-date']
         verbose_name = _("Visitor hit")
         verbose_name_plural = _("Visitors hits")
+
 
 class EmailValidationManager(Manager):
     """
@@ -474,13 +483,12 @@ class EmailValidationManager(Manager):
         if settings.REQUIRE_EMAIL_CONFIRMATION:
             template_body = "userprofile/email/validation.txt"
             template_subject = "userprofile/email/validation_subject.txt"
-            site_name, domain = Site.objects.get_current().name,\
-                                Site.objects.get_current().domain
+            site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
             body = loader.get_template(template_body).render(Context(locals()))
             subject = loader.get_template(template_subject)
             subject = subject.render(Context(locals())).strip()
             send_mail(subject=subject, message=body, from_email=None,
-                recipient_list=[email])
+                      recipient_list=[email])
             user = get_user_model().objects.get(username=str(user))
             self.filter(user=user).delete()
         return self.create(user=user, key=key, email=email)
@@ -528,6 +536,7 @@ class EmailValidation(models.Model):
         self.save()
         return True
 
+
 @python_2_unicode_compatible
 class Video(AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -536,9 +545,10 @@ class Video(AbstractDate, AbstractImg):
     video_url = models.URLField(max_length=255, verbose_name=_('Video URL'))
     video_provider = models.CharField(max_length=150, verbose_name=_('Video Provider'), blank=True)
     description = models.TextField(verbose_name=_('Description'), blank=True)
-    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_("Enable this if users must login before access with this objects."))
+    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
+        "Enable this if users must login before access with this objects."))
     slug = models.SlugField(_("Slug"), max_length=255, blank=True)
-    duration = models.PositiveIntegerField(null=True,blank=True,editable=False)
+    duration = models.PositiveIntegerField(null=True, blank=True, editable=False)
     viewcount = models.PositiveIntegerField(default=0, editable=False)
     liked = models.PositiveIntegerField(default=0, editable=False)
     embedcode = models.TextField(verbose_name=_('Embed code'), blank=True)
@@ -557,11 +567,11 @@ class Video(AbstractDate, AbstractImg):
 
     def followers_count(self):
         ctype = ContentType.objects.get_for_model(self)
-        return Follow.objects.filter(content_type=ctype,object_id=self.id).count()
+        return Follow.objects.filter(content_type=ctype, object_id=self.id).count()
 
     def followers(self):
         ctype = ContentType.objects.get_for_model(self)
-        users = Follow.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
+        users = Follow.objects.filter(content_type=ctype, object_id=self.id).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
     @permalink
@@ -573,8 +583,9 @@ class Video(AbstractDate, AbstractImg):
 
     def users_commented(self):
         ctype = ContentType.objects.get_for_model(self)
-        users = Nnmcomment.objects.filter(content_type=ctype,object_id=self.id).values_list('user',flat=True)
+        users = Nnmcomment.objects.filter(content_type=ctype, object_id=self.id).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
+
 
 @python_2_unicode_compatible
 class NnmwareUser(AbstractUser):
@@ -595,20 +606,20 @@ class NnmwareUser(AbstractUser):
     workphone = models.CharField(max_length=100, verbose_name=_('work phone'), blank=True)
     publicmail = models.EmailField(_('Public email'), blank=True)
     signature = models.CharField(max_length=100, verbose_name=_('Signature'), blank=True)
-    time_zone = models.FloatField(_('Time zone'), choices=TZ_CHOICES, default=float(settings.PROFILE_DEFAULT_TIME_ZONE), null=True,
-        blank=True)
+    time_zone = models.FloatField(_('Time zone'), choices=TZ_CHOICES, default=float(settings.PROFILE_DEFAULT_TIME_ZONE),
+                                  null=True,
+                                  blank=True)
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
     img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     balance = models.DecimalField(verbose_name=_('Balance'), default=0, max_digits=20, decimal_places=3)
 
-
     class Meta:
         ordering = ['username', ]
         verbose_name = _("User")
         verbose_name_plural = _("Users")
-        abstract =  True
+        abstract = True
 
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.username])
@@ -620,7 +631,7 @@ class NnmwareUser(AbstractUser):
     def ava(self):
         try:
             return self.img.url
-        except :
+        except:
             return settings.DEFAULT_AVATAR
 
     @property
@@ -634,10 +645,10 @@ class NnmwareUser(AbstractUser):
         return ContentType.objects.get_for_model(get_user_model())
 
     def followers_count(self):
-        return Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).count()
+        return Follow.objects.filter(content_type=self._ctype(), object_id=self.user.pk).count()
 
     def followers(self):
-        users = Follow.objects.filter(content_type=self._ctype(),object_id=self.user.pk).values_list('user',flat=True)
+        users = Follow.objects.filter(content_type=self._ctype(), object_id=self.user.pk).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
     def follow_tags_count(self):
@@ -646,7 +657,7 @@ class NnmwareUser(AbstractUser):
 
     def follow_tags(self):
         ctype = ContentType.objects.get_for_model(Tag)
-        tags_ids = self.user.follow_set.filter(content_type=ctype).values_list('object_id',flat=True)
+        tags_ids = self.user.follow_set.filter(content_type=ctype).values_list('object_id', flat=True)
         return map(lambda x: int(x), tags_ids)
 
     def loved_video_count(self):
@@ -656,17 +667,16 @@ class NnmwareUser(AbstractUser):
     def follow_count(self):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
 
-
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.user.username])
 
     def basket_sum(self):
         from nnmware.apps.shop.models import Basket
-        all_sum =  Basket.objects.filter(user=self).aggregate(Sum('sum'))
-#        basket_user = Basket.objects.filter(user=self.user)
-#        all_sum = 0
-#        for item in basket_user:
-#            all_sum += item.sum
+        all_sum = Basket.objects.filter(user=self).aggregate(Sum('sum'))
+        #        basket_user = Basket.objects.filter(user=self.user)
+        #        all_sum = 0
+        #        for item in basket_user:
+        #            all_sum += item.sum
         return "%0.2f" % (all_sum,)
 
     @property
@@ -679,5 +689,3 @@ class NnmwareUser(AbstractUser):
     def save(self, *args, **kwargs):
         self.date_modified = datetime.now()
         super(NnmwareUser, self).save(*args, **kwargs)
-
-

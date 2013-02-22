@@ -7,7 +7,6 @@ from django.db.models import Q
 
 
 class AbstractContentManager(Manager):
-
     def for_object(self, obj):
         object_type = ContentType.objects.get_for_model(obj)
         return self.filter(content_type__pk=object_type.id, object_id=obj.id)
@@ -113,7 +112,8 @@ class PublicNnmcommentManager(NnmcommentManager):
     def get_query_set(self):
         from nnmware.core.abstract import STATUS_PUBLISHED, STATUS_STICKY
 
-        return super(NnmcommentManager, self).get_query_set().filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
+        return super(NnmcommentManager, self).get_query_set().filter(
+            Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
 
 class FollowManager(AbstractContentManager):
@@ -134,6 +134,7 @@ class FollowManager(AbstractContentManager):
 #        content_type = ContentType.objects.get_for_model(User).pk
 #        return self.filter(content_type=content_type, user=user)
 
+
 class FinancialManager(Manager):
     """
     Manager for Transaction model.
@@ -146,8 +147,8 @@ class FinancialManager(Manager):
         content_type = ContentType.objects.get_for_model(instance).pk
         return self.filter(target_ctype=content_type, target_oid=instance.pk)
 
-class MessageManager(Manager):
 
+class MessageManager(Manager):
     def inbox_for(self, user):
         """
         Returns all messages that were received by the given user and are not
@@ -172,8 +173,8 @@ class MessageManager(Manager):
         messages = self.filter(
             Q(recipient=user, recipient_deleted_at__isnull=True) |
             Q(sender=user, sender_deleted_at__isnull=True))
-        senders = messages.values_list('sender',flat=True)
-        recipients = messages.values_list('recipient',flat=True)
+        senders = messages.values_list('sender', flat=True)
+        recipients = messages.values_list('recipient', flat=True)
         return get_user_model().objects.exclude(pk=user.pk).filter(
             Q(pk__in=senders) | Q(pk__in=recipients)).order_by('username')
 
@@ -191,7 +192,6 @@ class MessageManager(Manager):
             Q(recipient=user, recipient_deleted_at__isnull=True) |
             Q(sender=user, sender_deleted_at__isnull=True)
         ).filter(parent_msg__isnull=True).order_by('-sent_at')
-
 
     def outbox_for(self, user):
         """
@@ -216,14 +216,13 @@ class MessageManager(Manager):
             sender_deleted_at__isnull=False,
         )
 
-class ProductManager(Manager):
 
+class ProductManager(Manager):
     def active(self):
-        return self.filter(avail=True,visible=True)
+        return self.filter(avail=True, visible=True)
 
     def sale(self):
         return self.active().filter(discount=True)
-
 
     #    def active_date_sort(self):
     #        return self.filter(avail=True).order_by('-created_date')
@@ -232,4 +231,4 @@ class ProductManager(Manager):
         return self.active().filter(latest=True)
 
     def on_main(self):
-        return self.filter(enabled=True,on_main=True).order_by('-maincatid')
+        return self.filter(enabled=True, on_main=True).order_by('-maincatid')

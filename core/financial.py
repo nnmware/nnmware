@@ -5,6 +5,7 @@ from datetime import datetime, date, time
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 
+
 def convert_from_client_currency(request, amount):
     try:
         if request.COOKIES['currency'] == CURRENCY:
@@ -15,28 +16,30 @@ def convert_from_client_currency(request, amount):
             exchange = rate.official_rate
         else:
             exchange = rate.rate
-        return int((int(amount)*exchange)/rate.nominal)
-    except :
+        return int((int(amount) * exchange) / rate.nominal)
+    except:
         return int(amount)
+
 
 def luhn_checksum(card_number):
     def digits_of(n):
         return [int(d) for d in str(n)]
+
     digits = digits_of(card_number)
     odd_digits = digits[-1::-2]
     even_digits = digits[-2::-2]
     checksum = 0
     checksum += sum(odd_digits)
     for d in even_digits:
-        checksum += sum(digits_of(d*2))
+        checksum += sum(digits_of(d * 2))
     return checksum % 10
+
 
 def is_luhn_valid(card_number):
     return luhn_checksum(card_number) == 0
 
 
 class ExcelResponse(HttpResponse):
-
     def __init__(self, data, output_name='excel_data', headers=None,
                  force_csv=False, encoding='utf8'):
 
@@ -57,6 +60,7 @@ class ExcelResponse(HttpResponse):
         assert valid_data is True, "ExcelResponse requires a sequence of sequences"
 
         import StringIO
+
         output = StringIO.StringIO()
         # Excel has a limit on number of rows; if we have more than that, make a csv
         use_xls = False
@@ -103,7 +107,5 @@ class ExcelResponse(HttpResponse):
             mimetype = 'text/csv'
             file_ext = 'csv'
         output.seek(0)
-        super(ExcelResponse, self).__init__(content=output.getvalue(),
-                                            mimetype=mimetype)
-        self['Content-Disposition'] = 'attachment;filename="%s.%s"' % \
-            (output_name.replace('"', '\"'), file_ext)
+        super(ExcelResponse, self).__init__(content=output.getvalue(), mimetype=mimetype)
+        self['Content-Disposition'] = 'attachment;filename="%s.%s"' % (output_name.replace('"', '\"'), file_ext)

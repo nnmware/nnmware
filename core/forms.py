@@ -14,8 +14,9 @@ from nnmware.core.models import Pic, Tag, Doc, EmailValidation, Video
 from nnmware.core.utils import tags_normalize
 from nnmware.core.exceptions import UserIsDisabled
 
+
 class TagsMixinForm(forms.ModelForm):
-    tags = forms.CharField(label=_('Tags'))  #, widget=AutocompleteWidget(choices_url='autocomplete_tags'))
+    tags = forms.CharField(label=_('Tags'))  # widget=AutocompleteWidget(choices_url='autocomplete_tags'))
 
     def clean_tags(self):
         """
@@ -43,6 +44,7 @@ class DocDeleteForm(forms.ModelForm):
         model = Doc
         fields = ()
 
+
 EDITOR_ACTION = (('rotate90', _('Rotate 90')), ('rotate270', _('Rotate 270')),
                  ('resize', _('Resize')))
 
@@ -57,13 +59,12 @@ class PicEditorForm(forms.ModelForm):
     bottom = forms.IntegerField()
     editor_action = forms.ChoiceField(widget=RadioSelect, choices=EDITOR_ACTION)
 
-class UploadPicForm(forms.Form):
 
+class UploadPicForm(forms.Form):
     pic = forms.ImageField()
 
     def __init__(self, *args, **kwargs):
-        size = kwargs.pop('size', settings.PIC_DEFAULT_SIZE)
-#        self.target = kwargs.pop('target')
+        kwargs.pop('size', settings.PIC_DEFAULT_SIZE)
         super(UploadPicForm, self).__init__(*args, **kwargs)
 
     def clean_pic(self):
@@ -90,11 +91,11 @@ class UploadPicForm(forms.Form):
                 {'nb_pic': count, 'nb_max_pic': settings.PIC_MAX_PER_OBJECT})
         return
 
-class EmailQuickRegisterForm(forms.ModelForm):
 
+class EmailQuickRegisterForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ('email','password')
+        fields = ('email', 'password')
 
     def clean_email(self):
         """
@@ -106,7 +107,7 @@ class EmailQuickRegisterForm(forms.ModelForm):
         try:
             get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
-        except :
+        except:
             return email
 
     def clean_password(self):
@@ -114,6 +115,7 @@ class EmailQuickRegisterForm(forms.ModelForm):
         if not password:
             raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
         return password
+
 
 class PassChangeForm(forms.Form):
     old_password = forms.CharField(label=_("Old password"), widget=forms.PasswordInput)
@@ -142,9 +144,10 @@ class PassChangeForm(forms.Form):
         return password2
 
     def clean(self):
-        if  self.cleaned_data.get('old_password') == self.cleaned_data.get('new_password2'):
+        if self.cleaned_data.get('old_password') == self.cleaned_data.get('new_password2'):
             raise forms.ValidationError(_("Old and new passwords are equal."))
         return self.cleaned_data
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label=_('Username'), max_length=30)
@@ -159,23 +162,30 @@ class LoginForm(forms.Form):
             raise forms.ValidationError(_("THIS FIELD IS REQUIRED"))
         try:
             user = get_user_model().objects.get(username=username)
-            if not user.is_active: raise UserIsDisabled
+            if not user.is_active:
+                raise UserIsDisabled
             return username
         except get_user_model().DoesNotExist:
             try:
                 user = get_user_model().objects.get(email=username)
-                if not user.is_active: raise UserIsDisabled
+                if not user.is_active:
+                    raise UserIsDisabled
                 return username
-            except UserIsDisabled: raise UserIsDisabled
-            except: raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"))
-        except UserIsDisabled: raise forms.ValidationError(_("THE USER IS DISABLED"))
+            except UserIsDisabled:
+                raise UserIsDisabled
+            except:
+                raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"))
+        except UserIsDisabled:
+            raise forms.ValidationError(_("THE USER IS DISABLED"))
 
     def clean_password(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
-        if not user: raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
+        if not user:
+            raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
         return password
+
 
 class UserSettingsForm(forms.ModelForm):
     oldpassword = forms.CharField(label=_('Old Password'), max_length=30, required=False)
@@ -184,8 +194,10 @@ class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ('oldpassword', 'newpassword')
+
 #            'fullname', 'publicmail', 'location', 'website',
 #            'facebook','googleplus','twitter', 'about', 'oldpassword', 'newpassword', 'subscribe')
+
 
 class RegistrationForm(UserCreationForm):
     """
@@ -198,8 +210,8 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         if settings.CAPTCHA_ENABLED:
-            self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
-                                                                         'invalid' : _('Answer is wrong') })
+            self.fields['recaptcha'] = ReCaptchaField(error_messages={'required': _('This field is required'),
+                                                                      'invalid': _('Answer is wrong')})
         super(RegistrationForm, self).__init__(*args, **kwargs)
 
     def clean_email(self):
@@ -226,16 +238,18 @@ class RegistrationForm(UserCreationForm):
         """
         Verify that the 2 passwords fields are equal
         """
-        if self.cleaned_data.get("password1") ==\
-           self.cleaned_data.get("password2"):
+        if self.cleaned_data.get("password1") == \
+                self.cleaned_data.get("password2"):
             return self.cleaned_data
         else:
             raise forms.ValidationError(_("The passwords inserted are different."))
+
 
 class SignupForm(UserCreationForm):
     """
     Form for registering a new user userprofile.
     """
+
     class Meta:
         model = get_user_model()
         fields = ('username', 'email')
@@ -247,7 +261,7 @@ class SignupForm(UserCreationForm):
         try:
             get_user_model().objects.get(username=username)
             raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
-        except :
+        except:
             return username
 
     def clean_email(self):
@@ -283,6 +297,7 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(_("PASSWORDS ARE MISMATCH"))
         return password2
 
+
 class AvatarCropForm(forms.ModelForm):
     """
     Crop dimensions form
@@ -294,7 +309,7 @@ class AvatarCropForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ('top','left','right','bottom')
+        fields = ('top', 'left', 'right', 'bottom')
 
     def clean(self):
         if int(self.cleaned_data.get('right')) - int(self.cleaned_data.get('left')) < 4:
@@ -302,10 +317,12 @@ class AvatarCropForm(forms.ModelForm):
         else:
             return self.cleaned_data
 
+
 class AvatarForm(forms.ModelForm):
     """
     The avatar form requires only one image field.
     """
+
     class Meta:
         model = get_user_model()
         fields = ('img',)
@@ -316,7 +333,6 @@ class AvatarForm(forms.ModelForm):
         return self.cleaned_data
 
 
-
 class EmailValidationForm(forms.Form):
     email = forms.EmailField()
 
@@ -325,8 +341,7 @@ class EmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if not (get_user_model().objects.filter(email=email) or
-                EmailValidation.objects.filter(email=email)):
+        if not (get_user_model().objects.filter(email=email) or EmailValidation.objects.filter(email=email)):
             return email
 
         raise forms.ValidationError(_("That e-mail is already used."))
@@ -340,8 +355,8 @@ class ResendEmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if get_user_model().objects.filter(email=email) or\
-           EmailValidation.objects.filter(email=email):
+        if get_user_model().objects.filter(email=email) or \
+                EmailValidation.objects.filter(email=email):
             return email
 
         raise forms.ValidationError(_("That e-mail isn't registered."))
@@ -352,19 +367,19 @@ class ProfileForm(forms.ModelForm):
     last_name = forms.CharField(label=_('Last Name'), max_length=30)
     email = forms.EmailField(label=_("Site-only email"))
     birthdate = forms.DateField(('%d/%m/%Y',), label='Birth Date', required=False,
-        widget=forms.DateTimeInput(format='%d/%m/%Y', attrs={
-            'class': 'datePicker',
-            'readonly': 'readonly',
-            'size': '15'
-        }))
+                                widget=forms.DateTimeInput(format='%d/%m/%Y', attrs={
+                                    'class': 'datePicker',
+                                    'readonly': 'readonly',
+                                    'size': '15'
+                                }))
 
     class Meta:
         model = get_user_model()
         fields = ('first_name', 'last_name', 'email', 'birthdate')
-#            'first_name', 'last_name', 'email', 'gender', 'birthdate',
-#            'website', 'icq', 'skype', 'jabber', 'mobile', 'workphone',
-#            'facebook','googleplus','twitter',
-#            'publicmail', 'signature', 'time_zone', 'show_signatures', 'about')
+    #            'first_name', 'last_name', 'email', 'gender', 'birthdate',
+    #            'website', 'icq', 'skype', 'jabber', 'mobile', 'workphone',
+    #            'facebook','googleplus','twitter',
+    #            'publicmail', 'signature', 'time_zone', 'show_signatures', 'about')
 
     def __init__(self, *args, **kwargs):
         self.profile = kwargs.get('instance', None)
@@ -385,7 +400,6 @@ class ProfileForm(forms.ModelForm):
         return f
 
 
-
 class EditForm(forms.ModelForm):
     """Form for editing user userprofile"""
 
@@ -393,20 +407,20 @@ class EditForm(forms.ModelForm):
         model = get_user_model()
         fields = ('first_name', 'last_name', 'email')
 
-class VideoAddForm(TagsMixinForm):
 
+class VideoAddForm(TagsMixinForm):
     class Meta:
         model = Video
-        fields = ('project_url','project_name', 'video_url' ,'tags','description')
+        fields = ('project_url', 'project_name', 'video_url', 'tags', 'description')
         widgets = dict(description=forms.Textarea)
 
-class CoreUserChangeForm(UserChangeForm):
 
+class CoreUserChangeForm(UserChangeForm):
     class Meta:
         model = get_user_model()
 
-class CoreUserCreationForm(UserCreationForm):
 
+class CoreUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
 

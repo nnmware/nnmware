@@ -1,8 +1,5 @@
 # -*- encoding: utf-8 -*-
-
-
-from xml.etree.ElementTree import Element, SubElement, tostring
-from django.db.models import Q
+from xml.etree.ElementTree import SubElement
 
 
 def get_queryset_category(obj, main_obj, cat_obj, active=False):
@@ -10,9 +7,9 @@ def get_queryset_category(obj, main_obj, cat_obj, active=False):
     if obj.kwargs['parent_slugs']:
         parent_slugs = obj.kwargs['parent_slugs']
         parent = cat_obj.objects.all().filter(slug=parent_slugs[:-1])[0].id
-        q = cat_obj.objects.get(parent=parent,slug=slug)
+        q = cat_obj.objects.get(parent=parent, slug=slug)
     else:
-        q = cat_obj.objects.get(slug=slug,parent__isnull=True)
+        q = cat_obj.objects.get(slug=slug, parent__isnull=True)
     array_child = [q.id]
     children = q.get_all_children()
     for child in children:
@@ -34,7 +31,7 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
         for child in current_node.get_all_children():
             counter += child._active_set.count()
         if counter > 0:
-            count_txt = SubElement(temp_parent, 'sup', {'class':'amount'})
+            count_txt = SubElement(temp_parent, 'sup', {'class': 'amount'})
             count_txt.text = str(counter)
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul')

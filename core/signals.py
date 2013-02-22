@@ -3,7 +3,7 @@ from django.dispatch import Signal
 action = Signal(providing_args=['user', 'verb', 'action_object', 'target', 'description', 'timestamp'])
 
 #Signal for create new notice
-notice = Signal(providing_args=['user','sender', 'verb', 'target', 'description', 'notice_type'])
+notice = Signal(providing_args=['user', 'sender', 'verb', 'target', 'description', 'notice_type'])
 
 # Pre update signal
 #   This signal is sent when user instance is about to be updated with
