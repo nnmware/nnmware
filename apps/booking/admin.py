@@ -100,6 +100,15 @@ class PaymentMethodAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+class HotelTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+    fieldsets = (
+        (_("Hotel type"), {"fields": [("name", ), ('description',)]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en",), ("description_en",), ]}),)
+
+
 class RoomOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'slug')
     search_fields = ('name',)
@@ -229,6 +238,4 @@ admin.site.register(SettlementVariant, SettlementVariantAdmin)
 admin.site.register(PlacePrice, PlacePriceAdmin)
 admin.site.register(PaymentMethod, PaymentMethodAdmin)
 admin.site.register(Discount, DiscountAdmin)
-
-
-
+admin.site.register(HotelType, HotelTypeAdmin)

@@ -65,6 +65,15 @@ class PaymentMethod(AbstractName):
         ordering = ("name",)
 
 
+class HotelType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Hotel type")
+        verbose_name_plural = _("Hotel types")
+        ordering = ("name",)
+
+
 UNKNOWN_STAR = -10
 APARTAMENTS = -2
 HOSTEL = -1
@@ -155,6 +164,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
     work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False)
+    hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True)
 
     class Meta:
         verbose_name = _("Hotel")
