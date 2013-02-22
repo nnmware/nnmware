@@ -145,7 +145,7 @@ class HotelList(RedirectHttpView, ListView):
                     self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
                 self.search_data['city'] = self.city
                 for hotel in hotels:
-                    if hotel.free_room(from_date, to_date, guests):
+                    if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
                         result.append(hotel.pk)
                 search_hotel = Hotel.objects.filter(pk__in=result)
             except:
