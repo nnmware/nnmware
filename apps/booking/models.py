@@ -66,6 +66,7 @@ class PaymentMethod(AbstractName):
 
 
 UNKNOWN_STAR = -10
+APARTAMENTS = -2
 HOSTEL = -1
 MINI_HOTEL = 0
 ONE_STAR = 1
@@ -76,6 +77,7 @@ FIVE_STAR = 5
 
 STAR_CHOICES = (
     (UNKNOWN_STAR, _("Unknown")),
+    (APARTAMENTS, _("Apartaments")),
     (HOSTEL, _("Hostel")),
     (MINI_HOTEL, _("Mini-hotel")),
     (ONE_STAR, _("One star")),
