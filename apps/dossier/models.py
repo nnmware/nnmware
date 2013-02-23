@@ -509,7 +509,6 @@ class SurveySuit(AbstractName):
     class Meta:
         verbose_name = _("Survey type")
         verbose_name_plural = _("Survey types")
-        abstract = True
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
