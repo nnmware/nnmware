@@ -157,6 +157,22 @@ class SurveySuitTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', ]}),)
 
 
+class VehicleAdmin(TypeBaseAdmin):
+    fieldsets = (('t_mark', 't_type', 'name'),)
+
+
+class SurveyObjectAdmin(TypeBaseAdmin):
+    fieldsets = (('surveyobject', 'addon'),)
+
+
+class SurveySuitAdmin(TypeBaseAdmin):
+    fieldsets = (('surveysuit', 'addon'),)
+
+
+class AnimalAdmin(TypeBaseAdmin):
+    fieldsets = (('animal', 'name'), ('description'))
+
+
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
 admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
@@ -187,3 +203,7 @@ admin.site.register(AnimalType, AnimalTypeAdmin)
 admin.site.register(AnimalKind, AnimalKindAdmin)
 admin.site.register(SurveyObjectType, SurveyObjectTypeAdmin)
 admin.site.register(SurveySuitType, SurveySuitTypeAdmin)
+admin.site.register(Vehicle, VehicleAdmin)
+admin.site.register(SurveyObject, SurveyObjectAdmin)
+admin.site.register(SurveySuit, SurveySuitAdmin)
+admin.site.register(Animal, AnimalAdmin)
