@@ -426,14 +426,13 @@ class AnimalKind(AbstractImg):
 
 
 @python_2_unicode_compatible
-class AbstractAnimal(AbstractName):
+class Animal(AbstractName):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
     animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind', blank=True, null=True)
 
     class Meta:
         verbose_name = _("Animal")
         verbose_name_plural = _("Animals")
-        abstract = True
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.animal.name)
@@ -463,14 +462,13 @@ class TransportMark(AbstractImg):
 
 
 @python_2_unicode_compatible
-class AbstractVehicle(AbstractName):
+class Vehicle(AbstractName):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
     tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles', blank=True, null=True)
 
     class Meta:
         verbose_name = _("Vehicle")
         verbose_name_plural = _("Vehicles")
-        abstract = True
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.ttype.name)
@@ -481,17 +479,16 @@ class SurveyObjectType(AbstractName):
 
     class Meta:
         verbose_name = _("Survey object type")
-        verbose_name_plural = _("Surver object types")
+        verbose_name_plural = _("Survey object types")
 
 
 @python_2_unicode_compatible
-class AbstractSurveyObject(AbstractName):
+class SurveyObject(AbstractName):
     stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
 
     class Meta:
         verbose_name = _("Survey object")
         verbose_name_plural = _("Survey objects")
-        abstract = True
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
@@ -506,7 +503,7 @@ class SurveySuitType(AbstractName):
 
 
 @python_2_unicode_compatible
-class AbstractSurveySuit(AbstractName):
+class SurveySuit(AbstractName):
     stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
 
     class Meta:
