@@ -157,20 +157,44 @@ class SurveySuitTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', ]}),)
 
 
-class VehicleAdmin(TypeBaseAdmin):
-    fieldsets = (('t_mark', 't_type', 'name'),)
+class VehicleAdmin(admin.ModelAdmin):
+    list_display = ('ttype', 'tmark', 'name')
+    search_fields = ('description',)
+    fieldsets = (
+        (_("Vehicle"), {"fields": [('ttype', 'tmark'),
+                                   ('description',), ]}),
+    )
+    ordering = ('ttype', 'name')
 
 
-class SurveyObjectAdmin(TypeBaseAdmin):
-    fieldsets = (('surveyobject', 'addon'),)
+class SurveyObjectAdmin(admin.ModelAdmin):
+    list_display = ('stype', 'name')
+    search_fields = ('description',)
+    fieldsets = (
+        (_("Survey object"), {"fields": [('stype', 'name'),
+                                   ('description',), ]}),
+    )
+    ordering = ('stype', 'name')
 
 
-class SurveySuitAdmin(TypeBaseAdmin):
-    fieldsets = (('surveysuit', 'addon'),)
+class SurveySuitAdmin(admin.ModelAdmin):
+    list_display = ('stype', 'name')
+    search_fields = ('description',)
+    fieldsets = (
+        (_("Survey suit"), {"fields": [('stype', 'name'),
+                                         ('description',), ]}),
+    )
+    ordering = ('stype', 'name')
 
 
-class AnimalAdmin(TypeBaseAdmin):
-    fieldsets = (('animal', 'name'), ('description'))
+class AnimalAdmin(admin.ModelAdmin):
+    list_display = ('animal', 'animalkind', 'name')
+    search_fields = ('description',)
+    fieldsets = (
+        (_("Animal"), {"fields": [('animal', 'name'),('animalkind',),
+                                         ('description',), ]}),
+    )
+    ordering = ('animal', 'name')
 
 
 admin.site.register(TypeDance, TypeDanceAdmin)
