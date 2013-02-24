@@ -892,7 +892,7 @@ def file_uploader(request, **kwargs):
         obj.save()
         try:
             addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
-                                         aspect=int(kwargs['aspect'])))
+                                             aspect=int(kwargs['aspect'])))
         except:
             addons = {}
         result.update(addons)
