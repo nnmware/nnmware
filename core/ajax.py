@@ -855,7 +855,7 @@ class AjaxUploader(object):
         self._destination.close()
         if self._filetype == 'image':
             try:
-                i = Image.open(self._path).convert('RGB')
+                i = Image.open(self._path).convert('RGBA')
             except:
                 os.remove(self._path)
                 return dict(success=False, error=_("File is not image format"))
