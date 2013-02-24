@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
+from io import FileIO, BufferedWriter
+from hashlib import md5
 import os
 import Image
 import json
@@ -22,7 +24,7 @@ from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTI
 from nnmware.core.backends import PicUploadBackend, DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
-from nnmware.core.utils import get_oembed_end_point, update_video_size
+from nnmware.core.utils import get_oembed_end_point, update_video_size, setting, get_date_directory
 
 
 def AjaxAnswer(payload):
@@ -774,3 +776,121 @@ def set_paginator(request, num):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+
+class AjaxUploader(object):
+    BUFFER_SIZE = 10485760  # 10MB
+
+    def __init__(self, filetype='file', uploadDirectory='files', sizeLimit=10485760):
+        self._upload_dir = os.path.join(settings.MEDIA_ROOT, uploadDirectory, get_date_directory())
+        self._filetype = filetype
+        if filetype == 'image':
+            self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPG')
+        else:
+            self._save_format = None
+        self._size_limit = sizeLimit
+
+    def max_size(self):
+        """
+        Checking file max size
+        """
+        if int(self._destination.tell()) > self._size_limit:
+            self._destination.close()
+            os.remove(self._path)
+            return True
+
+    def setup(self, filename):
+        ext = os.path.splitext(filename)[1]
+        self._filename = md5(filename.encode('utf8')).hexdigest() + ext
+        self._path = os.path.join(self._upload_dir, self._filename)
+        try:
+            os.makedirs(os.path.realpath(os.path.dirname(self._path)))
+        except:
+            pass
+        self._destination = BufferedWriter(FileIO(self._path, "w"))
+
+    def handleUpload(self, request):
+        is_raw = True
+        if request.is_ajax():
+            # the file is stored raw in the request
+            upload = request
+            #get file size
+            try:
+                filesize = int(upload.read.im_self.META["CONTENT_LENGTH"])
+            except ValueError:
+                return dict(success=False, error=_("Can't read file size"))
+            if filesize > self._size_limit:
+                return dict(success=False, error=_("File is too large"))
+            try:
+                filename = upload.read.im_self.META["HTTP_X_FILE_NAME"]
+            except KeyError:
+                filename = request.GET.get('qqfile')
+            except:
+                return dict(success=False, error=_("AJAX request not valid"))
+        else:
+            is_raw = False
+            if len(request.FILES) == 1:
+                upload = request.FILES.values()[0]
+            else:
+                return dict(success=False, error=_("Bad upload."))
+            filename = upload.name
+        self.setup(filename)
+        try:
+            if is_raw:
+                # File was uploaded via ajax, and is streaming in.
+                chunk = upload.read(self.BUFFER_SIZE)
+                while len(chunk) > 0:
+                    self._destination.write(chunk)
+                    if self.max_size():
+                        raise
+                    chunk = upload.read(self.BUFFER_SIZE)
+            else:
+                # File was uploaded via a POST, and is here.
+                for chunk in upload.chunks():
+                    self._destination.write(chunk)
+                    if self.max_size():
+                        raise
+        except:
+            # things went badly.
+            return dict(success=False, error=_("Upload error"))
+        self._destination.close()
+        if self._filetype == 'image':
+            try:
+                i = Image.open(self._path)
+            except:
+                os.remove(self._path)
+                return dict(success=False, error=_("File is not image format"))
+            f_name, f_ext = os.path.splitext(self._filename)
+            new_path = ".".join([os.path.splitext(self._path)[0], self._save_format.lower()])
+            try:
+                if self._path == new_path:
+                    i.save(self._path, self._save_format)
+                else:
+                    i.save(new_path, self._save_format)
+                    os.remove(self._path)
+                    self._path = new_path
+            except:
+                return dict(success=False, error=_("Error saving image"))
+            self._filename = ".".join([f_name, self._save_format.lower()])
+        return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
+                    old_filename=filename, filename=self._filename)
+
+
+def file_uploader(request, **kwargs):
+    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'))
+    result = uploader.handleUpload(request)
+    if result['success']:
+        ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+        object_id = int(kwargs['object_id'])
+        obj = ctype.get_object_for_this_type(pk=object_id)
+        try:
+            remove_thumbnails(obj.img.path)
+            remove_file(obj.img.path)
+            obj.img.delete()
+        except:
+            pass
+        obj.img = result['path']
+        obj.save()
+        addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
+                                         aspect=int(kwargs['aspect'])))
+        result.update(addons)
+    return AjaxAnswer(result)
