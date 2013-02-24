@@ -3,6 +3,7 @@ from datetime import datetime
 from io import FileIO, BufferedWriter
 from hashlib import md5
 import os
+import shutil
 import Image
 import json
 from django.conf import settings
@@ -855,12 +856,16 @@ class AjaxUploader(object):
         self._destination.close()
         if self._filetype == 'image':
             try:
-                i = Image.open(self._path).convert('RGBA')
+                i = Image.open(self._path)
             except:
                 os.remove(self._path)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
-            new_path = ".".join([os.path.splitext(self._path)[0], self._save_format.lower()])
+            f_without_ext = os.path.splitext(self._path)[0]
+            new_path = ".".join([f_without_ext, self._save_format.lower()])
+            if setting('IMAGE_STORE_ORIGINAL', False):
+                orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
+                shutil.copy2(self._path, orig_path)
             try:
                 if self._path == new_path:
                     i.save(self._path, self._save_format)
