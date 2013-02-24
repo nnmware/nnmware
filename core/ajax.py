@@ -784,7 +784,7 @@ class AjaxUploader(object):
         self._upload_dir = os.path.join(settings.MEDIA_ROOT, uploadDirectory, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
-            self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPG')
+            self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPEG')
         else:
             self._save_format = None
         self._size_limit = sizeLimit
@@ -861,15 +861,15 @@ class AjaxUploader(object):
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
             new_path = ".".join([os.path.splitext(self._path)[0], self._save_format.lower()])
-            if 1>0: #try:
+            try:
                 if self._path == new_path:
                     i.save(self._path, self._save_format)
                 else:
                     i.save(new_path, self._save_format)
                     os.remove(self._path)
                     self._path = new_path
-            # except:
-            #     return dict(success=False, error=_("Error saving image"))
+            except:
+                return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
         return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
                     old_filename=filename, filename=self._filename)
