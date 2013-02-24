@@ -869,6 +869,11 @@ class AjaxUploader(object):
                     os.remove(self._path)
                     self._path = new_path
             except:
+                try:
+                    os.remove(self._path)
+                    os.remove(new_path)
+                except:
+                    pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
         return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
