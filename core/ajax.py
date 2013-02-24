@@ -890,7 +890,10 @@ def file_uploader(request, **kwargs):
             pass
         obj.img = result['path']
         obj.save()
-        addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
+        try:
+            addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
                                          aspect=int(kwargs['aspect'])))
+        except:
+            addons = {}
         result.update(addons)
     return AjaxAnswer(result)
