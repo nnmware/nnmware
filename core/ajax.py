@@ -861,15 +861,15 @@ class AjaxUploader(object):
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
             new_path = ".".join([os.path.splitext(self._path)[0], self._save_format.lower()])
-            try:
+            if 1>0: #try:
                 if self._path == new_path:
                     i.save(self._path, self._save_format)
                 else:
                     i.save(new_path, self._save_format)
                     os.remove(self._path)
                     self._path = new_path
-            except:
-                return dict(success=False, error=_("Error saving image"))
+            # except:
+            #     return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
         return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
                     old_filename=filename, filename=self._filename)
