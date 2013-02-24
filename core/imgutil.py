@@ -38,7 +38,10 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
         th_name += '%d' % width  # for compatibility with admin
     elif height is not None:
         th_name += '_h%d' % height
-    th_name += ext
+    if watermark:
+        th_name += '.png'
+    else:
+        th_name += ext
 
     return urlparse.urljoin(basedir, th_name)
 
@@ -243,5 +246,5 @@ def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=set
                       logo_im)
     else:
         base_im.paste(logo_im, (base_im.size[0] - logo_im.size[0], base_im.size[1] - logo_im.size[1]), logo_im)
-    base_im.save(wm_path, "PNG")
+    base_im.convert('RGBA').save(wm_path, "PNG")
     return wm_url
