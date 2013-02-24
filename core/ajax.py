@@ -866,6 +866,7 @@ class AjaxUploader(object):
             if setting('IMAGE_STORE_ORIGINAL', False):
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
                 shutil.copy2(self._path, orig_path)
+            i.thumbnail((1200, 1200), Image.ANTIALIAS)
             try:
                 if self._path == new_path:
                     i.save(self._path, self._save_format)
