@@ -807,55 +807,41 @@ class AjaxUploader(object):
             os.makedirs(os.path.realpath(os.path.dirname(self._path)))
         except:
             pass
-#        self._destination = open(self._path, "wb+")
-
         self._destination = BufferedWriter(FileIO(self._path, "w"))
 
     def handleUpload(self, request):
         is_raw = True
-        if 1>0: #request.is_ajax():
+        if request.FILES:
+            is_raw = False
+            if len(request.FILES) == 1:
+                upload = request.FILES.values()[0]
+            else:
+                return dict(success=False, error=_("Bad upload."))
+            filename = upload.name
+        else:
             # the file is stored raw in the request
             upload = request
             #get file size
             try:
-                filesize = int(upload.read.im_self.META["CONTENT_LENGTH"])
-            except ValueError:
-                return dict(success=False, error=_("Can't read file size"))
-            if filesize > self._size_limit:
-                return dict(success=False, error=_("File is too large"))
-            # try:
-            #     filename = upload.read.im_self.META["HTTP_X_FILE_NAME"]
-            # except KeyError:
-            if 1>0: #try:
-                filename = request.FILES['qqfile'].name
-#                raise ValueError, filename #request.REQUEST['qqfile']
-            # except:
-            #     return dict(success=False, error=_("AJAX request not valid"))
-        # else:
-        #     is_raw = False
-        #     if len(request.FILES) == 1:
-        #         upload = request.FILES.values()[0]
-        #     else:
-        #         return dict(success=False, error=_("Bad upload."))
-        #     filename = upload.name
+                filename = request.GET['qqfile']
+            except KeyError:
+                return dict(success=False, error=_("Can't read file name"))
         self.setup(filename)
         try:
-            if 1>0: #is_raw:
+            if is_raw:
                 # File was uploaded via ajax, and is streaming in.
-                fileContent = request.FILES['qqfile']
-                for chunk in fileContent.chunks():
+                chunk = upload.read(self.BUFFER_SIZE)
+                while len(chunk) > 0:
                     self._destination.write(chunk)
-            #     while len(chunk) > 0:
-            #         self._destination.write(chunk)
-            #         if self.max_size():
-            #             raise
-            #         chunk = upload.read(self.BUFFER_SIZE)
-            # else:
-            #     # File was uploaded via a POST, and is here.
-            #     for chunk in upload.chunks():
-            #         self._destination.write(chunk)
-            #         if self.max_size():
-            #             raise
+                    if self.max_size():
+                        raise
+                    chunk = upload.read(self.BUFFER_SIZE)
+            else:
+                # File was uploaded via a POST, and is here.
+                for chunk in upload.chunks():
+                    self._destination.write(chunk)
+                    if self.max_size():
+                        raise
         except:
             # things went badly.
             return dict(success=False, error=_("Upload error"))
@@ -864,7 +850,7 @@ class AjaxUploader(object):
             try:
                 i = Image.open(self._path)
             except:
-#                os.remove(self._path)
+                os.remove(self._path)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
             f_without_ext = os.path.splitext(self._path)[0]
