@@ -840,18 +840,19 @@ class AjaxUploader(object):
         try:
             if is_raw:
                 # File was uploaded via ajax, and is streaming in.
-                chunk = upload.read(self.BUFFER_SIZE)
-                while len(chunk) > 0:
-                    self._destination.write(chunk)
-                    if self.max_size():
-                        raise
-                    chunk = upload.read(self.BUFFER_SIZE)
-            else:
-                # File was uploaded via a POST, and is here.
-                for chunk in upload.chunks():
-                    self._destination.write(chunk)
-                    if self.max_size():
-                        raise
+                chunk = upload.read(filesize)
+                self._destination.write(chunk)
+            #     while len(chunk) > 0:
+            #         self._destination.write(chunk)
+            #         if self.max_size():
+            #             raise
+            #         chunk = upload.read(self.BUFFER_SIZE)
+            # else:
+            #     # File was uploaded via a POST, and is here.
+            #     for chunk in upload.chunks():
+            #         self._destination.write(chunk)
+            #         if self.max_size():
+            #             raise
         except:
             # things went badly.
             return dict(success=False, error=_("Upload error"))
