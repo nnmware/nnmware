@@ -824,9 +824,8 @@ class AjaxUploader(object):
             # try:
             #     filename = upload.read.im_self.META["HTTP_X_FILE_NAME"]
             # except KeyError:
+            raise request.REQUEST.items()
             if 1>0: #try:
-                for item,val in request.REQUEST:
-                    print item,val
                 filename = request.REQUEST['qqfile']
             # except:
             #     return dict(success=False, error=_("AJAX request not valid"))
