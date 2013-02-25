@@ -879,7 +879,8 @@ class AjaxUploader(object):
 
 
 def file_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'))
+    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'),
+                            sizeLimit=setting('IMAGE_UPLOAD_SIZE', 10485760))
     result = uploader.handleUpload(request)
     if result['success']:
         ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
