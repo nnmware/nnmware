@@ -813,7 +813,7 @@ class AjaxUploader(object):
 
     def handleUpload(self, request):
         is_raw = True
-        if request.is_ajax():
+        if 1>0: #request.is_ajax():
             # the file is stored raw in the request
             upload = request
             #get file size
@@ -831,13 +831,13 @@ class AjaxUploader(object):
 #                raise ValueError, filename #request.REQUEST['qqfile']
             # except:
             #     return dict(success=False, error=_("AJAX request not valid"))
-        else:
-            is_raw = False
-            if len(request.FILES) == 1:
-                upload = request.FILES.values()[0]
-            else:
-                return dict(success=False, error=_("Bad upload."))
-            filename = upload.name
+        # else:
+        #     is_raw = False
+        #     if len(request.FILES) == 1:
+        #         upload = request.FILES.values()[0]
+        #     else:
+        #         return dict(success=False, error=_("Bad upload."))
+        #     filename = upload.name
         self.setup(filename)
         try:
             if 1>0: #is_raw:
