@@ -821,9 +821,10 @@ class AjaxUploader(object):
                 return dict(success=False, error=_("Can't read file size"))
             if filesize > self._size_limit:
                 return dict(success=False, error=_("File is too large"))
+            # try:
+            #     filename = upload.read.im_self.META["HTTP_X_FILE_NAME"]
+            # except KeyError:
             try:
-                filename = upload.read.im_self.META["HTTP_X_FILE_NAME"]
-            except KeyError:
                 filename = request.GET['qqfile']
             except:
                 return dict(success=False, error=_("AJAX request not valid"))
