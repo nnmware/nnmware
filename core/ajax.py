@@ -861,7 +861,7 @@ class AjaxUploader(object):
             try:
                 i = Image.open(self._path)
             except:
-                os.remove(self._path)
+#                os.remove(self._path)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
             f_without_ext = os.path.splitext(self._path)[0]
