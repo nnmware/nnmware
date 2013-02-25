@@ -826,7 +826,7 @@ class AjaxUploader(object):
             # except KeyError:
             if 1>0: #try:
                 filename = request.FILES['qqfile'].name
-                raise ValueError, filename #request.REQUEST['qqfile']
+#                raise ValueError, filename #request.REQUEST['qqfile']
             # except:
             #     return dict(success=False, error=_("AJAX request not valid"))
         else:
