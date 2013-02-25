@@ -807,9 +807,9 @@ class AjaxUploader(object):
             os.makedirs(os.path.realpath(os.path.dirname(self._path)))
         except:
             pass
-        self._destination = open(self._path, "wb+")
+#        self._destination = open(self._path, "wb+")
 
-#        self._destination = BufferedWriter(FileIO(self._path, "w"))
+        self._destination = BufferedWriter(FileIO(self._path, "w"))
 
     def handleUpload(self, request):
         is_raw = True
