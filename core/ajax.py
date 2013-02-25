@@ -842,8 +842,9 @@ class AjaxUploader(object):
         try:
             if 1>0: #is_raw:
                 # File was uploaded via ajax, and is streaming in.
-                chunk = upload.read(filesize)
-                self._destination.write(chunk)
+                fileContent = request.FILES['qqfile']
+                for chunk in fileContent.chunks():
+                    self._destination.write(chunk)
             #     while len(chunk) > 0:
             #         self._destination.write(chunk)
             #         if self.max_size():
