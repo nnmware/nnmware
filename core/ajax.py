@@ -838,7 +838,7 @@ class AjaxUploader(object):
             filename = upload.name
         self.setup(filename)
         try:
-            if is_raw:
+            if 1>0: #is_raw:
                 # File was uploaded via ajax, and is streaming in.
                 chunk = upload.read(filesize)
                 self._destination.write(chunk)
