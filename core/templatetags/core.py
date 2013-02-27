@@ -354,6 +354,12 @@ def get_img_attach_url(content_object):
 
 
 @register.simple_tag
+def get_addon_image_attach_url(content_object):
+    kwargs = get_contenttype_kwargs(content_object)
+    return reverse('addon_img_ajax', kwargs=kwargs)
+
+
+@register.simple_tag
 def get_comment_url(content_object, parent=None):
     """
     Given an object and an optional parent, this tag gets the URL to POST to for the
