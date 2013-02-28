@@ -137,7 +137,7 @@ def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     try:
         os.remove(file_name)
     except:
-        print >> sys.stderr, "Could not delete file: %s" % file_name
+        pass
 
 
 def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
