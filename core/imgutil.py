@@ -38,11 +38,7 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
         th_name += '%d' % width  # for compatibility with admin
     elif height is not None:
         th_name += '_h%d' % height
-    if watermark:
-        th_name += '.jpg'
-    else:
-        th_name += ext
-
+    th_name += ext
     return urlparse.urljoin(basedir, th_name)
 
 
