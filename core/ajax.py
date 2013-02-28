@@ -856,6 +856,7 @@ class AjaxUploader(object):
             f_without_ext = os.path.splitext(self._path)[0]
             new_path = ".".join([f_without_ext, self._save_format.lower()])
             if setting('IMAGE_STORE_ORIGINAL', False):
+                # TODO need change the extension
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
                 shutil.copy2(self._path, orig_path)
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
