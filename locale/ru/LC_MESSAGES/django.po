@@ -1398,7 +1398,7 @@ msgstr "Тип объекта съемок"
 
 #: apps/dossier/admin.py:157
 msgid "Type of survey suit"
-msgstr "Типы места съемок"
+msgstr "Типы костюмов для съемок"
 
 #: apps/dossier/models.py:25
 msgid "End of education"
@@ -1878,11 +1878,11 @@ msgstr "Объекты съемок"
 
 #: apps/dossier/models.py:504
 msgid "Survey suit type"
-msgstr "Тип места съемки"
+msgstr "Тип костюма для съемки"
 
 #: apps/dossier/models.py:505
 msgid "Survey suits types"
-msgstr "Типы мест съемок"
+msgstr "Типы костюмов для съемки"
 
 #: apps/dossier/models.py:513
 msgid "Survey type"
