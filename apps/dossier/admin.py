@@ -197,6 +197,15 @@ class AnimalAdmin(admin.ModelAdmin):
     ordering = ('animal', 'name')
 
 
+class ChildAdmin(admin.ModelAdmin):
+    list_display = ('name', 'gender', 'birthdate')
+    search_fields = ('name',)
+    fieldsets = (
+        (_("Child"), {"fields": [('name', 'gender', 'birthdate',), ('description',), ]}),
+    )
+    ordering = ('name', 'gender')
+
+
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
 admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
@@ -231,3 +240,4 @@ admin.site.register(Vehicle, VehicleAdmin)
 admin.site.register(SurveyObject, SurveyObjectAdmin)
 admin.site.register(SurveySuit, SurveySuitAdmin)
 admin.site.register(Animal, AnimalAdmin)
+admin.site.register(Child, ChildAdmin)

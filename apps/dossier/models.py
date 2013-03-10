@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.apps.address.models import Institution
-from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
+from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg, GENDER_CHOICES
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
 
@@ -512,6 +512,19 @@ class SurveySuit(AbstractName):
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
+
+@python_2_unicode_compatible
+class Child(AbstractName):
+    birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
+    gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
+    twins = models.BooleanField(_('Twins'), default=False)
+
+    class Meta:
+        verbose_name = _("Child")
+        verbose_name_plural = _("Children")
+
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.age)
 
 
 class AbstractPersonalData(models.Model):
