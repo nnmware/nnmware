@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
+from django.contrib.auth import get_user_model
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
@@ -41,15 +42,19 @@ class HotelAdmin(admin.ModelAdmin):
                                                                             ('paid_services'), ('time_on', 'time_off')
         ]}),
         (_("Hotel admins"), {"classes": ("grp-collapse grp-closed",), "fields": [
-            ('admins')]}),
+            ('admins',)]}),
         (_("Hotel options"), {"classes": ("grp-collapse grp-closed",), "fields": [
-            ('option')]}),
+            ('option',)]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "address_en"), ("description_en",),
                                    ("schema_transit_en"), ("booking_terms_en")
                         ]}),)
     ordering = ('-register_date', 'name')
 
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        if db_field.name == "admins":
+            kwargs["queryset"] = get_user_model().objects.order_by('-date joined')
+        return super(HotelAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
 
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'order_in_list')
