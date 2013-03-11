@@ -198,7 +198,7 @@ class AnimalAdmin(admin.ModelAdmin):
 
 
 class ChildAdmin(admin.ModelAdmin):
-    list_display = ('name', 'gender', 'birthdate')
+    list_display = ('name', 'gender', 'birthdate','twins')
     search_fields = ('name',)
     fieldsets = (
         (_("Child"), {"fields": [('name', 'gender'), ('birthdate', 'twins'), ('description',), ]}),
