@@ -53,7 +53,7 @@ class HotelAdmin(admin.ModelAdmin):
 
     def formfield_for_manytomany(self, db_field, request, **kwargs):
         if db_field.name == "admins":
-            kwargs["queryset"] = get_user_model().objects.order_by('-date joined')
+            kwargs["queryset"] = get_user_model().objects.order_by('-date_joined')
         return super(HotelAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
 
 class HotelOptionAdmin(admin.ModelAdmin):
