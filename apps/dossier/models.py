@@ -524,7 +524,7 @@ class Child(AbstractName):
         verbose_name_plural = _("Children")
 
     def __str__(self):
-        return "%s :: %s" % (self.name, self.age)
+        return "%s :: %s" % (self.name, self.gender)
 
 
 class AbstractPersonalData(models.Model):
