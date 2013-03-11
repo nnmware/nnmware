@@ -589,6 +589,10 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     def get_absolute_url(self):
         return "employer_view", (), {'pk': self.pk}
 
+    @property
+    def allpics(self):
+        from nnmware.core.models import Pic
+        return Pic.objects.for_object(self).order_by('-primary')
 
 class AbstractOffer(AbstractImg):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
