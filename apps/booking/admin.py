@@ -186,8 +186,6 @@ class AgentPercentAdmin(admin.ModelAdmin):
         return '%s' % obj.hotel.city
 
     city_of_hotel.short_description = _('City')
-#    ordering = ('hotel',)
-
 
 
 class DiscountAdmin(admin.ModelAdmin):
