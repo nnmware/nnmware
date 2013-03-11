@@ -507,11 +507,32 @@ class SurveySuit(AbstractName):
     stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
 
     class Meta:
-        verbose_name = _("Survey type")
-        verbose_name_plural = _("Survey types")
+        verbose_name = _("Survey suit")
+        verbose_name_plural = _("Survey suits")
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.stype.name)
+
+
+class RequisiteType(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Requisite type")
+        verbose_name_plural = _("Requisite types")
+
+
+@python_2_unicode_compatible
+class Requisite(AbstractName):
+    rtype = models.ForeignKey(RequisiteType, verbose_name=_('Type'))
+
+    class Meta:
+        verbose_name = _("Requisite")
+        verbose_name_plural = _("Requisites")
+
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.rtype.name)
+
 
 @python_2_unicode_compatible
 class Child(AbstractName):

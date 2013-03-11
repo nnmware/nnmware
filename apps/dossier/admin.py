@@ -157,6 +157,10 @@ class SurveySuitTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', ]}),)
 
 
+class RequisiteTypeAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Type of requisite"), {"fields": ['name', ]}),)
+
+
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ('ttype', 'tmark', 'name')
     search_fields = ('description',)
@@ -185,6 +189,16 @@ class SurveySuitAdmin(admin.ModelAdmin):
                                          ('description',), ]}),
     )
     ordering = ('stype', 'name')
+
+
+class RequisiteAdmin(admin.ModelAdmin):
+    list_display = ('rtype', 'name')
+    search_fields = ('description',)
+    fieldsets = (
+        (_("Requisite"), {"fields": [('rtype', 'name'),
+                                       ('description',), ]}),
+    )
+    ordering = ('rtype', 'name')
 
 
 class AnimalAdmin(admin.ModelAdmin):
@@ -241,3 +255,6 @@ admin.site.register(SurveyObject, SurveyObjectAdmin)
 admin.site.register(SurveySuit, SurveySuitAdmin)
 admin.site.register(Animal, AnimalAdmin)
 admin.site.register(Child, ChildAdmin)
+admin.site.register(RequisiteType, RequisiteTypeAdmin)
+admin.site.register(Requisite, RequisiteAdmin)
+
