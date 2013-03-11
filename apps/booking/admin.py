@@ -67,7 +67,6 @@ class HotelOptionAdmin(admin.ModelAdmin):
 #    ordering = ('category','order_in_list','name')
 
 
-
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'places', 'hotel')
     search_fields = ('name',)
@@ -187,7 +186,7 @@ class AgentPercentAdmin(admin.ModelAdmin):
         return '%s' % obj.hotel.city
 
     city_of_hotel.short_description = _('City')
-    ordering = ('hotel',)
+#    ordering = ('hotel',)
 
 
 

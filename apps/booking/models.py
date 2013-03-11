@@ -597,6 +597,7 @@ class AgentPercent(models.Model):
     class Meta:
         verbose_name = _("Agent Percent")
         verbose_name_plural = _("Agent Percents")
+        ordering = ("hotel",)
 
     objects = Manager()
 
