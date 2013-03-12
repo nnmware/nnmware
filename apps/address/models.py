@@ -118,6 +118,7 @@ class City(Address, MetaGeo):
                 self.slug = self.pk
         super(City, self).save(*args, **kwargs)
 
+
 class AbstractGeo(MetaGeo):
     city = models.ForeignKey(City, verbose_name=_('City'))
     address = std_text_field(_("Address"), max_length=100)
@@ -184,6 +185,7 @@ class StationMetro(Address, AbstractGeo):
     def __str__(self):
         return "%s :: %s" % (self.name, self.city)
 
+
 class AbstractLocation(models.Model):
     country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, related_name="%(class)s_cou")
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
@@ -203,8 +205,8 @@ class AbstractLocation(models.Model):
 
 @python_2_unicode_compatible
 class Institution(AbstractName):
-    city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city',null=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'),related_name='edu_country',null=True)
+    city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'),related_name='edu_country', null=True, blank=True)
 
     class Meta:
         verbose_name = _("Institution")

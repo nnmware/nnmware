@@ -8,6 +8,7 @@ from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.models import Pic
 
+
 class TypeEmployer(AbstractName):
     pass
 
