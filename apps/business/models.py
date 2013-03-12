@@ -75,19 +75,12 @@ class AbstractEmployer(AbstractImg):
     def radio_profiles(self):
         return self.employer_profile.filter(is_radio=True)
 
+
 class Agency(AbstractName):
 
     class Meta:
         verbose_name = _("Agency")
         verbose_name_plural = _("Agencies")
-
-class InAgencyBase(models.Model):
-    name = std_text_field(_('Name'))
-    agency = models.ForeignKey(Agency, verbose_name=_('Agency'), related_name='agency_base', blank=True, null=True)
-
-    class Meta:
-        verbose_name = _("In agency base")
-        verbose_name_plural = _("In agencies bases")
 
 
 class AbstractEmployee(AbstractImg):
@@ -102,8 +95,8 @@ class AbstractEmployee(AbstractImg):
     payment_to = models.IntegerField(verbose_name=_('Amount payment to'),null=True, blank=True)
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
-    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True, null=True, related_name='edu')
-    in_agency = models.ManyToManyField(InAgencyBase,verbose_name=_('In agency base'), blank=True, null=True)
+    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True, null=True)
+    agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Employee")

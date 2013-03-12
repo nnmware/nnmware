@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
-    list_display = ('name','employer_type','is_radio')
+    list_display = ('name', 'employer_type', 'is_radio')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
@@ -28,11 +28,6 @@ class AgencyAdmin(TypeBaseAdmin):
     fieldsets = (
         (_("Agency name"), {"fields": [('name'),
                                        ]}),)
-
-class InAgencyBaseInline(BaseSkillInline):
-    model = InAgencyBase
-    fields = (('agency'),)
-
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
