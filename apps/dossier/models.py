@@ -180,19 +180,6 @@ class CreativeActivity(AbstractOrder):
         verbose_name_plural = _("Creative activities")
 
 
-@python_2_unicode_compatible
-class CreativeActivityPerson(AbstractOrder):
-    activity = models.ForeignKey(CreativeActivity, verbose_name=_('Creative activity'))
-    description = std_text_field(_('Description'))
-
-    class Meta:
-        verbose_name = _("Creative activity")
-        verbose_name_plural = _("Creative activities")
-
-    def __str__(self):
-        return "%s" % self.activity.name
-
-
 class AbstractHumanAppearance(models.Model):
     appearance = models.ManyToManyField(TypeAppearanceHuman, verbose_name=_('Type of Appearance'),
                                         related_name='appearance_human', blank=True, null=True)
