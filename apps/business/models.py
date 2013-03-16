@@ -50,6 +50,7 @@ class TypeEmployerOther(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
+
 class AbstractEmployer(AbstractImg):
     is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
     name = std_text_field(_('Company name'))
@@ -89,7 +90,7 @@ class AbstractEmployee(AbstractImg):
     agent_phone = models.CharField(max_length=20, verbose_name=_('Mobile phone of agent'), blank=True, default='')
     agent_email = models.EmailField(verbose_name=_('Agent Email'), blank=True, null=True)
     agent_avatar = models.ForeignKey(Pic, blank=True, null=True)
-    agent_contact_only = models.BooleanField(_('Contact only with agent'), default=False)
+    agent_only = models.BooleanField(_('Contact only with agent'), default=False)
     permanent_work = std_text_field(_('Permanent place of work'))
     awards = std_text_field(_('Awards, achievements, titles'))
     payment_from = models.IntegerField(verbose_name=_('Amount payment from'),null=True, blank=True)
