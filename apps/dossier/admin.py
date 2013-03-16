@@ -64,6 +64,10 @@ class TypeSurveyAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
+class ReadinessSceneAdmin(TypeBaseAdmin):
+    fieldsets = ((_("Readiness in scene"), {"fields": [('name', 'order_in_list'), ]}),)
+
+
 class CreativeActivityAdmin(TypeBaseAdmin):
     fieldsets = ((_("CreativeActivity"), {"fields": [('name', 'order_in_list'), ]}),)
 
@@ -257,4 +261,5 @@ admin.site.register(Animal, AnimalAdmin)
 admin.site.register(Child, ChildAdmin)
 admin.site.register(RequisiteType, RequisiteTypeAdmin)
 admin.site.register(Requisite, RequisiteAdmin)
+admin.site.register(ReadinessScene, ReadinessSceneAdmin)
 

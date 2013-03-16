@@ -172,6 +172,14 @@ class TypeSurvey(AbstractOrder):
         verbose_name_plural = _("Types of surveys")
 
 
+class ReadinessScene(AbstractOrder):
+    name = std_text_field(_('Readiness in scene'))
+
+    class Meta:
+        verbose_name = _("Readiness in scene")
+        verbose_name_plural = _("Readiness in scenes")
+
+
 class CreativeActivity(AbstractOrder):
     name = std_text_field(_('Creative activity'))
 
