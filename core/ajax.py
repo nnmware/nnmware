@@ -282,7 +282,7 @@ def img_getcrop(request, object_id):
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = dict(success=False)
-    return AjaxLazyAnswerNoCache(payload)
+    return AjaxLazyAnswer(payload)
 
 
 def img_rotate(request):
@@ -697,7 +697,7 @@ def ajax_image_crop(request):
         payload = {'success': False, 'error': _('You are not allowed change this image')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return AjaxLazyAnswerNoCache(payload)
 
 
 def comment_add(request, content_type, object_id, parent_id=None):
