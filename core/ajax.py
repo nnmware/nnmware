@@ -36,12 +36,6 @@ def AjaxLazyAnswer(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
-def AjaxLazyAnswerNoCache(payload):
-    response = HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
-    response['Cache-Control'] = 'no-cache'
-    return response
-
-
 class AjaxAbstractUploader(object):
     def __call__(self, request, **kwargs):
         return self._ajax_upload(request, **kwargs)
