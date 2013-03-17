@@ -36,6 +36,12 @@ def AjaxLazyAnswer(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
+def AjaxLazyAnswerNoCache(payload):
+    response = HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
+    response['Cache-Control'] = 'no-cache'
+    return response
+
+
 class AjaxAbstractUploader(object):
     def __call__(self, request, **kwargs):
         return self._ajax_upload(request, **kwargs)
@@ -276,7 +282,7 @@ def img_getcrop(request, object_id):
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = dict(success=False)
-    return AjaxLazyAnswer(payload)
+    return AjaxLazyAnswerNoCache(payload)
 
 
 def img_rotate(request):
