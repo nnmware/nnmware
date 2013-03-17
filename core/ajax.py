@@ -692,7 +692,7 @@ def ajax_image_crop(request):
             im = im.convert('RGB')
         im.save(img)
         pic.save()
-        remove_thumbnails(pic.path)
+        remove_thumbnails(pic.pic.path)
         payload = {'success': True, 'id': pic.pk}
     except AccessError:
         payload = {'success': False, 'error': _('You are not allowed change this image')}
