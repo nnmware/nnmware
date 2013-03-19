@@ -590,6 +590,13 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         return "employer_view", (), {'pk': self.pk}
 
     @property
+    def main_image(self):
+        try:
+            return self.allpics[0].pic.url
+        except:
+            return settings.DEFAULT_IMG
+
+    @property
     def allpics(self):
         from nnmware.core.models import Pic
         return Pic.objects.for_object(self).order_by('-primary')
