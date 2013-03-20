@@ -158,6 +158,7 @@ class SurveyObjectTypeAdmin(TypeBaseAdmin):
 
 
 class SurveySuitTypeAdmin(TypeBaseAdmin):
+    list_display = ('name', 'overall')
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', ]}),)
 
 
