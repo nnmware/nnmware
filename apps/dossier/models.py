@@ -200,7 +200,7 @@ class AbstractHumanAppearance(models.Model):
     body_desc = std_text_field(_('Explain body'))
     feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True)
-    feature_appearance_desc = std_text_field(_('Explain feature appearance'))
+    another_feature = std_text_field(_('Text of Another feature of appearance'))
     growth = models.IntegerField(_('Growth'), choices=GROWTH, blank=True, null=True, default=None)
     weight = models.IntegerField(_('Weight'), choices=WEIGHT, blank=True, null=True, default=None)
     clothing_size = models.IntegerField(_('Clothing size'), choices=CLOTHING_SIZE, blank=True, null=True, default=None)
@@ -228,7 +228,6 @@ class AbstractHumanAppearance(models.Model):
     feature_structure_body = std_text_field(_('Which feature of structure body'))
     nonstandard_growth = models.BooleanField(_('Non-standard growth'), default=False)
     pregnant = models.BooleanField(_('Pregnant'), default=False)
-    another_feature = std_text_field(_('Text of Another feature of appearance'))
     similarity = std_text_field(_('Which person similarity'))
     twins = std_text_field(_('Have brother(sister) twins'))
 
@@ -236,6 +235,10 @@ class AbstractHumanAppearance(models.Model):
         verbose_name = _("Human appearance")
         verbose_name_plural = _("Human appearances")
         abstract = True
+
+    @property
+    def another_feature_split(self):
+        return self.another_feature.split(',')
 
 
 class LanguageSpeak(AbstractName):
