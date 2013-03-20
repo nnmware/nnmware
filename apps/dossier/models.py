@@ -229,9 +229,7 @@ class AbstractHumanAppearance(models.Model):
     nonstandard_growth = models.BooleanField(_('Non-standard growth'), default=False)
     pregnant = models.BooleanField(_('Pregnant'), default=False)
     another_feature = std_text_field(_('Text of Another feature of appearance'))
-
-    similarity = models.BooleanField(_('Similarity with known person'), default=False)
-    which_person_similarity = std_text_field(_('Which person similarity'))
+    similarity = std_text_field(_('Which person similarity'))
     twins = models.BooleanField(_('Have brother(sister) twins'), default=False)
     twins_addon_text = std_text_field(_('Addon text for twins parameter'))
 
