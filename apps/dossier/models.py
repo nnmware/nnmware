@@ -240,6 +240,14 @@ class AbstractHumanAppearance(models.Model):
     def another_feature_split(self):
         return self.another_feature.split(',')
 
+    @property
+    def tattoo_split(self):
+        return self.tattoo.split(',')
+
+    @property
+    def piercing_split(self):
+        return self.piercing.split(',')
+
 
 class LanguageSpeak(AbstractName):
     pass
