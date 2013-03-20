@@ -230,8 +230,7 @@ class AbstractHumanAppearance(models.Model):
     pregnant = models.BooleanField(_('Pregnant'), default=False)
     another_feature = std_text_field(_('Text of Another feature of appearance'))
     similarity = std_text_field(_('Which person similarity'))
-    twins = models.BooleanField(_('Have brother(sister) twins'), default=False)
-    twins_addon_text = std_text_field(_('Addon text for twins parameter'))
+    twins = std_text_field(_('Have brother(sister) twins'))
 
     class Meta:
         verbose_name = _("Human appearance")
