@@ -208,7 +208,8 @@ class AbstractHumanAppearance(models.Model):
     head_size = models.IntegerField(_('Head size'), choices=HEAD_SIZE, blank=True, null=True, default=None)
     hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'),
                                    related_name='hair_color', blank=True, null=True)
-    natural_hair_color = models.BooleanField(_('Natural color of hair'), default=True)
+    natural_hair_color = models.ForeignKey(HairColor, verbose_name=_('Natural hair color'),
+                                   related_name='naturalhair_color', blank=True, null=True)
     have_wig = models.BooleanField(_('Have wig'), default=False)
     hair_length = models.ForeignKey(HairLength, verbose_name=_('Length of hair'),
                                     related_name='hair_length', blank=True, null=True)
