@@ -69,6 +69,7 @@ class Region(Address):
                 self.slug = self.pk
         super(Region, self).save(*args, **kwargs)
 
+
 class MetaGeo(models.Model):
     longitude = models.FloatField(_('Longitude'), default=0.0)
     latitude = models.FloatField(_('Latitude'), default=0.0)
