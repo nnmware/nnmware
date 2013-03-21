@@ -1328,7 +1328,7 @@ msgstr "Типы съемок"
 #: apps/dossier/admin.py:68 apps/dossier/models.py:176
 #: apps/dossier/models.py:179
 msgid "Readiness in scene"
-msgstr ""
+msgstr "Готовность к съемкам в сценах"
 
 #: apps/dossier/admin.py:72
 msgid "CreativeActivity"
@@ -1395,9 +1395,8 @@ msgid "Type of survey suit"
 msgstr "Типы костюмов для съемок"
 
 #: apps/dossier/admin.py:166
-#, fuzzy
 msgid "Type of requisite"
-msgstr "Типы костюмов для съемок"
+msgstr "Тип реквизита"
 
 #: apps/dossier/admin.py:173 apps/dossier/models.py:465
 msgid "Vehicle"
@@ -1408,14 +1407,12 @@ msgid "Survey object"
 msgstr "Объект съемки"
 
 #: apps/dossier/admin.py:193 apps/dossier/models.py:505
-#, fuzzy
 msgid "Survey suit"
-msgstr "Тип костюма для съемки"
+msgstr "Костюма для съемки"
 
 #: apps/dossier/admin.py:203 apps/dossier/models.py:525
-#, fuzzy
 msgid "Requisite"
-msgstr "Вебсайт"
+msgstr "Реквизит"
 
 #: apps/dossier/admin.py:213 apps/dossier/models.py:410
 #: apps/dossier/models.py:425 apps/dossier/models.py:429
@@ -1424,7 +1421,7 @@ msgstr "Животное"
 
 #: apps/dossier/admin.py:223 apps/dossier/models.py:539
 msgid "Child"
-msgstr ""
+msgstr "Ребенок"
 
 #: apps/dossier/models.py:25
 msgid "End of education"
@@ -1447,9 +1444,8 @@ msgid "Specialty"
 msgstr "Специальность"
 
 #: apps/dossier/models.py:31
-#, fuzzy
 msgid "Profile education"
-msgstr "Окончание обучения"
+msgstr "Профильное образование"
 
 #: apps/dossier/models.py:32
 msgid "Non-profile course name"
@@ -1552,7 +1548,7 @@ msgstr "Типы съемок"
 
 #: apps/dossier/models.py:180
 msgid "Readiness in scenes"
-msgstr ""
+msgstr "Готовность к съемкам в сценах"
 
 #: apps/dossier/models.py:184 apps/dossier/models.py:187
 msgid "Creative activity"
@@ -1667,7 +1663,6 @@ msgid "Another feature of appearance"
 msgstr "Другие особенности внешности"
 
 #: apps/dossier/models.py:235
-#, fuzzy
 msgid "Text of Another feature of appearance"
 msgstr "Другие особенности внешности"
 
@@ -1685,17 +1680,15 @@ msgstr "Есть брат(сестра) близняшки"
 
 #: apps/dossier/models.py:240
 msgid "Addon text for twins parameter"
-msgstr ""
+msgstr "Дополнительная инфо о близняшках"
 
 #: apps/dossier/models.py:243
-#, fuzzy
 msgid "Human appearance"
-msgstr "Пояснение типа внешности"
+msgstr "Внешность человека"
 
 #: apps/dossier/models.py:244
-#, fuzzy
 msgid "Human appearances"
-msgstr "Пояснение типа внешности"
+msgstr "Внешности людей"
 
 #: apps/dossier/models.py:252
 msgid "Language"
