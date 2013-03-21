@@ -56,10 +56,10 @@ class AbstractEmployer(AbstractImg):
     name = std_text_field(_('Company name'))
     position = std_text_field(_('Work position'))
     description = models.TextField(verbose_name=_('Activities description '), blank=True, default='')
-    work_on = models.TimeField(verbose_name=_('Work time from'),blank=True, null=True)
-    work_off = models.TimeField(verbose_name=_('Work time to'),blank=True, null=True)
-    phone_on = models.TimeField(verbose_name=_('Phone time from'),blank=True, null=True)
-    phone_off = models.TimeField(verbose_name=_('Phone time to'),blank=True, null=True)
+    work_on = models.TimeField(verbose_name=_('Work time from'), blank=True, null=True)
+    work_off = models.TimeField(verbose_name=_('Work time to'), blank=True, null=True)
+    phone_on = models.TimeField(verbose_name=_('Phone time from'), blank=True, null=True)
+    phone_off = models.TimeField(verbose_name=_('Phone time to'), blank=True, null=True)
     employer_profile = models.ManyToManyField(TypeEmployerProfile, verbose_name=_('Types of employer profile'),blank=True, null=True)
     employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'),blank=True, null=True)
 
@@ -91,6 +91,8 @@ class AbstractEmployee(AbstractImg):
     agent_email = models.EmailField(verbose_name=_('Agent Email'), blank=True, null=True)
     agent_avatar = models.ForeignKey(Pic, blank=True, null=True)
     agent_only = models.BooleanField(_('Contact only with agent'), default=False)
+    agent_on = models.TimeField(verbose_name=_('Agent work time from'), blank=True, null=True)
+    agent_off = models.TimeField(verbose_name=_('Agent work time to'), blank=True, null=True)
     permanent_work = std_text_field(_('Permanent place of work'))
     awards = std_text_field(_('Awards, achievements, titles'))
     payment_from = models.IntegerField(verbose_name=_('Amount payment from'),null=True, blank=True)
@@ -109,7 +111,7 @@ class AbstractEmployee(AbstractImg):
     def get_agent_avatar(self):
         try:
             return self.agent_avatar.pic.url
-        except :
+        except:
             return settings.DEFAULT_AVATAR
 
     def delete(self, *args, **kwargs):
