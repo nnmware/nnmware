@@ -554,7 +554,7 @@ class AbstractSkill(AbstractOrder):
 
 
 @python_2_unicode_compatible
-class AbstractNnmwareProfile(AbstractDate, AbstractImg):
+class AbstractNnmwareProfile(AbstractDate):
     main = models.BooleanField(_('Main profile'), default=False)
     first_name = std_text_field(_('First Name'), max_length=50)
     middle_name = std_text_field(_('Middle Name'), max_length=50)
@@ -588,6 +588,21 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
     @permalink
     def get_absolute_url(self):
         return "employer_view", (), {'pk': self.pk}
+
+    @property
+    def main_image(self):
+        try:
+            return self.allpics[0].pic.url
+        except:
+            return settings.DEFAULT_IMG
+
+    @property
+    def allpics(self):
+        from nnmware.core.models import Pic
+        return Pic.objects.for_object(self).order_by('-primary')
+
+
+class PicsMixin(object):
 
     @property
     def main_image(self):

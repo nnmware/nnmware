@@ -7,6 +7,7 @@ from nnmware.core.abstract import AbstractName, AbstractImg
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.models import Pic
+from nnmware.core.abstract import PicsMixin
 
 
 class TypeEmployer(AbstractName):
@@ -85,11 +86,10 @@ class Agency(AbstractName):
         verbose_name_plural = _("Agencies")
 
 
-class AbstractEmployee(AbstractImg):
+class AbstractEmployee(models.Model, PicsMixin):
     agent_name = std_text_field(_('Agent name'))
     agent_phone = models.CharField(max_length=20, verbose_name=_('Mobile phone of agent'), blank=True, default='')
     agent_email = models.EmailField(verbose_name=_('Agent Email'), blank=True, null=True)
-    agent_avatar = models.ForeignKey(Pic, blank=True, null=True)
     agent_only = models.BooleanField(_('Contact only with agent'), default=False)
     agent_on = models.TimeField(verbose_name=_('Agent work time from'), blank=True, null=True)
     agent_off = models.TimeField(verbose_name=_('Agent work time to'), blank=True, null=True)
@@ -106,14 +106,3 @@ class AbstractEmployee(AbstractImg):
         verbose_name = _("Employee")
         verbose_name_plural = _("Employees")
         abstract = True
-
-    @property
-    def get_agent_avatar(self):
-        try:
-            return self.agent_avatar.pic.url
-        except:
-            return settings.DEFAULT_AVATAR
-
-    def delete(self, *args, **kwargs):
-        self.agent_avatar.delete()
-        super(AbstractEmployee, self).delete(*args, **kwargs)
