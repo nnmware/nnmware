@@ -24,7 +24,7 @@ from django.template.defaultfilters import slugify
 from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, TZ_CHOICES
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
-from nnmware.core.imgutil import remove_thumbnails, remove_file
+from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.file import get_path_from_url
 from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
@@ -194,6 +194,17 @@ class Pic(AbstractContent, AbstractFile):
 
     def get_editor_url(self):
         return reverse("pic_editor", self.pk)
+
+    def slide_thumbnail(self):
+        if self.pic:
+            path = self.pic.url
+            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
+        else:
+            tmb = '/static/img/icon-no.gif"'
+            path = '/static/img/icon-no.gif"'
+        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
+
+    slide_thumbnail.allow_tags = True
 
 
 @python_2_unicode_compatible

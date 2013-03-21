@@ -109,7 +109,7 @@ class PicAdmin(admin.ModelAdmin):
         (_('Meta'), {'fields': [('description', 'source')]}),
     )
     list_display = ('user', 'created_date', 'content_type',
-                    'pic', '__unicode__')
+                    'slide_thumbnail', '__unicode__')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('description', 'user__username')
