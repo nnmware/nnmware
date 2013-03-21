@@ -599,7 +599,7 @@ class Video(AbstractDate, AbstractImg):
 
 
 @python_2_unicode_compatible
-class NnmwareUser(AbstractUser):
+class NnmwareUser(AbstractUser, AbstractImg):
     fullname = models.CharField(max_length=100, verbose_name=_('Full Name'), blank=True)
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
@@ -623,7 +623,6 @@ class NnmwareUser(AbstractUser):
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     balance = models.DecimalField(verbose_name=_('Balance'), default=0, max_digits=20, decimal_places=3)
 
     class Meta:
