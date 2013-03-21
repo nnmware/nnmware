@@ -238,15 +238,18 @@ class AbstractHumanAppearance(models.Model):
 
     @property
     def another_feature_split(self):
-        return self.another_feature.split(',')
+        result = self.another_feature.split(',')
+        return map(lambda x: ' '.join(x.split()),result)
 
     @property
     def tattoo_split(self):
-        return self.tattoo.split(',')
+        result = self.tattoo.split(',')
+        return map(lambda x: ' '.join(x.split()),result)
 
     @property
     def piercing_split(self):
-        return self.piercing.split(',')
+        result = self.piercing.split(',')
+        return map(lambda x: ' '.join(x.split()),result)
 
 
 class LanguageSpeak(AbstractName):
