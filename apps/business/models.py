@@ -86,7 +86,7 @@ class Agency(AbstractName):
         verbose_name_plural = _("Agencies")
 
 
-class AbstractEmployee(models.Model, PicsMixin):
+class AbstractEmployee(AbstractImg):
     agent_name = std_text_field(_('Agent name'))
     agent_phone = models.CharField(max_length=20, verbose_name=_('Mobile phone of agent'), blank=True, default='')
     agent_email = models.EmailField(verbose_name=_('Agent Email'), blank=True, null=True)
