@@ -9,7 +9,8 @@ class TypeEmployerProfileAdmin(TypeBaseAdmin):
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('employer_type', '-is_radio', '-order_in_list', 'name')
-    fieldsets = ((_("Type of employer profile"), {"fields": [('name', 'employer_type', 'is_radio'), ]}),)
+    fieldsets = ((_("Type of employer profile"), {"fields": [('name', 'employer_type'),
+                                                             ('order_in_list', 'is_radio'), ]}),)
 
 
 class TypeEmployerOtherAdmin(TypeBaseAdmin):
