@@ -192,8 +192,8 @@ class AbstractLocation(models.Model):
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
     city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, related_name="%(class)s_cit")
     stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
-        null=True,blank=True, related_name='metro')
-    zipcode = models.CharField(max_length=20,verbose_name=_('Zipcode'), blank=True, null=True)
+                                     null=True, blank=True, related_name='location')
+    zipcode = models.CharField(max_length=20, verbose_name=_('Zipcode'), blank=True, null=True)
     street = std_text_field(_('Street'))
     house_number = std_text_field(_('Number of house'),max_length=5)
     building = std_text_field(_('Building'), max_length=5)
