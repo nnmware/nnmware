@@ -76,6 +76,9 @@ class AbstractEmployer(AbstractImg):
         result = self.employer_profile.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
         return TypeEmployer.objects.filter(pk__in=result).values_list('pk', flat=True)
 
+    def profile_lst(self):
+        return self.employer_profile.order_by('-order_in_list', 'name').values_list('pk', flat=True)
+
     @property
     def empother(self):
         result = self.employer_other.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
