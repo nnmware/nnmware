@@ -81,7 +81,7 @@ class AbstractEmployer(AbstractImg):
     def other_radio(self):
         return self.employer_other.filter(is_radio=True).values_list('employer_type__pk', flat=True).distinct()
 
-    def other_check(self):
+    def other_multi(self):
         return self.employer_other.filter(is_radio=False).values_list('employer_type__pk', flat=True).distinct()
 
     @property
