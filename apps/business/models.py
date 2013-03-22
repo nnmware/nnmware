@@ -80,10 +80,10 @@ class AbstractEmployer(AbstractImg):
         return self.employer_profile.order_by('-order_in_list', 'name').values_list('pk', flat=True)
 
     def other_radio(self):
-        return self.employer_other.filter(is_radio=True).values_list('pk', flat=True)
+        return self.employer_other.filter(is_radio=True).values_list('employer_type__pk', flat=True)
 
     def other_check(self):
-        return self.employer_other.filter(is_radio=False).values_list('pk', flat=True)
+        return self.employer_other.filter(is_radio=False).values_list('employer_type__pk', flat=True)
 
     @property
     def empother(self):
