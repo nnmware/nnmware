@@ -116,36 +116,43 @@ class LanguageSpeakAdmin(TypeBaseAdmin):
 
 
 class TypeDanceAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of dance"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeVocalAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of vocal"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeMusicInstrumentAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of music instrument"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeDriveAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of driving"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeSportAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of sport"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeSpecialSkillAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of special skill"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
 
 class TypeOtherSkillAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of other skill"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
@@ -187,6 +194,7 @@ class TMarkAdmin(TypeBaseAdmin):
 
 
 class AnimalTypeAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of animal"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
@@ -197,6 +205,7 @@ class AnimalKindAdmin(TypeBaseAdmin):
 
 
 class SurveyObjectTypeAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of survey object"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
 
