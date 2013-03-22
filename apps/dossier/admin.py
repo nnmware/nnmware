@@ -17,6 +17,7 @@ class TypeBodyHumanAdmin(TypeBaseAdmin):
 
 
 class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Feature appearance"), {"fields": ['name', ]}),)
 
 
@@ -25,50 +26,62 @@ class HairColorAdmin(TypeBaseAdmin):
 
 
 class EyeColorAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Eye color"), {"fields": ['name', ]}),)
 
 
 class SkinColorAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Skin color"), {"fields": ['name', ]}),)
 
 
 class HairLengthAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair length"), {"fields": ['name', ]}),)
 
 
 class HairTextureAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair texture"), {"fields": ['name', ]}),)
 
 
 class TypeNationalAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on national sign"), {"fields": ['name', ]}),)
 
 
 class TypeProfessionAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on profession"), {"fields": ['name', ]}),)
 
 
 class TypeLifestyleAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on lifestyle"), {"fields": ['name', ]}),)
 
 
 class TypeBrightAppearanceAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on bright appearance"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
 class TypeHistoricalAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type in historical projects"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
 class TypeSurveyAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
 class ReadinessSceneAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Readiness in scene"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
 class CreativeActivityAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("CreativeActivity"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
