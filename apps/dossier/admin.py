@@ -7,86 +7,103 @@ from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 class TypeAppearanceHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of appearance"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeNationalHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("National type"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeBodyHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Body Type"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Feature appearance"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class HairColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair color"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class EyeColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Eye color"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class SkinColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Skin color"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class HairLengthAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair length"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class HairTextureAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair texture"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeNationalAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on national sign"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeProfessionAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on profession"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeLifestyleAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on lifestyle"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeBrightAppearanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type on bright appearance"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeHistoricalAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type in historical projects"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeSurveyAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class ReadinessSceneAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Readiness in scene"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class CreativeActivityAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("CreativeActivity"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class LanguageSkillInline(BaseSkillInline):
@@ -100,30 +117,37 @@ class LanguageSpeakAdmin(TypeBaseAdmin):
 
 class TypeDanceAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of dance"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeVocalAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of vocal"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeMusicInstrumentAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of music instrument"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeDriveAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of driving"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeSportAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of sport"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeSpecialSkillAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of special skill"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeOtherSkillAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of other skill"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class DanceSkillInline(BaseSkillInline):
@@ -164,23 +188,28 @@ class TMarkAdmin(TypeBaseAdmin):
 
 class AnimalTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of animal"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class AnimalKindAdmin(TypeBaseAdmin):
     fieldsets = ((_("Kind of animal"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class SurveyObjectTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of survey object"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class SurveySuitTypeAdmin(TypeBaseAdmin):
     list_display = ('name', 'overall')
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', 'overall' ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class RequisiteTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of requisite"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class VehicleAdmin(admin.ModelAdmin):
