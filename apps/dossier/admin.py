@@ -112,7 +112,9 @@ class LanguageSkillInline(BaseSkillInline):
 
 
 class LanguageSpeakAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Language speak"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
 
 
 class TypeDanceAdmin(TypeBaseAdmin):
