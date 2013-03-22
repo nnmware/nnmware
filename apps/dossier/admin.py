@@ -61,6 +61,7 @@ class TypeHistoricalAdmin(TypeBaseAdmin):
 
 
 class TypeSurveyAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
 
 
