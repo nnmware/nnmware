@@ -526,6 +526,7 @@ class AbstractOrder(AbstractImg):
     class Meta:
         ordering = ['-order_in_list', ]
         abstract = True
+        ordering = ['order_in_list', 'name']
 
     def __str__(self):
         return "%s" % self.name
