@@ -73,7 +73,7 @@ class AbstractEmployer(AbstractImg):
 
     @property
     def emptypes(self):
-        return self.employer_profile.objects.values_list('employer_type__pk', flat=True).distinct()
+        return self.employer_profile.objects.all().values_list('employer_type__pk', flat=True).distinct()
 
     def profile_lst(self):
         return self.employer_profile.order_by('-order_in_list', 'name').values_list('pk', flat=True)
@@ -86,7 +86,7 @@ class AbstractEmployer(AbstractImg):
 
     @property
     def empother(self):
-        return self.employer_other.objects.values_list('employer_type__pk', flat=True).distinct()
+        return self.employer_other.objects.all().values_list('employer_type__pk', flat=True).distinct()
 
     @property
     def radio_profiles(self):
