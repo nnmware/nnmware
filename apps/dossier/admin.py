@@ -193,7 +193,7 @@ class AnimalTypeAdmin(TypeBaseAdmin):
 
 class AnimalKindAdmin(TypeBaseAdmin):
     fieldsets = ((_("Kind of animal"), {"fields": ['name', ]}),)
-    ordering = ('-order_in_list', 'name')
+    ordering = ('name', )
 
 
 class SurveyObjectTypeAdmin(TypeBaseAdmin):
