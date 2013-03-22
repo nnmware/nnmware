@@ -5,14 +5,17 @@ from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
 
 class TypeAppearanceHumanAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of appearance"), {"fields": ['name', ]}),)
 
 
 class TypeNationalHumanAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("National type"), {"fields": ['name', ]}),)
 
 
 class TypeBodyHumanAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Body Type"), {"fields": ['name', ]}),)
 
 
@@ -22,6 +25,7 @@ class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
 
 
 class HairColorAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
     fieldsets = ((_("Hair color"), {"fields": ['name', ]}),)
 
 
