@@ -14,7 +14,7 @@ class TypeEmployerProfileAdmin(TypeBaseAdmin):
 
 
 class TypeEmployerOtherAdmin(TypeBaseAdmin):
-    list_display = ('name', 'employer_type')
+    list_display = ('name', 'employer_type', 'is_radio')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
