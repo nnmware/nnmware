@@ -41,7 +41,7 @@ class TypeEmployerProfile(AbstractName):
 
 @python_2_unicode_compatible
 class TypeEmployerOther(AbstractName):
-    employer_type = models.ForeignKey(TypeEmployer,verbose_name=_('Type of employer'))
+    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
 
     class Meta:
@@ -61,8 +61,10 @@ class AbstractEmployer(AbstractImg):
     work_off = models.TimeField(verbose_name=_('Work time to'), blank=True, null=True)
     phone_on = models.TimeField(verbose_name=_('Phone time from'), blank=True, null=True)
     phone_off = models.TimeField(verbose_name=_('Phone time to'), blank=True, null=True)
-    employer_profile = models.ManyToManyField(TypeEmployerProfile, verbose_name=_('Types of employer profile'),blank=True, null=True)
-    employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'),blank=True, null=True)
+    employer_profile = models.ManyToManyField(TypeEmployerProfile, verbose_name=_('Types of employer profile'),
+                                              blank=True, null=True)
+    employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'), blank=True,
+                                            null=True)
 
     class Meta:
         verbose_name = _("Employer")
@@ -71,8 +73,13 @@ class AbstractEmployer(AbstractImg):
 
     @property
     def emptypes(self):
-        result = self.employer_profile.order_by('-order_in_list','name').values_list('employer_type',flat=True)
-        return TypeEmployer.objects.filter(pk__in=result).values_list('pk',flat=True)
+        result = self.employer_profile.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
+        return TypeEmployer.objects.filter(pk__in=result).values_list('pk', flat=True)
+
+    @property
+    def empother(self):
+        result = self.employer_other.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
+        return TypeEmployer.objects.filter(pk__in=result).values_list('pk', flat=True)
 
     @property
     def radio_profiles(self):
