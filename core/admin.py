@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class TypeBaseAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'order_in_list')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
