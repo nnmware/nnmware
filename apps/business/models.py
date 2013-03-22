@@ -73,22 +73,20 @@ class AbstractEmployer(AbstractImg):
 
     @property
     def emptypes(self):
-        result = self.employer_profile.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
-        return TypeEmployer.objects.filter(pk__in=result).values_list('pk', flat=True)
+        return self.employer_profile.objects.values_list('employer_type__pk', flat=True).distinct()
 
     def profile_lst(self):
         return self.employer_profile.order_by('-order_in_list', 'name').values_list('pk', flat=True)
 
     def other_radio(self):
-        return self.employer_other.filter(is_radio=True).values_list('employer_type__pk', flat=True)
+        return self.employer_other.filter(is_radio=True).values_list('employer_type__pk', flat=True).distinct()
 
     def other_check(self):
-        return self.employer_other.filter(is_radio=False).values_list('employer_type__pk', flat=True)
+        return self.employer_other.filter(is_radio=False).values_list('employer_type__pk', flat=True).distinct()
 
     @property
     def empother(self):
-        result = self.employer_other.order_by('-order_in_list', 'name').values_list('employer_type', flat=True)
-        return TypeEmployer.objects.filter(pk__in=result).values_list('pk', flat=True)
+        return self.employer_other.objects.values_list('employer_type__pk', flat=True).distinct()
 
     @property
     def radio_profiles(self):
