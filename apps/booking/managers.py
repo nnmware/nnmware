@@ -1,5 +1,6 @@
 from django.db.models.manager import Manager
 
+
 class SettlementVariantManager(Manager):
 
     def get_query_set(self):

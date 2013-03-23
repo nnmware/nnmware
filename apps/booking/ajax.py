@@ -54,7 +54,7 @@ def room_rates(request):
                         min_days = int(json_data['min_days'][i])
                     except:
                         min_days = None
-                    # store availability
+                        # store availability
                     availability, created = Availability.objects.get_or_create(date=on_date, room=room)
                     availability.placecount = placecount
                     if min_days is not None:
@@ -262,8 +262,7 @@ def hotels_in_city(request):
                       'address': hotel.address, 'id': hotel.pk, 'starcount': hotel.starcount,
                       'img': make_thumbnail(hotel.main_image, width=113, height=75, aspect=1),
                       'longitude': hotel.longitude, 'starcount_name': hotel.get_starcount_display(),
-                      'amount': str(int(hotel.current_amount))
-            }
+                      'amount': str(int(hotel.current_amount))}
 
             results.append(answer)
         payload = {'success': True, 'hotels': results}

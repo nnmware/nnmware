@@ -9,70 +9,77 @@ from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
 
+
 class CabinetInfoForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-    schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
+    name = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
+    schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
 
     class Meta:
         model = Hotel
         fields = ('name', 'description', 'schema_transit', 'option')
         widgets = {
-            'typefood': forms.RadioSelect(attrs={'class' : 'uniform'}),
-            }
+            'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
+        }
+
 
 class CabinetTermsForm(forms.ModelForm):
-    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}),required=False)
-    time_on = forms.CharField(widget=AdminTimeWidget(),required=False)
-    time_off = forms.CharField(widget=AdminTimeWidget(),required=False)
+    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
+    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}),
+                                             required=False)
+    paid_services = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
+    time_on = forms.CharField(widget=AdminTimeWidget(), required=False)
+    time_off = forms.CharField(widget=AdminTimeWidget(), required=False)
 
     class Meta:
         model = Hotel
-        fields = ('booking_terms', 'payment_method','condition_cancellation',
-            'paid_services','time_on','time_off')
+        fields = ('booking_terms', 'payment_method', 'condition_cancellation',
+                  'paid_services', 'time_on', 'time_off')
+
 
 class CabinetRoomForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '25'}))
-    description = forms.CharField(required=False,widget=forms.Textarea(attrs={'class' : 'wide','rows':'5'}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
+    description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}))
 
     class Meta:
         model = Room
-        fields = ('name', 'description', 'option','typefood')
+        fields = ('name', 'description', 'option', 'typefood')
         widgets = {
-            'typefood': forms.RadioSelect(attrs={'class' : 'uniform'}),
-            }
+            'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
+        }
+
 
 class CabinetEditBillForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}))
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}))
 
     class Meta:
         model = Bill
-        fields = ('date_billed', 'status', 'description','amount','currency')
+        fields = ('date_billed', 'status', 'description', 'amount', 'currency')
+
 
 class RequestAddHotelForm(forms.ModelForm):
-    city = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    address = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    name = forms.CharField(widget=forms.TextInput(attrs={'size' : '35'}))
-    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    fax = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    contact_email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    website = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
-    rooms_count = forms.CharField(required=False, widget=forms.TextInput(attrs={'size' : '35'}))
+    city = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    address = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    name = forms.CharField(widget=forms.TextInput(attrs={'size': '35'}))
+    email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    phone = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    fax = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    contact_email = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    website = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
+    rooms_count = forms.CharField(required=False, widget=forms.TextInput(attrs={'size': '35'}))
 
     class Meta:
         model = RequestAddHotel
-        fields = ('city', 'address', 'name','email','phone','fax','contact_email',
-                  'website','rooms_count','starcount')
+        fields = ('city', 'address', 'name', 'email', 'phone', 'fax', 'contact_email',
+                  'website', 'rooms_count', 'starcount')
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(RequestAddHotelForm, self).__init__(*args, **kwargs)
         if not user.is_authenticated():
-            self.fields['recaptcha'] = ReCaptchaField(error_messages = { 'required': _('This field is required'),
-                                                                       'invalid' : _('Answer is wrong') })
+            self.fields['recaptcha'] = ReCaptchaField(error_messages={'required': _('This field is required'),
+                                                                      'invalid': _('Answer is wrong')})
+
 
 class UserCabinetInfoForm(forms.ModelForm):
     password = forms.CharField(label=_('New Password'), max_length=30, required=False)
@@ -94,6 +101,7 @@ class UserCabinetInfoForm(forms.ModelForm):
                 self.current_user.save()
         return password
 
+
 class BookingAddForm(forms.ModelForm):
     room_id = forms.CharField(max_length=30, required=False)
     settlement = forms.CharField(max_length=30, required=False)
@@ -102,7 +110,7 @@ class BookingAddForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = (
-            'from_date', 'to_date', 'first_name', 'middle_name','last_name', 'phone','email',
+            'from_date', 'to_date', 'first_name', 'middle_name', 'last_name', 'phone', 'email',
             'payment_method')
 
     def clean_payment_method(self):
@@ -112,9 +120,11 @@ class BookingAddForm(forms.ModelForm):
             return payment_method
         raise forms.ValidationError(_("No valid payment method."))
 
+
 class BookingStatusForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={'class' : 'wide','rows':'5','cols':'40'}), required=False)
+    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}),
+                                  required=False)
 
     class Meta:
         model = Booking
-        fields = ('status','description')
+        fields = ('status', 'description')

@@ -8,6 +8,7 @@ from django.utils.encoding import force_text
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
+
 class HotelOptionSelectMultiple(forms.CheckboxSelectMultiple):
     """
     Widget that renders multiple-select checkboxes in columns.
@@ -20,7 +21,8 @@ class HotelOptionSelectMultiple(forms.CheckboxSelectMultiple):
         self.css_class = css_class
 
     def render(self, name, value, attrs=None, choices=()):
-        if value is None: value = []
+        if value is None:
+            value = []
         has_id = attrs and 'id' in attrs
         final_attrs = self.build_attrs(attrs, name=name)
         choices_enum = list(enumerate(chain(self.choices, choices)))
