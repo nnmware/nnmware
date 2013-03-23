@@ -14,22 +14,22 @@ class TypeEmployer(AbstractName):
     pass
 
     class Meta:
-        ordering = ('-order_in_list','name')
+        ordering = ('-order_in_list', 'name')
         verbose_name = _("Type of employer")
         verbose_name_plural = _("Types of employers")
 
     @property
     def radio(self):
-        return self.typeemployerprofile_set.filter(is_radio=True).order_by('-order_in_list','name')
+        return self.typeemployerprofile_set.filter(is_radio=True).order_by('-order_in_list', 'name')
 
     @property
     def multi(self):
-        return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list','name')
+        return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list', 'name')
 
 
 @python_2_unicode_compatible
 class TypeEmployerProfile(AbstractName):
-    employer_type = models.ForeignKey(TypeEmployer,verbose_name=_('Type of employer'))
+    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
 
     class Meta:
@@ -38,6 +38,7 @@ class TypeEmployerProfile(AbstractName):
 
     def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
+
 
 @python_2_unicode_compatible
 class TypeEmployerOther(AbstractName):
@@ -100,7 +101,6 @@ class AbstractEmployer(AbstractImg):
 
 
 class Agency(AbstractName):
-
     class Meta:
         verbose_name = _("Agency")
         verbose_name_plural = _("Agencies")
@@ -115,8 +115,8 @@ class AbstractEmployee(AbstractImg):
     agent_off = models.TimeField(verbose_name=_('Agent work time to'), blank=True, null=True)
     permanent_work = std_text_field(_('Permanent place of work'))
     awards = std_text_field(_('Awards, achievements, titles'))
-    payment_from = models.IntegerField(verbose_name=_('Amount payment from'),null=True, blank=True)
-    payment_to = models.IntegerField(verbose_name=_('Amount payment to'),null=True, blank=True)
+    payment_from = models.IntegerField(verbose_name=_('Amount payment from'), null=True, blank=True)
+    payment_to = models.IntegerField(verbose_name=_('Amount payment to'), null=True, blank=True)
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
     education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True, null=True)
