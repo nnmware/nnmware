@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg
@@ -22,6 +23,10 @@ class TypeEmployer(AbstractName):
     @property
     def multi(self):
         return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list', 'name')
+
+    @permalink
+    def get_absolute_url(self):
+        return "type_employer_detail", (), {'slug': self.slug}
 
 
 @python_2_unicode_compatible
