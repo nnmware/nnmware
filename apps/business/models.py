@@ -26,7 +26,7 @@ class TypeEmployer(AbstractName):
 
     @permalink
     def get_absolute_url(self):
-        return ('employer_profile', (), {'slug': self.slug})
+        return 'employers_profile', (), {'slug': self.slug}
 
 
 @python_2_unicode_compatible
@@ -40,6 +40,10 @@ class TypeEmployerProfile(AbstractName):
 
     def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
+
+    @permalink
+    def get_absolute_url(self):
+        return 'employers_group', (), {'slug': self.slug}
 
 
 @python_2_unicode_compatible
