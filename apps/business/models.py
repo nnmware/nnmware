@@ -26,7 +26,7 @@ class TypeEmployer(AbstractName):
 
     @permalink
     def get_absolute_url(self):
-        return 'employer_profile', (), {'slug': self.slug}
+        return ('employer_profile', (), {'slug': self.slug})
 
 
 @python_2_unicode_compatible
