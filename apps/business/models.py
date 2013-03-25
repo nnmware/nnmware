@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
-from nnmware.core.models import Pic
-from nnmware.core.abstract import PicsMixin
 
 
 class TypeEmployer(AbstractName):

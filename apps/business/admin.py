@@ -5,7 +5,7 @@ from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
 
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
-    list_display = ('name', 'employer_type', 'is_radio', 'order_in_list')
+    list_display = ('name', 'employer_type', 'is_radio', 'order_in_list', 'slug')
     list_filter = ('name',)
     search_fields = ('name',)
     ordering = ('employer_type', '-is_radio', '-order_in_list', 'name')
@@ -22,7 +22,7 @@ class TypeEmployerOtherAdmin(TypeBaseAdmin):
 
 
 class TypeEmployerAdmin(TypeBaseAdmin):
-    list_display = ('name', 'order_in_list')
+    list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
         (_("Type of employer"), {"fields": [('name', 'order_in_list'),
         ]}),)
