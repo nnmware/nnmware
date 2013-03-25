@@ -1,7 +1,7 @@
 from django.contrib import admin
 from nnmware.apps.business.models import *
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
+from nnmware.core.admin import TypeBaseAdmin
 
 
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
@@ -24,19 +24,16 @@ class TypeEmployerOtherAdmin(TypeBaseAdmin):
 class TypeEmployerAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
-        (_("Type of employer"), {"fields": [('name', 'order_in_list'),
-        ]}),)
+        (_("Type of employer"), {"fields": [('name', 'order_in_list'), ]}),)
     ordering = ('-order_in_list', 'name',)
 
 
 class AgencyAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Agency name"), {"fields": [('name'),
-        ]}),)
+        (_("Agency name"), {"fields": [('name', ), ]}),)
 
 
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
 admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
 admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
-
