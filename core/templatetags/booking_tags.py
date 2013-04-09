@@ -254,6 +254,20 @@ def client_currency(context):
     else:
         return _('rub')
 
+@register.simple_tag(takes_context=True)
+def view_currency(context):
+    request = context['request']
+    try:
+        currency = request.COOKIES['currency']
+    except:
+        currency = CURRENCY
+    if currency == 'USD':
+        return _('US Dollars')
+    elif currency == 'EUR':
+        return _('Euro')
+    else:
+        return _('Roubles')
+
 
 @register.simple_tag(takes_context=True)
 def convert_to_client_currency(context, amount):
