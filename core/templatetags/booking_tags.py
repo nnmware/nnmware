@@ -138,6 +138,12 @@ def hotels_count():
 
 
 @register.assignment_tag
+def city_count():
+    result = City.objects.count()
+    return result
+
+
+@register.assignment_tag
 def hotels_best_offer():
     result = Hotel.objects.filter(best_offer=True).select_related().order_by('-current_amount')
     return result
