@@ -336,7 +336,8 @@ def hotels_city_count(slug):
         result = Hotel.objects.filter(city=city).count()
         return result
     except:
-        return None
+        return 0
+
 
 @register.simple_tag
 def settlement_price_on_date(settlement, date):
