@@ -331,10 +331,12 @@ def hotels_moscow_count():
 
 @register.assignment_tag
 def hotels_city_count(slug):
-    city = City.objects.get(slug=slug)
-    result = Hotel.objects.filter(city=city).count()
-    return result
-
+    try:
+        city = City.objects.get(slug=slug)
+        result = Hotel.objects.filter(city=city).count()
+        return result
+    except:
+        return None
 
 @register.simple_tag
 def settlement_price_on_date(settlement, date):
