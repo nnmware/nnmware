@@ -131,7 +131,7 @@ def hotels_city():
     return result
 
 
-@register.simple_tag
+@register.assignment_tag
 def hotels_count():
     result = Hotel.objects.count()
     return result
