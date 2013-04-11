@@ -126,10 +126,10 @@ class HotelList(RedirectHttpView, ListView):
             a_max = convert_from_client_currency(self.request, amount_max)
         try:
             self.city = City.objects.get(slug=self.kwargs['slug'])
-            hotels = Hotel.objects.select_related.filter(city=self.city).exclude(payment_method=None)
+            hotels = Hotel.objects.select_related().filter(city=self.city).exclude(payment_method=None)
         except:
             self.city = None
-            hotels = Hotel.objects.select_related.all()
+            hotels = Hotel.objects.select_related().all()
         self.tab = {'css_name': 'asc', 'css_class': 'desc', 'css_amount': 'desc', 'css_review': 'desc',
                     'order_name': 'desc', 'order_class': 'desc', 'order_amount': 'desc', 'order_review': 'desc',
                     'tab': 'name'}
