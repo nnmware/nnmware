@@ -148,7 +148,7 @@ class HotelList(RedirectHttpView, ListView):
                 for hotel in hotels:
                     if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
                         result.append(hotel.pk)
-                search_hotel = Hotel.objects.filter(pk__in=result)
+                search_hotel = Hotel.objects.select_related().filter(pk__in=result)
             except:
                 search_hotel = hotels
             self.search = 1
@@ -161,7 +161,7 @@ class HotelList(RedirectHttpView, ListView):
                 amount = h.min_current_amount
                 if int(a_min) < amount < int(a_max):
                     r.append(h.pk)
-            search_hotel = Hotel.objects.filter(pk__in=r)
+            search_hotel = Hotel.objects.select_related().filter(pk__in=r)
         if options:
             for option in options:
                 search_hotel = search_hotel.filter(option=option)
