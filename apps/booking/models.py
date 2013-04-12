@@ -237,18 +237,18 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def free_room(self, from_date, to_date, roomcount):
         result = []
         for room in self.room_set.all():
-            if room.check_min_days(from_date, to_date):
-                check_date = from_date
-                avail = None
-                while check_date < to_date:
-                    places = room.date_place_count(check_date)
-                    if places < roomcount:
-                        avail = None
-                        break
-                    avail = 1
-                    check_date += timedelta(days=1)
-                if avail:
-                    result.append(room)
+            if room.check_min_days(from_date, to_date, roomcount):
+                # check_date = from_date
+                # avail = None
+                # while check_date < to_date:
+                #     places = room.date_place_count(check_date)
+                #     if places < roomcount:
+                #         avail = None
+                #         break
+                #     avail = 1
+                #     check_date += timedelta(days=1)
+                # if avail:
+                result.append(room)
         return result
 
     @property
@@ -448,12 +448,21 @@ class Room(AbstractName):
         except:
             return None
 
-    def check_min_days(self, from_date, to_date):
+    def check_min_days(self, from_date, to_date, roomcount):
+        try:
+            places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
+            places_max = places[0].settlement
+        except:
+            return False
         need_days = (to_date - from_date).days
         date_gen = daterange(from_date, to_date)
         for d in date_gen:
             try:
-                min_days = Availability.objects.get(room=self, date=d).min_days
+                avail = Availability.objects.get(room=self, date=d)
+                min_days = avail.min_days
+                availability = avail.placecount
+                if availability * places_max < roomcount:
+                    return False
             except:
                 return False
             if min_days > need_days:
