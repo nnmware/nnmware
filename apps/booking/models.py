@@ -237,20 +237,18 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def free_room(self, from_date, to_date, roomcount):
         result = []
         for room in self.room_set.all():
-            result.append(room)
-
-            # if room.check_min_days(from_date, to_date):
-            #     check_date = from_date
-            #     avail = None
-            #     while check_date < to_date:
-            #         places = room.date_place_count(check_date)
-            #         if places < roomcount:
-            #             avail = None
-            #             break
-            #         avail = 1
-            #         check_date += timedelta(days=1)
-            #     if avail:
-            #         result.append(room)
+            if room.check_min_days(from_date, to_date):
+                check_date = from_date
+                avail = None
+                while check_date < to_date:
+                    places = 20  # room.date_place_count(check_date)
+                    if places < roomcount:
+                        avail = None
+                        break
+                    avail = 1
+                    check_date += timedelta(days=1)
+                if avail:
+                    result.append(room)
         return result
 
     @property
