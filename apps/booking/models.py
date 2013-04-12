@@ -241,7 +241,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                 check_date = from_date
                 avail = None
                 while check_date < to_date:
-                    places = 20  # room.date_place_count(check_date)
+                    places = room.date_place_count(check_date)
                     if places < roomcount:
                         avail = None
                         break
@@ -441,9 +441,9 @@ class Room(AbstractName):
 
     def date_place_count(self, date):
         try:
+            availability = Availability.objects.get(room=self, date=date).placecount
             places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
             places_max = places[0].settlement
-            availability = Availability.objects.get(room=self, date=date).placecount
             return places_max * availability
         except:
             return None
