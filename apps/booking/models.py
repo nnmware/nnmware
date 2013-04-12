@@ -238,16 +238,6 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         result = []
         for room in self.room_set.all():
             if room.check_min_days(from_date, to_date, roomcount):
-                # check_date = from_date
-                # avail = None
-                # while check_date < to_date:
-                #     places = room.date_place_count(check_date)
-                #     if places < roomcount:
-                #         avail = None
-                #         break
-                #     avail = 1
-                #     check_date += timedelta(days=1)
-                # if avail:
                 result.append(room)
         return result
 
@@ -439,15 +429,6 @@ class Room(AbstractName):
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
 
-    def date_place_count(self, date):
-        try:
-            availability = Availability.objects.get(room=self, date=date).placecount
-            places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
-            places_max = places[0].settlement
-            return places_max * availability
-        except:
-            return None
-
     def check_min_days(self, from_date, to_date, roomcount):
         try:
             places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
@@ -457,15 +438,15 @@ class Room(AbstractName):
         need_days = (to_date - from_date).days
         date_gen = daterange(from_date, to_date)
         avail = Availability.objects.select_related().filter(room=self, date__in=date_gen)
+        if avail.count() < need_days:
+            return False
         for a in avail:
             try:
-                min_days = a.min_days
-                availability = a.placecount
-                if availability * places_max < roomcount:
+                if a.min_days > need_days:
+                    return False
+                if a.placecount * places_max < roomcount:
                     return False
             except:
-                return False
-            if min_days > need_days:
                 return False
         return True
 
