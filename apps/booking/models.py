@@ -461,8 +461,8 @@ class Room(AbstractName):
                 avail = Availability.objects.get(room=self, date=d)
                 min_days = avail.min_days
                 availability = avail.placecount
-                if availability * places_max < roomcount:
-                    return False
+                # if availability * places_max < roomcount:
+                #     return False
             except:
                 return False
             if min_days > need_days:
