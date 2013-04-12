@@ -456,13 +456,13 @@ class Room(AbstractName):
             return False
         need_days = (to_date - from_date).days
         date_gen = daterange(from_date, to_date)
-        for d in date_gen:
+        avail = Availability.objects.select_related().filter(room=self, date__in=date_gen)
+        for a in avail:
             try:
-                avail = Availability.objects.get(room=self, date=d)
-                min_days = avail.min_days
-                availability = avail.placecount
-                # if availability * places_max < roomcount:
-                #     return False
+                min_days = a.min_days
+                availability = a.placecount
+                if availability * places_max < roomcount:
+                    return False
             except:
                 return False
             if min_days > need_days:
