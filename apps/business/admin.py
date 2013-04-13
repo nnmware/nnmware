@@ -42,8 +42,32 @@ class CompanyCategoryAdmin(TreeAdmin):
     )
 
 
+class CompanyAdmin(admin.ModelAdmin):
+    model = Company
+    list_display = ('name', 'region', 'work_on', 'work_off')
+    list_filter = ('name', 'region', )
+    search_fields = ('name', 'position')
+    fieldsets = (
+        (_("Employer"), {"fields": [
+            ('is_company', "name"),
+            ('position',),
+            ('description', ),
+            ('work_on', 'work_off'),
+            ('phone_on', 'phone_off')
+        ]}),
+        (_("Sphere of activity"), {"classes": ("collapse closed",), "fields": [
+            ('employer_profile',),
+            ('employer_other',),
+            ]}),
+
+    )
+    ordering = ('is_company', 'position')
+    readonly_fields = ('profile',)
+
+
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
 admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
 admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
 admin.site.register(CompanyCategory, CompanyCategoryAdmin)
+admin.site.register(Company, CompanyAdmin)
