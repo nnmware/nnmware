@@ -49,8 +49,8 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name', 'position')
     fieldsets = (
         (_("Employer"), {"fields": [
-            ('is_company', "name"),
-            ('position',),
+            ("name",),
+            ('region',),
             ('description', ),
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
@@ -61,8 +61,8 @@ class CompanyAdmin(admin.ModelAdmin):
             ]}),
 
     )
-    ordering = ('is_company', 'position')
-    readonly_fields = ('profile',)
+    ordering = ('region', 'name')
+#    readonly_fields = ('profile',)
 
 
 admin.site.register(Agency, AgencyAdmin)
