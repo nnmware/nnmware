@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+from django.conf import settings
 from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
-from nnmware.core.abstract import AbstractName, AbstractImg
+from nnmware.core.abstract import AbstractName, AbstractImg, Tree
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -59,11 +61,7 @@ class TypeEmployerOther(AbstractName):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
 
-class AbstractEmployer(AbstractImg):
-    is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
-    name = std_text_field(_('Company name'))
-    position = std_text_field(_('Work position'))
-    description = models.TextField(verbose_name=_('Activities description '), blank=True, default='')
+class AbstractWTime(models.Model):
     work_on = models.TimeField(verbose_name=_('Work time from'), blank=True, null=True)
     work_off = models.TimeField(verbose_name=_('Work time to'), blank=True, null=True)
     phone_on = models.TimeField(verbose_name=_('Phone time from'), blank=True, null=True)
@@ -74,8 +72,6 @@ class AbstractEmployer(AbstractImg):
                                             null=True)
 
     class Meta:
-        verbose_name = _("Employer")
-        verbose_name_plural = _("Employers")
         abstract = True
 
     @property
@@ -106,6 +102,18 @@ class AbstractEmployer(AbstractImg):
         return self.employer_profile.filter(is_radio=True)
 
 
+class AbstractEmployer(AbstractImg, AbstractWTime):
+    is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
+    name = std_text_field(_('Company name'))
+    position = std_text_field(_('Work position'))
+    description = models.TextField(verbose_name=_('Activities description '), blank=True, default='')
+
+    class Meta:
+        verbose_name = _("Employer")
+        verbose_name_plural = _("Employers")
+        abstract = True
+
+
 class Agency(AbstractName):
     class Meta:
         verbose_name = _("Agency")
@@ -132,3 +140,24 @@ class AbstractEmployee(AbstractImg):
         verbose_name = _("Employee")
         verbose_name_plural = _("Employees")
         abstract = True
+
+
+class CompanyCategory(Tree):
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Category Admins'),
+                                    null=True, blank=True, related_name='%(class)s_cat_adm')
+    slug_detail = 'companies_category'
+
+    class Meta:
+        ordering = ['parent__id', ]
+        verbose_name = _('Company Category')
+        verbose_name_plural = _('Companies Categories')
+
+
+class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime):
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
+                                    null=True, blank=True, related_name='%(class)s_comp_adm')
+    cat = models.ForeignKey(CompanyCategory, verbose_name=_('Company category'), related_name='company')
+
+    class Meta:
+        verbose_name = _("Company")
+        verbose_name_plural = _("Companies")
