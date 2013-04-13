@@ -1,7 +1,7 @@
 from django.contrib import admin
 from nnmware.apps.business.models import *
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.admin import TypeBaseAdmin
+from nnmware.core.admin import TypeBaseAdmin, TreeAdmin
 
 
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
@@ -33,7 +33,17 @@ class AgencyAdmin(TypeBaseAdmin):
         (_("Agency name"), {"fields": [('name', ), ]}),)
 
 
+class CompanyCategoryAdmin(TreeAdmin):
+    fieldsets = (
+        (_("Main"), {"fields": [("name", "slug"), ("parent",
+                                                   "login_required",)]}),
+        (_("Description"), {"classes": ("collapse",),
+                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+    )
+
+
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
 admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
 admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
+admin.site.register(CompanyCategory, CompanyCategoryAdmin)
