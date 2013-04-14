@@ -19,7 +19,7 @@ class ProductCategory(Tree):
     slug_detail = 'product_category'
 
     class Meta:
-        ordering = ['parent__id',]
+        ordering = ['parent__id', ]
         verbose_name = _('Product Category')
         verbose_name_plural = _('Product Categories')
 
@@ -31,16 +31,19 @@ class ProductCategory(Tree):
 class ProductColor(Color):
     pass
 
+
 class ProductMaterial(Material):
     pass
 
+
 @python_2_unicode_compatible
 class Vendor(models.Model):
-    name = models.CharField(_("Name of vendor"),max_length=200)
+    name = models.CharField(_("Name of vendor"), max_length=200)
     website = std_url_field(_("URL"))
-    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='', blank=True)
+    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='',
+                                   blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
-        on_delete=models.SET_NULL)
+                                on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ['name', 'website']
@@ -50,16 +53,17 @@ class Vendor(models.Model):
     def __str__(self):
         return self.name
 
-class CargoService(Vendor):
 
+class CargoService(Vendor):
     class Meta:
         ordering = ['name', 'website']
         verbose_name = _("Cargo Service")
         verbose_name_plural = _("Cargo Services")
 
+
 class Product(AbstractName, MoneyBase, AbstractDate):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
-        on_delete=models.SET_NULL, related_name='shopcat')
+                                 on_delete=models.SET_NULL, related_name='shopcat')
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
     materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
@@ -67,7 +71,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
-        on_delete=models.SET_NULL)
+                               on_delete=models.SET_NULL)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
@@ -76,7 +80,8 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     on_main = models.BooleanField(verbose_name=_("On main page"), default=False)
     visible = models.BooleanField(verbose_name=_("Visible"), default=True)
     special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
-    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, null=True, decimal_places=1, max_digits=4, default=0)
+    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, null=True,
+                                           decimal_places=1, max_digits=4, default=0)
     width = models.IntegerField(_('Width, sm'), default=0, blank=True)
     height = models.IntegerField(_('Height, sm'), default=0, blank=True)
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
@@ -86,7 +91,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     objects = ProductManager()
 
     class Meta:
-#        ordering = ['category__name','order_in_list','name']
+    #        ordering = ['category__name','order_in_list','name']
         ordering = ['-created_date']
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
@@ -118,20 +123,20 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
     @property
     def effect(self):
-        return self.fullmoney/(datetime.now()-self.created_date).days
+        return self.fullmoney / (datetime.now() - self.created_date).days
 
     @property
     def allorders(self):
-        allitems = OrderItem.objects.filter(product_origin=self).values_list('order__pk',flat=True)
+        allitems = OrderItem.objects.filter(product_origin=self).values_list('order__pk', flat=True)
         return Order.objects.active().filter(pk__in=allitems).dates('created_date', 'day')
 
     @property
     def with_discount(self):
-        if self.discount_percent >0:
-            result =  self.amount*(100-self.discount_percent)/100
+        if self.discount_percent > 0:
+            result = self.amount * (100 - self.discount_percent) / 100
         else:
             result = self.amount
-        return floatformat(result,0)
+        return floatformat(result, 0)
 
     def save(self, *args, **kwargs):
         if self.slug is not None:
@@ -142,6 +147,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
 
 class ParameterUnit(Unit):
     pass
+
 
 @python_2_unicode_compatible
 class ProductParameterCategory(models.Model):
@@ -154,13 +160,16 @@ class ProductParameterCategory(models.Model):
     def __str__(self):
         return self.name
 
+
 class ProductParameter(Parameter):
-    category = models.ForeignKey(ProductParameterCategory, verbose_name=_('Category'), related_name='category', null=True, blank=True)
+    category = models.ForeignKey(ProductParameterCategory, verbose_name=_('Category'), related_name='category',
+                                 null=True, blank=True)
     unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
 
     class Meta:
         verbose_name = _("Product parameter")
         verbose_name_plural = _("Product parameters")
+
 
 @python_2_unicode_compatible
 class ProductParameterValue(AbstractContent):
@@ -176,14 +185,14 @@ class ProductParameterValue(AbstractContent):
     def __str__(self):
         try:
             return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
-        except :
+        except:
             return "%s: %s" % (self.parameter.name, self.value)
 
 
 @python_2_unicode_compatible
 class Basket(AbstractDate):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket',blank=True, null=True,
-        on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket', blank=True,
+                             null=True, on_delete=models.SET_NULL)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
     product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
@@ -195,7 +204,7 @@ class Basket(AbstractDate):
 
     @property
     def sum(self):
-        return self.quantity*int(self.product.with_discount)
+        return self.quantity * int(self.product.with_discount)
 
     def __str__(self):
         try:
@@ -214,20 +223,23 @@ STATUS_UNDO = 6
 STATUS_SHIPPING = 7
 
 STATUS_ORDER = (
-        (STATUS_UNKNOWN, _('Unknown')),
-        (STATUS_WAIT, _('Wait')),
-        (STATUS_PROCESS, _('Process')),
-        (STATUS_SENT, _('Sent')),
-        (STATUS_CANCEL, _('Cancel')),
-        (STATUS_CLOSED, _('Closed')),
-        (STATUS_UNDO, _('Undo')),
-        (STATUS_SHIPPING, _('Shipping')),
-        )
+    (STATUS_UNKNOWN, _('Unknown')),
+    (STATUS_WAIT, _('Wait')),
+    (STATUS_PROCESS, _('Process')),
+    (STATUS_SENT, _('Sent')),
+    (STATUS_CANCEL, _('Cancel')),
+    (STATUS_CLOSED, _('Closed')),
+    (STATUS_UNDO, _('Undo')),
+    (STATUS_SHIPPING, _('Shipping')),
+)
+
 
 class OrdersManager(models.Manager):
-
     def active(self):
-        return self.filter(Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT)| Q(status=STATUS_CLOSED)| Q(status=STATUS_SHIPPING)| Q(status=STATUS_WAIT) )
+        return self.filter(
+            Q(status=STATUS_PROCESS) | Q(status=STATUS_SENT) | Q(status=STATUS_CLOSED) | Q(status=STATUS_SHIPPING) | Q(
+                status=STATUS_WAIT))
+
 
 @python_2_unicode_compatible
 class DeliveryMethod(MoneyBase):
@@ -246,21 +258,22 @@ class DeliveryMethod(MoneyBase):
     def __str__(self):
         return self.name
 
+
 @python_2_unicode_compatible
 class Order(AbstractDate, AbstractIP):
     """
     Definition of orders.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='orders', blank=True,
-        null=True, on_delete=models.SET_NULL)
+                             null=True, on_delete=models.SET_NULL)
     comment = models.TextField(verbose_name=_('Shipping comment'), default='', blank=True)
     status = models.IntegerField(verbose_name=_('Status'), max_length=2, default=STATUS_UNKNOWN, choices=STATUS_ORDER)
     delivery = models.ForeignKey(DeliveryMethod, verbose_name=_('Delivery method'), blank=True,
-        null=True, on_delete=models.SET_NULL)
+                                 null=True, on_delete=models.SET_NULL)
     address = std_text_field(_('Shipping address'))
     tracknumber = std_text_field(_('Track number'))
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
-        related_name='cargo', null=True, blank=True)
+                                     related_name='cargo', null=True, blank=True)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
@@ -290,33 +303,34 @@ class Order(AbstractDate, AbstractIP):
 
     @permalink
     def get_absolute_url(self):
-        return "order_view", (), {'pk':self.pk}
+        return "order_view", (), {'pk': self.pk}
 
     @permalink
     def get_complete_url(self):
-        return "order_complete", (), {'pk':self.pk}
+        return "order_complete", (), {'pk': self.pk}
 
     @property
     def receiver(self):
         result = ''
-        if self.last_name <> '' and self.last_name is not None:
+        if self.last_name != '' and self.last_name is not None:
             result += self.last_name
-        if self.first_name <> '' and self.first_name is not None:
+        if self.first_name != '' and self.first_name is not None:
             result += ' ' + self.first_name
-        if self.middle_name <> '' and self.middle_name is not None:
+        if self.middle_name != '' and self.middle_name is not None:
             result += ' ' + self.middle_name
         return result
 
     @property
     def fio(self):
         result = ''
-        if self.last_name <> '' and self.last_name is not None:
+        if self.last_name != '' and self.last_name is not None:
             result += self.last_name.split(' ')[0]
-        if self.first_name <> '' and self.first_name is not None:
+        if self.first_name != '' and self.first_name is not None:
             result += ' ' + self.first_name[0]
-        if self.middle_name <> '' and self.middle_name is not None:
+        if self.middle_name != '' and self.middle_name is not None:
             result += ' ' + self.middle_name[0]
         return result
+
 
 @python_2_unicode_compatible
 class OrderItem(MoneyBase):
@@ -337,7 +351,7 @@ class OrderItem(MoneyBase):
 
     @property
     def fullamount(self):
-        return self.quantity*self.amount
+        return self.quantity * self.amount
 
 
 @python_2_unicode_compatible
@@ -346,8 +360,8 @@ class DeliveryAddress(AbstractLocation):
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
-    phone = models.CharField(max_length=20,verbose_name=_('Phone'), default='',blank=True,null=True)
-    skype = models.CharField(max_length=50,verbose_name=_('Skype'), default='',blank=True,null=True)
+    phone = models.CharField(max_length=20, verbose_name=_('Phone'), default='', blank=True, null=True)
+    skype = models.CharField(max_length=50, verbose_name=_('Skype'), default='', blank=True, null=True)
 
     class Meta:
         verbose_name = _("Delivery Address")
@@ -364,7 +378,7 @@ class DeliveryAddress(AbstractLocation):
         if self.city is not None:
             result += _(', city ') + self.city.name
         if self.street <> '' and self.street is not None:
-            result += _(', street ') +' '+ self.street
+            result += _(', street ') + ' ' + self.street
         if self.house_number <> '' and self.house_number is not None:
             result += _(', house ') + self.house_number
         if self.building <> '' and self.building is not None:
@@ -382,6 +396,7 @@ class DeliveryAddress(AbstractLocation):
         if self.skype <> '' and self.skype is not None:
             result += _(', skype-') + self.skype
         return result
+
 
 @python_2_unicode_compatible
 class Feedback(AbstractIP):
@@ -402,9 +417,11 @@ class Feedback(AbstractIP):
     def get_absolute_url(self):
         return reverse('feedback_detail', args=[self.pk])
 
+
 @python_2_unicode_compatible
 class Review(AbstractIP, AbstractImg):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True,
+                             blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = std_text_field(_('Name'))
     position = std_text_field(_('Position'))
@@ -419,6 +436,7 @@ class Review(AbstractIP, AbstractImg):
 
     def __str__(self):
         return "%s - %s" % (self.name, self.created_date)
+
 
 @python_2_unicode_compatible
 class ShopText(models.Model):
@@ -445,12 +463,14 @@ class ShopNews(ShopText):
         verbose_name = _('Shop news')
         verbose_name_plural = _('Shop news')
 
+
 class ShopArticle(ShopText):
     pass
 
     class Meta:
         verbose_name = _('Shop article')
         verbose_name_plural = _('Shop articles')
+
 
 class SpecialOffer(AbstractOffer):
     pass
@@ -468,7 +488,8 @@ class SpecialOffer(AbstractOffer):
 
     @permalink
     def get_absolute_url(self):
-        return "special_offer", (), {'pk':self.pk}
+        return "special_offer", (), {'pk': self.pk}
+
 
 @python_2_unicode_compatible
 class ShopCallback(AbstractIP):
