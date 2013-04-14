@@ -6,9 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.social.base import UserSocialAuthMixin, AssociationMixin, NonceMixin
 from nnmware.core.fields import JSONField
 
+
 class UserSocialAuth(models.Model, UserSocialAuthMixin):
     """Social Auth association model"""
-    User = get_user_model()
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='social_auth')
     provider = models.CharField(max_length=32)
     uid = models.CharField(max_length=255)
@@ -29,14 +29,13 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
     @classmethod
     def get_social_auth(cls, provider, uid):
         try:
-            return cls.objects.select_related('user').get(provider=provider,
-                uid=uid)
+            return cls.objects.select_related('user').get(provider=provider, uid=uid)
         except UserSocialAuth.DoesNotExist:
             return None
 
     @classmethod
     def username_max_length(cls):
-        return cls.User._meta.get_field('username').max_length
+        return cls._field_length('USERNAME_FIELD', 'username')
 
 
 class Nonce(models.Model, NonceMixin):
