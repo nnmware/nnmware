@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-10 05:30+1100\n"
+"POT-Creation-Date: 2013-04-14 11:56+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,7 +34,7 @@ msgstr "Деньги :: Адреса :: Видео"
 msgid "Shop"
 msgstr "Магазин"
 
-#: dashboard.py:45 apps/booking/admin.py:40 apps/booking/models.py:553
+#: dashboard.py:45 apps/booking/admin.py:40 apps/booking/models.py:543
 msgid "Booking"
 msgstr "Бронирование"
 
@@ -77,7 +77,7 @@ msgstr ""
 #: apps/address/admin.py:10 apps/address/models.py:98
 #: apps/address/models.py:124 apps/address/models.py:193
 #: apps/address/models.py:209 apps/booking/admin.py:184
-#: apps/booking/models.py:676
+#: apps/booking/models.py:666
 msgid "City"
 msgstr "Город"
 
@@ -141,7 +141,7 @@ msgstr "Широта"
 msgid "Cities"
 msgstr "Города"
 
-#: apps/address/models.py:125 apps/booking/models.py:677
+#: apps/address/models.py:125 apps/booking/models.py:667
 msgid "Address"
 msgstr "Адрес"
 
@@ -210,7 +210,7 @@ msgid "ArticleCategories"
 msgstr "Категории статей"
 
 #: apps/article/models.py:17 apps/board/models.py:17
-#: apps/booking/models.py:327 apps/shop/models.py:61 apps/shop/models.py:158
+#: apps/booking/models.py:317 apps/shop/models.py:61 apps/shop/models.py:158
 #: apps/topic/models.py:20
 msgid "Category"
 msgstr "Категория"
@@ -284,7 +284,7 @@ msgid "Boards"
 msgstr "Объявления"
 
 #: apps/board/models.py:26 apps/booking/models.py:141
-#: apps/booking/models.py:679 apps/shop/models.py:269 apps/shop/models.py:390
+#: apps/booking/models.py:669 apps/shop/models.py:269 apps/shop/models.py:390
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
@@ -293,7 +293,7 @@ msgid "ICQ"
 msgstr "Аська"
 
 #: apps/board/models.py:29 apps/booking/models.py:142
-#: apps/booking/models.py:540 apps/booking/models.py:680
+#: apps/booking/models.py:530 apps/booking/models.py:670
 #: apps/shop/models.py:268 apps/shop/models.py:349
 msgid "Phone"
 msgstr "Телефон"
@@ -311,8 +311,8 @@ msgid "view"
 msgstr "просмотр"
 
 #: apps/booking/admin.py:34 apps/booking/models.py:107
-#: apps/booking/models.py:170 apps/booking/models.py:368
-#: apps/booking/models.py:535
+#: apps/booking/models.py:170 apps/booking/models.py:358
+#: apps/booking/models.py:525
 msgid "Hotel"
 msgstr "Отель"
 
@@ -332,18 +332,18 @@ msgstr "Опции отеля"
 msgid "Hotel Option"
 msgstr "Опция отеля"
 
-#: apps/booking/admin.py:73 apps/booking/models.py:373
-#: apps/booking/models.py:470 apps/booking/models.py:628
-#: apps/booking/models.py:644
+#: apps/booking/admin.py:73 apps/booking/models.py:363
+#: apps/booking/models.py:460 apps/booking/models.py:618
+#: apps/booking/models.py:634
 msgid "Room"
 msgstr "Номер"
 
-#: apps/booking/admin.py:83 apps/booking/models.py:332
+#: apps/booking/admin.py:83 apps/booking/models.py:322
 msgid "Room Option"
 msgstr "Опция номера"
 
 #: apps/booking/admin.py:95 apps/booking/models.py:63
-#: apps/booking/models.py:549
+#: apps/booking/models.py:539
 msgid "Payment method"
 msgstr "Способ оплаты"
 
@@ -352,7 +352,7 @@ msgstr "Способ оплаты"
 msgid "Hotel type"
 msgstr "Тип отеля"
 
-#: apps/booking/admin.py:114 apps/booking/models.py:321
+#: apps/booking/admin.py:114 apps/booking/models.py:311
 msgid "Room Option Category"
 msgstr "Категория опций номера"
 
@@ -372,17 +372,17 @@ msgstr "Кредитка"
 msgid "Request for add Hotel"
 msgstr "Заявка на добавление Отеля"
 
-#: apps/booking/admin.py:179 apps/booking/models.py:598
+#: apps/booking/admin.py:179 apps/booking/models.py:588
 msgid "Agent Percent"
 msgstr "Агентский процент"
 
-#: apps/booking/admin.py:192 apps/booking/models.py:646
-#: apps/booking/models.py:649 apps/shop/models.py:75
+#: apps/booking/admin.py:192 apps/booking/models.py:636
+#: apps/booking/models.py:639 apps/shop/models.py:75
 msgid "Discount"
 msgstr "Скидка"
 
-#: apps/booking/admin.py:204 apps/booking/models.py:475
-#: apps/booking/models.py:533 apps/booking/models.py:660
+#: apps/booking/admin.py:204 apps/booking/models.py:465
+#: apps/booking/models.py:523 apps/booking/models.py:650
 msgid "Settlement Variant"
 msgstr "Вариант поселения"
 
@@ -390,7 +390,7 @@ msgstr "Вариант поселения"
 msgid "Availability"
 msgstr "Наличие"
 
-#: apps/booking/admin.py:218 apps/booking/models.py:663
+#: apps/booking/admin.py:218 apps/booking/models.py:653
 msgid "Place Price"
 msgstr "Стоимость места"
 
@@ -455,7 +455,7 @@ msgstr "Категории опций отеля"
 msgid "Category option"
 msgstr "Категория опции"
 
-#: apps/booking/models.py:44 apps/booking/models.py:328
+#: apps/booking/models.py:44 apps/booking/models.py:318
 msgid "In search form?"
 msgstr "В форме поиска?"
 
@@ -467,12 +467,12 @@ msgstr "Закреплено в форме поиска?"
 msgid "Hotel Options"
 msgstr "Опции отеля"
 
-#: apps/booking/models.py:54 apps/booking/models.py:337
+#: apps/booking/models.py:54 apps/booking/models.py:327
 #, python-format
 msgid "%(name)s :: %(category)s"
 msgstr ""
 
-#: apps/booking/models.py:56 apps/booking/models.py:339
+#: apps/booking/models.py:56 apps/booking/models.py:329
 #, python-format
 msgid "%(name)s"
 msgstr ""
@@ -490,7 +490,7 @@ msgid "Hotel types"
 msgstr "Типы отеля"
 
 #: apps/booking/models.py:88 apps/booking/models.py:106
-#: apps/booking/models.py:353 apps/booking/models.py:516
+#: apps/booking/models.py:343 apps/booking/models.py:506
 #: apps/dossier/models.py:268 apps/dossier/models.py:599
 #: apps/money/models.py:64 apps/money/models.py:114 apps/shop/models.py:217
 #: core/abstract.py:540 core/models.py:279 core/models.py:367
@@ -585,11 +585,11 @@ msgstr "FB+ - Пансион + напитки местного производ�
 msgid "Register from"
 msgstr "Регистрация с"
 
-#: apps/booking/models.py:143 apps/booking/models.py:681
+#: apps/booking/models.py:143 apps/booking/models.py:671
 msgid "Fax"
 msgstr "Факс"
 
-#: apps/booking/models.py:144 apps/booking/models.py:683 core/abstract.py:486
+#: apps/booking/models.py:144 apps/booking/models.py:673 core/abstract.py:486
 #: core/models.py:608
 msgid "Website"
 msgstr "Вебсайт"
@@ -606,7 +606,7 @@ msgstr "Контактное лицо"
 msgid "Count of Rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:149 apps/booking/models.py:685
+#: apps/booking/models.py:149 apps/booking/models.py:675
 msgid "Count of Stars"
 msgstr "Количество звезд"
 
@@ -678,248 +678,248 @@ msgstr "Работа по запросу"
 msgid "Hotels"
 msgstr "Отели"
 
-#: apps/booking/models.py:314
+#: apps/booking/models.py:304
 #, python-format
 msgid "%(hotel)s :: %(city)s"
 msgstr ""
 
-#: apps/booking/models.py:322
+#: apps/booking/models.py:312
 msgid "Room Option Categories"
 msgstr "Категории опций номера"
 
-#: apps/booking/models.py:333
+#: apps/booking/models.py:323
 msgid "Room Options"
 msgstr "Опции номера"
 
-#: apps/booking/models.py:354
+#: apps/booking/models.py:344
 msgid "One"
 msgstr "Одно"
 
-#: apps/booking/models.py:355
+#: apps/booking/models.py:345
 msgid "Two"
 msgstr "Два"
 
-#: apps/booking/models.py:356
+#: apps/booking/models.py:346
 msgid "Three"
 msgstr "Три"
 
-#: apps/booking/models.py:357
+#: apps/booking/models.py:347
 msgid "Four"
 msgstr "Четыре"
 
-#: apps/booking/models.py:358
+#: apps/booking/models.py:348
 msgid "Five"
 msgstr "Пять"
 
-#: apps/booking/models.py:359
+#: apps/booking/models.py:349
 msgid "Six"
 msgstr "Шесть"
 
-#: apps/booking/models.py:360
+#: apps/booking/models.py:350
 msgid "Seven"
 msgstr "Семь"
 
-#: apps/booking/models.py:361
+#: apps/booking/models.py:351
 msgid "Eight"
 msgstr "Восемь"
 
-#: apps/booking/models.py:367
+#: apps/booking/models.py:357
 msgid "Availability options"
 msgstr "Доступные опции"
 
-#: apps/booking/models.py:369
+#: apps/booking/models.py:359
 msgid "Place Count"
 msgstr "Количество мест"
 
-#: apps/booking/models.py:370
+#: apps/booking/models.py:360
 msgid "Type of food"
 msgstr "Тип питания"
 
-#: apps/booking/models.py:374
+#: apps/booking/models.py:364
 msgid "Rooms"
 msgstr "Номера"
 
-#: apps/booking/models.py:380
+#: apps/booking/models.py:370
 #, python-format
 msgid "%(room)s :: %(places)s :: %(hotel)s"
 msgstr ""
 
-#: apps/booking/models.py:471
+#: apps/booking/models.py:461
 msgid "Settlement"
 msgstr "Заселения"
 
-#: apps/booking/models.py:472 apps/shop/models.py:429 core/abstract.py:627
+#: apps/booking/models.py:462 apps/shop/models.py:429 core/abstract.py:627
 msgid "Enabled"
 msgstr "Включено"
 
-#: apps/booking/models.py:476
+#: apps/booking/models.py:466
 msgid "Settlements Variants"
 msgstr "Варианты заселения"
 
-#: apps/booking/models.py:480 apps/booking/models.py:484
+#: apps/booking/models.py:470 apps/booking/models.py:474
 #, python-format
 msgid "Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s"
 msgstr "Заселение -> %(settlement)s в %(room)s :: %(places)s :: %(hotel)s"
 
-#: apps/booking/models.py:517 apps/money/models.py:65
+#: apps/booking/models.py:507 apps/money/models.py:65
 msgid "Accepted"
 msgstr "Принято"
 
-#: apps/booking/models.py:518
+#: apps/booking/models.py:508
 msgid "Pre-confirmed"
 msgstr "Предварительно подтверждено"
 
-#: apps/booking/models.py:519
+#: apps/booking/models.py:509
 msgid "Confirmed"
 msgstr "Подтверждено"
 
-#: apps/booking/models.py:520 apps/money/models.py:116
+#: apps/booking/models.py:510 apps/money/models.py:116
 msgid "Paid"
 msgstr "Оплачено"
 
-#: apps/booking/models.py:521 apps/money/models.py:67 apps/money/models.py:117
+#: apps/booking/models.py:511 apps/money/models.py:67 apps/money/models.py:117
 msgid "Cancelled"
 msgstr "Аннулировано"
 
-#: apps/booking/models.py:522 apps/money/models.py:66
+#: apps/booking/models.py:512 apps/money/models.py:66
 msgid "Completed"
 msgstr "Завершено"
 
-#: apps/booking/models.py:528 apps/booking/models.py:674
+#: apps/booking/models.py:518 apps/booking/models.py:664
 #: apps/money/models.py:76 apps/money/models.py:126 apps/shop/models.py:185
 #: apps/shop/models.py:254 apps/shop/models.py:345 apps/shop/models.py:407
 #: core/models.py:440 core/models.py:630
 msgid "User"
 msgstr "Пользователь"
 
-#: apps/booking/models.py:529 core/models.py:441
+#: apps/booking/models.py:519 core/models.py:441
 msgid "Creation date"
 msgstr "Дата создания"
 
-#: apps/booking/models.py:530
+#: apps/booking/models.py:520
 msgid "ID in system"
 msgstr "ID в системе"
 
-#: apps/booking/models.py:531
+#: apps/booking/models.py:521
 msgid "From"
 msgstr "С"
 
-#: apps/booking/models.py:532
+#: apps/booking/models.py:522
 msgid "To"
 msgstr "До"
 
-#: apps/booking/models.py:536
+#: apps/booking/models.py:526
 msgid "Booking status"
 msgstr "Статус бронирования"
 
-#: apps/booking/models.py:537 core/forms.py:366
+#: apps/booking/models.py:527 core/forms.py:366
 msgid "First name"
 msgstr "Имя"
 
-#: apps/booking/models.py:538
+#: apps/booking/models.py:528
 msgid "Middle name"
 msgstr "Отчество"
 
-#: apps/booking/models.py:539
+#: apps/booking/models.py:529
 msgid "Last name"
 msgstr "Фамилия"
 
-#: apps/booking/models.py:541 core/models.py:514
+#: apps/booking/models.py:531 core/models.py:514
 msgid "E-mail"
 msgstr "E-mail"
 
-#: apps/booking/models.py:542
+#: apps/booking/models.py:532
 msgid "Unique ID"
 msgstr ""
 
-#: apps/booking/models.py:543
+#: apps/booking/models.py:533
 msgid "Commission"
 msgstr "Комиссия"
 
-#: apps/booking/models.py:544
+#: apps/booking/models.py:534
 msgid "Hotel Sum"
 msgstr "Сумма отеля"
 
-#: apps/booking/models.py:545
+#: apps/booking/models.py:535
 msgid "Card number"
 msgstr "Номер карты"
 
-#: apps/booking/models.py:546
+#: apps/booking/models.py:536
 msgid "Card valid to"
 msgstr "Карта действительна до"
 
-#: apps/booking/models.py:547
+#: apps/booking/models.py:537
 msgid "Card holder"
 msgstr "Владелец карты"
 
-#: apps/booking/models.py:548
+#: apps/booking/models.py:538
 msgid "Card verification value(CVV2)"
 msgstr "Верификационное значение карты(CVV2)"
 
-#: apps/booking/models.py:554
+#: apps/booking/models.py:544
 msgid "Bookings"
 msgstr "Бронирования"
 
-#: apps/booking/models.py:594
+#: apps/booking/models.py:584
 msgid "From date"
 msgstr "С даты"
 
-#: apps/booking/models.py:595
+#: apps/booking/models.py:585
 msgid "Percent"
 msgstr "Процент"
 
-#: apps/booking/models.py:599
+#: apps/booking/models.py:589
 msgid "Agent Percents"
 msgstr "Агентские проценты"
 
-#: apps/booking/models.py:605
+#: apps/booking/models.py:595
 #, python-format
 msgid "For %(hotel)s on date %(date)s percent is %(percent)s"
 msgstr "Для %(hotel)s на дату %(date)s процент - %(percent)s"
 
-#: apps/booking/models.py:613
+#: apps/booking/models.py:603
 msgid "Published by"
 msgstr "Опубликовано"
 
-#: apps/booking/models.py:614 apps/shop/admin.py:118 apps/shop/models.py:417
+#: apps/booking/models.py:604 apps/shop/admin.py:118 apps/shop/models.py:417
 msgid "Review"
 msgstr "Отзыв"
 
-#: apps/booking/models.py:618
+#: apps/booking/models.py:608
 msgid "Client review"
 msgstr "Отзыв клиента"
 
-#: apps/booking/models.py:619
+#: apps/booking/models.py:609
 msgid "Client reviews"
 msgstr "Отзывы клиентов"
 
-#: apps/booking/models.py:622
+#: apps/booking/models.py:612
 #, python-format
 msgid "Review client %(client)s for hotel %(hotel)s is -> %(review)s"
 msgstr "Отзыв клиента %(client)s для отеля %(hotel)s -> %(review)s"
 
-#: apps/booking/models.py:629 apps/booking/models.py:645
-#: apps/booking/models.py:659 apps/money/models.py:34
+#: apps/booking/models.py:619 apps/booking/models.py:635
+#: apps/booking/models.py:649 apps/money/models.py:34
 msgid "On date"
 msgstr "На дату"
 
-#: apps/booking/models.py:630
+#: apps/booking/models.py:620
 msgid "Count of places"
 msgstr "Количество мест"
 
-#: apps/booking/models.py:631
+#: apps/booking/models.py:621
 msgid "Minimum days"
 msgstr "Минимум дней"
 
-#: apps/booking/models.py:634
+#: apps/booking/models.py:624
 msgid "Availability Place"
 msgstr "Наличие места"
 
-#: apps/booking/models.py:635
+#: apps/booking/models.py:625
 msgid "Availabilities Places"
 msgstr "Наличия мест"
 
-#: apps/booking/models.py:638
+#: apps/booking/models.py:628
 #, python-format
 msgid ""
 "Availability place %(place)s for hotel %(hotel)s on date %(date)s is -> "
@@ -927,11 +927,11 @@ msgid ""
 msgstr ""
 "Наличие мест %(place)s для отеля %(hotel)s на дату %(date)s ->  %(count)s"
 
-#: apps/booking/models.py:650
+#: apps/booking/models.py:640
 msgid "Discounts"
 msgstr "Скидки"
 
-#: apps/booking/models.py:653
+#: apps/booking/models.py:643
 #, python-format
 msgid ""
 "Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> "
@@ -939,11 +939,11 @@ msgid ""
 msgstr ""
 "Скидка места %(place)s для отеля %(hotel)s на дату %(date)s ->  %(discount)s"
 
-#: apps/booking/models.py:664
+#: apps/booking/models.py:654
 msgid "Places Prices"
 msgstr "Стоимости мест"
 
-#: apps/booking/models.py:668
+#: apps/booking/models.py:658
 #, python-format
 msgid ""
 "Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> "
@@ -952,29 +952,29 @@ msgstr ""
 "Стоимость заселения %(settlement)s для отеля %(hotel)s на дату %(date)s -> "
 "%(price)s%(currency)s"
 
-#: apps/booking/models.py:675
+#: apps/booking/models.py:665
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:678 apps/dossier/models.py:418
+#: apps/booking/models.py:668 apps/dossier/models.py:418
 #: apps/dossier/models.py:454 apps/money/models.py:19 apps/shop/models.py:389
 #: apps/shop/models.py:409 core/abstract.py:248 core/models.py:39
 msgid "Name"
 msgstr "Имя"
 
-#: apps/booking/models.py:682
+#: apps/booking/models.py:672
 msgid "Contact email"
 msgstr "Контактный емейл"
 
-#: apps/booking/models.py:684
+#: apps/booking/models.py:674
 msgid "Count of rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:688
+#: apps/booking/models.py:678
 msgid "Request for add hotel"
 msgstr "Заявка на добавление отеля"
 
-#: apps/booking/models.py:689
+#: apps/booking/models.py:679
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
@@ -1111,7 +1111,7 @@ msgstr "Не заполнено наличие мест"
 msgid "Not filled price for %s-placed settlement"
 msgstr "Не заполнена цена номера для %s-местного размещения"
 
-#: apps/business/admin.py:12 apps/business/models.py:38
+#: apps/business/admin.py:12 apps/business/models.py:40
 msgid "Type of employer profile"
 msgstr "Тип профиля работодателя"
 
@@ -1119,8 +1119,8 @@ msgstr "Тип профиля работодателя"
 msgid "Type of other employer sphere"
 msgstr "Тип других сфер деятельности работодателя"
 
-#: apps/business/admin.py:27 apps/business/models.py:16
-#: apps/business/models.py:34 apps/business/models.py:51
+#: apps/business/admin.py:27 apps/business/models.py:18
+#: apps/business/models.py:36 apps/business/models.py:53
 msgid "Type of employer"
 msgstr "Тип работодателя"
 
@@ -1128,147 +1128,192 @@ msgstr "Тип работодателя"
 msgid "Agency name"
 msgstr "Название агентства"
 
-#: apps/business/models.py:17
-msgid "Types of employers"
-msgstr "Типы работодателей"
+#: apps/business/admin.py:38 core/admin.py:46 core/admin.py:65
+#: core/admin.py:167 core/admin.py:224
+msgid "Main"
+msgstr "Основная"
 
-#: apps/business/models.py:35 apps/business/models.py:52
-msgid "Radio button?"
-msgstr "Радиокнопка?"
+#: apps/business/admin.py:40 apps/dossier/models.py:419
+#: apps/dossier/models.py:455 apps/money/models.py:134 apps/shop/models.py:478
+#: core/abstract.py:94 core/abstract.py:251 core/abstract.py:459
+#: core/admin.py:48 core/admin.py:66 core/models.py:558
+msgid "Description"
+msgstr "Описание"
 
-#: apps/business/models.py:39
-msgid "Types of employers profiles"
-msgstr "Типы профилей работодателей"
-
-#: apps/business/models.py:55
-msgid "Type of other sphere act. employer"
-msgstr "Тип других сфер деятельности работодателя"
-
-#: apps/business/models.py:56
-msgid "Types of other sphere act. employers"
-msgstr "Типы других сфер деятельности работодателя"
-
-#: apps/business/models.py:63
-msgid "Employer is company"
-msgstr "Работодатель-компания"
-
-#: apps/business/models.py:64
-msgid "Company name"
-msgstr "Название компании"
-
-#: apps/business/models.py:65
-msgid "Work position"
-msgstr "Должность"
-
-#: apps/business/models.py:66
-msgid "Activities description "
-msgstr "Описание деятельности"
-
-#: apps/business/models.py:67
-msgid "Work time from"
-msgstr "Часы приема с"
-
-#: apps/business/models.py:68
-msgid "Work time to"
-msgstr "Часы приема до"
-
-#: apps/business/models.py:69
-msgid "Phone time from"
-msgstr "Звонки на телефон с"
-
-#: apps/business/models.py:70
-msgid "Phone time to"
-msgstr "Звонки на телефон до"
-
-#: apps/business/models.py:71
-msgid "Types of employer profile"
-msgstr "Типы профиля работодателя"
-
-#: apps/business/models.py:73
-msgid "Types of employer"
-msgstr "Типы работодателя"
-
-#: apps/business/models.py:77
+#: apps/business/admin.py:51 apps/business/models.py:112
 msgid "Employer"
 msgstr "Работодатель"
 
-#: apps/business/models.py:78
+#: apps/business/admin.py:58
+#, fuzzy
+msgid "Sphere of activity"
+msgstr "Творческая деятельность"
+
+#: apps/business/models.py:19
+msgid "Types of employers"
+msgstr "Типы работодателей"
+
+#: apps/business/models.py:37 apps/business/models.py:54
+msgid "Radio button?"
+msgstr "Радиокнопка?"
+
+#: apps/business/models.py:41
+msgid "Types of employers profiles"
+msgstr "Типы профилей работодателей"
+
+#: apps/business/models.py:57
+msgid "Type of other sphere act. employer"
+msgstr "Тип других сфер деятельности работодателя"
+
+#: apps/business/models.py:58
+msgid "Types of other sphere act. employers"
+msgstr "Типы других сфер деятельности работодателя"
+
+#: apps/business/models.py:65
+msgid "Work time from"
+msgstr "Часы приема с"
+
+#: apps/business/models.py:66
+msgid "Work time to"
+msgstr "Часы приема до"
+
+#: apps/business/models.py:67
+msgid "Phone time from"
+msgstr "Звонки на телефон с"
+
+#: apps/business/models.py:68
+msgid "Phone time to"
+msgstr "Звонки на телефон до"
+
+#: apps/business/models.py:69
+msgid "Types of employer profile"
+msgstr "Типы профиля работодателя"
+
+#: apps/business/models.py:71
+msgid "Types of employer"
+msgstr "Типы работодателя"
+
+#: apps/business/models.py:106
+msgid "Employer is company"
+msgstr "Работодатель-компания"
+
+#: apps/business/models.py:107
+msgid "Company name"
+msgstr "Название компании"
+
+#: apps/business/models.py:108
+msgid "Work position"
+msgstr "Должность"
+
+#: apps/business/models.py:109
+msgid "Activities description "
+msgstr "Описание деятельности"
+
+#: apps/business/models.py:113
 msgid "Employers"
 msgstr "Работодатели"
 
-#: apps/business/models.py:111
+#: apps/business/models.py:119
 msgid "Agency"
 msgstr "Агентство"
 
-#: apps/business/models.py:112
+#: apps/business/models.py:120
 msgid "Agencies"
 msgstr "Агентства"
 
-#: apps/business/models.py:116
+#: apps/business/models.py:124
 msgid "Agent name"
 msgstr "Имя агента"
 
-#: apps/business/models.py:117
+#: apps/business/models.py:125
 msgid "Mobile phone of agent"
 msgstr "Мобильный телефон агента"
 
-#: apps/business/models.py:118
+#: apps/business/models.py:126
 msgid "Agent Email"
 msgstr "Контактный емейл агента"
 
-#: apps/business/models.py:119
+#: apps/business/models.py:127
 msgid "Contact only with agent"
 msgstr "Контакт только через агента"
 
-#: apps/business/models.py:120
+#: apps/business/models.py:128
 #, fuzzy
 msgid "Agent work time from"
 msgstr "Часы приема с"
 
-#: apps/business/models.py:121
+#: apps/business/models.py:129
 #, fuzzy
 msgid "Agent work time to"
 msgstr "Часы приема до"
 
-#: apps/business/models.py:122
+#: apps/business/models.py:130
 msgid "Permanent place of work"
 msgstr "Постоянное место работы"
 
-#: apps/business/models.py:123
+#: apps/business/models.py:131
 msgid "Awards, achievements, titles"
 msgstr "Награды, достижения, звания"
 
-#: apps/business/models.py:124
+#: apps/business/models.py:132
 msgid "Amount payment from"
 msgstr "Оплата от"
 
-#: apps/business/models.py:125
+#: apps/business/models.py:133
 msgid "Amount payment to"
 msgstr "Оплата до"
 
-#: apps/business/models.py:126
+#: apps/business/models.py:134
 msgid "Additionally"
 msgstr "Дополнительно"
 
-#: apps/business/models.py:127
+#: apps/business/models.py:135
 msgid "Source about our resource"
 msgstr "Источник о нашем ресурсе"
 
-#: apps/business/models.py:128 apps/dossier/models.py:35
+#: apps/business/models.py:136 apps/dossier/models.py:35
 msgid "Education"
 msgstr "Учебное заведение"
 
-#: apps/business/models.py:129
+#: apps/business/models.py:137
 msgid "In agency base"
 msgstr "В базе агентства"
 
-#: apps/business/models.py:132
+#: apps/business/models.py:140
 msgid "Employee"
 msgstr "Работник"
 
-#: apps/business/models.py:133
+#: apps/business/models.py:141
 msgid "Employees"
 msgstr "Работники"
+
+#: apps/business/models.py:146
+msgid "Company Category Admins"
+msgstr "Администраторы Категории компаний"
+
+#: apps/business/models.py:152
+msgid "Company Category"
+msgstr "Категория компании"
+
+#: apps/business/models.py:153
+msgid "Companies Categories"
+msgstr "Категории компаний"
+
+#: apps/business/models.py:157
+msgid "Company Admins"
+msgstr "Администраторы компании"
+
+#: apps/business/models.py:159
+msgid "Company category"
+msgstr "Категория компании"
+
+#: apps/business/models.py:162
+msgid "Company"
+msgstr "Компания"
+
+#: apps/business/models.py:163
+msgid "Companies"
+msgstr "Компании"
 
 #: apps/dossier/admin.py:9 apps/dossier/models.py:40 apps/dossier/models.py:43
 msgid "Type of appearance"
@@ -1805,13 +1850,6 @@ msgstr "Вид животного"
 #: apps/dossier/models.py:412
 msgid "Animals types"
 msgstr "Виды животных"
-
-#: apps/dossier/models.py:419 apps/dossier/models.py:455
-#: apps/money/models.py:134 apps/shop/models.py:478 core/abstract.py:94
-#: core/abstract.py:251 core/abstract.py:459 core/admin.py:48 core/admin.py:66
-#: core/models.py:558
-msgid "Description"
-msgstr "Описание"
 
 #: apps/dossier/models.py:420 apps/dossier/models.py:456 core/abstract.py:524
 msgid "English name"
@@ -3195,10 +3233,6 @@ msgstr "nnmware"
 #: core/admin.py:24 core/admin.py:98 core/admin.py:108
 msgid "Meta"
 msgstr "Мета"
-
-#: core/admin.py:46 core/admin.py:65 core/admin.py:167 core/admin.py:224
-msgid "Main"
-msgstr "Основная"
 
 #: core/admin.py:97 core/models.py:80
 msgid "Doc"
