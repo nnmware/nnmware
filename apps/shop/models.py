@@ -13,7 +13,7 @@ from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, Abstract
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
 from django.utils.encoding import python_2_unicode_compatible
-from nnmware.core.abstract import AbstractDeliveryMethod
+from nnmware.apps.money.models import AbstractDeliveryMethod
 
 
 class ProductCategory(Tree):

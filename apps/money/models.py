@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from nnmware.apps.address.models import Country
+from nnmware.core.fields import std_text_field
 from nnmware.core.managers import FinancialManager
 from nnmware.core.models import Doc
 from django.utils.encoding import python_2_unicode_compatible
@@ -149,3 +150,21 @@ class Bill(MoneyBase):
     def docs(self):
         return Doc.objects.for_object(self)
 
+
+@python_2_unicode_compatible
+class AbstractDeliveryMethod(MoneyBase):
+    name = std_text_field(_("Name of delivery method"))
+    name_en = std_text_field(_("Name of delivery method(English)"))
+    description = models.TextField(_("Description of delivery method"), default='', blank=True)
+    description_en = models.TextField(_("Description of delivery method(English)"), default='', blank=True)
+    enabled_for_registered = models.BooleanField(verbose_name=_("Enabled for registered users"), default=False)
+    enabled_for_unregistered = models.BooleanField(verbose_name=_("Enabled for unregistered users"), default=False)
+    order_in_list = models.IntegerField(_('Order in list'), default=0)
+
+    class Meta:
+        verbose_name = _("Delivery method")
+        verbose_name_plural = _("Delivery methods")
+        abstract = True
+
+    def __str__(self):
+        return self.name
