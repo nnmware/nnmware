@@ -34,6 +34,7 @@ class Address(AbstractName):
             return self.name_add
         return self.get_name
 
+
 class Country(Address):
 
     class Meta:
@@ -49,6 +50,7 @@ class Country(Address):
             if Country.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         super(Country, self).save(*args, **kwargs)
+
 
 class Region(Address):
     country = models.ForeignKey(Country, null=True, blank=True)

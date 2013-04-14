@@ -36,7 +36,6 @@ class ExchangeRate(models.Model):
     official_rate = models.DecimalField(verbose_name=_('Official Rate'), default=0, max_digits=10, decimal_places=4)
     rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4)
 
-
     class Meta:
         ordering = ("-date",'currency__code')
         unique_together = ('currency','date','rate')
