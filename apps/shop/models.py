@@ -6,13 +6,14 @@ from django.db import models
 from django.db.models import permalink, Q
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.address.models import Country, AbstractLocation
+from nnmware.apps.address.models import Country, AbstractLocation, Region
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material
 from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager
 from django.utils.encoding import python_2_unicode_compatible
+from nnmware.core.abstract import AbstractDeliveryMethod
 
 
 class ProductCategory(Tree):
@@ -87,6 +88,10 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
     maincat = std_text_field(_('Main category'))
     maincatid = models.IntegerField(_('Main category id'), default=0, blank=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Product Admins'),
+                                    null=True, blank=True, related_name='%(class)s_adm')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
 
     objects = ProductManager()
 
@@ -241,22 +246,8 @@ class OrdersManager(models.Manager):
                 status=STATUS_WAIT))
 
 
-@python_2_unicode_compatible
-class DeliveryMethod(MoneyBase):
-    name = std_text_field(_("Name of delivery method"))
-    name_en = std_text_field(_("Name of delivery method(English)"))
-    description = models.TextField(_("Description of delivery method"), default='', blank=True)
-    description_en = models.TextField(_("Description of delivery method(English)"), default='', blank=True)
-    enabled_for_registered = models.BooleanField(verbose_name=_("Enabled for registered users"), default=False)
-    enabled_for_unregistered = models.BooleanField(verbose_name=_("Enabled for unregistered users"), default=False)
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
-
-    class Meta:
-        verbose_name = _("Delivery method")
-        verbose_name_plural = _("Delivery methods")
-
-    def __str__(self):
-        return self.name
+class DeliveryMethod(AbstractDeliveryMethod):
+    pass
 
 
 @python_2_unicode_compatible
@@ -283,6 +274,7 @@ class Order(AbstractDate, AbstractIP):
     buyer_comment = std_text_field(_('Buyer comment'))
     seller_comment = std_text_field(_('Seller comment'))
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True)
 
     objects = OrdersManager()
 
@@ -369,7 +361,7 @@ class DeliveryAddress(AbstractLocation):
 
     def __str__(self):
         result = ''
-        if self.zipcode <> '' and self.zipcode is not None:
+        if self.zipcode != '' and self.zipcode is not None:
             result += self.zipcode
         if self.country is not None:
             result += ', ' + self.country.name
@@ -377,23 +369,23 @@ class DeliveryAddress(AbstractLocation):
             result += _(', region ') + self.region.name
         if self.city is not None:
             result += _(', city ') + self.city.name
-        if self.street <> '' and self.street is not None:
+        if self.street != '' and self.street is not None:
             result += _(', street ') + ' ' + self.street
-        if self.house_number <> '' and self.house_number is not None:
+        if self.house_number != '' and self.house_number is not None:
             result += _(', house ') + self.house_number
-        if self.building <> '' and self.building is not None:
+        if self.building != '' and self.building is not None:
             result += _(', building ') + self.building
-        if self.flat_number <> '' and self.flat_number is not None:
+        if self.flat_number != '' and self.flat_number is not None:
             result += _(', flat ') + self.flat_number
-        if self.last_name <> '' and self.last_name is not None:
+        if self.last_name != '' and self.last_name is not None:
             result += ', ' + self.last_name
-        if self.first_name <> '' and self.first_name is not None:
+        if self.first_name != '' and self.first_name is not None:
             result += ' ' + self.first_name
-        if self.middle_name <> '' and self.middle_name is not None:
+        if self.middle_name != '' and self.middle_name is not None:
             result += ' ' + self.middle_name
-        if self.phone <> '' and self.phone is not None:
+        if self.phone != '' and self.phone is not None:
             result += _(', phone-') + self.phone
-        if self.skype <> '' and self.skype is not None:
+        if self.skype != '' and self.skype is not None:
             result += _(', skype-') + self.skype
         return result
 
@@ -405,6 +397,10 @@ class Feedback(AbstractIP):
     email = std_text_field(_('Email'))
     message = models.TextField(verbose_name=_("Message"))
     answer = models.TextField(verbose_name=_("Answer"), null=True, blank=True)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True,
+                               related_name='%(class)s_seller')
+    buyer = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Buyer'), blank=True, null=True,
+                              related_name='%(class)s_buyer')
 
     class Meta:
         ordering = ['-created_date']
