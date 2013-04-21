@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
+import json
 import Image
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models.aggregates import Sum
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
+from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
@@ -20,6 +22,7 @@ from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, AjaxLazyAnswer
+from nnmware.core.http import LazyEncoder
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
 from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
@@ -67,6 +70,20 @@ class AjaxFormMixin(object):
             return AjaxLazyAnswer(payload)
         else:
             return super(AjaxFormMixin, self).form_invalid(form, *args, **kwargs)
+
+
+class AjaxViewMixin(object):
+    """
+    A mixin that can be used to render a JSON response for CBV.
+    """
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.is_ajax():
+            html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
+            payload = {'success': True, 'html': html}
+            response_kwargs['content_type'] = 'application/json'
+            return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
+        return super(AjaxViewMixin, self).render_to_response(context, **response_kwargs)
 
 
 class DocEdit(UpdateView):
