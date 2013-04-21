@@ -150,6 +150,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 pass
         elif notknowndates and self.city:
             self.search = 1
+        self.result_count = None
         if self.request.is_ajax():
             if self.city:
                 search_hotel = Hotel.objects.select_related().filter(city=self.city).exclude(payment_method=None)
@@ -222,10 +223,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     pass
             else:
                 result = search_hotel
-        try:
             self.result_count = search_hotel.count()
-        except:
-            self.result_count = None
+            self.payload['result_count'] = self.result_count
         return result
 
     def get_context_data(self, **kwargs):
