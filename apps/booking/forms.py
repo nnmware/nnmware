@@ -3,7 +3,7 @@
 from django import forms
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from nnmware.apps.booking.models import Hotel, Room, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
@@ -43,11 +43,20 @@ class CabinetRoomForm(forms.ModelForm):
 
     class Meta:
         model = Room
-        fields = ('name', 'description', 'option', 'typefood')
+        fields = ('option', 'typefood')
         widgets = {
             'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(CabinetRoomForm, self).__init__(*args, **kwargs)
+        if get_language() == 'ru':
+            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
+            self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}))
+        else:
+            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
+            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}))
 
 class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}))
