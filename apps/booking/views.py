@@ -107,11 +107,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
+    search = 0
 
     def get_queryset(self):
         result = []
         searched_date = False
-        search = 0
         self.search_data = dict()
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
