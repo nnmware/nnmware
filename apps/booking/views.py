@@ -110,6 +110,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
 
     def get_queryset(self):
         result = []
+        searched_date = False
+        search = 0
         self.search_data = dict()
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
@@ -121,22 +123,18 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
         amount_max = self.request.GET.get('amount_max') or None
+        self.tab = {'css_name': 'asc', 'css_class': 'desc', 'css_amount': 'desc', 'css_review': 'desc',
+                    'order_name': 'desc', 'order_class': 'desc', 'order_amount': 'desc', 'order_review': 'desc',
+                    'tab': 'name'}
         if amount_min:
             a_min = convert_from_client_currency(self.request, amount_min)
         if amount_max:
             a_max = convert_from_client_currency(self.request, amount_max)
         try:
             self.city = City.objects.get(slug=self.kwargs['slug'])
-            hotels = Hotel.objects.select_related().filter(city=self.city).exclude(payment_method=None)
         except:
             self.city = None
-            hotels = Hotel.objects.select_related().all()
-        self.tab = {'css_name': 'asc', 'css_class': 'desc', 'css_amount': 'desc', 'css_review': 'desc',
-                    'order_name': 'desc', 'order_class': 'desc', 'order_amount': 'desc', 'order_review': 'desc',
-                    'tab': 'name'}
-
-        if (notknowndates and self.city) or (f_date and t_date and self.city):
-            result = []
+        if f_date and t_date and self.city:
             try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
@@ -146,73 +144,84 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 else:
                     self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
                 self.search_data['city'] = self.city
-                for hotel in hotels:
+                searched_date = True
+                self.search = 1
+            except:
+                pass
+        elif notknowndates and self.city:
+            self.search = 1
+        if self.request.is_ajax():
+            if self.city:
+                search_hotel = Hotel.objects.select_related().filter(city=self.city).exclude(payment_method=None)
+            else:
+                search_hotel = Hotel.objects.select_related().all()
+            if searched_date:
+                result = []
+                for hotel in search_hotel:
                     if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
                         result.append(hotel.pk)
                 search_hotel = Hotel.objects.select_related().filter(pk__in=result)
-            except:
-                search_hotel = hotels
-            self.search = 1
-        else:
-            self.search = 0
-            search_hotel = hotels
-        if amount_max and amount_min:
-            r = []
-            for h in search_hotel:
-                amount = h.min_current_amount
-                if int(a_min) < amount < int(a_max):
-                    r.append(h.pk)
-            search_hotel = Hotel.objects.select_related().filter(pk__in=r)
-        if options:
-            for option in options:
-                search_hotel = search_hotel.filter(option=option)
-        if stars:
-            search_hotel = search_hotel.filter(starcount__in=stars)
-        if order:
-            if order == 'name':
-                self.tab['tab'] = 'name'
-                if sort == 'desc':
-                    result = search_hotel.order_by('-name')
-                    self.tab['css_name'] = 'desc'
-                    self.tab['order_name'] = 'asc'
+            if amount_max and amount_min:
+                r = []
+                for h in search_hotel:
+                    amount = h.min_current_amount
+                    if int(a_min) < amount < int(a_max):
+                        r.append(h.pk)
+                search_hotel = Hotel.objects.select_related().filter(pk__in=r)
+            if options:
+                for option in options:
+                    search_hotel = search_hotel.filter(option=option)
+            if stars:
+                search_hotel = search_hotel.filter(starcount__in=stars)
+            if order:
+                if order == 'name':
+                    self.tab['tab'] = 'name'
+                    if sort == 'desc':
+                        ui_order = '-name'
+                        self.tab['css_name'] = 'desc'
+                        self.tab['order_name'] = 'asc'
+                    else:
+                        ui_order = 'name'
+                        self.tab['css_name'] = 'asc'
+                        self.tab['order_name'] = 'desc'
+                elif order == 'class':
+                    self.tab['tab'] = 'class'
+                    if sort == 'asc':
+                        ui_order = 'starcount'
+                        self.tab['css_class'] = 'asc'
+                        self.tab['order_class'] = 'desc'
+                    else:
+                        ui_order = '-starcount'
+                        self.tab['css_class'] = 'desc'
+                        self.tab['order_class'] = 'asc'
+                elif order == 'amount':
+                    self.tab['tab'] = 'amount'
+                    if sort == 'asc':
+                        ui_order = 'current_amount'
+                        self.tab['css_amount'] = 'asc'
+                        self.tab['order_amount'] = 'desc'
+                    else:
+                        ui_order = '-current_amount'
+                        self.tab['css_amount'] = 'desc'
+                        self.tab['order_amount'] = 'asc'
+                elif order == 'review':
+                    self.tab['tab'] = 'review'
+                    if sort == 'asc':
+                        ui_order = 'point'
+                        self.tab['css_review'] = 'asc'
+                        self.tab['order_review'] = 'desc'
+                    else:
+                        ui_order = '-point'
+                        self.tab['css_review'] = 'desc'
+                        self.tab['order_review'] = 'asc'
                 else:
-                    result = search_hotel.order_by('name')
-                    self.tab['css_name'] = 'asc'
-                    self.tab['order_name'] = 'desc'
-            elif order == 'class':
-                self.tab['tab'] = 'class'
-                if sort == 'asc':
-                    result = search_hotel.order_by('starcount')
-                    self.tab['css_class'] = 'asc'
-                    self.tab['order_class'] = 'desc'
-                else:
-                    result = search_hotel.order_by('-starcount')
-                    self.tab['css_class'] = 'desc'
-                    self.tab['order_class'] = 'asc'
-            elif order == 'amount':
-                self.tab['tab'] = 'amount'
-                if sort == 'asc':
-                    result = search_hotel.order_by('current_amount')
-                    self.tab['css_amount'] = 'asc'
-                    self.tab['order_amount'] = 'desc'
-                else:
-                    result = search_hotel.order_by('-current_amount')
-                    self.tab['css_amount'] = 'desc'
-                    self.tab['order_amount'] = 'asc'
-            elif order == 'review':
-                self.tab['tab'] = 'review'
-                if sort == 'asc':
-                    result = search_hotel.order_by('point')
-                    self.tab['css_review'] = 'asc'
-                    self.tab['order_review'] = 'desc'
-                else:
-                    result = search_hotel.order_by('-point')
-                    self.tab['css_review'] = 'desc'
-                    self.tab['order_review'] = 'asc'
+                    pass
+                try:
+                    result = search_hotel.order_by(ui_order)
+                except:
+                    pass
             else:
-                pass
-        else:
-            result = search_hotel
+                result = search_hotel
         try:
             self.result_count = search_hotel.count()
         except:
