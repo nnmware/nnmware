@@ -31,6 +31,7 @@ from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
 from nnmware.core.decorators import ssl_required
 from django.views.decorators.cache import never_cache
+from nnmware.core.views import AjaxViewMixin
 
 
 class CurrentUserHotelAdmin(object):
@@ -102,7 +103,7 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
-class HotelList(RedirectHttpView, ListView):
+class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
