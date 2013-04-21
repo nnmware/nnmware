@@ -51,12 +51,16 @@ class CabinetRoomForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CabinetRoomForm, self).__init__(*args, **kwargs)
         if get_language() == 'ru':
-            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
+            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
+                                                  initial=self.instance.name)
             self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}))
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.description)
         else:
-            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
-            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}))
+            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
+                                                     initial=self.instance.name_en)
+            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
+                'class': 'wide', 'rows': '5'}), initial=self.instance.description_en)
 
 class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}))
