@@ -957,3 +957,9 @@ def compare_products(context):
 @register.assignment_tag
 def shop_slider():
     return ShopSlider.objects.filter(visible=True)
+
+
+@register.assignment_tag(takes_context=True)
+def path_without_i18n(context):
+    request = context['request']
+    return request.get_full_path()[4:]
