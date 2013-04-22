@@ -69,7 +69,7 @@ class CabinetRoomForm(forms.ModelForm):
         else:
             self.instance.name_en = self.cleaned_data['name_en']
             self.instance.description_en = self.cleaned_data['description_en']
-        super(CabinetRoomForm, self).save(commit=commit)
+        return super(CabinetRoomForm, self).save(commit=commit)
 
 
 class CabinetEditBillForm(forms.ModelForm):
