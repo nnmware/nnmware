@@ -36,14 +36,12 @@ class LocaleNamedForm(object):
         return super(LocaleNamedForm, self).save(commit=commit)
 
 
-class CabinetInfoForm(forms.ModelForm):
-    name = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
+class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
     schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
 
     class Meta:
         model = Hotel
-        fields = ('name', 'description', 'schema_transit', 'option')
+        fields = ('schema_transit', 'option')
         widgets = {
             'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
         }
