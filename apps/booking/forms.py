@@ -10,6 +10,32 @@ from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
 
 
+class LocaleNamedForm(forms.Form):
+
+    def __init__(self, *args, **kwargs):
+        super(LocaleNamedForm, self).__init__(*args, **kwargs)
+        if get_language() == 'ru':
+            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
+                                                  initial=self.instance.name)
+            self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.description)
+        else:
+            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
+                                                     initial=self.instance.name_en)
+            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
+                'class': 'wide', 'rows': '5'}), initial=self.instance.description_en)
+
+    def save(self, commit=True):
+        if get_language() == 'ru':
+            self.instance.name = self.cleaned_data['name']
+            self.instance.description = self.cleaned_data['description']
+        else:
+            self.instance.name_en = self.cleaned_data['name_en']
+            self.instance.description_en = self.cleaned_data['description_en']
+        return super(LocaleNamedForm, self).save(commit=commit)
+
+
 class CabinetInfoForm(forms.ModelForm):
     name = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
@@ -37,9 +63,7 @@ class CabinetTermsForm(forms.ModelForm):
                   'paid_services', 'time_on', 'time_off')
 
 
-class CabinetRoomForm(forms.ModelForm):
-    # name = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}))
-    # description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}))
+class CabinetRoomForm(LocaleNamedForm, forms.ModelForm):
 
     class Meta:
         model = Room
@@ -47,29 +71,6 @@ class CabinetRoomForm(forms.ModelForm):
         widgets = {
             'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
         }
-
-    def __init__(self, *args, **kwargs):
-        super(CabinetRoomForm, self).__init__(*args, **kwargs)
-        if get_language() == 'ru':
-            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
-                                                  initial=self.instance.name)
-            self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.description)
-        else:
-            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
-                                                     initial=self.instance.name_en)
-            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
-                'class': 'wide', 'rows': '5'}), initial=self.instance.description_en)
-
-    def save(self, commit=True):
-        if get_language() == 'ru':
-            self.instance.name = self.cleaned_data['name']
-            self.instance.description = self.cleaned_data['description']
-        else:
-            self.instance.name_en = self.cleaned_data['name_en']
-            self.instance.description_en = self.cleaned_data['description_en']
-        return super(CabinetRoomForm, self).save(commit=commit)
 
 
 class CabinetEditBillForm(forms.ModelForm):
