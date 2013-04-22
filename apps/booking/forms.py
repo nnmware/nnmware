@@ -62,6 +62,16 @@ class CabinetRoomForm(forms.ModelForm):
             self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
                 'class': 'wide', 'rows': '5'}), initial=self.instance.description_en)
 
+    def save(self, commit=True):
+        if get_language() == 'ru':
+            self.instance.name = self.cleaned_data['name']
+            self.instance.description = self.cleaned_data['desscription']
+        else:
+            self.instance.name_en = self.cleaned_data['name_en']
+            self.instance.description_en = self.cleaned_data['description_en']
+        super(CabinetRoomForm, self).save(commit=commit)
+
+
 class CabinetEditBillForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}))
 
