@@ -65,7 +65,7 @@ class CabinetRoomForm(forms.ModelForm):
     def save(self, commit=True):
         if get_language() == 'ru':
             self.instance.name = self.cleaned_data['name']
-            self.instance.description = self.cleaned_data['desscription']
+            self.instance.description = self.cleaned_data['description']
         else:
             self.instance.name_en = self.cleaned_data['name_en']
             self.instance.description_en = self.cleaned_data['description_en']
