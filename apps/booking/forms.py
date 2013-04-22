@@ -10,7 +10,7 @@ from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
 
 
-class LocaleNamedForm(forms.Form):
+class LocaleNamedForm(object):
 
     def __init__(self, *args, **kwargs):
         super(LocaleNamedForm, self).__init__(*args, **kwargs)
