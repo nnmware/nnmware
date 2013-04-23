@@ -210,7 +210,7 @@ def paginator(context):
     if 'page' in getvars:
         del getvars['page']
     if len(getvars.keys()) > 0:
-        new_getvars = "&%s" % getvars.urlencode()
+        new_getvars = "&%s" % getvars.urlencode('&')
     else:
         new_getvars = ''
     return {
