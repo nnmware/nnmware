@@ -108,6 +108,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     model = Hotel
     template_name = "hotels/list.html"
     search = 0
+    payload = {}
+
 
     def get_queryset(self):
         result = []
@@ -225,7 +227,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 result = search_hotel
             self.result_count = search_hotel.count()
             self.payload['result_count'] = self.result_count
-        raise EnvironmentError, result
         return result
 
     def get_context_data(self, **kwargs):
