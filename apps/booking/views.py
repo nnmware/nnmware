@@ -103,7 +103,7 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
-class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
+class HotelList(RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
