@@ -2,8 +2,10 @@
 
 from datetime import date, timedelta, datetime
 from decimal import Decimal
+from hashlib import sha1
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
 from django.http import Http404, HttpResponseRedirect
@@ -21,6 +23,7 @@ from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
+from nnmware.core.http import get_session_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
@@ -110,6 +113,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     search = 0
 
     def get_queryset(self):
+        key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
         result = []
         searched_date = False
         self.search_data = dict()
@@ -152,79 +156,83 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.search = 1
         self.result_count = None
         if self.request.is_ajax():
-            if self.city:
-                search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
-            else:
-                search_hotel = Hotel.objects.select_related().all()
-            if searched_date:
-                result = []
-                for hotel in search_hotel:
-                    if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
-                        result.append(hotel.pk)
-                search_hotel = Hotel.objects.select_related().filter(pk__in=result)
-            if amount_max and amount_min:
-                r = []
-                for h in search_hotel:
-                    amount = h.min_current_amount
-                    if int(a_min) < amount < int(a_max):
-                        r.append(h.pk)
-                search_hotel = Hotel.objects.select_related().filter(pk__in=r)
-            if options:
-                for option in options:
-                    search_hotel = search_hotel.filter(option=option)
-            if stars:
-                search_hotel = search_hotel.filter(starcount__in=stars)
-            if order:
-                if order == 'name':
-                    self.tab['tab'] = 'name'
-                    if sort == 'desc':
-                        ui_order = '-name'
-                        self.tab['css_name'] = 'desc'
-                        self.tab['order_name'] = 'asc'
-                    else:
-                        ui_order = 'name'
-                        self.tab['css_name'] = 'asc'
-                        self.tab['order_name'] = 'desc'
-                elif order == 'class':
-                    self.tab['tab'] = 'class'
-                    if sort == 'asc':
-                        ui_order = 'starcount'
-                        self.tab['css_class'] = 'asc'
-                        self.tab['order_class'] = 'desc'
-                    else:
-                        ui_order = '-starcount'
-                        self.tab['css_class'] = 'desc'
-                        self.tab['order_class'] = 'asc'
-                elif order == 'amount':
-                    self.tab['tab'] = 'amount'
-                    if sort == 'asc':
-                        ui_order = 'current_amount'
-                        self.tab['css_amount'] = 'asc'
-                        self.tab['order_amount'] = 'desc'
-                    else:
-                        ui_order = '-current_amount'
-                        self.tab['css_amount'] = 'desc'
-                        self.tab['order_amount'] = 'asc'
-                elif order == 'review':
-                    self.tab['tab'] = 'review'
-                    if sort == 'asc':
-                        ui_order = 'point'
-                        self.tab['css_review'] = 'asc'
-                        self.tab['order_review'] = 'desc'
-                    else:
-                        ui_order = '-point'
-                        self.tab['css_review'] = 'desc'
-                        self.tab['order_review'] = 'asc'
+            data_key = cache.get(key)
+            if not data_key:
+                if self.city:
+                    search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
-                    pass
-                try:
-                    result = search_hotel.order_by(ui_order)
-                except:
-                    pass
+                    search_hotel = Hotel.objects.select_related().all()
+                if searched_date:
+                    result = []
+                    for hotel in search_hotel:
+                        if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
+                            result.append(hotel.pk)
+                    search_hotel = Hotel.objects.select_related().filter(pk__in=result)
+                if amount_max and amount_min:
+                    r = []
+                    for h in search_hotel:
+                        amount = h.min_current_amount
+                        if int(a_min) < amount < int(a_max):
+                            r.append(h.pk)
+                    search_hotel = Hotel.objects.select_related().filter(pk__in=r)
+                if options:
+                    for option in options:
+                        search_hotel = search_hotel.filter(option=option)
+                if stars:
+                    search_hotel = search_hotel.filter(starcount__in=stars)
+                if order:
+                    if order == 'name':
+                        self.tab['tab'] = 'name'
+                        if sort == 'desc':
+                            ui_order = '-name'
+                            self.tab['css_name'] = 'desc'
+                            self.tab['order_name'] = 'asc'
+                        else:
+                            ui_order = 'name'
+                            self.tab['css_name'] = 'asc'
+                            self.tab['order_name'] = 'desc'
+                    elif order == 'class':
+                        self.tab['tab'] = 'class'
+                        if sort == 'asc':
+                            ui_order = 'starcount'
+                            self.tab['css_class'] = 'asc'
+                            self.tab['order_class'] = 'desc'
+                        else:
+                            ui_order = '-starcount'
+                            self.tab['css_class'] = 'desc'
+                            self.tab['order_class'] = 'asc'
+                    elif order == 'amount':
+                        self.tab['tab'] = 'amount'
+                        if sort == 'asc':
+                            ui_order = 'current_amount'
+                            self.tab['css_amount'] = 'asc'
+                            self.tab['order_amount'] = 'desc'
+                        else:
+                            ui_order = '-current_amount'
+                            self.tab['css_amount'] = 'desc'
+                            self.tab['order_amount'] = 'asc'
+                    elif order == 'review':
+                        self.tab['tab'] = 'review'
+                        if sort == 'asc':
+                            ui_order = 'point'
+                            self.tab['css_review'] = 'asc'
+                            self.tab['order_review'] = 'desc'
+                        else:
+                            ui_order = '-point'
+                            self.tab['css_review'] = 'desc'
+                            self.tab['order_review'] = 'asc'
+                    else:
+                        pass
+                    try:
+                        result = search_hotel.order_by(ui_order)
+                    except:
+                        pass
+                else:
+                    result = search_hotel
+                cache.set(key, result)
             else:
-                result = search_hotel
-            self.result_count = search_hotel.count()
-            self.payload['result_count'] = self.result_count
+                result = data_key
+            self.result_count = result.count()
         else:
             self.paginate_by = None
         return result
@@ -238,6 +246,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['search'] = self.search
             context['search_count'] = self.result_count
             context['search_data'] = self.search_data
+            self.payload['result_count'] = self.result_count
         else:
             context['country'] = 1
         if self.city:
