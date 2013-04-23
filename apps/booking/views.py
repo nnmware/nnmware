@@ -108,7 +108,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     model = Hotel
     template_name = "hotels/list.html"
     search = 0
-    payload = {}
 
     def get_queryset(self):
         result = []
