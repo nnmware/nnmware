@@ -110,7 +110,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     search = 0
     payload = {}
 
-
     def get_queryset(self):
         result = []
         searched_date = False
@@ -227,6 +226,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 result = search_hotel
             self.result_count = search_hotel.count()
             self.payload['result_count'] = self.result_count
+        else:
+            self.paginate_by = None
         return result
 
     def get_context_data(self, **kwargs):
