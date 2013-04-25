@@ -165,7 +165,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 if searched_date:
                     result = []
                     for hotel in search_hotel:
-                        if (hotel.work_on_request is True) or hotel.free_room(from_date, to_date, guests):
+                        if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
                             result.append(hotel.pk)
                     search_hotel = Hotel.objects.select_related().filter(pk__in=result)
                 if amount_max and amount_min:
