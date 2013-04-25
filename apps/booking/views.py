@@ -233,10 +233,10 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 self.result_count = result.count()
             else:
                 result = data_key
-                self.result_count = len(result)
-                # self.result_count = 0
-                # for i in result:
-                #     self.result_count += 1
+                #self.result_count = len(result)
+                self.result_count = 0
+                for i in result:
+                    self.result_count += 1
 
         else:
             self.paginate_by = None
