@@ -255,7 +255,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['search'] = self.search
             context['search_count'] = self.result_count
             context['search_data'] = self.search_data
-            self.payload['result_count'] = self.get_queryset().count()
+            self.payload['result_count'] = len(self.get_queryset())
         else:
             context['country'] = 1
         if self.city:
