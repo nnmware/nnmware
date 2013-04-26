@@ -230,17 +230,18 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 else:
                     result = search_hotel
                 cache.set(key, result)
-                self.result_count = result.count()
-                cache.set(key+'_len', result.count())
+                # self.result_count = result.count()
+                # cache.set(key+'_len', result.count())
             else:
                 result = data_key
-                self.result_count = cache.get(key+'_len')
+#                self.result_count = cache.get(key+'_len')
                 # self.result_count = 0
                 # for i in result:
                 #     self.result_count += 1
 
         else:
             self.paginate_by = None
+        self.result_count = result.count()
         return result
 
     def get_context_data(self, **kwargs):
