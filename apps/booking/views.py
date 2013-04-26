@@ -157,7 +157,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         self.result_count = None
         if self.request.is_ajax():
             data_key = cache.get(key)
-            if not data_key:
+            if 1>0: #not data_key:
                 if self.city:
                     search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
