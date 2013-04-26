@@ -229,7 +229,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         pass
                 else:
                     result = search_hotel
-                self.result_count = len(result)
+                self.result_count = len(list(result))
 #                self.result_count = search_hotel.count()
                 #cache.set(key, result)
                 # self.result_count = result.count()
