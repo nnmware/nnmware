@@ -159,15 +159,15 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             data_key = cache.get(key)
             if 1>0: #not data_key:
                 if self.city:
-                    search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
+                    search_hotel = Hotel.objects.filter(city=self.city)  # .exclude(payment_method=None)
                 else:
-                    search_hotel = Hotel.objects.select_related().all()
+                    search_hotel = Hotel.objects.all()
                 if searched_date:
                     result = []
                     for hotel in search_hotel:
                         if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
                             result.append(hotel.pk)
-                    search_hotel = Hotel.objects.select_related().filter(pk__in=result)
+                    search_hotel = Hotel.objects.filter(pk__in=result)
                 if amount_max and amount_min:
                     r = []
                     for h in search_hotel:
