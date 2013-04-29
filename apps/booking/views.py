@@ -274,7 +274,7 @@ class HotelList(RedirectHttpView, ListView):
             payload.update(self.payload)
             response_kwargs['content_type'] = 'application/json'
             return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
-        return super(AjaxViewMixin, self).render_to_response(context, **response_kwargs)
+        return super(HotelList, self).render_to_response(context, **response_kwargs)
 
 
 class HotelAdminList(ListView):
