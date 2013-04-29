@@ -76,7 +76,8 @@ class AjaxViewMixin(object):
     """
     A mixin that can be used to render a JSON response for CBV.
     """
-    payload = {}
+    #payload = {}
+
     def render_to_response(self, context, **response_kwargs):
         if self.request.is_ajax():
             html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
