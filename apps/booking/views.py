@@ -111,6 +111,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     model = Hotel
     template_name = "hotels/list.html"
     search = 0
+    payload = {}
 
     def get_queryset(self):
         key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
@@ -248,7 +249,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
 
     def get_context_data(self, **kwargs):
     # Call the base implementation first to get a context
-        self.payload = {}
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = self.tab
