@@ -72,7 +72,7 @@ class AjaxFormMixin(object):
             return super(AjaxFormMixin, self).form_invalid(form, *args, **kwargs)
 
 
-class AjaxViewMixin(object):
+class AjaxViewMixin(View):
     """
     A mixin that can be used to render a JSON response for CBV.
     """
