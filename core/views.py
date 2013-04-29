@@ -451,6 +451,7 @@ class RedirectHttpsView(object):
 
 
 class RedirectHttpView(object):
+    payload = {}
     @method_decorator(ssl_not_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
