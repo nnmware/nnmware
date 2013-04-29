@@ -111,7 +111,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     model = Hotel
     template_name = "hotels/list.html"
     search = 0
-    payload = {}
 
     def get_queryset(self):
         key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
