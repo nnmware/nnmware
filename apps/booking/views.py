@@ -113,6 +113,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     search = 0
 
     def get_queryset(self):
+        self.payload = {}
         key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
         result = []
         searched_date = False
