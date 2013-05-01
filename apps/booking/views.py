@@ -233,6 +233,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             else:
                 result = data_key
             self.result_count = result.count()
+            self.payload['result_count'] = self.result_count
         else:
             self.paginate_by = None
         return result
@@ -253,12 +254,12 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
         return context
 
-    def render_to_response(self, context):
-        if self.request.is_ajax():
-            self.payload['result_count'] = self.result_count
-            return AjaxViewMixin.render_to_response(self, context)
-        else:
-            return ListView.render_to_response(self, context)
+    # def render_to_response(self, context):
+    #     if self.request.is_ajax():
+    #         self.payload['result_count'] = self.result_count
+    #         return AjaxViewMixin.render_to_response(self, context)
+    #     else:
+    #         return ListView.render_to_response(self, context)
 
 class HotelAdminList(ListView):
     model = Hotel

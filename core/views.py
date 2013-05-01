@@ -72,18 +72,20 @@ class AjaxFormMixin(object):
             return super(AjaxFormMixin, self).form_invalid(form, *args, **kwargs)
 
 
-class AjaxViewMixin(View):
+class AjaxViewMixin(object):
     """
     A mixin that can be used to render a JSON response for CBV.
     """
     payload = {}
 
     def render_to_response(self, context, **response_kwargs):
-        html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
-        payload = {'success': True, 'html': html}
-        payload.update(self.payload)
-        response_kwargs['content_type'] = 'application/json'
-        return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
+        if self.request.is_ajax():
+            html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
+            payload = {'success': True, 'html': html}
+            payload.update(self.payload)
+            response_kwargs['content_type'] = 'application/json'
+            return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
+        return super(AjaxViewMixin, self).render_to_response(self, context, **response_kwargs)
 
 
 class DocEdit(UpdateView):
