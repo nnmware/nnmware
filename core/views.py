@@ -79,7 +79,7 @@ class AjaxViewMixin(View):
     payload = {}
 
     def get(self, context, **kwargs):
-        context = self.get_context_data(**kwargs)
+        context = super(AjaxViewMixin, self).get_context_data(**kwargs)
         if self.request.is_ajax():
             response_kwargs = {}
             html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
