@@ -255,7 +255,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['search'] = self.search
             context['search_count'] = self.result_count
             context['search_data'] = self.search_data
-            self.payload['result_count'] = len(self.object_list)
         else:
             context['country'] = 1
         if self.city:
@@ -265,6 +264,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
 
     def render_to_response(self, context):
         if self.request.is_ajax():
+            self.payload['result_count'] = self.result_count
             return AjaxViewMixin.render_to_response(self, context)
         else:
             return ListView.render_to_response(self, context)
