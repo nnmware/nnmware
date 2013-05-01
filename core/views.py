@@ -78,15 +78,15 @@ class AjaxViewMixin(object):
     """
     payload = {}
 
-    def render_to_response(self, context):
+    def render_to_response(self, context, **response_kwargs):
         if self.request.is_ajax():
             html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
             payload = {'success': True, 'html': html}
             payload.update(self.payload)
-            response_kwargs = {}
+#            response_kwargs = {}
             response_kwargs['content_type'] = 'application/json'
             return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
-        return super(AjaxViewMixin, self).render_to_response(self, context)
+        return super(AjaxViewMixin, self).render_to_response(self, context, **response_kwargs)
 
 
 class DocEdit(UpdateView):
