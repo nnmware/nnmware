@@ -263,6 +263,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
         return context
 
+    def render_to_response(self, context):
+        if self.request.is_ajax():
+            return AjaxViewMixin.render_to_response(self, context)
+        else:
+            return ListView.render_to_response(self, context)
 
 class HotelAdminList(ListView):
     model = Hotel
