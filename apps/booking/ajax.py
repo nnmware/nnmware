@@ -256,7 +256,7 @@ def tourism_places(request):
 
 
 def hotels_in_city(request):
-    try:
+    if 1>0: #try:
         c = request.REQUEST['city']
         url = request.REQUEST['city'] or None
         if url is not None:
@@ -277,8 +277,8 @@ def hotels_in_city(request):
 
             results.append(answer)
         payload = {'success': True, 'hotels': results}
-    except:
-        payload = {'success': False}
+    # except:
+    #     payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
