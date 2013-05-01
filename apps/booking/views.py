@@ -156,8 +156,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.search = 1
         self.result_count = None
         if self.request.is_ajax():
-            #data_key = cache.get(key)
-            if 1>0: #not data_key:
+            data_key = cache.get(key)
+            if not data_key:
                 if self.city:
                     search_hotel = Hotel.objects.filter(city=self.city)  # .exclude(payment_method=None)
                 else:
@@ -229,19 +229,10 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         pass
                 else:
                     result = search_hotel
-#                new_result = result._clone()
-                self.result_count = result.count()
-#                self.result_count = search_hotel.count()
-                #cache.set(key, result)
-                # self.result_count = result.count()
-                # cache.set(key+'_len', result.count())
+                cache.set(key, result)
             else:
                 result = data_key
-#                self.result_count = cache.get(key+'_len')
-                # self.result_count = 0
-                # for i in result:
-                #     self.result_count += 1
-
+            self.result_count = result.count()
         else:
             self.paginate_by = None
         return result
