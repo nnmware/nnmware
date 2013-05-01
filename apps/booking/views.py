@@ -3,16 +3,13 @@
 from datetime import date, timedelta, datetime
 from decimal import Decimal
 from hashlib import sha1
-import json
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.http import Http404, HttpResponseRedirect, HttpResponse
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.template import RequestContext
-from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import View, TemplateView
@@ -26,7 +23,7 @@ from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
-from nnmware.core.http import get_session_from_request, LazyEncoder
+from nnmware.core.http import get_session_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
@@ -109,7 +106,7 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
-class HotelList(RedirectHttpView, ListView):
+class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
@@ -265,15 +262,6 @@ class HotelList(RedirectHttpView, ListView):
             context['city'] = self.city
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
         return context
-
-    def render_to_response(self, context, **response_kwargs):
-        if self.request.is_ajax():
-            html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
-            payload = {'success': True, 'html': html}
-            payload.update(self.payload)
-            response_kwargs['content_type'] = 'application/json'
-            return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
-        return super(HotelList, self).render_to_response(context, **response_kwargs)
 
 
 class HotelAdminList(ListView):

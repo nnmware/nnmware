@@ -76,16 +76,18 @@ class AjaxViewMixin(View):
     """
     A mixin that can be used to render a JSON response for CBV.
     """
-    #payload = {}
+    payload = {}
 
-    def render_to_response(self, context, **response_kwargs):
+    def get(self, context, **kwargs):
+        context = self.get_context_data(**kwargs)
         if self.request.is_ajax():
+            response_kwargs = {}
             html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
             payload = {'success': True, 'html': html}
             payload.update(self.payload)
             response_kwargs['content_type'] = 'application/json'
             return HttpResponse(json.dumps(payload, cls=LazyEncoder), **response_kwargs)
-        return super(AjaxViewMixin, self).render_to_response(context, **response_kwargs)
+        return super(AjaxViewMixin, self).render_to_response(context)
 
 
 class DocEdit(UpdateView):
@@ -451,7 +453,6 @@ class RedirectHttpsView(object):
 
 
 class RedirectHttpView(object):
-    payload = {}
     @method_decorator(ssl_not_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
