@@ -15,11 +15,14 @@ from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Ava
     Review, Booking, PaymentMethod, Discount
 from nnmware.apps.money.models import Currency
 import time
+from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date
 from nnmware.core.ajax import AjaxLazyAnswer
 from django.views.decorators.cache import never_cache
+from hashlib import sha1
+from django.core.cache import cache
 
 
 class UserNotAllowed(Exception):
@@ -255,9 +258,17 @@ def tourism_places(request):
 def hotels_in_city(request):
     try:
         c = request.REQUEST['city']
-        city = City.objects.get(pk=c)
+        url = request.REQUEST['city'] or None
+        if url is not None:
+            key = sha1('%s:%s' % (get_session_from_request(request), url)).hexdigest()
+            data_key = cache.get(key)
+        else:
+            city = City.objects.get(pk=c)
+            searched = Hotel.objects.filter(city=city).order_by('starcount')
+        if data_key:
+            searched = data_key
         results = []
-        for hotel in Hotel.objects.filter(city=city).order_by('starcount'):
+        for hotel in searched:
             answer = {'name': hotel.get_name, 'latitude': hotel.latitude, 'url': hotel.get_absolute_url(),
                       'address': hotel.address, 'id': hotel.pk, 'starcount': hotel.starcount,
                       'img': make_thumbnail(hotel.main_image, width=113, height=75, aspect=1),
