@@ -694,9 +694,9 @@ class BookingsList(CurrentUserSuperuser, ListView):
                 self.search_dates = {'from_date': t_date, 'to_date': f_date}
             else:
                 self.search_dates = {'from_date': f_date, 'to_date': t_date}
-            return Booking.objects.filter(date__range=(from_date, to_date))
+            return Booking.objects.select_related().filter(date__range=(from_date, to_date))
         except:
-            return Booking.objects.all()
+            return Booking.objects.select_related().all()
 
 
 class RequestsList(CurrentUserSuperuser, ListView):
