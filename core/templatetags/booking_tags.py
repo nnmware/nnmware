@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
-from django.db.models import Min, Max
+from django.db.models import Min, Max, Count
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.translation import gettext as _
@@ -425,3 +425,9 @@ def hotel_range_price(context):
     result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     return amount_request_currency(request, int(result['amount__min'])), \
            amount_request_currency(request, int(result['amount__max']))
+
+
+@register.assignment_tag
+def stars_hotel_count():
+    result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
+    return result

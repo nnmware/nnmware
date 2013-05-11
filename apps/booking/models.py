@@ -664,7 +664,6 @@ class PlacePrice(MoneyBase):
         super(PlacePrice, self).save(*args, **kwargs)
 
 
-
 class RequestAddHotel(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     register_date = models.DateTimeField(_("Register date"), default=datetime.now)
