@@ -159,9 +159,9 @@ class HotelList(RedirectHttpView, ListView):
             data_key = cache.get(key)
             if not data_key:
                 if self.city:
-                    search_hotel = Hotel.objects.filter(city=self.city)  # .exclude(payment_method=None)
+                    search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
-                    search_hotel = Hotel.objects.all()
+                    search_hotel = Hotel.objects.select_related().all()
                 if searched_date:
                     result = []
                     for hotel in search_hotel:
