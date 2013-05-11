@@ -748,7 +748,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.select_related().exclude(admins=None)
             self.report_name = _('Hotels with admins')
         elif report_type == 'city':
-            result = City.objects.select_related().order_by('name')
+            result = City.objects.order_by('name')
             self.report_name = _('Total cities')
             self.template_name = "sysadm/report_city.html"
         if result and report_type != 'city':
