@@ -10,13 +10,14 @@ from django.db.models import permalink, signals, Avg
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+from django.utils.encoding import python_2_unicode_compatible
+from django.core.cache import cache
 from nnmware.apps.address.models import AbstractGeo, Tourism
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
 from nnmware.core.utils import daterange
-from django.utils.encoding import python_2_unicode_compatible
-from django.core.cache import cache
+
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
