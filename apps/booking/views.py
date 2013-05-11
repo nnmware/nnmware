@@ -233,7 +233,7 @@ class HotelList(RedirectHttpView, ListView):
             else:
                 result = data_key
             self.result_count = result.count()
-            self.payload['result_count'] = self.result_count
+            #self.payload['result_count'] = self.result_count
         else:
             self.paginate_by = None
         return result
