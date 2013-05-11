@@ -431,7 +431,7 @@ class Room(AbstractName):
         return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
 
     def check_min_days(self, from_date, to_date, guests):
-        if not SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).exist():
+        if not SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).exists():
             return False
         # try:
         #     places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
