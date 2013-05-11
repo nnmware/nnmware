@@ -16,7 +16,7 @@ from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
 from nnmware.core.utils import daterange
 from django.utils.encoding import python_2_unicode_compatible
-
+from django.core.cache import cache
 
 class HotelPoints(models.Model):
     food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
@@ -658,6 +658,11 @@ class PlacePrice(MoneyBase):
             "Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> %(price)s %(currency)s") % dict(
                 settlement=self.settlement.settlement, hotel=self.settlement.room.hotel.name, date=self.date,
                 price=self.amount, currency=self.currency.code)
+
+    def save(self, *args, **kwargs):
+        cache.delete('hotel_prices')
+        super(PlacePrice, self).save(*args, **kwargs)
+
 
 
 class RequestAddHotel(AbstractIP):
