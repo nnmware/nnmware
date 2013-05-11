@@ -174,7 +174,7 @@ class HotelList(RedirectHttpView, ListView):
                         order_by('room').annotate(Count('room'))
                     avail_room = []
                     for item in avail:
-                        if item['room_count'] >= need_days:
+                        if item['room__count'] >= need_days:
                             avail_room.append(item['room__pk'])
                     searched_hotels_list = Room.objects.filter(pk__in=avail_room).values_list('hotel__pk', flat=True)
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
