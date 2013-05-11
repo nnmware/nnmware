@@ -427,7 +427,7 @@ class Room(AbstractName):
         return s.amount_on_date(date), s.settlement
 
     def active_settlements(self):
-        return SettlementVariant.objects.select_related().filter(room=self, enabled=True).order_by('settlement')
+        return SettlementVariant.objects.prefetch_related().filter(room=self, enabled=True).order_by('settlement')
 
     def check_min_days(self, from_date, to_date, roomcount):
         try:
