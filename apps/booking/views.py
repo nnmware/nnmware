@@ -392,7 +392,7 @@ class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, Up
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-        context['options_list'] = HotelOption.objects.prefetch_related().order_by('category', 'order_in_list', 'name')
+        context['options_list'] = HotelOption.objects.select_related().order_by('category', 'order_in_list', 'name')
         context['tab'] = 'common'
         context['title_line'] = _('private cabinet')
         return context
@@ -438,7 +438,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category', 'order_in_list', 'name')
+        context['options_list'] = RoomOption.objects.select_related().order_by('category', 'order_in_list', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = hotel
         context['title_line'] = _('private cabinet')
@@ -458,7 +458,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         # Call the base implementation first to get a context
         context = super(CabinetEditRoom, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        context['options_list'] = RoomOption.objects.order_by('category', 'order_in_list', 'name')
+        context['options_list'] = RoomOption.objects.select_related().order_by('category', 'order_in_list', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
         context['title_line'] = _('private cabinet')
