@@ -189,7 +189,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         amount = h.min_current_amount
                         if int(a_min) < amount < int(a_max):
                             r.append(h.pk)
-                    search_hotel = Hotel.objects.filter(pk__in=r)
+                    search_hotel = Hotel.objects.select_related().filter(pk__in=r)
                 if options:
                     for option in options:
                         search_hotel = search_hotel.filter(option=option)
