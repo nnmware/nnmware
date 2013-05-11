@@ -405,7 +405,7 @@ def room_avg_amount(amount, days):
     return format(result, '.2f')
 
 
-@register.simple_tag(takes_context=True)
+@register.assignment_tag(takes_context=True)
 def min_hotel_price(context):
     request = context['request']
     result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'))
