@@ -733,22 +733,22 @@ class ReportView(CurrentUserSuperuser, ListView):
         self.report_name = _('Error')
         result = []
         if report_type == 'all':
-            result = Hotel.objects.all()
+            result = Hotel.objects.select_related().all()
             self.report_name = _('All hotels in system')
         elif report_type == 'notsetpayment':
-            result = Hotel.objects.filter(payment_method=None)
+            result = Hotel.objects.select_related().filter(payment_method=None)
             self.report_name = _('Hotels without payment methods')
         elif report_type == 'setpayment':
-            result = Hotel.objects.exclude(payment_method=None)
+            result = Hotel.objects.select_related().exclude(payment_method=None)
             self.report_name = _('Hotels with payment methods')
         elif report_type == 'notsetadmins':
-            result = Hotel.objects.filter(admins=None)
+            result = Hotel.objects.select_related().filter(admins=None)
             self.report_name = _('Hotels without admins')
         elif report_type == 'setadmins':
-            result = Hotel.objects.exclude(admins=None)
+            result = Hotel.objects.select_related().exclude(admins=None)
             self.report_name = _('Hotels with admins')
         elif report_type == 'city':
-            result = City.objects.order_by('name')
+            result = City.objects.select_related().order_by('name')
             self.report_name = _('Total cities')
             self.template_name = "sysadm/report_city.html"
         if result and report_type != 'city':
