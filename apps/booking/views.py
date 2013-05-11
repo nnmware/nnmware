@@ -170,7 +170,8 @@ class HotelList(RedirectHttpView, ListView):
                                                              settlement__gte=guests).values_list('room__id', flat=True)
                     need_days = (to_date - from_date).days
                     date_gen = daterange(from_date, to_date)
-                    avail = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen).values('room__pk').\
+                    avail = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
+                        min_days__lte=need_days).values('room__pk').\
                         order_by('room').annotate(Count('room'))
                     avail_room = []
                     for item in avail:
