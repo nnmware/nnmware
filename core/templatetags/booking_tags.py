@@ -428,6 +428,6 @@ def hotel_range_price(context):
 
 
 @register.assignment_tag
-def stars_hotel_count(city=None):
+def stars_hotel_count():
     result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
     return result
