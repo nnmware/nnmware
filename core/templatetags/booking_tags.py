@@ -417,3 +417,11 @@ def max_hotel_price(context):
     request = context['request']
     result = PlacePrice.objects.aggregate(Max('amount'))
     return amount_request_currency(request, int(result['amount__max']))
+
+
+@register.assignment_tag(takes_context=True)
+def hotel_range_price(context):
+    request = context['request']
+    result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
+    return amount_request_currency(request, int(result['amount__min'])), \
+           amount_request_currency(request, int(result['amount__max']))
