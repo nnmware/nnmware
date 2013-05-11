@@ -297,7 +297,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
-        context['hotel_options'] = self.object.option.order_by('category', 'order_in_list', 'name')
+        context['hotel_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
         if f_date is not None and t_date is not None and guests is not None:
             try:
