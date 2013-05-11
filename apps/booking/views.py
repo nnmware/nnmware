@@ -370,7 +370,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
             context['search_url'] = self.object.hotel.get_absolute_url()
         context['tab'] = 'description'
-        context['room_options'] = self.object.option.order_by('category', 'order_in_list', 'name')
+        context['room_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
