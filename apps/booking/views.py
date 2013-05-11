@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
+from django.db.models import Count
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -164,10 +165,23 @@ class HotelList(RedirectHttpView, ListView):
                     search_hotel = Hotel.objects.select_related().all()
                 if searched_date:
                     result = []
-                    for hotel in search_hotel:
-                        if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
-                            result.append(hotel.pk)
-                    search_hotel = Hotel.objects.filter(pk__in=result)
+                    # Find all rooms pk for this guest count
+                    rooms_list = SettlementVariant.objects.filter(enabled=True,
+                                                             settlement__gte=guests).values_list('room__id', flat=True)
+                    need_days = (to_date - from_date).days
+                    date_gen = daterange(from_date, to_date)
+                    avail = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen).values('room__pk').\
+                        order_by('room').annotate(Count('room'))
+                    avail_room = []
+                    for item in avail:
+                        if item['room_count'] >= need_days:
+                            avail_room.append(item['room__pk'])
+                    searched_hotels_list = Room.objects.filter(pk__in=avail_room).values_list('hotel__pk', flat=True)
+                    search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
+                    # for hotel in search_hotel:
+                    #     if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
+                    #         result.append(hotel.pk)
+                    # search_hotel = Hotel.objects.filter(pk__in=result)
                 if amount_max and amount_min:
                     r = []
                     for h in search_hotel:
