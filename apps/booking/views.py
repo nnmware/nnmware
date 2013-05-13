@@ -177,7 +177,8 @@ class HotelList(RedirectHttpView, ListView):
                     for item in avail:
                         if item['room__count'] >= need_days:
                             avail_room.append(item['room__pk'])
-                    searched_hotels_list = Room.objects.filter(pk__in=avail_room).values_list('hotel__pk', flat=True)
+                    searched_hotels_avail = Room.objects.filter(pk__in=avail_room)
+                    searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                     # for hotel in search_hotel:
                     #     if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
@@ -185,7 +186,7 @@ class HotelList(RedirectHttpView, ListView):
                     # search_hotel = Hotel.objects.filter(pk__in=result)
                     if amount_max and amount_min:
                         res = []
-                        rooms = Room.objects.filter(pk__in=avail_room)
+                        rooms = searched_hotels_avail
                         for r in rooms:
                             amount = r.amount_date_guests(from_date, guests)
                             if int(a_min) < amount < int(a_max):
