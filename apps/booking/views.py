@@ -177,7 +177,7 @@ class HotelList(RedirectHttpView, ListView):
                     for item in avail:
                         if item['room__count'] >= need_days:
                             avail_room.append(item['room__pk'])
-                    searched_hotels_avail = Room.objects.prefetch_related().filter(pk__in=avail_room)
+                    searched_hotels_avail = Room.objects.select_related().filter(pk__in=avail_room)
                     searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                     # for hotel in search_hotel:
