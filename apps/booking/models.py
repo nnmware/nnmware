@@ -410,7 +410,7 @@ class Room(AbstractName):
 
     def amount_date_guests(self, date, guests):
         try:
-            s = SettlementVariant.objects.prefetch_related().filter(room=self,
+            s = SettlementVariant.objects.select_related().filter(room=self,
                                                  enabled=True, settlement__gte=guests).order_by('settlement')[0]
             return s.amount_on_date(date)
         except:
