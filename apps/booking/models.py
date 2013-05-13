@@ -408,6 +408,14 @@ class Room(AbstractName):
                     result = s_min_price
         return result
 
+    def amount_date_guests(self, date, guests):
+        try:
+            s = SettlementVariant.objects.filter(room=self,
+                                                 enabled=True, settlement__gte=guests).order_by('settlement')[0]
+            return s.amount_on_date(date)
+        except:
+            return None
+
     def discount_on_date(self, date):
         try:
             return Discount.objects.get(room=self, date=date).discount
