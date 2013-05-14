@@ -234,11 +234,11 @@ class HotelList(RedirectHttpView, ListView):
                     else:
                         pass
                     try:
-                        result = search_hotel.order_by(ui_order)
+                        result = search_hotel.order_by(ui_order).aggregate(Count('review'))
                     except:
                         pass
                 else:
-                    result = search_hotel
+                    result = search_hotel.aggregate(Count('review'))
                 #cache.set(key, result)
             else:
                 result = data_key
