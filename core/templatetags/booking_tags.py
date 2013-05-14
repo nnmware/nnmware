@@ -301,7 +301,8 @@ def amount_request_currency(request, amount):
 
 
 @register.assignment_tag(takes_context=True)
-def user_currency_rate(request):
+def user_currency_rate(context):
+    request = context['request']
     try:
         currency = Currency.objects.get(code=request.COOKIES['currency'])
     except:
