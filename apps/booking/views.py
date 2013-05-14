@@ -250,7 +250,7 @@ class HotelList(RedirectHttpView, ListView):
                         pass
                 else:
                     result = search_hotel
-                cache.set(key, result)
+                #cache.set(key, result)
             else:
                 result = data_key
             self.result_count = result.count()
