@@ -227,7 +227,7 @@ def room_full_amount(context, room, rate):
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
     result = PlacePrice.objects.filter(settlement__room=room,
-                                       date__range=(from_date, to_date)).aggregate(Sum('amount'))['amount__sum']
+                                       date__range=(from_date, to_date-timedelta(days=1))).aggregate(Sum('amount'))['amount__sum']
     # room_all_amount = 0
     # for single_date in daterange(from_date, to_date):
     #     room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
