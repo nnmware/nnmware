@@ -162,7 +162,7 @@ class HotelList(RedirectHttpView, ListView):
                 if self.city:
                     search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
-                    search_hotel = Hotel.objects.select_related().all()
+                    search_hotel = Hotel.objects.select_related('review').all()
                 if searched_date:
                     result = []
                     # Find all rooms pk for this guest count
@@ -999,12 +999,6 @@ class HotelMainPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HotelMainPage, self).get_context_data(**kwargs)
-        # city = City.objects.get(slug='spb')
-        # result_spb = Hotel.objects.filter(city=city).count()
-        # city = City.objects.get(slug='moscow')
-        # result_moscow = Hotel.objects.filter(city=city).count()
-        # context['hotels_moscow'] = result_moscow
-        # context['hotels_spb'] = result_spb
         context['title_line'] = _('booking of russian hotels')
         return context
 
