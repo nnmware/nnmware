@@ -217,7 +217,7 @@ def room_price_average(context, room):
 
 
 @register.simple_tag(takes_context=True)
-def room_full_amount(context, room):
+def room_full_amount(context, room, rate):
     request = context['request']
     search_data = context['search_data']
     f_date = search_data['from_date']
@@ -230,7 +230,7 @@ def room_full_amount(context, room):
     for single_date in daterange(from_date, to_date):
         room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
     result = room_all_amount
-    return amount_request_currency(request, result)
+    return convert_to_client_currency(result, rate)
 
 
 @register.simple_tag(takes_context=True)
