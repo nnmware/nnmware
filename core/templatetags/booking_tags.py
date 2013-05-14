@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
-from django.db.models import Min, Max, Count
+from django.db.models import Min, Max, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.translation import gettext as _
@@ -226,10 +226,11 @@ def room_full_amount(context, room, rate):
     from_date = convert_to_date(f_date)
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
-    room_all_amount = 0
-    for single_date in daterange(from_date, to_date):
-        room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
-    result = room_all_amount
+    result = PlacePrice.objects.filter(date__range=(from_date, to_date)).aggregate(Sum('amount'))['amount__sum']
+    # room_all_amount = 0
+    # for single_date in daterange(from_date, to_date):
+    #     room_all_amount += room.amount_on_date_guest_variant(single_date, guests)[0]
+    # result = room_all_amount
     return convert_to_client_currency(result, rate)
 
 
