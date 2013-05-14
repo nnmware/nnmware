@@ -275,10 +275,16 @@ def view_currency(context):
         return _('Roubles')
 
 
-@register.simple_tag(takes_context=True)
-def convert_to_client_currency(context, amount):
-    request = context['request']
-    return amount_request_currency(request, amount)
+@register.simple_tag
+def convert_to_client_currency(amount, rate):
+    try:
+        if OFFICIAL_RATE:
+            exchange = rate.official_rate
+        else:
+            exchange = rate.rate
+        return int((amount * rate.nominal) / exchange)
+    except:
+        return int(amount)
 
 
 def amount_request_currency(request, amount):
@@ -292,6 +298,20 @@ def amount_request_currency(request, amount):
         return int((amount * rate.nominal) / exchange)
     except:
         return int(amount)
+
+
+@register.assignment_tag(takes_context=True)
+def user_currency_rate(request):
+    try:
+        currency = Currency.objects.get(code=request.COOKIES['currency'])
+    except:
+        currency = Currency.objects.get(code=CURRENCY)
+    try:
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        return rate
+    except:
+        return None
+
 
 
 @register.simple_tag
