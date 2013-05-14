@@ -444,8 +444,8 @@ def max_hotel_price(context):
 def hotel_range_price(context):
     rate = context['user_currency_rate']
     result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
-    return convert_to_client_currency(rate, int(result['amount__min'])), \
-           convert_to_client_currency(rate, int(result['amount__max']))
+    return convert_to_client_currency(int(result['amount__min']), rate), \
+           convert_to_client_currency(int(result['amount__max']), rate)
 
 
 @register.assignment_tag
