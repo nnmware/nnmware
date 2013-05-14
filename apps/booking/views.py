@@ -107,7 +107,7 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
-class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
+class HotelList(RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
@@ -156,9 +156,9 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         elif notknowndates and self.city:
             self.search = 1
         self.result_count = None
-        if self.request.is_ajax():
+        if 1>0: #self.request.is_ajax():
             data_key = cache.get(key)
-            if not data_key:
+            if 1>0: #not data_key:
                 if self.city:
                     search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
@@ -184,15 +184,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     #     if hotel.work_on_request or hotel.free_room(from_date, to_date, guests):
                     #         result.append(hotel.pk)
                     # search_hotel = Hotel.objects.filter(pk__in=result)
-                    # if amount_max and amount_min:
-                    #     res = []
-                    #     rooms = searched_hotels_avail
-                    #     for r in rooms:
-                    #         amount = r.amount_date_guests(from_date, guests)
-                    #         if int(a_min) < amount < int(a_max):
-                    #             res.append(r.pk)
-                    #     hotel_amount = Room.objects.filter(pk__in=res).values_list('hotel__pk', flat=True)
-                    #     search_hotel = search_hotel.filter(pk__in=hotel_amount)
+                    if amount_max and amount_min:
+                        hotels_with_amount = PlacePrice.objects.filter(date=from_date,
+                            amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
+                            flat=True)
+                        search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
                 # if amount_max and amount_min:
                 #     r = []
                 #     for h in search_hotel:
@@ -258,7 +254,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             else:
                 result = data_key
             self.result_count = result.count()
-            self.payload['result_count'] = self.result_count
+            #self.payload['result_count'] = self.result_count
         else:
             self.paginate_by = None
         return result
