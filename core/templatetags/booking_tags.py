@@ -242,7 +242,7 @@ def room_variant(context, room):
     return room.amount_on_date_guest_variant(from_date, guests)[1]
 
 
-@register.simple_tag(takes_context=True)
+@register.assignment_tag(takes_context=True)
 def client_currency(context):
     request = context['request']
     try:
