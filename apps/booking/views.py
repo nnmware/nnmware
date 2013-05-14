@@ -107,7 +107,7 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
-class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
+class HotelList(RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
@@ -156,7 +156,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         elif notknowndates and self.city:
             self.search = 1
         self.result_count = None
-        if self.request.is_ajax():
+        if 1>0: #self.request.is_ajax():
             data_key = cache.get(key)
             if 1>0: #not data_key:
                 if self.city:
@@ -243,7 +243,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             else:
                 result = data_key
             self.result_count = result.count()
-            self.payload['result_count'] = self.result_count
+            #self.payload['result_count'] = self.result_count
         else:
             self.paginate_by = None
         return result
