@@ -999,12 +999,12 @@ class HotelMainPage(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HotelMainPage, self).get_context_data(**kwargs)
-        city = City.objects.get(slug='spb')
-        result_spb = Hotel.objects.filter(city=city).count()
-        city = City.objects.get(slug='moscow')
-        result_moscow = Hotel.objects.filter(city=city).count()
-        context['hotels_moscow'] = result_moscow
-        context['hotels_spb'] = result_spb
+        # city = City.objects.get(slug='spb')
+        # result_spb = Hotel.objects.filter(city=city).count()
+        # city = City.objects.get(slug='moscow')
+        # result_moscow = Hotel.objects.filter(city=city).count()
+        # context['hotels_moscow'] = result_moscow
+        # context['hotels_spb'] = result_spb
         context['title_line'] = _('booking of russian hotels')
         return context
 
