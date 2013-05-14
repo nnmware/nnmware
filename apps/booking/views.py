@@ -160,9 +160,9 @@ class HotelList(RedirectHttpView, ListView):
             data_key = cache.get(key)
             if 1>0: #not data_key:
                 if self.city:
-                    search_hotel = Hotel.objects.prefetch_related('address', 'review').filter(city=self.city)  # .exclude(payment_method=None)
+                    search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
-                    search_hotel = Hotel.objects.prefetch_related('address', 'review').all()
+                    search_hotel = Hotel.objects.select_related().all()
                 if searched_date:
                     result = []
                     # Find all rooms pk for this guest count
