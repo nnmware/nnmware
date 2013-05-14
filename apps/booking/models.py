@@ -610,7 +610,7 @@ class AgentPercent(models.Model):
 @python_2_unicode_compatible
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    hotel = models.ForeignKey(Hotel, blank=True, null=True)
+    hotel = models.ForeignKey(Hotel)
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
     review = models.TextField(verbose_name=_("Review"), blank=True)
 
