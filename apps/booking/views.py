@@ -107,7 +107,122 @@ class CurrentUserCabinetAccess(object):
         return super(CurrentUserCabinetAccess, self).dispatch(request, *args, **kwargs)
 
 
+def hotel_order(arr, order, sort):
+    ui_order = '?'
+    if order in ['name', 'starcount', 'current_amount', 'point'] and sort in ['asc', 'desc']:
+        arr.tab['tab'] = order
+        if sort == 'asc':
+            ui_order = order
+            arr.tab['css_'+order] = 'asc'
+            arr.tab['order_'+order] = 'desc'
+        else:
+            ui_order = '-'+order
+            arr.tab['css_'+order] = 'desc'
+            arr.tab['order_'+order] = 'asc'
+    return arr, ui_order
+
+
 class HotelList(RedirectHttpView, ListView):
+    paginate_by = 20
+    model = Hotel
+    template_name = "hotels/list.html"
+    search = 0
+
+    def get_queryset(self):
+        key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
+        result = []
+        searched_date = False
+        self.search_data = dict()
+        order = self.request.GET.get('order') or None
+        sort = self.request.GET.get('sort') or None
+        notknowndates = self.request.GET.get('notknowndates') or None
+        guests = guests_from_request(self.request)
+        f_date = self.request.GET.get('from') or None
+        t_date = self.request.GET.get('to') or None
+        self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
+                    'order_name': 'desc', 'order_starcount': 'desc', 'order_current_amount': 'desc',
+                    'order_point': 'desc', 'tab': 'name'}
+        try:
+            self.city = City.objects.get(slug=self.kwargs['slug'])
+        except:
+            self.city = None
+        if f_date and t_date and self.city:
+            try:
+                from_date = convert_to_date(f_date)
+                to_date = convert_to_date(t_date)
+                if from_date > to_date:
+                    self.search_data = {'from_date': t_date, 'to_date': f_date, 'guests': guests}
+                    from_date, to_date = to_date, from_date
+                else:
+                    self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
+                self.search_data['city'] = self.city
+                searched_date = True
+                self.search = 1
+            except:
+                pass
+        elif notknowndates and self.city:
+            self.search = 1
+        self.result_count = None
+        if 1>0: #self.request.is_ajax():
+            data_key = cache.get(key)
+            if 1>0: #not data_key:
+                if self.city:
+                    search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
+                else:
+                    search_hotel = Hotel.objects.select_related().all()
+                if searched_date:
+                    result = []
+                    # Find all rooms pk for this guest count
+                    rooms_list = SettlementVariant.objects.filter(enabled=True,
+                                                             settlement__gte=guests).values_list('room__id', flat=True)
+                    need_days = (to_date - from_date).days
+                    date_gen = daterange(from_date, to_date)
+                    avail = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
+                        min_days__lte=need_days).values('room__pk').\
+                        order_by('room').annotate(Count('room'))
+                    avail_room = []
+                    for item in avail:
+                        if item['room__count'] >= need_days:
+                            avail_room.append(item['room__pk'])
+                    searched_hotels_avail = Room.objects.select_related().filter(pk__in=avail_room)
+                    searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
+                    search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
+                if order:
+                    self.tab, ui_order = hotel_order(self.tab, order, sort)
+                    try:
+                        result = search_hotel.order_by(ui_order).annotate(Count('review'))
+                    except:
+                        pass
+                else:
+                    result = search_hotel.annotate(Count('review'))
+                #cache.set(key, result)
+            else:
+                result = data_key
+            self.result_count = result.count()
+            #self.payload['result_count'] = self.result_count
+        else:
+            self.paginate_by = None
+        return result
+
+    def get_context_data(self, **kwargs):
+    # Call the base implementation first to get a context
+        context = super(HotelList, self).get_context_data(**kwargs)
+        context['title_line'] = _('list of hotels')
+        context['tab'] = self.tab
+        if self.search:
+            context['search'] = self.search
+#            context['search_count'] = self.result_count
+            context['search_data'] = self.search_data
+        else:
+            context['country'] = 1
+        if self.city:
+            context['city'] = self.city
+            context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
+        context['search_count'] = self.result_count
+        return context
+
+
+class HotelSearchList(RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
