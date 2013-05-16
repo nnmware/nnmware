@@ -259,12 +259,12 @@ def hotels_in_city(request):
     try:
         c = request.REQUEST['city']
         url = request.REQUEST['city'] or None
-        if url is not None:
-            key = sha1('%s:%s' % (get_session_from_request(request), url)).hexdigest()
-            data_key = cache.get(key)
-        else:
-            city = City.objects.get(pk=c)
-            searched = Hotel.objects.filter(city=city).order_by('starcount')
+        # if url is not None:
+        #     key = sha1('%s:%s' % (get_session_from_request(request), url)).hexdigest()
+        #     data_key = cache.get(key)
+        # else:
+        city = City.objects.get(pk=c)
+        searched = Hotel.objects.filter(city=city).order_by('starcount')
         # if data_key:
         #     searched = data_key
         results = []
