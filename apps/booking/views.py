@@ -122,7 +122,7 @@ def hotel_order(arr, order, sort):
     return arr, ui_order
 
 
-class HotelList(RedirectHttpView, ListView):
+class HotelList(ListView):
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
