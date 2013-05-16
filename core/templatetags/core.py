@@ -596,10 +596,13 @@ def image_height(url):
 def watermark(url, arg=''):
     if url is None:
         return None
-    if arg == 'center':
-        ret = make_watermark(url, align='center')
-    else:
-        ret = make_watermark(url)
+    try:
+        if arg == 'center':
+            ret = make_watermark(url, align='center')
+        else:
+            ret = make_watermark(url)
+    except:
+        ret = url
     if ret is None:
         ret = url
     if not ret.startswith(settings.MEDIA_URL):

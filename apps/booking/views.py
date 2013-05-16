@@ -211,7 +211,6 @@ class HotelList(RedirectHttpView, ListView):
         context['tab'] = self.tab
         if self.search:
             context['search'] = self.search
-#            context['search_count'] = self.result_count
             context['search_data'] = self.search_data
         else:
             context['country'] = 1
