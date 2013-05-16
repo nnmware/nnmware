@@ -256,7 +256,7 @@ def tourism_places(request):
 
 
 def hotels_in_city(request):
-    if 1>0: #try:
+    try:
         c = request.REQUEST['city']
         url = request.REQUEST['city'] or None
         if url is not None:
@@ -265,8 +265,8 @@ def hotels_in_city(request):
         else:
             city = City.objects.get(pk=c)
             searched = Hotel.objects.filter(city=city).order_by('starcount')
-        if data_key:
-            searched = data_key
+        # if data_key:
+        #     searched = data_key
         results = []
         for hotel in searched:
             answer = {'name': hotel.get_name, 'latitude': hotel.latitude, 'url': hotel.get_absolute_url(),
@@ -277,8 +277,8 @@ def hotels_in_city(request):
 
             results.append(answer)
         payload = {'success': True, 'hotels': results}
-    # except:
-    #     payload = {'success': False}
+    except:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
