@@ -110,7 +110,7 @@ class CurrentUserCabinetAccess(object):
 def hotel_order(arr, order, sort):
     ui_order = '?'
     if order in ['name', 'starcount', 'current_amount', 'point'] and sort in ['asc', 'desc']:
-        arr.tab['tab'] = order
+        arr['tab'] = order
         if sort == 'asc':
             ui_order = order
             arr.tab['css_'+order] = 'asc'
