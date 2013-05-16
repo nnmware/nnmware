@@ -177,9 +177,9 @@ class HotelList(ListView):
                                                              settlement__gte=guests).values_list('room__id', flat=True)
                     need_days = (to_date - from_date).days
                     date_gen = daterange(from_date, to_date)
-                    searched_hotels_list = [x[0] for x in Availability.objects.select_related().filter(room__pk__in=rooms_list, date__in=date_gen,
-                        min_days__lte=need_days).annotate(num_room=Count('room')).filter(num_room__gte=need_days).values(
-                        'room__hotel__pk','num_room')]
+                    searched_hotels_list = Availability.objects.select_related().filter(room__pk__in=rooms_list, date__in=date_gen,
+                        min_days__lte=need_days).annotate(num_room=Count('room')).filter(num_room__gte=need_days).values_list(
+                        'room__hotel__pk', flat=True)
                     # avail_room = []
                     # for item in avail:
                     #     if item['room__count'] >= need_days:
