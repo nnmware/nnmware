@@ -357,7 +357,7 @@ PLACES_CHOICES = (
 class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True, null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
-    places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN)
+    places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN, db_index=True)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
 
     class Meta:
@@ -469,8 +469,8 @@ class Room(AbstractName):
 @python_2_unicode_compatible
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
-    settlement = models.PositiveSmallIntegerField(_("Settlement"))
-    enabled = models.BooleanField(verbose_name=_('Enabled'), default=True)
+    settlement = models.PositiveSmallIntegerField(_("Settlement"), db_index=True)
+    enabled = models.BooleanField(verbose_name=_('Enabled'), default=True, db_index=True)
 
     class Meta:
         verbose_name = _("Settlement Variant")
@@ -628,8 +628,8 @@ class Review(AbstractIP, HotelPoints):
 class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True)
     date = models.DateField(verbose_name=_("On date"), db_index=True)
-    placecount = models.IntegerField(verbose_name=_('Count of places'), default=0)
-    min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True)
+    placecount = models.IntegerField(verbose_name=_('Count of places'), default=0, db_index=True)
+    min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True, db_index=True)
 
     class Meta:
         verbose_name = _("Availability Place")
@@ -657,7 +657,7 @@ class Discount(models.Model):
 
 @python_2_unicode_compatible
 class PlacePrice(MoneyBase):
-    date = models.DateField(verbose_name=_("On date"))
+    date = models.DateField(verbose_name=_("On date"), db_index=True)
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
 
     class Meta:
