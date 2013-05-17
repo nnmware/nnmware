@@ -627,7 +627,7 @@ class Review(AbstractIP, HotelPoints):
 @python_2_unicode_compatible
 class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True)
-    date = models.DateField(verbose_name=_("On date"))
+    date = models.DateField(verbose_name=_("On date"), db_index=True)
     placecount = models.IntegerField(verbose_name=_('Count of places'), default=0)
     min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True)
 
