@@ -180,12 +180,7 @@ class HotelList(ListView):
                     searched_hotels_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
                         min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                         order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
-                    # avail_room = []
-                    # for item in avail:
-                    #     if item[1] >= need_days:
-                    #         avail_room.append(item[0])
-                    # searched_hotels_avail = Room.objects.select_related().filter(pk__in=avail_room)
-                    # searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
+                    # TODO add hotels_on_request !!!
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                 if order:
                     self.tab, ui_order = hotel_order(self.tab, order, sort)

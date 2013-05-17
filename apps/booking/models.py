@@ -441,11 +441,6 @@ class Room(AbstractName):
     def check_min_days(self, from_date, to_date, guests):
         if not SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).exists():
             return False
-        # try:
-        #     places = SettlementVariant.objects.filter(room=self, enabled=True).order_by('-settlement')
-        #     places_max = places[0].settlement
-        # except:
-        #     return False
         need_days = (to_date - from_date).days
         date_gen = daterange(from_date, to_date)
         avail = Availability.objects.select_related().filter(room=self, date__in=date_gen)
