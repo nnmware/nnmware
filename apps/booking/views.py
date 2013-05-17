@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count
+from django.db.models import Count, Sum
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -178,7 +178,7 @@ class HotelList(ListView):
                     need_days = (to_date - from_date).days
                     date_gen = daterange(from_date, to_date)
                     avail_room = [room for room, room_days in Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
-                        min_days__lte=need_days).order_by('room').annotate(num_days=Count('room')).\
+                        min_days__lte=need_days).order_by('room').annotate(num_days=Sum('room')).\
                         values_list('room__pk', 'num_days') if room_days >= need_days]
                     # avail_room = []
                     # for item in avail:
