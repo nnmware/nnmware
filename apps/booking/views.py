@@ -173,19 +173,19 @@ class HotelList(ListView):
                 if searched_date:
                     result = []
                     # Find all rooms pk for this guest count
-                    rooms_list = SettlementVariant.objects.filter(enabled=True,
-                                                             settlement__gte=guests).values_list('room__id', flat=True)
+                    rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
+                        values_list('room__id', flat=True).distinct()
                     need_days = (to_date - from_date).days
                     date_gen = daterange(from_date, to_date)
-                    searched_hotels_list = Availability.objects.select_related().filter(room__pk__in=rooms_list, date__in=date_gen,
-                        min_days__lte=need_days).annotate(num_room=Count('room')).filter(num_room__gte=need_days).values_list(
-                        'room__hotel__pk', flat=True)
-                    # avail_room = []
-                    # for item in avail:
-                    #     if item['room__count'] >= need_days:
-                    #         avail_room.append(item['room__pk'])
-                    # searched_hotels_avail = Room.objects.select_related().filter(pk__in=avail_room)
-                    # searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
+                    avail = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
+                        min_days__lte=need_days).values('room__pk').\
+                        order_by('room').annotate(Count('room'))
+                    avail_room = []
+                    for item in avail:
+                        if item['room__count'] >= need_days:
+                            avail_room.append(item['room__pk'])
+                    searched_hotels_avail = Room.objects.select_related().filter(pk__in=avail_room)
+                    searched_hotels_list = searched_hotels_avail.values_list('hotel__pk', flat=True)
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                 if order:
                     self.tab, ui_order = hotel_order(self.tab, order, sort)
