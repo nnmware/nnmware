@@ -245,13 +245,13 @@ class Material(AbstractImg):
 
 @python_2_unicode_compatible
 class AbstractName(AbstractImg):
-    name = models.CharField(verbose_name=_("Name"), max_length=255)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, null=True)
-    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, db_index=True)
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, null=True, db_index=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True, db_index=True)
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
-    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True, db_index=True)
+    order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
     comments = models.IntegerField(blank=True, null=True)
