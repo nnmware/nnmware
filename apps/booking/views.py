@@ -184,12 +184,8 @@ class HotelList(ListView):
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                 if order:
                     self.tab, ui_order = hotel_order(self.tab, order, sort)
-                    try:
-                        result = search_hotel.order_by(ui_order).annotate(Count('review'))
-                    except:
-                        pass
-                else:
-                    result = search_hotel.annotate(Count('review'))
+                    search_hotel = search_hotel.order_by(ui_order)
+                result = search_hotel.annotate(Count('review'))
                 #cache.set(key, result)
             else:
                 result = data_key
