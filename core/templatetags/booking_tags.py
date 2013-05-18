@@ -290,12 +290,17 @@ def amount_request_currency(request, amount):
 @register.assignment_tag(takes_context=True)
 def user_currency_rate(context):
     request = context['request']
+    # try:
+    #     currency = Currency.objects.get(code=request.COOKIES['currency'])
+    # except:
+    #     currency = Currency.objects.get(code=CURRENCY)
     try:
-        currency = Currency.objects.get(code=request.COOKIES['currency'])
-    except:
-        currency = Currency.objects.get(code=CURRENCY)
-    try:
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        try:
+            rate = ExchangeRate.objects.filter(currency__code=request.COOKIES['currency']).\
+                filter(date__lte=datetime.now()).order_by('-date')[0]
+        except:
+            rate = ExchangeRate.objects.filter(currency__code=CURRENCY).filter(date__lte=datetime.now()).\
+                order_by('-date')[0]
         return rate
     except:
         return None
