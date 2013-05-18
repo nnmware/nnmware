@@ -296,7 +296,7 @@ def user_currency_rate(context):
     # except:
     #     currency = Currency.objects.get(code=CURRENCY)
     try:
-        rate = ExchangeRate.objects.filter(currency__code=user_currency).\
+        rate = ExchangeRate.objects.select_related().filter(currency__code=user_currency).\
                 filter(date__lte=datetime.now()).order_by('-date')[0]
         return rate
     except:
