@@ -20,11 +20,12 @@ from nnmware.core.utils import daterange
 
 
 class HotelPoints(models.Model):
-    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4)
-    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4)
-    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=1, max_digits=4)
-    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=1, max_digits=4)
-    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4)
+    food = models.DecimalField(verbose_name=_('Food'), default=0, decimal_places=1, max_digits=4, db_index=True)
+    service = models.DecimalField(verbose_name=_('Service'), default=0, decimal_places=1, max_digits=4, db_index=True)
+    purity = models.DecimalField(verbose_name=_('Purity'), default=0, decimal_places=1, max_digits=4, db_index=True)
+    transport = models.DecimalField(verbose_name=_('Transport'), default=0, decimal_places=1, max_digits=4,
+                                    db_index=True)
+    prices = models.DecimalField(verbose_name=_('Prices'), default=0, decimal_places=1, max_digits=4, db_index=True)
 
     class Meta:
         abstract = True
@@ -42,8 +43,8 @@ class HotelOptionCategory(AbstractName):
 @python_2_unicode_compatible
 class HotelOption(AbstractName):
     category = models.ForeignKey(HotelOptionCategory, verbose_name=_('Category option'))
-    in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
-    sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False)
+    in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
+    sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False, db_index=True)
 
     class Meta:
         verbose_name = _("Hotel Option")
@@ -58,7 +59,7 @@ class HotelOption(AbstractName):
 
 
 class PaymentMethod(AbstractName):
-    use_card = models.BooleanField(verbose_name=_("Use credit card?"), default=False)
+    use_card = models.BooleanField(verbose_name=_("Use credit card?"), default=False, db_index=True)
 
     class Meta:
         verbose_name = _("Payment method")
@@ -147,13 +148,16 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
     option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'), blank=True, null=True)
-    starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
-    choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False)
+    starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR, db_index=True)
+    choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False,
+                                 db_index=True)
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Hotel Admins'), null=True, blank=True)
-    point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4)
-    best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False)
-    in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False)
-    current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3)
+    point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4,
+                                db_index=True)
+    best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False, db_index=True)
+    in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False, db_index=True)
+    current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3,
+                                         db_index=True)
     booking_terms = models.TextField(verbose_name=_("Booking terms"), blank=True, null=True)
     schema_transit = models.TextField(verbose_name=_("Schema of transit"), blank=True, null=True)
     booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True, null=True)
@@ -164,8 +168,8 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
-    work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False)
-    hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True)
+    work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False, db_index=True)
+    hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True, db_index=True)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -316,7 +320,7 @@ class RoomOptionCategory(AbstractName):
 @python_2_unicode_compatible
 class RoomOption(AbstractName):
     category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
-    in_search = models.BooleanField(verbose_name=_("In search form?"), default=False)
+    in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
 
     class Meta:
         ordering = ['order_in_list', 'name']
@@ -358,7 +362,7 @@ class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True, null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN, db_index=True)
-    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO)
+    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO, db_index=True)
 
     class Meta:
         verbose_name = _("Room")
@@ -589,8 +593,9 @@ class Booking(MoneyBase, AbstractIP):
 @python_2_unicode_compatible
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel)
-    date = models.DateField(verbose_name=_("From date"))
-    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0)
+    date = models.DateField(verbose_name=_("From date"), db_index=True)
+    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0,
+                                  db_index=True)
 
     class Meta:
         verbose_name = _("Agent Percent")
@@ -608,7 +613,7 @@ class AgentPercent(models.Model):
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel)
-    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now)
+    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now, db_index=True)
     review = models.TextField(verbose_name=_("Review"), blank=True)
 
     class Meta:
@@ -640,8 +645,8 @@ class Availability(models.Model):
 @python_2_unicode_compatible
 class Discount(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
-    date = models.DateField(verbose_name=_("On date"))
-    discount = models.SmallIntegerField(verbose_name=_('Discount'), default=0)
+    date = models.DateField(verbose_name=_("On date"), db_index=True)
+    discount = models.SmallIntegerField(verbose_name=_('Discount'), default=0, db_index=True)
 
     class Meta:
         verbose_name = _("Discount")

@@ -73,8 +73,8 @@ class Region(Address):
 
 
 class MetaGeo(models.Model):
-    longitude = models.FloatField(_('Longitude'), default=0.0)
-    latitude = models.FloatField(_('Latitude'), default=0.0)
+    longitude = models.FloatField(_('Longitude'), default=0.0, db_index=True)
+    latitude = models.FloatField(_('Latitude'), default=0.0, db_index=True)
 
     class Meta:
         abstract = True
@@ -197,7 +197,7 @@ class AbstractLocation(models.Model):
                                      null=True, blank=True, related_name='%(class)s_metro')
     zipcode = models.CharField(max_length=20, verbose_name=_('Zipcode'), blank=True, null=True)
     street = std_text_field(_('Street'))
-    house_number = std_text_field(_('Number of house'),max_length=5)
+    house_number = std_text_field(_('Number of house'), max_length=5)
     building = std_text_field(_('Building'), max_length=5)
     flat_number = std_text_field(_('Number of flat'), max_length=5)
 
