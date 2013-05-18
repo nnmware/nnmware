@@ -159,6 +159,10 @@ class HotelList(RedirectHttpView, ListView):
                 else:
                     self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
                 self.search_data['city'] = self.city
+                if stars:
+                    self.search_data['stars'] = stars
+                if options:
+                    self.search_data['options'] = options
                 searched_date = True
                 self.search = 1
             except:
