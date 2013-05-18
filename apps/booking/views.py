@@ -183,7 +183,6 @@ class HotelList(RedirectHttpView, ListView):
                     searched_hotels_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
                         min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                         order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
-                    # TODO add hotels_on_request !!!
                     search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
                     if amount_max and amount_min:
                         hotels_with_amount = PlacePrice.objects.filter(date=from_date,

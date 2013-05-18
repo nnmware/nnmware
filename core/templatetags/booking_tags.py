@@ -189,17 +189,6 @@ def room_price_date(context, room, on_date):
 
 
 @register.simple_tag(takes_context=True)
-def client_days_booking(context):
-    search_data = context['search_data']
-    f_date = search_data['from_date']
-    t_date = search_data['to_date']
-    from_date = convert_to_date(f_date)
-    to_date = convert_to_date(t_date)
-    delta = (to_date - from_date).days
-    return int(delta)
-
-
-@register.simple_tag(takes_context=True)
 def room_price_average(context, room):
     request = context['request']
     search_data = context['search_data']
