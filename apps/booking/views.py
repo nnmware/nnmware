@@ -139,6 +139,10 @@ class HotelList(RedirectHttpView, ListView):
         guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        amount_min = self.request.GET.get('amount_min') or None
+        amount_max = self.request.GET.get('amount_max') or None
+        options = self.request.GET.getlist('options') or None
+        stars = self.request.GET.getlist('stars') or None
         self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
                     'order_name': 'desc', 'order_starcount': 'desc', 'order_current_amount': 'desc',
                     'order_point': 'desc', 'tab': 'name'}
@@ -182,6 +186,16 @@ class HotelList(RedirectHttpView, ListView):
                         order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
                     # TODO add hotels_on_request !!!
                     search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
+                    if amount_max and amount_min:
+                        hotels_with_amount = PlacePrice.objects.filter(date=from_date,
+                            amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
+                            flat=True)
+                        search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
+                if options:
+                    for option in options:
+                        search_hotel = search_hotel.filter(option=option)
+                if stars:
+                    search_hotel = search_hotel.filter(starcount__in=stars)
                 if order:
                     self.tab, ui_order = hotel_order(self.tab, order, sort)
                     search_hotel = search_hotel.order_by(ui_order)
