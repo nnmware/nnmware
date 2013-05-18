@@ -544,6 +544,8 @@ class Booking(MoneyBase, AbstractIP):
     card_cvv2 = models.CharField(verbose_name=_("Card verification value(CVV2)"), max_length=4, blank=True)
     payment_method = models.ForeignKey(PaymentMethod, verbose_name=_('Payment method'))
 
+    objects = Manager()
+
     class Meta:
         ordering = ("-date",)
         verbose_name = _("Booking")

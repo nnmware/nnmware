@@ -45,8 +45,7 @@ class CurrentUserHotelAdmin(object):
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        city = get_object_or_404(City, slug=kwargs['city'])
-        obj = get_object_or_404(Hotel, city=city, slug=kwargs['slug'])
+        obj = get_object_or_404(Hotel.objects.select_related(), city__slug=kwargs['city'], slug=kwargs['slug'])
         if not request.user in obj.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
@@ -58,7 +57,7 @@ class CurrentUserRoomAdmin(object):
     @method_decorator(ssl_required)
     @method_decorator(ensure_csrf_cookie)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Room, pk=kwargs['pk'])
+        obj = get_object_or_404(Room.objects.select_related(), pk=kwargs['pk'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserRoomAdmin, self).dispatch(request, *args, **kwargs)
@@ -69,7 +68,7 @@ class CurrentUserHotelBillAccess(object):
 
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Bill, pk=kwargs['pk'])
+        obj = get_object_or_404(Bill.objects.select_related(), pk=kwargs['pk'])
         if not request.user in obj.target.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
@@ -80,7 +79,7 @@ class CurrentUserHotelBookingAccess(object):
 
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Booking, uuid=kwargs['slug'])
+        obj = get_object_or_404(Booking.objects.select_related(), uuid=kwargs['slug'])
         if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
@@ -91,7 +90,7 @@ class CurrentUserBookingAccess(object):
 
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Booking, uuid=kwargs['slug'])
+        obj = get_object_or_404(Booking.objects.select_related(), uuid=kwargs['slug'])
         if obj.user:
             if (request.user != obj.user) and not request.user.is_superuser:
                 raise Http404
@@ -553,16 +552,15 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
-        city = get_object_or_404(City, slug=self.kwargs['city'])
-        hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
+        hotel = get_object_or_404(Hotel, city__slug=self.kwargs['city'], slug=self.kwargs['slug'])
         self.object = form.save(commit=False)
         self.object.hotel = hotel
         self.object.save()
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        city = get_object_or_404(City, slug=self.kwargs['city'])
-        hotel = get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
+        hotel = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
+                                  slug=self.kwargs['slug'])
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
@@ -822,9 +820,9 @@ class BookingsList(CurrentUserSuperuser, ListView):
                 self.search_dates = {'from_date': t_date, 'to_date': f_date}
             else:
                 self.search_dates = {'from_date': f_date, 'to_date': t_date}
-            return Booking.objects.filter(date__range=(from_date, to_date))
+            return Booking.objects.select_related().filter(date__range=(from_date, to_date))
         except:
-            return Booking.objects.all()
+            return Booking.objects.select_related().all()
 
 
 class RequestsList(CurrentUserSuperuser, ListView):
@@ -945,9 +943,9 @@ class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
-            return Booking.objects.filter(user=self.object, date__range=(from_date, to_date))
+            return Booking.objects.select_related().filter(user=self.object, date__range=(from_date, to_date))
         except:
-            return Booking.objects.filter(user=self.object)
+            return Booking.objects.select_related().filter(user=self.object)
 
 
 class UserBookingDetail(CurrentUserBookingAccess, DetailView):
@@ -968,7 +966,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
     template_name = "booking/add.html"
 
     def get_object(self, queryset=None):
-        room = get_object_or_404(Room, pk=self.kwargs['room'])
+        room = get_object_or_404(Room.objects.select_related(), pk=self.kwargs['room'])
         return room.hotel
 
     def get_context_data(self, **kwargs):
@@ -1166,7 +1164,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
     def form_valid(self, form):
         booking = get_object_or_404(Booking, uuid=self.kwargs['slug'])
         self.object = form.save(commit=False)
-        if self.object.status <> booking.status:
+        if self.object.status != booking.status:
             desc = self.request.POST.get('description') or None
             subject = _("Changed status of booking")
             message = _("Hotel: ") + self.object.hotel.get_name + "\n"
