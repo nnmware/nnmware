@@ -440,6 +440,8 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
                 context['search'] = 1
                 context['search_data'] = search_data
+                context['need_days'] = (to_date - from_date).days
+
             try:
                 context['search_count'] = Hotel.objects.filter(city=self.object.city).count()
             except:
