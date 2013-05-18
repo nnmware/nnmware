@@ -17,8 +17,8 @@ from django.utils.encoding import python_2_unicode_compatible
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'))
     country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
-    name = models.CharField(verbose_name=_("Name"), max_length=100)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=100, db_index=True)
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, db_index=True)
 
     class Meta:
         unique_together = ('code',)
@@ -49,7 +49,7 @@ class ExchangeRate(models.Model):
 
 #---------------------------------------------------------------------------
 class MoneyBase(models.Model):
-    amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=20, decimal_places=3)
+    amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=20, decimal_places=3, db_index=True)
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
