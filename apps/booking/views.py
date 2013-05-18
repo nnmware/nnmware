@@ -198,7 +198,7 @@ class HotelList(RedirectHttpView, ListView):
                     # AND = lambda q, value: q & Q(option__in=value)
                     # search_hotel.filter(reduce(AND, options, Q()))
                     for option in options:
-                        search_hotel = search_hotel.filter(option__in=option)
+                        search_hotel = search_hotel.filter(option=option)
                 # if options:
                 #     search_hotel = search_hotel.filter(option__pk__in=options)
                 if stars:
