@@ -15,7 +15,7 @@ from django.utils.encoding import python_2_unicode_compatible
 #---------------------------------------------------------------------------
 @python_2_unicode_compatible
 class Currency(models.Model):
-    code = models.CharField(max_length=3, verbose_name=_('Currency code'))
+    code = models.CharField(max_length=3, verbose_name=_('Currency code'), db_index=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
     name = models.CharField(verbose_name=_("Name"), max_length=100, db_index=True)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=100, blank=True, db_index=True)
@@ -32,10 +32,11 @@ class Currency(models.Model):
 @python_2_unicode_compatible
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
-    date = models.DateField(verbose_name=_('On date'))
-    nominal = models.SmallIntegerField(verbose_name=_('Nominal'), default=1)
-    official_rate = models.DecimalField(verbose_name=_('Official Rate'), default=0, max_digits=10, decimal_places=4)
-    rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4)
+    date = models.DateField(verbose_name=_('On date'), db_index=True)
+    nominal = models.SmallIntegerField(verbose_name=_('Nominal'), default=1, db_index=True)
+    official_rate = models.DecimalField(verbose_name=_('Official Rate'), default=0, max_digits=10, decimal_places=4,
+                                        db_index=True)
+    rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4, db_index=True)
 
     class Meta:
         ordering = ("-date",'currency__code')
