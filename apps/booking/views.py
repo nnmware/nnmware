@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count, Sum
+from django.db.models import Count, Sum, Q
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -185,12 +185,12 @@ class HotelList(RedirectHttpView, ListView):
                         min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                         order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
                     # TODO add hotels_on_request !!!
-                    search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
+                    search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
                     if amount_max and amount_min:
                         hotels_with_amount = PlacePrice.objects.filter(date=from_date,
                             amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                             flat=True).distinct()
-                        search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
+                        search_hotel = search_hotel.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
                 if options:
                     search_hotel = search_hotel.filter(option__in=options)
                 if stars:
