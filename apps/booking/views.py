@@ -189,7 +189,7 @@ class HotelList(RedirectHttpView, ListView):
                     if amount_max and amount_min:
                         hotels_with_amount = PlacePrice.objects.filter(date=from_date,
                             amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
-                            flat=True)
+                            flat=True).distinct()
                         search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
                 if options:
                     for option in options:
