@@ -189,7 +189,7 @@ class HotelList(RedirectHttpView, ListView):
                 #cache.set(key, result)
             else:
                 result = data_key
-            self.result_count = result
+            self.result_count = result.count()
         else:
             self.paginate_by = None
         return result
@@ -207,7 +207,7 @@ class HotelList(RedirectHttpView, ListView):
         if self.city:
             context['city'] = self.city
             context['hotels_in_city'] = Hotel.objects.filter(city=self.city).count()
-        context['search_count'] = self.result_count.count()
+        context['search_count'] = self.result_count
         return context
 
 
