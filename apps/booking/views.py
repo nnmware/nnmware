@@ -140,7 +140,7 @@ class HotelList(RedirectHttpView, ListView):
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
         amount_max = self.request.GET.get('amount_max') or None
-        options = self.request.GET.getlist('options[]') or None
+        options = self.request.GET.getlist('options') or None
         stars = self.request.GET.getlist('stars') or None
         self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
                     'order_name': 'desc', 'order_starcount': 'desc', 'order_current_amount': 'desc',
