@@ -195,7 +195,10 @@ class HotelList(RedirectHttpView, ListView):
                             flat=True).distinct()
                         search_hotel = search_hotel.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
                 if options:
-                    search_hotel = search_hotel.filter(option__in=options)
+                    for option in options:
+                        search_hotel = search_hotel.filter(option=option)
+                # if options:
+                #     search_hotel = search_hotel.filter(option__in=options)
                 if stars:
                     search_hotel = search_hotel.filter(starcount__in=stars)
                 if order:
