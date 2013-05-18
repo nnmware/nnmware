@@ -291,17 +291,12 @@ def amount_request_currency(request, amount):
 def user_currency_rate(context):
     request = context['request']
     user_currency = request.COOKIES['currency'] or CURRENCY
-    # try:
-    #     currency = Currency.objects.get(code=request.COOKIES['currency'])
-    # except:
-    #     currency = Currency.objects.get(code=CURRENCY)
     try:
         rate = ExchangeRate.objects.select_related().filter(currency__code=user_currency).\
-                filter(date__lte=datetime.now()).order_by('-date')[0]
+            filter(date__lte=datetime.now()).order_by('-date')[0]
         return rate
     except:
         return None
-
 
 
 @register.simple_tag
@@ -433,7 +428,7 @@ def max_hotel_price(context):
 def hotel_range_price(rate):
     result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     return convert_to_client_currency(int(result['amount__min']), rate), \
-           convert_to_client_currency(int(result['amount__max']), rate)
+        convert_to_client_currency(int(result['amount__max']), rate)
 
 
 @register.assignment_tag
