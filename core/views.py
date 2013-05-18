@@ -451,12 +451,8 @@ class RedirectHttpsView(object):
 
 
 class RedirectHttpView(object):
-#    @method_decorator(ssl_not_required)
+    @method_decorator(ssl_not_required)
     def dispatch(self, request, *args, **kwargs):
-        if request.is_secure():
-            url_str = request.build_absolute_uri()
-            url_str = url_str.replace('https://', 'http://')
-            return HttpResponseRedirect(url_str)
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
 
