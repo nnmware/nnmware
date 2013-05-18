@@ -159,7 +159,7 @@ class HotelList(RedirectHttpView, ListView):
                 else:
                     self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
                 self.search_data['city'] = self.city
-                if stars is not None:
+                if stars:
                     self.search_data['stars'] = stars
                 if options:
                     self.search_data['options'] = options
@@ -189,6 +189,7 @@ class HotelList(RedirectHttpView, ListView):
                         order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
                     search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
                     if amount_max and amount_min:
+                        self.search_data['amount'] = [amount_min, amount_max]
                         hotels_with_amount = PlacePrice.objects.filter(date=from_date,
                             amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                             flat=True).distinct()
