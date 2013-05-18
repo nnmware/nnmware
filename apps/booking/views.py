@@ -408,7 +408,7 @@ class HotelAdminList(ListView):
 class HotelPathMixin(object):
     def get_object(self, queryset=None):
         city = get_object_or_404(City, slug=self.kwargs['city'])
-        return get_object_or_404(Hotel, city=city, slug=self.kwargs['slug'])
+        return get_object_or_404(Hotel.objects.select_related(), city=city, slug=self.kwargs['slug'])
 
 
 class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
