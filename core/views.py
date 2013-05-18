@@ -456,7 +456,7 @@ class RedirectHttpView(object):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        pass
+        return {}
 
 
 class ChangePasswordView(AjaxFormMixin, FormView):
