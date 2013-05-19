@@ -521,7 +521,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search_data'] = search_data
             context['search'] = 1
-            context['search_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
+            context['search_count'] = context['hotels_in_city']
         return context
 
 
