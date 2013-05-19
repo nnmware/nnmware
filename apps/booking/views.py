@@ -988,6 +988,8 @@ class ClientBooking(RedirectHttpsView, DetailView):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
+        if f_date == t_date:
+            raise Http404
         if f_date and t_date and guests and ('room' in self.kwargs.keys()):
             try:
                 room_id = int(self.kwargs['room'])
@@ -1004,7 +1006,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             if from_date > to_date:
                 f_date, t_date = t_date, f_date
                 from_date, to_date = to_date, from_date
-            if (from_date - datetime.now()).days < -1 or (from_date == to_date):
+            if (from_date - datetime.now()).days < -1:
                 raise Http404
             avail_count = Availability.objects.filter(room=room, date__range=(from_date, to_date - timedelta(days=1)),
                                                       placecount__gt=0).count()
