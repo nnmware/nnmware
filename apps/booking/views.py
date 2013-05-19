@@ -438,7 +438,18 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 if from_date > to_date:
                     from_date, to_date = to_date, from_date
                     f_date, t_date = t_date, f_date
-                context['free_room'] = self.object.free_room(from_date, to_date, guests)
+
+                # Find all rooms pk for this guest count
+                rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
+                                                              room__hotel=self.object).\
+                    values_list('room__id', flat=True).distinct()
+                need_days = (to_date - from_date).days
+                date_gen = daterange(from_date, to_date)
+                searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
+                    min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
+                    order_by('room').values_list('room__pk', flat=True).distinct()
+                rooms = Room.objects.select_related().filter(pk__in=searched_room_list)
+                context['free_room'] = rooms
             except:
                 context['free_room'] = None
             finally:
