@@ -239,13 +239,6 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def get_percent_on_date(self, date):
         return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
 
-    def free_room(self, from_date, to_date, guests):
-        result = []
-        for room in self.room_set.all():
-            if room.check_min_days(from_date, to_date, guests):
-                result.append(room)
-        return result
-
     @property
     def min_current_amount(self):
         rooms = Room.objects.filter(hotel=self)
@@ -431,39 +424,8 @@ class Room(AbstractName):
             aggregate(Min('settlement'))
         return result['settlement__min']
 
-    def amount_on_date_guest_variant(self, date, guests):
-        # Find all settlement variants for room
-        try:
-            s = SettlementVariant.objects.filter(room=self, enabled=True, settlement=guests)[0]
-        except:
-            try:
-                s = SettlementVariant.objects.filter(room=self,
-                                                     enabled=True, settlement__gte=guests).order_by('settlement')[0]
-            except:
-                s = SettlementVariant.objects.filter(room=self,
-                                                     enabled=True, settlement__lte=guests).order_by('-settlement')[0]
-        return s.amount_on_date(date), s.settlement
-
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
-
-    def check_min_days(self, from_date, to_date, guests):
-        if not SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).exists():
-            return False
-        need_days = (to_date - from_date).days
-        date_gen = daterange(from_date, to_date)
-        avail = Availability.objects.select_related().filter(room=self, date__in=date_gen)
-        if avail.count() < need_days:
-            return False
-        for a in avail:
-            try:
-                if a.min_days > need_days:
-                    return False
-                # if a.placecount * places_max < roomcount:
-                #     return False
-            except:
-                return False
-        return True
 
     @permalink
     def get_absolute_url(self):
