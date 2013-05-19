@@ -444,7 +444,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             need_days = (to_date - from_date).days
             date_period = (from_date, to_date-timedelta(days=1))
             searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
-                min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
+                min_days__lte=need_days).filter(placecount__gt=0).annotate(num_days=Sum('room')).\
                 filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
             room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
                 date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
