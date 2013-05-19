@@ -185,8 +185,9 @@ class HotelList(RedirectHttpView, ListView):
                     need_days = (to_date - from_date).days
                     date_period = (from_date, to_date-timedelta(days=1))
                     searched_hotels_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_period,
-                        min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
-                        order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
+                        min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
+                        filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
+                                                                                            flat=True).distinct()
                     search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
                     if amount_max and amount_min:
                         self.search_data['amount'] = [amount_min, amount_max]
@@ -443,8 +444,8 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             need_days = (to_date - from_date).days
             date_period = (from_date, to_date-timedelta(days=1))
             searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
-                min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
-                order_by('room').values_list('room__pk', flat=True).distinct()
+                min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
+                filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
             room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
                 date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
                 filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
