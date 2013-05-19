@@ -449,7 +449,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                     min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                     order_by('room').values_list('room__pk', flat=True).distinct()
                 room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
-                    date__in=date_gen).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
+                    date__in=date_gen).annotate(num_days=Sum('settlement__room')).filter(num_days__gte=need_days).\
                     order_by('settlement__room').values_list('settlement__room__pk', flat=True).distinct()
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
