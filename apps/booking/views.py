@@ -988,6 +988,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
+        # TODO WTF
         if f_date is t_date:
             raise Http404
         if f_date and t_date and guests and ('room' in self.kwargs.keys()):
