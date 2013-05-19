@@ -444,7 +444,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                                                               room__hotel=self.object).\
                     values_list('room__id', flat=True).distinct()
                 need_days = (to_date - from_date).days
-                date_gen = daterange(from_date, to_date)
+                date_gen = daterange(from_date, to_date-timedelta(days=1))
                 searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
                     min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                     order_by('room').values_list('room__pk', flat=True).distinct()
