@@ -427,7 +427,7 @@ class Room(AbstractName):
             return None
 
     def settlement_on_date_for_guests(self, date, guests):
-        result= SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).\
+        result = SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).\
             aggregate(Min('settlement'))
         return result['settlement__min']
 
