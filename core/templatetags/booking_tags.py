@@ -189,8 +189,7 @@ def room_price_date(context, room, on_date):
 
 
 @register.simple_tag(takes_context=True)
-def room_price_average(context, room):
-    request = context['request']
+def room_price_average(context, room, rate):
     search_data = context['search_data']
     f_date = search_data['from_date']
     t_date = search_data['to_date']
@@ -204,12 +203,11 @@ def room_price_average(context, room):
         aggregate(Sum('amount'))
     room_sum = all_sum['amount__sum']
     result = room_sum / delta
-    return amount_request_currency(request, result)
+    return convert_to_client_currency(result, rate)
 
 
 @register.simple_tag(takes_context=True)
 def room_full_amount(context, room, rate):
-    request = context['request']
     search_data = context['search_data']
     f_date = search_data['from_date']
     t_date = search_data['to_date']
@@ -217,9 +215,10 @@ def room_full_amount(context, room, rate):
     from_date = convert_to_date(f_date)
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
-    result = PlacePrice.objects.filter(settlement__room=room,
-                                       date__range=(from_date, to_date-timedelta(days=1))).\
-        aggregate(Sum('amount'))['amount__sum']
+    date_period = (from_date, to_date-timedelta(days=1))
+    s = room.settlement_on_date_for_guests(from_date, guests)
+    result = PlacePrice.objects.filter(settlement__room=room, settlement__settlement=s,
+                                       date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     return convert_to_client_currency(result, rate)
 
 
