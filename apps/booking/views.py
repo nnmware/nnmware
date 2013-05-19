@@ -995,7 +995,6 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 raise Http404
             room = get_object_or_404(Room, id=room_id)
             if room.hotel.payment_method.count() < 1:
-                raise ImportError, []
                 raise Http404
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests > max(s):
