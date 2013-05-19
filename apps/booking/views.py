@@ -448,7 +448,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_gen,
                     min_days__lte=need_days).annotate(num_days=Sum('room')).filter(num_days__gte=need_days).\
                     order_by('room').values_list('room__pk', flat=True).distinct()
-
+                raise EnvironmentError, searched_room_list
                 room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
                     date__in=date_gen).annotate(num_days=Sum('settlement__room')).filter(num_days__gte=need_days).\
                     order_by('settlement__room').values_list('settlement__room__pk', flat=True).distinct()
