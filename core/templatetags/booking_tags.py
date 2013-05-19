@@ -226,7 +226,7 @@ def room_variant(context, room):
     f_date = search_data['from_date']
     guests = search_data['guests']
     from_date = convert_to_date(f_date)
-    return room.amount_on_date_guest_variant(from_date, guests)[1]
+    return room.settlement_on_date_for_guests(from_date, guests)
 
 
 @register.assignment_tag(takes_context=True)

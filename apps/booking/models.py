@@ -6,7 +6,7 @@ from uuid import uuid4
 import random
 from django.db import models
 from django.conf import settings
-from django.db.models import permalink, signals, Avg
+from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
@@ -425,6 +425,11 @@ class Room(AbstractName):
             return Discount.objects.get(room=self, date=date).discount
         except:
             return None
+
+    def settlement_on_date_for_guests(self, date, guests):
+        result= SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).\
+            aggregate(Min('settlement'))
+        return result['settlement__min']
 
     def amount_on_date_guest_variant(self, date, guests):
         # Find all settlement variants for room
