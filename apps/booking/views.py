@@ -28,7 +28,7 @@ from nnmware.core.http import get_session_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
-from nnmware.core.utils import date_range, convert_to_date, daterange
+from nnmware.core.utils import convert_to_date, daterange
 from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
@@ -995,6 +995,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 raise Http404
             room = get_object_or_404(Room, id=room_id)
             if room.hotel.payment_method.count() < 1:
+                raise ImportError, []
                 raise Http404
             s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
             if guests > max(s):
