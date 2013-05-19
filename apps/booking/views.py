@@ -1055,9 +1055,9 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
                     else:
                         use_card = True
                         try:
-                            if len(card_cvv2) <> 3:
+                            if len(card_cvv2) != 3:
                                 raise ValueError
-                            if len(card_valid) <> 5:
+                            if len(card_valid) != 5:
                                 raise ValueError
                             card_cvv2 = int(card_cvv2)
                         except ValueError:
