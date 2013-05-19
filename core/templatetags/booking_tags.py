@@ -222,10 +222,7 @@ def room_full_amount(context, room, rate):
 
 @register.simple_tag(takes_context=True)
 def room_variant(context, room):
-    search_data = context['search_data']
-    f_date = search_data['from_date']
-    guests = search_data['guests']
-    from_date = convert_to_date(f_date)
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     return room.settlement_on_date_for_guests(from_date, guests)
 
 
