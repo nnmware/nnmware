@@ -432,7 +432,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['hotel_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
         if f_date is not None and t_date is not None and guests is not None:
-            try:
+            if 1>0: #try:
                 from_date = convert_to_date(f_date)
                 to_date = convert_to_date(t_date)
                 if from_date > to_date:
@@ -452,13 +452,12 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                 room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
                     date__in=date_gen).annotate(num_days=Sum('settlement__room')).filter(num_days__gte=need_days).\
                     order_by('settlement__room').values_list('settlement__room__pk', flat=True).distinct()
-                raise EnvironmentError, room_with_amount_list
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
                 context['free_room'] = rooms
-            except:
-                context['free_room'] = None
-            finally:
+            # except:
+            #     context['free_room'] = None
+            if 1>0: #finally:
                 search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
                 context['search'] = 1
                 context['search_data'] = search_data
