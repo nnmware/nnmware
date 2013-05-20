@@ -351,24 +351,6 @@ def hotels_city_count(slug):
         return 0
 
 
-@register.simple_tag
-def settlement_price_on_date(settlement, date):
-    try:
-        result = int(PlacePrice.objects.get(settlement=settlement, date=date).amount)
-    except:
-        result = ''
-    return result
-
-
-@register.simple_tag
-def settlement_price_on_date(settlement, date):
-    try:
-        result = int(PlacePrice.objects.get(settlement=settlement, date=date).amount)
-    except:
-        result = ''
-    return result
-
-
 @register.assignment_tag
 def settlement_prices_on_dates(settlement, dates):
     result = PlacePrice.objects.filter(settlement=settlement, date__in=dates).order_by('date')
@@ -390,6 +372,12 @@ def room_availability_on_date(room, date):
         result = Availability.objects.get(room=room, date=date).placecount
     except:
         result = ''
+    return result
+
+
+@register.simple_tag
+def room_availability_on_dates(room, dates):
+    result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
     return result
 
 
