@@ -366,7 +366,7 @@ def settlement_prices_on_dates(settlement, dates):
         #result[k] = v
         result[k.strftime("%Y-%m-%d")] = v
 #    raise ImportError, [result, result1]
-    return sorted(result.items(), key=lambda x: x[0])
+    return sorted(result.items())
 
 
 @register.assignment_tag
