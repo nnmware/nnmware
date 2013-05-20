@@ -360,7 +360,7 @@ def settlement_prices_on_dates(settlement, dates):
     #     result[d.strftime("%d%m%Y")] = '1'
     result = dict((d.strftime("%d%m%Y"), '1') for d in dates)
     for k, v in prices:
-        result[k.strftime("%d.%m.%Y")] = v
+        result[k.strftime("%d%m%Y")] = v
     return result
 
 
