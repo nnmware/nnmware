@@ -375,7 +375,7 @@ def room_availability_on_date(room, date):
     return result
 
 
-@register.simple_tag
+@register.assignment_tag
 def room_availability_on_dates(room, dates):
     result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
     return result
