@@ -366,30 +366,16 @@ def discount_on_date(room, date):
     return result
 
 
-@register.simple_tag
-def room_availability_on_date(room, date):
-    try:
-        result = Availability.objects.get(room=room, date=date).placecount
-    except:
-        result = ''
-    return result
-
-
 @register.assignment_tag
 def room_availability_on_dates(room, dates):
     result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
     return result
 
 
-@register.simple_tag
-def room_min_days_on_date(room, date):
-    try:
-        result = Availability.objects.get(room=room, date=date).min_days
-        if result is None:
-            return 1
-        return result
-    except:
-        return ''
+@register.assignment_tag
+def room_min_days_on_dates(room, dates):
+    result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
+    return result
 
 
 @register.simple_tag
