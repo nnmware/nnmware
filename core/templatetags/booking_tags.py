@@ -359,12 +359,13 @@ def settlement_prices_on_dates(settlement, dates):
     # for d in dates:
     #     result[d.strftime("%d%m%Y")] = '1'
     result = dict((d.strftime("%Y-%m-%d"), '1') for d in dates)
+    raise ImportError, result.keys()
     a = []
     for k, v in prices:
 #        raise ImportError, k
         #result[k] = v
         a.append(k.strftime("%Y-%m-%d"))
-    raise ImportError, a
+#    raise ImportError, a
     return result
 
 
