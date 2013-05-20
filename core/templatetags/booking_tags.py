@@ -357,12 +357,9 @@ def settlement_prices_on_dates(settlement, dates):
     return result
 
 
-@register.simple_tag
-def discount_on_date(room, date):
-    try:
-        result = int(Discount.objects.get(room=room, date=date).discount)
-    except:
-        result = ''
+@register.assignment_tag
+def discount_on_dates(room, dates):
+    result = Discount.objects.filter(room=room, date__in=dates).order_by('date')
     return result
 
 
