@@ -356,8 +356,8 @@ def settlement_prices_on_dates(settlement, dates):
     prices = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values('date', 'amount').\
         order_by('date')
     result = dict((d, '') for d in dates)
-    for d, amount in prices:
-        result[d] = amount
+    for p in prices:
+        result[p['date']] = p['amount']
     return result
 
 
