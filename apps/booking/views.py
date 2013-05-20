@@ -655,7 +655,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
                 context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
             except IndexError:
                 pass
-        if f_date is not None and t_date is not None:
+        if f_date and t_date:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
