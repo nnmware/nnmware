@@ -244,6 +244,7 @@ def client_currency(context):
     else:
         return _('rub')
 
+
 @register.simple_tag(takes_context=True)
 def view_currency(context):
     request = context['request']

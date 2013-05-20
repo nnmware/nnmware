@@ -149,25 +149,30 @@ class HotelList(RedirectHttpView, ListView):
             self.city = City.objects.get(slug=self.kwargs['slug'])
         except:
             self.city = None
-        if f_date and t_date and self.city:
-            try:
-                from_date = convert_to_date(f_date)
-                to_date = convert_to_date(t_date)
-                if from_date > to_date:
-                    self.search_data = {'from_date': t_date, 'to_date': f_date, 'guests': guests}
-                    from_date, to_date = to_date, from_date
-                else:
-                    self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
-                self.search_data['city'] = self.city
-                if stars:
-                    self.search_data['stars'] = stars
-                if options:
-                    self.search_data['options'] = options
-                searched_date = True
-                self.search = 1
-            except:
+        if self.city:
+            if f_date and t_date:
+                try:
+                    from_date = convert_to_date(f_date)
+                    to_date = convert_to_date(t_date)
+                    if from_date > to_date:
+                        self.search_data = {'from_date': t_date, 'to_date': f_date, 'guests': guests}
+                        from_date, to_date = to_date, from_date
+                    else:
+                        self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
+                    self.search_data['city'] = self.city
+                    if stars:
+                        self.search_data['stars'] = stars
+                    if options:
+                        self.search_data['options'] = options
+                    if from_date < datetime.now():
+                        self.result_count = 0
+                        result = []
+                        return result
+                    searched_date = True
+                except:
+                    pass
+            elif notknowndates:
                 pass
-        elif notknowndates and self.city:
             self.search = 1
         self.result_count = None
         if 1>0: #self.request.is_ajax():
