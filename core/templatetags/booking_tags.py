@@ -355,6 +355,7 @@ def hotels_city_count(slug):
 def settlement_prices_on_dates(settlement, dates):
     prices = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values_list('date', 'amount').\
         order_by('date')
+    raise ImportError, prices
     result = dict((d, '1') for d in dates)
     for p in prices:
         result[p[0]] = p[1]
