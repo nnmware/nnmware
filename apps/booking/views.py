@@ -171,9 +171,10 @@ class HotelList(RedirectHttpView, ListView):
                     searched_date = True
                 except:
                     pass
+                finally:
+                    self.search = 1
             elif notknowndates:
-                pass
-            self.search = 1
+                self.search = 1
         self.result_count = None
         if 1>0: #self.request.is_ajax():
             data_key = cache.get(key)
