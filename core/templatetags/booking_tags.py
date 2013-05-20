@@ -353,7 +353,8 @@ def hotels_city_count(slug):
 
 @register.assignment_tag
 def settlement_prices_on_dates(settlement, dates):
-    result = PlacePrice.objects.filter(settlement=settlement, date__in=dates).order_by('date')
+    result = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values('date', 'amount').\
+        order_by('date')
     return result
 
 
