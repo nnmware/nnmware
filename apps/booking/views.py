@@ -164,10 +164,10 @@ class HotelList(RedirectHttpView, ListView):
                         self.search_data['stars'] = stars
                     if options:
                         self.search_data['options'] = options
-                    if from_date < datetime.now():
-                        self.result_count = 0
-                        result = []
-                        return result
+                    # if from_date < datetime.now():
+                    #     self.result_count = 0
+                    #     result = []
+                    #     return result
                     searched_date = True
                 except:
                     pass
