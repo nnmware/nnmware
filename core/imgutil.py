@@ -3,8 +3,7 @@ import sys
 import fnmatch
 import shutil
 import urlparse
-import Image
-import ImageOps
+from PIL import Image, ImageOps
 from django.conf import settings
 from django.db.models.fields.files import ImageField
 from nnmware.core.file import get_path_from_url

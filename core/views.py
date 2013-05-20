@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 import json
-import Image
+from PIL import Image
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.core.urlresolvers import reverse, reverse_lazy

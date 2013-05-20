@@ -17,10 +17,7 @@ from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
 from nnmware.core.abstract import Tree
 from nnmware.core.data import *
 
-try:
-    from PIL import Image
-except ImportError:
-    import Image
+from PIL import Image
 
 register = Library()
 

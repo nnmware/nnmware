@@ -6,7 +6,7 @@ Base model library.
 from StringIO import StringIO
 from datetime import datetime
 import os
-import Image
+from PIL import Image
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.generic import GenericForeignKey

@@ -6,7 +6,7 @@
 #
 
 import os
-import Image
+from PIL import Image
 import settings
 
 GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2013 framework for python/django coders'

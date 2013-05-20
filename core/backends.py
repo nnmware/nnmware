@@ -5,7 +5,7 @@ import os
 from hashlib import md5
 import urllib2
 from urlparse import urlparse
-import Image
+from PIL import Image
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model

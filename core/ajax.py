@@ -4,7 +4,7 @@ from io import FileIO, BufferedWriter
 from hashlib import md5
 import os
 import shutil
-import Image
+from PIL import Image
 import json
 from django.conf import settings
 from django.contrib import messages
