@@ -360,13 +360,13 @@ def settlement_prices_on_dates(settlement, dates):
     #     result[d.strftime("%d%m%Y")] = '1'
     result = dict((d.strftime("%Y-%m-%d"), '1') for d in dates)
 #    a = []
-    result1 = dict()
+#    result1 = dict()
     for k, v in prices:
 #        raise ImportError, k
         #result[k] = v
-        result1[k.strftime("%Y-%m-%d")] = v
-    raise ImportError, [result, result1]
-    return result
+        result[k.strftime("%Y-%m-%d")] = v
+#    raise ImportError, [result, result1]
+    return sorted(result.items(), key=lambda x: x[0])
 
 
 @register.assignment_tag
