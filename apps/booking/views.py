@@ -458,7 +458,8 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                     date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
                     filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
                                                                                              flat=True).distinct()
-                rooms = Room.objects.select_related().filter(pk__in=searched_room_list).filter(pk__in=room_with_amount_list)
+                rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
+                    filter(pk__in=room_with_amount_list)
             context['free_room'] = rooms
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['search'] = 1
