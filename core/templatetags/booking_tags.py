@@ -368,7 +368,7 @@ def settlement_prices_on_dates(settlement, dates):
     r = []
     for k in sorted(result):
         r.append(result[k])
-    raise ImportError, r
+#    raise ImportError, r
     return r
 
 
