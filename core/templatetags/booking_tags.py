@@ -351,33 +351,38 @@ def hotels_city_count(slug):
         return 0
 
 
+# Make string of values for all dates + empty values
+def make_values_by_dates(dates, array):
+    all_dates = dict((d.strftime("%Y-%m-%d"), '') for d in dates)
+    for k, v in array:
+        all_dates[k.strftime("%Y-%m-%d")] = v
+    result = [all_dates[k] for k in sorted(all_dates)]
+    return result
+
+
 @register.assignment_tag
 def settlement_prices_on_dates(settlement, dates):
-    prices = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values_list('date', 'amount').\
+    result = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values_list('date', 'amount').\
         order_by('date')
-    all_dates = dict((d.strftime("%Y-%m-%d"), '') for d in dates)
-    for k, v in prices:
-        all_dates[k.strftime("%Y-%m-%d")] = v
-    r = [all_dates[k] for k in sorted(all_dates)]
-    return r
+    return make_values_by_dates(dates, result)
 
 
 @register.assignment_tag
 def discount_on_dates(room, dates):
-    result = Discount.objects.filter(room=room, date__in=dates).order_by('date')
-    return result
+    result = Discount.objects.filter(room=room, date__in=dates).values_list('date', 'discount').order_by('date')
+    return make_values_by_dates(dates, result)
 
 
 @register.assignment_tag
 def room_availability_on_dates(room, dates):
-    result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
-    return result
+    result = Availability.objects.filter(room=room, date__in=dates).values_list('date', 'placecount').order_by('date')
+    return make_values_by_dates(dates, result)
 
 
 @register.assignment_tag
 def room_min_days_on_dates(room, dates):
-    result = Availability.objects.filter(room=room, date__in=dates).order_by('date')
-    return result
+    result = Availability.objects.filter(room=room, date__in=dates).values_list('date', 'min_days').order_by('date')
+    return make_values_by_dates(dates, result)
 
 
 @register.simple_tag
