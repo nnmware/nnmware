@@ -177,9 +177,6 @@ class HotelList(RedirectHttpView, ListView):
                 self.search = 1
         self.result_count = None
         if 1 > 0: #self.request.is_ajax():
-            dd = cache.set('test',123)
-            raise ImportError, dd
-            aaa = cache.get('test')
             data_key = cache.get(key)
             if not data_key:
                 if self.city:
