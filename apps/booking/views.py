@@ -128,7 +128,7 @@ class HotelList(RedirectHttpView, ListView):
     search = 0
 
     def get_queryset(self):
-        key = sha1('%s:%s' % (get_session_from_request(self.request), self.request.get_full_path())).hexdigest()
+        key = sha1(self.request.get_full_path()).hexdigest()
         result = []
         searched_date = False
         self.search_data = dict()
@@ -178,7 +178,7 @@ class HotelList(RedirectHttpView, ListView):
         self.result_count = None
         if 1>0: #self.request.is_ajax():
             data_key = cache.get(key)
-            if 1>0: #not data_key:
+            if not data_key:
                 if self.city:
                     search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
                 else:
@@ -210,7 +210,7 @@ class HotelList(RedirectHttpView, ListView):
                     self.tab, ui_order = hotel_order(self.tab, order, sort)
                     search_hotel = search_hotel.order_by(ui_order)
                 result = search_hotel.annotate(Count('review'))
-                #cache.set(key, result)
+                cache.set(key, result)
             else:
                 result = data_key
             self.result_count = result.count()
