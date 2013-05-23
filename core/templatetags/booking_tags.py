@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from hashlib import sha1
 from datetime import datetime, timedelta
+from django.core import cache
 from django.db.models import Min, Max, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
@@ -428,7 +430,13 @@ def hotel_range_price(rate):
         convert_to_client_currency(int(result['amount__max']), rate)
 
 
-@register.assignment_tag
-def stars_hotel_count():
-    result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
+@register.assignment_tag(takes_context=True)
+def stars_hotel_count(context):
+    request = context['request']
+    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    data_key = cache.get(key)
+    if data_key:
+        result = data_key.order_by('starcount').annotate(Count('starcount'))
+    else:
+        result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
     return result
