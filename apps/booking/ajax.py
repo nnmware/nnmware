@@ -9,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
+from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
@@ -258,13 +259,15 @@ def tourism_places(request):
 def hotels_in_city(request):
     try:
         c = request.REQUEST['city']
-        url = request.REQUEST['city'] or None
-        # if url is not None:
-        #     key = sha1('%s:%s' % (get_session_from_request(request), url)).hexdigest()
-        #     data_key = cache.get(key)
-        # else:
-        city = City.objects.get(pk=c)
-        searched = Hotel.objects.filter(city=city).order_by('starcount')
+        path = request.REQUEST['path'] or None
+
+        if path:
+            key = sha1('%s' % (urlencode(path),)).hexdigest()
+            data_key = cache.get('list_'+key)
+            searched = Hotel.objects.filter(pk__in=data_key).order_by('starcount')
+        else:
+            city = City.objects.get(pk=c)
+            searched = Hotel.objects.filter(city=city).order_by('starcount')
         # if data_key:
         #     searched = data_key
         results = []
