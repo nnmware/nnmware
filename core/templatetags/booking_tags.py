@@ -429,8 +429,11 @@ def hotel_range_price(context, rate):
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get('list_'+key)
     if data_key:
-        result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__pk__in=data_key).\
-            aggregate(Min('amount'), Max('amount'))
+        try:
+            result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__pk__in=data_key).\
+                aggregate(Min('amount'), Max('amount'))
+        except:
+            result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     else:
         result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     return convert_to_client_currency(int(result['amount__min']), rate), \
