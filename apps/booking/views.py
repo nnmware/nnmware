@@ -131,6 +131,7 @@ class HotelList(RedirectHttpView, ListView):
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
         cache.set('test', '123', 300)
         aa = cache.get('test')
+        raise ImportError, str(aa)
         result = []
         searched_date = False
         self.search_data = dict()
