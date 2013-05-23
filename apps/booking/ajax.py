@@ -267,8 +267,6 @@ def hotels_in_city(request):
         else:
             city = City.objects.get(pk=c)
             searched = Hotel.objects.filter(city=city).order_by('starcount')
-        # if data_key:
-        #     searched = data_key
         results = []
         for hotel in searched:
             answer = {'name': hotel.get_name, 'latitude': hotel.latitude, 'url': hotel.get_absolute_url(),
