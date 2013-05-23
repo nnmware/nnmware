@@ -212,7 +212,6 @@ class HotelList(RedirectHttpView, ListView):
                 result = search_hotel.annotate(Count('review'))
                 cache.set(key, result, 300)
             else:
-                raise ImportError, data_key
                 result = data_key
             self.result_count = result.count()
         else:
