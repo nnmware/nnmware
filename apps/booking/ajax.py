@@ -257,6 +257,8 @@ def tourism_places(request):
 
 
 def hotels_in_city(request):
+    path = request.REQUEST['path'] or None
+    raise ImportError, urlencode(path).replace('&amp;', '&')
     try:
         c = request.REQUEST['city']
         path = request.REQUEST['path'] or None

@@ -128,7 +128,6 @@ class HotelList(RedirectHttpView, ListView):
     search = 0
 
     def get_queryset(self):
-        raise ImportError, self.request.get_full_path()
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
         result = []
         searched_date = False
