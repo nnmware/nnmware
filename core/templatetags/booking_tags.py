@@ -427,10 +427,9 @@ def max_hotel_price(context):
 def hotel_range_price(context, rate):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get(key)
+    data_key = cache.get('list_'+key)
     if data_key:
-        hotels = data_key.values_list('pk', flat=True)
-        result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__pk__in=hotels).aggregate(Min('amount'), Max('amount'))
+        result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__pk__in=data_key).aggregate(Min('amount'), Max('amount'))
     else:
         result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     return convert_to_client_currency(int(result['amount__min']), rate), \
@@ -441,9 +440,9 @@ def hotel_range_price(context, rate):
 def stars_hotel_count(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get(key)
+    data_key = cache.get('list_'+key)
     if data_key:
-        result = data_key.values('starcount').order_by('starcount').annotate(Count('starcount'))
+        result = Hotel.objects.filter(pk__in=data_key).values('starcount').order_by('starcount').annotate(Count('starcount'))
     else:
         result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
     return result

@@ -211,6 +211,8 @@ class HotelList(RedirectHttpView, ListView):
                     search_hotel = search_hotel.order_by(ui_order)
                 result = search_hotel.annotate(Count('review'))
                 cache.set(key, result, 300)
+                hotels_pk_list = result.values_list('pk', flat=True).distinct()
+                cache.set('list_'+key, hotels_pk_list, 300)
             else:
                 result = data_key
             self.result_count = result.count()
