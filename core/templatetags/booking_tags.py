@@ -436,7 +436,7 @@ def stars_hotel_count(context):
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
     if data_key:
-        result = data_key.order_by('starcount').annotate(Count('starcount'))
+        result = data_key.values('starcount').order_by('starcount').annotate(Count('starcount'))
     else:
         result = Hotel.objects.values('starcount').order_by('starcount').annotate(Count('starcount'))
     return result
