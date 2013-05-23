@@ -257,10 +257,10 @@ def tourism_places(request):
 
 
 def hotels_in_city(request):
+    path = request.REQUEST['path'] or None
+    raise ImportError, path
     try:
         c = request.REQUEST['city']
-        path = request.REQUEST['path'] or None
-        raise ImportError, path
         if path:
             key = sha1('%s' % (urlencode(path),)).hexdigest()
             data_key = cache.get('list_'+key)
