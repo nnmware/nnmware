@@ -423,9 +423,15 @@ def max_hotel_price(context):
     return amount_request_currency(request, int(result['amount__max']))
 
 
-@register.assignment_tag
-def hotel_range_price(rate):
-    result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
+@register.assignment_tag(takes_context=True)
+def hotel_range_price(context, rate):
+    request = context['request']
+    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    data_key = cache.get(key)
+    if data_key:
+        result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__in=data_key).aggregate(Min('amount'), Max('amount'))
+    else:
+        result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'), Max('amount'))
     return convert_to_client_currency(int(result['amount__min']), rate), \
         convert_to_client_currency(int(result['amount__max']), rate)
 
