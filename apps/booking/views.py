@@ -129,7 +129,7 @@ class HotelList(RedirectHttpView, ListView):
 
     def get_queryset(self):
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
-        cache.set('test', 123)
+        cache.set('test', '123', 300)
         aa = cache.get('test')
         result = []
         searched_date = False
