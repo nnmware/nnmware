@@ -209,11 +209,10 @@ class HotelList(RedirectHttpView, ListView):
                 if order:
                     self.tab, ui_order = hotel_order(self.tab, order, sort)
                     search_hotel = search_hotel.order_by(ui_order)
-                result = search_hotel
+                result = search_hotel.annotate(Count('review'))
                 cache.set(key, result, 300)
             else:
                 result = data_key
-            result = result.annotate(Count('review'))
             self.result_count = result.count()
         else:
             self.paginate_by = None
