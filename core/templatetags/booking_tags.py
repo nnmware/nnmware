@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from hashlib import sha1
 from datetime import datetime, timedelta
-from django.core import cache
+from django.core.cache import cache
 from django.db.models import Min, Max, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
