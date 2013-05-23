@@ -257,14 +257,11 @@ def tourism_places(request):
 
 
 def hotels_in_city(request):
-    path = request.REQUEST['path'] or None
-    raise ImportError, str(path.replace('&amp;', '&'))
     try:
         c = request.REQUEST['city']
         path = request.REQUEST['path'] or None
-
         if path:
-            key = sha1('%s' % (urlencode(path).replace('&amp;', '&'),)).hexdigest()
+            key = sha1('%s' % (path.replace('&amp;', '&'),)).hexdigest()
             data_key = cache.get('list_'+key)
             searched = Hotel.objects.filter(pk__in=data_key).order_by('starcount')
         else:
