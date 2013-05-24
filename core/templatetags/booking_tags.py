@@ -62,13 +62,26 @@ def five_star_count(city=None):
     return result
 
 
-@register.assignment_tag
-def search_sticky_options():
+@register.assignment_tag(takes_context=True)
+def search_sticky_options(context):
+    request = context['request']
+    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    data_key = cache.get('list_'+key)
+    if data_key:
+        hotels = Hotel.objects.filter(pk__in=data_key)
+        return HotelOption.objects.filter(sticky_in_search=True, hotel__in=hotels).order_by('order_in_list')
     return HotelOption.objects.filter(sticky_in_search=True).order_by('order_in_list')
 
 
-@register.assignment_tag
-def search_options():
+@register.assignment_tag(takes_context=True)
+def search_options(context):
+    request = context['request']
+    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    data_key = cache.get('list_'+key)
+    if data_key:
+        hotels = Hotel.objects.filter(pk__in=data_key)
+        return HotelOption.objects.filter(sticky_in_search=False, in_search=True, hotel__in=hotels).\
+            order_by('order_in_list')
     return HotelOption.objects.filter(sticky_in_search=False, in_search=True).order_by('order_in_list')
 
 
