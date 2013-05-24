@@ -69,7 +69,7 @@ def search_sticky_options(context):
     data_key = cache.get('list_'+key)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        return HotelOption.objects.filter(sticky_in_search=True, hotel__in=hotels).order_by('order_in_list')
+        return HotelOption.objects.filter(sticky_in_search=True, hotel__in=hotels).distinct().order_by('order_in_list')
     return HotelOption.objects.filter(sticky_in_search=True).order_by('order_in_list')
 
 
@@ -80,7 +80,7 @@ def search_options(context):
     data_key = cache.get('list_'+key)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        return HotelOption.objects.filter(sticky_in_search=False, in_search=True, hotel__in=hotels).\
+        return HotelOption.objects.filter(sticky_in_search=False, in_search=True, hotel__in=hotels).distinct().\
             order_by('order_in_list')
     return HotelOption.objects.filter(sticky_in_search=False, in_search=True).order_by('order_in_list')
 
