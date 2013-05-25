@@ -122,11 +122,13 @@ def hotel_order(arr, order, sort):
 
 
 class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
-    http_method_names = ['get', 'post']
     paginate_by = 20
     model = Hotel
     template_name = "hotels/list.html"
     search = 0
+
+    def post(self, request, *args, **kwargs):
+        pass
 
     def get_queryset(self):
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
