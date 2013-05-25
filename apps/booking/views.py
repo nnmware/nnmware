@@ -128,7 +128,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     search = 0
 
     def post(self, request, *args, **kwargs):
-        return self.get(request, *args, **kwargs)
+        return super(HotelList, self).get(request, *args, **kwargs)
 
     def get_queryset(self):
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
