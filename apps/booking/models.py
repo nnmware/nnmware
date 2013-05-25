@@ -222,6 +222,10 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         else:
             return range(0, int(self.starcount))
 
+    def all_room_options(self):
+        return RoomOption.objects.filter(enabled=True, room__hotel=self).select_related().order_by('category',
+            'order_in_list', 'name').distinct()
+
     @permalink
     def get_absolute_url(self):
         return "hotel_detail", (), {'city': self.city.slug, 'slug': self.slug}

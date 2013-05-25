@@ -423,6 +423,11 @@ class HotelPathMixin(object):
         return get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
             slug=self.kwargs['slug'])
 
+    def get_context_data(self, **kwargs):
+        context = super(HotelPathMixin, self).get_context_data(**kwargs)
+        context['hotel'] = self.object
+        return context
+
 
 class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
     model = Hotel
@@ -440,7 +445,6 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
-        context['hotel'] = self.object
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
