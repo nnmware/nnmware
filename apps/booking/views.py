@@ -440,6 +440,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
+        context['hotel'] = self.object
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
@@ -468,10 +469,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             context['search'] = 1
             context['search_data'] = search_data
             context['need_days'] = need_days
-        try:
             context['search_count'] = context['hotels_in_city']
-        except:
-            pass
         return context
 
 
@@ -535,6 +533,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_data'] = search_data
             context['search'] = 1
             context['search_count'] = context['hotels_in_city']
+        try:
+            context['hotel'] = self.object.hotel
+        except:
+            pass
         return context
 
 
