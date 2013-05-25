@@ -9,6 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Avg
+from django.http import HttpResponse
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
@@ -16,7 +17,7 @@ from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Ava
     Review, Booking, PaymentMethod, Discount
 from nnmware.apps.money.models import Currency
 import time
-from nnmware.core.http import get_session_from_request
+from nnmware.core.http import get_session_from_request, LazyEncoder
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date
@@ -327,3 +328,6 @@ def add_category(request):
     except UserNotAllowed:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+
+

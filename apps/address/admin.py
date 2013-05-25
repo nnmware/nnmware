@@ -7,13 +7,14 @@ class CityAdmin(admin.ModelAdmin):
     list_display = ('name','region','country','slug','longitude','latitude')
     search_fields = ('name',)
     fieldsets = (
-        (_("City"), {"fields": [("name","slug"),
+        (_("City"), {"fields": [("name", "slug"),
             ('description',),
-            ('country','region'),
-            ('name_add','order_in_list','enabled'),
+            ('country', 'region'),
+            ('longitude', 'latitude'),
+            ('name_add', 'order_in_list', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en","name_add_en"),("description_en",) ]}),)
+                        "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
 class RegionAdmin(admin.ModelAdmin):
