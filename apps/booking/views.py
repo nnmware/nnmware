@@ -522,6 +522,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['title_line'] = self.object.hotel.get_name
             context['hotels_in_city'] = Hotel.objects.filter(city=self.object.hotel.city).count()
             context['search_url'] = self.object.hotel.get_absolute_url()
+            context['hotel'] = self.object.hotel
         context['tab'] = 'description'
         context['room_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         if f_date and t_date and guests:
@@ -533,10 +534,6 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['search_data'] = search_data
             context['search'] = 1
             context['search_count'] = context['hotels_in_city']
-        try:
-            context['hotel'] = self.object.hotel
-        except:
-            pass
         return context
 
 
