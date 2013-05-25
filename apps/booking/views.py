@@ -206,20 +206,23 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                             amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                             flat=True).distinct()
                         search_hotel = search_hotel.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
-                if options:
-                    for option in options:
-                        search_hotel = search_hotel.filter(option=option)
-                if stars:
-                    search_hotel = search_hotel.filter(starcount__in=stars)
-                if order:
-                    self.tab, ui_order = hotel_order(self.tab, order, sort)
-                    search_hotel = search_hotel.order_by(ui_order)
-                result = search_hotel.annotate(Count('review'))
+                result = search_hotel
                 cache.set(key, result, 300)
                 hotels_pk_list = result.values_list('pk', flat=True).distinct()
                 cache.set('list_'+key, hotels_pk_list, 300)
             else:
-                result = data_key
+#                result = data_key
+                data_key1 = cache.get('list_'+key)
+                search_hotel = Hotel.objects.filter(pk__in=data_key1)
+            if options:
+                for option in options:
+                    search_hotel = search_hotel.filter(option=option)
+            if stars:
+                search_hotel = search_hotel.filter(starcount__in=stars)
+            if order:
+                self.tab, ui_order = hotel_order(self.tab, order, sort)
+                search_hotel = search_hotel.order_by(ui_order)
+            result = search_hotel.annotate(Count('review'))
             self.result_count = result.count()
             self.payload['result_count'] = self.result_count
         else:
