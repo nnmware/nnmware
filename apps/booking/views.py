@@ -143,8 +143,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         t_date = self.request.GET.get('to') or None
         amount_min = self.request.GET.get('amount_min') or None
         amount_max = self.request.GET.get('amount_max') or None
-        options = self.request.GET.getlist('options') or None
-        stars = self.request.GET.getlist('stars') or None
+        options = self.request.REQUEST.getlist('options') or None
+        stars = self.request.REQUEST.getlist('stars') or None
         self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
                     'order_name': 'desc', 'order_starcount': 'desc', 'order_current_amount': 'desc',
                     'order_point': 'desc', 'tab': 'name'}
@@ -183,7 +183,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             if self.request.is_ajax():
                 self.template_name = "hotels/list_ajax.html"
                 path = self.request.REQUEST['path'] or None
-                raise ImportError, [self.request.get_full_path(), path]
                 if path:
                     key = sha1('%s' % (path,)).hexdigest()
                     data_key = cache.get('list_'+key)
