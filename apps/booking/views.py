@@ -183,6 +183,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             if self.request.is_ajax():
                 self.template_name = "hotels/list_ajax.html"
                 path = self.request.REQUEST['path'] or None
+                raise ImportError, [self.request.get_full_path(), path]
                 if path:
                     key = sha1('%s' % (path,)).hexdigest()
                     data_key = cache.get('list_'+key)
