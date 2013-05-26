@@ -141,8 +141,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        amount_min = self.request.GET.get('amount_min') or None
-        amount_max = self.request.GET.get('amount_max') or None
+        amount_min = self.request.REQUEST.get('amount_min') or None
+        amount_max = self.request.REQUEST.get('amount_max') or None
         options = self.request.REQUEST.getlist('options') or None
         stars = self.request.REQUEST.getlist('stars') or None
         self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
