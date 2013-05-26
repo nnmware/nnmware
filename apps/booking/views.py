@@ -205,12 +205,12 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
                                                                                             flat=True).distinct()
                     search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
-                    if amount_max and amount_min:
-                        self.search_data['amount'] = [amount_min, amount_max]
-                        hotels_with_amount = PlacePrice.objects.filter(date=from_date,
-                            amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
-                            flat=True).distinct()
-                        search_hotel = search_hotel.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
+                if amount_max and amount_min:
+                    self.search_data['amount'] = [amount_min, amount_max]
+                    hotels_with_amount = PlacePrice.objects.filter(date=from_date,
+                        amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
+                        flat=True).distinct()
+                    search_hotel = search_hotel.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
                 result = search_hotel
                 cache.set(key, result, 300)
                 hotels_pk_list = result.values_list('pk', flat=True).distinct()
