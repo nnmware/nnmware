@@ -179,6 +179,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             elif notknowndates:
                 self.search = 1
         self.result_count = None
+        data_key = None
         if 1 > 0: #self.request.is_ajax():
             if self.request.is_ajax():
                 self.template_name = "hotels/list_ajax.html"
