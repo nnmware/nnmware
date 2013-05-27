@@ -264,10 +264,20 @@ def hotels_in_city(request):
         if path:
             key = sha1('%s' % (path.replace('&amp;', '&'),)).hexdigest()
             data_key = cache.get('list_'+key)
-            searched = Hotel.objects.filter(pk__in=data_key).order_by('starcount')
+            searched = Hotel.objects.filter(pk__in=data_key)
         else:
             city = City.objects.get(pk=c)
-            searched = Hotel.objects.filter(city=city).order_by('starcount')
+            searched = Hotel.objects.filter(city=city)
+        amount_min = request.REQUEST.get('amount_min') or None
+        amount_max = request.REQUEST.get('amount_max') or None
+        options = request.REQUEST.getlist('options') or None
+        stars = request.REQUEST.getlist('stars') or None
+        if options:
+            for option in options:
+                searched = searched.filter(option=option)
+        if stars:
+            searched = searched.filter(starcount__in=stars)
+        searched = searched.order_by('starcount')
         results = []
         for hotel in searched:
             answer = {'name': hotel.get_name, 'latitude': hotel.latitude, 'url': hotel.get_absolute_url(),
