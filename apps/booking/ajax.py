@@ -339,5 +339,3 @@ def add_category(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-
-

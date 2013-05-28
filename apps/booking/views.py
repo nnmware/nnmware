@@ -112,12 +112,12 @@ def hotel_order(arr, order, sort):
         arr['tab'] = order
         if sort == 'asc':
             ui_order = order
-            arr['css_'+order] = 'asc'
-            arr['order_'+order] = 'desc'
+            arr['css_' + order] = 'asc'
+            arr['order_' + order] = 'desc'
         else:
-            ui_order = '-'+order
-            arr['css_'+order] = 'desc'
-            arr['order_'+order] = 'asc'
+            ui_order = '-' + order
+            arr['css_' + order] = 'desc'
+            arr['order_' + order] = 'asc'
     return arr, ui_order
 
 
