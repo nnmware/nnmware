@@ -867,7 +867,7 @@ class ReportView(CurrentUserSuperuser, ListView):
     def get_queryset(self):
         report_type = self.kwargs['slug'] or None
         self.report_name = _('Error')
-        result = []
+        result = None
         if report_type == 'all':
             result = Hotel.objects.select_related().all()
             self.report_name = _('All hotels in system')
@@ -896,7 +896,6 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.template_name = "sysadm/report_city.html"
         if result and report_type != 'city':
             result = result.order_by('city__name', 'name')
-        self.result_count = len(result)
         self.report_arg = report_type
         return result
 
@@ -906,7 +905,6 @@ class ReportView(CurrentUserSuperuser, ListView):
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
         context['report_name'] = self.report_name
-        context['result_count'] = self.result_count
         context['report_arg'] = self.report_arg
         return context
 
