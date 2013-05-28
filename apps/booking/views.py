@@ -186,9 +186,9 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 path = self.request.REQUEST.get('path') or None
                 if path:
                     key = sha1('%s' % (path,)).hexdigest()
-                    data_key = cache.get('list_'+key)
+                    data_key = cache.get('list_' + key)
             else:
-                data_key = cache.get(key)
+                data_key = cache.get('list_' + key)
             if not data_key:
                 if self.city:
                     search_hotel = Hotel.objects.select_related().filter(city=self.city)  # .exclude(payment_method=None)
@@ -205,11 +205,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                         filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
                                                                                             flat=True).distinct()
-                    search_hotel = search_hotel.filter(Q(pk__in=searched_hotels_list) | Q(work_on_request=True))
+                    search_hotel = search_hotel.filter(pk__in=searched_hotels_list)
                 result = search_hotel
                 cache.set(key, result, 300)
                 hotels_pk_list = result.values_list('pk', flat=True).distinct()
-                cache.set('list_'+key, hotels_pk_list, 300)
+                cache.set('list_' + key, hotels_pk_list, 300)
             else:
 #                result = data_key
 #                data_key1 = cache.get('list_'+key)
@@ -323,7 +323,6 @@ class HotelAjaxList(AjaxViewMixin, RedirectHttpView, ListView):
                 else:
                     search_hotel = Hotel.objects.select_related().all()
                 if searched_date:
-                    result = []
                     # Find all rooms pk for this guest count
                     rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
                         values_list('room__id', flat=True).distinct()
