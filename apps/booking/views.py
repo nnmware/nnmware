@@ -285,7 +285,7 @@ class HotelPathMixin(object):
         return context
 
 
-class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
+class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView):
     model = Hotel
     template_name = "hotels/detail.html"
 
@@ -305,6 +305,8 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['hotel_options'] = self.object.option.select_related().order_by('category', 'order_in_list', 'name')
         context['search_url'] = self.object.get_absolute_url()
+        if self.request.is_ajax():
+            self.template_name = "hotels/rooms_ajax.html"
         if f_date and t_date and guests:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
@@ -339,6 +341,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
             for option in options:
                 rooms = rooms.filter(option=option)
         context['rooms'] = rooms
+        self.payload['result_count'] = rooms.count()
         return context
 
 
