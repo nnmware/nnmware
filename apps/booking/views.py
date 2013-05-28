@@ -293,6 +293,7 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
+        options = self.request.REQUEST.getlist('options') or None
         # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['tab'] = 'description'
@@ -324,14 +325,17 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                                                                                              flat=True).distinct()
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
-            context['rooms'] = rooms
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['search'] = 1
             context['search_data'] = search_data
             context['need_days'] = need_days
             context['search_count'] = context['hotels_in_city']
         else:
-            context['rooms'] = self.object.room_set.all()
+            rooms = self.object.room_set.all()
+        if options:
+            for option in options:
+                rooms = rooms.filter(option=option)
+        context['rooms'] = rooms
         return context
 
 
