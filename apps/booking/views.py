@@ -887,8 +887,8 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.select_related().filter(work_on_request=True)
             self.report_name = _('Hotels, works on request')
         elif report_type == 'nullpercent':
-            result = Hotel.objects.annotate(Max('agentpercent__date')).filter(agentpercent__percent=0,
-                agentpercent__date__max=F('agentpercent__date'))
+            result = Hotel.objects.filter(agentpercent__date__lte=datetime.now()).annotate(Max('agentpercent__date')).\
+                filter(agentpercent__percent=0, agentpercent__date__max=F('agentpercent__date'))
             self.report_name = _('Hotels, with current null percent')
         elif report_type == 'city':
             result = City.objects.order_by('name')
