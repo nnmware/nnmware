@@ -324,12 +324,14 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
                                                                                              flat=True).distinct()
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
-            context['free_room'] = rooms
+            context['rooms'] = rooms
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['search'] = 1
             context['search_data'] = search_data
             context['need_days'] = need_days
             context['search_count'] = context['hotels_in_city']
+        else:
+            context['rooms'] = self.object.room_set.all()
         return context
 
 
