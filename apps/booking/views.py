@@ -289,6 +289,9 @@ class HotelDetail(HotelPathMixin, AttachedImagesMixin, DetailView):
     model = Hotel
     template_name = "hotels/detail.html"
 
+    def post(self, request, *args, **kwargs):
+        return super(HotelDetail, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
