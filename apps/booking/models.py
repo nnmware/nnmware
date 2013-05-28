@@ -245,28 +245,15 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     @property
     def min_current_amount(self):
-        rooms = Room.objects.filter(hotel=self)
-        result = None
-        for r in rooms:
-            min_price = r.min_current_amount
-            if not result:
-                result = min_price
-            else:
-                if result > min_price > 0:
-                    result = min_price
-        return result
+        result = PlacePrice.objects.filter(settlement__room__hotel=self, date=datetime.now()).aggregate(Min('amount'))
+        return result['amount__min']
 
     def amount_on_date(self, date):
-        rooms = Room.objects.filter(hotel=self)
-        result = None
-        for r in rooms:
-            min_price = r.amount_on_date(date)
-            if not result:
-                result = min_price
-            else:
-                if result > min_price:
-                    result = min_price
-        return result
+        result = PlacePrice.objects.filter(settlement__room__hotel=self, date=date).aggregate(Min('amount'))
+        amount = result['amount__min']
+        if amount:
+            return amount
+        return 0
 
     def save(self, *args, **kwargs):
         if not self.slug:
