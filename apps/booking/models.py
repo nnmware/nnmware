@@ -245,11 +245,11 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     @property
     def min_current_amount(self):
-        result = PlacePrice.objects.filter(settlement__room__hotel=self, date=datetime.now()).aggregate(Min('amount'))
-        return result['amount__min']
+        return self.amount_on_date(datetime.now())
 
     def amount_on_date(self, date):
-        result = PlacePrice.objects.filter(settlement__room__hotel=self, date=date).aggregate(Min('amount'))
+        result = PlacePrice.objects.filter(settlement__room__hotel=self, settlement__enabled=True, date=date).\
+            aggregate(Min('amount'))
         amount = result['amount__min']
         if amount:
             return amount
@@ -370,36 +370,20 @@ class Room(AbstractName):
 
     @property
     def min_current_amount(self):
-        settlements = SettlementVariant.objects.filter(room=self, enabled=True)
-        result = None
-        for s in settlements:
-            s_min_price = s.current_amount()
-            if not result:
-                result = s_min_price
-            else:
-                if result > s_min_price:
-                    result = s_min_price
-        return result
+        return self.amount_on_date(datetime.now())
 
     def amount_on_date(self, date, guests=None):
-        if guests:
-            settlements = SettlementVariant.objects.filter(room=self, enabled=True, settlement=guests)
-        else:
-            settlements = SettlementVariant.objects.filter(room=self, enabled=True)
-        result = None
-        for s in settlements:
-            s_min_price = s.amount_on_date(date)
-            if not result:
-                result = s_min_price
-            else:
-                if result > s_min_price:
-                    result = s_min_price
-        return result
+        result = PlacePrice.objects.filter(settlement__room=self, settlement__enabled=True, date=date).\
+            aggregate(Min('amount'))
+        amount = result['amount__min']
+        if amount:
+            return amount
+        return 0
 
     def amount_date_guests(self, date, guests):
         try:
-            s = SettlementVariant.objects.select_related().filter(room=self,
-                                                 enabled=True, settlement__gte=guests).order_by('settlement')[0]
+            s = SettlementVariant.objects.select_related().filter(room=self, enabled=True, settlement__gte=guests).\
+                order_by('settlement')[0]
             return s.amount_on_date(date)
         except:
             return None
