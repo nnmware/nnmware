@@ -894,7 +894,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = City.objects.order_by('name')
             self.report_name = _('Total cities')
             self.template_name = "sysadm/report_city.html"
-        if result and report_type != 'city':
+        if report_type != 'city' and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
         return result
