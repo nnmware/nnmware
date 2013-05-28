@@ -263,7 +263,7 @@ def hotels_in_city(request):
         path = request.REQUEST['path'] or None
         if path:
             key = sha1('%s' % (path,)).hexdigest()
-            data_key = cache.get('list_'+key)
+            data_key = cache.get(key)
             searched = Hotel.objects.filter(pk__in=data_key)
         else:
             city = City.objects.get(pk=c)

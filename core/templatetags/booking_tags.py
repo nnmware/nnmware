@@ -66,7 +66,7 @@ def five_star_count(city=None):
 def search_sticky_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get('list_'+key)
+    data_key = cache.get(key)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
         return HotelOption.objects.filter(sticky_in_search=True, hotel__in=hotels).distinct().order_by('order_in_list')
@@ -77,7 +77,7 @@ def search_sticky_options(context):
 def search_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get('list_'+key)
+    data_key = cache.get(key)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
         return HotelOption.objects.filter(sticky_in_search=False, in_search=True, hotel__in=hotels).distinct().\
@@ -440,7 +440,7 @@ def max_hotel_price(context):
 def hotel_range_price(context, rate):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get('list_'+key)
+    data_key = cache.get(key)
     if data_key:
         result = PlacePrice.objects.filter(amount__gt=0, settlement__room__hotel__pk__in=data_key).\
             aggregate(Min('amount'), Max('amount'))
@@ -458,7 +458,7 @@ def hotel_range_price(context, rate):
 def stars_hotel_count(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get('list_'+key)
+    data_key = cache.get(key)
     if data_key:
         result = Hotel.objects.filter(pk__in=data_key).values('starcount').order_by('starcount').\
             annotate(Count('starcount'))
