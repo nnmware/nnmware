@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count, Sum, Q
+from django.db.models import Count, Sum, Q, Max, F
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -886,6 +886,10 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'onrequest':
             result = Hotel.objects.select_related().filter(work_on_request=True)
             self.report_name = _('Hotels, works on request')
+        elif report_type == 'nullpercent':
+            result = Hotel.objects.annotate(Max('agentpercent__date')).filter(agentpercent__percent=0,
+                agentpercent__date__max=F('agentpercent__date'))
+            self.report_name = _('Hotels, with current null percent')
         elif report_type == 'city':
             result = City.objects.order_by('name')
             self.report_name = _('Total cities')
