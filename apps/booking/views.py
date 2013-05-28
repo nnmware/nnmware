@@ -883,6 +883,9 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'setadmins':
             result = Hotel.objects.select_related().exclude(admins=None)
             self.report_name = _('Hotels with admins')
+        elif report_type == 'onrequest':
+            result = Hotel.objects.select_related().filter(work_on_request=True)
+            self.report_name = _('Hotels, works on request')
         elif report_type == 'city':
             result = City.objects.order_by('name')
             self.report_name = _('Total cities')
