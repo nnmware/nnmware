@@ -233,7 +233,10 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
                                 'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
         result = search_hotel.annotate(Count('review'))
-        self.result_count = result.count()
+        if result:
+            self.result_count = result.count()
+        else:
+            self.result_count = 0
         self.payload['result_count'] = self.result_count
         return result
 
