@@ -230,8 +230,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.tab, ui_order = hotel_order(self.tab, order, sort)
             search_hotel = search_hotel.order_by(ui_order)
         if not f_date and not t_date:
-            self.search_data = {'from_date': convert_to_date(datetime.now() + timedelta(days=1)),
-                                'to_date': convert_to_date(datetime.now() + timedelta(days=2)), 'guests': 1}
+            self.search_data = {'from_date': convert_to_date(datetime.today() + timedelta(days=1)),
+                                'to_date': convert_to_date(datetime.today() + timedelta(days=2)), 'guests': 1}
         result = search_hotel.annotate(Count('review'))
         self.result_count = result.count()
         self.payload['result_count'] = self.result_count
