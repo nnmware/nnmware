@@ -339,7 +339,10 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             for option in options:
                 rooms = rooms.filter(option=option)
         context['rooms'] = rooms
-        self.payload['result_count'] = rooms.count()
+        if rooms:
+            self.payload['result_count'] = rooms.count()
+        else:
+            self.payload['result_count'] = 0
         return context
 
 
