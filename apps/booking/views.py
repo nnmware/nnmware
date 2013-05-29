@@ -245,11 +245,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         context['path'] = self.request.get_full_path()
         if self.search:
             context['search'] = self.search
-            context['search_data'] = self.search_data
         else:
             context['country'] = 1
         if self.city:
             context['city'] = self.city
+        context['search_data'] = self.search_data
         context['hotels_in_city'] = self.result_count
         return context
 
@@ -336,7 +336,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             context['search'] = 1
             context['need_days'] = need_days
         else:
-            self.search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
+            search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
                                 'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
             rooms = self.object.room_set.all()
         if options:
