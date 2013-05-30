@@ -409,8 +409,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search'] = 1
         else:
-            search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
+            search_data = default_search()
         context['search_data'] = search_data
         context['search'] = 1
         context['panel_for'] = 'room'
