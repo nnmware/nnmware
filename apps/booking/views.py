@@ -328,7 +328,6 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
-            context['search'] = 1
             context['need_days'] = need_days
         else:
             search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
@@ -343,6 +342,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             self.payload['result_count'] = rooms.count()
         else:
             self.payload['result_count'] = 0
+        context['search'] = 1
         context['search_data'] = search_data
         context['panel_for'] = 'hotel'
         return context
