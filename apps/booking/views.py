@@ -171,7 +171,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         self.search_data['stars'] = stars
                     if options:
                         self.search_data['options'] = options
-                    if from_date < datetime.now():
+                    if (from_date - datetime.now()).days < 0:
                         self.result_count = 0
                         result = []
                         return result
