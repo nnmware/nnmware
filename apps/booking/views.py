@@ -174,10 +174,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     searched_date = True
                 except:
                     pass
-                finally:
-                    self.search = 1
-            elif notknowndates:
-                self.search = 1
+            self.search = 1
         self.result_count = None
         data_key = None
         if self.request.is_ajax():
@@ -248,9 +245,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         context['path'] = self.request.get_full_path()
         if self.search:
             context['search'] = self.search
-        else:
-            context['country'] = 1
-        if self.city:
             context['city'] = self.city
         context['search_data'] = self.search_data
         context['hotels_in_city'] = self.result_count
