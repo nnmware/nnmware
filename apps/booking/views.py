@@ -121,6 +121,11 @@ def hotel_order(arr, order, sort):
     return arr, ui_order
 
 
+def default_search():
+    return {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
+    'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1, 'no_dates': 1}
+
+
 class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
     paginate_by = 20
     model = Hotel
@@ -223,9 +228,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.tab, ui_order = hotel_order(self.tab, order, sort)
             search_hotel = search_hotel.order_by(ui_order)
         if not f_date and not t_date:
-            self.search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1,
-                                'no_dates': 1}
+            self.search_data = default_search()
         result = search_hotel.annotate(Count('review'))
         if result:
             self.result_count = result.count()
@@ -330,9 +333,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['need_days'] = need_days
         else:
-            search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1,
-                                'no_dates': 1}
+            search_data = default_search()
             rooms = self.object.room_set.all()
         if options:
             for option in options:
