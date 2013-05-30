@@ -171,7 +171,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         self.search_data['stars'] = stars
                     if options:
                         self.search_data['options'] = options
-                    if (from_date - datetime.now()).days < 0:
+                    if (from_date - datetime.now()).days < -1:
                         self.result_count = 0
                         result = []
                         return result
@@ -314,7 +314,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
             need_days = (to_date - from_date).days
-            if (from_date - datetime.now()).days < 0:
+            if (from_date - datetime.now()).days < -1:
                 rooms = []
             else:
                 # Find all rooms pk for this guest count
