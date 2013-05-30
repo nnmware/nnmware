@@ -137,7 +137,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         self.search_data = dict()
         order = self.request.GET.get('order') or None
         sort = self.request.GET.get('sort') or None
-        notknowndates = self.request.GET.get('notknowndates') or None
         guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
@@ -225,7 +224,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             search_hotel = search_hotel.order_by(ui_order)
         if not f_date and not t_date:
             self.search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
+                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1,
+                                'no_dates': 1}
         result = search_hotel.annotate(Count('review'))
         if result:
             self.result_count = result.count()
