@@ -245,6 +245,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             context['city'] = self.city
         context['search_data'] = self.search_data
         context['hotels_in_city'] = self.result_count
+        context['panel_for'] = 'hotels'
         return context
 
 
@@ -342,6 +343,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
         else:
             self.payload['result_count'] = 0
         context['search_data'] = search_data
+        context['panel_for'] = 'hotel'
         return context
 
 
@@ -408,6 +410,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
                 'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
         context['search_data'] = search_data
+        context['panel_for'] = 'room'
         return context
 
 
