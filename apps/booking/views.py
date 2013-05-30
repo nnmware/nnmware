@@ -332,7 +332,8 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             context['need_days'] = need_days
         else:
             search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
+                                'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1,
+                                'no_dates': 1}
             rooms = self.object.room_set.all()
         if options:
             for option in options:
