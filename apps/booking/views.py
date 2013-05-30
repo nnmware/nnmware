@@ -406,8 +406,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 f_date, t_date = t_date, f_date
+            need_days = (to_date - from_date).days
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search'] = 1
+            context['need_days'] = 1
         else:
             search_data = default_search()
         context['search_data'] = search_data
