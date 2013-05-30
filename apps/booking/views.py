@@ -412,6 +412,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             search_data = {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
                 'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1}
         context['search_data'] = search_data
+        context['search'] = 1
         context['panel_for'] = 'room'
         return context
 
