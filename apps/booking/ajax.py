@@ -8,6 +8,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.db.models.aggregates import Avg
 from django.http import HttpResponse
 from django.utils.http import urlencode
@@ -268,10 +269,22 @@ def hotels_in_city(request):
         else:
             city = City.objects.get(pk=c)
             searched = Hotel.objects.filter(city=city)
+        f_date = request.REQUEST.get('start_date') or None
         amount_min = request.REQUEST.get('amount_min') or None
         amount_max = request.REQUEST.get('amount_max') or None
         options = request.REQUEST.getlist('options') or None
         stars = request.REQUEST.getlist('stars') or None
+        if amount_max and amount_min:
+            if f_date:
+                from_date = convert_to_date(f_date)
+                hotels_with_amount = PlacePrice.objects.filter(date=from_date,
+                    amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
+                    flat=True).distinct()
+            else:
+                hotels_with_amount = PlacePrice.objects.filter(date=datetime.today(),
+                    amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
+                    flat=True).distinct()
+            searched = searched.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
         if options:
             for option in options:
                 searched = searched.filter(option=option)
