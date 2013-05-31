@@ -298,7 +298,6 @@ def filter_hotels_on_map(request, hotels):
     return AjaxLazyAnswer(payload)
 
 
-
 def hotels_in_city(request):
     try:
         c = request.REQUEST['city']
