@@ -258,17 +258,9 @@ def tourism_places(request):
     return AjaxLazyAnswer(payload)
 
 
-def hotels_in_city(request):
+def filter_hotels_on_map(request, hotels):
     try:
-        c = request.REQUEST['city']
-        path = request.REQUEST['path'] or None
-        if path:
-            key = sha1('%s' % (path,)).hexdigest()
-            data_key = cache.get(key)
-            searched = Hotel.objects.filter(pk__in=data_key)
-        else:
-            city = City.objects.get(pk=c)
-            searched = Hotel.objects.filter(city=city)
+        searched = hotels
         f_date = request.REQUEST.get('start_date') or None
         amount_min = request.REQUEST.get('amount_min') or None
         amount_max = request.REQUEST.get('amount_max') or None
@@ -306,17 +298,28 @@ def hotels_in_city(request):
     return AjaxLazyAnswer(payload)
 
 
+
+def hotels_in_city(request):
+    try:
+        c = request.REQUEST['city']
+        path = request.REQUEST['path'] or None
+        if path:
+            key = sha1('%s' % (path,)).hexdigest()
+            data_key = cache.get(key)
+            searched = Hotel.objects.filter(pk__in=data_key)
+        else:
+            city = City.objects.get(pk=c)
+            searched = Hotel.objects.filter(city=city)
+        return filter_hotels_on_map(request, searched)
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
 def hotels_in_country(request):
     try:
-        results = []
-        for hotel in Hotel.objects.all().order_by('starcount'):
-            answer = {'name': hotel.get_name, 'latitude': hotel.latitude, 'url': hotel.get_absolute_url(),
-                      'address': hotel.address, 'id': hotel.pk, 'starcount': hotel.starcount,
-                      'img': make_thumbnail(hotel.main_image, width=113, height=75, aspect=1),
-                      'longitude': hotel.longitude, 'starcount_name': hotel.get_starcount_display(),
-                      'amount': str(int(hotel.current_amount))}
-            results.append(answer)
-        payload = {'success': True, 'hotels': results}
+        searched = Hotel.objects.all()
+        return filter_hotels_on_map(request, searched)
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
