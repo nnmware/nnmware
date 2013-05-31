@@ -362,6 +362,7 @@ class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
         context['title_line'] = self.object.get_name
         context['tab'] = 'location'
         context['search_data'] = default_search()
+        context['search'] = 1
         return context
 
 
@@ -379,6 +380,7 @@ class HotelReviews(HotelPathMixin, SingleObjectMixin, ListView):
         context['tab'] = 'reviews'
         context['title_line'] = self.object.get_name
         context['search_data'] = default_search()
+        context['search'] = 1
         return context
 
     def get_queryset(self):
