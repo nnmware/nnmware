@@ -1018,7 +1018,8 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             booking_new_client_mail(self.object, self.request.user.username)
         else:
             booking_new_client_mail(self.object)
-        booking_new_hotel_mail(self.object)
+        # TODO temporary disable booking to hotel
+        #booking_new_hotel_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
 
