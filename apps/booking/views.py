@@ -544,6 +544,8 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             except IndexError:
                 pass
         if f_date and t_date:
+            context['from'] = f_date
+            context['to'] = t_date
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
