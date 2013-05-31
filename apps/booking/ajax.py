@@ -276,7 +276,7 @@ def filter_hotels_on_map(request, hotels):
                 hotels_with_amount = PlacePrice.objects.filter(date=datetime.today(),
                     amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                     flat=True).distinct()
-            searched = searched.filter(Q(pk__in=hotels_with_amount) | Q(work_on_request=True))
+            searched = searched.filter(pk__in=hotels_with_amount, work_on_request=False)
         if options:
             for option in options:
                 searched = searched.filter(option=option)
