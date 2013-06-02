@@ -920,22 +920,15 @@ class ClientBooking(RedirectHttpsView, DetailView):
                                                       placecount__gt=0).count()
             if avail_count != (to_date - from_date).days:
                 raise Http404
-            settlement = room.settlement_on_date_for_guests(from_date, guests)
-            # settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
-            #                                               enabled=True).order_by('settlement')[0]
-            #settlement = get_object_or_404(SettlementVariant,room=room,settlement=guests,enabled=True)
+            settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+                                                          enabled=True).order_by('settlement')[0]
             valid_price_count = PlacePrice.objects.filter(settlement=settlement,
                                                           date__range=(from_date, to_date - timedelta(days=1)),
                                                           amount__gt=0).count()
             if valid_price_count != (to_date - from_date).days:
                 raise Http404
-            # date_period = (from_date, to_date - timedelta(days=1))
-            # place_sum = PlacePrice.objects.filter(settlement__room=room, settlement__settlement=s,
-            #                            date__range=date_period).aggregate(Sum('amount'))['amount__sum']
-            # user_place_sum = convert_to_client_currency(place_sum, user_rate_from_request(request))
             context = super(ClientBooking, self).get_context_data(**kwargs)
             context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
-#            context['full_sum'] = user_place_sum
             context['tab'] = 'rates'
             context['hotel'] = self.object
             context['title_line'] = _('booking')
