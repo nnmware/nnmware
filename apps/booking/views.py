@@ -197,7 +197,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
                     values_list('room__id', flat=True).distinct()
                 need_days = (to_date - from_date).days
-                date_period = (from_date, to_date-timedelta(days=1))
+                date_period = (from_date, to_date - timedelta(days=1))
                 searched_hotels_list = Availability.objects.filter(room__pk__in=rooms_list, date__in=date_period,
                     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                     filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
@@ -636,7 +636,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
             t_date = datetime.strftime(to_date, "%d.%m.%Y")
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
         self.search_dates = {'from_date': f_date, 'to_date': t_date}
-        return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
+        return Booking.objects.filter(hotel=self.object, date__in=(from_date, to_date))
 
 
 class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
