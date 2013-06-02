@@ -2,7 +2,6 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
-from django.contrib.auth import get_user_model
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
@@ -35,7 +34,7 @@ class HotelAdmin(admin.ModelAdmin):
                                  ('room_count', 'starcount'), ('best_offer', 'in_top10', 'work_on_request'),
                                  ('longitude', 'latitude'), 'schema_transit'
         ]}),
-        (_("Contacts"), {"fields": [('phone', 'fax'), ('website', 'register_date'), ( 'contact_email', 'contact_name'),
+        (_("Contacts"), {"fields": [('phone', 'fax'), ('website', 'register_date'), ('contact_email', 'contact_name'),
         ]}),
         (_("Booking"), {"classes": ("grp-collapse grp-closed",), "fields": [('payment_method',), ('booking_terms',),
                                                                             ('condition_cancellation',),
@@ -59,7 +58,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Hotel Option"), {"fields": [("name",),
                                         ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'order_in_list' ), ( 'enabled', 'in_search', 'sticky_in_search'), ]}),
+        (_("Addons"), {"fields": [('category', 'order_in_list'), ( 'enabled', 'in_search', 'sticky_in_search'), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
@@ -129,7 +128,8 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
 
 
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'from_date', 'to_date', 'settlement', 'amount', 'currency', 'status', 'date', 'uuid')
+    list_display = ('user', 'from_date', 'to_date', 'settlement', 'amount', 'currency', 'status', 'date', 'uuid',
+        'enabled')
     search_fields = ('from_date',)
     readonly_fields = ('uuid', 'ip', 'user_agent', 'currency')
     fieldsets = (
@@ -138,7 +138,7 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('last_name', 'first_name', 'middle_name'),
                                          ('phone', 'email'),
                                          ('amount', 'currency', 'date'),
-                                         ('uuid'),
+                                         ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
         (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
                                                                                 ('card_holder', 'card_cvv2')]}),
