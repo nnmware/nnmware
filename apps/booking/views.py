@@ -635,7 +635,6 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
             f_date = datetime.strftime(from_date, "%d.%m.%Y")
             t_date = datetime.strftime(to_date, "%d.%m.%Y")
         self.search_dates = {'from_date': f_date, 'to_date': t_date}
-        raise ImportError, [from_date, to_date]
         return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
 
 
