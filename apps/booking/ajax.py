@@ -7,7 +7,7 @@ import json
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
 from django.db.models.aggregates import Avg
 from django.http import HttpResponse, Http404
@@ -340,6 +340,12 @@ def booking_sysadm(request, pk, action):
         if not request.user.is_superuser:
             raise UserNotAllowed
         booking = Booking.objects.get(id=pk)
+        if action == 'delete':
+            url = reverse_lazy('bookings_list')
+        elif action == 'enable':
+            url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
+        else:
+            raise UserNotAllowed
         payload = {'success': True}
     except UserNotAllowed:
         payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
