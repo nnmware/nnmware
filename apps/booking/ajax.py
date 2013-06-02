@@ -333,7 +333,7 @@ def add_category(request):
     return AjaxLazyAnswer(payload)
 
 
-def booking_sysadm(request, pk):
+def booking_sysadm(request, pk, action):
     if not request.is_ajax():
         raise Http404
     try:
