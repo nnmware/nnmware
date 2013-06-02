@@ -11,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount
+from nnmware.apps.booking.utils import booking_delete_client_mail
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
@@ -343,6 +344,7 @@ def booking_sysadm(request, pk, action):
                 avail.placecount += 1
                 avail.save()
                 from_date += timedelta(days=1)
+            booking_delete_client_mail(booking)
             booking.delete()
             url = reverse_lazy('bookings_list')
         elif action == 'enable':

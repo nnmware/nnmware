@@ -23,6 +23,16 @@ def booking_new_client_mail(booking, username=''):
         send_template_mail(subject, body, mail_dict, recipients)
 
 
+def booking_delete_client_mail(booking, username=''):
+    if booking.email:
+        recipients = [booking.email]
+        mail_dict = {'booking': booking,
+                     'site_name': settings.SITENAME, 'username': username}
+        subject = 'booking/on_delete_to_client_subject.txt'
+        body = 'booking/on_delete_to_client.txt'
+        send_template_mail(subject, body, mail_dict, recipients)
+
+
 def booking_new_hotel_mail(booking):
     recipients = settings.BOOKING_MANAGERS
     hotel_recipients = []
@@ -39,6 +49,15 @@ def booking_new_hotel_mail(booking):
     body = 'booking/on_create_to_hotel.txt'
     send_template_mail(subject, body, mail_dict, recipients)
     send_template_mail(subject, body, mail_dict, hotel_recipients)
+
+
+def booking_new_sysadm_mail(booking):
+    recipients = settings.BOOKING_MANAGERS
+    mail_dict = {'booking': booking,
+                 'site_name': settings.SITENAME}
+    subject = 'booking/on_create_to_sysadm_subject.txt'
+    body = 'booking/on_create_to_sysadm.txt'
+    send_template_mail(subject, body, mail_dict, recipients)
 
 
 def request_add_hotel_mail(req_add):

@@ -20,7 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
     STATUS_ACCEPTED, HotelOption
 from nnmware.apps.booking.forms import *
-from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
+from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
@@ -999,8 +999,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
             booking_new_client_mail(self.object, self.request.user.username)
         else:
             booking_new_client_mail(self.object)
-        # TODO temporary disable booking to hotel
-        #booking_new_hotel_mail(self.object)
+        booking_new_sysadm_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
 
