@@ -339,10 +339,20 @@ def booking_sysadm(request, pk, action):
     try:
         if not request.user.is_superuser:
             raise UserNotAllowed
-        booking = Booking.objects.get(id=pk)
+        booking = Booking.objects.select_related().get(id=pk)
         if action == 'delete':
+            from_date = booking.from_date
+            to_date = booking.to_date
+            settlement = booking.settlement
+            while from_date < to_date:
+                avail = Availability.objects.get(room=settlement.room, date=from_date)
+                avail.placecount += 1
+                avail.save()
+            booking.delete()
             url = reverse_lazy('bookings_list')
         elif action == 'enable':
+            booking.enabled = True
+            booking.save()
             url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
         else:
             raise UserNotAllowed
