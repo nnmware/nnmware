@@ -655,24 +655,19 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
         self.object = self.get_object()
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        if f_date is not None and t_date is not None:
+        bills = Bill.objects.for_object(self.object)
+        if f_date and t_date:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
+                f_date, t_date = t_date, f_date
             if (to_date - from_date).days > 365:
                 to_date = from_date + timedelta(days=365)
-        else:
-            from_date = datetime.now()
-            to_date = from_date + timedelta(days=14)
-            f_date = datetime.strftime(from_date, "%d.%m.%Y")
-            t_date = datetime.strftime(to_date, "%d.%m.%Y")
-        if from_date < to_date:
+                t_date = datetime.strftime(to_date, "%d.%m.%Y")
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
-        else:
-            from_date, to_date = to_date, from_date
-            self.search_dates = {'from_date': t_date, 'to_date': f_date}
-        return Bill.objects.for_object(self.object)
+            bills = bills.filter(date__range=(from_date, to_date))
+        return bills
 
 
 class RequestAddHotelView(CreateView):
