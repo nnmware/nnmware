@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
 
 from datetime import datetime, timedelta
-from decimal import Decimal
 from exceptions import ValueError, Exception
 import json
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.db.models import Q
-from django.db.models.aggregates import Avg
-from django.http import HttpResponse, Http404
-from django.utils.http import urlencode
+from django.db import transaction
+from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount
 from nnmware.apps.money.models import Currency
 import time
-from nnmware.core.http import get_session_from_request, LazyEncoder
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date
@@ -332,7 +326,7 @@ def add_category(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-
+@transaction.atomic
 def booking_sysadm(request, pk, action):
     if not request.is_ajax():
         raise Http404
