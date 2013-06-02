@@ -346,7 +346,7 @@ def booking_sysadm(request, pk, action):
             url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
         else:
             raise UserNotAllowed
-        payload = {'success': True}
+        payload = {'success': True, 'location': url}
     except UserNotAllowed:
         payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
     except:
