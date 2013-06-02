@@ -134,7 +134,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
 
     def get_queryset(self):
         key = sha1('%s' % (self.request.get_full_path(),)).hexdigest()
-        result = []
         searched_date = False
         self.search_data = dict()
         order = self.request.GET.get('order') or None
@@ -170,8 +169,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         self.search_data['options'] = options
                     if (from_date - datetime.now()).days < -1:
                         self.result_count = 0
-                        result = []
-                        return result
+                        return []
                     searched_date = True
                 except:
                     pass
@@ -199,8 +197,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
                                                                                         flat=True).distinct()
                 search_hotel = search_hotel.filter(pk__in=searched_hotels_list, work_on_request=False)
-            result = search_hotel
-            hotels_pk_list = result.values_list('pk', flat=True).distinct()
+            hotels_pk_list = search_hotel.values_list('pk', flat=True).distinct()
             cache.set(key, hotels_pk_list, 300)
         else:
             search_hotel = Hotel.objects.filter(pk__in=data_key)
@@ -408,7 +405,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             to_date = convert_to_date(t_date)
             if from_date > to_date:
                 f_date, t_date = t_date, f_date
-            need_days = (to_date - from_date).days
+            # need_days = (to_date - from_date).days
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search'] = 1
             context['need_days'] = 1
@@ -881,7 +878,6 @@ class ClientBooking(RedirectHttpsView, DetailView):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
-        # TODO WTF
         if f_date == t_date:
             raise Http404
         if f_date and t_date and guests and ('room' in self.kwargs.keys()):
