@@ -52,7 +52,7 @@ class VisitorHitMiddleware(object):
         v.ip_address = request.META.get('REMOTE_ADDR', '')
         v.session_key = get_session_from_request(request)
         v.secure = request.is_secure()
-        v.referrer = request.META.get('HTTP_REFERRER', '')
+        v.referrer = request.META.get('HTTP_REFERER', '')
         v.hostname = request.META.get('REMOTE_HOST', '')[:100]
         v.url = request.get_full_path()
         v.date = datetime.now()
