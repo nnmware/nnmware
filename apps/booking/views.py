@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count, Sum, Max, F
+from django.db.models import Count, Sum, Max, F, Min
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -23,6 +23,7 @@ from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
+from nnmware.core.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
@@ -225,6 +226,16 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         result = search_hotel.annotate(Count('review'))
         if result:
             self.result_count = result.count()
+            amounts = PlacePrice.objects.filter(date__gte=datetime.now(), amount__gt=0,
+                settlement__room__hotel__in=result).aggregate(Min('amount'), Max('amount'))
+            if not amounts['amount__min']:
+                amounts['amount__min'] = 0
+            if not result['amount__max']:
+                amounts['amount__max'] = 0
+            self.payload['amount_min'] = convert_to_client_currency(int(amounts['amount__min']),
+                                                                    user_rate_from_request(self.request))
+            self.payload['amount_max'] = convert_to_client_currency(int(amounts['amount__min']),
+                                                                    user_rate_from_request(self.request))
         else:
             self.result_count = 0
         self.payload['result_count'] = self.result_count
