@@ -332,3 +332,15 @@ def add_category(request):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+
+def booking_sysadm(request, pk):
+    try:
+        if not request.user.is_superuser:
+            raise UserNotAllowed
+        booking = Booking.objects.get(id=pk)
+        payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
