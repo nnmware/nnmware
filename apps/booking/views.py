@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date, timedelta, datetime
+from datetime import timedelta, datetime
 from decimal import Decimal
 from hashlib import sha1
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count, Sum, Q, Max, F
-from django.http import Http404, HttpResponseRedirect
+from django.db.models import Count, Sum, Max, F
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.generic.base import View, TemplateView
+from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import FormView, UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
@@ -24,12 +23,10 @@ from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_hotel_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.config import CURRENCY
-from nnmware.core.http import get_session_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
 from nnmware.core.utils import convert_to_date, daterange
-from nnmware.core.financial import convert_from_client_currency
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
@@ -192,7 +189,6 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             else:
                 search_hotel = Hotel.objects.select_related().all()
             if searched_date:
-                result = []
                 # Find all rooms pk for this guest count
                 rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
                     values_list('room__id', flat=True).distinct()
