@@ -462,7 +462,7 @@ def hotel_range_price(context, rate):
 @register.assignment_tag(takes_context=True)
 def stars_hotel_count(context):
     request = context['request']
-    search_data = context['search_date']
+    search_data = context['search_data']
     try:
         on_date = convert_to_date(search_data['from_date']) - timedelta(days=1)
     except:
