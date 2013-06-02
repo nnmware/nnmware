@@ -633,7 +633,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
                 t_date = datetime.strftime(to_date, "%d.%m.%Y")
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
             bookings = bookings.filter(date__range=(from_date, to_date))
-        return bookings
+        return bookings.filter(enabled=True)
 
 
 class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
