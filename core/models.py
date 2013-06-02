@@ -443,7 +443,7 @@ class VisitorHit(models.Model):
     ip_address = models.CharField(max_length=20, verbose_name=_('IP'))
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
     user_agent = models.CharField(max_length=255, verbose_name=_('User-agent'))
-    referrer = models.CharField(max_length=255, verbose_name=_('Referrer'))
+    referer = models.CharField(max_length=255, verbose_name=_('Referer'))
     url = models.CharField(max_length=255, verbose_name=_('URL'))
     secure = models.BooleanField(_('Is secure'), default=False)
 
