@@ -348,6 +348,7 @@ def booking_sysadm(request, pk, action):
                 avail = Availability.objects.get(room=settlement.room, date=from_date)
                 avail.placecount += 1
                 avail.save()
+                from_date += timedelta(days=1)
             booking.delete()
             url = reverse_lazy('bookings_list')
         elif action == 'enable':
