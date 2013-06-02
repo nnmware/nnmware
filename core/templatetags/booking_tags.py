@@ -462,14 +462,14 @@ def hotel_range_price(context, rate):
 @register.assignment_tag(takes_context=True)
 def stars_hotel_count(context):
     request = context['request']
-    search_data = context['search_data']
-    try:
-        on_date = convert_to_date(search_data['from_date']) - timedelta(days=1)
-    except:
-        on_date = datetime.now()
-    hotels_with_amount = PlacePrice.objects.filter(date=on_date, amount__gt=0).\
-        values_list('settlement__room__hotel__pk', flat=True).distinct()
-    result = Hotel.objects.filter(pk__in=hotels_with_amount)
+    # search_data = context['search_data']
+    # try:
+    #     on_date = convert_to_date(search_data['from_date']) - timedelta(days=1)
+    # except:
+    #     on_date = datetime.now()
+    # hotels_with_amount = PlacePrice.objects.filter(date=on_date, amount__gt=0).\
+    #     values_list('settlement__room__hotel__pk', flat=True).distinct()
+    result = Hotel.objects.all()  #  filter(pk__in=hotels_with_amount)
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
     if data_key:
