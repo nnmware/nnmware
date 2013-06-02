@@ -631,7 +631,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
                 to_date = from_date + timedelta(days=365)
                 t_date = datetime.strftime(to_date, "%d.%m.%Y")
         else:
-            from_date = datetime.now()
+            from_date = datetime.today()
             to_date = from_date + timedelta(days=14)
             f_date = datetime.strftime(from_date, "%d.%m.%Y")
             t_date = datetime.strftime(to_date, "%d.%m.%Y")
