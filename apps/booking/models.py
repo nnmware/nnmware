@@ -489,6 +489,7 @@ class Booking(MoneyBase, AbstractIP):
     card_holder = models.CharField(verbose_name=_("Card holder"), max_length=50, blank=True)
     card_cvv2 = models.CharField(verbose_name=_("Card verification value(CVV2)"), max_length=4, blank=True)
     payment_method = models.ForeignKey(PaymentMethod, verbose_name=_('Payment method'))
+    enabled = models.BooleanField(verbose_name=_('Enabled'), default=False, db_index=True)
 
     objects = Manager()
 
