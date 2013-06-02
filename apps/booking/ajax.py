@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db.models.aggregates import Avg
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.utils.http import urlencode
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
@@ -334,6 +334,8 @@ def add_category(request):
 
 
 def booking_sysadm(request, pk):
+    if not request.is_ajax():
+        raise Http404
     try:
         if not request.user.is_superuser:
             raise UserNotAllowed
