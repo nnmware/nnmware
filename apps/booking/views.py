@@ -230,7 +230,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 settlement__room__hotel__in=result).aggregate(Min('amount'), Max('amount'))
             if not amounts['amount__min']:
                 amounts['amount__min'] = 0
-            if not result['amount__max']:
+            if not amounts['amount__max']:
                 amounts['amount__max'] = 0
             self.payload['amount_min'] = convert_to_client_currency(int(amounts['amount__min']),
                                                                     user_rate_from_request(self.request))
