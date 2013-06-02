@@ -211,7 +211,7 @@ def dates_guests_from_context(context):
     from_date = convert_to_date(f_date)
     to_date = convert_to_date(t_date)
     delta = (to_date - from_date).days
-    date_period = (from_date, to_date-timedelta(days=1))
+    date_period = (from_date, to_date - timedelta(days=1))
     return from_date, to_date, date_period, delta, guests
 
 
@@ -300,9 +300,7 @@ def amount_request_currency(request, amount):
         return int(amount)
 
 
-@register.assignment_tag(takes_context=True)
-def user_currency_rate(context):
-    request = context['request']
+def user_rate_from_request(request):
     try:
         user_currency = request.COOKIES['currency']
     except:
@@ -313,6 +311,12 @@ def user_currency_rate(context):
         return rate
     except:
         return None
+
+
+@register.assignment_tag(takes_context=True)
+def user_currency_rate(context):
+    request = context['request']
+    return user_rate_from_request(request)
 
 
 @register.simple_tag
