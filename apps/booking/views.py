@@ -234,7 +234,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 amounts['amount__max'] = 0
             self.payload['amount_min'] = convert_to_client_currency(int(amounts['amount__min']),
                                                                     user_rate_from_request(self.request))
-            self.payload['amount_max'] = convert_to_client_currency(int(amounts['amount__min']),
+            self.payload['amount_max'] = convert_to_client_currency(int(amounts['amount__max']),
                                                                     user_rate_from_request(self.request))
         else:
             self.result_count = 0
