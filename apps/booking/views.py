@@ -621,6 +621,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
         self.object = self.get_object()
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        bookings = Booking.objects.filter(hotel=self.object)
         if f_date and t_date:
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
@@ -630,13 +631,9 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
             if (to_date - from_date).days > 365:
                 to_date = from_date + timedelta(days=365)
                 t_date = datetime.strftime(to_date, "%d.%m.%Y")
-        else:
-            from_date = datetime.today() - timedelta(days=1)
-            to_date = from_date + timedelta(days=14)
-            f_date = datetime.strftime(from_date, "%d.%m.%Y")
-            t_date = datetime.strftime(to_date, "%d.%m.%Y")
-        self.search_dates = {'from_date': f_date, 'to_date': t_date}
-        return Booking.objects.filter(hotel=self.object, date__range=(from_date, to_date))
+            self.search_dates = {'from_date': f_date, 'to_date': t_date}
+            bookings = bookings.filter(date__range=(from_date, to_date))
+        return bookings
 
 
 class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
