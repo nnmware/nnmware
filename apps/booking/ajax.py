@@ -142,28 +142,6 @@ def request_hotel_delete(request, pk):
     return AjaxLazyAnswer(payload)
 
 
-def get_booking_amount(request):
-    try:
-        room_id = request.REQUEST['room_id']
-        s = request.REQUEST['guests']
-        from_date = convert_to_date(request.REQUEST['from'])
-        to_date = convert_to_date(request.REQUEST['to'])
-        room = Room.objects.get(id=room_id)
-        settlement = SettlementVariant.objects.filter(room=room, settlement=s)
-        delta = to_date - from_date
-        all_amount = 0
-        on_date = from_date
-        while on_date < to_date:
-            price = PlacePrice.objects.get(settlement=settlement, date=on_date)
-            all_amount += int(price.amount)
-            on_date = on_date + timedelta(days=1)
-        all_amount = str(all_amount) + price.currency.code
-        payload = {'success': True, 'dayscount': delta.days, 'amount': all_amount}
-    except:
-        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
-
-
 def hotel_add(request):
     try:
         if not request.user.is_superuser:
