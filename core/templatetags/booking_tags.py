@@ -248,8 +248,7 @@ def room_variant_s(context, room):
         filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
         flat=True).distinct()[0]
     variant = SettlementVariant.objects.get(pk=s_pk).settlement
-    #№['settlement']
-    return variant
+    return range(0, int(variant))
 
 
 @register.simple_tag(takes_context=True)
