@@ -899,9 +899,9 @@ class ClientBooking(RedirectHttpsView, DetailView):
             room = get_object_or_404(Room, id=room_id)
             if room.hotel.payment_method.count() < 1:
                 raise Http404
-            s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
-            if guests > max(s):
-                raise Http404
+            # s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
+            # if guests > max(s):
+            #     raise Http404
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
@@ -909,17 +909,28 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 from_date, to_date = to_date, from_date
             if (from_date - datetime.now()).days < -1:
                 raise Http404
-            avail_count = Availability.objects.filter(room=room, date__range=(from_date, to_date - timedelta(days=1)),
-                                                      placecount__gt=0).count()
+            delta = (to_date - from_date).days
+            date_period = (from_date, to_date - timedelta(days=1))
+
+            avail_count = Availability.objects.filter(room=room, date__range=date_period, placecount__gt=0).count()
             if avail_count != (to_date - from_date).days:
                 raise Http404
-            settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
-                                                          enabled=True).order_by('settlement')[0]
-            valid_price_count = PlacePrice.objects.filter(settlement=settlement,
-                                                          date__range=(from_date, to_date - timedelta(days=1)),
-                                                          amount__gt=0).count()
-            if valid_price_count != (to_date - from_date).days:
+            try:
+                s = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
+                    date__range=date_period, amount__gte=0).\
+                    annotate(valid_s=Sum('settlement')).\
+                    filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
+                    flat=True).distinct()[0]
+                settlement = SettlementVariant.objects.get(pk=s)
+            except:
                 raise Http404
+            # settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+            #                                               enabled=True).order_by('settlement')[0]
+            # valid_price_count = PlacePrice.objects.filter(settlement=settlement,
+            #                                               date__range=(from_date, to_date - timedelta(days=1)),
+            #                                               amount__gt=0).count()
+            # if valid_price_count != (to_date - from_date).days:
+            #     raise Http404
             context = super(ClientBooking, self).get_context_data(**kwargs)
             context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
             context['tab'] = 'rates'
@@ -927,7 +938,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             context['title_line'] = _('booking')
             context['room_id'] = room_id
             context['room'] = room
-            context['settlements'] = s
+            context['settlement'] = settlement
             context['search_data'] = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
             return context
         else:
