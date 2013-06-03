@@ -917,8 +917,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 raise Http404
             try:
                 settlement = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
-                    date__range=date_period, amount__gte=0).\
-                    annotate(valid_s=Sum('settlement')).\
+                    date__range=date_period, amount__gte=0).annotate(valid_s=Sum('settlement')).\
                     filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
                     flat=True).distinct()[0]
             except:
