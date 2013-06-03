@@ -237,7 +237,7 @@ def room_full_amount(context, room, rate):
     s = SettlementVariant.objects.get(pk=settlement)
 
     #s = room.settlement_on_date_for_guests(from_date, guests)
-    result = PlacePrice.objects.filter(settlement__room=room, settlement__settlement=s,
+    result = PlacePrice.objects.filter(settlement__room=room, settlement=s,
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     return convert_to_client_currency(result, rate)
 
