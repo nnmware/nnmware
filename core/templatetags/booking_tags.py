@@ -234,10 +234,7 @@ def room_full_amount(context, room, rate):
         annotate(valid_s=Sum('settlement')).\
         filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
         flat=True).distinct()[0]
-    s = SettlementVariant.objects.get(pk=settlement)
-
-    #s = room.settlement_on_date_for_guests(from_date, guests)
-    result = PlacePrice.objects.filter(settlement__room=room, settlement=s,
+    result = PlacePrice.objects.filter(settlement__room=room, settlement__pk=settlement,
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     return convert_to_client_currency(result, rate)
 
