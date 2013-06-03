@@ -214,9 +214,9 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         if self.starcount == -10:
             return None
         elif self.starcount == -1:
-            return 'hostel'
-        elif self.starcount == -2:
             return 'apartaments'
+        elif self.starcount == -2:
+            return 'hostel'
         elif not self.starcount:
             return 'mini'
         else:
