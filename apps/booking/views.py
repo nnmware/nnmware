@@ -922,17 +922,9 @@ class ClientBooking(RedirectHttpsView, DetailView):
                     flat=True).distinct()[0]
             except:
                 raise Http404
-            # settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
-            #                                               enabled=True).order_by('settlement')[0]
-            # valid_price_count = PlacePrice.objects.filter(settlement=settlement,
-            #                                               date__range=(from_date, to_date - timedelta(days=1)),
-            #                                               amount__gt=0).count()
-            # if valid_price_count != (to_date - from_date).days:
-            #     raise Http404
             context = super(ClientBooking, self).get_context_data(**kwargs)
             context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
             context['tab'] = 'rates'
-            context['hotel'] = self.object
             context['title_line'] = _('booking')
             context['room_id'] = room_id
             context['room'] = room
