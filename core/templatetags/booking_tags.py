@@ -239,6 +239,18 @@ def room_full_amount(context, room, rate):
     return convert_to_client_currency(result, rate)
 
 
+@register.assignment_tag(takes_context=True)
+def room_variant_s(context, room):
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
+    s_pk = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
+        date__range=date_period, amount__gte=0).\
+        annotate(valid_s=Sum('settlement')).\
+        filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
+        flat=True).distinct()[0]
+    variant = SettlementVariant.objects.get(pk=s_pk)['settlement']
+    return variant
+
+
 @register.simple_tag(takes_context=True)
 def room_variant(context, room):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
