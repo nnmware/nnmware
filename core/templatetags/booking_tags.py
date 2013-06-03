@@ -247,7 +247,8 @@ def room_variant_s(context, room):
         annotate(valid_s=Sum('settlement')).\
         filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
         flat=True).distinct()[0]
-    variant = SettlementVariant.objects.get(pk=s_pk)['settlement']
+    variant = SettlementVariant.objects.get(pk=s_pk)
+    #№['settlement']
     return variant
 
 
