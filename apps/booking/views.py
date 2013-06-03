@@ -142,6 +142,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        with_amount = self.request.REQUEST.get('with_amount') or None
         amount_min = self.request.REQUEST.get('amount_min') or None
         amount_max = self.request.REQUEST.get('amount_max') or None
         options = self.request.REQUEST.getlist('options') or None
@@ -202,7 +203,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             cache.set(key, hotels_pk_list, 300)
         else:
             search_hotel = Hotel.objects.filter(pk__in=data_key)
-        if amount_max and amount_min:
+        if with_amount and amount_max and amount_min:
             self.search_data['amount'] = [amount_min, amount_max]
             if searched_date:
                 hotels_with_amount = PlacePrice.objects.filter(date=from_date,
