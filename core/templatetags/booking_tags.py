@@ -14,7 +14,7 @@ from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
 from nnmware.core.models import VisitorHit
 from nnmware.core.utils import convert_to_date, daterange
-from nnmware.apps.booking.models import APARTAMENTS
+from nnmware.apps.booking.models import APARTAMENTS, SettlementVariant
 
 
 register = Library()
@@ -229,7 +229,14 @@ def room_price_average(context, room, rate):
 @register.simple_tag(takes_context=True)
 def room_full_amount(context, room, rate):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
-    s = room.settlement_on_date_for_guests(from_date, guests)
+    settlement = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
+        date__range=date_period, amount__gte=0).\
+        annotate(valid_s=Sum('settlement')).\
+        filter(valid_s__eq=delta).order_by('settlement__settlement').values_list('settlement__pk',
+        flat=True).distinct()[0]
+    s = SettlementVariant.objects.get(pk=settlement)
+
+    #s = room.settlement_on_date_for_guests(from_date, guests)
     result = PlacePrice.objects.filter(settlement__room=room, settlement__settlement=s,
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     return convert_to_client_currency(result, rate)

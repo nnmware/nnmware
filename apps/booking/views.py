@@ -324,7 +324,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 # Find all rooms pk for this guest count
                 rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
                     room__hotel=self.object).values_list('room__id', flat=True).distinct()
-                date_period = (from_date, to_date-timedelta(days=1))
+                date_period = (from_date, to_date - timedelta(days=1))
                 searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
                     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                     filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
