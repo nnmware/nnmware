@@ -34,7 +34,6 @@ def booking_delete_client_mail(booking, username=''):
 
 
 def booking_new_hotel_mail(booking):
-    recipients = settings.BOOKING_MANAGERS
     hotel_recipients = []
     if booking.hotel.email:
         hotel_recipients.append(booking.hotel.email)
@@ -47,7 +46,6 @@ def booking_new_hotel_mail(booking):
                  'site_name': settings.SITENAME}
     subject = 'booking/on_create_to_hotel_subject.txt'
     body = 'booking/on_create_to_hotel.txt'
-    send_template_mail(subject, body, mail_dict, recipients)
     send_template_mail(subject, body, mail_dict, hotel_recipients)
 
 

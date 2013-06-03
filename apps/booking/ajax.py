@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount
-from nnmware.apps.booking.utils import booking_delete_client_mail
+from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
 from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
@@ -350,6 +350,7 @@ def booking_sysadm(request, pk, action):
         elif action == 'enable':
             booking.enabled = True
             booking.save()
+            booking_new_hotel_mail(booking)
             url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
         else:
             raise UserNotAllowed
