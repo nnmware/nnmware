@@ -128,6 +128,7 @@ class BookingAddForm(forms.ModelForm):
     room_id = forms.CharField(max_length=30, required=False)
     settlement = forms.CharField(max_length=30, required=False)
     payment_method = forms.CharField(max_length=30, required=False)
+    hid_method = forms.CharField(max_length=30, required=False)
 
     class Meta:
         model = Booking
@@ -141,6 +142,12 @@ class BookingAddForm(forms.ModelForm):
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
             return payment_method
         raise forms.ValidationError(_("No valid payment method."))
+
+    def clean_hid_method(self):
+        m = self.cleaned_data.get('hid_method')
+        if m:
+            raise forms.ValidationError(_("Spam."))
+        return None
 
 
 class BookingStatusForm(forms.ModelForm):
