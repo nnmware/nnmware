@@ -232,7 +232,7 @@ def room_full_amount(context, room, rate):
     settlement = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
         date__range=date_period, amount__gte=0).\
         annotate(valid_s=Sum('settlement')).\
-        filter(valid_s__eq=delta)
+        filter(valid_s__gte=delta)
     raise ImportError, settlement
     #.order_by('settlement__settlement').values_list('settlement__pk',
     #    flat=True).distinct()[0]
