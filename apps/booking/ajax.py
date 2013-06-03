@@ -331,7 +331,7 @@ def add_category(request):
 def booking_sysadm(request, pk, action):
     if not request.is_ajax():
         raise Http404
-    if 1>0: #try:
+    try:
         if not request.user.is_superuser:
             raise UserNotAllowed
         booking = Booking.objects.select_related().get(id=pk)
@@ -354,8 +354,8 @@ def booking_sysadm(request, pk, action):
         else:
             raise UserNotAllowed
         payload = {'success': True, 'location': url}
-    # except UserNotAllowed:
-    #     payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
-    # except:
-    #     payload = {'success': False}
+    except UserNotAllowed:
+        payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
+    except:
+        payload = {'success': False}
     return AjaxLazyAnswer(payload)
