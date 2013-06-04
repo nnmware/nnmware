@@ -335,7 +335,6 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
-            raise ImportError, need_days
             context['need_days'] = need_days
         else:
             search_data = default_search()
@@ -416,11 +415,14 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
+                from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
-            # need_days = (to_date - from_date).days
+            need_days = (to_date - from_date).days
+            # if (from_date - datetime.now()).days < -1:
+            #     rooms = []
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
             context['search'] = 1
-            context['need_days'] = 1
+            context['need_days'] = need_days
         else:
             search_data = default_search()
         context['search_data'] = search_data
