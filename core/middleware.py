@@ -28,7 +28,7 @@ UNTRACKED_USER_AGENT = [
     "Slurp", "msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz", "Baiduspider",
     "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider",
     "WebAlta Crawler", "MJ12bot", "Yandex/", "YandexBot", "YaDirectBot", "StackRambler", "DotBot", "dotbot",
-    "AhrefsBot", "Mail.RU_Bot", "YandexDirect", "Twitterbot", "PaperLiBot"
+    "AhrefsBot", "Mail.RU_Bot", "YandexDirect", "Twitterbot", "PaperLiBot", "bingbot"
 ]
 
 
