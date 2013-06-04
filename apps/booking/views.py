@@ -419,23 +419,23 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 f_date, t_date = t_date, f_date
             need_days = (to_date - from_date).days
             if (from_date - datetime.now()).days < -1:
-                rooms = []
+                no_search = 1
             else:
-                rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
-                    room=self.object).values_list('room__id', flat=True).distinct()
-                date_period = (from_date, to_date - timedelta(days=1))
-                searched_room_list = Availability.objects.filter(room=self.object, date__range=date_period,
-                    min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
-                    filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
-                room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
-                    date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
-                    filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
+                no_search = 1
+                if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object).exists():
+                    date_period = (from_date, to_date - timedelta(days=1))
+                    searched_room_list = Availability.objects.filter(room=self.object, date__range=date_period,
+                        min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
+                        filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
+                    room_with_amount_list = PlacePrice.objects.filter(settlement__room=self.object,
+                        date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
+                        filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
                                                                                                  flat=True).distinct()
-                rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
-                    filter(pk__in=room_with_amount_list)
-                if not rooms.exists():
-                    rooms = []
-            if rooms == []:
+                    rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
+                        filter(pk__in=room_with_amount_list)
+                    if not rooms.exists():
+                        no_search = 1
+            if no_search:
                 search_data = default_search()
             else:
                 search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
