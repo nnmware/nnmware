@@ -433,7 +433,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                                                                                                  flat=True).distinct()
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
-                if not rooms.exist():
+                if not rooms.exists():
                     rooms = []
             if rooms == []:
                 search_data = default_search()
