@@ -27,7 +27,8 @@ UNTRACKED_USER_AGENT = [
     "www.galaxy.com", "Googlebot", "Googlebot/2.1", "Google", "Webmaster", "Scooter", "James Bond",
     "Slurp", "msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz", "Baiduspider",
     "Feedfetcher-Google", "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider",
-    "WebAlta Crawler", "MJ12bot", "Yandex/", "YandexBot", "YaDirectBot", "StackRambler", "DotBot", "dotbot"
+    "WebAlta Crawler", "MJ12bot", "Yandex/", "YandexBot", "YaDirectBot", "StackRambler", "DotBot", "dotbot",
+    "AhrefsBot"
 ]
 
 
