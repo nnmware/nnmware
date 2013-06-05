@@ -120,7 +120,7 @@ class VisitorHitAdmin(admin.ModelAdmin):
     fieldsets = ((_('Visitor hit'), {'fields': [('user', 'date', 'secure'), ('ip_address', 'session_key'),
                                                 ('user_agent', 'referer'), ('url', 'hostname'), ]}),)
     list_display = ('user', 'date', 'ip_address', 'user_agent', 'url', 'secure', 'referer')
-    list_filter = ('date', 'user')
+    list_filter = ('date', 'user', 'ip_address')
     search_fields = ('user__username', 'user_agent')
     ordering = ('-date', 'user', 'ip_address')
 
