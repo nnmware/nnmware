@@ -678,7 +678,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
 
     def get_absolute_url(self):
-        return reverse("user_detail", args=[self.user.username])
+        return reverse("user_detail", args=[self.username])
 
     def basket_sum(self):
         from nnmware.apps.shop.models import Basket
