@@ -231,3 +231,9 @@ class ProductManager(Manager):
 
     def on_main(self):
         return self.filter(enabled=True, on_main=True).order_by('-maincatid')
+
+
+class TopicManager(Manager):
+    def active(self):
+        return self.filter(enabled=True)
+
