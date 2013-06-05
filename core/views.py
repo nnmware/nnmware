@@ -1027,3 +1027,11 @@ def redirect_page_not_found(request):
 
 def redirect_500_error(request):
     return render_to_response('errors/500.html', {}, context_instance=RequestContext(request))
+
+
+class AttachedCommentMixin(object):
+    paginate_by = 40
+
+    def get_queryset(self):
+        self.object = self.get_object()
+        return Nnmcomment.public.get_tree(self.object)
