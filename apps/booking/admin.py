@@ -173,7 +173,7 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
 
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'city_of_hotel', 'date', 'percent')
-    search_fields = ('date', 'hotel', 'percent', 'hotel__name')
+    search_fields = ('date', 'hotel', 'percent')
     list_filter = ('date', 'hotel', 'percent')
     fieldsets = (
         (_("Agent Percent"), {"fields": [("hotel", 'date', 'percent'), ]}),)
