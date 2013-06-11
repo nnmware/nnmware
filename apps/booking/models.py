@@ -418,14 +418,15 @@ class SettlementVariant(models.Model):
         verbose_name_plural = _("Settlements Variants")
 
     def __str__(self):
-        try:
-            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
-                'hotel': self.room.hotel.get_name}
-        except:
-            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
-                'hotel': self.room.hotel}
+        return 'test'
+        # try:
+        #     return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+        #         'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+        #         'hotel': self.room.hotel.get_name}
+        # except:
+        #     return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+        #         'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+        #         'hotel': self.room.hotel}
 
     def current_amount(self):
         result = PlacePrice.objects.filter(settlement=self, date__lte=datetime.now()).order_by('-date')
