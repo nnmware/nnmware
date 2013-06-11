@@ -143,21 +143,21 @@ class BookingAdmin(admin.ModelAdmin):
         (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
                                                                                 ('card_holder', 'card_cvv2')]}),
     )
-    no_root_fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'settlement', 'hotel'),
-                                         ('from_date', 'to_date', 'status'),
-                                         ('last_name', 'first_name', 'middle_name'),
-                                         ('phone', 'email'),
-                                         ('amount', 'currency', 'date'),
-                                         ('uuid',),
-                                         ('ip', 'user_agent')
-        ]}),
-    )
-
-    def get_fieldsets(self, request, obj=None):
-        if request.user.username != 'root':
-            return self.no_root_fieldsets
-        return self.fieldsets
+    # no_root_fieldsets = (
+    #     (_("Booking Event"), {"fields": [("user", 'settlement', 'hotel'),
+    #                                      ('from_date', 'to_date', 'status'),
+    #                                      ('last_name', 'first_name', 'middle_name'),
+    #                                      ('phone', 'email'),
+    #                                      ('amount', 'currency', 'date'),
+    #                                      ('uuid',),
+    #                                      ('ip', 'user_agent')
+    #     ]}),
+    # )
+    #
+    # def get_fieldsets(self, request, obj=None):
+    #     if request.user.username != 'root':
+    #         return self.no_root_fieldsets
+    #     return self.fieldsets
 
 
 class RequestAddHotelAdmin(admin.ModelAdmin):
