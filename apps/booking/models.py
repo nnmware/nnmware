@@ -418,12 +418,10 @@ class SettlementVariant(models.Model):
         verbose_name_plural = _("Settlements Variants")
 
     def __str__(self):
-#        if 1>0: #try:
-        return 'Settlement -> %s :: %s' % (str(self.settlement), str(self.room.places))
-        # try:
-        #     return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-        #         'settlement': self.settlement, 'room': self.room.name, 'places': self.room.places,
-        #         'hotel': self.room.hotel}
+        if 1>0: #try:
+            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+                'hotel': self.room.hotel.get_name}
         # except:
         #     return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
         #         'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
