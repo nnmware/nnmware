@@ -133,15 +133,16 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ('from_date',)
     readonly_fields = ('uuid', 'ip', 'user_agent', 'currency')
     fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'settlement', 'hotel'),
+        (_("Booking Event"), {"fields": [('ip', 'user_agent')]}),
+                                         # ("user", 'settlement', 'hotel'),
                                          # ('from_date', 'to_date', 'status'),
                                          # ('last_name', 'first_name', 'middle_name'),
                                          # ('phone', 'email'),
                                          # ('amount', 'currency', 'date'),
                                          # ('uuid', 'enabled'),
-                                         ('ip', 'user_agent')]}),
-        (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
-                                                                                ('card_holder', 'card_cvv2')]}),
+                                         #('ip', 'user_agent')]}),
+        # (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
+        #                                                                         ('card_holder', 'card_cvv2')]}),
     )
     # no_root_fieldsets = (
     #     (_("Booking Event"), {"fields": [("user", 'settlement', 'hotel'),
