@@ -136,7 +136,7 @@ class BookingAdmin(admin.ModelAdmin):
         (_("Booking Event"), {"fields": [("user", 'status'),
                                          ('from_date', 'to_date'),
                                          ('settlement', 'hotel'),
-                                         ('last_name', 'first_name', 'middle_name'),
+                                         ('last_name', 'first_name'), ('middle_name', ),
                                          ('phone', 'email'),
                                          ('amount', 'currency', 'date'),
                                          ('uuid', 'enabled'),
