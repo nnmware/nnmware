@@ -419,9 +419,9 @@ class SettlementVariant(models.Model):
 
     def __str__(self):
         if 1>0: #try:
-            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s" % {
-                'settlement': self.settlement, 'room': self.room, 'places': self.room.places,
-                'hotel': self.room.hotel})
+            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+                'settlement': self.settlement, 'room': self.room.name, 'places': self.room.places,
+                'hotel': self.room.hotel.name}
         # except:
         #     return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
         #         'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
