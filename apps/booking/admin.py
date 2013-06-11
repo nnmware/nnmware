@@ -146,14 +146,15 @@ class BookingAdmin(admin.ModelAdmin):
                                                                                 ('card_holder', 'card_cvv2')]}),
     )
     no_root_fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'settlement', 'hotel'),
-                                         ('from_date', 'to_date', 'status'),
-                                         ('last_name', 'first_name', 'middle_name'),
+        (_("Booking Event"), {"fields": [("user", 'status'),
+                                         ('from_date', 'to_date'),
+                                         ('settlement', 'hotel'),
+                                         ('last_name', 'first_name'), ('middle_name', 'date'),
                                          ('phone', 'email'),
-                                         ('amount', 'currency', 'date'),
-                                         ('uuid',),
-                                         ('ip', 'user_agent')
-        ]}),
+                                         ('amount', 'currency'),
+                                         ('commission', 'hotel_sum'),
+                                         ('uuid', 'enabled'),
+                                         ('ip', 'user_agent')]}),
     )
 
     def get_fieldsets(self, request, obj=None):
