@@ -139,6 +139,7 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('last_name', 'first_name'), ('middle_name', ),
                                          ('phone', 'email'),
                                          ('amount', 'currency', 'date'),
+                                         ('commission', 'hotel_sum'),
                                          ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
         (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
