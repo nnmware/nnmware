@@ -133,8 +133,7 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ('from_date',)
     readonly_fields = ('uuid', 'ip', 'user_agent', 'currency')
     fieldsets = (
-        (_("Booking Event"), {"fields": [
-                                          ("user", 'settlement', 'hotel')]}),
+        (_("Booking Event"), {"fields": [('user', 'settlement', 'hotel')]}),
                                          # ('from_date', 'to_date', 'status'),
                                          # ('last_name', 'first_name', 'middle_name'),
                                          # ('phone', 'email'),
