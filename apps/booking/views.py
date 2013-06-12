@@ -822,7 +822,13 @@ class ReportView(CurrentUserSuperuser, ListView):
                 order_by('-last_login')
             self.report_name = _('Last hotel admin login')
             self.template_name = "sysadm/report_user.html"
-        if report_type not in ['city', 'login'] and result:
+        elif report_type == 'nologin':
+            self.model = get_user_model()
+            result = get_user_model().objects.annotate(Count('hotel')).filter(hotel__count__gt=0).\
+                filter(last_login=F('date_joined')).order_by('username')
+            self.report_name = _('Admins hotel, who not entering')
+            self.template_name = "sysadm/report_user.html"
+        if report_type not in ['city', 'login', 'nologin'] and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
         self.full_count = result.count()
