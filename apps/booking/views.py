@@ -403,6 +403,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
         context = super(RoomDetail, self).get_context_data(**kwargs)
+        no_search = None
         if self.object.hotel is not None:
             context['city'] = self.object.hotel.city
             context['title_line'] = self.object.hotel.get_name
