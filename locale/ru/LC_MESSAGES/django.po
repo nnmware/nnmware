@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-13 09:11+1100\n"
+"POT-Creation-Date: 2013-06-13 09:48+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -999,11 +999,11 @@ msgstr "администратор отелей"
 #: apps/booking/views.py:463 apps/booking/views.py:481
 #: apps/booking/views.py:509 apps/booking/views.py:529
 #: apps/booking/views.py:563 apps/booking/views.py:622
-#: apps/booking/views.py:860
+#: apps/booking/views.py:866
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:641 apps/booking/views.py:880
+#: apps/booking/views.py:641 apps/booking/views.py:886
 msgid "bookings"
 msgstr "бронирования"
 
@@ -1019,11 +1019,11 @@ msgstr "заявка на добавление отеля"
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:768 apps/booking/views.py:1055
+#: apps/booking/views.py:768 apps/booking/views.py:1061
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:779 apps/booking/views.py:835
+#: apps/booking/views.py:779 apps/booking/views.py:841
 msgid "site reports"
 msgstr "отчеты сайта"
 
@@ -1067,60 +1067,64 @@ msgstr "Всего городов"
 msgid "Last hotel admin login"
 msgstr "Последняя дата входа администратора отеля"
 
-#: apps/booking/views.py:905 apps/booking/views.py:1079
-#: apps/booking/views.py:1092 apps/booking/views.py:1108
+#: apps/booking/views.py:829
+msgid "Admins hotel, who not entering"
+msgstr "Администраторы отеля, кто не заходил"
+
+#: apps/booking/views.py:911 apps/booking/views.py:1085
+#: apps/booking/views.py:1098 apps/booking/views.py:1114
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:958
+#: apps/booking/views.py:964
 msgid "booking"
 msgstr "бронирование"
 
-#: apps/booking/views.py:984
+#: apps/booking/views.py:990
 msgid "Card number is wrong."
 msgstr "Неверный номер карты"
 
-#: apps/booking/views.py:995
+#: apps/booking/views.py:1001
 msgid "Card CVV2 is wrong."
 msgstr "Неверный CVV2 код карты"
 
-#: apps/booking/views.py:998
+#: apps/booking/views.py:1004
 msgid "You enter not all data of card."
 msgstr "Вы ввели не все данные кредитной карты"
 
-#: apps/booking/views.py:1001
+#: apps/booking/views.py:1007
 msgid "You are not select payment method."
 msgstr "Вы не выбрали вариант платежа"
 
-#: apps/booking/views.py:1065
+#: apps/booking/views.py:1071
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
 
-#: apps/booking/views.py:1117
+#: apps/booking/views.py:1123
 msgid "Changed status of booking"
 msgstr "Изменен статус бронирования"
 
-#: apps/booking/views.py:1118
+#: apps/booking/views.py:1124
 msgid "Hotel: "
 msgstr "Отель: "
 
-#: apps/booking/views.py:1119
+#: apps/booking/views.py:1125
 msgid "Booking: "
 msgstr "Бронирование: "
 
-#: apps/booking/views.py:1120
+#: apps/booking/views.py:1126
 msgid "Booking link: "
 msgstr "Ссылка на бронирование: "
 
-#: apps/booking/views.py:1121
+#: apps/booking/views.py:1127
 msgid "Old status: "
 msgstr "Старый статус: "
 
-#: apps/booking/views.py:1122
+#: apps/booking/views.py:1128
 msgid "New status: "
 msgstr "Новый статус: "
 
-#: apps/booking/views.py:1124
+#: apps/booking/views.py:1130
 msgid "Description: "
 msgstr "Описание: "
 
