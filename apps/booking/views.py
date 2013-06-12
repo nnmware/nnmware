@@ -818,7 +818,8 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.template_name = "sysadm/report_city.html"
         elif report_type == 'login':
             self.model = get_user_model()
-            result = get_user_model().objects.annotate(Count('hotel')).filter(hotel__count__gt=0).order_by('-last_login')
+            result = get_user_model().objects.annotate(Count('hotel')).filter(hotel__count__gt=0).\
+                order_by('-last_login')
             self.report_name = _('Last hotel admin login')
             self.template_name = "sysadm/report_user.html"
         if report_type != 'city' and report_type != 'login' and result:
