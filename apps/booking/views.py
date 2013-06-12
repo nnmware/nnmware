@@ -828,7 +828,7 @@ class ReportView(CurrentUserSuperuser, ListView):
                 filter(last_login__isnull=True).order_by('username')
             self.report_name = _('Admins hotel, who not entering')
             self.template_name = "sysadm/report_user.html"
-        if report_type != 'city' and report_type != 'login' and report_type != 'nologin' and result:
+        if report_type not in ['city', 'login', 'nologin'] and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
         self.full_count = result.count()
