@@ -820,7 +820,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = get_user_model().objects.order_by('-last_login')
             self.report_name = _('Last hotel admin login')
             self.template_name = "sysadm/report_user.html"
-        if report_type != 'city' and result:
+        if report_type != 'city' and report_type != 'login' and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
         return result
