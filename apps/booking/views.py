@@ -421,7 +421,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             if (from_date - datetime.now()).days < -1:
                 no_search = 1
             else:
-                no_search = 1
+#                no_search = 1
                 if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object).exists():
                     date_period = (from_date, to_date - timedelta(days=1))
                     searched_room_list = Availability.objects.filter(room=self.object, date__range=date_period,
