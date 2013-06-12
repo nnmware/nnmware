@@ -152,6 +152,10 @@ class CompanyCategory(Tree):
         verbose_name = _('Company Category')
         verbose_name_plural = _('Companies Categories')
 
+    @property
+    def _active_set(self):
+        return Company.objects.filter(category=self)
+
 
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
