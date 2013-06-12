@@ -825,7 +825,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'nologin':
             self.model = get_user_model()
             result = get_user_model().objects.annotate(Count('hotel')).filter(hotel__count__gt=0).\
-                filter(last_login=F('date_joined')).order_by('username')
+                filter(last_login=F('date_joined')).order_by('-last_login')
             self.report_name = _('Admins hotel, who not entering')
             self.template_name = "sysadm/report_user.html"
         if report_type not in ['city', 'login', 'nologin'] and result:
