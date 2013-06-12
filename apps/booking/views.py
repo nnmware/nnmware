@@ -825,6 +825,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         if report_type != 'city' and report_type != 'login' and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
+        self.full_count = result.count()
         return result
 
     def get_context_data(self, **kwargs):
@@ -832,6 +833,8 @@ class ReportView(CurrentUserSuperuser, ListView):
         context = super(ReportView, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
         context['title_line'] = _('site reports')
+        context['full_count'] = self.full_count
+        context['report_name'] = self.report_name
         context['report_name'] = self.report_name
         context['report_arg'] = self.report_arg
         return context
