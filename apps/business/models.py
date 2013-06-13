@@ -8,7 +8,7 @@ from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
-from core.managers import CompanyManager
+from nnmware.core.managers import CompanyManager
 
 
 class TypeEmployer(AbstractName):
