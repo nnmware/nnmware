@@ -165,3 +165,10 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime):
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
+
+    def geoaddress(self):
+        try:
+            result = "%s %s" % (self.house_number, self.street)
+            return "%s, %s" % (result, self.city)
+        except:
+            return None
