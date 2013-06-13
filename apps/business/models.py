@@ -5,7 +5,7 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
-from nnmware.core.abstract import AbstractName, AbstractImg, Tree
+from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.managers import CompanyManager
@@ -158,7 +158,7 @@ class CompanyCategory(Tree):
         return Company.objects.filter(category=self)
 
 
-class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime):
+class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
     category = models.ForeignKey(CompanyCategory, verbose_name=_('Company category'), related_name='company')
