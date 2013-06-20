@@ -89,9 +89,9 @@ class CurrentUserBookingAccess(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Booking.objects.select_related(), uuid=kwargs['slug'])
-        if obj.user:
-            if (request.user != obj.user) and not request.user.is_superuser:
-                raise Http404
+        # if obj.user:
+        #     if (request.user != obj.user) and not request.user.is_superuser:
+        #         raise Http404
         return super(CurrentUserBookingAccess, self).dispatch(request, *args, **kwargs)
 
 
