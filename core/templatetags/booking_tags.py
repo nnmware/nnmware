@@ -505,5 +505,5 @@ def min_search_hotel_price(context, hotel):
         annotate(num_days=Count('pk')).filter(num_days__gte=delta).order_by('pk').values_list('pk', flat=True).\
         distinct()
     result = PlacePrice.objects.filter(settlement__room__in=rooms, settlement__settlement__gte=guests,
-         placeprice__date=from_date, placeprice__amount__gt=0).aggregate(Min('amount'))
+         date=from_date, amount__gt=0).aggregate(Min('amount'))
     return convert_to_client_currency(int(result['amount__min']), user_rate)
