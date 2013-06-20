@@ -332,10 +332,10 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 # searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
                 #     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                 #     filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
-                room_with_amount_list = Room.objects.filter(pk__in=rooms_list,
-                    settlementvariant__placeprice__date__range=date_period, settlementvariant__placeprice__amount__gt=0).\
+                room_with_amount_list = SettlementVariant.objects.filter(room__pk__in=rooms_list,
+                    placeprice__date__range=date_period, placeprice__amount__gt=0).\
                     annotate(num_days=Count('pk')).\
-                    filter(num_days__gte=need_days).order_by('pk').values_list('pk', flat=True).distinct()
+                    filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
 
                 # room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
                 #     date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
