@@ -190,10 +190,14 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 search_hotel = Hotel.objects.select_related().all()
             if searched_date:
                 # Find all rooms pk for this guest count
-                rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
-                    values_list('room__id', flat=True).distinct()
                 need_days = (to_date - from_date).days
                 date_period = (from_date, to_date - timedelta(days=1))
+                rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
+                    placeprice__date__range=date_period, placeprice__amount__gt=0).\
+                    annotate(num_days=Count('pk')).\
+                    filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
+                # rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
+                #     values_list('room__id', flat=True).distinct()
                 searched_hotels_list = Room.objects.filter(pk__in=rooms_list, availability__date__range=date_period,
                     availability__min_days__lte=need_days, availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days).order_by('hotel').\
@@ -330,14 +334,6 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 rooms = Room.objects.filter(pk__in=rooms_with_amount, availability__date__range=date_period,
                     availability__min_days__lte=need_days, availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days)
-                # rooms = Room.objects.filter(settlementvariant__enabled=True,
-                #     settlementvariant__settlement__gte=guests,
-                #     hotel=self.object, settlementvariant__placeprice__date__range=date_period,
-                #     settlementvariant__placeprice__amount__gt=0).\
-                #     annotate(num_days=Count('pk')).\
-                #     filter(num_days__gte=need_days).filter(availability__date__range=date_period,
-                #     availability__min_days__lte=need_days, availability__placecount__gt=0).\
-                #     annotate(r_num_days=Count('pk')).filter(r_num_days__gte=need_days)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['need_days'] = need_days
         else:
