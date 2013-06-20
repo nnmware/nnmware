@@ -134,7 +134,7 @@ class BookingAddForm(forms.ModelForm):
         model = Booking
         fields = (
             'from_date', 'to_date', 'first_name', 'middle_name', 'last_name', 'phone', 'email',
-            'payment_method')
+            'payment_method', 'guests')
 
     def clean_payment_method(self):
         p_m = self.cleaned_data.get('payment_method')
