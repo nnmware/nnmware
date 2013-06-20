@@ -334,7 +334,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                     settlementvariant__settlement__gte=guests,
                     hotel=self.object, settlementvariant__placeprice__date__range=date_period,
                     settlementvariant__placeprice__amount__gt=0).\
-                    annotate(num_days=Count('settlement__pk')).\
+                    annotate(num_days=Count('settlementvariant__pk')).\
                     filter(num_days__gte=need_days).filter(availability__date__range=date_period,
                     availability__min_days__lte=need_days, availability__placecount__gt=0).\
                     annotate(r_num_days=Count('pk')).filter(r_num_days__gte=need_days)
