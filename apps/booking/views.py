@@ -953,9 +953,9 @@ class ClientBooking(RedirectHttpsView, DetailView):
             if avail_count != (to_date - from_date).days:
                 raise Http404
             try:
-                settlement = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
-                    date__range=date_period, amount__gte=0).annotate(valid_s=Sum('settlement')).\
-                    filter(valid_s__gte=delta).order_by('settlement__settlement').values_list('settlement__pk',
+                settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+                    placeprice__date__range=date_period, placeprice__amount__gte=0).annotate(valid_s=Sum('pk')).\
+                    filter(valid_s__gte=delta).order_by('settlement').values_list('pk',
                     flat=True).distinct()[0]
             except:
                 raise Http404
