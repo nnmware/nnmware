@@ -194,9 +194,9 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     values_list('room__id', flat=True).distinct()
                 need_days = (to_date - from_date).days
                 date_period = (from_date, to_date - timedelta(days=1))
-                searched_hotels_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
-                    min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
-                    filter(num_days__gte=need_days).order_by('room__hotel').values_list('room__hotel__pk',
+                searched_hotels_list = Room.objects.filter(pk__in=rooms_list, availability__date__range=date_period,
+                    availability__min_days__lte=need_days, availability__placecount__gt=0).annotate(num_days=Count('pk')).\
+                    filter(availability__num_days__gte=need_days).order_by('hotel').values_list('hotel__pk',
                                                                                         flat=True).distinct()
                 search_hotel = search_hotel.filter(pk__in=searched_hotels_list, work_on_request=False)
             hotels_pk_list = search_hotel.values_list('pk', flat=True).distinct()
