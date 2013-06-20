@@ -333,7 +333,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 #     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                 #     filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
                 room_with_amount_list = Room.objects.filter(pk__in=rooms_list,
-                    settlementvariant__placeprice__date__range=date_period, settlementvariant__placeprice__amount__gte=0).\
+                    settlementvariant__placeprice__date__range=date_period, settlementvariant__placeprice__amount__gt=0).\
                     annotate(num_days=Count('pk')).\
                     filter(num_days__gte=need_days).order_by('pk').values_list('pk', flat=True).distinct()
 
