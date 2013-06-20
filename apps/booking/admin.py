@@ -146,7 +146,7 @@ class BookingAdmin(admin.ModelAdmin):
                                                                                 ('card_holder', 'card_cvv2')]}),
     )
     no_root_fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'status'),
+        (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
                                          ('from_date', 'to_date'),
                                          ('settlement', 'hotel'),
                                          ('last_name', 'first_name'), ('middle_name', 'date'),
