@@ -502,7 +502,7 @@ def min_search_hotel_price(context, hotel):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     rooms = Room.objects.filter(hotel=hotel, availability__date__range=date_period,
         availability__min_days__lte=delta, availability__placecount__gt=0).\
-        annotate(num_days=Count('pk')).filter(num_days__gte=delta).order_by('pk').values_list('room__pk', flat=True).\
+        annotate(num_days=Count('pk')).filter(num_days__gte=delta).order_by('pk').values_list('pk', flat=True).\
         distinct()
     result = PlacePrice.objects.filter(settlement__room__in=rooms, settlement__settlement__gte=guests,
          placeprice__date=from_date, placeprice__amount__gt=0).aggregate(Min('amount'))
