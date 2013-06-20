@@ -496,7 +496,7 @@ def stars_hotel_count(context):
     return result
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def min_search_hotel_price(context, hotel):
     user_rate = context['user_currency_rate']
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
