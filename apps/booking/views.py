@@ -193,11 +193,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 need_days = (to_date - from_date).days
                 date_period = (from_date, to_date - timedelta(days=1))
                 rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
-                    placeprice__date__range=date_period, placeprice__amount__gt=0).\
-                    annotate(num_days=Count('pk')).\
+                    placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(num_days=Count('pk')).\
                     filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
-                # rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests).\
-                #     values_list('room__id', flat=True).distinct()
                 searched_hotels_list = Room.objects.filter(pk__in=rooms_list, availability__date__range=date_period,
                     availability__min_days__lte=need_days, availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days).order_by('hotel').\
@@ -422,8 +419,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             if (from_date - datetime.now()).days < -1:
                 no_search = 1
             else:
-                if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object).exists():
-                    date_period = (from_date, to_date - timedelta(days=1))
+                date_period = (from_date, to_date - timedelta(days=1))
+                if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object,
+                    placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(num_days=Count('pk')).\
+                    filter(num_days__gte=need_days).exists():
                     searched_room_list = Availability.objects.filter(room=self.object, date__range=date_period,
                         min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                         filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
