@@ -400,7 +400,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
         context = super(RoomDetail, self).get_context_data(**kwargs)
-        no_search = None
+        room_search = None
         if self.object.hotel is not None:
             context['city'] = self.object.hotel.city
             context['title_line'] = self.object.hotel.get_name
@@ -417,7 +417,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 f_date, t_date = t_date, f_date
             need_days = (to_date - from_date).days
             if (from_date - datetime.now()).days < -1:
-                no_search = 1
+                search_data = default_search()
             else:
                 date_period = (from_date, to_date - timedelta(days=1))
                 if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object,
@@ -432,15 +432,10 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                                                                                                  flat=True).distinct()
                     rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                         filter(pk__in=room_with_amount_list)
-                    if not rooms.exists():
-                        no_search = 1
-                else:
-                    no_search = 1
-            if no_search:
-                search_data = default_search()
-            else:
+                    if rooms.exists():
+                        room_search = 1
                 search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.hotel.city}
-            context['search'] = 1
+            context['room_found'] = room_search
             context['need_days'] = need_days
         else:
             search_data = default_search()
@@ -936,9 +931,6 @@ class ClientBooking(RedirectHttpsView, DetailView):
             room = get_object_or_404(Room, id=room_id)
             if room.hotel.payment_method.count() < 1:
                 raise Http404
-            # s = SettlementVariant.objects.filter(room=room).values_list('settlement', flat=True)
-            # if guests > max(s):
-            #     raise Http404
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
@@ -948,7 +940,6 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 raise Http404
             delta = (to_date - from_date).days
             date_period = (from_date, to_date - timedelta(days=1))
-
             avail_count = Availability.objects.filter(room=room, date__range=date_period, placecount__gt=0).count()
             if avail_count != (to_date - from_date).days:
                 raise Http404
