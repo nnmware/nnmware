@@ -27,7 +27,7 @@ def make_key(name):
 
 
 def convert_to_date(d):
-    return datetime.fromtimestamp(time.mktime(time.strptime(d, "%d.%m.%Y")))
+    return datetime.strptime(d, "%d.%m.%Y")
 
 
 def get_date_directory():
