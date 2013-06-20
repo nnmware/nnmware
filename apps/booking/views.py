@@ -332,10 +332,15 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 # searched_room_list = Availability.objects.filter(room__pk__in=rooms_list, date__range=date_period,
                 #     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                 #     filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
-                room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
-                    date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
-                    filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
-                                                                                             flat=True).distinct()
+                room_with_amount_list = Room.objects.filter(pk__in=rooms_list,
+                    settlement__placeprice__date__range=date_period, settlement__placeprice__amount__gte=0).\
+                    annotate(num_days=Count('pk')).\
+                    filter(num_days__gte=need_days).order_by('pk').values_list('pk', flat=True).distinct()
+
+                # room_with_amount_list = PlacePrice.objects.filter(settlement__room__pk__in=rooms_list,
+                #     date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
+                #     filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
+                #                                                                              flat=True).distinct()
                 rooms = Room.objects.select_related().filter(pk__in=searched_room_list).\
                     filter(pk__in=room_with_amount_list)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
