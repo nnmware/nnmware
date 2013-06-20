@@ -434,6 +434,8 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                         filter(pk__in=room_with_amount_list)
                     if not rooms.exists():
                         no_search = 1
+                else:
+                    no_search = 1
             if no_search:
                 search_data = default_search()
             else:
