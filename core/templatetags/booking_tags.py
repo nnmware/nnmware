@@ -14,7 +14,7 @@ from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
 from nnmware.core.models import VisitorHit
 from nnmware.core.utils import convert_to_date, daterange
-from nnmware.apps.booking.models import APARTAMENTS, SettlementVariant
+from nnmware.apps.booking.models import APARTAMENTS, SettlementVariant, Room
 
 
 register = Library()
@@ -494,3 +494,16 @@ def stars_hotel_count(context):
     else:
         result = result.values('starcount').order_by('starcount').annotate(Count('starcount'))
     return result
+
+
+@register.assignment_tag(takes_context=True)
+def min_search_hotel_price(context, hotel):
+    user_rate = context['user_currency_rate']
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
+    rooms = Room.objects.filter(hotel=hotel, availability__date=date_period,
+        availability__min_days__lte=delta, availability__placecount__gt=0).\
+        annotate(num_days=Count('pk')).filter(num_days__gte=delta).order_by('pk').values_list('room__pk', flat=True).\
+        distinct()
+    result = PlacePrice.objects.filter(settlement__room__in=rooms, settlement__settlement__gte=guests,
+         placeprice__date=from_date, placeprice__amount__gt=0).aggregate(Min('amount'))
+    return convert_to_client_currency(int(result['amount__min']), user_rate)
