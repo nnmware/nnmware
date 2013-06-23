@@ -37,14 +37,28 @@ class LocaleNamedForm(object):
 
 
 class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
-    schema_transit = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
 
     class Meta:
         model = Hotel
-        fields = ('schema_transit', 'option')
-        widgets = {
-            'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
-        }
+        fields = ('option',)
+
+    def __init__(self, *args, **kwargs):
+        super(CabinetInfoForm, self).__init__(*args, **kwargs)
+        if get_language() == 'ru':
+            self.fields['schema_transit'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.schema_transit)
+        else:
+            self.fields['schema_transit_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.schema_transit_en)
+
+    def save(self, commit=True):
+        if get_language() == 'ru':
+            self.instance.schema_transit = self.cleaned_data['schema_transit']
+        else:
+            self.instance.name_en = self.cleaned_data['name_en']
+        return super(CabinetInfoForm, self).save(commit=commit)
 
 
 class CabinetTermsForm(forms.ModelForm):

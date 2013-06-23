@@ -182,9 +182,13 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         if get_language() == 'en':
             if self.address_en:
                 return self.address_en
-            else:
-                return self.address
         return self.address
+
+    def get_schema_transit(self):
+        if get_language() == 'en':
+            if self.schema_transit_en:
+                return self.schema_transit_en
+        return self.schema_transit
 
     @property
     def metadesc(self):
