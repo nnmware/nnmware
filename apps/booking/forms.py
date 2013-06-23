@@ -15,24 +15,23 @@ class LocaleNamedForm(object):
     def __init__(self, *args, **kwargs):
         super(LocaleNamedForm, self).__init__(*args, **kwargs)
         if get_language() == 'ru':
-            self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
-                                                  initial=self.instance.name)
-            self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.description)
+            name = self.instance.name
+            description = self.instance.description
         else:
-            self.fields['name_en'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}),
-                                                     initial=self.instance.name_en)
-            self.fields['description_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
-                'class': 'wide', 'rows': '5'}), initial=self.instance.description_en)
+            name = self.instance.name_en
+            description = self.instance.description_en
+        self.fields['name'] = forms.CharField(widget=forms.TextInput(attrs={'size': '25'}), initial=name)
+        self.fields['description'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                  'rows': '5'}),
+                                                     initial=description)
 
     def save(self, commit=True):
         if get_language() == 'ru':
             self.instance.name = self.cleaned_data['name']
             self.instance.description = self.cleaned_data['description']
         else:
-            self.instance.name_en = self.cleaned_data['name_en']
-            self.instance.description_en = self.cleaned_data['description_en']
+            self.instance.name_en = self.cleaned_data['name']
+            self.instance.description_en = self.cleaned_data['description']
         return super(LocaleNamedForm, self).save(commit=commit)
 
 
@@ -45,19 +44,18 @@ class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CabinetInfoForm, self).__init__(*args, **kwargs)
         if get_language() == 'ru':
-            self.fields['schema_transit'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.schema_transit)
+            schema_transit = self.instance.schema_transit
         else:
-            self.fields['schema_transit_en'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.schema_transit_en)
+            schema_transit = self.instance.schema_transit_en
+        self.fields['schema_transit'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                     'rows': '5'}),
+                                                        initial=schema_transit)
 
     def save(self, commit=True):
         if get_language() == 'ru':
             self.instance.schema_transit = self.cleaned_data['schema_transit']
         else:
-            self.instance.schema_transit_en = self.cleaned_data['schema_transit_en']
+            self.instance.schema_transit_en = self.cleaned_data['schema_transit']
         return super(CabinetInfoForm, self).save(commit=commit)
 
 
@@ -72,25 +70,21 @@ class CabinetTermsForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CabinetTermsForm, self).__init__(*args, **kwargs)
         if get_language() == 'ru':
-            self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.booking_terms)
-            self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.condition_cancellation)
-            self.fields['paid_services'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.paid_services)
+            booking_terms = self.instance.booking_terms
+            condition_cancellation = self.instance.condition_cancellation
+            paid_services = self.instance.paid_services
         else:
-            self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.booking_terms_en)
-            self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.condition_cancellation_en)
-            self.fields['paid_services'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                      'rows': '5'}),
-                                                         initial=self.instance.paid_services_en)
+            booking_terms = self.instance.booking_terms_en
+            condition_cancellation = self.instance.condition_cancellation_en
+            paid_services = self.instance.paid_services_en
+        self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                    'rows': '5'}),
+                                                       initial=booking_terms)
+        self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
+            'class': 'wide', 'rows': '5'}), initial=condition_cancellation)
+        self.fields['paid_services'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                    'rows': '5'}),
+                                                       initial=paid_services)
 
     def save(self, commit=True):
         if get_language() == 'ru':
