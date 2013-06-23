@@ -167,6 +167,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
     condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True, null=True)
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
+    paid_services_en = models.TextField(verbose_name=_("Paid services(English)"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
     work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False, db_index=True)
@@ -202,6 +203,12 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
             if self.condition_cancellation_en:
                 return self.condition_cancellation_en
         return self.condition_cancellation
+
+    def get_paid_services(self):
+        if get_language() == 'en':
+            if self.paid_services_en:
+                return self.paid_services_en
+        return self.paid_services
 
     @property
     def metadesc(self):
