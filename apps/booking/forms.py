@@ -57,7 +57,7 @@ class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
         if get_language() == 'ru':
             self.instance.schema_transit = self.cleaned_data['schema_transit']
         else:
-            self.instance.name_en = self.cleaned_data['name_en']
+            self.instance.schema_transit_en = self.cleaned_data['schema_transit_en']
         return super(CabinetInfoForm, self).save(commit=commit)
 
 
