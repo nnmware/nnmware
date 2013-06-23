@@ -81,7 +81,7 @@ class CabinetRoomForm(LocaleNamedForm, forms.ModelForm):
         model = Room
         fields = ('option', 'typefood')
         widgets = {
-            'typefood': forms.RadioSelect(attrs={'class': 'uniform'}),
+            'typefood': forms.RadioSelect(),
         }
 
 
