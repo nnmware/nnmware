@@ -165,6 +165,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
+    condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True, null=True)
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
@@ -189,6 +190,18 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
             if self.schema_transit_en:
                 return self.schema_transit_en
         return self.schema_transit
+
+    def get_booking_terms(self):
+        if get_language() == 'en':
+            if self.booking_terms_en:
+                return self.booking_terms_en
+        return self.booking_terms
+
+    def get_condition_cancellation(self):
+        if get_language() == 'en':
+            if self.condition_cancellation_en:
+                return self.condition_cancellation_en
+        return self.condition_cancellation
 
     @property
     def metadesc(self):

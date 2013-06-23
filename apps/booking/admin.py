@@ -46,7 +46,7 @@ class HotelAdmin(admin.ModelAdmin):
             ('option',)]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "address_en"), ("description_en",),
-                                   ("schema_transit_en",), ("booking_terms_en",)]})
+                                   ("schema_transit_en",), ("booking_terms_en",), ('condition_cancellation_en',)]})
         ,)
     ordering = ('-register_date', 'name')
 

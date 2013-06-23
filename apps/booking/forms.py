@@ -62,17 +62,39 @@ class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
 
 
 class CabinetTermsForm(forms.ModelForm):
-    booking_terms = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
-    condition_cancellation = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}),
-                                             required=False)
     paid_services = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5'}), required=False)
     time_on = forms.CharField(widget=AdminTimeWidget(), required=False)
     time_off = forms.CharField(widget=AdminTimeWidget(), required=False)
 
     class Meta:
         model = Hotel
-        fields = ('booking_terms', 'payment_method', 'condition_cancellation',
-                  'paid_services', 'time_on', 'time_off')
+        fields = ('payment_method', 'paid_services', 'time_on', 'time_off')
+
+    def __init__(self, *args, **kwargs):
+        super(CabinetTermsForm, self).__init__(*args, **kwargs)
+        if get_language() == 'ru':
+            self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.booking_terms)
+            self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.condition_cancellation)
+        else:
+            self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.booking_terms_en)
+            self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                      'rows': '5'}),
+                                                         initial=self.instance.condition_cancellation_en)
+
+    def save(self, commit=True):
+        if get_language() == 'ru':
+            self.instance.booking_terms = self.cleaned_data['booking_terms']
+            self.instance.condition_cancellation = self.cleaned_data['condition_cancellation']
+        else:
+            self.instance.booking_terms_en = self.cleaned_data['booking_terms']
+            self.instance.condition_cancellation_en = self.cleaned_data['condition_cancellation']
+        return super(CabinetTermsForm, self).save(commit=commit)
 
 
 class CabinetRoomForm(LocaleNamedForm, forms.ModelForm):
