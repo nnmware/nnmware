@@ -108,10 +108,10 @@ class PublicNnmcommentManager(NnmcommentManager):
      (in other words, ``is_public = True``).
      """
 
-    def get_query_set(self):
+    def get_queryset(self):
         from nnmware.core.abstract import STATUS_PUBLISHED, STATUS_STICKY
 
-        return super(NnmcommentManager, self).get_query_set().filter(
+        return super(NnmcommentManager, self).get_queryset().filter(
             Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
 
