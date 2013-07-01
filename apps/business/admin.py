@@ -42,6 +42,15 @@ class CompanyCategoryAdmin(TreeAdmin):
     )
 
 
+class CompanyDataInline(admin.StackedInline):
+    model = CompanyData
+    fieldsets = (
+        (_("Company Data"), {"fields": [
+            ('inn', ),
+        ]}),
+    )
+
+
 class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('name', 'region', 'work_on', 'work_off')
@@ -61,13 +70,14 @@ class CompanyAdmin(admin.ModelAdmin):
                         "fields": [("country", 'region'),
                                    ('city', 'zipcode'),
                                    ('street', 'stationmetro'),
-                                   ('house_number', 'building', 'flat_number'),
+                                   ('house_number', 'building'), ('flat_number', ),
                                    ('longitude', 'latitude')
                         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", 'fullname_en'), ("description_en",)]})
     )
     ordering = ('region', 'name')
+    inlines = [CompanyDataInline,]
 
 
 admin.site.register(Agency, AgencyAdmin)
