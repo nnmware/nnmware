@@ -46,8 +46,8 @@ class CompanyDetailInline(admin.StackedInline):
     model = CompanyDetail
     fieldsets = (
         (_("Company Data"), {"fields": [
-            ('inn', 'kpp', 'kpp_add'),
-            ('okato', 'okpo', 'ogrn'),
+            ('inn', 'ogrn'), ('kpp', 'kpp_add'),
+            ('okato', 'okpo'),
         ]}),
     )
 
