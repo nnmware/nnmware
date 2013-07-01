@@ -187,6 +187,8 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
 class CompanyDetail(models.Model):
     company = models.OneToOneField(Company, verbose_name=_('Company'))
     inn = models.CharField(max_length=12, verbose_name=_('INN'), blank=True)
+    kpp = models.CharField(max_length=9, verbose_name=_('KPP'), blank=True)
+    kpp_add = models.CharField(max_length=9, verbose_name=_('KPP (addon)'), blank=True)
 
     class Meta:
         verbose_name = _("Company detail")
