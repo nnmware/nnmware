@@ -161,7 +161,7 @@ class CompanyCategory(Tree):
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
-    category = models.ForeignKey(CompanyCategory, verbose_name=_('Company category'), related_name='company')
+    category = models.ManyToManyField(CompanyCategory, verbose_name=_('Company category'), related_name='company')
     objects = CompanyManager()
 
     class Meta:
