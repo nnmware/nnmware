@@ -2,6 +2,8 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
@@ -180,3 +182,18 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
         if self.fullname:
             return self.fullname
         return self.get_name
+
+
+class CompanyDetail(models.Model):
+    company = models.OneToOneField(Company, verbose_name=_('Company'))
+    inn = models.CharField(max_length=12, verbose_name=_('INN'), blank=True)
+
+    class Meta:
+        verbose_name = _("Company detail")
+        verbose_name_plural = _("Companies details")
+
+
+@receiver(post_save, sender=Company, dispatch_uid='nnmware_uid')
+def create_company_detail(sender, instance, created, **kwargs):
+    if created:
+        Company.objects.create(company=instance)
