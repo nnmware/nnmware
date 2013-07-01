@@ -49,8 +49,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name', 'position')
     fieldsets = (
         (_("Employer"), {"fields": [
-            ("name", 'category'),
-            ('region',),
+            ("name", 'fullname'), ('category', 'region',),
             ('description', ),
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
@@ -59,10 +58,10 @@ class CompanyAdmin(admin.ModelAdmin):
             ('employer_profile',),
             ('employer_other',),
             ]}),
-
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en", 'fullname_en'), ("address_en", ), ("description_en",)]})
     )
     ordering = ('region', 'name')
-#    readonly_fields = ('profile',)
 
 
 admin.site.register(Agency, AgencyAdmin)

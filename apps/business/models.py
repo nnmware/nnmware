@@ -2,7 +2,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models import permalink
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, get_language
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate
@@ -163,6 +163,9 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('Company category'), related_name='company')
     objects = CompanyManager()
+    fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True)
+    fullname_en = models.CharField(verbose_name=_("Full Name(English"), max_length=255, blank=True, null=True,
+                                   db_index=True)
 
     class Meta:
         verbose_name = _("Company")
@@ -174,3 +177,12 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
             return "%s, %s" % (result, self.city)
         except:
             return None
+
+    @property
+    def get_fullname(self):
+        if get_language() == 'en':
+            if self.fullname_en:
+                return self.fullname_en
+        if self.fullname:
+            return self.fullname
+        return self.get_name
