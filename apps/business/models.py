@@ -197,6 +197,9 @@ class CompanyDetail(models.Model):
     date_state_reg = models.DateField(verbose_name=_("Date of state registration"), blank=True, null=True)
     authority_state_reg = models.CharField(max_length=255, verbose_name=_('Authority of state registration'),
                                            blank=True)
+    date_ogrn = models.DateField(verbose_name=_("Date of ogrn"), blank=True, null=True)
+    authority_ogrn = models.CharField(max_length=255, verbose_name=_('Authority of ogrn'),
+                                      blank=True)
 
     class Meta:
         verbose_name = _("Company detail")

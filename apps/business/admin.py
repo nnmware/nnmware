@@ -49,7 +49,8 @@ class CompanyDetailInline(admin.StackedInline):
             ('inn', 'ogrn'), ('kpp', 'kpp_add'),
             ('okato', 'okpo'),
             ('num_cert_state_reg', 'date_state_reg'),
-            ('authority_state_reg', )
+            ('authority_state_reg', ),
+            ('date_ogrn', 'authority_ogrn')
         ]}),
     )
 
