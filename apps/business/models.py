@@ -163,7 +163,7 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('Company category'), related_name='company')
     objects = CompanyManager()
-    fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True)
+    fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
     fullname_en = models.CharField(verbose_name=_("Full Name(English"), max_length=255, blank=True, null=True,
                                    db_index=True)
 
