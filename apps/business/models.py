@@ -183,6 +183,10 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
             return self.fullname
         return self.get_name
 
+    @permalink
+    def get_absolute_url(self):
+        return 'company_detail', (self.pk, ), {}
+
 
 class CompanyDetail(models.Model):
     company = models.OneToOneField(Company, verbose_name=_('Company'))
