@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
-from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate
+from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.managers import CompanyManager
@@ -206,7 +206,12 @@ class CompanyDetail(models.Model):
         verbose_name_plural = _("Companies details")
 
 
+class CompanyWorkTime(AbstractWorkTime):
+    company = models.OneToOneField(Company, verbose_name=_('Company'))
+
+
 @receiver(post_save, sender=Company, dispatch_uid='nnmware_uid')
 def create_company_detail(sender, instance, created, **kwargs):
     if created:
         CompanyDetail.objects.create(company=instance)
+        CompanyWorkTime.objects.create(company=instance)
