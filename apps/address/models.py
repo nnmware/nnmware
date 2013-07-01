@@ -212,6 +212,27 @@ class AbstractLocation(models.Model):
         except:
             return None
 
+    @property
+    def full_address(self):
+        result = ''
+        if self.country:
+            result += self.country.get_name + ', '
+        if self.region:
+            result += self.region.get_name + ', '
+        if self.city:
+            result += self.city.get_name + ', '
+        if self.street:
+            result += self.street + ' '
+        if self.street:
+            result += self.street + ' '
+        if self.house_number:
+            result += self.house_number + ' '
+        if self.building:
+            result += self.building + ' '
+        if self.flat_number:
+            result += self.flat_number
+        return result
+
 
 @python_2_unicode_compatible
 class Institution(AbstractName):
