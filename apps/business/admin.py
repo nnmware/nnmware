@@ -59,7 +59,7 @@ class CompanyAdmin(admin.ModelAdmin):
             ('employer_other',),
             ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en", 'fullname_en'), ("address_en", ), ("description_en",)]})
+                        "fields": [("name_en", 'fullname_en'), ("description_en",)]})
     )
     ordering = ('region', 'name')
 
