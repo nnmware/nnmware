@@ -61,7 +61,7 @@ class CompanyAdmin(admin.ModelAdmin):
                         "fields": [("country", 'region'),
                                    ('city', 'zipcode'),
                                    ('street', 'stationmetro'),
-                                   ('house', 'building', 'flat_number')
+                                   ('house_number', 'building', 'flat_number')
                         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", 'fullname_en'), ("description_en",)]})
