@@ -54,10 +54,15 @@ class CompanyAdmin(admin.ModelAdmin):
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
         ]}),
-        (_("Sphere of activity"), {"classes": ("collapse closed",), "fields": [
+        (_("Sphere of activity"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('employer_profile',),
-            ('employer_other',),
-            ]}),
+            ('employer_other',)]}),
+        (_("Address"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("country", 'region'),
+                                   ('city', 'zipcode'),
+                                   ('street', 'stationmetro'),
+                                   ('house', 'building', 'flat_number')
+                        ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", 'fullname_en'), ("description_en",)]})
     )
