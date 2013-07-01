@@ -196,4 +196,4 @@ class CompanyDetail(models.Model):
 @receiver(post_save, sender=Company, dispatch_uid='nnmware_uid')
 def create_company_detail(sender, instance, created, **kwargs):
     if created:
-        Company.objects.create(company=instance)
+        CompanyDetail.objects.create(company=instance)

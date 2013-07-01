@@ -42,8 +42,8 @@ class CompanyCategoryAdmin(TreeAdmin):
     )
 
 
-class CompanyDataInline(admin.StackedInline):
-    model = CompanyData
+class CompanyDetailInline(admin.StackedInline):
+    model = CompanyDetail
     fieldsets = (
         (_("Company Data"), {"fields": [
             ('inn', ),
@@ -77,7 +77,7 @@ class CompanyAdmin(admin.ModelAdmin):
                         "fields": [("name_en", 'fullname_en'), ("description_en",)]})
     )
     ordering = ('region', 'name')
-    inlines = [CompanyDataInline,]
+    inlines = [CompanyDetailInline, ]
 
 
 admin.site.register(Agency, AgencyAdmin)
