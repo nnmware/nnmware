@@ -195,6 +195,8 @@ class CompanyDetail(models.Model):
     num_cert_state_reg = models.CharField(max_length=20, verbose_name=_('Number certificate of state registration'),
                                           blank=True)
     date_state_reg = models.DateField(verbose_name=_("Date of state registration"), blank=True, null=True)
+    authority_state_reg = models.CharField(max_length=255, verbose_name=_('Authority of state registration'),
+                                           blank=True)
 
     class Meta:
         verbose_name = _("Company detail")
