@@ -192,6 +192,8 @@ class CompanyDetail(models.Model):
     okato = models.CharField(max_length=11, verbose_name=_('OKATO'), blank=True)
     okpo = models.CharField(max_length=10, verbose_name=_('OKPO'), blank=True)
     ogrn = models.CharField(max_length=13, verbose_name=_('OGRN'), blank=True)
+    num_cert_state_reg = models.CharField(max_length=20, verbose_name=_('Number certificate of state registration'),
+                                          blank=True)
 
     class Meta:
         verbose_name = _("Company detail")

@@ -48,6 +48,7 @@ class CompanyDetailInline(admin.StackedInline):
         (_("Company Data"), {"fields": [
             ('inn', 'ogrn'), ('kpp', 'kpp_add'),
             ('okato', 'okpo'),
+            ('num_cert_state_reg', )
         ]}),
     )
 
