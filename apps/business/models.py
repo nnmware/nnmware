@@ -189,6 +189,9 @@ class CompanyDetail(models.Model):
     inn = models.CharField(max_length=12, verbose_name=_('INN'), blank=True)
     kpp = models.CharField(max_length=9, verbose_name=_('KPP'), blank=True)
     kpp_add = models.CharField(max_length=9, verbose_name=_('KPP (addon)'), blank=True)
+    okato = models.CharField(max_length=11, verbose_name=_('OKATO'), blank=True)
+    okpo = models.CharField(max_length=10, verbose_name=_('OKPO'), blank=True)
+    ogrn = models.CharField(max_length=13, verbose_name=_('OGRN'), blank=True)
 
     class Meta:
         verbose_name = _("Company detail")
