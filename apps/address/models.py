@@ -206,6 +206,13 @@ class AbstractLocation(models.Model):
         verbose_name_plural = _("Locations")
         abstract = True
 
+    def geoaddress(self):
+        try:
+            return "%s %s, %s" % (self.house_number, self.street, self.city)
+        except:
+            return None
+
+
 @python_2_unicode_compatible
 class Institution(AbstractName):
     city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True, blank=True)
