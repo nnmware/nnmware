@@ -213,7 +213,7 @@ class AbstractLocation(models.Model):
             return None
 
     @property
-    def full_address(self):
+    def get_fulladdress(self):
         result = ''
         if self.country:
             result += self.country.get_name + ', '
