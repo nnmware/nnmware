@@ -440,6 +440,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             context['need_days'] = need_days
         else:
             search_data = default_search()
+            context['full_info'] = 1
         context['search_data'] = search_data
         context['search'] = 1
         context['panel_for'] = 'room'
