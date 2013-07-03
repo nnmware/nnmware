@@ -336,6 +336,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
         else:
             search_data = default_search()
             rooms = self.object.room_set.all()
+            context['full_info'] = 1
         if options:
             for option in options:
                 rooms = rooms.filter(option=option)
