@@ -168,6 +168,9 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
     fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
     fullname_en = models.CharField(verbose_name=_("Full Name(English"), max_length=255, blank=True, null=True,
                                    db_index=True)
+    teaser = models.CharField(verbose_name=_("Teaser"), max_length=255, db_index=True, blank=True, null=True)
+    teaser_en = models.CharField(verbose_name=_("Teaser(English"), max_length=255, blank=True, null=True,
+                                 db_index=True)
 
     class Meta:
         verbose_name = _("Company")
@@ -182,6 +185,13 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
         if self.fullname:
             return self.fullname
         return self.get_name
+
+    @property
+    def get_teaser(self):
+        if get_language() == 'en':
+            if self.teaser_en:
+                return self.teaser_en
+        return self.teaser
 
     @permalink
     def get_absolute_url(self):

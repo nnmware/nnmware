@@ -62,7 +62,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name', 'position')
     fieldsets = (
         (_("Employer"), {"fields": [
-            ("name", 'fullname'), ('category', ),
+            ("name", 'fullname'), ('teaser', 'category'),
             ('description', ),
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
@@ -78,8 +78,7 @@ class CompanyAdmin(admin.ModelAdmin):
                                    ('longitude', 'latitude')
                         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en", 'fullname_en'), ("description_en",)]})
-    )
+                        "fields": [("name_en", 'fullname_en'), ('teaser_en', ), ("description_en",)]}))
     ordering = ('region', 'name')
     inlines = [CompanyDetailInline, ]
 
