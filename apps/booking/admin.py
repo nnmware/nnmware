@@ -197,7 +197,7 @@ class DiscountAdmin(admin.ModelAdmin):
 
 
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('__unicode__', 'username')
     search_fields = ('date',)
 
 
