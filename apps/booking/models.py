@@ -579,6 +579,7 @@ class Review(AbstractIP, HotelPoints):
     date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now, db_index=True)
     review = models.TextField(verbose_name=_("Review"), blank=True)
     username = models.CharField(verbose_name=_("Guest username"), max_length=100)
+    booking = models.ForeignKey(Booking, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ['-date', ]
