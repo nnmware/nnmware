@@ -197,6 +197,7 @@ def client_review(request, pk):
         review = request.REQUEST['review']
         r = Review()
         r.user = request.user
+        r.username = request.user.first_name
         r.hotel = hotel
         r.food = food
         r.service = service
