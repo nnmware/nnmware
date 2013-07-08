@@ -181,12 +181,11 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
 
 
 class ServiceCategoryAdmin(TreeAdmin):
-    fieldsets = (
-        (_("Main"), {"fields": [("name", "slug"), ("parent",
-                                                   "login_required",)]}),
-        (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
-    )
+    pass
+
+    class Media:
+        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+              '/static/grappelli/tinymce_setup/tinymce_setup.js',]
 
 
 class ServiceAdmin(admin.ModelAdmin):
