@@ -443,6 +443,9 @@ class AbstractContent(models.Model):
         except:
             return None
 
+    def get_content_object(self):
+        return self.content_object
+
 
 DOC_FILE = 0
 DOC_IMAGE = 1
