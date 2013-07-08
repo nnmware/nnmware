@@ -557,7 +557,7 @@ class Service(AbstractName, MoneyBase, AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
-    objects = ServiceManager
+    objects = ServiceManager()
 
     class Meta:
         ordering = ['-created_date']
