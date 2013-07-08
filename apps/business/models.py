@@ -163,8 +163,8 @@ class CompanyCategory(Tree):
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
-    main_category = models.ForeignKey(CompanyCategory, verbose_name=_('Company category'), related_name='company',
-                                 on_delete=models.SET_NULL)
+    main_category = models.ForeignKey(CompanyCategory, blank=True, null=True, verbose_name=_('Company category'),
+                                      related_name='company', on_delete=models.SET_NULL)
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('All company category'),
                                       related_name='companies')
     fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
