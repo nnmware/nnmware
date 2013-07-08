@@ -40,18 +40,23 @@ class ProductCategoryAdmin(TreeAdmin):
               '/static/grappelli/tinymce_setup/tinymce_setup.js',]
     #list_display = ("name", "_parents_repr")
 
+
 class ProductParameterAdmin(admin.ModelAdmin):
     list_display = ("name",'category' ,"unit")
 
+
 class ProductParameterCategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
+
 
 class VendorAdmin(admin.ModelAdmin):
     fieldsets = ((_('Vendor'), {'fields': [('name','country','website'),('description',)]}),)
     list_display = ('name','country','website')
 
+
 class BasketAdmin(admin.ModelAdmin):
     list_display = ("user", "product",'quantity','created_date','updated_date')
+
 
 class OrderItemInline(admin.StackedInline):
     model = OrderItem
@@ -66,22 +71,25 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('user','id','status')
     inlines = [ OrderItemInline, ]
     fieldsets = (
-        (_("Order"), {"fields": [('user','status','phone'),
-            ("last_name",'first_name','amount_order'),('middle_name','email'),
-            ("created_date",'updated_date'),
-            ('address','delivery'),
-            ('buyer_comment','seller_comment'),
-            ('comment'),
+        (_("Order"), {"fields": [('user', 'status', 'phone'),
+            ("last_name", 'first_name', 'amount_order'), ('middle_name', 'email'),
+            ("created_date", 'updated_date'),
+            ('address', 'delivery'),
+            ('buyer_comment', 'seller_comment'),
+            ('comment', ),
         ]}),
         )
     ordering = ('-created_date','user')
+
     def number_order(self, obj):
         return obj.pk
     number_order.short_description = _('Order number')
+
     def amount_order(self, obj):
         return obj.fullamount
     amount_order.short_description = _('Amount')
-    readonly_fields = ('amount_order','updated_date')
+    readonly_fields = ('amount_order', 'updated_date')
+
 
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city',"street",'house_number','last_name','first_name')
@@ -92,8 +100,8 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
             ("zipcode",'city','street'),
             ('house_number','building','flat_number'),
             ('phone','skype'),
-        ]}),
-        )
+        ]}),)
+
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date',"ip",'user_agent')
@@ -103,6 +111,7 @@ class FeedbackAdmin(admin.ModelAdmin):
         )
     ordering = ('-created_date','name','email')
     readonly_fields = ('ip','user_agent','created_date')
+
 
 class ShopCallbackAdmin(admin.ModelAdmin):
     list_display = ("clientname", "clientphone", 'created_date','closed','quickorder',"ip",'user_agent')
@@ -123,12 +132,14 @@ class ReviewAdmin(admin.ModelAdmin):
     ordering = ('-created_date','user','visible')
     readonly_fields = ('ip','user_agent','created_date')
 
+
 class ShopSliderAdmin(admin.ModelAdmin):
     list_display = ('pk','slide_thumbnail','slider_link','visible')
     fieldsets = (
         (_("ShopSlider"), {"fields": [('img',),('visible','slider_link')]}),
         )
     ordering = ('visible',)
+
 
 class SpecialOfferAdmin(admin.ModelAdmin):
     class Media:
@@ -150,6 +161,7 @@ class ShopNewsAdmin(admin.ModelAdmin):
         )
     ordering = ('-created_date','title')
 
+
 class ShopArticleAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
@@ -158,6 +170,7 @@ class ShopArticleAdmin(admin.ModelAdmin):
         )
     ordering = ('-created_date','title')
 
+
 class DeliveryMethodAdmin(admin.ModelAdmin):
     list_display = ("name", "amount", 'enabled_for_registered','enabled_for_unregistered','order_in_list')
     fieldsets = (
@@ -165,6 +178,33 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
                                     ('order_in_list',),]}),
         )
     ordering = ('-order_in_list','name')
+
+
+class ServiceCategoryAdmin(TreeAdmin):
+    fieldsets = (
+        (_("Main"), {"fields": [("name", "slug"), ("parent",
+                                                   "login_required",)]}),
+        (_("Description"), {"classes": ("collapse",),
+                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+    )
+
+
+class ServiceAdmin(admin.ModelAdmin):
+    readonly_fields = ('created_date', 'updated_date')
+    list_display = ("name", "category", "created_date", 'amount', 'shop_pn', 'vendor_pn', 'visible')
+    prepopulated_fields = {'slug': ('name',)}
+    fieldsets = (
+        (_("Service"), {"fields": [('name', 'category'),
+            ('slug', 'visible', 'avail'),
+            ('amount', 'teaser'),
+            ('description',),
+            ("created_date", 'updated_date'),
+            ('shop_pn', 'vendor_pn'),
+            ('order_in_list', 'enabled', 'on_main'),
+            ('discount', 'discount_percent', 'special_offer'),
+            ('related_services',),
+        ]}),)
+
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductCategory, ProductCategoryAdmin)
@@ -186,3 +226,5 @@ admin.site.register(SpecialOffer, SpecialOfferAdmin)
 admin.site.register(DeliveryMethod, DeliveryMethodAdmin)
 admin.site.register(ShopCallback, ShopCallbackAdmin)
 admin.site.register(ShopSlider, ShopSliderAdmin)
+admin.site.register(ServiceCategory, ServiceCategoryAdmin)
+admin.site.register(Service, ServiceAdmin)
