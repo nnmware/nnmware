@@ -87,6 +87,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     width = models.IntegerField(_('Width, sm'), default=0, blank=True)
     height = models.IntegerField(_('Height, sm'), default=0, blank=True)
     depth = models.IntegerField(_('Depth, sm'), default=0, blank=True)
+    weight = models.DecimalField(verbose_name=_('Weight, kg'), default=0, blank=True, decimal_places=3, max_digits=20)
     maincat = std_text_field(_('Main category'))
     maincatid = models.IntegerField(_('Main category id'), default=0, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
