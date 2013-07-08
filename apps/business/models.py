@@ -157,7 +157,7 @@ class CompanyCategory(Tree):
 
     @property
     def _active_set(self):
-        companies = Company.objects.filter(category=self).values_list('pk', flat=True).distinct()
+        companies = Company.objects.filter(category=self).order_by('pk').values_list('pk', flat=True).distinct()
         return Company.objects.filter(pk__in=companies)
 
 
