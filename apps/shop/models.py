@@ -7,6 +7,7 @@ from django.db.models import permalink, Q
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country, AbstractLocation, Region
+from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material
 from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
@@ -92,6 +93,7 @@ class Product(AbstractName, MoneyBase, AbstractDate):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Product Admins'),
                                     null=True, blank=True, related_name='%(class)s_adm')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
     objects = ProductManager()
 

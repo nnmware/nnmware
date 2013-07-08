@@ -6,28 +6,30 @@ from django.utils.translation import ugettext as _
 from nnmware.apps.shop.models import *
 from nnmware.core.admin import ColorAdmin, MaterialAdmin
 
+
 class ProductParameterValueInline(generic.GenericStackedInline):
     model = ProductParameterValue
     extra = 0
-    fields = (('parameter','value'),)
+    fields = (('parameter', 'value'),)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    readonly_fields = ('created_date','updated_date')
-    list_display = ("name", "category", 'vendor',"created_date",'quantity','amount','shop_pn','vendor_pn','visible')
+    readonly_fields = ('created_date', 'updated_date')
+    list_display = ("name", "category", 'vendor', "created_date", 'quantity', 'amount', 'shop_pn', 'vendor_pn',
+                    'visible')
     prepopulated_fields = {'slug': ('name',)}
-    inlines = [ ProductParameterValueInline, ]
+    inlines = [ProductParameterValueInline, ]
     fieldsets = (
-        (_("Product"), {"fields": [('name','category'),
-            ('slug','vendor','visible','avail'),
-            ('amount','quantity'),
+        (_("Product"), {"fields": [('name', 'category'),
+            ('slug', 'vendor', 'visible', 'avail'),
+            ('amount', 'quantity'),
             ('description',),
-            ("created_date",'updated_date'),
-            ('shop_pn','vendor_pn'),
-            ('order_in_list','enabled','on_main'),
-            ('teaser',),('discount','discount_percent','special_offer'),('colors',),('materials',),('related_products',),
-        ]}),
-        )
+            ("created_date", 'updated_date'),
+            ('shop_pn', 'vendor_pn'),
+            ('order_in_list', 'enabled', 'on_main'),
+            ('teaser',), ('discount', 'discount_percent', 'special_offer'),
+            ('colors',), ('materials',), ('related_products',),
+        ]}),)
 
 
 class ProductCategoryAdmin(TreeAdmin):

@@ -183,7 +183,6 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
 
-
     @property
     def get_fullname(self):
         if get_language() == 'en':
