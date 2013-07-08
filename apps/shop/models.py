@@ -563,3 +563,7 @@ class Service(AbstractName, MoneyBase, AbstractDate):
         ordering = ['-created_date']
         verbose_name = _("Service")
         verbose_name_plural = _("Services")
+
+    @permalink
+    def get_absolute_url(self):
+        return "service_detail", (), {'pk': self.pk}
