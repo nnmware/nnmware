@@ -233,6 +233,11 @@ class ProductManager(Manager):
         return self.filter(enabled=True, on_main=True).order_by('-maincatid')
 
 
+class ServiceManager(Manager):
+    def active(self):
+        return self.filter(avail=True, visible=True)
+
+
 class TopicManager(Manager):
     def active(self):
         return self.filter(enabled=True)
