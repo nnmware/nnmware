@@ -157,7 +157,8 @@ class CompanyCategory(Tree):
 
     @property
     def _active_set(self):
-        return Company.objects.filter(category=self).distinct()
+        companies = Company.objects.filter(category=self).values_list('pk', flat=True).distinct()
+        return Company.objects.filter(pk__in=companies)
 
 
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
