@@ -163,14 +163,21 @@ class CompanyCategory(Tree):
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
-    category = models.ManyToManyField(CompanyCategory, verbose_name=_('Company category'), related_name='company')
-    objects = CompanyManager()
+    main_category = models.ForeignKey(CompanyCategory, verbose_name=_('Company category'), related_name='company',
+                                 on_delete=models.SET_NULL)
+    category = models.ManyToManyField(CompanyCategory, verbose_name=_('All company category'),
+                                      related_name='companies')
     fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
     fullname_en = models.CharField(verbose_name=_("Full Name(English"), max_length=255, blank=True, null=True,
                                    db_index=True)
     teaser = models.CharField(verbose_name=_("Teaser"), max_length=255, db_index=True, blank=True, null=True)
     teaser_en = models.CharField(verbose_name=_("Teaser(English"), max_length=255, blank=True, null=True,
                                  db_index=True)
+    branch = models.BooleanField(verbose_name=_('Is branch?'), default=False, db_index=True)
+    parent = models.ForeignKey('self', verbose_name=_('Parent company'), blank=True, null=True, related_name='children',
+                               on_delete=models.SET_NULL)
+
+    objects = CompanyManager()
 
     class Meta:
         verbose_name = _("Company")

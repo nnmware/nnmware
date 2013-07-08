@@ -62,7 +62,7 @@ class CompanyAdmin(admin.ModelAdmin):
     search_fields = ('name', 'position')
     fieldsets = (
         (_("Employer"), {"fields": [
-            ("name", 'fullname'), ('teaser', 'category'),
+            ("name", 'fullname'), ('main_category', 'category'), ('branch', 'parent'),
             ('description', ),
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
