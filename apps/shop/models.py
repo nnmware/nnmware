@@ -521,3 +521,43 @@ class ShopSlider(AbstractImg):
     def __str__(self):
         return "Slider Image - %s" % self.pk
 
+
+class ServiceCategory(Tree):
+    slug_detail = 'service_category'
+
+    class Meta:
+        ordering = ['parent__id', ]
+        verbose_name = _('Service Category')
+        verbose_name_plural = _('Service Categories')
+
+    @property
+    def _active_set(self):
+        return Service.objects.filter(category=self, visible=True)
+
+
+class Service(AbstractName, MoneyBase, AbstractDate):
+    category = models.ForeignKey(ServiceCategory, verbose_name=_('Category'), null=True, blank=True,
+                                 on_delete=models.SET_NULL, related_name='servicecat')
+    related_services = models.ManyToManyField('self', verbose_name=_('Related services'), null=True, blank=True)
+    shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
+    vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
+    avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
+    latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
+    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
+    bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
+    discount = models.BooleanField(verbose_name=_("Discount"), default=False)
+    on_main = models.BooleanField(verbose_name=_("On main page"), default=False)
+    visible = models.BooleanField(verbose_name=_("Visible"), default=True)
+    special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
+    discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, null=True,
+                                           decimal_places=1, max_digits=4, default=0)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Service Admins'),
+                                    null=True, blank=True, related_name='%(class)s_adm')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ['-created_date']
+        verbose_name = _("Service")
+        verbose_name_plural = _("Services")
