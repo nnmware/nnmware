@@ -31,7 +31,7 @@ class HotelAdmin(admin.ModelAdmin):
     filter_horizontal = ['option', 'admins']
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('description',),
-                                 ('room_count', 'starcount'), ('best_offer', 'in_top10', 'work_on_request'),
+                                 ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
                                  ('longitude', 'latitude'), 'schema_transit'
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'), ('website', 'register_date'), ('contact_email', 'contact_name'),
