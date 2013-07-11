@@ -10,7 +10,7 @@ from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
-from nnmware.core.managers import CompanyManager
+from nnmware.core.managers import CompanyManager, VacancyManager
 
 
 class TypeEmployer(AbstractName):
@@ -278,6 +278,8 @@ class Vacancy(AbstractName, AbstractDate):
     company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
                                  on_delete=models.SET_NULL)
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
+
+    objects = VacancyManager()
 
     class Meta:
         ordering = ['-created_date', ]

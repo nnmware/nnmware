@@ -246,3 +246,8 @@ class TopicManager(Manager):
 class CompanyManager(Manager):
     def active(self):
         return self.filter(enabled=True)
+
+
+class VacancyManager(Manager):
+    def active(self):
+        return self.filter(enabled=True)
