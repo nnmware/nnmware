@@ -96,7 +96,7 @@ class VacancyAdmin(admin.ModelAdmin):
     list_display = ('name', 'vacancy_type', 'owner_user', 'owner_company', 'enabled')
     fieldsets = (
         (_("Vacancy"), {"fields": [
-            ("name", 'vacancy_type'), ('category', 'category'), ('owner_user', 'owner_company'),
+            ("name", 'vacancy_type'), ('category', ), ('owner_user', 'owner_company'),
             ('description', ),
             ('teaser', ),
             ('created_date', 'updated_date')
