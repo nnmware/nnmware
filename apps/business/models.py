@@ -273,9 +273,9 @@ class Vacancy(AbstractName, AbstractDate):
                                  related_name='vacancy', on_delete=models.SET_NULL)
     vacancy_type = models.IntegerField(_("Type of vacancy"), choices=VACANCY_TYPE, default=VACANCY_UNKNOWN,
                                        db_index=True)
-    owner_user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Vacancy owner user'), blank=True,
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Vacancy owner user'), blank=True,
                                    null=True, on_delete=models.SET_NULL)
-    owner_company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
+    company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
                                  on_delete=models.SET_NULL)
     teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
 
