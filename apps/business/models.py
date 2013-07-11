@@ -168,10 +168,10 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('All company category'),
                                       related_name='companies')
     fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
-    fullname_en = models.CharField(verbose_name=_("Full Name(English"), max_length=255, blank=True, null=True,
+    fullname_en = models.CharField(verbose_name=_('Full Name(English)'), max_length=255, blank=True, null=True,
                                    db_index=True)
-    teaser = models.CharField(verbose_name=_("Teaser"), max_length=255, db_index=True, blank=True, null=True)
-    teaser_en = models.CharField(verbose_name=_("Teaser(English"), max_length=255, blank=True, null=True,
+    teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True, null=True)
+    teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True, null=True,
                                  db_index=True)
     branch = models.BooleanField(verbose_name=_('Is branch?'), default=False, db_index=True)
     parent = models.ForeignKey('self', verbose_name=_('Parent company'), blank=True, null=True, related_name='children',

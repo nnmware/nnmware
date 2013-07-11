@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-09 09:40+1100\n"
+"POT-Creation-Date: 2013-07-12 08:55+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,7 +86,7 @@ msgstr "Город"
 #: apps/booking/admin.py:47 apps/booking/admin.py:63 apps/booking/admin.py:75
 #: apps/booking/admin.py:86 apps/booking/admin.py:97 apps/booking/admin.py:106
 #: apps/booking/admin.py:117 apps/booking/admin.py:127
-#: apps/business/admin.py:80
+#: apps/business/admin.py:80 apps/business/admin.py:104
 msgid "English"
 msgstr "Английский"
 
@@ -440,7 +440,7 @@ msgstr "Спам"
 msgid "Food"
 msgstr "Питание"
 
-#: apps/booking/models.py:24 apps/shop/admin.py:197 apps/shop/models.py:562
+#: apps/booking/models.py:24 apps/shop/admin.py:196 apps/shop/models.py:564
 msgid "Service"
 msgstr "Сервис"
 
@@ -501,9 +501,10 @@ msgstr "Типы отеля"
 
 #: apps/booking/models.py:90 apps/booking/models.py:108
 #: apps/booking/models.py:356 apps/booking/models.py:477
-#: apps/dossier/models.py:268 apps/dossier/models.py:599
-#: apps/money/models.py:65 apps/money/models.py:115 apps/shop/models.py:234
-#: core/abstract.py:543 core/models.py:279 core/models.py:367
+#: apps/business/models.py:261 apps/dossier/models.py:268
+#: apps/dossier/models.py:599 apps/money/models.py:65 apps/money/models.py:115
+#: apps/shop/models.py:234 core/abstract.py:543 core/models.py:279
+#: core/models.py:367
 msgid "Unknown"
 msgstr "Неизвестно"
 
@@ -910,9 +911,8 @@ msgid "Review"
 msgstr "Отзыв"
 
 #: apps/booking/models.py:581
-#, fuzzy
 msgid "Guest username"
-msgstr "Имя пользователя"
+msgstr "Имя гостя"
 
 #: apps/booking/models.py:586
 msgid "Client review"
@@ -1173,22 +1173,22 @@ msgstr "Тип работодателя"
 msgid "Agency name"
 msgstr "Название агентства"
 
-#: apps/business/admin.py:38 apps/shop/admin.py:185 core/admin.py:46
+#: apps/business/admin.py:38 apps/business/admin.py:88 core/admin.py:46
 #: core/admin.py:65 core/admin.py:167 core/admin.py:224
 msgid "Main"
 msgstr "Основная"
 
-#: apps/business/admin.py:40 apps/dossier/models.py:419
-#: apps/dossier/models.py:455 apps/money/models.py:135 apps/shop/admin.py:187
-#: apps/shop/models.py:498 core/abstract.py:94 core/abstract.py:251
-#: core/abstract.py:462 core/admin.py:48 core/admin.py:66 core/models.py:558
+#: apps/business/admin.py:40 apps/business/admin.py:90
+#: apps/dossier/models.py:419 apps/dossier/models.py:455
+#: apps/money/models.py:135 apps/shop/models.py:498 core/abstract.py:94
+#: core/abstract.py:251 core/abstract.py:462 core/admin.py:48 core/admin.py:66
+#: core/models.py:558
 msgid "Description"
 msgstr "Описание"
 
 #: apps/business/admin.py:48
-#, fuzzy
 msgid "Company Data"
-msgstr "Название компании"
+msgstr "Данные компании"
 
 #: apps/business/admin.py:64 apps/business/models.py:115
 msgid "Employer"
@@ -1198,6 +1198,10 @@ msgstr "Работодатель"
 #, fuzzy
 msgid "Sphere of activity"
 msgstr "Творческая деятельность"
+
+#: apps/business/admin.py:98 apps/business/models.py:286
+msgid "Vacancy"
+msgstr "Вакансия"
 
 #: apps/business/models.py:22
 msgid "Types of employers"
@@ -1347,7 +1351,7 @@ msgstr "Категория компании"
 msgid "Companies Categories"
 msgstr "Категории компаний"
 
-#: apps/business/models.py:164
+#: apps/business/models.py:164 apps/business/models.py:270
 msgid "Company Admins"
 msgstr "Администраторы компании"
 
@@ -1356,37 +1360,33 @@ msgid "Company category"
 msgstr "Категория компании"
 
 #: apps/business/models.py:168
-#, fuzzy
 msgid "All company category"
-msgstr "Категория компании"
+msgstr "Все категории компании"
 
 #: apps/business/models.py:170 core/models.py:603
 msgid "Full Name"
 msgstr "Полное имя"
 
 #: apps/business/models.py:171
-#, fuzzy
-msgid "Full Name(English"
-msgstr "Название(Английский)"
+msgid "Full Name(English)"
+msgstr "Полное название(Английский)"
 
-#: apps/business/models.py:173 apps/shop/models.py:79 apps/shop/models.py:444
-#: apps/shop/models.py:546
+#: apps/business/models.py:173 apps/business/models.py:280
+#: apps/shop/models.py:79 apps/shop/models.py:444 apps/shop/models.py:546
 msgid "Teaser"
 msgstr "Тизер"
 
 #: apps/business/models.py:174
-#, fuzzy
-msgid "Teaser(English"
-msgstr "Название(Английский)"
+msgid "Teaser(English)"
+msgstr "Тизер(Английский)"
 
 #: apps/business/models.py:176
 msgid "Is branch?"
-msgstr ""
+msgstr "Это филиал?"
 
 #: apps/business/models.py:177
-#, fuzzy
 msgid "Parent company"
-msgstr "Родительское сообщениe"
+msgstr "Родительская компания"
 
 #: apps/business/models.py:183 apps/business/models.py:208
 #: apps/business/models.py:230 apps/shop/models.py:97 apps/shop/models.py:558
@@ -1403,56 +1403,99 @@ msgstr "ИНН"
 
 #: apps/business/models.py:210
 msgid "KPP"
-msgstr ""
+msgstr "КПП"
 
 #: apps/business/models.py:211
 msgid "KPP (addon)"
-msgstr ""
+msgstr "КПП (дополнительно)"
 
 #: apps/business/models.py:212
 msgid "OKATO"
-msgstr ""
+msgstr "ОКАТО"
 
 #: apps/business/models.py:213
 msgid "OKPO"
-msgstr ""
+msgstr "ОКПО"
 
 #: apps/business/models.py:214
 msgid "OGRN"
-msgstr ""
+msgstr "ОГРН"
 
 #: apps/business/models.py:215
 msgid "Number certificate of state registration"
-msgstr ""
+msgstr "Номер свидетельства государственной регистрации"
 
 #: apps/business/models.py:217
-#, fuzzy
 msgid "Date of state registration"
-msgstr "Паспорт зарегистрирован"
+msgstr "Дата государственной регистрации"
 
 #: apps/business/models.py:218
-#, fuzzy
 msgid "Authority of state registration"
-msgstr "Паспорт зарегистрирован"
+msgstr "Орган государственной регистрации"
 
 #: apps/business/models.py:220
-#, fuzzy
 msgid "Date of ogrn"
-msgstr "Мастер курса"
+msgstr "Дата ОГРГ"
 
 #: apps/business/models.py:221
 msgid "Authority of ogrn"
-msgstr ""
+msgstr "Государственный орган, выдавший ОГРН"
 
 #: apps/business/models.py:225
-#, fuzzy
 msgid "Company detail"
-msgstr "Администраторы компании"
+msgstr "Детальная информация компании"
 
 #: apps/business/models.py:226
-#, fuzzy
 msgid "Companies details"
-msgstr "Категории компаний"
+msgstr "Детальные информации о компаниях"
+
+#: apps/business/models.py:241
+msgid "Vacancy Category Admins"
+msgstr "Администраторы Категории вакансий"
+
+#: apps/business/models.py:247
+msgid "Vacancy Category"
+msgstr "Категория вакансии"
+
+#: apps/business/models.py:248
+msgid "Vacancy Categories"
+msgstr "Категории вакансий"
+
+#: apps/business/models.py:262
+msgid "Permanent"
+msgstr "Постоянно"
+
+#: apps/business/models.py:263
+msgid "Contract"
+msgstr "Контракт"
+
+#: apps/business/models.py:264
+msgid "Internship"
+msgstr "Стажировка"
+
+#: apps/business/models.py:265
+msgid "Freelance"
+msgstr "Фриланс"
+
+#: apps/business/models.py:272
+msgid "Vacancy category"
+msgstr "Категория вакансии"
+
+#: apps/business/models.py:274
+msgid "Type of vacancy"
+msgstr "Тип вакансии"
+
+#: apps/business/models.py:276
+msgid "Vacancy owner user"
+msgstr "Владелец вакансии(пользователь)"
+
+#: apps/business/models.py:278
+msgid "Vacancy owner company"
+msgstr "Владелец вакансии(компания)"
+
+#: apps/business/models.py:287
+msgid "Vacancies"
+msgstr "Вакансии"
 
 #: apps/dossier/admin.py:9 apps/dossier/models.py:40 apps/dossier/models.py:43
 msgid "Type of appearance"
@@ -1797,7 +1840,6 @@ msgid "Head size"
 msgstr "Размер головы"
 
 #: apps/dossier/models.py:211
-#, fuzzy
 msgid "Natural hair color"
 msgstr "Натуральный цвет волос"
 
@@ -1818,9 +1860,8 @@ msgid "Have collection of glasses"
 msgstr "Имеет коллекцию очков"
 
 #: apps/dossier/models.py:225
-#, fuzzy
 msgid "Piercing"
-msgstr "Имеется пирсинг"
+msgstr "Пирсинг"
 
 #: apps/dossier/models.py:226
 msgid "Tattoo"
@@ -2523,9 +2564,8 @@ msgid "Depth, sm"
 msgstr "Глубина, см"
 
 #: apps/shop/models.py:90
-#, fuzzy
 msgid "Weight, kg"
-msgstr "Вес"
+msgstr "Вес, кг"
 
 #: apps/shop/models.py:91
 msgid "Main category"
@@ -2536,9 +2576,8 @@ msgid "Main category id"
 msgstr "ID главной категории"
 
 #: apps/shop/models.py:94
-#, fuzzy
 msgid "Product Admins"
-msgstr "Товары"
+msgstr "Администраторы товара"
 
 #: apps/shop/models.py:105
 msgid "Products"
@@ -2678,9 +2717,8 @@ msgid "Seller comment"
 msgstr "Комментарий продавца"
 
 #: apps/shop/models.py:280 apps/shop/models.py:403
-#, fuzzy
 msgid "Seller"
-msgstr "Хит продаж"
+msgstr "Продавец"
 
 #: apps/shop/models.py:287
 msgid "Orders"
@@ -2754,7 +2792,7 @@ msgstr "Ответ"
 
 #: apps/shop/models.py:405
 msgid "Buyer"
-msgstr ""
+msgstr "Покупатель"
 
 #: apps/shop/models.py:426
 msgid "Position"
@@ -2832,7 +2870,7 @@ msgstr "Сопутствующие услуги"
 msgid "Service Admins"
 msgstr "Администраторы услуг"
 
-#: apps/shop/models.py:563
+#: apps/shop/models.py:565
 msgid "Services"
 msgstr "Услуги"
 
