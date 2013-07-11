@@ -83,9 +83,34 @@ class CompanyAdmin(admin.ModelAdmin):
     inlines = [CompanyDetailInline, ]
 
 
+class VacancyCategoryAdmin(TreeAdmin):
+    fieldsets = (
+        (_("Main"), {"fields": [("name", "slug"), ("parent",
+                                                   "login_required",)]}),
+        (_("Description"), {"classes": ("collapse",),
+                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+    )
+
+
+class VacancyAdmin(admin.ModelAdmin):
+    list_display = ('name', 'vacancy_type', 'owner_user', 'owner_company', 'enabled')
+    fieldsets = (
+        (_("Vacancy"), {"fields": [
+            ("name", 'vacancy_type'), ('category', 'category'), ('owner_user', 'owner_company'),
+            ('description', ),
+            ('teaser', ),
+            ('created_date', 'updated_date')
+        ]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en", ), ("description_en",)]}))
+    ordering = ('-created_date', 'name')
+
+
 admin.site.register(Agency, AgencyAdmin)
 admin.site.register(TypeEmployer, TypeEmployerAdmin)
 admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
 admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
 admin.site.register(CompanyCategory, CompanyCategoryAdmin)
 admin.site.register(Company, CompanyAdmin)
+admin.site.register(VacancyCategory, VacancyCategoryAdmin)
+admin.site.register(Vacancy, VacancyAdmin)

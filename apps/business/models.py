@@ -235,3 +235,52 @@ def create_company_detail(sender, instance, created, **kwargs):
     if created:
         CompanyDetail.objects.create(company=instance)
         CompanyWorkTime.objects.create(company=instance)
+
+
+class VacancyCategory(Tree):
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Vacancy Category Admins'),
+                                    null=True, blank=True, related_name='%(class)s_cat_adm')
+    slug_detail = 'vacancy_category'
+
+    class Meta:
+        ordering = ['parent__id', ]
+        verbose_name = _('Vacancy Category')
+        verbose_name_plural = _('Vacancy Categories')
+
+    @property
+    def _active_set(self):
+        return Vacancy.objects.filter(category=self)
+
+VACANCY_UNKNOWN = 0
+VACANCY_PERMANENT = 1
+VACANCY_CONTRACT = 2
+VACANCY_INTERNSHIP = 3
+VACANCY_FREELANCE = 4
+
+VACANCY_TYPE = (
+    (VACANCY_UNKNOWN, _('Unknown')),
+    (VACANCY_PERMANENT, _('Permanent')),
+    (VACANCY_CONTRACT, _('Contract')),
+    (VACANCY_INTERNSHIP, _('Internship')),
+    (VACANCY_FREELANCE, _('Freelance')),
+)
+
+
+class Vacancy(AbstractName, AbstractDate):
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
+                                    null=True, blank=True, related_name='%(class)s_comp_adm')
+    category = models.ForeignKey(VacancyCategory, blank=True, null=True, verbose_name=_('Vacancy category'),
+                                 related_name='vacancy', on_delete=models.SET_NULL)
+    vacancy_type = models.IntegerField(_("Type of vacancy"), choices=VACANCY_TYPE, default=VACANCY_UNKNOWN,
+                                       db_index=True)
+    owner_user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Vacancy owner user'), blank=True,
+                                   null=True, on_delete=models.SET_NULL)
+    owner_company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
+                                 on_delete=models.SET_NULL)
+    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
+
+    class Meta:
+        ordering = ['-created_date', ]
+        verbose_name = _('Vacancy')
+        verbose_name_plural = _('Vacancies')
+
