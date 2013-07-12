@@ -251,3 +251,13 @@ class CompanyManager(Manager):
 class VacancyManager(Manager):
     def active(self):
         return self.filter(enabled=True)
+
+
+class NewsManager(Manager):
+    def active(self):
+        return self.filter(enabled=True)
+
+
+class ArticleManager(Manager):
+    def active(self):
+        return self.filter(enabled=True)
