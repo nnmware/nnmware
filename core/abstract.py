@@ -334,6 +334,16 @@ class Tree(AbstractName):
             p_list.reverse()
         return p_list
 
+    def get_root_category(self, node):
+        if node.parent:
+            p = node.parent
+            if p != self:
+                return self.get_root_category(p)
+        return node
+
+    def root_category(self):
+        return self.get_root_category(self)
+
     def get_absolute_url(self):
         parents = self._recurse_for_parents(self)
         slug_list = [node.slug for node in parents]
