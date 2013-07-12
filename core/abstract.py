@@ -335,7 +335,7 @@ class Tree(AbstractName):
         return p_list
 
     def get_root_category(self, node):
-        if node.parent_id:
+        if node.parent:
             p = node.parent
             if p != self:
                 return self.get_root_category(p)
