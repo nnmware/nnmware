@@ -286,3 +286,6 @@ class Vacancy(AbstractName, AbstractDate):
         verbose_name = _('Vacancy')
         verbose_name_plural = _('Vacancies')
 
+    @permalink
+    def get_absolute_url(self):
+        return 'vacancy_detail', (self.pk, ), {}
