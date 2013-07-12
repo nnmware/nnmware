@@ -18,7 +18,7 @@ class TopicAddForm(ModelForm):
 
     class Meta:
         model = Topic
-        fields = ('category', 'title', 'description')
+        fields = ('category', 'name', 'description')
 
 
 class AdminTopicForm(forms.ModelForm):
