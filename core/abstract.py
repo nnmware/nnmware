@@ -693,3 +693,16 @@ class AbstractWorkTime(models.Model):
         verbose_name_plural = _('Times of works')
         abstract = True
 
+
+class UserMixin(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'))
+
+    class Meta:
+        abstract = True
+
+    @property
+    def get_user_name(self):
+        try:
+            return self.user.get_name
+        except:
+            return self.user.username
