@@ -4,20 +4,20 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName
-from nnmware.core.managers import ArticleManager
+from nnmware.core.managers import NewsManager
 
 
-class ArticleCategory(Tree):
-    slug_detail = 'article_category'
+class NewsCategory(Tree):
+    slug_detail = 'news_category'
 
     class Meta:
         ordering = ['parent__id', 'name']
-        verbose_name = _('Article Category')
-        verbose_name_plural = _('Articles Categories')
+        verbose_name = _('News Category')
+        verbose_name_plural = _('News Categories')
 
     @property
     def _active_set(self):
-        return Article.objects.filter(category=self)
+        return News.objects.filter(category=self)
 
 
 STATUS_DELETE = 0
@@ -37,25 +37,25 @@ STATUS_CHOICES = (
 )
 
 
-class Article(AbstractDate, AbstractName):
+class News(AbstractDate, AbstractName):
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
-    category = models.ForeignKey(ArticleCategory, verbose_name=_('Category'), null=True, blank=True,
+    category = models.ForeignKey(NewsCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.PROTECT)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
-    objects = ArticleManager()
+    objects = NewsManager()
 
     class Meta:
         ordering = ['-created_date', ]
-        verbose_name = _('Article')
-        verbose_name_plural = _('Articles')
+        verbose_name = _('News')
+        verbose_name_plural = _('Many news')
 
     @permalink
     def get_absolute_url(self):
-        return "article_detail", (), {'pk': self.pk}
+        return "news_detail", (), {'pk': self.pk}
 
     @permalink
     def get_edit_url(self):
-        return 'articles_edit', (), {'pk': self.pk}
+        return 'news_edit', (), {'pk': self.pk}

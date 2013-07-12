@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.article.models import Article, ArticleCategory
+from nnmware.apps.news.models import News, NewsCategory
 from nnmware.core.admin import TreeAdmin
 
 
-class ArticleCategoryAdmin(TreeAdmin):
+class NewsCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
@@ -12,7 +12,7 @@ class ArticleCategoryAdmin(TreeAdmin):
     )
 
 
-class ArticleAdmin(admin.ModelAdmin):
+class NewsAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Topic'), {'fields': [('user', 'enabled', 'category', 'region')]}),
         (_('Content'), {'fields': [('name',), ('description',)]}),
@@ -24,5 +24,5 @@ class ArticleAdmin(admin.ModelAdmin):
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
 
-admin.site.register(Article, ArticleAdmin)
-admin.site.register(ArticleCategory, ArticleCategoryAdmin)
+admin.site.register(News, NewsAdmin)
+admin.site.register(NewsCategory, NewsCategoryAdmin)
