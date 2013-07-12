@@ -146,8 +146,6 @@ class AbstractEmployee(AbstractImg):
 
 
 class CompanyCategory(Tree):
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Category Admins'),
-                                    null=True, blank=True, related_name='%(class)s_cat_adm')
     slug_detail = 'companies_category'
 
     class Meta:
@@ -238,8 +236,6 @@ def create_company_detail(sender, instance, created, **kwargs):
 
 
 class VacancyCategory(Tree):
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Vacancy Category Admins'),
-                                    null=True, blank=True, related_name='%(class)s_cat_adm')
     slug_detail = 'vacancy_category'
 
     class Meta:

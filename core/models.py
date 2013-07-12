@@ -18,6 +18,7 @@ from django.db.models import permalink, Manager, Sum
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
+from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
@@ -411,10 +412,16 @@ class Action(AbstractContent, AbstractIP):
 
 
 def update_comment_count(sender, instance, **kwargs):
-    what = instance.get_content_object()
-    what.comments = Nnmcomment.public.all_for_object(what).count()
-    what.updated_date = datetime.now()
-    what.save()
+    try:
+        what = instance.get_content_object()
+        what.comments = Nnmcomment.public.all_for_object(what).count()
+        what.updated_date = datetime.now()
+        what.save()
+    except:
+        pass
+
+post_save.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
+post_delete.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
 
 
 def update_pic_count(sender, instance, **kwargs):
@@ -428,8 +435,6 @@ def update_doc_count(sender, instance, **kwargs):
     what.docs = Doc.objects.for_object(what).count()
     what.save()
 
-#signals.post_save.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
-#signals.post_delete.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
 #signals.post_save.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
 #signals.post_delete.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
 #signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
@@ -699,3 +704,4 @@ class NnmwareUser(AbstractUser, AbstractImg):
     def save(self, *args, **kwargs):
         self.date_modified = datetime.now()
         super(NnmwareUser, self).save(*args, **kwargs)
+

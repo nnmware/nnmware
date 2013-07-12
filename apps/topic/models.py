@@ -7,6 +7,9 @@ from django.core.cache import cache
 from nnmware.core.abstract import Tree, AbstractData
 
 
+
+
+
 class Category(Tree):
     slug_detail = 'topic_category'
 
@@ -31,10 +34,3 @@ class Topic(AbstractData):
         return reverse("topic_edit", self.id)
 
 
-def topic_cache(sender, **kwargs):
-    cache.delete('treetopic')
-
-#signals.pre_delete.connect(topic_cache, sender = Topic)
-#signals.post_save.connect(topic_cache, sender = Topic)
-#signals.pre_delete.connect(topic_cache, sender = Category)
-#signals.post_save.connect(topic_cache, sender = Category)
