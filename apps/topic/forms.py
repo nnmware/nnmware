@@ -10,7 +10,7 @@ class TopicForm(ModelForm):
 
     class Meta:
         model = Topic
-        fields = ('category', 'title', 'description')
+        fields = ('category', 'name', 'description')
 
 
 class TopicAddForm(ModelForm):
