@@ -34,6 +34,29 @@ class EstateTypeAdmin(admin.ModelAdmin):
         (_("Estate type"), {"fields": [('name', 'enabled'),
             ('name_en', )]}),)
 
+
+class EstateFeatureAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Estate feature"), {"fields": [('name', 'enabled'), ('internal', 'external'),
+            ('name_en', )]}),)
+
+
+class TrimKindAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Trim kind"), {"fields": [('name', 'enabled'), ('internal', 'external'),
+            ('name_en', )]}),)
+
+
 admin.site.register(Compass, CompassAdmin)
 admin.site.register(MaterialKind, MaterialKindAdmin)
 admin.site.register(EstateType, EstateTypeAdmin)
+admin.site.register(EstateFeature, EstateFeatureAdmin)
+admin.site.register(TrimKind, TrimKindAdmin)
