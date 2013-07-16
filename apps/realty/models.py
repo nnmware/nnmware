@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import AbstractData, AbstractDate
+from nnmware.core.abstract import AbstractDate, AbstractName
 
 
 class Compass(models.Model):
@@ -19,7 +19,7 @@ class Compass(models.Model):
         verbose_name_plural = _("Points of compass")
 
 
-class MaterialKind(AbstractData):
+class MaterialKind(AbstractName):
     pass
 
     class Meta:
@@ -35,7 +35,7 @@ class ExtInt(models.Model):
         abstract = True
 
 
-class EstateType(AbstractData):
+class EstateType(AbstractName):
     pass
 
     class Meta:
@@ -43,7 +43,7 @@ class EstateType(AbstractData):
         verbose_name_plural = _("Estate types")
 
 
-class EstateFeature(AbstractData, ExtInt):
+class EstateFeature(AbstractName, ExtInt):
     pass
 
     class Meta:
@@ -51,7 +51,7 @@ class EstateFeature(AbstractData, ExtInt):
         verbose_name_plural = _("Estate features")
 
 
-class TrimKind(AbstractData, ExtInt):
+class TrimKind(AbstractName, ExtInt):
     pass
 
     class Meta:
@@ -59,7 +59,7 @@ class TrimKind(AbstractData, ExtInt):
         verbose_name_plural = _("Trims kinds")
 
 
-class Estate(AbstractData, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
+class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
     gross_size = models.DecimalField(verbose_name=_('Gross area size (square meters)'), default=0, max_digits=10,
                                      decimal_places=1, db_index=True)
     live_size = models.DecimalField(verbose_name=_('Living space size (square meters)'), default=0, max_digits=10,
@@ -87,7 +87,7 @@ class Estate(AbstractData, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
         verbose_name_plural = _("Estate")
 
 
-class RmFeature(AbstractData, ExtInt):
+class RmFeature(AbstractName, ExtInt):
     pass
 
     class Meta:
@@ -95,7 +95,7 @@ class RmFeature(AbstractData, ExtInt):
         verbose_name_plural = _("Rm features")
 
 
-class RmType(AbstractData, ExtInt):
+class RmType(AbstractName, ExtInt):
     pass
 
     class Meta:
@@ -103,7 +103,7 @@ class RmType(AbstractData, ExtInt):
         verbose_name_plural = _("Rms types")
 
 
-class Rm(AbstractData):
+class Rm(AbstractName):
     kind = models.ForeignKey(RmType, verbose_name=_('Rm type'))
     estate = models.ForeignKey(Estate, verbose_name=_('Estate'))
     size = models.DecimalField(verbose_name=_('Space size (square meters)'), default=0, max_digits=10,
