@@ -25,5 +25,15 @@ class MaterialKindAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+class EstateTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Estate type"), {"fields": [('name', 'enabled'),
+            ('name_en', )]}),)
+
 admin.site.register(Compass, CompassAdmin)
 admin.site.register(MaterialKind, MaterialKindAdmin)
+admin.site.register(EstateType, EstateTypeAdmin)
