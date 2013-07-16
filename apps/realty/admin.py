@@ -14,4 +14,16 @@ class CompassAdmin(admin.ModelAdmin):
         (_("Point of compass"), {"fields": [('name', 'abbreviation'),
             ('name_en', )]}),)
 
+
+class MaterialKindAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Material kind"), {"fields": [('name', 'enabled'),
+            ('name_en', )]}),)
+
+
 admin.site.register(Compass, CompassAdmin)
+admin.site.register(MaterialKind, MaterialKindAdmin)
