@@ -7,15 +7,15 @@ class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'date', 'actor', 'status', 'amount', 'currency', 'target')
     search_fields = ('name', )
     list_filter = ('user', 'date')
-    ordering = [('user'),]
+    ordering = ('user', )
 #    readonly_fields = ('actor_ctype','actor_oid','target_ctype','target_oid')
     fieldsets = (
-        (_("Transaction"), {"fields": [("user","date"),
+        (_("Transaction"), {"fields": [("user", "date"),
             ('amount', 'currency', 'status'),
             ('actor_ctype', 'actor_oid'),
             ('target_ctype', 'target_oid')]}),)
 
-    _readonly_fields = [] # Default fields that are readonly for everyone.
+    _readonly_fields = []  # Default fields that are readonly for everyone.
 
     def get_readonly_fields(self, request, obj=None):
         readonly = list(self._readonly_fields)
@@ -28,8 +28,8 @@ class TransactionAdmin(admin.ModelAdmin):
 class BillAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_billed', 'target', 'status', 'amount', 'currency')
     search_fields = ('name',)
-    list_filter = ('user','date_billed')
-    ordering = [('user'),]
+    list_filter = ('user', 'date_billed')
+    ordering = ('user', )
     #readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
         (_("Bill"), {"fields": [("user", "date_billed"),
