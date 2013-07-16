@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-17 07:54+1100\n"
+"POT-Creation-Date: 2013-07-17 08:21+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2307,11 +2307,11 @@ msgstr "Умения"
 msgid "Transaction"
 msgstr "Транзакция"
 
-#: apps/money/admin.py:33 apps/money/models.py:140
+#: apps/money/admin.py:35 apps/money/models.py:140
 msgid "Bill"
 msgstr "Счет"
 
-#: apps/money/admin.py:47 apps/money/models.py:44
+#: apps/money/admin.py:51 apps/money/models.py:44
 msgid "Exchange Rate"
 msgstr "Курс обмена валют"
 
@@ -2470,6 +2470,10 @@ msgstr "Новость"
 msgid "Many news"
 msgstr "Новости"
 
+#: apps/realty/admin.py:14 apps/realty/models.py:18
+msgid "Point of compass"
+msgstr "Сторона света"
+
 #: apps/realty/models.py:14
 msgid "Name(en)"
 msgstr "Название(англ)"
@@ -2477,10 +2481,6 @@ msgstr "Название(англ)"
 #: apps/realty/models.py:15
 msgid "Abbreviation"
 msgstr "Аббревиатура"
-
-#: apps/realty/models.py:18
-msgid "Point of compass"
-msgstr "Сторона света"
 
 #: apps/realty/models.py:19 apps/realty/models.py:78
 msgid "Points of compass"
