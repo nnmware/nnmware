@@ -80,7 +80,10 @@ class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
     cost_meter = models.DecimalField(verbose_name=_('Cost per square meter'), default=0, max_digits=20,
                                      decimal_places=3, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
+    contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
+    contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
+    contact_phone = models.CharField(max_length=100, verbose_name=_('Contact Phone'), blank=True)
 
     class Meta:
         verbose_name = _("Estate")
