@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
+from django.conf import settings
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
+from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractData, AbstractDate
 
@@ -75,6 +76,11 @@ class Estate(AbstractData, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
     floor = models.PositiveSmallIntegerField(verbose_name=_('Floor'), blank=True, null=True)
     total_floor = models.PositiveSmallIntegerField(verbose_name=_('Total floor'), blank=True, null=True)
     compass = models.ManyToManyField(Compass, verbose_name=_('Points of compass'))
+    rent = models.BooleanField(verbose_name=_("Rent"), default=False)
+    cost_meter = models.DecimalField(verbose_name=_('Cost per square meter'), default=0, max_digits=20,
+                                     decimal_places=3, db_index=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _("Estate")
@@ -107,4 +113,3 @@ class Rm(AbstractData):
     class Meta:
         verbose_name = _("Rm")
         verbose_name_plural = _("Rms")
-
