@@ -8,12 +8,30 @@ from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractData, AbstractDate
 
 
+class Compass(models.Model):
+    name = models.CharField(verbose_name=_('Name'), max_length=100)
+    name_en = models.CharField(verbose_name=_('Name(en)'), max_length=100)
+    abbreviation = models.CharField(verbose_name=_('Abbreviation'), max_length=2)
+
+    class Meta:
+        verbose_name = _("Point of compass")
+        verbose_name_plural = _("Points of compass")
+
+
 class MaterialKind(AbstractData):
     pass
 
     class Meta:
         verbose_name = _("Material kind")
         verbose_name_plural = _("Materials kinds")
+
+
+class ExtInt(models.Model):
+    internal = models.BooleanField(verbose_name=_("Internal"), default=False)
+    external = models.BooleanField(verbose_name=_("External"), default=False)
+
+    class Meta:
+        abstract = True
 
 
 class EstateType(AbstractData):
@@ -24,17 +42,16 @@ class EstateType(AbstractData):
         verbose_name_plural = _("Estate types")
 
 
-class EstateFeature(AbstractData):
-    internal = models.BooleanField(verbose_name=_("Internal"), default=False)
-    external = models.BooleanField(verbose_name=_("External"), default=False)
+class EstateFeature(AbstractData, ExtInt):
+    pass
 
     class Meta:
         verbose_name = _("Estate feature")
         verbose_name_plural = _("Estate features")
 
 
-class TrimKind(AbstractData):
-    internal = models.BooleanField(verbose_name=_("Internal"), default=False)
+class TrimKind(AbstractData, ExtInt):
+    pass
 
     class Meta:
         verbose_name = _("Trim kind")
@@ -54,22 +71,34 @@ class Estate(AbstractData, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
     kind = models.ForeignKey(EstateType, verbose_name=_('Estate type'))
     location_public = models.BooleanField(verbose_name=_("Is location public?"), default=False)
     features = models.ManyToManyField(EstateFeature, verbose_name=_('Estate features'))
+    total_room = models.PositiveSmallIntegerField(verbose_name=_('Total rooms count'), blank=True, null=True)
+    floor = models.PositiveSmallIntegerField(verbose_name=_('Floor'), blank=True, null=True)
+    total_floor = models.PositiveSmallIntegerField(verbose_name=_('Total floor'), blank=True, null=True)
+    compass = models.ManyToManyField(Compass, verbose_name=_('Points of compass'))
 
     class Meta:
         verbose_name = _("Estate")
         verbose_name_plural = _("Estate")
 
 
-class RmFeature(AbstractData):
-    internal = models.BooleanField(verbose_name=_("Internal"), default=False)
-    external = models.BooleanField(verbose_name=_("External"), default=False)
+class RmFeature(AbstractData, ExtInt):
+    pass
 
     class Meta:
         verbose_name = _("Rm feature")
         verbose_name_plural = _("Rm features")
 
 
+class RmType(AbstractData, ExtInt):
+    pass
+
+    class Meta:
+        verbose_name = _("Rm type")
+        verbose_name_plural = _("Rms types")
+
+
 class Rm(AbstractData):
+    kind = models.ForeignKey(RmType, verbose_name=_('Rm type'))
     estate = models.ForeignKey(Estate, verbose_name=_('Estate'))
     size = models.DecimalField(verbose_name=_('Space size (square meters)'), default=0, max_digits=10,
                                decimal_places=1, db_index=True)
