@@ -55,8 +55,30 @@ class TrimKindAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+class RmFeatureAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Rm feature"), {"fields": [('name', 'enabled'), ('internal', 'external'),
+            ('name_en', )]}),)
+
+
+class RmTypeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
+    search_fields = ('name', )
+    list_filter = ('name', )
+    ordering = ('name', 'name_en')
+    fieldsets = (
+        (_("Rm type"), {"fields": [('name', 'enabled'), ('internal', 'external'),
+            ('name_en', )]}),)
+
+
 admin.site.register(Compass, CompassAdmin)
 admin.site.register(MaterialKind, MaterialKindAdmin)
 admin.site.register(EstateType, EstateTypeAdmin)
 admin.site.register(EstateFeature, EstateFeatureAdmin)
 admin.site.register(TrimKind, TrimKindAdmin)
+admin.site.register(RmFeature, RmFeatureAdmin)
+admin.site.register(RmType, RmTypeAdmin)
