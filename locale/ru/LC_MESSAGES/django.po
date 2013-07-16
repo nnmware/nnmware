@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-13 14:03+1100\n"
+"POT-Creation-Date: 2013-07-17 07:54+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,10 +279,10 @@ msgstr "Категория"
 
 #: apps/article/models.py:45 apps/booking/models.py:489
 #: apps/booking/models.py:646 apps/money/models.py:77 apps/money/models.py:127
-#: apps/news/models.py:45 apps/shop/models.py:96 apps/shop/models.py:202
-#: apps/shop/models.py:261 apps/shop/models.py:354 apps/shop/models.py:422
-#: apps/shop/models.py:557 apps/topic/models.py:45 core/abstract.py:698
-#: core/models.py:445 core/models.py:635
+#: apps/news/models.py:45 apps/realty/models.py:82 apps/shop/models.py:96
+#: apps/shop/models.py:202 apps/shop/models.py:261 apps/shop/models.py:354
+#: apps/shop/models.py:422 apps/shop/models.py:557 apps/topic/models.py:45
+#: core/abstract.py:698 core/models.py:445 core/models.py:635
 msgid "User"
 msgstr "Пользователь"
 
@@ -1048,8 +1048,9 @@ msgid "Register date"
 msgstr "Дата регистрации"
 
 #: apps/booking/models.py:650 apps/dossier/models.py:418
-#: apps/dossier/models.py:454 apps/money/models.py:20 apps/shop/models.py:399
-#: apps/shop/models.py:425 core/abstract.py:248 core/models.py:40
+#: apps/dossier/models.py:454 apps/money/models.py:20 apps/realty/models.py:13
+#: apps/shop/models.py:399 apps/shop/models.py:425 core/abstract.py:248
+#: core/models.py:40
 msgid "Name"
 msgstr "Имя"
 
@@ -1434,7 +1435,8 @@ msgid "Parent company"
 msgstr "Родительская компания"
 
 #: apps/business/models.py:181 apps/business/models.py:206
-#: apps/business/models.py:228 apps/shop/models.py:97 apps/shop/models.py:558
+#: apps/business/models.py:228 apps/realty/models.py:83 apps/shop/models.py:97
+#: apps/shop/models.py:558
 msgid "Company"
 msgstr "Компания"
 
@@ -2467,6 +2469,142 @@ msgstr "Новость"
 #: apps/news/models.py:53
 msgid "Many news"
 msgstr "Новости"
+
+#: apps/realty/models.py:14
+msgid "Name(en)"
+msgstr "Название(англ)"
+
+#: apps/realty/models.py:15
+msgid "Abbreviation"
+msgstr "Аббревиатура"
+
+#: apps/realty/models.py:18
+msgid "Point of compass"
+msgstr "Сторона света"
+
+#: apps/realty/models.py:19 apps/realty/models.py:78
+msgid "Points of compass"
+msgstr "Стороны света"
+
+#: apps/realty/models.py:26
+msgid "Material kind"
+msgstr "Тип материала"
+
+#: apps/realty/models.py:27 apps/realty/models.py:68
+msgid "Materials kinds"
+msgstr "Типы материалов"
+
+#: apps/realty/models.py:31
+msgid "Internal"
+msgstr "Внутренняя"
+
+#: apps/realty/models.py:32
+msgid "External"
+msgstr "Внешняя"
+
+#: apps/realty/models.py:42 apps/realty/models.py:72
+msgid "Estate type"
+msgstr "Тип недвижимости"
+
+#: apps/realty/models.py:43
+msgid "Estate types"
+msgstr "Типы недвижимости"
+
+#: apps/realty/models.py:50
+msgid "Estate feature"
+msgstr "Опция недвижимости"
+
+#: apps/realty/models.py:51 apps/realty/models.py:74
+msgid "Estate features"
+msgstr "Опции недвижимости"
+
+#: apps/realty/models.py:58
+msgid "Trim kind"
+msgstr "Тип отделки"
+
+#: apps/realty/models.py:59
+msgid "Trims kinds"
+msgstr "Типы отделок"
+
+#: apps/realty/models.py:63
+msgid "Gross area size (square meters)"
+msgstr "Общая площадь (квадратные метры)"
+
+#: apps/realty/models.py:65
+msgid "Living space size (square meters)"
+msgstr "Жилая площадь (квадратные метры)"
+
+#: apps/realty/models.py:67
+msgid "Date of construction"
+msgstr "Дата постройки"
+
+#: apps/realty/models.py:69
+msgid "Interior trim kinds"
+msgstr "Типы внутренней отделки"
+
+#: apps/realty/models.py:70
+msgid "Exterior trim kinds"
+msgstr "Типы внешней отделки"
+
+#: apps/realty/models.py:71
+msgid "Housing"
+msgstr "Жилое помещение"
+
+#: apps/realty/models.py:73
+msgid "Is location public?"
+msgstr "Местоположение видимо?"
+
+#: apps/realty/models.py:75
+msgid "Total rooms count"
+msgstr "Общее количество комнат"
+
+#: apps/realty/models.py:76
+msgid "Floor"
+msgstr "Этаж"
+
+#: apps/realty/models.py:77
+msgid "Total floor"
+msgstr "Всего этажей"
+
+#: apps/realty/models.py:79
+msgid "Rent"
+msgstr "Аренда"
+
+#: apps/realty/models.py:80
+msgid "Cost per square meter"
+msgstr "Стоимость за квадратный метр"
+
+#: apps/realty/models.py:86 apps/realty/models.py:87 apps/realty/models.py:108
+msgid "Estate"
+msgstr "Недвижимость"
+
+#: apps/realty/models.py:94
+msgid "Rm feature"
+msgstr "Опция комнаты"
+
+#: apps/realty/models.py:95 apps/realty/models.py:111
+msgid "Rm features"
+msgstr "Опции комнат"
+
+#: apps/realty/models.py:102 apps/realty/models.py:107
+msgid "Rm type"
+msgstr "Тип комнаты"
+
+#: apps/realty/models.py:103
+msgid "Rms types"
+msgstr "Типы комнат"
+
+#: apps/realty/models.py:109
+msgid "Space size (square meters)"
+msgstr "Площадь места (квадратные метры)"
+
+#: apps/realty/models.py:114
+msgid "Rm"
+msgstr "Комната"
+
+#: apps/realty/models.py:115
+msgid "Rms"
+msgstr "Комнаты"
 
 #: apps/shop/admin.py:23 apps/shop/models.py:104 apps/shop/models.py:205
 msgid "Product"
@@ -3963,9 +4101,8 @@ msgid "User-agent"
 msgstr ""
 
 #: core/models.py:451
-#, fuzzy
 msgid "Referer"
-msgstr "Реферрер"
+msgstr "Реферер"
 
 #: core/models.py:453
 msgid "Is secure"
