@@ -75,6 +75,19 @@ class RmTypeAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+class EstateAdmin(admin.ModelAdmin):
+    list_display = ('name', 'user', 'company', 'enabled')
+    fieldsets = (
+        (_('Estate'), {"fields": [
+            ("name", 'vacancy_type'), ('category', ), ('user', 'company'),
+            ('description', ),
+            ('created_date', 'updated_date')
+        ]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en", ), ("description_en",)]}))
+    ordering = ('-created_date', 'name')
+
+
 admin.site.register(Compass, CompassAdmin)
 admin.site.register(MaterialKind, MaterialKindAdmin)
 admin.site.register(EstateType, EstateTypeAdmin)
@@ -82,3 +95,4 @@ admin.site.register(EstateFeature, EstateFeatureAdmin)
 admin.site.register(TrimKind, TrimKindAdmin)
 admin.site.register(RmFeature, RmFeatureAdmin)
 admin.site.register(RmType, RmTypeAdmin)
+admin.site.register(Estate, EstateAdmin)
