@@ -76,10 +76,16 @@ class RmTypeAdmin(admin.ModelAdmin):
 
 
 class EstateAdmin(admin.ModelAdmin):
-    list_display = ('name', 'user', 'company', 'enabled')
+    list_display = ('name', 'user', 'company', 'enabled', 'housing')
     fieldsets = (
         (_('Estate'), {"fields": [
-            ("name", 'vacancy_type'), ('category', ), ('user', 'company'),
+            ("name", 'construction_year', 'housing'), ('gross_size', 'live_size'),
+            ('user', 'company'),
+            ('kind', 'rent', 'location_public'),
+
+            ('materials', 'features'),
+            ('interior', 'exterior'),
+
             ('description', ),
             ('created_date', 'updated_date')
         ]}),
