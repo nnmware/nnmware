@@ -87,6 +87,7 @@ class EstateAdmin(admin.ModelAdmin):
             ('interior', 'exterior'),
             ('total_room', 'floor', 'total_floor'),
             ('description', ),
+            ('amount', 'cost_meter'),
             ('created_date', 'updated_date')
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
