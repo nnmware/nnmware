@@ -15,6 +15,7 @@ from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager, ServiceManager
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.apps.money.models import AbstractDeliveryMethod
+from core.abstract import AbstractVendor
 
 
 class ProductCategory(Tree):
@@ -38,27 +39,15 @@ class ProductMaterial(Material):
     pass
 
 
-@python_2_unicode_compatible
-class Vendor(models.Model):
-    name = models.CharField(_("Name of vendor"), max_length=200)
-    website = std_url_field(_("URL"))
-    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='',
-                                   blank=True)
+class Vendor(AbstractVendor):
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True,
                                 on_delete=models.SET_NULL)
 
-    class Meta:
-        ordering = ['name', 'website']
-        verbose_name = _("Vendor")
-        verbose_name_plural = _("Vendors")
-
-    def __str__(self):
-        return self.name
-
 
 class CargoService(Vendor):
+    pass
+
     class Meta:
-        ordering = ['name', 'website']
         verbose_name = _("Cargo Service")
         verbose_name_plural = _("Cargo Services")
 

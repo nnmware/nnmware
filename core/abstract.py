@@ -706,3 +706,21 @@ class UserMixin(models.Model):
             return self.user.get_name
         except:
             return self.user.username
+
+
+@python_2_unicode_compatible
+class AbstractVendor(models.Model):
+    name = models.CharField(_("Name of vendor"), max_length=200)
+    name_en = models.CharField(_("Name of vendor(english)"), max_length=200, null=True, blank=True)
+    website = std_url_field(_("URL"))
+    description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='',
+                                   blank=True)
+
+    class Meta:
+        ordering = ['name', 'website']
+        verbose_name = _("Vendor")
+        verbose_name_plural = _("Vendors")
+        abstract = True
+
+    def __str__(self):
+        return self.name
