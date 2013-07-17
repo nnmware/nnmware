@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-17 08:21+1100\n"
+"POT-Creation-Date: 2013-07-17 13:09+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,6 +87,7 @@ msgstr "Город"
 #: apps/booking/admin.py:86 apps/booking/admin.py:97 apps/booking/admin.py:106
 #: apps/booking/admin.py:117 apps/booking/admin.py:127
 #: apps/business/admin.py:80 apps/business/admin.py:104
+#: apps/realty/admin.py:112
 msgid "English"
 msgstr "Английский"
 
@@ -144,7 +145,7 @@ msgid "Cities"
 msgstr "Города"
 
 #: apps/address/models.py:127 apps/booking/models.py:649
-#: apps/business/admin.py:73
+#: apps/business/admin.py:73 apps/realty/admin.py:106
 msgid "Address"
 msgstr "Адрес"
 
@@ -675,11 +676,11 @@ msgstr "Факс"
 msgid "Website"
 msgstr "Вебсайт"
 
-#: apps/booking/models.py:147
+#: apps/booking/models.py:147 apps/realty/models.py:84
 msgid "Contact Email"
 msgstr "Контактный емейл"
 
-#: apps/booking/models.py:148
+#: apps/booking/models.py:148 apps/realty/models.py:85
 msgid "Contact Name"
 msgstr "Контактное лицо"
 
@@ -2474,6 +2475,39 @@ msgstr "Новости"
 msgid "Point of compass"
 msgstr "Сторона света"
 
+#: apps/realty/admin.py:24 apps/realty/models.py:26
+msgid "Material kind"
+msgstr "Тип материала"
+
+#: apps/realty/admin.py:34 apps/realty/models.py:42 apps/realty/models.py:72
+msgid "Estate type"
+msgstr "Тип недвижимости"
+
+#: apps/realty/admin.py:44 apps/realty/models.py:50
+msgid "Estate feature"
+msgstr "Опция недвижимости"
+
+#: apps/realty/admin.py:54 apps/realty/models.py:58
+msgid "Trim kind"
+msgstr "Тип отделки"
+
+#: apps/realty/admin.py:64 apps/realty/models.py:97
+msgid "Rm feature"
+msgstr "Опция помещения"
+
+#: apps/realty/admin.py:74 apps/realty/models.py:105 apps/realty/models.py:110
+msgid "Rm type"
+msgstr "Тип комнаты"
+
+#: apps/realty/admin.py:82
+msgid "Rm's"
+msgstr ""
+
+#: apps/realty/admin.py:93 apps/realty/models.py:89 apps/realty/models.py:90
+#: apps/realty/models.py:111
+msgid "Estate"
+msgstr "Недвижимость"
+
 #: apps/realty/models.py:14
 msgid "Name(en)"
 msgstr "Название(англ)"
@@ -2485,10 +2519,6 @@ msgstr "Аббревиатура"
 #: apps/realty/models.py:19 apps/realty/models.py:78
 msgid "Points of compass"
 msgstr "Стороны света"
-
-#: apps/realty/models.py:26
-msgid "Material kind"
-msgstr "Тип материала"
 
 #: apps/realty/models.py:27 apps/realty/models.py:68
 msgid "Materials kinds"
@@ -2502,29 +2532,17 @@ msgstr "Внутренняя"
 msgid "External"
 msgstr "Внешняя"
 
-#: apps/realty/models.py:42 apps/realty/models.py:72
-msgid "Estate type"
-msgstr "Тип недвижимости"
-
 #: apps/realty/models.py:43
 msgid "Estate types"
 msgstr "Типы недвижимости"
-
-#: apps/realty/models.py:50
-msgid "Estate feature"
-msgstr "Опция недвижимости"
 
 #: apps/realty/models.py:51 apps/realty/models.py:74
 msgid "Estate features"
 msgstr "Опции недвижимости"
 
-#: apps/realty/models.py:58
-msgid "Trim kind"
-msgstr "Тип отделки"
-
 #: apps/realty/models.py:59
 msgid "Trims kinds"
-msgstr "Типы отделок"
+msgstr "Типы отделки"
 
 #: apps/realty/models.py:63
 msgid "Gross area size (square meters)"
@@ -2574,35 +2592,27 @@ msgstr "Аренда"
 msgid "Cost per square meter"
 msgstr "Стоимость за квадратный метр"
 
-#: apps/realty/models.py:86 apps/realty/models.py:87 apps/realty/models.py:108
-msgid "Estate"
-msgstr "Недвижимость"
+#: apps/realty/models.py:86
+msgid "Contact Phone"
+msgstr "Контактный телефон"
 
-#: apps/realty/models.py:94
-msgid "Rm feature"
-msgstr "Опция комнаты"
-
-#: apps/realty/models.py:95 apps/realty/models.py:111
+#: apps/realty/models.py:98 apps/realty/models.py:114
 msgid "Rm features"
-msgstr "Опции комнат"
+msgstr "Опции помешений"
 
-#: apps/realty/models.py:102 apps/realty/models.py:107
-msgid "Rm type"
-msgstr "Тип комнаты"
-
-#: apps/realty/models.py:103
+#: apps/realty/models.py:106
 msgid "Rms types"
 msgstr "Типы комнат"
 
-#: apps/realty/models.py:109
+#: apps/realty/models.py:112
 msgid "Space size (square meters)"
 msgstr "Площадь места (квадратные метры)"
 
-#: apps/realty/models.py:114
+#: apps/realty/models.py:117
 msgid "Rm"
 msgstr "Комната"
 
-#: apps/realty/models.py:115
+#: apps/realty/models.py:118
 msgid "Rms"
 msgstr "Комнаты"
 
