@@ -75,8 +75,9 @@ class RmTypeAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
-class RmInline(admin.TabularInline):
+class RmInline(admin.StackedInline):
     model = Rm
+    extra = 0
     fieldsets = (
         (_("Rm's"), {"fields": [
             ('name', 'enabled'),
