@@ -85,7 +85,7 @@ class EstateAdmin(admin.ModelAdmin):
             ('latitude', 'longitude', 'location_public'),
             ('materials', 'features'),
             ('interior', 'exterior'),
-
+            ('total_room', 'floor', 'total_floor'),
             ('description', ),
             ('created_date', 'updated_date')
         ]}),
