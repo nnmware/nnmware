@@ -81,8 +81,8 @@ class EstateAdmin(admin.ModelAdmin):
         (_('Estate'), {"fields": [
             ("name", 'construction_year', 'housing'), ('gross_size', 'live_size'),
             ('user', 'company'),
-            ('kind', 'rent', 'location_public'),
-
+            ('kind', 'rent', ),
+            ('latitude', 'longitude', 'location_public'),
             ('materials', 'features'),
             ('interior', 'exterior'),
 
