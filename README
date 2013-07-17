@@ -42,11 +42,14 @@ contains base for:
 [Dossier]
     Dossier base 
 
+[Realty]
+    Realty application base 
+
 Licensed under GPL3 
 
 nnmware@gmail.com
 
-required django-current, python-oauth2, south, unidecode, xlwt
+required django(bleeding edge or 1.5.1), python-oauth2, south, unidecode, xlwt
 reccomended django-grappelli
 
 
