@@ -75,7 +75,7 @@ class RmTypeAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
-class RmInline(admin.StackedInline):
+class RmInline(admin.TabularInline):
     model = Rm
     fieldsets = (
         (_("Rm's"), {"fields": [
