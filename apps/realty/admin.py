@@ -95,7 +95,7 @@ class EstateAdmin(admin.ModelAdmin):
                         "fields": [('country', 'region'),
                                    ('city', 'stationmetro'),
                             ('zipcode', 'street'),
-                            ('house_number', 'building', 'flat_number')
+                            ('house_number', 'building'), ('flat_number', )
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", ), ("description_en",)]}))
