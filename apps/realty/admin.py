@@ -75,6 +75,17 @@ class RmTypeAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+class RmInline(admin.StackedInline):
+    model = Rm
+    fieldsets = (
+        (_("Rm's"), {"fields": [
+            ('name', 'enabled'),
+            ('kind', 'size'),
+            ('features', )
+        ]}),
+    )
+
+
 class EstateAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'company', 'enabled', 'housing')
     fieldsets = (
@@ -100,6 +111,7 @@ class EstateAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", ), ("description_en",)]}))
     ordering = ('-created_date', 'name')
+    inlines = [RmInline, ]
 
 
 admin.site.register(Compass, CompassAdmin)
