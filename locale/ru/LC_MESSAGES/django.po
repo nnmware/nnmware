@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-17 13:09+1100\n"
+"POT-Creation-Date: 2013-07-17 14:57+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,14 +93,14 @@ msgstr "Английский"
 
 #: apps/address/admin.py:24 apps/address/models.py:60
 #: apps/address/models.py:194 apps/article/models.py:41 apps/news/models.py:41
-#: apps/shop/models.py:93 apps/shop/models.py:554 apps/topic/models.py:41
+#: apps/shop/models.py:81 apps/shop/models.py:542 apps/topic/models.py:41
 msgid "Region"
 msgstr "Регион"
 
 #: apps/address/admin.py:36 apps/address/models.py:41
 #: apps/address/models.py:159 apps/address/models.py:181
 #: apps/address/models.py:193 apps/address/models.py:240
-#: apps/money/models.py:19 apps/shop/models.py:47
+#: apps/money/models.py:19 apps/shop/models.py:42
 msgid "Country"
 msgstr "Страна"
 
@@ -214,7 +214,7 @@ msgstr "Основная"
 #: apps/article/admin.py:10 apps/business/admin.py:40
 #: apps/business/admin.py:90 apps/dossier/models.py:419
 #: apps/dossier/models.py:455 apps/money/models.py:135 apps/news/admin.py:10
-#: apps/shop/models.py:498 apps/topic/admin.py:10 core/abstract.py:94
+#: apps/shop/models.py:486 apps/topic/admin.py:10 core/abstract.py:94
 #: core/abstract.py:251 core/abstract.py:474 core/admin.py:48 core/admin.py:66
 #: core/models.py:563
 msgid "Description"
@@ -225,7 +225,7 @@ msgstr "Описание"
 msgid "Topic"
 msgstr "Топик"
 
-#: apps/article/admin.py:18 apps/news/admin.py:18 apps/shop/models.py:445
+#: apps/article/admin.py:18 apps/news/admin.py:18 apps/shop/models.py:433
 #: apps/topic/admin.py:18 core/admin.py:23
 msgid "Content"
 msgstr "Содержание"
@@ -273,21 +273,21 @@ msgid "Draft"
 msgstr ""
 
 #: apps/article/models.py:43 apps/board/models.py:17
-#: apps/booking/models.py:330 apps/news/models.py:43 apps/shop/models.py:67
-#: apps/shop/models.py:173 apps/shop/models.py:539 apps/topic/models.py:43
+#: apps/booking/models.py:330 apps/news/models.py:43 apps/shop/models.py:55
+#: apps/shop/models.py:161 apps/shop/models.py:527 apps/topic/models.py:43
 msgid "Category"
 msgstr "Категория"
 
 #: apps/article/models.py:45 apps/booking/models.py:489
 #: apps/booking/models.py:646 apps/money/models.py:77 apps/money/models.py:127
-#: apps/news/models.py:45 apps/realty/models.py:82 apps/shop/models.py:96
-#: apps/shop/models.py:202 apps/shop/models.py:261 apps/shop/models.py:354
-#: apps/shop/models.py:422 apps/shop/models.py:557 apps/topic/models.py:45
+#: apps/news/models.py:45 apps/realty/models.py:82 apps/shop/models.py:84
+#: apps/shop/models.py:190 apps/shop/models.py:249 apps/shop/models.py:342
+#: apps/shop/models.py:410 apps/shop/models.py:545 apps/topic/models.py:45
 #: core/abstract.py:698 core/models.py:445 core/models.py:635
 msgid "User"
 msgstr "Пользователь"
 
-#: apps/article/models.py:46 apps/news/models.py:46 apps/shop/models.py:264
+#: apps/article/models.py:46 apps/news/models.py:46 apps/shop/models.py:252
 #: apps/topic/models.py:46 core/abstract.py:95 core/models.py:229
 msgid "Status"
 msgstr "Статус"
@@ -357,7 +357,7 @@ msgid "Boards"
 msgstr "Объявления"
 
 #: apps/board/models.py:26 apps/booking/models.py:143
-#: apps/booking/models.py:651 apps/shop/models.py:276 apps/shop/models.py:400
+#: apps/booking/models.py:651 apps/shop/models.py:264 apps/shop/models.py:388
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
@@ -367,7 +367,7 @@ msgstr "Аська"
 
 #: apps/board/models.py:29 apps/booking/models.py:144
 #: apps/booking/models.py:501 apps/booking/models.py:652
-#: apps/shop/models.py:275 apps/shop/models.py:358
+#: apps/shop/models.py:263 apps/shop/models.py:346
 msgid "Phone"
 msgstr "Телефон"
 
@@ -450,7 +450,7 @@ msgid "Agent Percent"
 msgstr "Агентский процент"
 
 #: apps/booking/admin.py:196 apps/booking/models.py:614
-#: apps/booking/models.py:617 apps/shop/models.py:81 apps/shop/models.py:548
+#: apps/booking/models.py:617 apps/shop/models.py:69 apps/shop/models.py:536
 msgid "Discount"
 msgstr "Скидка"
 
@@ -511,7 +511,7 @@ msgstr "Спам"
 msgid "Food"
 msgstr "Питание"
 
-#: apps/booking/models.py:24 apps/shop/admin.py:196 apps/shop/models.py:564
+#: apps/booking/models.py:24 apps/shop/admin.py:196 apps/shop/models.py:552
 msgid "Service"
 msgstr "Сервис"
 
@@ -574,7 +574,7 @@ msgstr "Типы отеля"
 #: apps/booking/models.py:356 apps/booking/models.py:477
 #: apps/business/models.py:257 apps/dossier/models.py:268
 #: apps/dossier/models.py:599 apps/money/models.py:65 apps/money/models.py:115
-#: apps/shop/models.py:234 core/abstract.py:555 core/models.py:280
+#: apps/shop/models.py:222 core/abstract.py:555 core/models.py:280
 #: core/models.py:368
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -839,7 +839,7 @@ msgid "Settlement"
 msgstr "Заселения"
 
 #: apps/booking/models.py:438 apps/booking/models.py:511
-#: apps/shop/models.py:446 core/abstract.py:642
+#: apps/shop/models.py:434 core/abstract.py:642
 msgid "Enabled"
 msgstr "Включено"
 
@@ -969,7 +969,7 @@ msgstr "Для %(hotel)s на дату %(date)s процент - %(percent)s"
 msgid "Published by"
 msgstr "Опубликовано"
 
-#: apps/booking/models.py:580 apps/shop/admin.py:129 apps/shop/models.py:433
+#: apps/booking/models.py:580 apps/shop/admin.py:129 apps/shop/models.py:421
 msgid "Review"
 msgstr "Отзыв"
 
@@ -1050,7 +1050,7 @@ msgstr "Дата регистрации"
 
 #: apps/booking/models.py:650 apps/dossier/models.py:418
 #: apps/dossier/models.py:454 apps/money/models.py:20 apps/realty/models.py:13
-#: apps/shop/models.py:399 apps/shop/models.py:425 core/abstract.py:248
+#: apps/shop/models.py:387 apps/shop/models.py:413 core/abstract.py:248
 #: core/models.py:40
 msgid "Name"
 msgstr "Имя"
@@ -1419,7 +1419,7 @@ msgid "Full Name(English)"
 msgstr "Полное название(Английский)"
 
 #: apps/business/models.py:171 apps/business/models.py:276
-#: apps/shop/models.py:79 apps/shop/models.py:444 apps/shop/models.py:546
+#: apps/shop/models.py:67 apps/shop/models.py:432 apps/shop/models.py:534
 msgid "Teaser"
 msgstr "Тизер"
 
@@ -1436,8 +1436,8 @@ msgid "Parent company"
 msgstr "Родительская компания"
 
 #: apps/business/models.py:181 apps/business/models.py:206
-#: apps/business/models.py:228 apps/realty/models.py:83 apps/shop/models.py:97
-#: apps/shop/models.py:558
+#: apps/business/models.py:228 apps/realty/models.py:83 apps/shop/models.py:85
+#: apps/shop/models.py:546
 msgid "Company"
 msgstr "Компания"
 
@@ -2438,12 +2438,12 @@ msgstr "Включено для зарегистрированых пользо�
 msgid "Enabled for unregistered users"
 msgstr "Включено для незарегистрированых пользователей магазина"
 
-#: apps/money/models.py:163 apps/shop/models.py:186 core/abstract.py:254
+#: apps/money/models.py:163 apps/shop/models.py:174 core/abstract.py:254
 #: core/abstract.py:538 core/abstract.py:644
 msgid "Order in list"
 msgstr "Очередность в списке"
 
-#: apps/money/models.py:166 apps/shop/models.py:265
+#: apps/money/models.py:166 apps/shop/models.py:253
 msgid "Delivery method"
 msgstr "Способ доставки"
 
@@ -2616,15 +2616,15 @@ msgstr "Комната"
 msgid "Rms"
 msgstr "Комнаты"
 
-#: apps/shop/admin.py:23 apps/shop/models.py:104 apps/shop/models.py:205
+#: apps/shop/admin.py:23 apps/shop/models.py:92 apps/shop/models.py:193
 msgid "Product"
 msgstr "Товар"
 
-#: apps/shop/admin.py:53 apps/shop/models.py:52 apps/shop/models.py:75
+#: apps/shop/admin.py:53 apps/shop/models.py:63 core/abstract.py:721
 msgid "Vendor"
 msgstr "Производитель"
 
-#: apps/shop/admin.py:74 apps/shop/models.py:286
+#: apps/shop/admin.py:74 apps/shop/models.py:274
 msgid "Order"
 msgstr "Заказ"
 
@@ -2632,19 +2632,19 @@ msgstr "Заказ"
 msgid "Order number"
 msgstr "Номер заказа"
 
-#: apps/shop/admin.py:97 apps/shop/models.py:362
+#: apps/shop/admin.py:97 apps/shop/models.py:350
 msgid "Delivery Address"
 msgstr "Адрес доставки"
 
-#: apps/shop/admin.py:109 apps/shop/models.py:410 apps/shop/models.py:411
+#: apps/shop/admin.py:109 apps/shop/models.py:398 apps/shop/models.py:399
 msgid "Feedback"
 msgstr "Обратная связь"
 
-#: apps/shop/admin.py:119 apps/shop/models.py:504
+#: apps/shop/admin.py:119 apps/shop/models.py:492
 msgid "Shop Callback"
 msgstr "Обратный звонок магазина"
 
-#: apps/shop/admin.py:139 apps/shop/models.py:518
+#: apps/shop/admin.py:139 apps/shop/models.py:506
 msgid "ShopSlider"
 msgstr "Слайдер магазина"
 
@@ -2682,400 +2682,383 @@ msgstr "Категория товара"
 msgid "Product Categories"
 msgstr "Категории товаров"
 
-#: apps/shop/models.py:43
-msgid "Name of vendor"
-msgstr "Название производителя"
-
-#: apps/shop/models.py:44 core/abstract.py:93 core/models.py:41
-#: core/models.py:452
-msgid "URL"
-msgstr "URL"
-
-#: apps/shop/models.py:45
-msgid "Description of Vendor"
-msgstr "Описание производителя"
-
-#: apps/shop/models.py:53
-msgid "Vendors"
-msgstr "Производители"
-
-#: apps/shop/models.py:62
+#: apps/shop/models.py:50
 msgid "Cargo Service"
 msgstr "Грузоперевозчик"
 
-#: apps/shop/models.py:63
+#: apps/shop/models.py:51
 msgid "Cargo Services"
 msgstr "Грузоперевозчики"
 
-#: apps/shop/models.py:69 apps/shop/models.py:204 apps/shop/models.py:340
+#: apps/shop/models.py:57 apps/shop/models.py:192 apps/shop/models.py:328
 msgid "Quantity"
 msgstr "Количество"
 
-#: apps/shop/models.py:70 core/abstract.py:226
+#: apps/shop/models.py:58 core/abstract.py:226
 msgid "Colors"
 msgstr "Цвета"
 
-#: apps/shop/models.py:71 core/abstract.py:239
+#: apps/shop/models.py:59 core/abstract.py:239
 msgid "Materials"
 msgstr "Материалы"
 
-#: apps/shop/models.py:72
+#: apps/shop/models.py:60
 msgid "Related products"
 msgstr "Сопутствующие товары"
 
-#: apps/shop/models.py:73 apps/shop/models.py:336 apps/shop/models.py:542
+#: apps/shop/models.py:61 apps/shop/models.py:324 apps/shop/models.py:530
 msgid "Shop part number"
 msgstr "Артикул продавца"
 
-#: apps/shop/models.py:74 apps/shop/models.py:543
+#: apps/shop/models.py:62 apps/shop/models.py:531
 msgid "Vendor part number"
 msgstr "Артикул производителя"
 
-#: apps/shop/models.py:77 apps/shop/models.py:544
+#: apps/shop/models.py:65 apps/shop/models.py:532
 msgid "Available for order"
 msgstr "Доступно для заказа"
 
-#: apps/shop/models.py:78 apps/shop/models.py:545
+#: apps/shop/models.py:66 apps/shop/models.py:533
 msgid "Latest product"
 msgstr "Новинка"
 
-#: apps/shop/models.py:80 apps/shop/models.py:547
+#: apps/shop/models.py:68 apps/shop/models.py:535
 msgid "Bestseller"
 msgstr "Хит продаж"
 
-#: apps/shop/models.py:82 apps/shop/models.py:549
+#: apps/shop/models.py:70 apps/shop/models.py:537
 msgid "On main page"
 msgstr "На главное странице"
 
-#: apps/shop/models.py:83 apps/shop/models.py:428 apps/shop/models.py:513
-#: apps/shop/models.py:550
+#: apps/shop/models.py:71 apps/shop/models.py:416 apps/shop/models.py:501
+#: apps/shop/models.py:538
 msgid "Visible"
 msgstr "Видимо"
 
-#: apps/shop/models.py:84 apps/shop/models.py:551
+#: apps/shop/models.py:72 apps/shop/models.py:539
 msgid "Special offer"
 msgstr "Специальное предложение"
 
-#: apps/shop/models.py:85 apps/shop/models.py:552
+#: apps/shop/models.py:73 apps/shop/models.py:540
 msgid "Percent of discount"
 msgstr "Процент скидки"
 
-#: apps/shop/models.py:87
+#: apps/shop/models.py:75
 msgid "Width, sm"
 msgstr "Высота, см"
 
-#: apps/shop/models.py:88
+#: apps/shop/models.py:76
 msgid "Height, sm"
 msgstr "Ширина, см"
 
-#: apps/shop/models.py:89
+#: apps/shop/models.py:77
 msgid "Depth, sm"
 msgstr "Глубина, см"
 
-#: apps/shop/models.py:90
+#: apps/shop/models.py:78
 msgid "Weight, kg"
 msgstr "Вес, кг"
 
-#: apps/shop/models.py:91
+#: apps/shop/models.py:79
 msgid "Main category"
 msgstr "Главная категория"
 
-#: apps/shop/models.py:92
+#: apps/shop/models.py:80
 msgid "Main category id"
 msgstr "ID главной категории"
 
-#: apps/shop/models.py:94
+#: apps/shop/models.py:82
 msgid "Product Admins"
 msgstr "Администраторы товара"
 
-#: apps/shop/models.py:105
+#: apps/shop/models.py:93
 msgid "Products"
 msgstr "Товары"
 
-#: apps/shop/models.py:162
+#: apps/shop/models.py:150
 msgid "Category of parameter"
 msgstr "Категория параметра"
 
-#: apps/shop/models.py:165
+#: apps/shop/models.py:153
 msgid "Category of product parameter"
 msgstr "Категория параметра товара"
 
-#: apps/shop/models.py:166
+#: apps/shop/models.py:154
 msgid "Categories of product parameters"
 msgstr "Категории параметров товара"
 
-#: apps/shop/models.py:175 core/abstract.py:49
+#: apps/shop/models.py:163 core/abstract.py:49
 msgid "Unit"
 msgstr "Единица измерения"
 
-#: apps/shop/models.py:178
+#: apps/shop/models.py:166
 msgid "Product parameter"
 msgstr "Параметр товара"
 
-#: apps/shop/models.py:179
+#: apps/shop/models.py:167
 msgid "Product parameters"
 msgstr "Параметры товаров"
 
-#: apps/shop/models.py:184 core/abstract.py:62
+#: apps/shop/models.py:172 core/abstract.py:62
 msgid "Parameter"
 msgstr "Параметр"
 
-#: apps/shop/models.py:185
+#: apps/shop/models.py:173
 msgid "Value of parameter"
 msgstr "Значение параметра"
 
-#: apps/shop/models.py:187
+#: apps/shop/models.py:175
 msgid "In key params"
 msgstr "В ключевых параметрах"
 
-#: apps/shop/models.py:190
+#: apps/shop/models.py:178
 msgid "Product parameter value"
 msgstr "Значение параметра товара"
 
-#: apps/shop/models.py:191
+#: apps/shop/models.py:179
 msgid "Product parameters values"
 msgstr "Значения параметров товара"
 
-#: apps/shop/models.py:206 apps/shop/models.py:279 core/models.py:447
+#: apps/shop/models.py:194 apps/shop/models.py:267 core/models.py:447
 msgid "Session key"
 msgstr "Ключ сессии"
 
-#: apps/shop/models.py:207 apps/shop/models.py:341
+#: apps/shop/models.py:195 apps/shop/models.py:329
 msgid "Add-on text"
 msgstr "Дополнительный текст"
 
-#: apps/shop/models.py:210
+#: apps/shop/models.py:198
 msgid "Basket"
 msgstr "Корзина"
 
-#: apps/shop/models.py:211
+#: apps/shop/models.py:199
 msgid "Baskets"
 msgstr "Корзины"
 
-#: apps/shop/models.py:235
+#: apps/shop/models.py:223
 msgid "Wait"
 msgstr "Ожидание"
 
-#: apps/shop/models.py:236
+#: apps/shop/models.py:224
 msgid "Process"
 msgstr "В обработке"
 
-#: apps/shop/models.py:237
+#: apps/shop/models.py:225
 msgid "Sent"
 msgstr "Отправлено"
 
-#: apps/shop/models.py:238
+#: apps/shop/models.py:226
 msgid "Cancel"
 msgstr "Отменено"
 
-#: apps/shop/models.py:239 apps/shop/models.py:499
+#: apps/shop/models.py:227 apps/shop/models.py:487
 msgid "Closed"
 msgstr "Завершено"
 
-#: apps/shop/models.py:240
+#: apps/shop/models.py:228
 msgid "Undo"
 msgstr "Возврат"
 
-#: apps/shop/models.py:241
+#: apps/shop/models.py:229
 msgid "Shipping"
 msgstr "Доставка"
 
-#: apps/shop/models.py:263
+#: apps/shop/models.py:251
 msgid "Shipping comment"
 msgstr "Комментарий при отправке"
 
-#: apps/shop/models.py:267
+#: apps/shop/models.py:255
 msgid "Shipping address"
 msgstr "Адрес доставки"
 
-#: apps/shop/models.py:268
+#: apps/shop/models.py:256
 msgid "Track number"
 msgstr "Номер трека"
 
-#: apps/shop/models.py:269
+#: apps/shop/models.py:257
 msgid "Cargo service"
 msgstr "Грузоперевозчик"
 
-#: apps/shop/models.py:271 apps/shop/models.py:355 core/abstract.py:575
+#: apps/shop/models.py:259 apps/shop/models.py:343 core/abstract.py:575
 msgid "First Name"
 msgstr "Имя"
 
-#: apps/shop/models.py:272 apps/shop/models.py:356 core/abstract.py:576
+#: apps/shop/models.py:260 apps/shop/models.py:344 core/abstract.py:576
 msgid "Middle Name"
 msgstr "Отчество"
 
-#: apps/shop/models.py:273 apps/shop/models.py:357 core/abstract.py:577
+#: apps/shop/models.py:261 apps/shop/models.py:345 core/abstract.py:577
 #: core/forms.py:367
 msgid "Last Name"
 msgstr "Фамилия"
 
-#: apps/shop/models.py:274
+#: apps/shop/models.py:262
 msgid "Not register shop user"
 msgstr "Незарегистрированый пользователь магазина"
 
-#: apps/shop/models.py:277
+#: apps/shop/models.py:265
 msgid "Buyer comment"
 msgstr "Комментарий покупателя"
 
-#: apps/shop/models.py:278
+#: apps/shop/models.py:266
 msgid "Seller comment"
 msgstr "Комментарий продавца"
 
-#: apps/shop/models.py:280 apps/shop/models.py:403
+#: apps/shop/models.py:268 apps/shop/models.py:391
 msgid "Seller"
 msgstr "Продавец"
 
-#: apps/shop/models.py:287
+#: apps/shop/models.py:275
 msgid "Orders"
 msgstr "Заказы"
 
-#: apps/shop/models.py:337
+#: apps/shop/models.py:325
 msgid "Product Name"
 msgstr "Название товара"
 
-#: apps/shop/models.py:338
+#: apps/shop/models.py:326
 msgid "Product URL"
 msgstr "URL товара"
 
-#: apps/shop/models.py:342
+#: apps/shop/models.py:330
 msgid "Delivery flag"
 msgstr "Флаг доставки"
 
-#: apps/shop/models.py:359 core/abstract.py:497
+#: apps/shop/models.py:347 core/abstract.py:497
 msgid "Skype"
 msgstr "Скайп"
 
-#: apps/shop/models.py:363
+#: apps/shop/models.py:351
 msgid "Delivery Addresses"
 msgstr "Адреса доставки"
 
-#: apps/shop/models.py:372
+#: apps/shop/models.py:360
 msgid ", region "
 msgstr ", область "
 
-#: apps/shop/models.py:374
+#: apps/shop/models.py:362
 msgid ", city "
 msgstr ", город "
 
-#: apps/shop/models.py:376
+#: apps/shop/models.py:364
 msgid ", street "
 msgstr ", улица "
 
-#: apps/shop/models.py:378
+#: apps/shop/models.py:366
 msgid ", house "
 msgstr ", дом "
 
-#: apps/shop/models.py:380
+#: apps/shop/models.py:368
 msgid ", building "
 msgstr ", cтроение "
 
-#: apps/shop/models.py:382
+#: apps/shop/models.py:370
 msgid ", flat "
 msgstr ", квартира "
 
-#: apps/shop/models.py:390
+#: apps/shop/models.py:378
 msgid ", phone-"
 msgstr ", телефон-"
 
-#: apps/shop/models.py:392
+#: apps/shop/models.py:380
 msgid ", skype-"
 msgstr ", скайп-"
 
-#: apps/shop/models.py:398 apps/shop/models.py:424 apps/shop/models.py:442
-#: apps/shop/models.py:495 core/abstract.py:37 core/abstract.py:637
+#: apps/shop/models.py:386 apps/shop/models.py:412 apps/shop/models.py:430
+#: apps/shop/models.py:483 core/abstract.py:37 core/abstract.py:637
 msgid "Created date"
 msgstr "Дата создания"
 
-#: apps/shop/models.py:401 apps/shop/models.py:427 core/admin.py:173
+#: apps/shop/models.py:389 apps/shop/models.py:415 core/admin.py:173
 #: core/models.py:356
 msgid "Message"
 msgstr "Сообщение"
 
-#: apps/shop/models.py:402
+#: apps/shop/models.py:390
 msgid "Answer"
 msgstr "Ответ"
 
-#: apps/shop/models.py:405
+#: apps/shop/models.py:393
 msgid "Buyer"
 msgstr "Покупатель"
 
-#: apps/shop/models.py:426
+#: apps/shop/models.py:414
 msgid "Position"
 msgstr "Должность"
 
-#: apps/shop/models.py:429
+#: apps/shop/models.py:417
 msgid "Vip"
 msgstr "Вип-клиент"
 
-#: apps/shop/models.py:434
+#: apps/shop/models.py:422
 msgid "Reviews"
 msgstr "Отзывы"
 
-#: apps/shop/models.py:443 core/abstract.py:92 core/abstract.py:640
+#: apps/shop/models.py:431 core/abstract.py:92 core/abstract.py:640
 msgid "Title"
 msgstr "Заголовок"
 
-#: apps/shop/models.py:450
+#: apps/shop/models.py:438
 msgid "Shop text"
 msgstr "Текст магазина"
 
-#: apps/shop/models.py:451
+#: apps/shop/models.py:439
 msgid "Shop texts"
 msgstr "Тексты магазина"
 
-#: apps/shop/models.py:462 apps/shop/models.py:463
+#: apps/shop/models.py:450 apps/shop/models.py:451
 msgid "Shop news"
 msgstr "Новости магазина"
 
-#: apps/shop/models.py:470
+#: apps/shop/models.py:458
 msgid "Shop article"
 msgstr "Статья магазина"
 
-#: apps/shop/models.py:471
+#: apps/shop/models.py:459
 msgid "Shop articles"
 msgstr "Статьи магазина"
 
-#: apps/shop/models.py:496
+#: apps/shop/models.py:484
 msgid "Client Name"
 msgstr "Имя клиента"
 
-#: apps/shop/models.py:497
+#: apps/shop/models.py:485
 msgid "Client Phone"
 msgstr "Телефон клиента"
 
-#: apps/shop/models.py:500
+#: apps/shop/models.py:488
 msgid "Quick order"
 msgstr "Быстрая покупка"
 
-#: apps/shop/models.py:505
+#: apps/shop/models.py:493
 msgid "Shop Callbacks"
 msgstr "Обратные звонки магазина"
 
-#: apps/shop/models.py:514
+#: apps/shop/models.py:502
 msgid "Slider_link"
 msgstr "Линк слайдера"
 
-#: apps/shop/models.py:519
+#: apps/shop/models.py:507
 msgid "ShopSliders"
 msgstr "Слайдеры магазина"
 
-#: apps/shop/models.py:530
+#: apps/shop/models.py:518
 msgid "Service Category"
 msgstr "Категория услуги"
 
-#: apps/shop/models.py:531
+#: apps/shop/models.py:519
 msgid "Service Categories"
 msgstr "Категории услуг"
 
-#: apps/shop/models.py:541
+#: apps/shop/models.py:529
 msgid "Related services"
 msgstr "Сопутствующие услуги"
 
-#: apps/shop/models.py:555
+#: apps/shop/models.py:543
 msgid "Service Admins"
 msgstr "Администраторы услуг"
 
-#: apps/shop/models.py:565
+#: apps/shop/models.py:553
 msgid "Services"
 msgstr "Услуги"
 
@@ -3209,6 +3192,11 @@ msgstr "Название параметра"
 #: core/abstract.py:63
 msgid "Parameters"
 msgstr "Параметры"
+
+#: core/abstract.py:93 core/abstract.py:715 core/models.py:41
+#: core/models.py:452
+msgid "URL"
+msgstr "URL"
 
 #: core/abstract.py:96 core/abstract.py:472
 msgid "Author"
@@ -3689,6 +3677,23 @@ msgstr "Время работы"
 #: core/abstract.py:693
 msgid "Times of works"
 msgstr "Время работы"
+
+#: core/abstract.py:713
+msgid "Name of vendor"
+msgstr "Название производителя"
+
+#: core/abstract.py:714
+#, fuzzy
+msgid "Name of vendor(english)"
+msgstr "Название производителя"
+
+#: core/abstract.py:716
+msgid "Description of Vendor"
+msgstr "Описание производителя"
+
+#: core/abstract.py:722
+msgid "Vendors"
+msgstr "Производители"
 
 #: core/admin.py:22 core/admin.py:96 core/admin.py:106 core/admin.py:129
 msgid "nnmware"
