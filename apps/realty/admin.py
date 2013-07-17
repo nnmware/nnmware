@@ -81,7 +81,7 @@ class RmInline(admin.StackedInline):
         (_("Rm's"), {"fields": [
             ('name', 'enabled'),
             ('kind', 'size'),
-            ('features', )
+            ('features', 'description')
         ]}),
     )
 
