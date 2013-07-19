@@ -4,6 +4,8 @@ from django import forms
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _, get_language
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from nnmware.apps.booking.models import Hotel, Room, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
@@ -199,6 +201,10 @@ class BookingAddForm(UserFromRequestForm):
         email = self.cleaned_data.get('email')
         if not email:
             raise forms.ValidationError(_("Email is required"))
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise forms.ValidationError(_("Email is wrong"))
         return email
 
     def clean(self):
