@@ -11,7 +11,7 @@ from nnmware.core.fields import ReCaptchaField
 from nnmware.core.forms import UserFromRequestForm
 
 
-class LocaleNamedForm(object):
+class LocaleNamedForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(LocaleNamedForm, self).__init__(*args, **kwargs)
@@ -36,7 +36,7 @@ class LocaleNamedForm(object):
         return super(LocaleNamedForm, self).save(commit=commit)
 
 
-class CabinetInfoForm(LocaleNamedForm, forms.ModelForm):
+class CabinetInfoForm(LocaleNamedForm):
 
     class Meta:
         model = Hotel
@@ -99,7 +99,7 @@ class CabinetTermsForm(forms.ModelForm):
         return super(CabinetTermsForm, self).save(commit=commit)
 
 
-class CabinetRoomForm(LocaleNamedForm, forms.ModelForm):
+class CabinetRoomForm(LocaleNamedForm):
 
     class Meta:
         model = Room
@@ -200,6 +200,14 @@ class BookingAddForm(UserFromRequestForm):
         if not email:
             raise forms.ValidationError(_("Email is required"))
         return email
+
+    def clean(self):
+        cleaned_data = super(BookingAddForm, self).clean()
+        if not self._user.is_authenticated():
+            email = cleaned_data.get("email")
+            if get_user_model().objects.filter(email=email).exists():
+                raise forms.ValidationError(_("Email already registered, please sign-in."))
+        return cleaned_data
 
 
 class BookingStatusForm(forms.ModelForm):
