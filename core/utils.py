@@ -1,5 +1,6 @@
 import hashlib
 import re
+import string
 import unicodedata
 from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 import os
@@ -13,7 +14,6 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from nnmware.core import oembed
-import time
 import unidecode
 from BeautifulSoup import BeautifulSoup
 
@@ -335,3 +335,7 @@ def tuplify(x):
     return x, x  # str(x) if needed
 
 current_year = datetime.now().year
+
+
+def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for x in range(size))
