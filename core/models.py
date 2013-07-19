@@ -445,7 +445,7 @@ class VisitorHit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
-    ip_address = models.CharField(max_length=20, verbose_name=_('IP'))
+    ip_address = models.GenericIPAddressField(verbose_name=_('IP'), blank=True, null=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
     user_agent = models.CharField(max_length=255, verbose_name=_('User-agent'))
     referer = models.TextField(verbose_name=_('Referer'))
