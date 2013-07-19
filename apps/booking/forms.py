@@ -146,7 +146,7 @@ class UserCabinetInfoForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = (
-            'fullname', 'email', 'subscribe')
+            'fullname', 'subscribe')
 
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user')
@@ -160,11 +160,11 @@ class UserCabinetInfoForm(forms.ModelForm):
                 self.current_user.save()
         return password
 
-    def clean_email(self):
-        email = self.cleaned_data["email"]
-        if get_user_model().objects.exclude(username=self.current_user.username).filter(email=email).exists():
-            raise forms.ValidationError(_("Email already exist."))
-        return email
+    # def clean_email(self):
+    #     email = self.cleaned_data["email"]
+    #     if get_user_model().objects.exclude(username=self.current_user.username).filter(email=email).exists():
+    #         raise forms.ValidationError(_("Email already exist."))
+    #     return email
 
 
 class BookingAddForm(forms.ModelForm):
