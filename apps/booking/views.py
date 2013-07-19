@@ -844,7 +844,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         return context
 
 
-class UserCabinet(CurrentUserCabinetAccess, UpdateView):
+class UserCabinet(AjaxFormMixin, CurrentUserCabinetAccess, UpdateView):
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
