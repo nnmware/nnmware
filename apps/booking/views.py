@@ -867,6 +867,11 @@ class UserCabinet(AjaxFormMixin, CurrentUserCabinetAccess, UpdateView):
     def get_success_url(self):
         return reverse('user_profile', args=[self.object.username])
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.save()
+        return super(UserCabinet, self).form_valid(form)
+
 
 class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
     paginate_by = 5
