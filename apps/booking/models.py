@@ -499,7 +499,7 @@ class Booking(MoneyBase, AbstractIP):
     middle_name = models.CharField(verbose_name=_("Middle name"), max_length=100, blank=True)
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
-    email = models.CharField(_('E-mail'), blank=True, max_length=75)
+    email = models.CharField(_('E-mail'), blank=True, max_length=100)
     uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True, editable=False)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)

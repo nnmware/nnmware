@@ -972,6 +972,7 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
     def form_valid(self, form):
         use_card = False
         p_m = self.request.REQUEST.get('payment_method') or None
+        payload = None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
             card_number = self.request.REQUEST.get('card_number') or None
@@ -982,7 +983,6 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
                         payload = {'success': False, 'engine_error': _('Card number is wrong.')}
-                        return AjaxLazyAnswer(payload)
                     else:
                         use_card = True
                         try:
@@ -993,12 +993,11 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
                             card_cvv2 = int(card_cvv2)
                         except ValueError:
                             payload = {'success': False, 'engine_error': _('Card CVV2 is wrong.')}
-                            return AjaxLazyAnswer(payload)
                 else:
                     payload = {'success': False, 'engine_error': _('You enter not all data of card.')}
-                    return AjaxLazyAnswer(payload)
         else:
             payload = {'success': False, 'engine_error': _('You are not select payment method.')}
+        if payload:
             return AjaxLazyAnswer(payload)
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
