@@ -146,7 +146,7 @@ class UserCabinetInfoForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = (
-            'fullname', 'subscribe')
+            'first_name', 'last_name', 'subscribe')
 
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('user')
