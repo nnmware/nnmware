@@ -8,6 +8,7 @@ from nnmware.apps.booking.models import Hotel, Room, Booking
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
+from nnmware.core.forms import UserFromRequestForm
 
 
 class LocaleNamedForm(object):
@@ -140,7 +141,7 @@ class RequestAddHotelForm(forms.ModelForm):
                                                                       'invalid': _('Answer is wrong')})
 
 
-class UserCabinetInfoForm(forms.ModelForm):
+class UserCabinetInfoForm(UserFromRequestForm):
     password = forms.CharField(label=_('New Password'), max_length=30, required=False)
 
     class Meta:
@@ -148,16 +149,12 @@ class UserCabinetInfoForm(forms.ModelForm):
         fields = (
             'first_name', 'last_name', 'subscribe')
 
-    def __init__(self, *args, **kwargs):
-        self.current_user = kwargs.pop('user')
-        super(UserCabinetInfoForm, self).__init__(*args, **kwargs)
-
     def clean_password(self):
         password = self.cleaned_data["password"]
         if len(password.strip(' ')) > 0:
-            if not self.current_user.check_password(password):
-                self.current_user.set_password(password)
-                self.current_user.save()
+            if not self._user.check_password(password):
+                self._user.set_password(password)
+                self._user.save()
         return password
 
     # def clean_email(self):
@@ -167,7 +164,7 @@ class UserCabinetInfoForm(forms.ModelForm):
     #     return email
 
 
-class BookingAddForm(forms.ModelForm):
+class BookingAddForm(UserFromRequestForm):
     room_id = forms.CharField(max_length=30, required=False)
     settlement = forms.CharField(max_length=30, required=False)
     payment_method = forms.CharField(max_length=30, required=False)

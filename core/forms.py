@@ -431,3 +431,10 @@ class CoreUserCreationForm(UserCreationForm):
         except get_user_model().DoesNotExist:
             return username
         raise forms.ValidationError(self.error_messages['duplicate_username'])
+
+
+class UserFromRequestForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user')
+        super(UserFromRequestForm, self).__init__(*args, **kwargs)
+        self._user = user

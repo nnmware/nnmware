@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from decimal import Decimal
 from uuid import uuid4
 import random
@@ -16,7 +16,6 @@ from nnmware.apps.address.models import AbstractGeo, Tourism
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
-from nnmware.core.utils import daterange
 
 
 class HotelPoints(models.Model):
@@ -493,7 +492,10 @@ class Booking(MoneyBase, AbstractIP):
     to_date = models.DateField(_("To"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True,
                                    on_delete=models.SET_NULL)
+    settlement_txt = models.CharField(verbose_name=_("Settlement Variant in text"), max_length=255, blank=True,
+                                      null=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
+    hotel_txt = models.CharField(verbose_name=_("Hotel in text"), max_length=255, blank=True, null=True)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
     first_name = models.CharField(verbose_name=_("First name"), max_length=100)
     middle_name = models.CharField(verbose_name=_("Middle name"), max_length=100, blank=True)

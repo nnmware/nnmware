@@ -33,7 +33,7 @@ from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
 from nnmware.core.decorators import ssl_required
 from django.views.decorators.cache import never_cache
-from nnmware.core.views import AjaxViewMixin
+from nnmware.core.views import AjaxViewMixin, UserToFormMixin
 
 
 class CurrentUserHotelAdmin(object):
@@ -970,7 +970,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             raise Http404
 
 
-class ClientAddBooking(AjaxFormMixin, CreateView):
+class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
     model = Booking
     form_class = BookingAddForm
 
@@ -1010,7 +1010,9 @@ class ClientAddBooking(AjaxFormMixin, CreateView):
         room = Room.objects.get(id=form.cleaned_data.get('room_id'))
         settlement = SettlementVariant.objects.get(pk=form.cleaned_data.get('settlement'))
         self.object.settlement = settlement
+        self.object.settlement_txt = str(settlement)
         self.object.hotel = settlement.room.hotel
+        self.object.hotel_txt = str(settlement.room.hotel)
         self.object.status = STATUS_ACCEPTED
         self.object.date = datetime.now()
         from_date = self.object.from_date
