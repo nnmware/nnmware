@@ -160,6 +160,12 @@ class UserCabinetInfoForm(forms.ModelForm):
                 self.current_user.save()
         return password
 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if get_user_model().filter(username__ne=self.current_user.username, email=email).exists():
+            raise forms.ValidationError(_("Email already exist."))
+        return email
+
 
 class BookingAddForm(forms.ModelForm):
     room_id = forms.CharField(max_length=30, required=False)
