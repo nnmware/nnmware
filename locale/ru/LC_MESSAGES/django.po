@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-20 01:04+1100\n"
+"POT-Creation-Date: 2013-07-20 01:44+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -488,35 +488,39 @@ msgstr "Спасибо за Ваш отзыв!"
 msgid "You are not allowed for this action."
 msgstr "Вы не имеете прав для данного действия"
 
-#: apps/booking/forms.py:140 core/forms.py:213
+#: apps/booking/forms.py:142 core/forms.py:213
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:141 core/forms.py:214
+#: apps/booking/forms.py:143 core/forms.py:214
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:145 core/forms.py:192
+#: apps/booking/forms.py:147 core/forms.py:192
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: apps/booking/forms.py:184
+#: apps/booking/forms.py:186
 msgid "No valid payment method."
 msgstr "Нет доступного метода оплаты"
 
-#: apps/booking/forms.py:189
+#: apps/booking/forms.py:191
 msgid "Spam."
 msgstr "Спам"
 
-#: apps/booking/forms.py:195
+#: apps/booking/forms.py:197
 msgid "Phone is required"
 msgstr "Номер телефона обязателен"
 
-#: apps/booking/forms.py:201
+#: apps/booking/forms.py:203
 msgid "Email is required"
 msgstr "Адрес email обязателен"
 
-#: apps/booking/forms.py:209
+#: apps/booking/forms.py:207
+msgid "Email is wrong"
+msgstr "Адрес email неверен"
+
+#: apps/booking/forms.py:215
 msgid "Email already registered, please sign-in."
 msgstr "Данный email уже зарегистрирован, пожалуйста авторизуйтесь."
 
