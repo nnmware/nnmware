@@ -1010,9 +1010,11 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             self.object.user = self.request.user
         else:
             email = form.cleaned_data.get('email')
+            first_name = form.cleaned_data.get('first_name')[:30]
+            last_name = form.cleaned_data.get('last_name')[:30]
             username = email[:30]
             password = random_pw()
-            u = get_user_model()(username=username, email=email)
+            u = get_user_model()(username=username, email=email, first_name=first_name, last_name=last_name)
             u.set_password(password)
             u.is_active = True
             u.save()
