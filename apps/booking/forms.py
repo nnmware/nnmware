@@ -186,6 +186,18 @@ class BookingAddForm(forms.ModelForm):
             raise forms.ValidationError(_("Spam."))
         return None
 
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if not phone:
+            raise forms.ValidationError(_("Phone is required"))
+        return phone
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError(_("Email is required"))
+        return email
+
 
 class BookingStatusForm(forms.ModelForm):
     description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}),
