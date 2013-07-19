@@ -204,7 +204,7 @@ class BookingAddForm(UserFromRequestForm):
     def clean(self):
         cleaned_data = super(BookingAddForm, self).clean()
         if not self._user.is_authenticated():
-            email = cleaned_data.get("email")
+            email = cleaned_data.get('email')
             if get_user_model().objects.filter(email=email).exists():
                 raise forms.ValidationError(_("Email already registered, please sign-in."))
         return cleaned_data
