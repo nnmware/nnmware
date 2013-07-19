@@ -3,6 +3,7 @@
 from datetime import timedelta, datetime
 from decimal import Decimal
 from hashlib import sha1
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -27,7 +28,7 @@ from nnmware.core.templatetags.booking_tags import convert_to_client_currency, u
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
-from nnmware.core.utils import convert_to_date, daterange
+from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
@@ -1007,6 +1008,19 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
+        else:
+            email = form.cleaned_data.get('email')
+            username = email[:30]
+            password = random_pw()
+            u = get_user_model()(username=username, email=email)
+            u.set_password(password)
+            u.is_active = True
+            u.save()
+            mail_dict = {'username': username, 'password': password, 'site_name': settings.SITENAME}
+            subject = 'registration/new_user_subject.txt'
+            body = 'registration/new_user.txt'
+            send_template_mail(subject, body, mail_dict, [email])
+            self.object.user = u
         room = Room.objects.get(id=form.cleaned_data.get('room_id'))
         settlement = SettlementVariant.objects.get(pk=form.cleaned_data.get('settlement'))
         self.object.settlement = settlement
