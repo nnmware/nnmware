@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-20 00:21+1100\n"
+"POT-Creation-Date: 2013-07-20 01:04+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgstr ""
 
 #: apps/address/admin.py:10 apps/address/models.py:100
 #: apps/address/models.py:126 apps/address/models.py:195
-#: apps/address/models.py:239 apps/booking/admin.py:188
+#: apps/address/models.py:239 apps/booking/admin.py:192
 #: apps/booking/models.py:650
 msgid "City"
 msgstr "Город"
@@ -110,7 +110,8 @@ msgstr "Категория места туризма"
 
 #: apps/address/admin.py:49 apps/address/admin.py:60 apps/address/admin.py:71
 #: apps/booking/admin.py:62 apps/booking/admin.py:85 apps/booking/admin.py:116
-#: apps/booking/admin.py:126 core/admin.py:226
+#: apps/booking/admin.py:126 apps/booking/admin.py:148
+#: apps/booking/admin.py:161 core/admin.py:226
 msgid "Addons"
 msgstr "Дополнения"
 
@@ -433,7 +434,7 @@ msgstr "Категория опций номера"
 msgid "Hotel Option Category"
 msgstr "Категория опций отеля"
 
-#: apps/booking/admin.py:137 apps/booking/admin.py:150
+#: apps/booking/admin.py:137 apps/booking/admin.py:152
 msgid "Booking Event"
 msgstr "Событие бронирования"
 
@@ -441,29 +442,29 @@ msgstr "Событие бронирования"
 msgid "Credit card"
 msgstr "Кредитка"
 
-#: apps/booking/admin.py:171
+#: apps/booking/admin.py:175
 msgid "Request for add Hotel"
 msgstr "Заявка на добавление Отеля"
 
-#: apps/booking/admin.py:183 apps/booking/models.py:566
+#: apps/booking/admin.py:187 apps/booking/models.py:566
 msgid "Agent Percent"
 msgstr "Агентский процент"
 
-#: apps/booking/admin.py:196 apps/booking/models.py:616
+#: apps/booking/admin.py:200 apps/booking/models.py:616
 #: apps/booking/models.py:619 apps/shop/models.py:69 apps/shop/models.py:536
 msgid "Discount"
 msgstr "Скидка"
 
-#: apps/booking/admin.py:208 apps/booking/models.py:440
+#: apps/booking/admin.py:212 apps/booking/models.py:440
 #: apps/booking/models.py:493 apps/booking/models.py:630
 msgid "Settlement Variant"
 msgstr "Вариант поселения"
 
-#: apps/booking/admin.py:215
+#: apps/booking/admin.py:219
 msgid "Availability"
 msgstr "Наличие"
 
-#: apps/booking/admin.py:222 apps/booking/models.py:633
+#: apps/booking/admin.py:226 apps/booking/models.py:633
 msgid "Place Price"
 msgstr "Стоимость места"
 
@@ -905,14 +906,12 @@ msgid "To"
 msgstr "До"
 
 #: apps/booking/models.py:495
-#, fuzzy
 msgid "Settlement Variant in text"
-msgstr "Вариант поселения"
+msgstr "Вариант поселения (текст)"
 
 #: apps/booking/models.py:498
-#, fuzzy
 msgid "Hotel in text"
-msgstr "Тип отеля"
+msgstr "Отель (текст)"
 
 #: apps/booking/models.py:499
 msgid "Booking status"
@@ -1093,143 +1092,143 @@ msgstr "Заявка на добавление отеля"
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
-#: apps/booking/views.py:248 apps/booking/views.py:277
+#: apps/booking/views.py:249 apps/booking/views.py:278
 msgid "list of hotels"
 msgstr "список отелей"
 
-#: apps/booking/views.py:278
+#: apps/booking/views.py:279
 msgid "admin of hotels"
 msgstr "администратор отелей"
 
-#: apps/booking/views.py:461 apps/booking/views.py:479
-#: apps/booking/views.py:507 apps/booking/views.py:527
-#: apps/booking/views.py:561 apps/booking/views.py:620
-#: apps/booking/views.py:864
+#: apps/booking/views.py:462 apps/booking/views.py:480
+#: apps/booking/views.py:508 apps/booking/views.py:528
+#: apps/booking/views.py:562 apps/booking/views.py:621
+#: apps/booking/views.py:865
 msgid "private cabinet"
 msgstr "личный кабинет"
 
-#: apps/booking/views.py:639 apps/booking/views.py:889
+#: apps/booking/views.py:640 apps/booking/views.py:890
 msgid "bookings"
 msgstr "бронирования"
 
-#: apps/booking/views.py:673
+#: apps/booking/views.py:674
 msgid "bills"
 msgstr "счета"
 
-#: apps/booking/views.py:713
+#: apps/booking/views.py:714
 msgid "request for add hotel"
 msgstr "заявка на добавление отеля"
 
-#: apps/booking/views.py:737
+#: apps/booking/views.py:738
 msgid "booking list"
 msgstr "список бронирования"
 
-#: apps/booking/views.py:766 apps/booking/views.py:1061
+#: apps/booking/views.py:767 apps/booking/views.py:1075
 msgid "request for add"
 msgstr "заявка на добавление"
 
-#: apps/booking/views.py:777 apps/booking/views.py:839
+#: apps/booking/views.py:778 apps/booking/views.py:840
 msgid "site reports"
 msgstr "отчеты сайта"
 
-#: apps/booking/views.py:788
+#: apps/booking/views.py:789
 msgid "Error"
 msgstr "Ошибка"
 
-#: apps/booking/views.py:792
+#: apps/booking/views.py:793
 msgid "All hotels in system"
 msgstr "Все отели в системе"
 
-#: apps/booking/views.py:795
+#: apps/booking/views.py:796
 msgid "Hotels without payment methods"
 msgstr "Отели, с неуказанными методами оплаты"
 
-#: apps/booking/views.py:798
+#: apps/booking/views.py:799
 msgid "Hotels with payment methods"
 msgstr "Отели, с установленными методами оплаты"
 
-#: apps/booking/views.py:801
+#: apps/booking/views.py:802
 msgid "Hotels without admins"
 msgstr "Отели без администраторов"
 
-#: apps/booking/views.py:804
+#: apps/booking/views.py:805
 msgid "Hotels with admins"
 msgstr "Отели с администраторами"
 
-#: apps/booking/views.py:807
+#: apps/booking/views.py:808
 msgid "Hotels, works on request"
 msgstr "Отели, работающие по запросу"
 
-#: apps/booking/views.py:812
+#: apps/booking/views.py:813
 msgid "Hotels, with current null percent"
 msgstr "Отели, с установленным нулевым процентом"
 
-#: apps/booking/views.py:815
+#: apps/booking/views.py:816
 msgid "Total cities"
 msgstr "Всего городов"
 
-#: apps/booking/views.py:821
+#: apps/booking/views.py:822
 msgid "Last hotel admin login"
 msgstr "Последняя дата входа администратора отеля"
 
-#: apps/booking/views.py:827
+#: apps/booking/views.py:828
 msgid "Admins hotel, who not entering"
 msgstr "Администраторы отеля, кто не заходил"
 
-#: apps/booking/views.py:914 apps/booking/views.py:1085
-#: apps/booking/views.py:1098 apps/booking/views.py:1114
+#: apps/booking/views.py:915 apps/booking/views.py:1099
+#: apps/booking/views.py:1112 apps/booking/views.py:1128
 msgid "Booking ID"
 msgstr "ID Бронирования"
 
-#: apps/booking/views.py:963
+#: apps/booking/views.py:964
 msgid "booking"
 msgstr "бронирование"
 
-#: apps/booking/views.py:990
+#: apps/booking/views.py:991
 msgid "Card number is wrong."
 msgstr "Неверный номер карты"
 
-#: apps/booking/views.py:1000
+#: apps/booking/views.py:1001
 msgid "Card CVV2 is wrong."
 msgstr "Неверный CVV2 код карты"
 
-#: apps/booking/views.py:1002
+#: apps/booking/views.py:1003
 msgid "You enter not all data of card."
 msgstr "Вы ввели не все данные кредитной карты"
 
-#: apps/booking/views.py:1004
+#: apps/booking/views.py:1005
 msgid "You are not select payment method."
 msgstr "Вы не выбрали вариант платежа"
 
-#: apps/booking/views.py:1071
+#: apps/booking/views.py:1085
 msgid "booking of russian hotels"
 msgstr "бронирование русских отелей"
 
-#: apps/booking/views.py:1123
+#: apps/booking/views.py:1137
 msgid "Changed status of booking"
 msgstr "Изменен статус бронирования"
 
-#: apps/booking/views.py:1124
+#: apps/booking/views.py:1138
 msgid "Hotel: "
 msgstr "Отель: "
 
-#: apps/booking/views.py:1125
+#: apps/booking/views.py:1139
 msgid "Booking: "
 msgstr "Бронирование: "
 
-#: apps/booking/views.py:1126
+#: apps/booking/views.py:1140
 msgid "Booking link: "
 msgstr "Ссылка на бронирование: "
 
-#: apps/booking/views.py:1127
+#: apps/booking/views.py:1141
 msgid "Old status: "
 msgstr "Старый статус: "
 
-#: apps/booking/views.py:1128
+#: apps/booking/views.py:1142
 msgid "New status: "
 msgstr "Новый статус: "
 
-#: apps/booking/views.py:1130
+#: apps/booking/views.py:1144
 msgid "Description: "
 msgstr "Описание: "
 
