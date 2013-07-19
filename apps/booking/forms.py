@@ -162,7 +162,7 @@ class UserCabinetInfoForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if get_user_model().filter(username__ne=self.current_user.username, email=email).exists():
+        if get_user_model().objects().filter(username__ne=self.current_user.username, email=email).exists():
             raise forms.ValidationError(_("Email already exist."))
         return email
 
