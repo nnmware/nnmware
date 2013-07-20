@@ -146,6 +146,8 @@ class AbstractEmployee(AbstractImg):
 
 
 class CompanyCategory(Tree):
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Category Admins'),
+                                    related_name='%(app_label)s_%(class)s_cat_adm')
     slug_detail = 'companies_category'
 
     class Meta:
