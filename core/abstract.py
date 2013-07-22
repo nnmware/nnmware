@@ -218,19 +218,6 @@ class AbstractImg(models.Model):
 
 
 @python_2_unicode_compatible
-class Color(AbstractImg):
-    name = std_text_field(_('Color'))
-
-    class Meta:
-        verbose_name = _("Color")
-        verbose_name_plural = _("Colors")
-        abstract = True
-
-    def __str__(self):
-        return self.name
-
-
-@python_2_unicode_compatible
 class Material(AbstractImg):
     name = std_text_field(_('Material'))
 
@@ -254,6 +241,8 @@ class AbstractName(AbstractImg):
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
+    pics = models.IntegerField(blank=True, null=True)
+    views = models.IntegerField(blank=True, null=True)
     comments = models.IntegerField(blank=True, null=True)
 
     class Meta:
@@ -303,6 +292,19 @@ class AbstractName(AbstractImg):
         else:
             self.slug = str(self.slug).strip().replace(' ', '-')
         super(AbstractName, self).save(*args, **kwargs)
+
+
+@python_2_unicode_compatible
+class Color(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Color")
+        verbose_name_plural = _("Colors")
+        abstract = True
+
+    def __str__(self):
+        return self.name
 
 
 @python_2_unicode_compatible
