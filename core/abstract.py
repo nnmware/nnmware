@@ -315,6 +315,8 @@ class Tree(AbstractName):
     rootnode = models.BooleanField(_('Root node'), default=False)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
         "Enable this if users must login before access with this objects."))
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Category Admins'),
+                                    related_name='%(app_label)s_%(class)s_adm')
 
     class Meta:
         ordering = ['ordering', ]

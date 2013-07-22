@@ -146,8 +146,6 @@ class AbstractEmployee(AbstractImg):
 
 
 class CompanyCategory(Tree):
-    # admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Category Admins'),
-    #                                 related_name='%(app_label)s_%(class)s_cat_adm')
     slug_detail = 'companies_category'
 
     class Meta:
@@ -161,8 +159,8 @@ class CompanyCategory(Tree):
 
 
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
-    # admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
-    #                                 null=True, blank=True, related_name='%(class)s_comp_adm')
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
+                                    null=True, blank=True, related_name='%(class)s_comp_adm')
     main_category = models.ForeignKey(CompanyCategory, blank=True, null=True, verbose_name=_('Company category'),
                                       related_name='company', on_delete=models.SET_NULL)
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('All company category'),
@@ -265,8 +263,8 @@ VACANCY_TYPE = (
 
 
 class Vacancy(AbstractName, AbstractDate):
-    # admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
-    #                                 null=True, blank=True, related_name='%(class)s_comp_adm')
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
+                                    null=True, blank=True, related_name='%(app_label)s_%(class)s_vac_adm')
     category = models.ForeignKey(VacancyCategory, blank=True, null=True, verbose_name=_('Vacancy category'),
                                  related_name='vacancy', on_delete=models.SET_NULL)
     vacancy_type = models.IntegerField(_("Type of vacancy"), choices=VACANCY_TYPE, default=VACANCY_UNKNOWN,

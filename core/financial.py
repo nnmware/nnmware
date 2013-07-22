@@ -92,7 +92,7 @@ class ExcelResponse(HttpResponse):
                         cell_style = styles['default']
                     sheet.write(rowx, colx, value, style=cell_style)
             book.save(output)
-            mimetype = 'application/vnd.ms-excel'
+            content_type = 'application/vnd.ms-excel'
             file_ext = 'xls'
         else:
             for row in data:
@@ -104,8 +104,8 @@ class ExcelResponse(HttpResponse):
                     out_row.append(value.replace('"', '""'))
                 output.write('"%s"\n' %
                              '","'.join(out_row))
-            mimetype = 'text/csv'
+            content_type = 'text/csv'
             file_ext = 'csv'
         output.seek(0)
-        super(ExcelResponse, self).__init__(content=output.getvalue(), mimetype=mimetype)
+        super(ExcelResponse, self).__init__(content=output.getvalue(), content_type=content_type)
         self['Content-Disposition'] = 'attachment;filename="%s.%s"' % (output_name.replace('"', '\"'), file_ext)

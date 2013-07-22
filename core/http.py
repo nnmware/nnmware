@@ -30,7 +30,7 @@ class JSONResponse(HttpResponse):
         else:
             content = json.dumps(obj, cls=LazyEncoder)
         super(JSONResponse, self).__init__(content,
-            mimetype='application/json')
+            content_type='application/json')
 
 
 class XMLResponse(HttpResponse):
@@ -43,7 +43,7 @@ class XMLResponse(HttpResponse):
             content = serialize('xml', obj)
         else:
             content = obj
-        super(XMLResponse, self).__init__(content, mimetype='application/xml')
+        super(XMLResponse, self).__init__(content, content_type='application/xml')
 
 
 def redirect(request):
