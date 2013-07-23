@@ -10,7 +10,7 @@ from nnmware.apps.address.models import Country, AbstractLocation, Region
 from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material, AbstractVendor
-from nnmware.core.abstract import AbstractDate, Color, Unit, Parameter, AbstractIP, AbstractImg
+from nnmware.core.abstract import AbstractDate, AbstractColor, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_url_field, std_text_field
 from nnmware.core.managers import ProductManager, ServiceManager
 from django.utils.encoding import python_2_unicode_compatible
@@ -30,7 +30,7 @@ class ProductCategory(Tree):
         return Product.objects.active().filter(category=self)
 
 
-class ProductColor(Color):
+class ProductColor(AbstractColor):
     pass
 
 

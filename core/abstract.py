@@ -295,7 +295,7 @@ class AbstractName(AbstractImg):
 
 
 @python_2_unicode_compatible
-class Color(AbstractName):
+class AbstractColor(AbstractName):
     pass
 
     class Meta:
