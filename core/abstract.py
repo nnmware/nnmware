@@ -173,7 +173,7 @@ class AbstractData(AbstractDate):
 
     def is_editable(self, request):
         """
-        Restrict in-line editing to the objects's owner and superusers.
+        Restrict in-line editing to the object's owner and superusers.
         """
         return request.user.is_superuser or request.user == self.user
 
@@ -524,7 +524,7 @@ class AbstractContact(AbstractImg):
     hide_googleplus = models.BooleanField(_('Hide googleplus'), default=False)
     hide_twitter = models.BooleanField(_('Hide twitter'), default=False)
     hide_vkontakte = models.BooleanField(_('Hide vkontakte'), default=False)
-    hide_moikrug = models.BooleanField(_('Hide mokrug'), default=False)
+    hide_moikrug = models.BooleanField(_('Hide moikrug'), default=False)
     hide_odnoklassniki = models.BooleanField(_('Hide odnoklassniki'), default=False)
     hide_other_social = models.BooleanField(_('Hide other social networks'), default=False)
     hide_address = models.BooleanField(_('Hide address'), default=False)

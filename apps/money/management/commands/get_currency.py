@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.management.base import BaseCommand
 from nnmware.core.parsers import parse_currency
-from datetime import datetime
+
 
 class Command(BaseCommand):
     help = 'Parsed Currency Rate from CBR site'

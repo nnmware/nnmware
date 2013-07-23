@@ -42,9 +42,8 @@ class BrowserIDBackend(SocialAuthBackend):
     def extra_data(self, user, uid, response, details):
         """Return users extra data"""
         # BrowserID sends timestamp for expiration date, here we
-        # comvert it to the remaining seconds
-        expires = (response['expires'] / 1000) - \
-                  time.mktime(datetime.now().timetuple())
+        # convert it to the remaining seconds
+        expires = (response['expires'] / 1000) - time.mktime(datetime.now().timetuple())
         return {
             'audience': response['audience'],
             'issuer': response['issuer'],
@@ -58,7 +57,7 @@ class BrowserIDAuth(BaseAuth):
     AUTH_BACKEND = BrowserIDBackend
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         if not 'assertion' in self.data:
             raise AuthMissingParameter(self, 'assertion')
 

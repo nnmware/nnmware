@@ -3,8 +3,9 @@ from nnmware.apps.address.models import *
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin
 
+
 class CityAdmin(admin.ModelAdmin):
-    list_display = ('name','region','country','slug','longitude','latitude')
+    list_display = ('name', 'region', 'country', 'slug', 'longitude', 'latitude')
     search_fields = ('name',)
     fieldsets = (
         (_("City"), {"fields": [("name", "slug"),
@@ -21,24 +22,25 @@ class RegionAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('name',)
     fieldsets = (
-        (_("Region"), {"fields": [("name","slug",'country'),
+        (_("Region"), {"fields": [("name", "slug", 'country'),
             ('description',),
-            ('name_add','order_in_list','enabled'),
+            ('name_add', 'order_in_list', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en","name_add_en"),("description_en",) ]}),)
+                        "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__','slug')
+    list_display = ('__unicode__', 'slug')
     search_fields = ('name',)
     fieldsets = (
-        (_("Country"), {"fields": [("name","slug"),
-            ('description',),
-            ('name_add','order_in_list','enabled'),
+        (_("Country"), {"fields": [("name", "slug"),
+            ('description', ),
+            ('name_add', 'order_in_list', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en","name_add_en"),("description_en",) ]}),)
+                        "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
+
 
 class TourismCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en')
@@ -46,39 +48,37 @@ class TourismCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Tourism place category"), {"fields": [("name",),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled'),( 'icon'),
-        ]}),
+        (_("Addons"), {"fields": [('enabled', ), ('icon', ), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en",),("description_en",) , ]}),)
+                        "fields": [("name_en",), ("description_en",), ]}),)
+
 
 class TourismAdmin(admin.ModelAdmin):
-    list_display = ('name','category' ,'country','city','address')
+    list_display = ('name', 'category', 'country', 'city', 'address')
     search_fields = ('name',)
     fieldsets = (
-        (_("Tourism place category"), {"fields": [("name",'address'),('category',),
+        (_("Tourism place category"), {"fields": [("name", 'address'), ('category',),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled','country','city'),
-        ]}),
+        (_("Addons"), {"fields": [('enabled', 'country', 'city')]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en",),("description_en",) , ]}),)
+                        "fields": [("name_en", ), ("description_en", )]}),)
+
 
 class StationMetroAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     fieldsets = (
-        (_("Station of metro"), {"fields": [("name",'address'),
+        (_("Station of metro"), {"fields": [("name", 'address'),
             ('description',)]}),
-        (_("Addons"), {"fields": [( 'enabled','country','city'),
-        ]}),
+        (_("Addons"), {"fields": [('enabled', 'country', 'city'), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en",),("description_en",) , ]}),
-        )
+                        "fields": [("name_en",), ("description_en",)]}),)
+
 
 class InstitutionAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Institution"), {"fields": [('name','order_in_list'),
-                                       ('city','country')
-        ]}),)
+        (_("Institution"), {"fields": [('name', 'order_in_list'),
+                                       ('city', 'country')]}),)
 
 admin.site.register(City, CityAdmin)
 admin.site.register(Region, RegionAdmin)

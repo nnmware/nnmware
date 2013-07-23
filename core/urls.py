@@ -1,7 +1,6 @@
 from django.conf.urls import *
 from nnmware.core import feeds
 from nnmware.core.views import *
-from nnmware.apps.account.views import *
 
 urlpatterns = patterns('',
     ### Comments ###
@@ -23,7 +22,7 @@ urlpatterns = patterns('',
     url(r'^pic/editor/(?P<pk>[0-9]+)/$', PicEditor.as_view(), name="pic_editor"),
     url(r'^doc/edit/(?P<pk>\d+)/$', DocEdit.as_view(), name="doc_edit"),
     url(r'^settings/$', UserSettings.as_view(), name='user_settings'),
-    url(r'^signin/$', SigninView.as_view(), name="signin"),
+    url(r'^signin/$', LoginView.as_view(), name="signin"),
     url(r'^signup/$', SignupView.as_view(), name="signup"),
     url(r'^logout/$', LogoutView.as_view(), name="logout"),
     url(r'^tags/popular/$', TagsPopularView.as_view(), name="tags_popular"),

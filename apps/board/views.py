@@ -1,20 +1,9 @@
-from datetime import datetime
-from django.contrib import messages
-
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.utils.translation import ugettext_lazy as _
-from django.forms.models import inlineformset_factory
 from django.db.models import Q
-from django.views.generic.dates import YearArchiveView, MonthArchiveView, \
-    DayArchiveView
+from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from nnmware.core.data import get_queryset_category
-
-from nnmware.core.decorators import render_to
-from nnmware.core.http import redirect
 from nnmware.apps.board.models import Board, Category
 from nnmware.apps.board.forms import BoardForm
 

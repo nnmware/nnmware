@@ -34,7 +34,7 @@ ACCESS_TOKEN_URL = 'https://www.google.com/accounts/OAuthGetAccessToken'
 
 # Google OAuth2 base configuration
 GOOGLE_OAUTH2_SERVER = 'accounts.google.com'
-GOOGLE_OATUH2_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/auth'
+GOOGLE_OAUTH2_AUTHORIZATION_URL = 'https://accounts.google.com/o/oauth2/auth'
 
 # scope for user email, specify extra scopes in settings, for example:
 # GOOGLE_OAUTH_EXTRA_SCOPE = ['https://www.google.com/m8/feeds/']

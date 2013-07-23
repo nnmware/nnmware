@@ -85,7 +85,7 @@ class FacebookAuth(BaseOAuth2):
         return data
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         access_token = None
         expires = None
 
@@ -112,9 +112,8 @@ class FacebookAuth(BaseOAuth2):
                 backend_setting(self, self.SETTINGS_SECRET_NAME))
 
             if response is not None:
-                access_token = response.get('access_token') or \
-                               response.get('oauth_token') or \
-                               self.data.get('access_token')
+                access_token = response.get('access_token') or response.get('oauth_token') or \
+                    self.data.get('access_token')
 
                 if 'expires' in response:
                     expires = response['expires']
@@ -128,11 +127,11 @@ class FacebookAuth(BaseOAuth2):
                 # data is needed (it contains the user ID used to identify the
                 # account on further logins), this app cannot allow it to
                 # continue with the auth process.
-                raise AuthUnknownError(self, 'An error ocurred while retrieving users Facebook data')
+                raise AuthUnknownError(self, 'An error occurred while retrieving users Facebook data')
 
             data['access_token'] = access_token
             # expires will not be part of response if offline access
-            # premission was requested
+            # permission was requested
             if expires:
                 data['expires'] = expires
 
@@ -174,7 +173,7 @@ def load_signed_request(signed_request, api_secret=None):
                                 msg=payload,
                                 digestmod=hashlib.sha256).digest()
 
-        # allow the signed_request to function for upto 1 day
+        # allow the signed_request to function for up to 1 day
         if sig == expected_sig and \
                 data['issued_at'] > (time.time() - 86400):
             return data

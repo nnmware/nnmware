@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Skyrock OAuth support.
 
@@ -9,7 +11,6 @@ values.
 By default account id is stored in extra_data field, check OAuthBackend
 class for details on how to extend it.
 """
-import json
 
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
 
@@ -61,7 +62,7 @@ class SkyrockAuth(ConsumerBasedOAuth):
             return None
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         if 'denied' in self.data:
             raise ValueError('Authentication denied')
         else:

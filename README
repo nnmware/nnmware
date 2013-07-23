@@ -50,7 +50,7 @@ Licensed under GPL3
 nnmware@gmail.com
 
 required django(bleeding edge or 1.5.1), python-oauth2, south, unidecode, xlwt
-reccomended django-grappelli
+recommended django-grappelli
 
 
 Working with OpenStreetMap and his geotargeting.
@@ -63,7 +63,7 @@ Great thanks Python, Django, Linux and all OpenSource community.
 QUICK START
 ============================================
 
-Install django-current, south, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(reccomended)
+Install django-current, south, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(recommended)
 
 
 cd /usr/src

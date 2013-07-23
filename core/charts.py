@@ -1,16 +1,14 @@
 from reportlab.graphics.shapes import Drawing, String
 from reportlab.graphics.charts.lineplots import LinePlot
-from reportlab.graphics.charts.lineplots import ScatterPlot
 from reportlab.lib import colors
 from reportlab.graphics.charts.legends import Legend
 from reportlab.graphics.charts.textlabels import Label
-from reportlab.graphics.widgets.markers import makeMarker
 from reportlab.graphics.charts.barcharts import HorizontalBarChart
 
 
 class MyLineChartDrawing(Drawing):
-    def __init__(self, width=600, height=400, *args, **kw):
-        apply(Drawing.__init__, (self, width, height) + args, kw)
+    def __init__(self, width=600, height=400, *args, **kwargs):
+        super(MyLineChartDrawing, self).__init__(width, height, *args, **kwargs)
         self.add(LinePlot(), name='chart')
 
         self.add(String(200, 180, 'Hello World'), name='title')

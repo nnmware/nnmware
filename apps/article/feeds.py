@@ -46,6 +46,7 @@ class LatestEntries(Feed, SiteMixin):
 
 
 class TagFeed(Feed, SiteMixin):
+
     def get_object(self, request, slug):
         try:
             return Tag.objects.get(slug__iexact=slug)

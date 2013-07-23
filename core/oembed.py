@@ -187,7 +187,7 @@ class OEmbedEndpoint(object):
         Remove an OEmbedUrlScheme from the list of schemes.
         
         Args:
-           url: The url used as key for the urlSchems dict. 
+           url: The url used as key for the urlSchemes dict.
             
         """
         if self._urlSchemes.has_key(url):
@@ -330,7 +330,7 @@ class OEmbedUrlScheme(object):
 
     def __init__(self, url):
         """
-        Create a new OEmbedUrlScheme instanace. 
+        Create a new OEmbedUrlScheme instance.
         
         Args;
             url: The url scheme. It also takes the wildcard character (*).
@@ -390,7 +390,7 @@ class OEmbedConsumer(object):
 
     def delEndpoint(self, endpoint):
         """
-        Remove an OEmbedEnpoint from this consumer.
+        Remove an OEmbedEndpoint from this consumer.
         
         Args:
             endpoint: An instance of an OEmbedEndpoint class.

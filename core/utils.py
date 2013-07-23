@@ -61,7 +61,7 @@ def get_video_provider_from_link(link):
 
 
 def update_video_size(html, w, h):
-    # Change parametrs in Iframe src of EOMBED
+    # Change parameters in Iframe src of EOMBED
     new_width = 'width="' + str(w) + '"'
     new_height = 'height="' + str(h) + '"'
     patern1 = r'width="\d+"'

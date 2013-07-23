@@ -83,7 +83,7 @@ class EvernoteAuth(ConsumerBasedOAuth):
 
         params = parse_qs(response)
 
-        # evernote sents a empty secret token, this way it doesn't fires up the
+        # evernote sends a empty secret token, this way it doesn't fires up the
         # exception
         response = response.replace('oauth_token_secret=',
                                     'oauth_token_secret=None')

@@ -33,7 +33,7 @@ def dsa_view(redirect_name=None):
             RAISE_EXCEPTIONS = backend_setting(backend, 'SOCIAL_AUTH_RAISE_EXCEPTIONS', setting('DEBUG'))
             try:
                 return func(request, backend, *args, **kwargs)
-            except Exception, e:  # some error ocurred
+            except Exception, e:  # some error occurred
                 if RAISE_EXCEPTIONS:
                     raise
                 log('error', unicode(e), exc_info=True, extra={'request': request})

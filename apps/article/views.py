@@ -1,14 +1,13 @@
 from django.contrib import messages
 from django.db.models import Q
 from django.views.generic import ListView, DateDetailView, YearArchiveView,\
-    MonthArchiveView, DayArchiveView
+    MonthArchiveView, DayArchiveView, CreateView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.data import get_queryset_category
 
 from nnmware.apps.article.forms import *
 from nnmware.core.views import *
 from nnmware.core.abstract import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
-from nnmware.apps.article.models import *
 
 
 class ArticleDetail(AttachedFilesMixin, DateDetailView):

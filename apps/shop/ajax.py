@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.query_utils import Q
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, Order, \
-    STATUS_WAIT, OrderItem, Feedback, ProductColor, ProductMaterial
-from nnmware.apps.shop.utils import get_basket
+from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, \
+    Feedback, ProductColor, ProductMaterial
 from nnmware.core.ajax import AjaxLazyAnswer
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
@@ -17,48 +16,52 @@ from nnmware.core.utils import send_template_mail
 from nnmware.apps.shop.models import ShopCallback
 import settings
 
+
 class BasketError(Exception):
     pass
 
-def autocomplete_search(request,size=16):
+
+def autocomplete_search(request, size=16):
     results = []
     search_qs = Product.objects.filter(
         Q(name__icontains=request.REQUEST['q']) |
         Q(name_en__icontains=request.REQUEST['q'])).order_by('name')[:5]
     for r in search_qs:
-        img = make_thumbnail(r.main_image,width=int(size))
+        img = make_thumbnail(r.main_image, width=int(size))
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
                       'img': img,
-                      'slug': r.slug, 'amount':"%0.2f" % (r.amount,),'id':r.pk }
+                      'slug': r.slug, 'amount': "%0.2f" % (r.amount,), 'id': r.pk}
         results.append(userstring)
     payload = {'answer': results}
     return AjaxLazyAnswer(payload)
 
-def add_param(request,object_id):
+
+def add_param(request, object_id):
     try:
         if not request.user.is_superuser:
-           raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
+            raise AccessError
+        p = get_object_or_404(Product, pk=int(object_id))
         ctype = ContentType.objects.get_for_model(Product)
         param = ProductParameterValue()
         param.content_type = ctype
         param.object_id = p.pk
-        param.parameter = get_object_or_404(ProductParameter,pk=int(request.REQUEST['param']))
+        param.parameter = get_object_or_404(ProductParameter, pk=int(request.REQUEST['param']))
         param.value = request.REQUEST['value']
         if request.REQUEST['keyparam'] == 'on':
             param.keyparam = True
         param.save()
         try:
             unit = param.parameter.unit.name
-        except :
+        except:
             unit = ''
-        payload = {'success': True, 'name':param.parameter.name, 'unit':unit, 'id': param.pk,
-                   'value':param.value}
+        payload = {'success': True, 'name': param.parameter.name, 'unit': unit, 'id': param.pk,
+                   'value': param.value}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def param_value_delete(request, object_id):
     # Link used when User delete the param value
@@ -73,11 +76,12 @@ def param_value_delete(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+
 def add_basket(request, object_id):
     # Link used when User add to basket
     try:
         p = Product.objects.get(pk=int(object_id))
-        if not p.avail or p.quantity < 1 or p.amount <= 0 :
+        if not p.avail or p.quantity < 1 or p.amount <= 0:
             raise AccessError
         try:
             color_id = request.REQUEST['color']
@@ -87,20 +91,20 @@ def add_basket(request, object_id):
             addon_text = ''
         if not request.user.is_authenticated():
             session_key = get_session_from_request(request)
-            if Basket.objects.filter(session_key=session_key, product=p,addon=addon_text).count() >0 :
-                b = Basket.objects.get(session_key=session_key, product=p,addon=addon_text)
+            if Basket.objects.filter(session_key=session_key, product=p, addon=addon_text).count() > 0:
+                b = Basket.objects.get(session_key=session_key, product=p, addon=addon_text)
                 b.quantity += 1
             else:
-                b = Basket(session_key=session_key,product=p,addon=addon_text)
+                b = Basket(session_key=session_key, product=p, addon=addon_text)
                 b.quantity = 1
             b.save()
             basket_user = Basket.objects.filter(session_key=session_key)
         else:
-            if Basket.objects.filter(user=request.user, product=p,addon=addon_text).count() >0 :
-                b = Basket.objects.get(user=request.user, product=p,addon=addon_text)
+            if Basket.objects.filter(user=request.user, product=p, addon=addon_text).count() > 0:
+                b = Basket.objects.get(user=request.user, product=p, addon=addon_text)
                 b.quantity += 1
             else:
-                b = Basket(user=request.user,product=p,addon=addon_text)
+                b = Basket(user=request.user, product=p, addon=addon_text)
                 b.quantity = 1
             b.save()
             basket_user = Basket.objects.filter(user=request.user)
@@ -108,8 +112,8 @@ def add_basket(request, object_id):
         all_sum = 0
         for item in basket_user:
             all_sum += item.sum
-        payload = {'success': True, 'basket_count':basket_count,
-                   'basket_sum':"%0.2f" % (all_sum,)}
+        payload = {'success': True, 'basket_count': basket_count,
+                   'basket_sum': "%0.2f" % (all_sum,)}
     except AccessError:
         payload = {'success': False}
     except:
@@ -129,13 +133,14 @@ def delete_basket(request, object_id):
         all_sum = 0
         for item in basket_user:
             all_sum += item.sum
-        payload = {'success': True, 'basket_count':basket_count,
-                   'basket_sum':"%0.2f" % (all_sum,),'id':int(object_id)}
+        payload = {'success': True, 'basket_count': basket_count,
+                   'basket_sum': "%0.2f" % (all_sum,), 'id': int(object_id)}
     except AccessError:
         payload = {'success': False}
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def add_address(request):
     """
@@ -191,10 +196,11 @@ def add_address(request):
         address.save()
         payload = {'success': True}
     except AccessError:
-        payload = {'success': False, 'error':_('You are not allowed for add address')}
-    except :
+        payload = {'success': False, 'error': _('You are not allowed for add address')}
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def delete_address(request, object_id):
     # Link used when User delete the address delivery
@@ -202,7 +208,7 @@ def delete_address(request, object_id):
         if not request.user.is_authenticated():
             raise AccessError
         DeliveryAddress.objects.get(pk=int(object_id)).delete()
-        payload = {'success': True,'id':int(object_id)}
+        payload = {'success': True, 'id': int(object_id)}
     except AccessError:
         payload = {'success': False}
     except:
@@ -223,11 +229,12 @@ def push_feedback(request):
         msg.message = request.POST.get('message')
         msg.save()
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def push_answer(request,object_id):
+
+def push_answer(request, object_id):
     try:
         f = Feedback.objects.get(pk=int(object_id))
         f.answer = request.POST.get('answer')
@@ -235,12 +242,13 @@ def push_answer(request,object_id):
         mail_dict = {'feedback': f}
         subject = 'emails/feedback_answer_subject.txt'
         body = 'emails/feedback_answer_body.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
+        send_template_mail(subject, body, mail_dict, recipients)
         f.save()
         payload = {'success': True, 'location': f.get_absolute_url()}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def delete_product(request, object_id):
     # Link used when User delete the product
@@ -257,6 +265,7 @@ def delete_product(request, object_id):
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
+
 def delete_feedback(request, object_id):
     # Link used when User delete the feedback
     try:
@@ -269,6 +278,7 @@ def delete_feedback(request, object_id):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def delete_comment(request, object_id):
     # Link used when Admin delete the comment
@@ -284,99 +294,106 @@ def delete_comment(request, object_id):
     return AjaxLazyAnswer(payload)
 
 
-def add_color(request,object_id):
+def add_color(request, object_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        color = get_object_or_404(ProductColor,pk=int(request.REQUEST['color']))
+        p = get_object_or_404(Product, pk=int(object_id))
+        color = get_object_or_404(ProductColor, pk=int(request.REQUEST['color']))
         w = int(request.REQUEST['width'])
         h = int(request.REQUEST['height'])
         p.colors.add(color)
         p.save()
-        payload = {'success': True, 'name':color.name, 'id': color.pk,
-                   'src': make_thumbnail(color.img.url,width=w,height=h)}
+        payload = {'success': True, 'name': color.name, 'id': color.pk,
+                   'src': make_thumbnail(color.img.url, width=w, height=h)}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def delete_color(request,object_id, color_id):
+
+def delete_color(request, object_id, color_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        color = get_object_or_404(ProductColor,pk=int(color_id))
+        p = get_object_or_404(Product, pk=int(object_id))
+        color = get_object_or_404(ProductColor, pk=int(color_id))
         p.colors.remove(color)
         p.save()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def add_material(request,object_id):
+
+def add_material(request, object_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        material = get_object_or_404(ProductMaterial,pk=int(request.REQUEST['material']))
+        p = get_object_or_404(Product, pk=int(object_id))
+        material = get_object_or_404(ProductMaterial, pk=int(request.REQUEST['material']))
         p.materials.add(material)
         p.save()
-        payload = {'success': True, 'name':material.name, 'id': material.pk}
+        payload = {'success': True, 'name': material.name, 'id': material.pk}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def delete_material(request,object_id, material_id):
+
+def delete_material(request, object_id, material_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        material = get_object_or_404(ProductMaterial,pk=int(material_id))
+        p = get_object_or_404(Product, pk=int(object_id))
+        material = get_object_or_404(ProductMaterial, pk=int(material_id))
         p.materials.remove(material)
         p.save()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def add_related_product(request,object_id):
+
+def add_related_product(request, object_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        product = get_object_or_404(Product,pk=int(request.REQUEST['product']))
+        p = get_object_or_404(Product, pk=int(object_id))
+        product = get_object_or_404(Product, pk=int(request.REQUEST['product']))
         p.related_products.add(product)
         p.save()
-        payload = {'success': True, 'name':product.name, 'id': product.pk, 'url':product.get_absolute_url(),
-                   'src': make_thumbnail(product.main_image,width=settings.RELATED_PRODUCT_WIDTH,height=settings.RELATED_PRODUCT_HEIGHT, aspect=1)}
+        payload = {'success': True, 'name': product.name, 'id': product.pk, 'url': product.get_absolute_url(),
+                   'src': make_thumbnail(product.main_image, width=settings.RELATED_PRODUCT_WIDTH,
+                                         height=settings.RELATED_PRODUCT_HEIGHT, aspect=1)}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def delete_related_product(request,object_id, product_id):
+
+def delete_related_product(request, object_id, product_id):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        p = get_object_or_404(Product,pk=int(object_id))
-        product = get_object_or_404(Product,pk=int(product_id))
+        p = get_object_or_404(Product, pk=int(object_id))
+        product = get_object_or_404(Product, pk=int(product_id))
         p.related_products.remove(product)
         p.save()
         payload = {'success': True}
     except AccessError:
         payload = {'success': False}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def basket_avail(user):
     basket = Basket.objects.filter(user=user)
@@ -387,7 +404,8 @@ def basket_avail(user):
             return False
     return True
 
-def add_compare_product(request,object_id):
+
+def add_compare_product(request, object_id):
     try:
         compare = request.session['shop_compare']
     except:
@@ -398,11 +416,12 @@ def add_compare_product(request,object_id):
     try:
         request.session['shop_compare'] = compare
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
-def del_compare_product(request,object_id):
+
+def del_compare_product(request, object_id):
     try:
         compare = request.session['shop_compare']
     except:
@@ -413,9 +432,10 @@ def del_compare_product(request,object_id):
     try:
         request.session['shop_compare'] = compare
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def push_shopcallback(request):
     """
@@ -432,11 +452,12 @@ def push_shopcallback(request):
         recipients = [settings.SHOP_MANAGER]
         subject = 'emails/callback_admin_subject.txt'
         body = 'emails/callback_admin_body.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
+        send_template_mail(subject, body, mail_dict, recipients)
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
 
 def push_quickorder(request):
     """
@@ -455,8 +476,8 @@ def push_quickorder(request):
         recipients = [settings.SHOP_MANAGER]
         subject = 'emails/quickorder_admin_subject.txt'
         body = 'emails/quickorder_admin_body.txt'
-        send_template_mail(subject,body,mail_dict,recipients)
+        send_template_mail(subject, body, mail_dict, recipients)
         payload = {'success': True}
-    except :
+    except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)

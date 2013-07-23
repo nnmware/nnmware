@@ -1,7 +1,6 @@
 from django.contrib import admin
 from nnmware.apps.board.models import Board, Category
 from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
-from nnmware.core.widgets import AdminImageWithThumbnailWidget
 
 from copy import deepcopy
 

@@ -2,9 +2,10 @@ from django import template
 from django.core.cache import cache
 from django.core.urlresolvers import resolve, reverse, Resolver404
 from django.db.models import Count
-from nnmware.apps.article.models import Article, Tag
 from datetime import datetime
 import math
+from nnmware.apps.article.models import Article
+from nnmware.core.models import Tag
 
 register = template.Library()
 

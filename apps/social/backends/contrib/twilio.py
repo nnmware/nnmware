@@ -48,7 +48,7 @@ class TwilioAuth(BaseAuth):
         return '%s%s?%s' % (TWILIO_AUTHORIZATION_URL, key, query)
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         account_sid = self.data.get('AccountSid')
 
         if not account_sid:

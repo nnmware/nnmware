@@ -1,5 +1,4 @@
 from cStringIO import StringIO
-from datetime import datetime
 from io import FileIO, BufferedWriter
 import os
 from hashlib import md5
@@ -7,10 +6,7 @@ import urllib2
 from urlparse import urlparse
 from PIL import Image
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import check_password
-
 from nnmware.core.imgutil import fit, aspect_ratio
 from nnmware.core.utils import get_date_directory
 
@@ -65,6 +61,8 @@ class UsernameOrEmailAuthBackend(object):
 
 class AbstractUploadBackend(object):
     BUFFER_SIZE = 10485760  # 10MB
+    upload_dir = None
+    upload_size = None
 
     def __init__(self, **kwargs):
         self._timedir = get_date_directory()

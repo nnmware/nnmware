@@ -31,7 +31,7 @@ class DjangoOpenIDStore(OpenIDStore):
         if expired:  # clear expired associations
             UserSocialAuth.delete_associations(expired)
 
-        if associations:  # return most recet association
+        if associations:  # return most reset association
             return associations[0]
 
     def useNonce(self, server_url, timestamp, salt):

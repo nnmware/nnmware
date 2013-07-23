@@ -184,7 +184,7 @@ class MessageAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         """
         Saves the message for the recipient and looks in the form instance
-        for other possible recipients. Prevents duplication by excludin the
+        for other possible recipients. Prevents duplication by exclude the
         original recipient from the list of optional recipients.
 
         When changing an existing message and choosing optional recipients,

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Douban OAuth support.
 
@@ -10,7 +12,6 @@ By default account id is stored in extra_data field, check OAuthBackend
 class for details on how to extend it.
 """
 
-import json
 from nnmware.apps.social.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
 from nnmware.apps.social.backends.exceptions import AuthCanceled
 

@@ -40,6 +40,12 @@ class AjaxAbstractUploader(object):
     def __call__(self, request, **kwargs):
         return self._ajax_upload(request, **kwargs)
 
+    def _ajax_upload(self, request, **kwargs):
+        raise NotImplemented
+
+    def get_backend(self):
+        raise NotImplemented
+
     def _upload_file(self, request, **kwargs):
         if request.is_ajax():
             # the file is stored raw in the request

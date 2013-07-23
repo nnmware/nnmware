@@ -1,10 +1,4 @@
-from oauth2 import Consumer as OAuthConsumer, Token, Request as OAuthRequest, \
-                   SignatureMethod_HMAC_SHA1, HTTP_METHOD
-
-import json
-
-from nnmware.apps.social.models import UserSocialAuth
-from nnmware.apps.social.utils import dsa_urlopen
+from oauth2 import Consumer as OAuthConsumer, Request as OAuthRequest, SignatureMethod_HMAC_SHA1, HTTP_METHOD
 
 
 #def consumer_oauth_url_request(backend, url, user_or_id, redirect_uri='/',

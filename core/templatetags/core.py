@@ -17,7 +17,6 @@ from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
 from nnmware.core.abstract import Tree
 from nnmware.core.data import *
 
-from PIL import Image
 
 register = Library()
 
@@ -533,7 +532,7 @@ Usage::
     {{ url|thumbnail:"width=10" }}
     {{ url|thumbnail:"height=20,aspect=1" }}
 
-Image is **proportionally** resized to dimension which is no greather than ``width x height``.
+Image is **proportionally** resized to dimension which is no greater than ``width x height``.
 
 Thumbnail file is saved in the same location as the original image
 and his name is constructed like this::

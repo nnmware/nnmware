@@ -2,7 +2,7 @@ Thanks for using this django application.
 
 NNMWARE CMF @ 2012
 
-Install django-current, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(reccomended)
+Install django-current, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(recommended)
 
 cd /usr/src
 git clone https://github.com/nnmware/nnmware.git

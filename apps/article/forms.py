@@ -1,9 +1,5 @@
 from django import forms
-from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.article.models import Article
-from django.conf import settings
-from nnmware.core.models import Tag
-from nnmware.core.utils import tags_normalize
 from nnmware.core.forms import TagsMixinForm
 
 

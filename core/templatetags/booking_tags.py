@@ -13,7 +13,7 @@ from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
 from nnmware.core.models import VisitorHit
-from nnmware.core.utils import convert_to_date, daterange
+from nnmware.core.utils import convert_to_date
 from nnmware.apps.booking.models import APARTAMENTS, SettlementVariant, Room
 
 
@@ -485,7 +485,7 @@ def stars_hotel_count(context):
     #     on_date = datetime.now()
     # hotels_with_amount = PlacePrice.objects.filter(date=on_date, amount__gt=0).\
     #     values_list('settlement__room__hotel__pk', flat=True).distinct()
-    result = Hotel.objects.all()  #  filter(pk__in=hotels_with_amount)
+    result = Hotel.objects.all()   # filter(pk__in=hotels_with_amount)
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
     if data_key:

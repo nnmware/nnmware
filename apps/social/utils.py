@@ -1,14 +1,11 @@
-import time
 import random
-import hashlib
 import urlparse
 import urllib
 from urllib2 import urlopen
 import logging
 
 from collections import defaultdict
-from datetime import timedelta, tzinfo
-from django.conf import settings
+from django.utils.functional import empty
 from django.db.models import Model
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import SimpleLazyObject
@@ -19,12 +16,6 @@ try:
     using_sysrandom = True
 except NotImplementedError:
     using_sysrandom = False
-
-
-from django.utils.crypto import get_random_string
-from django.utils.timezone import utc
-from django.utils.crypto import constant_time_compare
-from django.utils.functional import empty
 
 
 def sanitize_log_data(secret, data=None, leave_characters=4):
@@ -100,6 +91,7 @@ def group_backend_by_type(items, key=lambda x: x):
         elif issubclass(backend, BaseOAuth):
             result['oauth'].append(item)
     return dict(result)
+
 
 def backend_setting(backend, name, default=None):
     """
@@ -193,4 +185,3 @@ def dsa_urlopen(*args, **kwargs):
     if timeout and 'timeout' not in kwargs:
         kwargs['timeout'] = timeout
     return urlopen(*args, **kwargs)
-

@@ -60,9 +60,8 @@ SESSION_NAME = 'openid'
 # method
 USERNAME = 'username'
 
-PIPELINE = setting('SOCIAL_AUTH_PIPELINE', (
-                'social_auth.backends.pipeline.social.social_auth_user',
-                # Removed by default since it can be a dangerouse behavior that
+PIPELINE = setting('SOCIAL_AUTH_PIPELINE', ('social_auth.backends.pipeline.social.social_auth_user',
+                # Removed by default since it can be a dangerous behavior that
                 # could lead to accounts take over.
                 #'social_auth.backends.pipeline.associate.associate_by_email',
                 'social_auth.backends.pipeline.user.get_username',
@@ -337,7 +336,7 @@ class BaseAuth(object):
         raise NotImplementedError('Implement in subclass')
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         raise NotImplementedError('Implement in subclass')
 
     def to_session_dict(self, next_idx, *args, **kwargs):
@@ -615,7 +614,7 @@ class ConsumerBasedOAuth(BaseOAuth):
                                             extra_params)
 
     def fetch_response(self, request):
-        """Executes request and fetchs service response"""
+        """Executes request and fetched service response"""
         response = dsa_urlopen(request.to_url())
         return '\n'.join(response.readlines())
 
@@ -702,7 +701,7 @@ class BaseOAuth2(BaseOAuth):
         return state
 
     def auth_complete(self, *args, **kwargs):
-        """Completes loging process, must return user instance"""
+        """Completes logging process, must return user instance"""
         if self.data.get('error'):
             error = self.data.get('error_description') or self.data['error']
             raise AuthFailed(self, error)
