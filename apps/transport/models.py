@@ -55,6 +55,9 @@ class Vehicle(AbstractName, AbstractDate, AbstractSeller):
     carcass = models.ForeignKey(VehicleCarcass, verbose_name=_('Carcass of vehicle'))
     engine = models.ForeignKey(VehicleEngine, verbose_name=_('Engine of vehicle'))
     vendor = models.ForeignKey(VehicleVendor, verbose_name=_('Vendor of vehicle'))
+    mileage = models.IntegerField(verbose_name=_('Mileage'), max_length=10, null=True, blank=True)
+    vin = models.CharField(verbose_name=_('VIN-code'), max_length=100, blank=True)
+    horsepower = models.IntegerField(verbose_name=_('Horsepower'), max_length=10, null=True, blank=True)
 
     class Meta:
         verbose_name = _('Vehicle')
