@@ -11,7 +11,7 @@ class VehicleColor(AbstractColor):
     pass
 
 
-class VehicleType(AbstractName):
+class VehicleKind(AbstractName):
     pass
 
     class Meta:
@@ -20,7 +20,7 @@ class VehicleType(AbstractName):
 
 
 class VehicleTransmission(AbstractName):
-    type_vehicles = models.ManyToManyField(VehicleType, verbose_name=_('Using in vehicles'), blank=True, null=True)
+    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Transmission type')
@@ -28,7 +28,7 @@ class VehicleTransmission(AbstractName):
 
 
 class VehicleCarcass(AbstractName):
-    type_vehicles = models.ManyToManyField(VehicleType, verbose_name=_('Using in vehicles'), blank=True, null=True)
+    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Vehicle carcass type')
@@ -36,7 +36,7 @@ class VehicleCarcass(AbstractName):
 
 
 class VehicleEngine(AbstractName):
-    type_vehicles = models.ManyToManyField(VehicleType, verbose_name=_('Using in vehicles'), blank=True, null=True)
+    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Vehicle carcass type')
@@ -48,4 +48,14 @@ class VehicleVendor(AbstractVendor):
 
 
 class Vehicle(AbstractName, AbstractDate, AbstractSeller):
-    pass
+    expiration_date = models.DateTimeField(_("Date of expiration"), null=True, blank=True)
+    kind = models.ForeignKey(VehicleKind, verbose_name=_('Type of vehicle'))
+    color = models.ForeignKey(VehicleColor, verbose_name=_('Vehicle color'))
+    transmission = models.ForeignKey(VehicleTransmission, verbose_name=_('Type of transmission'))
+    carcass = models.ForeignKey(VehicleCarcass, verbose_name=_('Carcass of vehicle'))
+    engine = models.ForeignKey(VehicleEngine, verbose_name=_('Engine of vehicle'))
+    vendor = models.ForeignKey(VehicleVendor, verbose_name=_('Vendor of vehicle'))
+
+    class Meta:
+        verbose_name = _('Vehicle')
+        verbose_name_plural = _('Vehicles')
