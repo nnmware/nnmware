@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
-from nnmware.apps.business.models import Company
+from nnmware.apps.business.models import Company, AbstractSeller
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractDate, AbstractName
 
@@ -59,7 +59,7 @@ class TrimKind(AbstractName, ExtInt):
         verbose_name_plural = _("Trims kinds")
 
 
-class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
+class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase, AbstractSeller):
     gross_size = models.DecimalField(verbose_name=_('Gross area size (square meters)'), default=0, max_digits=10,
                                      decimal_places=1, db_index=True)
     live_size = models.DecimalField(verbose_name=_('Living space size (square meters)'), default=0, max_digits=10,
@@ -79,11 +79,6 @@ class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase):
     rent = models.BooleanField(verbose_name=_("Rent"), default=False)
     cost_meter = models.DecimalField(verbose_name=_('Cost per square meter'), default=0, max_digits=20,
                                      decimal_places=3, db_index=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
-    contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
-    contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
-    contact_phone = models.CharField(max_length=100, verbose_name=_('Contact Phone'), blank=True)
 
     class Meta:
         verbose_name = _("Estate")

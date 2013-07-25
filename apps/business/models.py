@@ -285,3 +285,14 @@ class Vacancy(AbstractName, AbstractDate):
     @permalink
     def get_absolute_url(self):
         return 'vacancy_detail', (self.pk, ), {}
+
+
+class AbstractSeller(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
+    contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
+    contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
+    contact_phone = models.CharField(max_length=100, verbose_name=_('Contact Phone'), blank=True)
+
+    class Meta:
+        abstract = True
