@@ -824,7 +824,8 @@ class ReportView(CurrentUserSuperuser, ListView):
             #                 in_report = True
             #     if in_report:
             #         noncorrect.append(hotel.pk)
-            result = Hotel.objects.select_related().filter(pk__in=not_filled_room)
+            result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
+                filter(pk__in=not_filled_room)
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
