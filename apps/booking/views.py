@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_managers
-from django.db.models import Count, Sum, Max, F, Min
+from django.db.models import Count, Sum, Max, F, Min, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
@@ -811,7 +811,8 @@ class ReportView(CurrentUserSuperuser, ListView):
             not_filled_room = Room.objects.filter(availability__date__range=(datetime.now(),
                 datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__gte=14).\
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
-
+            not_filled_amount = SettlementVariant.objects.filter(enabled=True, placeprice__date=datetime.now(),
+                placeprice__amount=0).order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
             # for hotel in Hotel.objects.exclude(admins=None).exclude(work_on_request=True):
             #     in_report = False
             #     for room in hotel.room_set.all():
@@ -825,7 +826,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             #     if in_report:
             #         noncorrect.append(hotel.pk)
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
-                filter(pk__in=not_filled_room)
+                filter(Q(pk__in=not_filled_room) | Q(pk__in=not_filled_amount))
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
