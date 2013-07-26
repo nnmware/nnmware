@@ -807,10 +807,13 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.select_related().filter(work_on_request=True)
             self.report_name = _('Hotels, works on request')
         elif report_type == 'non-correct':
-            noncorrect = []
             not_filled_room = Room.objects.filter(availability__date__range=(datetime.now(),
                 datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
+            not_filled_amount = PlacePrice.objects.exclude(amount=0).\
+                filter(settlement__enabled=True, date__range=(datetime.now(),
+                datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
+                order_by('settlement__room__hotel').values_list('settlement__room__room__hotel__pk', flat=True).distinct()
             # not_filled_amount = SettlementVariant.objects.exclude(placeprice__amount=0).\
             #     filter(enabled=True, placeprice__date__range=(datetime.now(),
             #     datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).filter(num_days__lt=14).\
@@ -828,7 +831,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             #     if in_report:
             #         noncorrect.append(hotel.pk)
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
-                filter(Q(pk__in=not_filled_room)) # | Q(pk__in=not_filled_amount))
+                filter(Q(pk__in=not_filled_room) | Q(pk__in=not_filled_amount))
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
