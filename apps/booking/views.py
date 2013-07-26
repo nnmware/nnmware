@@ -850,6 +850,8 @@ class ReportView(CurrentUserSuperuser, ListView):
         self.report_arg = report_type
         if result:
             self.full_count = result.count()
+        else:
+            self.full_count = 0
         return result
 
     def get_context_data(self, **kwargs):
