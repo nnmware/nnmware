@@ -813,7 +813,7 @@ class ReportView(CurrentUserSuperuser, ListView):
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             not_filled_amount = SettlementVariant.objects.exclude(placeprice__amount=0).\
                 filter(enabled=True, placeprice__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
+                datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).filter(num_days__lt=14).\
                 order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
             # for hotel in Hotel.objects.exclude(admins=None).exclude(work_on_request=True):
             #     in_report = False
