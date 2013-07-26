@@ -812,8 +812,8 @@ class ReportView(CurrentUserSuperuser, ListView):
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             not_filled_amount = SettlementVariant.objects.exclude(placeprice__amount=0).\
                 filter(enabled=True, placeprice__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).filter(num_days__lt=14).\
-                order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
+                datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).\
+                filter(num_days__lt=14).order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
                 filter(Q(pk__in=not_filled_room) | Q(pk__in=not_filled_amount))
             self.report_name = _('Hotels, not fully entered info')
@@ -823,7 +823,7 @@ class ReportView(CurrentUserSuperuser, ListView):
                 filter(num_days=14).order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
                 filter(pk__in=nullroom)
-            self.report_name = _('Hotels, which have null on 14 days')
+            self.report_name = _('Hotels, which have null availability on 14 days')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
                 annotate(Max('agentpercent__date')).filter(agentpercent__percent=0,
