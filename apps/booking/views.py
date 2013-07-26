@@ -809,7 +809,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'non-correct':
             noncorrect = []
             not_filled_room = Room.objects.filter(availability__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13)), availability__placecount__gt=0).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
+                datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             not_filled_amount = SettlementVariant.objects.filter(enabled=True, placeprice__date=datetime.now(),
                 placeprice__amount=0).order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
