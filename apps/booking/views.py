@@ -806,6 +806,22 @@ class ReportView(CurrentUserSuperuser, ListView):
         elif report_type == 'onrequest':
             result = Hotel.objects.select_related().filter(work_on_request=True)
             self.report_name = _('Hotels, works on request')
+        elif report_type == 'non-correct':
+            noncorrect = []
+            for hotel in Hotel.objects.exclude(admins=None).exclude(work_on_request=True):
+                in_report = False
+                for room in hotel.room_set.all():
+                    avail = Availability.objects.filter(room=room, date__range=(
+                        datetime.now(), datetime.now() + timedelta(days=13))).count()
+                    if avail < 14:
+                        in_report = True
+                    for settlement in SettlementVariant.objects.filter(room=room, enabled=True):
+                        if settlement.current_amount() is 0:
+                            in_report = True
+                if in_report:
+                    noncorrect.append(hotel.pk)
+            result = Hotel.objects.select_related().filter(pk__in=noncorrect)
+            self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
                 annotate(Max('agentpercent__date')).filter(agentpercent__percent=0,

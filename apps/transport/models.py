@@ -59,6 +59,7 @@ class Vehicle(AbstractName, AbstractDate, AbstractSeller):
     vin = models.CharField(verbose_name=_('VIN-code'), max_length=100, blank=True)
     horsepower = models.IntegerField(verbose_name=_('Horsepower'), max_length=10, null=True, blank=True)
 
+
     class Meta:
         verbose_name = _('Vehicle')
         verbose_name_plural = _('Vehicles')
