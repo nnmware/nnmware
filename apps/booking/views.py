@@ -818,8 +818,8 @@ class ReportView(CurrentUserSuperuser, ListView):
                 filter(Q(pk__in=not_filled_room) | Q(pk__in=not_filled_amount))
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullroom':
-            nullroom = Room.objects.filter(Q(availability__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13))) | Q(availability__placecount=0)).annotate(num_days=Count('pk')).\
+            nullroom = Room.objects.filter(availability__date__range=(datetime.now(),
+                datetime.now() + timedelta(days=13)), availability__placecount=0).annotate(num_days=Count('pk')).\
                 filter(num_days=0).order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
                 filter(pk__in=nullroom)
