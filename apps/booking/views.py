@@ -813,7 +813,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             not_filled_amount = PlacePrice.objects.exclude(amount=0).\
                 filter(settlement__enabled=True, date__range=(datetime.now(),
                 datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
-                order_by('settlement__room__hotel').values_list('settlement__room__room__hotel__pk', flat=True).distinct()
+                order_by('settlement__room__hotel').values_list('settlement__room__hotel__pk', flat=True).distinct()
             # not_filled_amount = SettlementVariant.objects.exclude(placeprice__amount=0).\
             #     filter(enabled=True, placeprice__date__range=(datetime.now(),
             #     datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).filter(num_days__lt=14).\
