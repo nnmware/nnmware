@@ -808,19 +808,23 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.report_name = _('Hotels, works on request')
         elif report_type == 'non-correct':
             noncorrect = []
-            for hotel in Hotel.objects.exclude(admins=None).exclude(work_on_request=True):
-                in_report = False
-                for room in hotel.room_set.all():
-                    avail = Availability.objects.filter(room=room, date__range=(
-                        datetime.now(), datetime.now() + timedelta(days=13))).count()
-                    if avail < 14:
-                        in_report = True
-                    for settlement in SettlementVariant.objects.filter(room=room, enabled=True):
-                        if settlement.current_amount() is 0:
-                            in_report = True
-                if in_report:
-                    noncorrect.append(hotel.pk)
-            result = Hotel.objects.select_related().filter(pk__in=noncorrect)
+            not_filled_room = Room.objects.filter(availability__date__range=(datetime.now(),
+                datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__gte=14).\
+                order_by('hotel').values_list('hotel__pk', flat=True).distinct()
+
+            # for hotel in Hotel.objects.exclude(admins=None).exclude(work_on_request=True):
+            #     in_report = False
+            #     for room in hotel.room_set.all():
+            #         avail = Availability.objects.filter(room=room, date__range=(
+            #             datetime.now(), datetime.now() + timedelta(days=13))).count()
+            #         if avail < 14:
+            #             in_report = True
+            #         for settlement in SettlementVariant.objects.filter(room=room, enabled=True):
+            #             if settlement.current_amount() is 0:
+            #                 in_report = True
+            #     if in_report:
+            #         noncorrect.append(hotel.pk)
+            result = Hotel.objects.select_related().filter(pk__in=not_filled_room)
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullpercent':
             result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
