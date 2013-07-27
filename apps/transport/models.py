@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Country
 from nnmware.core.abstract import AbstractColor, AbstractName, AbstractVendor, AbstractDate
 from nnmware.apps.business.models import AbstractSeller
+from nnmware.core.utils import current_year, tuplify
 
 
 class VehicleColor(AbstractColor):
@@ -50,8 +51,27 @@ class VehicleEngine(AbstractName, ForVehicles):
         verbose_name_plural = _('Vehicle carcass types')
 
 
+class VehicleFeature(AbstractName, ForVehicles):
+    pass
+
+    class Meta:
+        verbose_name = _('Vehicle feature')
+        verbose_name_plural = _('Vehicle features')
+
+
+class VehicleMark(AbstractName, ForVehicles):
+    pass
+
+    class Meta:
+        verbose_name = _('Vehicle mark')
+        verbose_name_plural = _('Vehicle mark')
+
+
 class VehicleVendor(AbstractVendor, ForVehicles):
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True, on_delete=models.SET_NULL)
+
+
+VEHICLE_YEAR = map(tuplify, range(current_year - 55, current_year + 1))
 
 
 class Vehicle(AbstractName, AbstractDate, AbstractSeller):
@@ -65,7 +85,13 @@ class Vehicle(AbstractName, AbstractDate, AbstractSeller):
     mileage = models.IntegerField(verbose_name=_('Mileage'), max_length=10, null=True, blank=True)
     vin = models.CharField(verbose_name=_('VIN-code'), max_length=100, blank=True)
     horsepower = models.IntegerField(verbose_name=_('Horsepower'), max_length=10, null=True, blank=True)
-
+    displacement = models.IntegerField(verbose_name=_('Displacement'), max_length=10, null=True, blank=True)
+    features = models.ManyToManyField(VehicleFeature, verbose_name=_('Vehicle features'))
+    year = models.IntegerField(verbose_name=_('Year'), choices=VEHICLE_YEAR, max_length=4, default=None, blank=True,
+                               null=True)
+    mark = models.ForeignKey(VehicleMark, verbose_name=_('Mark of vehicle'))
+    sold = models.BooleanField(verbose_name=_('Sold'), default=False)
+    left_control = models.BooleanField(verbose_name=_('Left hand drive'), default=False)
 
     class Meta:
         verbose_name = _('Vehicle')
