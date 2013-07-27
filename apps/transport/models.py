@@ -75,7 +75,6 @@ VEHICLE_YEAR = map(tuplify, range(current_year - 55, current_year + 1))
 
 
 class Vehicle(AbstractName, AbstractDate, AbstractSeller):
-    expiration_date = models.DateTimeField(_("Date of expiration"), null=True, blank=True)
     kind = models.ForeignKey(VehicleKind, verbose_name=_('Type of vehicle'))
     color = models.ForeignKey(VehicleColor, verbose_name=_('Vehicle color'))
     transmission = models.ForeignKey(VehicleTransmission, verbose_name=_('Type of transmission'))
@@ -90,7 +89,6 @@ class Vehicle(AbstractName, AbstractDate, AbstractSeller):
     year = models.IntegerField(verbose_name=_('Year'), choices=VEHICLE_YEAR, max_length=4, default=None, blank=True,
                                null=True)
     mark = models.ForeignKey(VehicleMark, verbose_name=_('Mark of vehicle'))
-    sold = models.BooleanField(verbose_name=_('Sold'), default=False)
     left_control = models.BooleanField(verbose_name=_('Left hand drive'), default=False)
 
     class Meta:

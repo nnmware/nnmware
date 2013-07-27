@@ -293,6 +293,8 @@ class AbstractSeller(models.Model):
     contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     contact_phone = models.CharField(max_length=100, verbose_name=_('Contact Phone'), blank=True)
+    expiration_date = models.DateTimeField(_("Date of expiration"), null=True, blank=True)
+    sold = models.BooleanField(verbose_name=_('Sold'), default=False)
 
     class Meta:
         abstract = True
