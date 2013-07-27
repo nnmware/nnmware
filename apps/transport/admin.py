@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
-from nnmware.apps.transport.models import VehicleColor, VehicleKind, VehicleTransmission, VehicleCarcass, VehicleEngine, VehicleFeature, VehicleMark
+from nnmware.apps.transport.models import VehicleColor, VehicleKind, VehicleTransmission, VehicleCarcass, VehicleEngine, VehicleFeature, VehicleMark, VehicleVendor
 from nnmware.core.admin import ColorAdmin
 
 
@@ -48,6 +48,14 @@ class VehicleMarkAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+class VehicleVendorAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (_('Vendor'), {'fields': [('name', 'country', 'website'), ('description',)]}),
+        (_('English'), {'fields': [('name_en', )]}),
+    )
+    list_display = ('name', 'country', 'website')
+
+
 admin.site.register(VehicleColor, ColorAdmin)
 admin.site.register(VehicleKind, VehicleKindAdmin)
 admin.site.register(VehicleTransmission, VehicleTransmissionAdmin)
@@ -55,3 +63,4 @@ admin.site.register(VehicleCarcass, VehicleCarcassAdmin)
 admin.site.register(VehicleEngine, VehicleEngineAdmin)
 admin.site.register(VehicleFeature, VehicleFeatureAdmin)
 admin.site.register(VehicleMark, VehicleMarkAdmin)
+admin.site.register(VehicleVendor, VehicleVendorAdmin)
