@@ -9,7 +9,10 @@ from nnmware.core.admin import ColorAdmin
 class VehicleKindAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
-        (_("Type of employer"), {"fields": [('name', 'order_in_list'), ]}),)
+        (_('Type of vehicle'), {"fields": [('name', 'order_in_list'),
+                                ('description',)]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",),
+                        "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('-order_in_list', 'name',)
 
 
