@@ -19,31 +19,38 @@ class VehicleKind(AbstractName):
         verbose_name_plural = _('Vehicle types')
 
 
-class VehicleTransmission(AbstractName):
+class ForVehicles(models.Model):
     type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class VehicleTransmission(AbstractName, ForVehicles):
+    pass
 
     class Meta:
         verbose_name = _('Transmission type')
         verbose_name_plural = _('Transmission types')
 
 
-class VehicleCarcass(AbstractName):
-    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
+class VehicleCarcass(AbstractName, ForVehicles):
+    pass
 
     class Meta:
         verbose_name = _('Vehicle carcass type')
         verbose_name_plural = _('Vehicle carcass types')
 
 
-class VehicleEngine(AbstractName):
-    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
+class VehicleEngine(AbstractName, ForVehicles):
+    pass
 
     class Meta:
         verbose_name = _('Vehicle carcass type')
         verbose_name_plural = _('Vehicle carcass types')
 
 
-class VehicleVendor(AbstractVendor):
+class VehicleVendor(AbstractVendor, ForVehicles):
     country = models.ForeignKey(Country, verbose_name=_('Country'), null=True, blank=True, on_delete=models.SET_NULL)
 
 
