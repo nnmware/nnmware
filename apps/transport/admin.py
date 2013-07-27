@@ -67,8 +67,8 @@ class VehicleAdmin(admin.ModelAdmin):
             ('horsepower', 'displacement'), ('year', 'left_control'),
             ('features', )]}),
         (_("Seller"), {"classes": ("grp-collapse grp-closed",),
-            "fields": [('user', 'company', 'corporate'), ('contact_name', 'contact_email', 'contact_phone'),
-                ('expiration_date', 'sold')]}),
+            "fields": [('user', 'company', 'corporate'), ('contact_name', 'contact_email'),
+                       ('contact_phone', ), ('expiration_date', 'sold')]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
             "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('-order_in_list', 'name',)
