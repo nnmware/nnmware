@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-27 02:49+1100\n"
+"POT-Creation-Date: 2013-07-27 23:56+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,9 @@ msgstr "Город"
 #: apps/booking/admin.py:86 apps/booking/admin.py:97 apps/booking/admin.py:106
 #: apps/booking/admin.py:117 apps/booking/admin.py:127
 #: apps/business/admin.py:80 apps/business/admin.py:104
-#: apps/realty/admin.py:112
+#: apps/realty/admin.py:112 apps/transport/admin.py:15
+#: apps/transport/admin.py:28 apps/transport/admin.py:55
+#: apps/transport/admin.py:65
 msgid "English"
 msgstr "Английский"
 
@@ -100,7 +102,7 @@ msgstr "Регион"
 #: apps/address/admin.py:37 apps/address/models.py:41
 #: apps/address/models.py:159 apps/address/models.py:181
 #: apps/address/models.py:193 apps/address/models.py:240
-#: apps/money/models.py:19 apps/shop/models.py:42 apps/transport/models.py:47
+#: apps/money/models.py:19 apps/shop/models.py:42 apps/transport/models.py:71
 msgid "Country"
 msgstr "Страна"
 
@@ -1579,6 +1581,15 @@ msgstr "Вакансии"
 msgid "Contact Phone"
 msgstr "Контактный телефон"
 
+#: apps/business/models.py:296
+#, fuzzy
+msgid "Date of expiration"
+msgstr "Дата государственной регистрации"
+
+#: apps/business/models.py:297
+msgid "Sold"
+msgstr "Продано"
+
 #: apps/dossier/admin.py:9 apps/dossier/models.py:40 apps/dossier/models.py:43
 msgid "Type of appearance"
 msgstr "Тип внешности"
@@ -1693,11 +1704,13 @@ msgstr "Тип специального навыка"
 msgid "Type of other skill"
 msgstr "Тип другого навыка"
 
-#: apps/dossier/admin.py:191 apps/transport/models.py:52
+#: apps/dossier/admin.py:191 apps/transport/admin.py:13
+#: apps/transport/admin.py:26 apps/transport/admin.py:63
+#: apps/transport/models.py:78
 msgid "Type of vehicle"
 msgstr "Тип транспортного средства"
 
-#: apps/dossier/admin.py:195
+#: apps/dossier/admin.py:195 apps/transport/models.py:91
 msgid "Mark of vehicle"
 msgstr "Марка транспортного средства"
 
@@ -1722,7 +1735,7 @@ msgid "Type of requisite"
 msgstr "Тип реквизита"
 
 #: apps/dossier/admin.py:230 apps/dossier/models.py:472
-#: apps/transport/models.py:64
+#: apps/transport/models.py:95
 msgid "Vehicle"
 msgstr "Транспортное средство"
 
@@ -2150,7 +2163,7 @@ msgstr "Марка транспортного средства"
 msgid "Mark"
 msgstr "Марка"
 
-#: apps/dossier/models.py:473 apps/transport/models.py:65
+#: apps/dossier/models.py:473 apps/transport/models.py:96
 msgid "Vehicles"
 msgstr "Транспортные средства"
 
@@ -2655,7 +2668,8 @@ msgstr "Комнаты"
 msgid "Product"
 msgstr "Товар"
 
-#: apps/shop/admin.py:52 apps/shop/models.py:63 core/abstract.py:723
+#: apps/shop/admin.py:52 apps/shop/models.py:63 apps/transport/admin.py:54
+#: core/abstract.py:723
 msgid "Vendor"
 msgstr "Производитель"
 
@@ -3200,80 +3214,89 @@ msgstr "Найдено %(len)s статей на модерации "
 msgid "Found %(len)s deleted topics"
 msgstr "Найдено %(len)s удаленных топиков "
 
-#: apps/transport/models.py:18
-#, fuzzy
-msgid "Vehicle type"
-msgstr "Транспортное средство"
-
 #: apps/transport/models.py:19
-#, fuzzy
-msgid "Vehicle types"
-msgstr "Транспортные средства"
-
-#: apps/transport/models.py:23 apps/transport/models.py:31
-#: apps/transport/models.py:39
-msgid "Using in vehicles"
-msgstr ""
-
-#: apps/transport/models.py:26
-#, fuzzy
-msgid "Transmission type"
+msgid "Vehicle type"
 msgstr "Тип транспортного средства"
 
-#: apps/transport/models.py:27
-#, fuzzy
-msgid "Transmission types"
+#: apps/transport/models.py:20
+msgid "Vehicle types"
 msgstr "Типы транспортных средств"
 
-#: apps/transport/models.py:34 apps/transport/models.py:42
+#: apps/transport/models.py:24
+msgid "Using in vehicles"
+msgstr "Используется в типах транспорта"
+
+#: apps/transport/models.py:34
+msgid "Transmission type"
+msgstr "Тип коробки передач"
+
+#: apps/transport/models.py:35
+msgid "Transmission types"
+msgstr "Типы коробок передач"
+
+#: apps/transport/models.py:42 apps/transport/models.py:50
 msgid "Vehicle carcass type"
-msgstr ""
+msgstr "Тип корпуса транспортного средства"
 
-#: apps/transport/models.py:35 apps/transport/models.py:43
+#: apps/transport/models.py:43 apps/transport/models.py:51
 msgid "Vehicle carcass types"
-msgstr ""
-
-#: apps/transport/models.py:51
-#, fuzzy
-msgid "Date of expiration"
-msgstr "Дата государственной регистрации"
-
-#: apps/transport/models.py:53
-#, fuzzy
-msgid "Vehicle color"
-msgstr "Транспортное средство"
-
-#: apps/transport/models.py:54
-#, fuzzy
-msgid "Type of transmission"
-msgstr "Тип вождения"
-
-#: apps/transport/models.py:55
-#, fuzzy
-msgid "Carcass of vehicle"
-msgstr "Марка транспортного средства"
-
-#: apps/transport/models.py:56
-#, fuzzy
-msgid "Engine of vehicle"
-msgstr "Тип транспортного средства"
-
-#: apps/transport/models.py:57
-#, fuzzy
-msgid "Vendor of vehicle"
-msgstr "Тип транспортного средства"
+msgstr "Типы корпусов транспортных средств"
 
 #: apps/transport/models.py:58
+msgid "Vehicle feature"
+msgstr "Опция транспортного средства"
+
+#: apps/transport/models.py:59 apps/transport/models.py:88
+msgid "Vehicle features"
+msgstr "Опции транспортных средств"
+
+#: apps/transport/models.py:66 apps/transport/models.py:67
+msgid "Vehicle mark"
+msgstr "Марка транспортного средства"
+
+#: apps/transport/models.py:79
+msgid "Vehicle color"
+msgstr "Цвет транспортного средства"
+
+#: apps/transport/models.py:80
+msgid "Type of transmission"
+msgstr "Типы коробок передач"
+
+#: apps/transport/models.py:81
+msgid "Carcass of vehicle"
+msgstr "Тип корпуса транспортного средства"
+
+#: apps/transport/models.py:82
+msgid "Engine of vehicle"
+msgstr "Тип двигателя транспортного средства"
+
+#: apps/transport/models.py:83
+msgid "Vendor of vehicle"
+msgstr "Производитель транспортного средства"
+
+#: apps/transport/models.py:84
 msgid "Mileage"
-msgstr ""
+msgstr "Пробег"
 
-#: apps/transport/models.py:59
+#: apps/transport/models.py:85
 msgid "VIN-code"
-msgstr ""
+msgstr "Вин-код"
 
-#: apps/transport/models.py:60
+#: apps/transport/models.py:86
 msgid "Horsepower"
-msgstr ""
+msgstr "Лошадиных сил"
+
+#: apps/transport/models.py:87
+msgid "Displacement"
+msgstr "Объем двигателя"
+
+#: apps/transport/models.py:89
+msgid "Year"
+msgstr "Год"
+
+#: apps/transport/models.py:92
+msgid "Left hand drive"
+msgstr "Леворульный"
 
 #: core/abstract.py:22
 msgid "Female"
