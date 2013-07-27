@@ -60,8 +60,14 @@ class VehicleVendorAdmin(admin.ModelAdmin):
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
-        (_('Type of vehicle'), {"fields": [('name', 'order_in_list'),
-                                ('description',)]}),
+        (_('Vehicle'), {"fields": [('name', 'order_in_list'),
+                                ('description',),
+            ('kind', 'color'), ('transmission', 'carcass'),
+            ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
+            ('horsepower', 'displacement'), ('year', 'left_control'),
+            ('features', ),
+
+        ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('-order_in_list', 'name',)
