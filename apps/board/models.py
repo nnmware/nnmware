@@ -1,10 +1,13 @@
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.abstract import Tree, AbstractData
+from nnmware.apps.address.models import Region
+from nnmware.apps.business.models import AbstractSeller
+from nnmware.core.abstract import Tree, AbstractName, AbstractDate
 
 
-class Category(Tree):
+class BoardCategory(Tree):
     slug_detail = 'board_category'
 
     class Meta:
@@ -13,9 +16,11 @@ class Category(Tree):
         verbose_name_plural = _("BoardCategories")
 
 
-class Board(AbstractData):
-    category = models.ForeignKey(Category, verbose_name=_("Category"),
-        null=True, blank=True)
+class Board(AbstractName, AbstractDate, AbstractSeller):
+    category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
+                               on_delete=models.PROTECT)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = _("Board")
@@ -23,13 +28,6 @@ class Board(AbstractData):
 
     slug_detail = "board_detail"
 
-    email = models.EmailField(_('Email'), blank=True)
-    icq = models.DecimalField(_('ICQ'), max_digits=20, decimal_places=0,
-        null=True, blank=True)
-    phone = models.DecimalField(_('Phone'), max_digits=20,
-        decimal_places=0, null=True, blank=True)
-    contact = models.CharField(_('Contact'), max_length=150,
-        null=True, blank=True)
     secured = models.BooleanField(verbose_name=_('Site-only contact'),
         default=False)
 
