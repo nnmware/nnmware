@@ -15,6 +15,10 @@ class BoardCategory(Tree):
         verbose_name = _("BoardCategory")
         verbose_name_plural = _("BoardCategories")
 
+    @property
+    def _active_set(self):
+        return Board.objects.filter(category=self)
+
 
 class Board(AbstractName, AbstractDate, AbstractSeller):
     category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True)
