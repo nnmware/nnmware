@@ -11,7 +11,7 @@ class BoardCategory(Tree):
     slug_detail = 'board_category'
 
     class Meta:
-        ordering = ['parent__id', 'title']
+        ordering = ['parent__id', 'name']
         verbose_name = _("BoardCategory")
         verbose_name_plural = _("BoardCategories")
 
