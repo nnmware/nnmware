@@ -32,8 +32,8 @@ class Publication(AbstractDate, AbstractName):
 
     class Meta:
         ordering = ['-created_date', ]
-        verbose_name = _('Article')
-        verbose_name_plural = _('Articles')
+        verbose_name = _('Publication')
+        verbose_name_plural = _('Publications')
 
     @permalink
     def get_absolute_url(self):
