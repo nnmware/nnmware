@@ -20,7 +20,6 @@ class Board(AbstractName, AbstractDate, AbstractSeller):
     category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = _("Board")
