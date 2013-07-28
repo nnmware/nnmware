@@ -261,3 +261,8 @@ class NewsManager(Manager):
 class PublicationManager(Manager):
     def active(self):
         return self.filter(enabled=True)
+
+
+class BoardManager(Manager):
+    def active(self):
+        return self.filter(enabled=True)
