@@ -1,5 +1,5 @@
 from django import forms
-from nnmware.apps.library.models import Publication
+from nnmware.apps.publication.models import Publication
 from nnmware.core.forms import TagsMixinForm
 
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.library.models import Publication, PublicationCategory
+from nnmware.apps.publication.models import Publication, PublicationCategory
 from nnmware.core.admin import TreeAdmin
 
 
