@@ -1,34 +1,34 @@
 from django import forms
-from nnmware.apps.article.models import Article
+from nnmware.apps.library.models import Publication
 from nnmware.core.forms import TagsMixinForm
 
 
-class ArticleEditForm(forms.ModelForm):
+class PublicationEditForm(forms.ModelForm):
     class Meta:
-        model = Article
+        model = Publication
         fields = ('title', 'category', 'slug', 'content', 'description')
 
 
-class ArticleAddForm(TagsMixinForm):
+class PublicationAddForm(TagsMixinForm):
 
     class Meta:
-        model = Article
+        model = Publication
         fields = ('title', 'category', 'tags', 'slug', 'content', 'description', 'allow_comments', 'created_date')
 
 
-class ArticleStatusForm(forms.ModelForm):
+class PublicationStatusForm(forms.ModelForm):
     class Meta:
-        model = Article
+        model = Publication
         fields = ('status', 'created_date', 'allow_comments', 'login_required')
 
 
-class ArticleStatusEditorForm(forms.ModelForm):
+class PublicationStatusEditorForm(forms.ModelForm):
     class Meta:
-        model = Article
+        model = Publication
         fields = ('status', 'created_date', 'allow_comments', 'allow_docs', 'allow_pics', 'login_required')
 
 
-class ArticleStatusAdminForm(forms.ModelForm):
+class PublicationStatusAdminForm(forms.ModelForm):
     class Meta:
-        model = Article
+        model = Publication
         fields = ('user', 'status', 'created_date', 'allow_comments', 'allow_docs', 'allow_pics', 'login_required')
