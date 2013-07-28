@@ -258,6 +258,6 @@ class NewsManager(Manager):
         return self.filter(enabled=True)
 
 
-class ArticleManager(Manager):
+class PublicationManager(Manager):
     def active(self):
         return self.filter(enabled=True)

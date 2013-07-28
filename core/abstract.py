@@ -75,6 +75,7 @@ STATUS_LOCKED = 1
 STATUS_PUBLISHED = 2
 STATUS_STICKY = 3
 STATUS_MODERATION = 4
+STATUS_DRAFT = 5
 
 STATUS_CHOICES = (
     (STATUS_DELETE, _("Deleted")),
@@ -82,6 +83,7 @@ STATUS_CHOICES = (
     (STATUS_PUBLISHED, _("Published")),
     (STATUS_STICKY, _("Sticky")),
     (STATUS_MODERATION, _("Moderation")),
+    (STATUS_DRAFT, _("Draft")),
 )
 
 
