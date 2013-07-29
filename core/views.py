@@ -652,7 +652,7 @@ class SignupView(AjaxFormMixin, FormView):
 class UserList(ListView):
     model = get_user_model()
     context_object_name = "object_list"
-    template_name = "user/list.html"
+    template_name = "users/list.html"
 
     def get_queryset(self):
         return get_user_model().objects.order_by("-date_joined")
