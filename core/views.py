@@ -660,12 +660,12 @@ class UserList(ListView):
 
 class UserMenList(UserList):
     def get_queryset(self):
-        return get_user_model().objects.filter(profile__gender='M')
+        return get_user_model().objects.filter(gender='M')
 
 
 class UserWomenList(UserList):
     def get_queryset(self):
-        return get_user_model().objects.filter(profile__gender='F')
+        return get_user_model().objects.filter(gender='F')
 
 
 class UserDateTemplate(object):
