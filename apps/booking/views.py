@@ -196,11 +196,20 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 rooms_list = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
                     placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(num_days=Count('pk')).\
                     filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
+                # searched_hotels_list = Room.objects.filter(pk__in=rooms_list, availability__date__range=date_period,
+                #     availability__min_days__lte=need_days, availability__placecount__gt=0).\
+                #     annotate(num_days=Count('pk')).filter(num_days__gte=need_days).order_by('hotel').\
+                #     values_list('hotel__pk', flat=True).distinct()
                 searched_hotels_list = Room.objects.filter(pk__in=rooms_list, availability__date__range=date_period,
-                    availability__min_days__lte=need_days, availability__placecount__gt=0).\
+                    availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days).order_by('hotel').\
                     values_list('hotel__pk', flat=True).distinct()
-                search_hotel = search_hotel.filter(pk__in=searched_hotels_list, work_on_request=False)
+                searched_hotels_not_avail = Room.objects.filter(pk__in=rooms_list,
+                    availability__date__range=date_period, availability__min_days__gt=need_days).\
+                    annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('hotel').\
+                    values_list('hotel__pk', flat=True).distinct()
+                search_hotel = search_hotel.filter(pk__in=searched_hotels_list, work_on_request=False).\
+                    exclude(pk__in=searched_hotels_not_avail)
             hotels_pk_list = search_hotel.values_list('pk', flat=True).distinct()
             cache.set(key, hotels_pk_list, 300)
         else:
