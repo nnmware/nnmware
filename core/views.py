@@ -5,6 +5,7 @@ from PIL import Image
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.db.models import Q
 from django.db.models.aggregates import Sum
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
@@ -666,6 +667,11 @@ class UserMenList(UserList):
 class UserWomenList(UserList):
     def get_queryset(self):
         return get_user_model().objects.filter(gender='F')
+
+
+class UserNoGenderList(UserList):
+    def get_queryset(self):
+        return get_user_model().objects.exclude(Q(gender='F') | Q(gender='M'))
 
 
 class UserDateTemplate(object):
