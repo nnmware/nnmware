@@ -340,8 +340,8 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                     filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
                 room_not_avail = Room.objects.filter(pk__in=rooms_with_amount,
                     availability__date__range=date_period, availability__min_days__gt=need_days).\
-                    annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('room').\
-                    values_list('room__pk', flat=True).distinct()
+                    annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('pk').\
+                    values_list('pk', flat=True).distinct()
                 rooms = Room.objects.exclude(pk__in=room_not_avail).filter(pk__in=rooms_with_amount,
                     availability__date__range=date_period, availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days)
