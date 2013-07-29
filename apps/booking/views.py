@@ -338,8 +338,12 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                     room__hotel=self.object, placeprice__date__range=date_period, placeprice__amount__gt=0).\
                     annotate(num_days=Count('pk')).\
                     filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
-                rooms = Room.objects.filter(pk__in=rooms_with_amount, availability__date__range=date_period,
-                    availability__min_days__lte=need_days, availability__placecount__gt=0).\
+                room_not_avail = Room.objects.filter(pk__in=rooms_with_amount,
+                    availability__date__range=date_period, availability__min_days__gt=need_days).\
+                    annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('room').\
+                    values_list('room__pk', flat=True).distinct()
+                rooms = Room.objects.exclude(pk__in=room_not_avail).filter(pk__in=rooms_with_amount,
+                    availability__date__range=date_period, availability__placecount__gt=0).\
                     annotate(num_days=Count('pk')).filter(num_days__gte=need_days)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['need_days'] = need_days
