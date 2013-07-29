@@ -669,7 +669,7 @@ class UserWomenList(UserList):
 
 
 class UserDateTemplate(object):
-    template_name = 'user/users_list.html'
+    template_name = 'users/list.html'
     model = get_user_model()
     date_field = 'date_joined'
     context_object_name = "object_list"
