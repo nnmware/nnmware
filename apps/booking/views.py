@@ -446,8 +446,8 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                         filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
                     room_with_amount_list = PlacePrice.objects.filter(settlement__room=self.object,
                         date__range=date_period, amount__gte=0).annotate(num_days=Sum('settlement__room')).\
-                        filter(num_days__gte=need_days).order_by('settlement__room').values_list('settlement__room__pk',
-                                                                                                 flat=True).distinct()
+                        filter(num_days__gte=need_days).order_by('settlement__room').\
+                        values_list('settlement__room__pk', flat=True).distinct()
                     searched_room_not_avail = Availability.objects.filter(room=self.object, date__range=date_period,
                         min_days__lte=need_days).annotate(num_days=Count('room')).\
                         filter(num_days__gt=0).order_by('room').values_list('room__pk', flat=True).distinct()
