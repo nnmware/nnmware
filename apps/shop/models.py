@@ -15,6 +15,7 @@ from nnmware.core.fields import std_text_field
 from nnmware.core.managers import ProductManager, ServiceManager
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.apps.money.models import AbstractDeliveryMethod
+from nnmware.core.abstract import AbstractTeaser
 
 
 class ProductCategory(Tree):
@@ -51,7 +52,7 @@ class CargoService(Vendor):
         verbose_name_plural = _("Cargo Services")
 
 
-class Product(AbstractName, MoneyBase, AbstractDate):
+class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.SET_NULL, related_name='shopcat')
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
@@ -64,7 +65,6 @@ class Product(AbstractName, MoneyBase, AbstractDate):
                                on_delete=models.SET_NULL)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
-    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
     bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
     discount = models.BooleanField(verbose_name=_("Discount"), default=False)
     on_main = models.BooleanField(verbose_name=_("On main page"), default=False)
@@ -426,10 +426,9 @@ class Review(AbstractIP, AbstractImg):
 
 
 @python_2_unicode_compatible
-class ShopText(models.Model):
+class ShopText(AbstractTeaser):
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
-    teaser = models.TextField(verbose_name=_("Teaser"), null=True, blank=True)
     content = models.TextField(verbose_name=_("Content"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
 
@@ -522,7 +521,7 @@ class ServiceCategory(Tree):
         return Service.objects.filter(category=self, visible=True)
 
 
-class Service(AbstractName, MoneyBase, AbstractDate):
+class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ServiceCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.SET_NULL, related_name='servicecat')
     related_services = models.ManyToManyField('self', verbose_name=_('Related services'), null=True, blank=True)
@@ -530,7 +529,6 @@ class Service(AbstractName, MoneyBase, AbstractDate):
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
-    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
     bestseller = models.BooleanField(verbose_name=_("Bestseller"), default=False)
     discount = models.BooleanField(verbose_name=_("Discount"), default=False)
     on_main = models.BooleanField(verbose_name=_("On main page"), default=False)

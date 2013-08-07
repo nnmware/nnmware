@@ -41,6 +41,22 @@ class AbstractDate(models.Model):
         abstract = True
 
 
+class AbstractTeaser(models.Model):
+    teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True, null=True)
+    teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True, null=True,
+                                 db_index=True)
+
+    class Meta:
+        abstract = True
+
+    @property
+    def get_teaser(self):
+        if get_language() == 'en':
+            if self.teaser_en:
+                return self.teaser_en
+        return self.teaser
+
+
 @python_2_unicode_compatible
 class Unit(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of unit'))

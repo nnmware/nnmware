@@ -7,7 +7,7 @@ from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
-from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime
+from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime, AbstractTeaser
 from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.managers import CompanyManager, VacancyManager
@@ -158,7 +158,7 @@ class CompanyCategory(Tree):
         return Company.objects.filter(category=self)
 
 
-class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate):
+class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate, AbstractTeaser):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(class)s_comp_adm')
     main_category = models.ForeignKey(CompanyCategory, blank=True, null=True, verbose_name=_('Company category'),
@@ -168,9 +168,6 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
     fullname = models.CharField(verbose_name=_("Full Name"), max_length=255, db_index=True, blank=True, null=True)
     fullname_en = models.CharField(verbose_name=_('Full Name(English)'), max_length=255, blank=True, null=True,
                                    db_index=True)
-    teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True, null=True)
-    teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True, null=True,
-                                 db_index=True)
     branch = models.BooleanField(verbose_name=_('Is branch?'), default=False, db_index=True)
     parent = models.ForeignKey('self', verbose_name=_('Parent company'), blank=True, null=True, related_name='children',
                                on_delete=models.SET_NULL)
@@ -189,13 +186,6 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
         if self.fullname:
             return self.fullname
         return self.get_name
-
-    @property
-    def get_teaser(self):
-        if get_language() == 'en':
-            if self.teaser_en:
-                return self.teaser_en
-        return self.teaser
 
     @permalink
     def get_absolute_url(self):
@@ -262,7 +252,7 @@ VACANCY_TYPE = (
 )
 
 
-class Vacancy(AbstractName, AbstractDate):
+class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
                                     null=True, blank=True, related_name='%(app_label)s_%(class)s_vac_adm')
     category = models.ForeignKey(VacancyCategory, blank=True, null=True, verbose_name=_('Vacancy category'),
@@ -273,7 +263,6 @@ class Vacancy(AbstractName, AbstractDate):
                              null=True, on_delete=models.SET_NULL)
     company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
                                 on_delete=models.SET_NULL)
-    teaser = models.TextField(verbose_name=_("Teaser"), blank=True, null=True)
 
     objects = VacancyManager()
 

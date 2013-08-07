@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
-from nnmware.core.abstract import Tree, AbstractDate, AbstractName
+from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import TopicManager
 
 
@@ -18,23 +18,6 @@ class TopicCategory(Tree):
     @property
     def _active_set(self):
         return Topic.objects.filter(category=self)
-
-
-STATUS_DELETE = 0
-STATUS_LOCKED = 1
-STATUS_PUBLISHED = 2
-STATUS_STICKY = 3
-STATUS_MODERATION = 4
-STATUS_DRAFT = 5
-
-STATUS_CHOICES = (
-    (STATUS_DELETE, _("Deleted")),
-    (STATUS_LOCKED, _("Locked")),
-    (STATUS_PUBLISHED, _("Published")),
-    (STATUS_STICKY, _("Sticky")),
-    (STATUS_MODERATION, _("Moderation")),
-    (STATUS_DRAFT, _("Draft")),
-)
 
 
 class Topic(AbstractDate, AbstractName):
