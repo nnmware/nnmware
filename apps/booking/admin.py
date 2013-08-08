@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
-from django.utils.text import slugify
+from django.template.defaultfilters import slugify
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
@@ -34,7 +34,7 @@ class HotelAdmin(admin.ModelAdmin):
     readonly_fields = ('translit_name',)
 
     def translit_name(self, obj):
-        return obj.name
+        return slugify(obj.name)
     translit_name.short_description = 'Translit'
 
     fieldsets = (
