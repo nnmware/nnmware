@@ -2,9 +2,13 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
-from django.template.defaultfilters import slugify
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
+
+try:
+    from pytils.translit import slugify
+except:
+    from django.template.defaultfilters import slugify
 
 
 class HotelAdminForm(forms.ModelForm):
@@ -30,7 +34,6 @@ class HotelAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
-#    prepopulated_fields = {'translit_name': ('name',)}
     readonly_fields = ('translit_name',)
 
     def translit_name(self, obj):
