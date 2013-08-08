@@ -30,12 +30,12 @@ class HotelAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
-#    prepopulated_fields = {'slug': ('name',)}
+    prepopulated_fields = {'translit_name': ('name',)}
     readonly_fields = ('translit_name',)
 
-#    def translit_name(self, obj):
-#        return slugify(obj.name)
-#    translit_name.short_description = 'Translit'
+    def translit_name(self, obj):
+        return slugify(obj.name)
+    translit_name.short_description = 'Translit'
 
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('translit_name', ) ,('city', 'address'), ('description',),
