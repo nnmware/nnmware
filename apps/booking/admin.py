@@ -30,7 +30,7 @@ class HotelAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
-    prepopulated_fields = {'translit_name': ('name',)}
+#    prepopulated_fields = {'translit_name': ('name',)}
     readonly_fields = ('translit_name',)
 
     def translit_name(self, obj):
