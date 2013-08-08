@@ -29,12 +29,14 @@ class HotelAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
+    prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
                                  ('longitude', 'latitude'), 'schema_transit'
         ]}),
-        (_("Contacts"), {"fields": [('phone', 'fax'), ('website', 'register_date'), ('contact_email', 'contact_name'),
+        (_("Contacts"), {"fields": [('phone', 'fax'), ('website',), ('contact_email', 'contact_name'),
+                                    ('register_date', )
         ]}),
         (_("Booking"), {"classes": ("grp-collapse grp-closed",), "fields": [('payment_method',), ('booking_terms',),
                                                                             ('condition_cancellation',),
