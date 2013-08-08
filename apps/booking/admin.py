@@ -33,9 +33,9 @@ class HotelAdmin(admin.ModelAdmin):
 #    prepopulated_fields = {'slug': ('name',)}
     readonly_fields = ('translit_name',)
 
-    def translit_name(self, obj):
-        return slugify(obj.name)
-    translit_name.short_description = 'Translit'
+#    def translit_name(self, obj):
+#        return slugify(obj.name)
+#    translit_name.short_description = 'Translit'
 
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('translit_name', ) ,('city', 'address'), ('description',),
