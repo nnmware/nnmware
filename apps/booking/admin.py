@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
+from django.utils.text import slugify
 from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
 
@@ -31,7 +32,7 @@ class HotelAdmin(admin.ModelAdmin):
     filter_horizontal = ['option', 'admins']
 #    prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
-        (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('description',),
+        (_("Hotel"), {"fields": [("name", "slug"), ('translit_name', ) ,('city', 'address'), ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
                                  ('longitude', 'latitude'), 'schema_transit'
         ]}),
@@ -53,6 +54,9 @@ class HotelAdmin(admin.ModelAdmin):
         ,)
     ordering = ('-register_date', 'name')
 
+    def translit_name(obj):
+        return slugify(obj.name)
+    translit_name.short_description = 'Translit'
 
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'order_in_list')
