@@ -29,7 +29,7 @@ class HotelAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
-    prepopulated_fields = {'slug': ('name',)}
+#    prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
