@@ -32,7 +32,7 @@ class HotelAdmin(admin.ModelAdmin):
     filter_horizontal = ['option', 'admins']
 #    prepopulated_fields = {'slug': ('name',)}
 
-    def translit_name(obj):
+    def translit_name(self, obj):
         return slugify(obj.name)
     translit_name.short_description = 'Translit'
 
