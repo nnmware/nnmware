@@ -34,7 +34,7 @@ class HotelAdmin(admin.ModelAdmin):
     readonly_fields = ('translit_name',)
 
     def translit_name(self, obj):
-        return slugify(obj.name)
+        return obj.name
     translit_name.short_description = 'Translit'
 
     fieldsets = (
