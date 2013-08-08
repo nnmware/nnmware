@@ -31,6 +31,11 @@ class HotelAdmin(admin.ModelAdmin):
     inlines = [AgentPercentInline, ]
     filter_horizontal = ['option', 'admins']
 #    prepopulated_fields = {'slug': ('name',)}
+
+    def translit_name(obj):
+        return slugify(obj.name)
+    translit_name.short_description = 'Translit'
+
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('translit_name', ) ,('city', 'address'), ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
@@ -54,9 +59,6 @@ class HotelAdmin(admin.ModelAdmin):
         ,)
     ordering = ('-register_date', 'name')
 
-    def translit_name(obj):
-        return slugify(obj.name)
-    translit_name.short_description = 'Translit'
 
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'order_in_list')
