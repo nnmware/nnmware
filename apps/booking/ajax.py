@@ -6,6 +6,7 @@ import json
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
+from django.db.models import Q
 from django.http import Http404
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
@@ -282,7 +283,7 @@ def hotels_in_city(request):
             searched = Hotel.objects.filter(pk__in=data_key)
         else:
             city = City.objects.get(pk=c)
-            searched = Hotel.objects.filter(city=city)
+            searched = Hotel.objects.filter(Q(city=city) | Q(addon_city=city))
         return filter_hotels_on_map(request, searched)
     except:
         payload = {'success': False}

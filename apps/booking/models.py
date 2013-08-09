@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.cache import cache
-from nnmware.apps.address.models import AbstractGeo, Tourism
+from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
 from nnmware.core.maps import places_near_object
@@ -164,13 +164,16 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
-    condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True, null=True)
+    condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True,
+                                                 null=True)
     paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
     paid_services_en = models.TextField(verbose_name=_("Paid services(English)"), blank=True, null=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
     work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False, db_index=True)
     hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True, db_index=True)
+    addon_city = models.ForeignKey(City, verbose_name=_('Main city'), related_name='main_city', null=True, blank=True,
+                                   db_index=True)
 
     class Meta:
         verbose_name = _("Hotel")

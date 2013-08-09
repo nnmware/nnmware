@@ -41,9 +41,10 @@ class HotelAdmin(admin.ModelAdmin):
     translit_name.short_description = 'Translit'
 
     fieldsets = (
-        (_("Hotel"), {"fields": [("name", "slug"), ('translit_name', ) ,('city', 'address'), ('description',),
+        (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('translit_name', 'addon_city'),
+                                 ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
-                                 ('longitude', 'latitude'), 'schema_transit'
+                                 ('longitude', 'latitude'), ('schema_transit',)
         ]}),
         (_("Contacts"), {"fields": [('phone', 'fax'), ('website',), ('contact_email', 'contact_name'),
                                     ('register_date', )
