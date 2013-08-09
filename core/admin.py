@@ -121,7 +121,7 @@ class VisitorHitAdmin(admin.ModelAdmin):
                                                 ('user_agent', 'referer'), ('url', 'hostname'), ]}),)
     list_display = ('user', 'date', 'ip_address', 'user_agent', 'url', 'secure', 'referer')
     list_filter = ('date', 'user', 'ip_address')
-    search_fields = ('user__username', 'user_agent', 'ip_address')
+    search_fields = ('user__username', 'user_agent', 'ip_address', 'url')
     ordering = ('-date', 'user', 'ip_address')
 
 
