@@ -38,7 +38,7 @@ class LocaleNamedForm(forms.ModelForm):
         return super(LocaleNamedForm, self).save(commit=commit)
 
 
-class CabinetInfoForm(LocaleNamedForm):
+class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
 
     class Meta:
         model = Hotel
