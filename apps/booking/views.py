@@ -468,7 +468,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         return context
 
 
-class CabinetInfo(HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
+class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
