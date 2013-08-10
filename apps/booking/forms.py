@@ -53,8 +53,8 @@ class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
         self.fields['schema_transit'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
                                                                                                      'rows': '5'}),
                                                         initial=schema_transit)
-        if not self._user.is_superuser():
-            self.fields['name'].widget.attrs['readonly'] = True
+        # if not self._user.is_superuser():
+        #     self.fields['name'].widget.attrs['readonly'] = True
 
     def clean_name(self):
         if self._user.is_superuser():
