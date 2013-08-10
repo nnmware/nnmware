@@ -54,7 +54,7 @@ class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
                                                                                                      'rows': '5'}),
                                                         initial=schema_transit)
         if not self._user.is_superuser:
-            del self.fields['name']
+            self.fields['name'].widget.attrs['readonly'] = True
 
     def clean_name(self):
         if self._user.is_superuser:
