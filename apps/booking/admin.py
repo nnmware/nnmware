@@ -210,7 +210,7 @@ class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'choice')
 #    search_fields = ('date',)
     fieldsets = (
-        (_("Discount"), {"fields": [("hotel", 'chocie'), ]}),)
+        (_("Discount"), {"fields": [("hotel", 'choice'), ]}),)
 
 
 class ReviewAdmin(admin.ModelAdmin):
