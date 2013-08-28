@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-10 10:44+1100\n"
+"POT-Creation-Date: 2013-08-28 16:58+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 #: apps/address/admin.py:11 apps/address/models.py:100
 #: apps/address/models.py:126 apps/address/models.py:195
 #: apps/address/models.py:239 apps/booking/admin.py:205
-#: apps/booking/models.py:653
+#: apps/booking/models.py:680
 msgid "City"
 msgstr "Город"
 
@@ -148,7 +148,7 @@ msgstr "Широта"
 msgid "Cities"
 msgstr "Города"
 
-#: apps/address/models.py:127 apps/booking/models.py:654
+#: apps/address/models.py:127 apps/booking/models.py:681
 #: apps/business/admin.py:73 apps/realty/admin.py:106
 msgid "Address"
 msgstr "Адрес"
@@ -219,7 +219,7 @@ msgstr "Основная"
 #: apps/dossier/models.py:419 apps/dossier/models.py:455
 #: apps/money/models.py:135 apps/news/admin.py:10 apps/publication/admin.py:10
 #: apps/shop/models.py:484 apps/topic/admin.py:10 core/abstract.py:112
-#: core/abstract.py:256 core/abstract.py:494 core/admin.py:48 core/admin.py:66
+#: core/abstract.py:256 core/abstract.py:493 core/admin.py:48 core/admin.py:66
 #: core/models.py:563
 msgid "Description"
 msgstr "Описание"
@@ -266,7 +266,7 @@ msgstr "просмотр"
 
 #: apps/booking/admin.py:44 apps/booking/models.py:108
 #: apps/booking/models.py:179 apps/booking/models.py:373
-#: apps/booking/models.py:500
+#: apps/booking/models.py:500 apps/booking/models.py:640
 msgid "Hotel"
 msgstr "Отель"
 
@@ -288,7 +288,6 @@ msgstr "Опция отеля"
 
 #: apps/booking/admin.py:86 apps/booking/models.py:378
 #: apps/booking/models.py:438 apps/booking/models.py:601
-#: apps/booking/models.py:617
 msgid "Room"
 msgstr "Номер"
 
@@ -330,13 +329,13 @@ msgstr "Заявка на добавление Отеля"
 msgid "Agent Percent"
 msgstr "Агентский процент"
 
-#: apps/booking/admin.py:213 apps/booking/models.py:619
-#: apps/booking/models.py:622 apps/shop/models.py:69 apps/shop/models.py:533
+#: apps/booking/admin.py:213 apps/booking/models.py:649 apps/shop/models.py:69
+#: apps/shop/models.py:533
 msgid "Discount"
 msgstr "Скидка"
 
 #: apps/booking/admin.py:225 apps/booking/models.py:443
-#: apps/booking/models.py:496 apps/booking/models.py:633
+#: apps/booking/models.py:496 apps/booking/models.py:660
 msgid "Settlement Variant"
 msgstr "Вариант поселения"
 
@@ -344,7 +343,7 @@ msgstr "Вариант поселения"
 msgid "Availability"
 msgstr "Наличие"
 
-#: apps/booking/admin.py:239 apps/booking/models.py:636
+#: apps/booking/admin.py:239 apps/booking/models.py:663
 msgid "Place Price"
 msgstr "Стоимость места"
 
@@ -368,39 +367,39 @@ msgstr "Спасибо за Ваш отзыв!"
 msgid "You are not allowed for this action."
 msgstr "Вы не имеете прав для данного действия"
 
-#: apps/booking/forms.py:142 core/forms.py:213
+#: apps/booking/forms.py:152 core/forms.py:213
 msgid "This field is required"
 msgstr "Поле обязательно"
 
-#: apps/booking/forms.py:143 core/forms.py:214
+#: apps/booking/forms.py:153 core/forms.py:214
 msgid "Answer is wrong"
 msgstr "Ответ неверен"
 
-#: apps/booking/forms.py:147 core/forms.py:192
+#: apps/booking/forms.py:157 core/forms.py:192
 msgid "New Password"
 msgstr "Новый пароль"
 
-#: apps/booking/forms.py:186
+#: apps/booking/forms.py:196
 msgid "No valid payment method."
 msgstr "Нет доступного метода оплаты"
 
-#: apps/booking/forms.py:191
+#: apps/booking/forms.py:201
 msgid "Spam."
 msgstr "Спам"
 
-#: apps/booking/forms.py:197
+#: apps/booking/forms.py:207
 msgid "Phone is required"
 msgstr "Номер телефона обязателен"
 
-#: apps/booking/forms.py:203
+#: apps/booking/forms.py:213
 msgid "Email is required"
 msgstr "Адрес email обязателен"
 
-#: apps/booking/forms.py:207
+#: apps/booking/forms.py:217
 msgid "Email is wrong"
 msgstr "Адрес email неверен"
 
-#: apps/booking/forms.py:215
+#: apps/booking/forms.py:225
 msgid "Email already registered, please sign-in."
 msgstr "Данный email уже зарегистрирован, пожалуйста авторизуйтесь."
 
@@ -471,7 +470,7 @@ msgstr "Типы отеля"
 #: apps/booking/models.py:358 apps/booking/models.py:479
 #: apps/business/models.py:247 apps/dossier/models.py:268
 #: apps/dossier/models.py:599 apps/money/models.py:65 apps/money/models.py:115
-#: apps/shop/models.py:222 core/abstract.py:575 core/models.py:280
+#: apps/shop/models.py:222 core/abstract.py:574 core/models.py:280
 #: core/models.py:368
 msgid "Unknown"
 msgstr "Неизвестно"
@@ -564,21 +563,21 @@ msgstr "FB+ - Пансион + напитки местного производ�
 msgid "Register from"
 msgstr "Регистрация с"
 
-#: apps/booking/models.py:142 apps/booking/models.py:656
+#: apps/booking/models.py:142 apps/booking/models.py:683
 #: apps/shop/models.py:264 apps/shop/models.py:388
 msgid "Email"
 msgstr "Адрес эл.почты:"
 
 #: apps/booking/models.py:143 apps/booking/models.py:506
-#: apps/booking/models.py:657 apps/shop/models.py:263 apps/shop/models.py:346
+#: apps/booking/models.py:684 apps/shop/models.py:263 apps/shop/models.py:346
 msgid "Phone"
 msgstr "Телефон"
 
-#: apps/booking/models.py:144 apps/booking/models.py:658
+#: apps/booking/models.py:144 apps/booking/models.py:685
 msgid "Fax"
 msgstr "Факс"
 
-#: apps/booking/models.py:145 apps/booking/models.py:660 core/abstract.py:521
+#: apps/booking/models.py:145 apps/booking/models.py:687 core/abstract.py:520
 #: core/models.py:613
 msgid "Website"
 msgstr "Вебсайт"
@@ -595,7 +594,7 @@ msgstr "Контактное лицо"
 msgid "Count of Rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:150 apps/booking/models.py:662
+#: apps/booking/models.py:150 apps/booking/models.py:689
 msgid "Count of Stars"
 msgstr "Количество звезд"
 
@@ -659,11 +658,11 @@ msgstr "Платные услуги"
 msgid "Paid services(English)"
 msgstr "Платные услуги(Англ)"
 
-#: apps/booking/models.py:171
+#: apps/booking/models.py:171 apps/booking/models.py:645
 msgid "Time on"
 msgstr "Время заезда"
 
-#: apps/booking/models.py:172
+#: apps/booking/models.py:172 apps/booking/models.py:646
 msgid "Time off"
 msgstr "Время выезда"
 
@@ -750,7 +749,7 @@ msgid "Settlement"
 msgstr "Заселения"
 
 #: apps/booking/models.py:440 apps/booking/models.py:516
-#: apps/shop/models.py:433 core/abstract.py:662
+#: apps/shop/models.py:433 core/abstract.py:661
 msgid "Enabled"
 msgstr "Включено"
 
@@ -787,13 +786,13 @@ msgstr "Аннулировано"
 msgid "Completed"
 msgstr "Завершено"
 
-#: apps/booking/models.py:491 apps/booking/models.py:651
+#: apps/booking/models.py:491 apps/booking/models.py:678
 #: apps/business/models.py:280 apps/money/models.py:77
 #: apps/money/models.py:127 apps/news/models.py:28
 #: apps/publication/models.py:28 apps/shop/models.py:84
 #: apps/shop/models.py:190 apps/shop/models.py:249 apps/shop/models.py:342
 #: apps/shop/models.py:410 apps/shop/models.py:542 apps/topic/models.py:28
-#: core/abstract.py:718 core/models.py:445 core/models.py:635
+#: core/abstract.py:717 core/models.py:445 core/models.py:635
 msgid "User"
 msgstr "Пользователь"
 
@@ -881,7 +880,7 @@ msgstr "Бронирования"
 msgid "From date"
 msgstr "С даты"
 
-#: apps/booking/models.py:565
+#: apps/booking/models.py:565 apps/booking/models.py:643
 msgid "Percent"
 msgstr "Процент"
 
@@ -919,8 +918,8 @@ msgstr "Отзывы клиентов"
 msgid "Review client %(client)s for hotel %(hotel)s is -> %(review)s"
 msgstr "Отзыв клиента %(client)s для отеля %(hotel)s -> %(review)s"
 
-#: apps/booking/models.py:602 apps/booking/models.py:618
-#: apps/booking/models.py:632 apps/money/models.py:35
+#: apps/booking/models.py:602 apps/booking/models.py:659
+#: apps/money/models.py:35
 msgid "On date"
 msgstr "На дату"
 
@@ -948,23 +947,59 @@ msgid ""
 msgstr ""
 "Наличие мест %(place)s для отеля %(hotel)s на дату %(date)s ->  %(count)s"
 
-#: apps/booking/models.py:623
+#: apps/booking/models.py:626
+msgid "No discount"
+msgstr "Без скидки"
+
+#: apps/booking/models.py:627
+msgid "Non-return rate"
+msgstr "Невозвратный тариф"
+
+#: apps/booking/models.py:628
+msgid "Early booking"
+msgstr "Раннее бронирование"
+
+#: apps/booking/models.py:629
+msgid "Later booking"
+msgstr "Позднее бронирование"
+
+#: apps/booking/models.py:630
+msgid "Booking on nights count"
+msgstr "Бронирование на определенное количество ночей"
+
+#: apps/booking/models.py:631
+msgid "Package discount"
+msgstr "Пакетная скидка"
+
+#: apps/booking/models.py:632
+msgid "Holidays discount"
+msgstr "Скидка выходного дня"
+
+#: apps/booking/models.py:633
+msgid "Special discount"
+msgstr "Специальная скидка"
+
+#: apps/booking/models.py:634
+msgid "Normal discount"
+msgstr "Обычная скидка"
+
+#: apps/booking/models.py:641
+msgid "Type of discount"
+msgstr "Тип скидки"
+
+#: apps/booking/models.py:650
 msgid "Discounts"
 msgstr "Скидки"
 
-#: apps/booking/models.py:626
-#, python-format
-msgid ""
-"Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> "
-"%(discount)s"
-msgstr ""
-"Скидка места %(place)s для отеля %(hotel)s на дату %(date)s ->  %(discount)s"
+#: apps/booking/models.py:653
+msgid "Discount hotel %(hotel)s -> %(discount)s"
+msgstr "Скидка для отеля %(hotel)s ->  %(discount)s"
 
-#: apps/booking/models.py:637
+#: apps/booking/models.py:664
 msgid "Places Prices"
 msgstr "Стоимости мест"
 
-#: apps/booking/models.py:641
+#: apps/booking/models.py:668
 #, python-format
 msgid ""
 "Price settlement %(settlement)s for hotel %(hotel)s on date %(date)s is -> "
@@ -973,30 +1008,30 @@ msgstr ""
 "Стоимость заселения %(settlement)s для отеля %(hotel)s на дату %(date)s -> "
 "%(price)s%(currency)s"
 
-#: apps/booking/models.py:652
+#: apps/booking/models.py:679
 msgid "Register date"
 msgstr "Дата регистрации"
 
-#: apps/booking/models.py:655 apps/dossier/models.py:418
+#: apps/booking/models.py:682 apps/dossier/models.py:418
 #: apps/dossier/models.py:454 apps/money/models.py:20 apps/realty/models.py:13
 #: apps/shop/models.py:387 apps/shop/models.py:413 core/abstract.py:253
 #: core/models.py:40
 msgid "Name"
 msgstr "Имя"
 
-#: apps/booking/models.py:659
+#: apps/booking/models.py:686
 msgid "Contact email"
 msgstr "Контактный емейл"
 
-#: apps/booking/models.py:661
+#: apps/booking/models.py:688
 msgid "Count of rooms"
 msgstr "Количество номеров"
 
-#: apps/booking/models.py:665
+#: apps/booking/models.py:692
 msgid "Request for add hotel"
 msgstr "Заявка на добавление отеля"
 
-#: apps/booking/models.py:666
+#: apps/booking/models.py:693
 msgid "Requests for add hotels"
 msgstr "Заявки на добавление отелей"
 
@@ -1906,7 +1941,7 @@ msgstr "Базовый"
 msgid "Conversational"
 msgstr "Разговорный"
 
-#: apps/dossier/models.py:278 core/abstract.py:583
+#: apps/dossier/models.py:278 core/abstract.py:582
 msgid "Level"
 msgstr "Уровень"
 
@@ -2022,7 +2057,7 @@ msgstr "Вид животного"
 msgid "Animals types"
 msgstr "Виды животных"
 
-#: apps/dossier/models.py:420 apps/dossier/models.py:456 core/abstract.py:559
+#: apps/dossier/models.py:420 apps/dossier/models.py:456 core/abstract.py:558
 msgid "English name"
 msgstr "Английское название"
 
@@ -2107,11 +2142,11 @@ msgstr "Типы реквизита"
 msgid "Requisites"
 msgstr "Реквизит"
 
-#: apps/dossier/models.py:541 core/abstract.py:600 core/models.py:609
+#: apps/dossier/models.py:541 core/abstract.py:599 core/models.py:609
 msgid "Date birth"
 msgstr "Дата рождения"
 
-#: apps/dossier/models.py:542 core/abstract.py:601 core/models.py:610
+#: apps/dossier/models.py:542 core/abstract.py:600 core/models.py:610
 msgid "Gender"
 msgstr "Пол"
 
@@ -2386,7 +2421,7 @@ msgid "Enabled for unregistered users"
 msgstr "Включено для незарегистрированых пользователей магазина"
 
 #: apps/money/models.py:163 apps/shop/models.py:174 core/abstract.py:259
-#: core/abstract.py:558 core/abstract.py:664
+#: core/abstract.py:557 core/abstract.py:663
 msgid "Order in list"
 msgstr "Очередность в списке"
 
@@ -2635,7 +2670,7 @@ msgid "Product"
 msgstr "Товар"
 
 #: apps/shop/admin.py:52 apps/shop/models.py:64 apps/transport/admin.py:54
-#: core/abstract.py:741
+#: core/abstract.py:740
 msgid "Vendor"
 msgstr "Производитель"
 
@@ -2709,7 +2744,7 @@ msgstr "Грузоперевозчики"
 msgid "Quantity"
 msgstr "Количество"
 
-#: apps/shop/models.py:59 core/abstract.py:321
+#: apps/shop/models.py:59 core/abstract.py:320
 msgid "Colors"
 msgstr "Цвета"
 
@@ -2894,15 +2929,15 @@ msgstr "Номер трека"
 msgid "Cargo service"
 msgstr "Грузоперевозчик"
 
-#: apps/shop/models.py:259 apps/shop/models.py:343 core/abstract.py:595
+#: apps/shop/models.py:259 apps/shop/models.py:343 core/abstract.py:594
 msgid "First Name"
 msgstr "Имя"
 
-#: apps/shop/models.py:260 apps/shop/models.py:344 core/abstract.py:596
+#: apps/shop/models.py:260 apps/shop/models.py:344 core/abstract.py:595
 msgid "Middle Name"
 msgstr "Отчество"
 
-#: apps/shop/models.py:261 apps/shop/models.py:345 core/abstract.py:597
+#: apps/shop/models.py:261 apps/shop/models.py:345 core/abstract.py:596
 #: core/forms.py:367
 msgid "Last Name"
 msgstr "Фамилия"
@@ -2939,7 +2974,7 @@ msgstr "URL товара"
 msgid "Delivery flag"
 msgstr "Флаг доставки"
 
-#: apps/shop/models.py:347 core/abstract.py:517
+#: apps/shop/models.py:347 core/abstract.py:516
 msgid "Skype"
 msgstr "Скайп"
 
@@ -2980,7 +3015,7 @@ msgid ", skype-"
 msgstr ", скайп-"
 
 #: apps/shop/models.py:386 apps/shop/models.py:412 apps/shop/models.py:430
-#: apps/shop/models.py:481 core/abstract.py:37 core/abstract.py:657
+#: apps/shop/models.py:481 core/abstract.py:37 core/abstract.py:656
 msgid "Created date"
 msgstr "Дата создания"
 
@@ -3009,7 +3044,7 @@ msgstr "Вип-клиент"
 msgid "Reviews"
 msgstr "Отзывы"
 
-#: apps/shop/models.py:431 core/abstract.py:110 core/abstract.py:660
+#: apps/shop/models.py:431 core/abstract.py:110 core/abstract.py:659
 msgid "Title"
 msgstr "Заголовок"
 
@@ -3324,20 +3359,20 @@ msgstr "Модерирование"
 msgid "Draft"
 msgstr ""
 
-#: core/abstract.py:111 core/abstract.py:735 core/models.py:41
+#: core/abstract.py:111 core/abstract.py:734 core/models.py:41
 #: core/models.py:452
 msgid "URL"
 msgstr "URL"
 
-#: core/abstract.py:114 core/abstract.py:492
+#: core/abstract.py:114 core/abstract.py:491
 msgid "Author"
 msgstr "Автор"
 
-#: core/abstract.py:116 core/abstract.py:336 core/models.py:564
+#: core/abstract.py:116 core/abstract.py:335 core/models.py:564
 msgid "Login required"
 msgstr "Требуется регистрация"
 
-#: core/abstract.py:117 core/abstract.py:337 core/models.py:565
+#: core/abstract.py:117 core/abstract.py:336 core/models.py:565
 msgid "Enable this if users must login before access with this objects."
 msgstr ""
 "Включите это, если пользователи должны зарегистрироваться для доступа к "
@@ -3367,7 +3402,7 @@ msgstr "Абстрактные Данные"
 msgid "View on site"
 msgstr "Смотреть на сайте"
 
-#: core/abstract.py:206 core/abstract.py:487 core/models.py:119
+#: core/abstract.py:206 core/abstract.py:486 core/models.py:119
 msgid "Image"
 msgstr "Изображение"
 
@@ -3375,7 +3410,7 @@ msgstr "Изображение"
 msgid "Material"
 msgstr "Материал"
 
-#: core/abstract.py:255 core/abstract.py:599
+#: core/abstract.py:255 core/abstract.py:598
 msgid "Enabled in system"
 msgstr "Включено в системе"
 
@@ -3383,451 +3418,451 @@ msgstr "Включено в системе"
 msgid "Description(English)"
 msgstr "Описание(Английский)"
 
-#: core/abstract.py:258 core/abstract.py:663
+#: core/abstract.py:258 core/abstract.py:662
 msgid "URL-identifier"
 msgstr "URL-идентификатор"
 
-#: core/abstract.py:320
+#: core/abstract.py:319
 msgid "Color"
 msgstr "Цвет"
 
-#: core/abstract.py:333
+#: core/abstract.py:332
 msgid "Parent"
 msgstr "Родитель"
 
-#: core/abstract.py:334 core/abstract.py:496
+#: core/abstract.py:333 core/abstract.py:495
 msgid "Ordering"
 msgstr "Упорядочить"
 
-#: core/abstract.py:334
+#: core/abstract.py:333
 msgid "Override alphabetical order in tree display"
 msgstr "Заменять сортировку по алфавиту в просмотре дерева"
 
-#: core/abstract.py:335
+#: core/abstract.py:334
 msgid "Root node"
 msgstr "Корневой узел"
 
-#: core/abstract.py:338
+#: core/abstract.py:337
 msgid "Category Admins"
 msgstr "Администраторы Категории"
 
-#: core/abstract.py:343
+#: core/abstract.py:342
 msgid "Tree"
 msgstr "Дерево"
 
-#: core/abstract.py:344
+#: core/abstract.py:343
 msgid "Trees"
 msgstr "Деревья"
 
-#: core/abstract.py:386
+#: core/abstract.py:385
 msgid "Tree parents"
 msgstr "Родитель дерева"
 
-#: core/abstract.py:421 core/abstract.py:424
+#: core/abstract.py:420 core/abstract.py:423
 msgid "You must not save a category in itself!"
 msgstr "Вы не можете сохранить категорию в саму себя!"
 
-#: core/abstract.py:463
+#: core/abstract.py:462
 msgid "object ID"
 msgstr "ID объекта"
 
-#: core/abstract.py:465
+#: core/abstract.py:464
 msgid "Is primary"
 msgstr "Основной"
 
-#: core/abstract.py:486 core/models.py:77
+#: core/abstract.py:485 core/models.py:77
 msgid "File"
 msgstr "Файл"
 
-#: core/abstract.py:496
+#: core/abstract.py:495
 msgid "Override alphabetical order in list display"
 msgstr "Заменять сортировку по алфавиту в просмотре списка"
 
-#: core/abstract.py:497
+#: core/abstract.py:496
 msgid "Is locked"
 msgstr "Блокировано"
 
-#: core/abstract.py:504 core/models.py:448
+#: core/abstract.py:503 core/models.py:448
 msgid "IP"
 msgstr ""
 
-#: core/abstract.py:505
+#: core/abstract.py:504
 msgid "User Agent"
 msgstr ""
 
-#: core/abstract.py:512
+#: core/abstract.py:511
 msgid "Personal mobile phone"
 msgstr "Мобильный Телефон (Личный)"
 
-#: core/abstract.py:513
+#: core/abstract.py:512
 msgid "Work mobile phone "
 msgstr "Рабочий мобильный телефон"
 
-#: core/abstract.py:514
+#: core/abstract.py:513
 msgid "Personal landline phone"
 msgstr "Личный стационарный телефон"
 
-#: core/abstract.py:515
+#: core/abstract.py:514
 msgid "Work landline phone"
 msgstr "Рабочий стационарный телефон"
 
-#: core/abstract.py:516 core/models.py:618
+#: core/abstract.py:515 core/models.py:618
 msgid "ICQ"
 msgstr "Аська"
 
-#: core/abstract.py:518
+#: core/abstract.py:517
 msgid "Jabber"
 msgstr "Джаббер"
 
-#: core/abstract.py:519 core/models.py:623
+#: core/abstract.py:518 core/models.py:623
 msgid "Public email"
 msgstr "Публичный email"
 
-#: core/abstract.py:520
+#: core/abstract.py:519
 msgid "Private email"
 msgstr "Личный email"
 
-#: core/abstract.py:522
+#: core/abstract.py:521
 msgid "Personal Website"
 msgstr "Личный вебсайт"
 
-#: core/abstract.py:523 core/models.py:614
+#: core/abstract.py:522 core/models.py:614
 msgid "Facebook"
 msgstr "Фейсбук"
 
-#: core/abstract.py:524 core/models.py:615
+#: core/abstract.py:523 core/models.py:615
 msgid "Google+"
 msgstr ""
 
-#: core/abstract.py:525 core/models.py:616
+#: core/abstract.py:524 core/models.py:616
 msgid "Twitter"
 msgstr "Твиттер"
 
-#: core/abstract.py:526
+#: core/abstract.py:525
 msgid "VKontakte"
 msgstr "ВКонтакте"
 
-#: core/abstract.py:527
+#: core/abstract.py:526
 msgid "Odnoklassniki"
 msgstr "Одноклассники"
 
-#: core/abstract.py:528
+#: core/abstract.py:527
 msgid "Moi krug"
 msgstr "Мой круг"
 
-#: core/abstract.py:529
+#: core/abstract.py:528
 msgid "Other social networks"
 msgstr "Другие социальные сети"
 
-#: core/abstract.py:530
+#: core/abstract.py:529
 msgid "Hide personal mobile phone"
 msgstr "Скрыть личный мобильный телефон"
 
-#: core/abstract.py:531
+#: core/abstract.py:530
 msgid "Hide work mobile phone"
 msgstr "Скрыть рабочий мобильный телефон"
 
-#: core/abstract.py:532
+#: core/abstract.py:531
 msgid "Hide personal landline phone"
 msgstr "Скрыть личный стационарный телефон"
 
-#: core/abstract.py:533
+#: core/abstract.py:532
 msgid "Hide work landline phone"
 msgstr "Скрыть рабочий стациональный телефон"
 
-#: core/abstract.py:534
+#: core/abstract.py:533
 msgid "Hide icq"
 msgstr "Скрыть ICQ"
 
-#: core/abstract.py:535
+#: core/abstract.py:534
 msgid "Hide skype"
 msgstr "Скрыть Скайп"
 
-#: core/abstract.py:536
+#: core/abstract.py:535
 msgid "Hide jabber"
 msgstr "Скрыть джаббер"
 
-#: core/abstract.py:537
+#: core/abstract.py:536
 msgid "Hide publicmail"
 msgstr "Скрыть публичный адрес электронной почты"
 
-#: core/abstract.py:538
+#: core/abstract.py:537
 msgid "Hide privatemail"
 msgstr "Скрыть личную почту"
 
-#: core/abstract.py:539
+#: core/abstract.py:538
 msgid "Hide website"
 msgstr "Скрыть вебсайт"
 
-#: core/abstract.py:540
+#: core/abstract.py:539
 msgid "Hide personal website"
 msgstr "Скрыть личный вебсайт"
 
-#: core/abstract.py:541
+#: core/abstract.py:540
 msgid "Hide facebook"
 msgstr "Скрыть Фейсбук"
 
-#: core/abstract.py:542
+#: core/abstract.py:541
 msgid "Hide googleplus"
 msgstr "Скрыть Гугл+"
 
-#: core/abstract.py:543
+#: core/abstract.py:542
 msgid "Hide twitter"
 msgstr "Скрыть Твиттер"
 
-#: core/abstract.py:544
+#: core/abstract.py:543
 msgid "Hide vkontakte"
 msgstr "Скрыть ВКонтакте"
 
-#: core/abstract.py:545
+#: core/abstract.py:544
 #, fuzzy
 msgid "Hide moikrug"
 msgstr "Скрыть МойКруг"
 
-#: core/abstract.py:546
+#: core/abstract.py:545
 msgid "Hide odnoklassniki"
 msgstr "Скрыть Одноклассники"
 
-#: core/abstract.py:547
+#: core/abstract.py:546
 msgid "Hide other social networks"
 msgstr "Скрыть другие социальные сети"
 
-#: core/abstract.py:548
+#: core/abstract.py:547
 msgid "Hide address"
 msgstr "Скрыть адрес"
 
-#: core/abstract.py:551
+#: core/abstract.py:550
 msgid "Contacts data"
 msgstr "Контактные данные"
 
-#: core/abstract.py:552
+#: core/abstract.py:551
 msgid "Contact data"
 msgstr "Контактные данные"
 
-#: core/abstract.py:576
+#: core/abstract.py:575
 msgid "Fan"
 msgstr "Любитель"
 
-#: core/abstract.py:577
+#: core/abstract.py:576
 msgid "Pro"
 msgstr "Профессионал"
 
-#: core/abstract.py:594
+#: core/abstract.py:593
 msgid "Main profile"
 msgstr "Основной профиль"
 
-#: core/abstract.py:602
+#: core/abstract.py:601
 msgid "Account is employer"
 msgstr "Аккаунт работодателя"
 
-#: core/abstract.py:603
+#: core/abstract.py:602
 msgid "Account is public"
 msgstr "Публичный аккаунт"
 
-#: core/abstract.py:620 core/models.py:285
+#: core/abstract.py:619 core/models.py:285
 msgid "Profile"
 msgstr "Профиль"
 
-#: core/abstract.py:621
+#: core/abstract.py:620
 msgid "Profiles"
 msgstr "Профили"
 
-#: core/abstract.py:658
+#: core/abstract.py:657
 msgid "Start date"
 msgstr "Дата начала"
 
-#: core/abstract.py:659
+#: core/abstract.py:658
 msgid "End date"
 msgstr "Дата окончания"
 
-#: core/abstract.py:661
+#: core/abstract.py:660
 msgid "Offer text"
 msgstr "Текст предложения"
 
-#: core/abstract.py:669
+#: core/abstract.py:668
 msgid "Special Offer"
 msgstr "Специальное предложение"
 
-#: core/abstract.py:670
+#: core/abstract.py:669
 msgid "Special Offers"
 msgstr "Специальные предложения"
 
-#: core/abstract.py:675
+#: core/abstract.py:674
 msgid "Monday time from"
 msgstr "Понедельник с"
 
-#: core/abstract.py:676
+#: core/abstract.py:675
 msgid "Monday time to"
 msgstr "Понедельник до"
 
-#: core/abstract.py:677
+#: core/abstract.py:676
 #, fuzzy
 msgid "Monday break from"
 msgstr "Понедельник с"
 
-#: core/abstract.py:678
+#: core/abstract.py:677
 #, fuzzy
 msgid "Monday break to"
 msgstr "Понедельник до"
 
-#: core/abstract.py:679
+#: core/abstract.py:678
 msgid "Monday any time"
 msgstr "Понедельник в любое время"
 
-#: core/abstract.py:680
+#: core/abstract.py:679
 msgid "Tuesday time from"
 msgstr "Звонки на телефон с"
 
-#: core/abstract.py:681
+#: core/abstract.py:680
 msgid "Tuesday time to"
 msgstr "Вторник до"
 
-#: core/abstract.py:682
+#: core/abstract.py:681
 #, fuzzy
 msgid "Tuesday break from"
 msgstr "Звонки на телефон с"
 
-#: core/abstract.py:683
+#: core/abstract.py:682
 #, fuzzy
 msgid "Tuesday break to"
 msgstr "Вторник до"
 
-#: core/abstract.py:684
+#: core/abstract.py:683
 msgid "Tuesday any time"
 msgstr "Вторник в любое время"
 
-#: core/abstract.py:685
+#: core/abstract.py:684
 msgid "Wednesday time from"
 msgstr "Среда с"
 
-#: core/abstract.py:686
+#: core/abstract.py:685
 msgid "Wednesday time to"
 msgstr "Среда до"
 
-#: core/abstract.py:687
+#: core/abstract.py:686
 #, fuzzy
 msgid "Wednesday break from"
 msgstr "Среда с"
 
-#: core/abstract.py:688
+#: core/abstract.py:687
 #, fuzzy
 msgid "Wednesday break to"
 msgstr "Среда до"
 
-#: core/abstract.py:689
+#: core/abstract.py:688
 msgid "Wednesday any time"
 msgstr "Среда в любое время"
 
-#: core/abstract.py:690
+#: core/abstract.py:689
 msgid "Thursday time from"
 msgstr "Четверг с"
 
-#: core/abstract.py:691
+#: core/abstract.py:690
 msgid "Thursday time to"
 msgstr "Четверг до"
 
-#: core/abstract.py:692
+#: core/abstract.py:691
 #, fuzzy
 msgid "Thursday break from"
 msgstr "Четверг с"
 
-#: core/abstract.py:693
+#: core/abstract.py:692
 #, fuzzy
 msgid "Thursday break to"
 msgstr "Четверг до"
 
-#: core/abstract.py:694
+#: core/abstract.py:693
 msgid "Thursday any time"
 msgstr "Четверг в любое время"
 
-#: core/abstract.py:695
+#: core/abstract.py:694
 msgid "Friday time from"
 msgstr "Пятница с"
 
-#: core/abstract.py:696
+#: core/abstract.py:695
 msgid "Friday time to"
 msgstr "Пятница до"
 
-#: core/abstract.py:697
+#: core/abstract.py:696
 #, fuzzy
 msgid "Friday break from"
 msgstr "Пятница с"
 
-#: core/abstract.py:698
+#: core/abstract.py:697
 #, fuzzy
 msgid "Friday break to"
 msgstr "Пятница до"
 
-#: core/abstract.py:699
+#: core/abstract.py:698
 msgid "Friday any time"
 msgstr "Пятница в любое время"
 
-#: core/abstract.py:700
+#: core/abstract.py:699
 msgid "Saturday time from"
 msgstr "Суббота с"
 
-#: core/abstract.py:701
+#: core/abstract.py:700
 msgid "Saturday time to"
 msgstr "Суббота до"
 
-#: core/abstract.py:702
+#: core/abstract.py:701
 #, fuzzy
 msgid "Saturday break from"
 msgstr "Суббота с"
 
-#: core/abstract.py:703
+#: core/abstract.py:702
 #, fuzzy
 msgid "Saturday break to"
 msgstr "Суббота до"
 
-#: core/abstract.py:704
+#: core/abstract.py:703
 msgid "Saturday any time"
 msgstr "Суббота в любое время"
 
-#: core/abstract.py:705
+#: core/abstract.py:704
 msgid "Sunday time from"
 msgstr "Воскресенье с"
 
-#: core/abstract.py:706
+#: core/abstract.py:705
 msgid "Sunday time to"
 msgstr "Воскресенье до"
 
-#: core/abstract.py:707
+#: core/abstract.py:706
 #, fuzzy
 msgid "Sunday break from"
 msgstr "Воскресенье с"
 
-#: core/abstract.py:708
+#: core/abstract.py:707
 #, fuzzy
 msgid "Sunday break to"
 msgstr "Воскресенье до"
 
-#: core/abstract.py:709
+#: core/abstract.py:708
 msgid "Sunday any time"
 msgstr "Воскресенье в любое время"
 
-#: core/abstract.py:712
+#: core/abstract.py:711
 msgid "Time of work"
 msgstr "Время работы"
 
-#: core/abstract.py:713
+#: core/abstract.py:712
 msgid "Times of works"
 msgstr "Время работы"
 
-#: core/abstract.py:733
+#: core/abstract.py:732
 msgid "Name of vendor"
 msgstr "Название производителя"
 
-#: core/abstract.py:734
+#: core/abstract.py:733
 #, fuzzy
 msgid "Name of vendor(english)"
 msgstr "Название производителя"
 
-#: core/abstract.py:736
+#: core/abstract.py:735
 msgid "Description of Vendor"
 msgstr "Описание производителя"
 
-#: core/abstract.py:742
+#: core/abstract.py:741
 msgid "Vendors"
 msgstr "Производители"
 
