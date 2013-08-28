@@ -207,10 +207,10 @@ class AgentPercentAdmin(admin.ModelAdmin):
 
 
 class DiscountAdmin(admin.ModelAdmin):
-    list_display = ('room', 'date', 'discount')
-    search_fields = ('date',)
+    list_display = ('hotel', 'choice')
+#    search_fields = ('date',)
     fieldsets = (
-        (_("Discount"), {"fields": [("room", 'date', 'discount'), ]}),)
+        (_("Discount"), {"fields": [("hotel", 'chocie'), ]}),)
 
 
 class ReviewAdmin(admin.ModelAdmin):
