@@ -259,7 +259,6 @@ class AbstractName(AbstractImg):
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
-    pics = models.IntegerField(blank=True, null=True)
     views = models.IntegerField(blank=True, null=True)
     comments = models.IntegerField(blank=True, null=True)
 

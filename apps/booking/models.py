@@ -612,19 +612,44 @@ class Availability(models.Model):
             place=self.room.name, hotel=self.room.hotel.name, date=self.date, count=self.placecount)
 
 
+DISCOUNT_UNKNOWN = 0
+DISCOUNT_NOREFUND = 1
+DISCOUNT_EARLY = 2
+DISCOUNT_LATER = 3
+DISCOUNT_PERIOD = 4
+DISCOUNT_PACKAGE = 5
+DISCOUNT_HOLIDAY = 6
+DISCOUNT_SPECIAL = 7
+DISCOUNT_NORMAL = 8
+
+DISCOUNT_CHOICES = (
+    (DISCOUNT_UNKNOWN, _("No discount")),
+    (DISCOUNT_NOREFUND, _("Non-return rate")),
+    (DISCOUNT_EARLY, _("Early booking")),
+    (DISCOUNT_LATER, _("Later booking")),
+    (DISCOUNT_PERIOD, _("Booking on nights count")),
+    (DISCOUNT_PACKAGE, _("Package discount")),
+    (DISCOUNT_HOLIDAY, _("Holidays discount")),
+    (DISCOUNT_SPECIAL, _("Special discount")),
+    (DISCOUNT_NORMAL, _("Normal discount")),
+)
+
+
 @python_2_unicode_compatible
-class Discount(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_('Room'))
-    date = models.DateField(verbose_name=_("On date"), db_index=True)
-    discount = models.SmallIntegerField(verbose_name=_('Discount'), default=0, db_index=True)
+class Discount(AbstractName, MoneyBase):
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
+    choice = models.IntegerField(verbose_name=_("Type of discount"), choices=DISCOUNT_CHOICES, default=DISCOUNT_UNKNOWN,
+                                 db_index=True)
+    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0,
+                                  db_index=True)
 
     class Meta:
         verbose_name = _("Discount")
         verbose_name_plural = _("Discounts")
 
     def __str__(self):
-        return _("Discount place %(place)s for hotel %(hotel)s on date %(date)s is -> %(discount)s") % dict(
-            place=self.room.name, hotel=self.room.hotel.name, date=self.date, discount=self.discount)
+        return _("Discount hotel %(hotel)s -> %(discount)s") % dict(hotel=self.hotel.name,
+                                                                    discount=self.get_choice_display())
 
 
 @python_2_unicode_compatible
@@ -683,3 +708,5 @@ def update_hotel_point(sender, instance, **kwargs):
 
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
+
+
