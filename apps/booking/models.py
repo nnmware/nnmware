@@ -9,7 +9,7 @@ from django.conf import settings
 from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
 from django.template.defaultfilters import floatformat, date
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.cache import cache
@@ -689,18 +689,18 @@ class Discount(AbstractName, MoneyBase):
             return _('Booking at least %s day(days)') % self.days
         elif self.choice == DISCOUNT_PACKAGE:
             return _('Package: booking %(days)s day(days) at price of %(price_days)s day(days)') % \
-                   dict(days=self.days, price_days=self.at_price_days)
+                dict(days=self.days, price_days=self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
-            return _('Booking in holidays/weekend') + self.quantities
+            return string_concat(_('Booking in holidays/weekend'), self.quantities)
         elif self.choice == DISCOUNT_SPECIAL:
-            return _('Special discount') + self.quantities
+            return string_concat(_('Special discount'), self.quantities)
         elif self.choice == DISCOUNT_LAST_MINUTE:
             return _('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s - ') % \
                 dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')) + self.algorithm_append
         elif self.choice == DISCOUNT_CREDITCARD:
             return _('Booking with creditcard - ') + self.algorithm_append
         elif self.choice == DISCOUNT_NORMAL:
-            return _('Simple discount') + self.quantities
+            return string_concat(_('Simple discount'), self.quantities)
         else:
             return None
 

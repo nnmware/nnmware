@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-30 00:11+1100\n"
+"POT-Creation-Date: 2013-08-30 00:49+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Thecore <nnmware@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1016,6 +1016,14 @@ msgstr "Скидки"
 msgid "Discount hotel %(hotel)s -> %(discount)s"
 msgstr "Скидка для отеля %(hotel)s ->  %(discount)s"
 
+#: apps/booking/models.py:677
+msgid "(in percents)"
+msgstr "(в процентах)"
+
+#: apps/booking/models.py:679
+msgid "(to the amount)"
+msgstr "(на сумму)"
+
 #: apps/booking/models.py:684
 msgid "No refund tariff - "
 msgstr "Неозвратный тариф - "
@@ -1052,8 +1060,8 @@ msgid ""
 "Booking after standard arrival time, over the time %(time_from)s - "
 "%(time_to)s - "
 msgstr ""
-"Бронирование в день заезда, позднее стандартного времени заселения, в течение времени %(time_from)s - "
-"%(time_to)s - "
+"Бронирование в день заезда, позднее стандартного времени заселения, в "
+"течение времени %(time_from)s - %(time_to)s - "
 
 #: apps/booking/models.py:702
 msgid "Booking with creditcard - "
