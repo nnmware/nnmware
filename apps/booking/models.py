@@ -651,7 +651,7 @@ class Discount(AbstractName, MoneyBase):
     at_price_days = models.SmallIntegerField(verbose_name=_("At price of days"), blank=True, null=True)
     time_on = models.TimeField(verbose_name=_('Time on'), blank=True, null=True)
     time_off = models.TimeField(verbose_name=_('Time off'), blank=True, null=True)
-    percentage = models.NullBooleanField(verbose_name=_('Percentage'), db_index=True)
+    percentage = models.BooleanField(verbose_name=_('Percentage discount'), default=True, db_index=True)
 
     class Meta:
         verbose_name = _("Discount")
@@ -661,6 +661,12 @@ class Discount(AbstractName, MoneyBase):
         return _("Discount hotel %(hotel)s -> %(discount)s") % dict(hotel=self.hotel.name,
                                                                     discount=self.get_choice_display())
 
+    # @property
+    # def algorithm(self):
+    #     if self.choice == DISCOUNT_UNKNOWN:
+    #         return None
+    #     elif self.choice == DISCOUNT_UNKNOWN:
+    #         if self.percentage
 
 @python_2_unicode_compatible
 class PlacePrice(MoneyBase):
