@@ -677,24 +677,15 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_NOREFUND:
             return _('No refund tariff - ') + self.algorithm_append
         elif self.choice == DISCOUNT_EARLY:
-            if self.percentage:
-                return _('Booking, earlier than %s days before arrival -%s %%') % (self.days, floatformat(self.percent))
-            else:
-                return _('Booking, earlier than %s days before arrival -%s %s') % (self.days, floatformat(self.amount), CURRENCY)
+            return _('Booking, earlier than %s days before arrival - ') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_LATER:
-            if self.percentage:
-                return _('Booking, later than %s days before arrival  -%s %%') % (self.days, floatformat(self.percent))
-            else:
-                return _('Booking, later than %s days before arrival -%s %s') % (self.days, floatformat(self.amount), CURRENCY)
+            return _('Booking, later than %s days before arrival - ') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_PERIOD:
             return _('Booking at least %s days') % self.days
         elif self.choice == DISCOUNT_PACKAGE:
             return _('Booking %s days at price of %s days') % (self.days, self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
-            if self.percentage:
-                return _('Booking of holidays/weekend than %s days before arrival  -%s %%') % (self.days, floatformat(self.percent))
-            else:
-                return _('Booking, later than %s days before arrival -%s %s') % (self.days, floatformat(self.amount), CURRENCY)
+            return _('Booking of holidays/weekend than %s days before arrival  - ') % self.days + self.algorithm_append
 
 
 
