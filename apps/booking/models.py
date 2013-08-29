@@ -649,6 +649,7 @@ class Discount(AbstractName, MoneyBase):
     at_price_days = models.SmallIntegerField(verbose_name=_("At price of days"), blank=True, null=True)
     time_on = models.TimeField(verbose_name=_('Time on'), blank=True, null=True)
     time_off = models.TimeField(verbose_name=_('Time off'), blank=True, null=True)
+    percentage = models.NullBooleanField(verbose_name=_('Percentage'), db_index=True)
 
     class Meta:
         verbose_name = _("Discount")
