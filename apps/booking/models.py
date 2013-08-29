@@ -676,7 +676,7 @@ class Discount(AbstractName, MoneyBase):
             if self.percentage:
                 return _('Early booking earlier then %s days -%s %%') % (self.days, floatformat(self.percent))
             else:
-                return _('Early booking earlier then %s days -%s %%') % (self.days, floatformat(self.amount), CURRENCY)
+                return _('Early booking earlier then %s days -%s %s') % (self.days, floatformat(self.amount), CURRENCY)
 
 
 @python_2_unicode_compatible
