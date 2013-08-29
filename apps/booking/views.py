@@ -19,7 +19,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
-    STATUS_ACCEPTED, HotelOption
+    STATUS_ACCEPTED, HotelOption, Discount
 from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import AjaxLazyAnswer
@@ -619,8 +619,9 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
-    model = Hotel
+class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
+    model = Discount
+    form_class = AddDiscountForm
     template_name = "cabinet/discounts.html"
 
     def get_context_data(self, **kwargs):

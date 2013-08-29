@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from nnmware.apps.booking.models import Hotel, Room, Booking
+from nnmware.apps.booking.models import Hotel, Room, Booking, Discount
 from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
@@ -233,3 +233,10 @@ class BookingStatusForm(forms.ModelForm):
     class Meta:
         model = Booking
         fields = ('status', 'description')
+
+
+class AddDiscountForm(LocaleNamedForm):
+
+    class Meta:
+        model = Discount
+        fields = ('name', 'choice')
