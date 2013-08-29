@@ -10,6 +10,7 @@ from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _nolazy
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.cache import cache
@@ -673,9 +674,9 @@ class Discount(AbstractName, MoneyBase):
     @property
     def quantities(self):
         if self.percentage:
-            return _('(in percents)')
+            return _nolazy('(in percents)')
         else:
-            return _('(amount)')
+            return _nolazy('(amount)')
 
     @property
     def algorithm(self):
