@@ -210,6 +210,7 @@ class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice')
 #    search_fields = ('date',)
     readonly_fields = ('hotel', )
+    ordering = ('choice', )
     fieldsets = (
         (_("Discount"), {"fields": [('name', ), ("hotel", 'choice'), ('time_on', 'time_off'), ('percent', 'percentage', 'amount'),
             ('days', 'at_price_days')]}),)
