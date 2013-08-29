@@ -674,9 +674,9 @@ class Discount(AbstractName, MoneyBase):
     @property
     def quantities(self):
         if self.percentage:
-            return _nolazy('(in percents)')
+            return _('(in percents)')
         else:
-            return _nolazy('(to the amount)')
+            return _('(to the amount)')
 
     @property
     def algorithm(self):
