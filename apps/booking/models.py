@@ -645,6 +645,8 @@ class Discount(AbstractName, MoneyBase):
                                  db_index=True)
     percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0,
                                   db_index=True)
+    days = models.SmallIntegerField(verbose_name=_("Count of days"), blank=True, null=True)
+    at_price_days = models.SmallIntegerField(verbose_name=_("At price of days"), blank=True, null=True)
     time_on = models.TimeField(verbose_name=_('Time on'), blank=True, null=True)
     time_off = models.TimeField(verbose_name=_('Time off'), blank=True, null=True)
 
