@@ -209,7 +209,7 @@ class AgentPercentAdmin(admin.ModelAdmin):
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice', 'percentage', 'enabled')
 #    search_fields = ('date',)
-    readonly_fields = ('hotel', )
+#    readonly_fields = ('hotel', )
     ordering = ('choice', )
     fieldsets = (
         (_("Discount"), {"fields": [('name', ), ("hotel", 'choice'), ('time_on', 'time_off'), ('percent', 'percentage', 'amount'),

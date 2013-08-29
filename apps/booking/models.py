@@ -669,9 +669,14 @@ class Discount(AbstractName, MoneyBase):
             return None
         elif self.choice == DISCOUNT_NOREFUND:
             if self.percentage:
-                return _('No refund tariff -%s%%') % floatformat(self.percent)
+                return _('No refund tariff -%s %%') % floatformat(self.percent)
             else:
                 return _('No refund tariff -%s %s') % (floatformat(self.amount), CURRENCY)
+        elif self.choice == DISCOUNT_EARLY:
+            if self.percentage:
+                return _('Early booking earlier then %s days -%s %%') % (self.days, floatformat(self.percent))
+            else:
+                return _('Early booking earlier then %s days -%s %%') % (self.days, floatformat(self.amount), CURRENCY)
 
 
 @python_2_unicode_compatible
