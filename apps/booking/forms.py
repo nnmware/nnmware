@@ -239,4 +239,4 @@ class AddDiscountForm(LocaleNamedForm):
 
     class Meta:
         model = Discount
-        fields = ('name', 'choice')
+        fields = ('name', 'choice', 'time_on', 'time_off')
