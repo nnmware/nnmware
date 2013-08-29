@@ -671,6 +671,13 @@ class Discount(AbstractName, MoneyBase):
             return '%s %s' % (floatformat(self.amount), CURRENCY)
 
     @property
+    def quantities(self):
+        if self.percentage:
+            return _('(in percents)')
+        else:
+            return _('(amount)')
+
+    @property
     def algorithm(self):
         if self.choice == DISCOUNT_NOREFUND:
             return _('No refund tariff - ') + self.algorithm_append
@@ -683,7 +690,7 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_PACKAGE:
             return _('Package: booking %s days at price of %s days') % (self.days, self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
-            return _('Booking in holidays/weekend') + _('(in percents)') if self.percentage else _('(amount)')
+            return _('Booking in holidays/weekend') + self.quantities
         elif self.choice == DISCOUNT_SPECIAL:
             return _('Special discount') + _('(in percents)') if self.percentage else _('(amount)')
         elif self.choice == DISCOUNT_LAST_MINUTE:
