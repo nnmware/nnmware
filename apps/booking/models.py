@@ -8,7 +8,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
-from django.template.defaultfilters import floatformat
+from django.template.defaultfilters import floatformat, date
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as _nolazy
 from django.utils.translation.trans_real import get_language
@@ -676,7 +676,7 @@ class Discount(AbstractName, MoneyBase):
         if self.percentage:
             return _nolazy('(in percents)')
         else:
-            return _nolazy('(amount)')
+            return _nolazy('(to the amount)')
 
     @property
     def algorithm(self):
@@ -695,8 +695,8 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_SPECIAL:
             return _('Special discount') + self.quantities
         elif self.choice == DISCOUNT_LAST_MINUTE:
-            return _('Booking after arrival date, over the time %s - %s ') % (self.time_on, self.time_off) + \
-                self.algorithm_append
+            return _('Booking after standard arrival time, over the time %s - %s ') % (date(self.time_on, 'H:i'),
+                date(self.time_off, 'H:i')) + self.algorithm_append
         elif self.choice == DISCOUNT_CREDITCARD:
             return _('Booking with creditcard - ') + self.algorithm_append
         elif self.choice == DISCOUNT_NORMAL:
