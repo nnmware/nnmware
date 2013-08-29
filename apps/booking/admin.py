@@ -211,7 +211,7 @@ class DiscountAdmin(admin.ModelAdmin):
 #    search_fields = ('date',)
     readonly_fields = ('hotel', )
     fieldsets = (
-        (_("Discount"), {"fields": [("hotel", 'choice'), ('time_on', 'time_off')]}),)
+        (_("Discount"), {"fields": [("hotel", 'choice'), ('time_on', 'time_off'), ('percent', 'amount')]}),)
 
 
 class ReviewAdmin(admin.ModelAdmin):

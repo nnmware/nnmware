@@ -620,7 +620,9 @@ DISCOUNT_PERIOD = 4
 DISCOUNT_PACKAGE = 5
 DISCOUNT_HOLIDAY = 6
 DISCOUNT_SPECIAL = 7
-DISCOUNT_NORMAL = 8
+DISCOUNT_LAST_MINUTE = 8
+DISCOUNT_NORMAL = 10
+
 
 DISCOUNT_CHOICES = (
     (DISCOUNT_UNKNOWN, _("No discount")),
@@ -631,6 +633,7 @@ DISCOUNT_CHOICES = (
     (DISCOUNT_PACKAGE, _("Package discount")),
     (DISCOUNT_HOLIDAY, _("Holidays discount")),
     (DISCOUNT_SPECIAL, _("Special discount")),
+    (DISCOUNT_LAST_MINUTE, _("Last minute discount")),
     (DISCOUNT_NORMAL, _("Normal discount")),
 )
 
