@@ -619,8 +619,8 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
-#    model = Discount
+class CabinetDiscount(CurrentUserHotelAdmin, CreateView):
+    model = Discount
     form_class = AddDiscountForm
     template_name = "cabinet/discounts.html"
 
@@ -628,6 +628,8 @@ class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
         context['discount'] = True
         context['tab'] = 'discounts'
+        context['hotel'] = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
+            slug=self.kwargs['slug'])
         return context
 
 
