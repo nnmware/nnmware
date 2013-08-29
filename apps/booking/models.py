@@ -650,7 +650,7 @@ class Discount(AbstractName, MoneyBase):
         verbose_name_plural = _("Discounts")
 
     def __str__(self):
-        return _("Discount hotel %(hotel)s -> %(discount)s") % dict(hotel=self.hotel.get_name,
+        return _("Discount hotel %(hotel)s -> %(discount)s") % dict(hotel=self.hotel.name,
                                                                     discount=self.get_choice_display())
 
 
