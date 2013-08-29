@@ -671,7 +671,7 @@ class Discount(AbstractName, MoneyBase):
             if self.percentage:
                 return _('No refund tariff -%s%%') % self.percent
             else:
-                return _('No refund tariff -%s% %s') % (floatformat(self.amount, 0), CURRENCY)
+                return _('No refund tariff -%s% %s') % (floatformat(self.amount), CURRENCY)
 
 
 @python_2_unicode_compatible
