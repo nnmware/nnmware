@@ -8,6 +8,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
+from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
@@ -670,7 +671,7 @@ class Discount(AbstractName, MoneyBase):
             if self.percentage:
                 return _('No refund tariff -%s%%') % self.percent
             else:
-                return _('No refund tariff -%s% %s') % (self.amount, CURRENCY)
+                return _('No refund tariff -%s% %s') % (floatformat(self.amount, 0), CURRENCY)
 
 
 @python_2_unicode_compatible
