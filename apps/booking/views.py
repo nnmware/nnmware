@@ -619,7 +619,10 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetDiscount(CabinetRates):
+class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
+    model = Hotel
+    template_name = "cabinet/discounts.html"
+
     def get_context_data(self, **kwargs):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
         context['discount'] = True
