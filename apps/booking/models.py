@@ -15,6 +15,7 @@ from django.core.cache import cache
 from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName
+from nnmware.core.config import CURRENCY
 from nnmware.core.maps import places_near_object
 
 
@@ -661,12 +662,16 @@ class Discount(AbstractName, MoneyBase):
         return _("Discount hotel %(hotel)s -> %(discount)s") % dict(hotel=self.hotel.name,
                                                                     discount=self.get_choice_display())
 
-    # @property
-    # def algorithm(self):
-    #     if self.choice == DISCOUNT_UNKNOWN:
-    #         return None
-    #     elif self.choice == DISCOUNT_UNKNOWN:
-    #         if self.percentage
+    @property
+    def algorithm(self):
+        if self.choice == DISCOUNT_UNKNOWN:
+            return None
+        elif self.choice == DISCOUNT_NOREFUND:
+            if self.percentage:
+                return _('No refund tariff -%s%%') % self.percent
+            else:
+                return _('No refund tariff -%s% %s') % (self.amount, CURRENCY)
+
 
 @python_2_unicode_compatible
 class PlacePrice(MoneyBase):
