@@ -672,9 +672,7 @@ class Discount(AbstractName, MoneyBase):
 
     @property
     def algorithm(self):
-        if self.choice == DISCOUNT_UNKNOWN:
-            return None
-        elif self.choice == DISCOUNT_NOREFUND:
+        if self.choice == DISCOUNT_NOREFUND:
             return _('No refund tariff - ') + self.algorithm_append
         elif self.choice == DISCOUNT_EARLY:
             return _('Booking, earlier than %s days before arrival - ') % self.days + self.algorithm_append
@@ -686,8 +684,17 @@ class Discount(AbstractName, MoneyBase):
             return _('Booking %s days at price of %s days') % (self.days, self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
             return _('Booking of holidays/weekend than %s days before arrival  - ') % self.days + self.algorithm_append
-
-
+        elif self.choice == DISCOUNT_SPECIAL:
+            return _('Special discount')
+        elif self.choice == DISCOUNT_LAST_MINUTE:
+            return _('Booking after arrival date, over the time %s - %s ') % (self.time_on, self.time_off) + \
+                self.algorithm_append
+        elif self.choice == DISCOUNT_CREDITCARD:
+            return _('Booking with creditcard - ') + self.algorithm_append
+        elif self.choice == DISCOUNT_NORMAL:
+            return _('Simple discount')
+        else:
+            return None
 
 
 @python_2_unicode_compatible
