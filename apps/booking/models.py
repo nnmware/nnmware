@@ -693,14 +693,14 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_HOLIDAY:
             return _('Booking in holidays/weekend') + self.quantities
         elif self.choice == DISCOUNT_SPECIAL:
-            return _('Special discount') + _('(in percents)') if self.percentage else _('(amount)')
+            return _('Special discount') + self.quantities
         elif self.choice == DISCOUNT_LAST_MINUTE:
             return _('Booking after arrival date, over the time %s - %s ') % (self.time_on, self.time_off) + \
                 self.algorithm_append
         elif self.choice == DISCOUNT_CREDITCARD:
             return _('Booking with creditcard - ') + self.algorithm_append
         elif self.choice == DISCOUNT_NORMAL:
-            return _('Simple discount') + _('(in percents)') if self.percentage else _('(amount)')
+            return _('Simple discount') + self.quantities
         else:
             return None
 
