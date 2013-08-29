@@ -683,13 +683,14 @@ class Discount(AbstractName, MoneyBase):
         if self.choice == DISCOUNT_NOREFUND:
             return _('No refund tariff - ') + self.algorithm_append
         elif self.choice == DISCOUNT_EARLY:
-            return _('Booking, earlier than %s day/days before arrival - ') % self.days + self.algorithm_append
+            return _('Booking, earlier than %s day(days) before arrival - ') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_LATER:
-            return _('Booking, later than %s day/days before arrival - ') % self.days + self.algorithm_append
+            return _('Booking, later than %s day(days) before arrival - ') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_PERIOD:
-            return _('Booking at least %s day/days') % self.days
+            return _('Booking at least %s day(days)') % self.days
         elif self.choice == DISCOUNT_PACKAGE:
-            return _('Package: booking %s day/days at price of %s day/days') % (self.days, self.at_price_days)
+            return _('Package: booking %(days)s day(days) at price of %(price_days)s day(days)') % \
+                   dict(days=self.days, price_days=self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
             return _('Booking in holidays/weekend') + self.quantities
         elif self.choice == DISCOUNT_SPECIAL:
