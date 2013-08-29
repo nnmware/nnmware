@@ -696,8 +696,8 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_SPECIAL:
             return _('Special discount') + self.quantities
         elif self.choice == DISCOUNT_LAST_MINUTE:
-            return _('Booking after standard arrival time, over the time %s - %s - ') % (date(self.time_on, 'H:i'),
-                date(self.time_off, 'H:i')) + self.algorithm_append
+            return _('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s - ') % \
+                dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')) + self.algorithm_append
         elif self.choice == DISCOUNT_CREDITCARD:
             return _('Booking with creditcard - ') + self.algorithm_append
         elif self.choice == DISCOUNT_NORMAL:
