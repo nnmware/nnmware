@@ -620,7 +620,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
 
 
 class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
-    model = Discount
+#    model = Discount
     form_class = AddDiscountForm
     template_name = "cabinet/discounts.html"
 
