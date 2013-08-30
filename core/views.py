@@ -526,7 +526,7 @@ class ActivateView(View):
     template_name = 'user/logged_out.html'
 
     def get_success_url(self):
-        return reverse('user_profile', args=[self.user.pk])
+        return reverse('user_profile', args=[self.user.username])
 
     def get(self, request, *args, **kwargs):
         key = self.kwargs['activation_key']
@@ -560,7 +560,7 @@ class PassRecoveryView(View):
             login(self.request, user)
         except:
             raise Http404
-        return HttpResponseRedirect(reverse('user_profile', args=[user.pk]))
+        return HttpResponseRedirect(reverse('user_profile', args=[user.username]))
 
 
 class LogoutView(TemplateView):
