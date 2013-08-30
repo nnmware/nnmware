@@ -241,4 +241,9 @@ class AddDiscountForm(LocaleNamedForm):
         model = Discount
         fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percent', 'percentage', 'amount')
 
+    def clean_choice(self):
+        choice = self.cleaned_data.get('choice')
+        if choice == 0:
+            raise forms.ValidationError(_("Discount not set"))
+        return choice
 

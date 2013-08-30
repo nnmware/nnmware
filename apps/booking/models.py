@@ -686,7 +686,7 @@ class Discount(AbstractName, MoneyBase):
         elif self.choice == DISCOUNT_LATER:
             return _('Booking, later than %s day(days) before arrival - ') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_PERIOD:
-            return _('Booking at least %s day(days)') % self.days
+            return _('Booking at least %s day(days)') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_PACKAGE:
             return _('Package: booking %(days)s day(days) at price of %(price_days)s day(days)') % \
                 dict(days=self.days, price_days=self.at_price_days)
