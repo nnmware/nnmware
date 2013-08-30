@@ -623,6 +623,7 @@ class CabinetDiscount(AjaxFormMixin, CurrentUserHotelAdmin, CreateView):
     model = Discount
     form_class = AddDiscountForm
     template_name = "cabinet/discounts.html"
+    success_url = '/'
 
     def get_context_data(self, **kwargs):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
