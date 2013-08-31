@@ -675,11 +675,11 @@ class Discount(AbstractName):
     @property
     def algorithm(self):
         if self.choice == DISCOUNT_NOREFUND:
-            return string_concat(_('No refund tariff - '), self.quantities)
+            return string_concat(_('No refund tariff'), self.quantities)
         elif self.choice == DISCOUNT_EARLY:
-            return string_concat(_('Booking, earlier than %s day(days) before arrival - ') % self.days, self.quantities)
+            return string_concat(_('Booking, earlier than %s day(days) before arrival') % self.days, self.quantities)
         elif self.choice == DISCOUNT_LATER:
-            return string_concat(_('Booking, later than %s day(days) before arrival - ') % self.days, self.quantities)
+            return string_concat(_('Booking, later than %s day(days) before arrival') % self.days, self.quantities)
         elif self.choice == DISCOUNT_PERIOD:
             return string_concat(_('Booking at least %s day(days)') % self.days, self.quantities)
         elif self.choice == DISCOUNT_PACKAGE:
@@ -690,11 +690,11 @@ class Discount(AbstractName):
         elif self.choice == DISCOUNT_SPECIAL:
             return string_concat(_('Special discount'), self.quantities)
         elif self.choice == DISCOUNT_LAST_MINUTE:
-            return string_concat(_('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s - ')
+            return string_concat(_('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s')
                                  % dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')),
                                  self.quantities)
         elif self.choice == DISCOUNT_CREDITCARD:
-            return string_concat(_('Booking with creditcard - '), self.quantities)
+            return string_concat(_('Booking with creditcard'), self.quantities)
         elif self.choice == DISCOUNT_NORMAL:
             return string_concat(_('Simple discount'), self.quantities)
         else:
