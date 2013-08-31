@@ -652,6 +652,11 @@ class Discount(AbstractName):
     time_on = models.TimeField(verbose_name=_('Time on'), blank=True, null=True)
     time_off = models.TimeField(verbose_name=_('Time off'), blank=True, null=True)
     percentage = models.BooleanField(verbose_name=_('Percentage discount'), default=True, db_index=True)
+    apply_norefund = models.BooleanField(verbose_name=_('Apply norefund discount'), default=False, db_index=True)
+    apply_creditcard = models.BooleanField(verbose_name=_('Apply creditcard discount'), default=False, db_index=True)
+    apply_package = models.BooleanField(verbose_name=_('Apply package discount'), default=False, db_index=True)
+    apply_period = models.BooleanField(verbose_name=_('Apply period discount'), default=False, db_index=True)
+
 
     class Meta:
         verbose_name = _("Discount")
