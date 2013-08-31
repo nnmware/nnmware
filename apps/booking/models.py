@@ -658,6 +658,7 @@ class Discount(AbstractName):
     apply_period = models.BooleanField(verbose_name=_('Apply period discount'), default=False, db_index=True)
 
     class Meta:
+        order = ['-pk', ]
         verbose_name = _("Discount")
         verbose_name_plural = _("Discounts")
 
