@@ -256,5 +256,5 @@ class AddDiscountForm(LocaleNamedForm):
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if len(name.strip()) is 0:
-            name = _("New discount from ") + datetime.now()
+            name = _("New discount from ") + datetime.now().strftime("%d.%m.%Y")
         return name
