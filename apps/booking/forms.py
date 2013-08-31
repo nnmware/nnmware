@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
 
 from django import forms
 from django.contrib.admin.widgets import AdminTimeWidget
@@ -248,3 +249,8 @@ class AddDiscountForm(LocaleNamedForm):
             raise forms.ValidationError(_("Discount not set"))
         return choice
 
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if len(name.strip()) is 0:
+            name = _("New discount from ") + datetime.now()
+        return name
