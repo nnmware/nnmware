@@ -643,12 +643,10 @@ DISCOUNT_CHOICES = (
 
 
 @python_2_unicode_compatible
-class Discount(AbstractName, MoneyBase):
+class Discount(AbstractName):
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
     choice = models.IntegerField(verbose_name=_("Type of discount"), choices=DISCOUNT_CHOICES, default=DISCOUNT_UNKNOWN,
                                  db_index=True)
-    percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0,
-                                  null=True, db_index=True)
     days = models.SmallIntegerField(verbose_name=_("Count of days"), blank=True, null=True)
     at_price_days = models.SmallIntegerField(verbose_name=_("At price of days"), blank=True, null=True)
     time_on = models.TimeField(verbose_name=_('Time on'), blank=True, null=True)
@@ -664,13 +662,6 @@ class Discount(AbstractName, MoneyBase):
                                                                     discount=self.get_choice_display())
 
     @property
-    def algorithm_append(self):
-        if self.percentage:
-            return '%s %%' % floatformat(self.percent)
-        else:
-            return '%s %s' % (floatformat(self.amount), CURRENCY)
-
-    @property
     def quantities(self):
         if self.percentage:
             return _('(in percents)')
@@ -680,11 +671,11 @@ class Discount(AbstractName, MoneyBase):
     @property
     def algorithm(self):
         if self.choice == DISCOUNT_NOREFUND:
-            return _('No refund tariff - ') + self.algorithm_append
+            return _('No refund tariff - ') + self.quantities
         elif self.choice == DISCOUNT_EARLY:
-            return _('Booking, earlier than %s day(days) before arrival - ') % self.days + self.algorithm_append
+            return _('Booking, earlier than %s day(days) before arrival - ') % self.days + self.quantities
         elif self.choice == DISCOUNT_LATER:
-            return _('Booking, later than %s day(days) before arrival - ') % self.days + self.algorithm_append
+            return _('Booking, later than %s day(days) before arrival - ') % self.days + self.quantities
         elif self.choice == DISCOUNT_PERIOD:
             return _('Booking at least %s day(days)') % self.days + self.algorithm_append
         elif self.choice == DISCOUNT_PACKAGE:
@@ -696,9 +687,9 @@ class Discount(AbstractName, MoneyBase):
             return string_concat(_('Special discount'), self.quantities)
         elif self.choice == DISCOUNT_LAST_MINUTE:
             return _('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s - ') % \
-                dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')) + self.algorithm_append
+                dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')) + self.quantities
         elif self.choice == DISCOUNT_CREDITCARD:
-            return _('Booking with creditcard - ') + self.algorithm_append
+            return _('Booking with creditcard - ') + self.quantities
         elif self.choice == DISCOUNT_NORMAL:
             return string_concat(_('Simple discount'), self.quantities)
         else:
