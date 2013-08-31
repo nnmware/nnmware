@@ -239,7 +239,7 @@ class AddDiscountForm(LocaleNamedForm):
 
     class Meta:
         model = Discount
-        fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percent', 'percentage', 'amount')
+        fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percentage')
 
     def clean_choice(self):
         choice = self.cleaned_data.get('choice')
