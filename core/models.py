@@ -22,7 +22,7 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, TZ_CHOICES
+from nnmware.core.abstract import AbstractDate, GENDER_CHOICES
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -622,13 +622,11 @@ class NnmwareUser(AbstractUser, AbstractImg):
     workphone = models.CharField(max_length=100, verbose_name=_('work phone'), blank=True)
     publicmail = models.EmailField(_('Public email'), blank=True)
     signature = models.CharField(max_length=100, verbose_name=_('Signature'), blank=True)
-    time_zone = models.FloatField(_('Time zone'), choices=TZ_CHOICES, default=float(settings.PROFILE_DEFAULT_TIME_ZONE),
-                                  null=True,
-                                  blank=True)
     show_signatures = models.BooleanField(_('Show signatures'), blank=True, default=False)
     post_count = models.IntegerField(_('Post count'), blank=True, default=0)
     subscribe = models.BooleanField(_('Subscribe for news and updates'), default=False)
     balance = models.DecimalField(verbose_name=_('Balance'), default=0, max_digits=20, decimal_places=3)
+    timezone = models.CharField(max_length=50, default='Europe/Moscow')
 
     class Meta:
         ordering = ['username', ]
