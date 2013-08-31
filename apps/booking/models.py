@@ -657,7 +657,6 @@ class Discount(AbstractName):
     apply_package = models.BooleanField(verbose_name=_('Apply package discount'), default=False, db_index=True)
     apply_period = models.BooleanField(verbose_name=_('Apply period discount'), default=False, db_index=True)
 
-
     class Meta:
         verbose_name = _("Discount")
         verbose_name_plural = _("Discounts")

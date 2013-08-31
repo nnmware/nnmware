@@ -243,6 +243,10 @@ class AddDiscountForm(LocaleNamedForm):
         fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percentage', 'apply_norefund',
         'apply_creditcard', 'apply_package', 'apply_period')
 
+    def __init__(self, *args, **kwargs):
+        super(AddDiscountForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = False
+
     def clean_choice(self):
         choice = self.cleaned_data.get('choice')
         if choice == 0:
