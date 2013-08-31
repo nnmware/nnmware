@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
-from nnmware.apps.booking.models import Hotel, Room, Booking, Discount
-from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod
+from nnmware.apps.booking.models import Hotel, Room, Booking, Discount, DISCOUNT_SPECIAL
+from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod, DISCOUNT_NOREFUND, DISCOUNT_CREDITCARD, DISCOUNT_EARLY, DISCOUNT_LATER, DISCOUNT_PERIOD, DISCOUNT_PACKAGE, DISCOUNT_NORMAL, DISCOUNT_HOLIDAY, DISCOUNT_LAST_MINUTE
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.forms import UserFromRequestForm
@@ -258,3 +258,26 @@ class AddDiscountForm(LocaleNamedForm):
         if len(name.strip()) is 0:
             name = _("New discount from ") + datetime.now().strftime("%d.%m.%Y")
         return name
+
+    def clean(self):
+        cleaned_data = super(AddDiscountForm, self).clean()
+        choice = cleaned_data.get("choice")
+        need_del = []
+        if choice == DISCOUNT_NOREFUND or choice == DISCOUNT_CREDITCARD:
+            need_del = ['time_on', 'time_off', 'days', 'at_price_days', 'apply_norefund', 'apply_creditcard',
+                        'apply_package', 'apply_period']
+        elif choice == DISCOUNT_EARLY:
+            need_del = ['time_on', 'time_off', 'at_price_days', 'apply_creditcard']
+        elif choice == DISCOUNT_LATER:
+            need_del = ['time_off', 'at_price_days']
+        elif choice == DISCOUNT_PERIOD:
+            need_del = ['time_on', 'time_off', 'at_price_days', 'apply_package', 'apply_period']
+        elif choice == DISCOUNT_PACKAGE:
+            need_del = ['time_on', 'time_off', 'apply_norefund', 'apply_creditcard']
+        elif choice == DISCOUNT_HOLIDAY or choice == DISCOUNT_SPECIAL or choice == DISCOUNT_NORMAL:
+            need_del = ['time_on', 'time_off', 'days', 'at_price_days', 'apply_package', 'apply_period']
+        elif choice == DISCOUNT_LAST_MINUTE:
+            need_del = ['days', 'at_price_days', 'apply_norefund', 'apply_creditcard', 'apply_package', 'apply_period']
+        for i in need_del:
+            del cleaned_data[i]
+
