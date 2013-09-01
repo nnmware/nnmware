@@ -15,7 +15,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.cache import cache
 from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import AbstractIP, AbstractName
+from nnmware.core.abstract import AbstractIP, AbstractName, AbstractDate
 from nnmware.core.config import CURRENCY
 from nnmware.core.maps import places_near_object
 
@@ -644,7 +644,7 @@ DISCOUNT_CHOICES = (
 
 
 @python_2_unicode_compatible
-class Discount(AbstractName):
+class Discount(AbstractName, AbstractDate):
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
     choice = models.IntegerField(verbose_name=_("Type of discount"), choices=DISCOUNT_CHOICES, default=DISCOUNT_UNKNOWN,
                                  db_index=True)
