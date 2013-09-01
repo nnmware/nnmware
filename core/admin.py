@@ -76,7 +76,7 @@ class AbstractDataAdmin(admin.ModelAdmin):
             obj.user = request.user
         return super(AbstractDataAdmin, self).save_form(request, form, change)
 
-    def queryset(self, request):
+    def get_queryset(self, request):
         """
           Filter the change list by currently logged in user if not a
           superuser.
