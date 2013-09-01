@@ -8,8 +8,10 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
+from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from nnmware.core.exceptions import AccessError
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount
@@ -360,6 +362,19 @@ def booking_sysadm(request, pk, action):
         payload = {'success': True, 'location': url}
     except UserNotAllowed:
         payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+def edit_discount(request):
+    try:
+        d = Discount.objects.get(pk=int(request.REQUEST['type_national']))
+        # if d in request.user.current_profile.actorappearance.type_national.all():
+        #     raise AccessError
+        # html = render_to_string('elements/type_national.html', {'item': t})
+        html = d.get_name
+        payload = {'success': True, 'html': html}
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
