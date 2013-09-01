@@ -641,6 +641,20 @@ class CabinetDiscount(AjaxFormMixin, CurrentUserHotelAdmin, CreateView):
         return super(CabinetDiscount, self).form_valid(form)
 
 
+class CabinetEditDiscount(AjaxFormMixin, CurrentUserHotelAdmin, UpdateView):
+    model = Discount
+    form_class = AddDiscountForm
+    template_name = "cabinet/edit_discount.html"
+    success_url = '/'
+
+    def form_valid(self, form):
+        hotel = get_object_or_404(Hotel, city__slug=self.kwargs['city'], slug=self.kwargs['slug'])
+        self.object = form.save(commit=False)
+        self.object.hotel = hotel
+        self.object.save()
+        return super(CabinetEditDiscount, self).form_valid(form)
+
+
 class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
     model = Bill
     form_class = CabinetEditBillForm
