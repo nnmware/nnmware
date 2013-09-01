@@ -245,6 +245,8 @@ class AbstractName(AbstractImg):
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True, db_index=True)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
+                                                blank=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)

@@ -59,7 +59,7 @@ class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('name', 'region', 'work_on', 'work_off')
     list_filter = ('name', 'region', )
-    search_fields = ('name', 'position')
+    search_fields = ('name', 'w_position')
     fieldsets = (
         (_("Employer"), {"fields": [
             ("name", 'fullname'), ('main_category', 'category'), ('branch', 'parent'),

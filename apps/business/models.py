@@ -108,7 +108,7 @@ class AbstractWTime(models.Model):
 class AbstractEmployer(AbstractImg, AbstractWTime):
     is_company = models.BooleanField(verbose_name=_('Employer is company'), default=False)
     name = std_text_field(_('Company name'))
-    position = std_text_field(_('Work position'))
+    w_position = std_text_field(_('Work position'))
     description = models.TextField(verbose_name=_('Activities description '), blank=True, default='')
 
     class Meta:

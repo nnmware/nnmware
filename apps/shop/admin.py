@@ -128,7 +128,7 @@ class ShopCallbackAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'slide_thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
     fieldsets = (
-        (_("Review"), {"fields": [('name', 'position', 'visible'), ('vip', 'img'), ('message',),
+        (_("Review"), {"fields": [('name', 'w_position', 'visible'), ('vip', 'img'), ('message',),
                                   ('created_date', 'ip', 'user_agent'), ('user',)]}),
     )
     ordering = ('-created_date', 'user', 'visible')

@@ -411,7 +411,7 @@ class Review(AbstractIP, AbstractImg):
                              blank=True)
     created_date = models.DateTimeField(_("Created date"), default=datetime.now)
     name = std_text_field(_('Name'))
-    position = std_text_field(_('Position'))
+    w_position = std_text_field(_('Position'))
     message = models.TextField(verbose_name=_("Message"), blank=True, default='')
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
     vip = models.BooleanField(verbose_name=_("Vip"), default=False)
