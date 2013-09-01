@@ -80,7 +80,7 @@ class Transaction(MoneyBase):
         related_name='transaction_object', on_delete=models.SET_NULL)
     actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
     actor = GenericForeignKey('actor_ctype', 'actor_oid')
-    date = models.DateTimeField(verbose_name=_("Date"), default=datetime.now)
+    date = models.DateTimeField(verbose_name=_("Date"), default=datetime.utcnow)
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='transaction_target', on_delete=models.SET_NULL)
@@ -125,8 +125,8 @@ class Bill(MoneyBase):
     Financial account
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True)
-    date = models.DateField(verbose_name=_("Date"), default=datetime.now())
-    date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.now())
+    date = models.DateField(verbose_name=_("Date"), default=datetime.utcnow)
+    date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.utcnow)
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)
