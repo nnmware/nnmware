@@ -7,6 +7,7 @@ from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.utils.timezone import now
 from django.db import models
 from django.db.models import permalink
 from django.db.models.manager import Manager
@@ -23,7 +24,7 @@ GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')), ('N', _('None')))
 
 
 class AbstractDate(models.Model):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
+    created_date = models.DateTimeField(_("Created date"), default=now)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
 
     class Meta:
@@ -135,7 +136,7 @@ class AbstractData(AbstractDate):
                 self.description = strip_tags(self.description_from_content())
             except:
                 self.description = ""
-        self.updated_date = datetime.utcnow()
+        self.updated_date = now()
         if not self.slug:
             if not self.pk:
                 super(AbstractData, self).save(*args, **kwargs)
@@ -644,9 +645,9 @@ class PicsMixin(object):
 
 
 class AbstractOffer(AbstractImg):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
-    start_date = models.DateTimeField(_("Start date"), default=datetime.utcnow)
-    end_date = models.DateTimeField(_("End date"), default=datetime.utcnow)
+    created_date = models.DateTimeField(_("Created date"), default=now)
+    start_date = models.DateTimeField(_("Start date"), default=now)
+    end_date = models.DateTimeField(_("End date"), default=now)
     title = std_text_field(_('Title'))
     text = models.TextField(verbose_name=_("Offer text"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)

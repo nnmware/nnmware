@@ -12,6 +12,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
+from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.db import models
 from django.db.models import permalink, Manager, Sum
@@ -237,7 +238,7 @@ class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
         return self.comment[:50]
 
     def save(self, **kwargs):
-        self.updated_date = datetime.utcnow()
+        self.updated_date = now()
         super(Nnmcomment, self).save(**kwargs)
 
     class Meta:
@@ -295,7 +296,7 @@ class Notice(AbstractContent, AbstractIP):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender')
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    timestamp = models.DateTimeField(default=datetime.utcnow)
+    timestamp = models.DateTimeField(default=now)
 
     class Meta:
         ordering = ['-timestamp']
@@ -348,7 +349,7 @@ class Message(AbstractIP):
 
     def save(self, **kwargs):
         if not self.id:
-            self.sent_at = datetime.utcnow()
+            self.sent_at = now()
         super(Message, self).save(**kwargs)
 
     class Meta:
@@ -383,7 +384,7 @@ class Action(AbstractContent, AbstractIP):
     action_type = models.IntegerField(_("Action Type"), choices=ACTION_CHOICES, default=ACTION_UNKNOWN)
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    timestamp = models.DateTimeField(default=datetime.utcnow)
+    timestamp = models.DateTimeField(default=now)
 
     class Meta:
         ordering = ['-timestamp']
@@ -415,7 +416,7 @@ def update_comment_count(sender, instance, **kwargs):
     try:
         what = instance.get_content_object()
         what.comments = Nnmcomment.public.all_for_object(what).count()
-        what.updated_date = datetime.utcnow()
+        what.updated_date = now()
         what.save()
     except:
         pass
@@ -443,7 +444,7 @@ def update_doc_count(sender, instance, **kwargs):
 
 class VisitorHit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.utcnow)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
     ip_address = models.GenericIPAddressField(verbose_name=_('IP'), blank=True, null=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
@@ -548,7 +549,7 @@ class EmailValidation(models.Model):
             send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
         except:
             pass
-        self.created = datetime.utcnow()
+        self.created = now()
         self.save()
         return True
 
@@ -609,7 +610,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     about = models.TextField(verbose_name=_('About'), help_text=_('Little words about you'), blank=True)
-    date_modified = models.DateTimeField(default=datetime.utcnow, editable=False)
+    date_modified = models.DateTimeField(default=now, editable=False)
     website = models.URLField(max_length=150, verbose_name=_('Website'), blank=True)
     facebook = models.URLField(max_length=150, verbose_name=_('Facebook'), blank=True)
     googleplus = models.URLField(max_length=150, verbose_name=_('Google+'), blank=True)
@@ -700,6 +701,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return None
 
     def save(self, *args, **kwargs):
-        self.date_modified = datetime.utcnow()
+        self.date_modified = now()
         super(NnmwareUser, self).save(*args, **kwargs)
 

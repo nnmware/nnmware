@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from django.conf import settings
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
+from django.utils.timezone import now
 from nnmware.apps.address.models import Country
 from nnmware.core.fields import std_text_field
 from nnmware.core.managers import FinancialManager
@@ -80,7 +80,7 @@ class Transaction(MoneyBase):
         related_name='transaction_object', on_delete=models.SET_NULL)
     actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
     actor = GenericForeignKey('actor_ctype', 'actor_oid')
-    date = models.DateTimeField(verbose_name=_("Date"), default=datetime.utcnow)
+    date = models.DateTimeField(verbose_name=_("Date"), default=now)
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='transaction_target', on_delete=models.SET_NULL)
@@ -125,8 +125,8 @@ class Bill(MoneyBase):
     Financial account
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True)
-    date = models.DateField(verbose_name=_("Date"), default=datetime.utcnow)
-    date_billed = models.DateField(verbose_name=_("Billed date"), default=datetime.utcnow)
+    date = models.DateField(verbose_name=_("Date"), default=now)
+    date_billed = models.DateField(verbose_name=_("Billed date"), default=now)
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)

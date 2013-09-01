@@ -140,7 +140,7 @@ TYPEFOOD = (
 
 @python_2_unicode_compatible
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
-    register_date = models.DateTimeField(_("Register from"), default=datetime.now)
+    register_date = models.DateTimeField(_("Register from"), default=datetime.utcnow)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
@@ -491,7 +491,7 @@ STATUS_CHOICES = (
 @python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.utcnow)
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
@@ -583,7 +583,7 @@ class AgentPercent(models.Model):
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel)
-    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.now, db_index=True)
+    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.utcnow, db_index=True)
     review = models.TextField(verbose_name=_("Review"), blank=True)
     username = models.CharField(verbose_name=_("Guest username"), max_length=100)
     booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.SET_NULL)
@@ -724,7 +724,7 @@ class PlacePrice(MoneyBase):
 
 class RequestAddHotel(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    register_date = models.DateTimeField(_("Register date"), default=datetime.now)
+    register_date = models.DateTimeField(_("Register date"), default=datetime.utcnow)
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
     name = models.CharField(verbose_name=_("Name"), max_length=100, null=True, blank=True)

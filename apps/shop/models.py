@@ -383,7 +383,7 @@ class DeliveryAddress(AbstractLocation):
 
 @python_2_unicode_compatible
 class Feedback(AbstractIP):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
     name = std_text_field(_('Name'))
     email = std_text_field(_('Email'))
     message = models.TextField(verbose_name=_("Message"))
@@ -409,7 +409,7 @@ class Feedback(AbstractIP):
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True,
                              blank=True)
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
     name = std_text_field(_('Name'))
     w_position = std_text_field(_('Position'))
     message = models.TextField(verbose_name=_("Message"), blank=True, default='')
@@ -427,7 +427,7 @@ class Review(AbstractIP, AbstractImg):
 
 @python_2_unicode_compatible
 class ShopText(AbstractTeaser):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
     content = models.TextField(verbose_name=_("Content"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
@@ -478,7 +478,7 @@ class SpecialOffer(AbstractOffer):
 
 @python_2_unicode_compatible
 class ShopCallback(AbstractIP):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
     clientname = std_text_field(_('Client Name'))
     clientphone = std_text_field(_('Client Phone'))
     description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
