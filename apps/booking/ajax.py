@@ -369,7 +369,7 @@ def booking_sysadm(request, pk, action):
 
 def edit_discount(request):
     try:
-        d = Discount.objects.get(pk=int(request.REQUEST['type_national']))
+        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
         # if d in request.user.current_profile.actorappearance.type_national.all():
         #     raise AccessError
         # html = render_to_string('elements/type_national.html', {'item': t})
