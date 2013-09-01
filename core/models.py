@@ -237,7 +237,7 @@ class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
         return self.comment[:50]
 
     def save(self, **kwargs):
-        self.updated_date = datetime.now()
+        self.updated_date = datetime.utcnow()
         super(Nnmcomment, self).save(**kwargs)
 
     class Meta:
@@ -295,7 +295,7 @@ class Notice(AbstractContent, AbstractIP):
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender')
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    timestamp = models.DateTimeField(default=datetime.now)
+    timestamp = models.DateTimeField(default=datetime.utcnow)
 
     class Meta:
         ordering = ['-timestamp']
@@ -348,7 +348,7 @@ class Message(AbstractIP):
 
     def save(self, **kwargs):
         if not self.id:
-            self.sent_at = datetime.now()
+            self.sent_at = datetime.utcnow()
         super(Message, self).save(**kwargs)
 
     class Meta:
@@ -383,7 +383,7 @@ class Action(AbstractContent, AbstractIP):
     action_type = models.IntegerField(_("Action Type"), choices=ACTION_CHOICES, default=ACTION_UNKNOWN)
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    timestamp = models.DateTimeField(default=datetime.now)
+    timestamp = models.DateTimeField(default=datetime.utcnow)
 
     class Meta:
         ordering = ['-timestamp']
@@ -415,7 +415,7 @@ def update_comment_count(sender, instance, **kwargs):
     try:
         what = instance.get_content_object()
         what.comments = Nnmcomment.public.all_for_object(what).count()
-        what.updated_date = datetime.now()
+        what.updated_date = datetime.utcnow()
         what.save()
     except:
         pass
@@ -443,7 +443,7 @@ def update_doc_count(sender, instance, **kwargs):
 
 class VisitorHit(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.now)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.utcnow)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
     ip_address = models.GenericIPAddressField(verbose_name=_('IP'), blank=True, null=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
@@ -548,7 +548,7 @@ class EmailValidation(models.Model):
             send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
         except:
             pass
-        self.created = datetime.now()
+        self.created = datetime.utcnow()
         self.save()
         return True
 
@@ -609,7 +609,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     about = models.TextField(verbose_name=_('About'), help_text=_('Little words about you'), blank=True)
-    date_modified = models.DateTimeField(default=datetime.now, editable=False)
+    date_modified = models.DateTimeField(default=datetime.utcnow, editable=False)
     website = models.URLField(max_length=150, verbose_name=_('Website'), blank=True)
     facebook = models.URLField(max_length=150, verbose_name=_('Facebook'), blank=True)
     googleplus = models.URLField(max_length=150, verbose_name=_('Google+'), blank=True)
@@ -700,6 +700,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return None
 
     def save(self, *args, **kwargs):
-        self.date_modified = datetime.now()
+        self.date_modified = datetime.utcnow()
         super(NnmwareUser, self).save(*args, **kwargs)
 

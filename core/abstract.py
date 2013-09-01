@@ -23,7 +23,7 @@ GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')), ('N', _('None')))
 
 
 class AbstractDate(models.Model):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
 
     class Meta:
@@ -135,7 +135,7 @@ class AbstractData(AbstractDate):
                 self.description = strip_tags(self.description_from_content())
             except:
                 self.description = ""
-        self.updated_date = datetime.now()
+        self.updated_date = datetime.utcnow()
         if not self.slug:
             if not self.pk:
                 super(AbstractData, self).save(*args, **kwargs)
@@ -644,9 +644,9 @@ class PicsMixin(object):
 
 
 class AbstractOffer(AbstractImg):
-    created_date = models.DateTimeField(_("Created date"), default=datetime.now)
-    start_date = models.DateTimeField(_("Start date"), default=datetime.now)
-    end_date = models.DateTimeField(_("End date"), default=datetime.now)
+    created_date = models.DateTimeField(_("Created date"), default=datetime.utcnow)
+    start_date = models.DateTimeField(_("Start date"), default=datetime.utcnow)
+    end_date = models.DateTimeField(_("End date"), default=datetime.utcnow)
     title = std_text_field(_('Title'))
     text = models.TextField(verbose_name=_("Offer text"), null=True, blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
