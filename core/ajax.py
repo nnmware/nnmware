@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
+
 from io import FileIO, BufferedWriter
 from hashlib import md5
 import os
@@ -14,6 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import linebreaksbr
+from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from nnmware.core import oembed
@@ -89,7 +90,7 @@ class AjaxAbstractUploader(object):
         target.object_id = int(kwargs['object_id'])
         target.description = self.extra_context['oldname']
         target.user = request.user
-        target.created_date = datetime.now()
+        target.created_date = now()
 
 
 class AjaxFileUploader(AjaxAbstractUploader):
@@ -186,7 +187,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
                 new.object_id = request.user.pk
                 new.description = self.extra_context['oldname']
                 new.user = request.user
-                new.created_date = datetime.now()
+                new.created_date = now()
                 new.pic = self.extra_context['path']
                 new.save()
                 request.user.img = new
@@ -533,11 +534,11 @@ def delete_message(request, object_id):
     if Message.objects.filter(sender=request.user, id=object_id).count():
         msg = Message.objects.get(sender=request.user, id=object_id)
         another_user = msg.recipient
-        msg.sender_deleted_at = datetime.now()
+        msg.sender_deleted_at = now()
     elif Message.objects.filter(recipient=request.user, id=object_id).count():
         msg = Message.objects.get(recipient=request.user, id=object_id)
         another_user = msg.sender
-        msg.recipient_deleted_at = datetime.now()
+        msg.recipient_deleted_at = now()
     if msg is not None:
         msg.save()
         result = Message.objects.concrete_user(request.user, another_user).count()
@@ -572,7 +573,7 @@ def message_add(request):
             if user and (user != request.user):
                 m = Message()
                 m.recipient = user
-                m.sent_at = datetime.now()
+                m.sent_at = now()
                 m.sender = request.user
                 m.body = request.REQUEST['body']
                 m.save()
@@ -757,7 +758,7 @@ def push_message(request, object_id):
         msg.body = request.POST.get('message_body') or None
         msg.sender = request.user
         msg.recipient = get_user_model().objects.get(id=object_id)
-        msg.sent_at = datetime.now()
+        msg.sent_at = now()
         msg.save()
         try:
             avatar_id = request.user.avatar.pk

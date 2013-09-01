@@ -1,7 +1,7 @@
 import json
-from datetime import datetime
 from django.conf import settings
 from django.contrib import messages
+from django.utils.timezone import now
 from nnmware.core.http import get_session_from_request
 
 
@@ -56,5 +56,5 @@ class VisitorHitMiddleware(object):
         v.referer = request.META.get('HTTP_REFERER', '')
         v.hostname = request.META.get('REMOTE_HOST', '')[:100]
         v.url = request.get_full_path()
-        v.date = datetime.now()
+        v.date = now()
         v.save()

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 
 from django import forms
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.contrib.auth import get_user_model
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
@@ -256,7 +256,7 @@ class AddDiscountForm(LocaleNamedForm):
     def clean_name(self):
         name = self.cleaned_data.get('name')
         if len(name.strip()) is 0:
-            name = _("New discount from ") + datetime.now().strftime("%d.%m.%Y")
+            name = _("New discount from ") + now().strftime("%d.%m.%Y")
         return name
 
     def clean(self):

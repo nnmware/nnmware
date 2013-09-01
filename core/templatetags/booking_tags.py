@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from hashlib import sha1
-from datetime import datetime, timedelta
+from datetime import timedelta
 from django.core.cache import cache
 from django.db.models import Min, Max, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
+from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, \
@@ -306,7 +307,7 @@ def convert_to_client_currency(amount, rate):
 def amount_request_currency(request, amount):
     try:
         currency = Currency.objects.get(code=request.COOKIES['currency'])
-        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=datetime.now()).order_by('-date')[0]
+        rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=now()).order_by('-date')[0]
         if OFFICIAL_RATE:
             exchange = rate.official_rate
         else:
@@ -323,7 +324,7 @@ def user_rate_from_request(request):
         user_currency = CURRENCY
     try:
         rate = ExchangeRate.objects.select_related().filter(currency__code=user_currency).\
-            filter(date__lte=datetime.now()).order_by('-date')[0]
+            filter(date__lte=now()).order_by('-date')[0]
         return rate
     except:
         return None
@@ -423,8 +424,8 @@ def room_min_days_on_dates(room, dates):
 @register.simple_tag
 def today_visitor_count():
     result = set(VisitorHit.objects.values_list('session_key', flat=True))
-    #    result = VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
-    #        date__gte=datetime.now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
+    #    result = VisitorHit.objects.filter(date__lte=now().date()-timedelta(days=1),
+    #        date__gte=now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
     return len(result)
 
 
@@ -432,8 +433,8 @@ def today_visitor_count():
 def today_hit_count():
     return VisitorHit.objects.count()
 
-#    return VisitorHit.objects.filter(date__lte=datetime.now().date()-timedelta(days=1),
-#        date__gte=datetime.now().date()-timedelta(days=30)).count()
+#    return VisitorHit.objects.filter(date__lte=now().date()-timedelta(days=1),
+#        date__gte=now().date()-timedelta(days=30)).count()
 
 
 @register.simple_tag
@@ -462,14 +463,14 @@ def hotel_range_price(context, rate):
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
     if data_key:
-        result = PlacePrice.objects.filter(date__gte=datetime.now(), amount__gt=0,
+        result = PlacePrice.objects.filter(date__gte=now(), amount__gt=0,
             settlement__room__hotel__pk__in=data_key).aggregate(Min('amount'), Max('amount'))
         if not result['amount__min']:
             result['amount__min'] = 0
         if not result['amount__max']:
             result['amount__max'] = 0
     else:
-        result = PlacePrice.objects.filter(date__gte=datetime.now(), amount__gt=0).\
+        result = PlacePrice.objects.filter(date__gte=now(), amount__gt=0).\
             aggregate(Min('amount'), Max('amount'))
     return convert_to_client_currency(int(result['amount__min']), rate), \
         convert_to_client_currency(int(result['amount__max']), rate)
@@ -482,7 +483,7 @@ def stars_hotel_count(context):
     # try:
     #     on_date = convert_to_date(search_data['from_date']) - timedelta(days=1)
     # except:
-    #     on_date = datetime.now()
+    #     on_date = now()
     # hotels_with_amount = PlacePrice.objects.filter(date=on_date, amount__gt=0).\
     #     values_list('settlement__room__hotel__pk', flat=True).distinct()
     result = Hotel.objects.all()   # filter(pk__in=hotels_with_amount)

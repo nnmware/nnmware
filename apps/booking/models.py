@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
 from decimal import Decimal
 from uuid import uuid4
 import random
@@ -9,6 +8,7 @@ from django.conf import settings
 from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
 from django.template.defaultfilters import floatformat, date
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
@@ -140,7 +140,7 @@ TYPEFOOD = (
 
 @python_2_unicode_compatible
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
-    register_date = models.DateTimeField(_("Register from"), default=datetime.utcnow)
+    register_date = models.DateTimeField(_("Register from"), default=now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     fax = models.CharField(max_length=100, verbose_name=_('Fax'), blank=True)
@@ -252,7 +252,8 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     def all_room_options(self):
         return RoomOption.objects.filter(enabled=True, room__hotel=self).select_related().order_by('category',
-            'order_in_list', 'name').distinct()
+                                                                                                   'order_in_list',
+                                                                                                   'name').distinct()
 
     @permalink
     def get_absolute_url(self):
@@ -264,7 +265,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     def get_current_percent(self):
         try:
-            return AgentPercent.objects.filter(hotel=self).filter(date__lte=datetime.now()).order_by('-date')[0].percent
+            return AgentPercent.objects.filter(hotel=self).filter(date__lte=now()).order_by('-date')[0].percent
         except IndexError:
             return None
 
@@ -273,7 +274,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     @property
     def min_current_amount(self):
-        return self.amount_on_date(datetime.now())
+        return self.amount_on_date(now())
 
     def amount_on_date(self, date):
         result = PlacePrice.objects.filter(settlement__room__hotel=self, settlement__enabled=True, date=date).\
@@ -292,7 +293,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
             self.slug = self.slug.strip().replace(' ', '-')
             if Hotel.objects.filter(slug=self.slug, city=self.city).exclude(pk=self.pk).count():
                 self.slug = self.pk
-        self.updated_date = datetime.now()
+        self.updated_date = now()
         super(Hotel, self).save(*args, **kwargs)
 
     def update_hotel_amount(self):
@@ -398,7 +399,7 @@ class Room(AbstractName):
 
     @property
     def min_current_amount(self):
-        return self.amount_on_date(datetime.now())
+        return self.amount_on_date(now())
 
     def amount_on_date(self, date, guests=None):
         result = PlacePrice.objects.filter(settlement__room=self, settlement__enabled=True, date=date).\
@@ -451,7 +452,7 @@ class SettlementVariant(models.Model):
             'hotel': self.room.hotel.get_name}
 
     def current_amount(self):
-        result = PlacePrice.objects.filter(settlement=self, date__lte=datetime.now()).order_by('-date')
+        result = PlacePrice.objects.filter(settlement=self, date__lte=now()).order_by('-date')
         if result:
             return result[0].amount
         else:
@@ -491,7 +492,7 @@ STATUS_CHOICES = (
 @python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=datetime.utcnow)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
     to_date = models.DateField(_("To"))
@@ -583,7 +584,7 @@ class AgentPercent(models.Model):
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel)
-    date = models.DateTimeField(verbose_name=_("Published by"), default=datetime.utcnow, db_index=True)
+    date = models.DateTimeField(verbose_name=_("Published by"), default=now, db_index=True)
     review = models.TextField(verbose_name=_("Review"), blank=True)
     username = models.CharField(verbose_name=_("Guest username"), max_length=100)
     booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.SET_NULL)
@@ -724,7 +725,7 @@ class PlacePrice(MoneyBase):
 
 class RequestAddHotel(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    register_date = models.DateTimeField(_("Register date"), default=datetime.utcnow)
+    register_date = models.DateTimeField(_("Register date"), default=now)
     city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
     name = models.CharField(verbose_name=_("Name"), max_length=100, null=True, blank=True)

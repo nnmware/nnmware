@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
 import json
 from PIL import Image
 from django.contrib import messages
@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
+from django.utils.timezone import now
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -424,7 +425,7 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
     def get_queryset(self):
         self.object = self.get_object()
         result = Message.objects.concrete_user(self.request.user, self.object)
-        answ = result.filter(recipient=self.request.user).update(read_at=datetime.now())
+        answ = result.filter(recipient=self.request.user).update(read_at=now())
         return result
 
     def get_context_data(self, **kwargs):
@@ -638,7 +639,7 @@ class SignupView(AjaxFormMixin, FormView):
             e.username = username
             e.email = email
             e.password = password
-            e.created = datetime.now()
+            e.created = now()
             e.key = make_key(username)
             e.save()
         mail_dict = {'key': e.key,
@@ -857,7 +858,7 @@ class VideoPopularFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(created_date__gte=datetime.now() - timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=now() - timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
@@ -889,7 +890,7 @@ class VideoLovedFeed(ListView):
     template_name = "video/feed.html"
 
     def get_queryset(self):
-        return Video.objects.filter(created_date__gte=datetime.now() - timedelta(days=1)).order_by('-viewcount')
+        return Video.objects.filter(created_date__gte=now() - timedelta(days=1)).order_by('-viewcount')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

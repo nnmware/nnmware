@@ -2,11 +2,11 @@
 BrowserID support
 """
 import time
-from datetime import datetime
 from urllib import urlencode
 
 from django.contrib.auth import authenticate
 import json
+from django.utils.timezone import now
 
 from nnmware.apps.social.backends import SocialAuthBackend, BaseAuth, USERNAME
 from nnmware.apps.social.utils import log, dsa_urlopen
@@ -43,7 +43,7 @@ class BrowserIDBackend(SocialAuthBackend):
         """Return users extra data"""
         # BrowserID sends timestamp for expiration date, here we
         # convert it to the remaining seconds
-        expires = (response['expires'] / 1000) - time.mktime(datetime.now().timetuple())
+        expires = (response['expires'] / 1000) - time.mktime(now().timetuple())
         return {
             'audience': response['audience'],
             'issuer': response['issuer'],

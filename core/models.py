@@ -4,7 +4,6 @@
 Base model library.
 """
 from StringIO import StringIO
-from datetime import datetime
 import os
 from PIL import Image
 from django.contrib.auth import get_user_model
@@ -532,7 +531,7 @@ class EmailValidation(models.Model):
         return _("Email validation process for %(user)s") % {'user': self.username}
 
     def is_expired(self):
-        return (datetime.today() - self.created).days > 7
+        return (now() - self.created).days > 7
 
     def resend(self):
         """

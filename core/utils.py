@@ -13,6 +13,7 @@ from django.core.mail import send_mail
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
+from django.utils.timezone import now
 from nnmware.core import oembed
 import unidecode
 from BeautifulSoup import BeautifulSoup
@@ -31,7 +32,7 @@ def convert_to_date(d):
 
 
 def get_date_directory():
-    return datetime.now().strftime("%Y/%m/%d/%H/%M/%S")
+    return now().strftime("%Y/%m/%d/%H/%M/%S")
 
 
 def get_oembed_end_point(link=''):
@@ -334,7 +335,7 @@ def setting(name, default=None):
 def tuplify(x):
     return x, x  # str(x) if needed
 
-current_year = datetime.now().year
+current_year = now().year
 
 
 def random_pw(size=6, chars=string.ascii_uppercase + string.digits):

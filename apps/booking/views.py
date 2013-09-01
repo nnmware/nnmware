@@ -121,8 +121,8 @@ def hotel_order(arr, order, sort):
 
 
 def default_search():
-    return {'from_date': (datetime.today() + timedelta(days=1)).strftime("%d.%m.%Y"),
-    'to_date': (datetime.today() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1, 'no_dates': 1}
+    return {'from_date': (now() + timedelta(days=1)).strftime("%d.%m.%Y"),
+            'to_date': (now() + timedelta(days=2)).strftime("%d.%m.%Y"), 'guests': 1, 'no_dates': 1}
 
 
 class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
@@ -170,7 +170,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         self.search_data['stars'] = stars
                     if options:
                         self.search_data['options'] = options
-                    if (from_date - datetime.now()).days < -1:
+                    if (from_date - now()).days < -1:
                         self.result_count = 0
                         return []
                     searched_date = True
@@ -222,7 +222,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                     flat=True).distinct()
             else:
-                hotels_with_amount = PlacePrice.objects.filter(date=datetime.today(),
+                hotels_with_amount = PlacePrice.objects.filter(date=now(),
                     amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                     flat=True).distinct()
             search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
@@ -239,7 +239,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         result = search_hotel.annotate(Count('review'))
         if result:
             self.result_count = result.count()
-            amounts = PlacePrice.objects.filter(date__gte=datetime.now(), amount__gt=0,
+            amounts = PlacePrice.objects.filter(date__gte=now(), amount__gt=0,
                 settlement__room__hotel__in=result).aggregate(Min('amount'), Max('amount'))
             if not amounts['amount__min']:
                 amounts['amount__min'] = 0
@@ -330,7 +330,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
             need_days = (to_date - from_date).days
-            if (from_date - datetime.now()).days < -1:
+            if (from_date - now()).days < -1:
                 rooms = []
             else:
                 # Find all rooms pk for this guest count
@@ -432,7 +432,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
             need_days = (to_date - from_date).days
-            if (from_date - datetime.now()).days < -1:
+            if (from_date - now()).days < -1:
                 search_data = default_search()
             else:
                 date_period = (from_date, to_date - timedelta(days=1))
@@ -598,7 +598,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
                 to_date = from_date + timedelta(days=365)
             date_gen = daterange(from_date, to_date + timedelta(days=1))
         else:
-            from_date = datetime.now()
+            from_date = now()
             to_date = from_date + timedelta(days=14)
             date_gen = daterange(from_date, to_date)
             f_date = datetime.strftime(from_date, "%d.%m.%Y")
@@ -841,28 +841,27 @@ class ReportView(CurrentUserSuperuser, ListView):
             result = Hotel.objects.select_related().filter(work_on_request=True)
             self.report_name = _('Hotels, works on request')
         elif report_type == 'non-correct':
-            not_filled_room = Room.objects.filter(availability__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
+            not_filled_room = Room.objects.filter(availability__date__range=(now(),
+                now() + timedelta(days=13))).annotate(num_days=Count('pk')).filter(num_days__lt=14).\
                 order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             empty_avail_info = Room.objects.exclude(hotel__work_on_request=True).exclude(availability__date__range=
-                (datetime.now(), datetime.now() + timedelta(days=13))).order_by('hotel').values_list('hotel__pk',
-                flat=True).distinct()
+                (now(), now() + timedelta(days=13))).order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             not_filled_amount = SettlementVariant.objects.exclude(placeprice__amount=0).\
-                filter(enabled=True, placeprice__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).\
+                filter(enabled=True, placeprice__date__range=(now(),
+                now() + timedelta(days=13))).annotate(num_days=Count('placeprice__pk')).\
                 filter(num_days__lt=14).order_by('room__hotel').values_list('room__hotel__pk', flat=True).distinct()
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
                 filter(Q(pk__in=not_filled_room) | Q(pk__in=not_filled_amount) | Q(pk__in=empty_avail_info))
             self.report_name = _('Hotels, not fully entered info')
         elif report_type == 'nullroom':
-            nullroom = Room.objects.filter(availability__date__range=(datetime.now(),
-                datetime.now() + timedelta(days=13)), availability__placecount=0).annotate(num_days=Count('pk')).\
+            nullroom = Room.objects.filter(availability__date__range=(now(),
+                now() + timedelta(days=13)), availability__placecount=0).annotate(num_days=Count('pk')).\
                 filter(num_days=14).order_by('hotel').values_list('hotel__pk', flat=True).distinct()
             result = Hotel.objects.select_related().exclude(admins=None).exclude(work_on_request=True).\
                 filter(pk__in=nullroom)
             self.report_name = _('Hotels, which have null availability on 14 days')
         elif report_type == 'nullpercent':
-            result = Hotel.objects.select_related().filter(agentpercent__date__lte=datetime.now()).\
+            result = Hotel.objects.select_related().filter(agentpercent__date__lte=now()).\
                 annotate(Max('agentpercent__date')).filter(agentpercent__percent=0,
                                                            agentpercent__date__max=F('agentpercent__date'))
             self.report_name = _('Hotels, with current null percent')
@@ -1002,7 +1001,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             if from_date > to_date:
                 f_date, t_date = t_date, f_date
                 from_date, to_date = to_date, from_date
-            if (from_date - datetime.now()).days < -1:
+            if (from_date - now()).days < -1:
                 raise Http404
             delta = (to_date - from_date).days
             date_period = (from_date, to_date - timedelta(days=1))
@@ -1088,7 +1087,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.hotel = settlement.room.hotel
         self.object.hotel_txt = str(settlement.room.hotel)
         self.object.status = STATUS_ACCEPTED
-        self.object.date = datetime.now()
+        self.object.date = now()
         from_date = self.object.from_date
         to_date = self.object.to_date
         all_amount = Decimal(0)

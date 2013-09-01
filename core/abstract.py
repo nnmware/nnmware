@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# Base abstract classed nnmware(c)2012
+# Base abstract classed nnmware(c)2013
 
-from datetime import datetime
 from django.conf import settings
 from django.contrib.contenttypes.generic import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType

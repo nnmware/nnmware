@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
@@ -181,7 +182,7 @@ def hotel_add(request):
 def client_review(request, pk):
     try:
         hotel = Hotel.objects.get(id=pk)
-        #        guests = Booking.objects.filter(hotel=hotel,to_date__gte=datetime.now()).values_list('user', flat=True)
+        #        guests = Booking.objects.filter(hotel=hotel,to_date__gte=now()).values_list('user', flat=True)
         if request.user.is_superuser:
             message = _('You are superuser and may add review.')
         elif request.user.pk in hotel.complete_booking_users_id:
@@ -248,7 +249,7 @@ def filter_hotels_on_map(request, hotels):
                     amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                     flat=True).distinct()
             else:
-                hotels_with_amount = PlacePrice.objects.filter(date=datetime.today(),
+                hotels_with_amount = PlacePrice.objects.filter(date=now(),
                     amount__range=(amount_min, amount_max)).values_list('settlement__room__hotel__pk',
                     flat=True).distinct()
             searched = searched.filter(pk__in=hotels_with_amount, work_on_request=False)

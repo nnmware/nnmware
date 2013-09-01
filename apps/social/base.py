@@ -3,7 +3,7 @@ import base64
 import time
 from datetime import datetime, timedelta
 from openid.association import Association as OIDAssociation
-from django.utils.timezone import utc
+from django.utils.timezone import utc, now
 from nnmware.core.utils import setting
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -44,14 +44,11 @@ class UserSocialAuthMixin(object):
             except (ValueError, TypeError):
                 return None
 
-            now = datetime.now()
-            now_timestamp = time.mktime(now.timetuple())
+            now_timestamp = time.mktime(now().timetuple())
 
             # Detect if expires is a timestamp
             if expires > now_timestamp:  # expires is a datetime
-                return datetime.utcfromtimestamp(expires) \
-                               .replace(tzinfo=utc) - \
-                       now.replace(tzinfo=utc)
+                return datetime.utcfromtimestamp(expires).replace(tzinfo=utc) - now().replace(tzinfo=utc)
             else:  # expires is a timedelta
                 return timedelta(seconds=expires)
 

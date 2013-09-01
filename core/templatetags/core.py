@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import timedelta
 import re
 from xml.etree.ElementTree import Element, SubElement, tostring
 from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
@@ -10,6 +10,7 @@ from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
+from django.utils.timezone import now
 from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review, ShopSlider
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.http import get_session_from_request
@@ -27,7 +28,7 @@ def video_links(context, mode='random'):
         category = context['category_panel']
     except KeyError:
         category = None
-    videos = Video.objects.filter(created_date__gte=datetime.now() - timedelta(days=1))
+    videos = Video.objects.filter(created_date__gte=now() - timedelta(days=1))
     result = videos
     if user.is_authenticated():
         result = result.exclude(users_viewed=user)
@@ -134,7 +135,7 @@ inline_word.is_safe = True
 
 @register.filter
 def latestdates(date):
-    if datetime.now() - date < timedelta(hours=24):
+    if now() - date < timedelta(hours=24):
         return 'red'
     else:
         return 'normal'

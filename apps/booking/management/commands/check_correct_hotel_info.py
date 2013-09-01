@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta, datetime
+from datetime import timedelta
 from django.conf import settings
+from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.utils.translation import activate
 
@@ -19,7 +20,7 @@ class Command(BaseCommand):
             all_users = []
             for room in hotel.room_set.all():
                 avail = Availability.objects.filter(room=room, date__range=(
-                    datetime.now(), datetime.now() + timedelta(days=13))).count()
+                    now(), now() + timedelta(days=13))).count()
                 if avail < 14:
                     avail_err = [room.get_name, _('Not filled availability')]
                     result.append(avail_err)
