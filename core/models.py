@@ -74,7 +74,7 @@ class Tag(models.Model):
 
 class Doc(AbstractContent, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
-    file = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
+    doc = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
 
     class Meta:
         ordering = ['ordering', ]
@@ -96,16 +96,16 @@ class Doc(AbstractContent, AbstractFile):
                 docs.delete()
         except:
             pass
-        fullpath = os.path.join(settings.MEDIA_ROOT, self.file.field.upload_to, self.file.path)
+        fullpath = os.path.join(settings.MEDIA_ROOT, self.doc.field.upload_to, self.doc.path)
         self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)
 
     @permalink
     def get_absolute_url(self):
-        return os.path.join(settings.MEDIA_URL, self.file.url)
+        return os.path.join(settings.MEDIA_URL, self.doc.url)
 
     def get_file_link(self):
-        return os.path.join(settings.MEDIA_URL, self.file.url)
+        return os.path.join(settings.MEDIA_URL, self.doc.url)
 
     def get_del_url(self):
         return reverse("doc_del", self.id)
