@@ -34,13 +34,15 @@ class TagsMixinForm(forms.ModelForm):
 
 
 class DocForm(forms.ModelForm):
-    class Meta(object):
+
+    class Meta:
         model = Doc
-        fields = ('file', 'description', 'created_date', 'locked', 'filetype')
+        fields = ('doc', 'description', 'created_date', 'locked', 'filetype')
 
 
 class DocDeleteForm(forms.ModelForm):
-    class Meta(object):
+
+    class Meta:
         model = Doc
         fields = ()
 
