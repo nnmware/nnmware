@@ -370,10 +370,22 @@ def booking_sysadm(request, pk, action):
 def edit_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.REQUEST['discount']))
-        # if d in request.user.current_profile.actorappearance.type_national.all():
-        #     raise AccessError
+        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+            raise AccessError
         html = render_to_string('cabinet/edit_discount.html', {'discount': d})
         payload = {'success': True, 'html': html}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
+
+def delete_discount(request):
+    try:
+        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+            raise AccessError
+        d.delete()
+        payload = {'success': True}
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
