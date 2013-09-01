@@ -372,8 +372,7 @@ def edit_discount(request):
         d = Discount.objects.get(pk=int(request.REQUEST['discount']))
         # if d in request.user.current_profile.actorappearance.type_national.all():
         #     raise AccessError
-        # html = render_to_string('elements/type_national.html', {'item': t})
-        html = d.get_name
+        html = render_to_string('cabinet/edit_discount.html', {'discount': d})
         payload = {'success': True, 'html': html}
     except:
         payload = {'success': False}
