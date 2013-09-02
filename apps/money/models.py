@@ -39,8 +39,8 @@ class ExchangeRate(models.Model):
     rate = models.DecimalField(verbose_name=_('Rate'), default=0, max_digits=10, decimal_places=4, db_index=True)
 
     class Meta:
-        ordering = ("-date",'currency__code')
-        unique_together = ('currency','date','rate')
+        ordering = ("-date", 'currency__code')
+        unique_together = ('currency', 'date', 'rate')
         verbose_name = _("Exchange Rate")
         verbose_name_plural = _("Exchange Rates")
 
