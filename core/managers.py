@@ -46,10 +46,10 @@ class NnmcommentManager(Manager):
           {% endfor %}
           """
         content_type = ContentType.objects.get_for_model(content_object)
-        children = list(self.get_query_set().filter(
+        children = list(self.get_queryset().filter(
             content_type=content_type,
             object_id=getattr(content_object, 'pk', getattr(content_object, 'id')),
-        ).select_related().order_by('-created_date'))
+        ).select_related('parent').order_by('-created_date'))
         to_return = []
         if root:
             if isinstance(root, int):
