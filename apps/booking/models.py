@@ -704,6 +704,20 @@ class Discount(AbstractName, AbstractDate):
 
 
 @python_2_unicode_compatible
+class RoomDiscount(models.Model):
+    date = models.DateField(verbose_name=_("On date"), db_index=True)
+    discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"))
+    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"))
+    value = models.DecimalField(verbose_name=_('Value of discount'), default=0, max_digits=20, decimal_places=3,
+                                db_index=True)
+
+    class Meta:
+        ordering = ['-pk', ]
+        verbose_name = _("Room discount")
+        verbose_name_plural = _("Room discounts")
+
+
+@python_2_unicode_compatible
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))

@@ -239,9 +239,16 @@ class PlacePriceAdmin(admin.ModelAdmin):
     list_display = ('settlement', 'date', 'amount', 'currency')
     search_fields = ('date',)
     fieldsets = (
-        (_("Place Price"), {"fields": [("settlement", 'date'),
-                                       ('amount', 'currency')]}),)
+        (_("Place Price"), {"fields": [("settlement", 'date'), ('amount', 'currency')]}),)
     ordering = ('amount',)
+
+
+class RoomDiscountAdmin(admin.ModelAdmin):
+    list_display = ('room', 'discount', 'date', 'value')
+    search_fields = ('date',)
+    fieldsets = (
+        (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]}),)
+    ordering = ('value',)
 
 
 admin.site.register(Hotel, HotelAdmin)
@@ -259,4 +266,5 @@ admin.site.register(SettlementVariant, SettlementVariantAdmin)
 admin.site.register(PlacePrice, PlacePriceAdmin)
 admin.site.register(PaymentMethod, PaymentMethodAdmin)
 admin.site.register(Discount, DiscountAdmin)
+admin.site.register(RoomDiscount, RoomDiscountAdmin)
 admin.site.register(HotelType, HotelTypeAdmin)
