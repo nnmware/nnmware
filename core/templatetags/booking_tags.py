@@ -404,7 +404,7 @@ def settlement_prices_on_dates(settlement, dates):
 
 @register.assignment_tag
 def discount_on_dates(discount, room, dates):
-    result = RoomDiscount.objects.filter(discount=discount, room=room, date__in=dates).values_list('date', 'discount').\
+    result = RoomDiscount.objects.filter(discount=discount, room=room, date__in=dates).values_list('date', 'value').\
         order_by('date')
     return make_values_by_dates(dates, result)
 
