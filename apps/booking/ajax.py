@@ -391,7 +391,7 @@ def delete_discount(request):
     return AjaxLazyAnswer(payload)
 
 
-def add_discount(request):
+def add_room_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.REQUEST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
