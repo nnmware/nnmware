@@ -249,8 +249,8 @@ class RoomDiscountAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]}),)
     ordering = ('value',)
-    raw_id_fields = ('room', 'discount')
-    autocomplete_lookup_fields = {'fk': ['room', 'discount']}
+    # raw_id_fields = ('room', 'discount')
+    # autocomplete_lookup_fields = {'fk': ['room', 'discount']}
 
 admin.site.register(Hotel, HotelAdmin)
 admin.site.register(HotelOption, HotelOptionAdmin)
