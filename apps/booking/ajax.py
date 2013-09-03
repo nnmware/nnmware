@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.exceptions import AccessError
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
-    Review, Booking, PaymentMethod, Discount
+    Review, Booking, PaymentMethod, Discount, RoomDiscount
 from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
 from nnmware.apps.money.models import Currency
 import time
@@ -396,6 +396,9 @@ def add_discount(request):
         d = Discount.objects.get(pk=int(request.REQUEST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
+        r = Room.objects.get(pk=int(request.REQUEST['room']))
+        if not RoomDiscount.objects.filter(room=r, discount=d).exists():
+            RoomDiscount(room=r, discount=d).save()
         payload = {'success': True}
     except:
         payload = {'success': False}
