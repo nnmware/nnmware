@@ -392,7 +392,7 @@ def delete_discount(request):
 
 
 def add_discount(request):
-   if 1>0: # try:
+   if 1 > 0: # try:
         d = Discount.objects.get(pk=int(request.REQUEST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
@@ -402,4 +402,4 @@ def add_discount(request):
         payload = {'success': True}
     # except:
     #     payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+   return AjaxLazyAnswer(payload)
