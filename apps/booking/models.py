@@ -435,6 +435,11 @@ class Room(AbstractName):
     def get_absolute_url(self):
         return "room_detail", (), {'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk}
 
+    def active_discounts(self):
+        discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
+            values_list('discount__pk', flat=True).distinct()
+        return Discount.objects.filter(pk__in=discounts)
+
 
 @python_2_unicode_compatible
 class SettlementVariant(models.Model):
