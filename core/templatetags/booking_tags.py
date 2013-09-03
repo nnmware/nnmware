@@ -9,13 +9,12 @@ from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, \
-    HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, Discount
+    HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
 from nnmware.core.models import VisitorHit
 from nnmware.core.utils import convert_to_date
-from nnmware.apps.booking.models import APARTAMENTS, SettlementVariant, Room
 
 
 register = Library()
@@ -404,8 +403,9 @@ def settlement_prices_on_dates(settlement, dates):
 
 
 @register.assignment_tag
-def discount_on_dates(room, dates):
-    result = Discount.objects.filter(room=room, date__in=dates).values_list('date', 'discount').order_by('date')
+def discount_on_dates(discount, room, dates):
+    result = RoomDiscount.objects.filter(discount=discount, room=room, date__in=dates).values_list('date', 'discount').\
+        order_by('date')
     return make_values_by_dates(dates, result)
 
 
