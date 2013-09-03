@@ -438,7 +438,7 @@ class Room(AbstractName):
     def active_discounts(self):
         discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
             values_list('discount__pk', flat=True).distinct()
-        return Discount.objects.filter(pk__in=discounts).order_by('pk')
+        return RoomDiscount.objects.filter(pk__in=discounts).order_by('pk')
 
 
 @python_2_unicode_compatible
