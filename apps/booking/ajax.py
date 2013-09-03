@@ -403,3 +403,16 @@ def add_room_discount(request):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+
+def delete_room_discount(request):
+    try:
+        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+            raise AccessError
+        r = Room.objects.get(pk=int(request.REQUEST['room']))
+        RoomDiscount.objects.filter(room=r, discount=d).delete()
+        payload = {'success': True}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
