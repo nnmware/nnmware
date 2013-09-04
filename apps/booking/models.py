@@ -443,7 +443,7 @@ class Room(AbstractName):
     def inactive_discounts(self):
         discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
             values_list('discount__pk', flat=True).distinct()
-        return Discount.objects.exclude(pk__in=discounts).order_by('pk')
+        return Discount.objects.filter(hotel=self.hotel).exclude(pk__in=discounts).order_by('pk')
 
 
 @python_2_unicode_compatible
