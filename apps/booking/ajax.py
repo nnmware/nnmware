@@ -44,12 +44,12 @@ def room_rates(request):
         if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
             # find settlements keys in data
-        all_settlements, discount = [], []
+        all_settlements, all_discounts = [], []
         for k in json_data.keys():
             if k[0] == 's':
                 all_settlements.append(k)
-            elif k == 'discount':
-                discount.append(k)
+            elif k[0] == 'dt':
+                all_discounts.append(k)
         for i, v in enumerate(json_data['dates']):
             on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
             if 'placecount' in json_data.keys():
@@ -67,14 +67,15 @@ def room_rates(request):
                     availability.save()
                 except ValueError:
                     pass
-            for k in discount:
+            for k in all_discounts:
                 try:
-                    discount_on_date = int(json_data[k][i])
-                    if discount_on_date < 1 or discount_on_date > 99:
-                        raise ValueError
-                    d, created = Discount.objects.get_or_create(date=on_date, room=room)
-                    d.discount = discount_on_date
-                    d.save()
+                    discount_id = int(k[1:])
+                    discount = Discount.objects.get(id=discount_id)
+                    value = int(json_data[k][i])
+                    room_discount, created = RoomDiscount.objects.get_or_create(date=on_date, discount=discount,
+                                                                                room=room)
+                    room_discount.value = value
+                    room_discount.save()
                 except ValueError:
                     pass
             for k in all_settlements:
