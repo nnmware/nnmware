@@ -440,6 +440,11 @@ class Room(AbstractName):
             values_list('discount__pk', flat=True).distinct()
         return Discount.objects.filter(pk__in=discounts).order_by('pk')
 
+    def inactive_discounts(self):
+        discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
+            values_list('discount__pk', flat=True).distinct()
+        return Discount.objects.exclude(pk__in=discounts).order_by('pk')
+
 
 @python_2_unicode_compatible
 class SettlementVariant(models.Model):
