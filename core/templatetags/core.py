@@ -963,3 +963,10 @@ def shop_slider():
 def path_without_i18n(context):
     request = context['request']
     return request.get_full_path()[4:]
+
+
+@register.assignment_tag
+def is_holiday(date):
+    if date.isoweekday() in [6,7]:
+        return True
+    return False
