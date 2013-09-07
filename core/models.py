@@ -137,7 +137,7 @@ class Pic(AbstractContent, AbstractFile):
         pics = Pic.objects.for_object(self.content_object)
         if self.pk:
             pics = pics.exclude(pk=self.pk)
-        if settings.PIC_MAX_PER_OBJECT > 1:
+        if settings.IMG_MAX_PER_OBJECT > 1:
             if self.primary:
                 pics = pics.filter(primary=True)
                 pics.update(primary=False)
@@ -165,7 +165,7 @@ class Pic(AbstractContent, AbstractFile):
             image = Image.open(StringIO(orig))
         except IOError:
             return  # What should we do here?  Render a "sorry, didn't work" img?
-        quality = quality or settings.PIC_THUMB_QUALITY
+        quality = quality or settings.IMG_THUMB_QUALITY
         (w, h) = image.size
         if w != size or h != size:
             if w > h:
@@ -176,9 +176,9 @@ class Pic(AbstractContent, AbstractFile):
                 image = image.crop((0, diff, w, h - diff))
             if image.mode != "RGB":
                 image = image.convert("RGB")
-            image = image.resize((size, size), settings.PIC_RESIZE_METHOD)
+            image = image.resize((size, size), settings.IMG_RESIZE_METHOD)
             thumb = StringIO()
-            image.save(thumb, settings.PIC_THUMB_FORMAT, quality=quality)
+            image.save(thumb, settings.IMG_THUMB_FORMAT, quality=quality)
             thumb_file = ContentFile(thumb.getvalue())
         else:
             thumb_file = ContentFile(orig)

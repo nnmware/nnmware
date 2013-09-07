@@ -66,31 +66,31 @@ class UploadPicForm(forms.Form):
     pic = forms.ImageField()
 
     def __init__(self, *args, **kwargs):
-        kwargs.pop('size', settings.PIC_DEFAULT_SIZE)
+        kwargs.pop('size', settings.IMG_DEFAULT_SIZE)
         super(UploadPicForm, self).__init__(*args, **kwargs)
 
     def clean_pic(self):
         data = self.cleaned_data['pic']
-        if settings.PIC_ALLOWED_FILE_EXTS:
+        if settings.IMG_ALLOWED_FILE_EXTS:
             (root, ext) = os.path.splitext(data.name.lower())
-            if ext not in settings.PIC_ALLOWED_FILE_EXTS:
+            if ext not in settings.IMG_ALLOWED_FILE_EXTS:
                 raise forms.ValidationError(
                     _("%(ext)s is an invalid file extension. "
                       "Authorized extensions are : %(valid_exts_list)s") %
                     {'ext': ext,
-                     'valid_exts_list': ", ".join(settings.PIC_ALLOWED_FILE_EXTS)})
-        if data.size > settings.PIC_MAX_SIZE:
+                     'valid_exts_list': ", ".join(settings.IMG_ALLOWED_FILE_EXTS)})
+        if data.size > settings.IMG_MAX_SIZE:
             raise forms.ValidationError(
                 _("Your file is too big (%(size)s), "
                   "the maximum allowed size is %(max_valid_size)s") %
                 {'size': filesizeformat(data.size),
                  'max_valid_size': filesizeformat(settings.AVATAR_MAX_SIZE)})
         count = Pic.objects.for_object(self.target).count()
-        if count >= settings.PIC_MAX_PER_OBJECT > 1:
+        if count >= settings.IMG_MAX_PER_OBJECT > 1:
             raise forms.ValidationError(
                 _("You already have %(nb_pic)d image, and the "
                   "maximum allowed is %(nb_max_pic)d.") %
-                {'nb_pic': count, 'nb_max_pic': settings.PIC_MAX_PER_OBJECT})
+                {'nb_pic': count, 'nb_max_pic': settings.IMG_MAX_PER_OBJECT})
         return
 
 
