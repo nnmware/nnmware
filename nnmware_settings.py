@@ -63,11 +63,9 @@ PIC_RESIZE_METHOD = getattr(settings, 'PIC_RESIZE_METHOD', Image.ANTIALIAS)
 PIC_DEFAULT_SIZE = getattr(settings, 'PIC_DEFAULT_SIZE', 96)
 PIC_ALLOWED_FILE_EXTS = getattr(settings, 'PIC_ALLOWED_FILE_EXTS', None)
 
-PIC_UPLOAD_DIR = getattr(settings, 'PIC_UPLOAD_DIR', 'pic')
 IMG_UPLOAD_DIR = getattr(settings, 'IMG_UPLOAD_DIR', 'img')
 DOC_UPLOAD_DIR = getattr(settings, 'DOC_UPLOAD_DIR', 'doc')
 AVATAR_UPLOAD_DIR = getattr(settings, 'DOC_UPLOAD_DIR', 'doc')
-PIC_UPLOAD_SIZE = getattr(settings, 'PIC_UPLOAD_SIZE', 10485760)
 IMG_UPLOAD_SIZE = getattr(settings, 'IMG_UPLOAD_SIZE', 10485760)
 DOC_UPLOAD_SIZE = getattr(settings, 'DOC_UPLOAD_SIZE', 10485760)
 

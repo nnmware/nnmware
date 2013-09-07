@@ -23,7 +23,7 @@ from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED
-from nnmware.core.backends import PicUploadBackend, DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
+from nnmware.core.backends import DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
 from nnmware.core.utils import get_oembed_end_point, update_video_size, setting, get_date_directory
@@ -122,7 +122,7 @@ class AjaxFileUploader(AjaxAbstractUploader):
 class AjaxImageUploader(AjaxAbstractUploader):
     def __init__(self, backend=None, **kwargs):
         if backend is None:
-            backend = PicUploadBackend
+            backend = ImgUploadBackend
         self.get_backend = lambda: backend(**kwargs)
 
     def _ajax_upload(self, request, **kwargs):
