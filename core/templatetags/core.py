@@ -823,3 +823,52 @@ def is_holiday(date):
     if date.isoweekday() in [6,7]:
         return True
     return False
+
+
+class SetVarNode(Node):
+
+    def __init__(self, var_name, var_value):
+        self.var_name = var_name
+        self.var_value = var_value
+
+    def render(self, context):
+        try:
+            value = Variable(self.var_value).resolve(context)
+        except VariableDoesNotExist:
+            value = ""
+        context[self.var_name] = value
+        return u""
+
+@register.tag
+def set_var(parser, token):
+    """
+        {% set <var_name>  = <var_value> %}
+    """
+    parts = token.split_contents()
+    if len(parts) < 4:
+        raise TemplateSyntaxError("'set' tag must be of the form:  {% set <var_name>  = <var_value> %}")
+    return SetVarNode(parts[1], parts[3])
+
+
+class RepeatNode(Node):
+    def __init__(self, nodelist, count_from, count_to):
+        self.nodelist = nodelist
+        self.count_from = Variable(count_from)
+        self.count_to = Variable(count_to)
+
+    def render(self, context):
+        output = self.nodelist.render(context)
+        return output * (int(self.count_from.resolve(context)) - int(self.count_to.resolve(context)))
+
+@register.tag
+def repeat(parser, token):
+    bits = token.split_contents()
+
+    if len(bits) != 3:
+        raise TemplateSyntaxError('%r tag requires 2 argument.' % bits[0])
+    count_from = bits[1]
+    count_to = bits[2]
+    nodelist = parser.parse(('endrepeat',))
+    parser.delete_first_token()
+    return RepeatNode(nodelist, count_from, count_to)
+
