@@ -14,6 +14,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import linebreaksbr
+from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
@@ -905,6 +906,30 @@ def file_uploader(request, **kwargs):
         try:
             addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
                                              aspect=int(kwargs['aspect'])))
+        except:
+            addons = {}
+        result.update(addons)
+    return AjaxAnswer(result)
+
+
+def addon_image_uploader(request, **kwargs):
+    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'),
+                            sizeLimit=setting('IMAGE_UPLOAD_SIZE', 10485760))
+    result = uploader.handleUpload(request)
+    if result['success']:
+        new = Pic()
+        new.content_type = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+        new.object_id = int(kwargs['object_id'])
+        new.description = result['old_filename']
+        new.user = request.user
+        new.created_date = now()
+        new.pic = result['path']
+        fullpath = os.path.join(settings.MEDIA_ROOT,
+                                new.pic.field.upload_to, new.pic.path)
+        new.size = os.path.getsize(fullpath)
+        new.save()
+        try:
+            addons = dict(html=render_to_string('upload/image_item.html', {'pic': new}))
         except:
             addons = {}
         result.update(addons)
