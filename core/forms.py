@@ -420,11 +420,13 @@ class VideoAddForm(TagsMixinForm):
 class CoreUserChangeForm(UserChangeForm):
     class Meta:
         model = get_user_model()
+        fields = '__all__'
 
 
 class CoreUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
+        fields = '__all__'
 
     def clean_username(self):
         username = self.cleaned_data["username"]
