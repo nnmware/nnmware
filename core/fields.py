@@ -102,7 +102,7 @@ class JSONField(models.TextField):
 add_introspection_rules([], ['^nnmware\.core\.fields\.JSONField'])
 
 
-def std_text_field(verbose, max_length=256):
+def std_text_field(verbose, max_length=255):
     return models.CharField(verbose_name=verbose, max_length=max_length, blank=True, default='')
 
 
