@@ -734,3 +734,30 @@ class AbstractVendor(models.Model):
 
     def __str__(self):
         return self.name
+
+
+@python_2_unicode_compatible
+class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True)
+    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
+                                    related_name="%(app_label)s_%(class)s_view_comments")
+    comment = models.TextField(verbose_name=_('comment'), null=True, blank=True)
+    parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), null=True, blank=True)
+    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
+
+    class Meta:
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")
+        ordering = ("-created_date",)
+        get_latest_by = "created_date"
+        abstract = True
+
+    def save(self, **kwargs):
+        self.updated_date = now()
+        super(AbstractNnmcomment, self).save(**kwargs)
+
+    def __str__(self):
+        if len(self.comment) > 50:
+            return self.comment[:50] + "..."
+        return self.comment[:50]

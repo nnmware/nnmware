@@ -22,7 +22,7 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.core.abstract import AbstractDate, GENDER_CHOICES
+from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -209,33 +209,12 @@ class Pic(AbstractContent, AbstractFile):
 
 
 @python_2_unicode_compatible
-class FlatNnmcomment(AbstractContent, AbstractIP, AbstractDate):
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True)
-    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
-                                    related_name="%(app_label)s_%(class)s_view_comments")
-    comment = models.TextField(verbose_name=_('comment'), null=True, blank=True)
-    parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), null=True, blank=True)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
-
-    class Meta:
-        verbose_name = _("Comment")
-        verbose_name_plural = _("Comments")
-        ordering = ("-created_date",)
-        get_latest_by = "created_date"
-
-    def save(self, **kwargs):
-        self.updated_date = now()
-        super(FlatNnmcomment, self).save(**kwargs)
-
-    def __str__(self):
-        if len(self.comment) > 50:
-            return self.comment[:50] + "..."
-        return self.comment[:50]
+class FlatNnmcomment(AbstractNnmcomment):
+    pass
 
 
 @python_2_unicode_compatible
-class Nnmcomment(FlatNnmcomment):
+class Nnmcomment(AbstractNnmcomment):
     """
     A threaded comment
     """
