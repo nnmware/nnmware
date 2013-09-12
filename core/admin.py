@@ -24,7 +24,7 @@ class FlatNnmcommentAdmin(admin.ModelAdmin):
         (_('Meta'), {'fields': [('created_date', 'updated_date',
                                  'ip')]}),
     )
-    list_display = ('user', 'created_date', 'content_type', 'comment')
+    list_display = ('user', 'created_date', 'content_type', 'content_object', 'comment')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
