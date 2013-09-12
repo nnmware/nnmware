@@ -212,8 +212,7 @@ class Pic(AbstractContent, AbstractFile):
 class FlatNnmcomment(AbstractNnmcomment):
     pass
 
-    objects = Manager()
-    public = AbstractContentManager()
+    objects = AbstractContentManager()
 
 
 @python_2_unicode_compatible
