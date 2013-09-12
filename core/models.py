@@ -209,36 +209,41 @@ class Pic(AbstractContent, AbstractFile):
 
 
 @python_2_unicode_compatible
-class Nnmcomment(AbstractContent, AbstractIP, AbstractDate):
-    """
-    A threaded comment which must be associated with an instance of
-    ``django.contrib.auth.models.User``.  It is given its hierarchy by
-    a nullable relationship back on itself named ``parent``.
-    It also includes two Managers: ``objects``, which is the same as the normal
-    ``objects`` Manager with a few added utility functions (see above), and
-    ``public``, which has those same utility functions but limits the QuerySet to
-    only those values which are designated as public (``is_public=True``).
-    """
-    # Hierarchy Field
-    parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children')
-    # User Field
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    # Meat n' Potatoes
-    comment = models.TextField(_('comment'))
-    # Status Fields
+class FlatNnmcomment(AbstractContent, AbstractIP, AbstractDate):
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True)
+    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
+                                    related_name='view_comments')
+    comment = models.TextField(verbose_name=_('comment'), null=True, blank=True)
+    parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), null=True, blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
 
-    objects = NnmcommentManager()
-    public = PublicNnmcommentManager()
+    class Meta:
+        verbose_name = _("Comment")
+        verbose_name_plural = _("Comments")
+        ordering = ("-created_date",)
+        get_latest_by = "created_date"
+
+    def save(self, **kwargs):
+        self.updated_date = now()
+        super(FlatNnmcomment, self).save(**kwargs)
 
     def __str__(self):
         if len(self.comment) > 50:
             return self.comment[:50] + "..."
         return self.comment[:50]
 
-    def save(self, **kwargs):
-        self.updated_date = now()
-        super(Nnmcomment, self).save(**kwargs)
+
+@python_2_unicode_compatible
+class Nnmcomment(FlatNnmcomment):
+    """
+    A threaded comment
+    """
+    # Hierarchy Field
+    parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children')
+
+    objects = NnmcommentManager()
+    public = PublicNnmcommentManager()
 
     class Meta:
         ordering = ('-created_date',)

@@ -239,7 +239,7 @@ class Material(AbstractImg):
 
 @python_2_unicode_compatible
 class AbstractName(AbstractImg):
-    name = models.CharField(verbose_name=_("Name"), max_length=255, db_index=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, null=True, db_index=True)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, null=True, db_index=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True, db_index=True)
     description = models.TextField(verbose_name=_("Description"), blank=True, null=True)

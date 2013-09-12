@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from nnmware.core.models import Nnmcomment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
-    EmailValidation
+    EmailValidation, FlatNnmcomment
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -17,9 +17,22 @@ class BaseSkillInline(admin.StackedInline):
     fields = (('skill', 'level', 'addon'),)
 
 
+class FlatNnmcommentAdmin(admin.ModelAdmin):
+    fieldsets = (
+        (_('Comment'), {'fields': [('content_type', 'object_id')]}),
+        (_('Content'), {'fields': [('comment', 'user', 'status')]}),
+        (_('Meta'), {'fields': [('created_date', 'updated_date',
+                                 'ip')]}),
+    )
+    list_display = ('user', 'created_date', 'content_type', '__unicode__')
+    list_filter = ('created_date',)
+    date_hierarchy = 'created_date'
+    search_fields = ('comment', 'user__username')
+
+
 class NnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
-        (_('nnmware'), {'fields': [('parent', 'content_type', 'object_id')]}),
+        (_('Comment'), {'fields': [('parent', 'content_type', 'object_id')]}),
         (_('Content'), {'fields': [('comment', 'user', 'status')]}),
         (_('Meta'), {'fields': [('created_date', 'updated_date',
                                  'ip')]}),
@@ -29,9 +42,6 @@ class NnmcommentAdmin(admin.ModelAdmin):
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
-
-
-admin.site.register(Nnmcomment, NnmcommentAdmin)
 
 
 class TreeAdmin(admin.ModelAdmin):
@@ -242,6 +252,8 @@ admin.site.register(Follow, FollowAdmin)
 admin.site.register(Notice, NoticeAdmin)
 admin.site.register(VisitorHit, VisitorHitAdmin)
 admin.site.register(Video, VideoAdmin)
+admin.site.register(FlatNnmcomment, FlatNnmcommentAdmin)
+admin.site.register(Nnmcomment, NnmcommentAdmin)
 
 
 #class ReadOnlyAdmin(admin.UserAdmin):
