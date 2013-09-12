@@ -23,7 +23,7 @@ from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
-from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED
+from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED, FlatNnmcomment
 from nnmware.core.backends import DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
@@ -743,6 +743,48 @@ def comment_add(request, content_type, object_id, parent_id=None):
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
+
+
+def flat_comment_add(request, content_type, object_id):
+    """
+    Its Ajax flat posted comments
+    """
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        comment = FlatNnmcomment()
+        comment.user = request.user
+        comment.content_type = get_object_or_404(ContentType, id=int(content_type))
+        comment.object_id = int(object_id)
+        comment.ip = request.META['REMOTE_ADDR']
+        comment.user_agent = request.META['HTTP_USER_AGENT']
+        comment.comment = request.REQUEST['comment']
+        if not len(comment.comment):
+            raise AccessError
+        kwargs = {'content_type': content_type, 'object_id': object_id}
+        comment.save()
+        action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
+                    description=comment.comment, target=comment.content_object, request=request)
+        avatar_id = False
+        kwargs['parent_id'] = comment.pk
+        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
+        comment_text = linebreaksbr(comment.comment)
+        comment_date = comment.created_date.strftime(settings.COMMENT_DATE_FORMAT)
+        try:
+            avatar_id = comment.user.avatar.pk
+        except:
+            pass
+        payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
+                   'username_url': comment.get_absolute_url(),
+                   'comment': comment_text, 'avatar_id': avatar_id,
+                   'comment_date': comment_date, 'reply_link': reply_link,
+                   'object_comments': comment.content_object.comments}
+    except AccessError:
+        payload = {'success': False, 'error': _('You are not allowed for add comment')}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
+
 
 
 def push_message(request, object_id):
