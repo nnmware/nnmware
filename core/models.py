@@ -212,7 +212,7 @@ class Pic(AbstractContent, AbstractFile):
 class FlatNnmcomment(AbstractNnmcomment):
     pass
 
-    objects = AbstractContentManager()
+    public = AbstractContentManager()
 
 
 @python_2_unicode_compatible
