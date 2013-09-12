@@ -767,7 +767,6 @@ def flat_comment_add(request, content_type, object_id):
                     description=comment.comment, target=comment.content_object, request=request)
         avatar_id = False
         kwargs['parent_id'] = comment.pk
-        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.created_date.strftime(settings.COMMENT_DATE_FORMAT)
         try:
@@ -777,7 +776,7 @@ def flat_comment_add(request, content_type, object_id):
         payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
                    'username_url': comment.get_absolute_url(),
                    'comment': comment_text, 'avatar_id': avatar_id,
-                   'comment_date': comment_date, 'reply_link': reply_link,
+                   'comment_date': comment_date,
                    'object_comments': comment.content_object.comments}
     # except AccessError:
     #     payload = {'success': False, 'error': _('You are not allowed for add comment')}
