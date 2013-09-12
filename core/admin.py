@@ -19,8 +19,8 @@ class BaseSkillInline(admin.StackedInline):
 
 class FlatNnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
-        (_('Comment'), {'fields': [('content_type', 'object_id')]}),
-        (_('Content'), {'fields': [('comment', 'user', 'status')]}),
+        (_('Comment'), {'fields': [('content_type', 'object_id', 'status')]}),
+        (_('Content'), {'fields': [('user', 'comment')]}),
         (_('Meta'), {'fields': [('created_date', 'updated_date',
                                  'ip')]}),
     )
