@@ -208,14 +208,12 @@ class Pic(AbstractContent, AbstractFile):
     slide_thumbnail.allow_tags = True
 
 
-@python_2_unicode_compatible
 class FlatNnmcomment(AbstractNnmcomment):
     pass
 
     objects = AbstractContentManager()
 
 
-@python_2_unicode_compatible
 class Nnmcomment(AbstractNnmcomment):
     """
     A threaded comment
