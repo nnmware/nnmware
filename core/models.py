@@ -232,15 +232,12 @@ class Nnmcomment(AbstractNnmcomment):
 
 
 @python_2_unicode_compatible
-class Follow(models.Model):
+class Follow(AbstractContent):
     """
     Lets a user follow the activities of any specific actor
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.CharField(max_length=255)
-    content_object = GenericForeignKey('content_type', 'object_id')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Follow'), null=True, blank=True,
+                             related_name='follow')
 
     objects = FollowManager()
 
