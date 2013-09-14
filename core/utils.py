@@ -343,6 +343,7 @@ def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
 
 
 def video_replace(txt):
+    answer = txt
     urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', txt)
     for url in urls:
         if 1>0: #try:
@@ -354,10 +355,10 @@ def video_replace(txt):
                 response = consumer.embed(url)
                 result = response.getData()
                 video_code = update_video_size(result['html'], 500, 280)
-                txt.replace(url, video_code)
+                answer.replace(url, video_code)
         # except:
         #     pass
-    return txt
+    return answer
 
 
 
