@@ -783,24 +783,13 @@ def flat_comment_add(request, content_type, object_id):
         comment.save()
         action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
                     description=comment.comment, target=comment.content_object, request=request)
-        avatar_id = False
-        kwargs['parent_id'] = comment.pk
-        comment_text = linebreaksbr(comment.comment)
-        comment_date = comment.created_date.strftime(settings.COMMENT_DATE_FORMAT)
-        try:
-            avatar_id = comment.user.avatar.pk
-        except:
-            pass
-        payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
-                   'comment': comment_text, 'avatar_id': avatar_id,
-                   'comment_date': comment_date,
-                   'object_comments': comment.content_object.comments}
+        html = render_to_string('comments/item_comment.html', {'comment': comment})
+        payload = {'success': True, 'html': html}
     except AccessError:
         payload = {'success': False, 'error': _('You are not allowed for add comment')}
     except:
         payload = {'success': False}
     return AjaxLazyAnswer(payload)
-
 
 
 def push_message(request, object_id):
