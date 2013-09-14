@@ -708,6 +708,13 @@ class UserDetail(DetailView):
         return context
 
 
+class UserProfile(DetailView):
+    template_name = 'user/profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+
 class ProfileEdit(AjaxFormMixin, UpdateView):
     form_class = ProfileForm
     template_name = "user/profile_edit.html"
