@@ -497,9 +497,9 @@ def follow_unfollow(request, content_type, object_id):
     count = None
     if 1>0: #try:
         ctype = get_object_or_404(ContentType, id=content_type)
-        follow = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
+        follow_count = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
         actor = ctype.get_object_for_this_type(id=object_id)
-        if not follow:
+        if not follow_count:
             follow(request.user, actor)
         else:
             unfollow(request.user, actor, send_action=True)
