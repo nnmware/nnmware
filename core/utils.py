@@ -345,7 +345,7 @@ def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
 def video_replace(txt):
     urls = re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', txt)
     for url in urls:
-        try:
+        if 1>0: #try:
             if url.find('youtu.be') != -1:
                 url = url.replace('youtu.be/', 'www.youtube.com/watch?v=')
                 consumer = oembed.OEmbedConsumer()
@@ -355,8 +355,8 @@ def video_replace(txt):
                 result = response.getData()
                 video_code = update_video_size(result['html'], 500, 280)
                 txt.replace(url, video_code)
-        except:
-            pass
+        # except:
+        #     pass
     return txt
 
 
