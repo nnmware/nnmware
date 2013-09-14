@@ -493,6 +493,24 @@ def unfollow_object(request, content_type_id, object_id):
     return AjaxLazyAnswer(payload)
 
 
+def follow_unfollow(request, content_type_id, object_id):
+    count = None
+    try:
+        ctype = get_object_or_404(ContentType, id=content_type_id)
+        follow = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
+        actor = ctype.get_object_for_this_type(id=object_id)
+        if not follow:
+            follow(request.user, actor)
+        else:
+            unfollow(request.user, actor, send_action=True)
+        count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
+        success = True
+    except:
+        success = False
+    payload = {'success': success, 'count': count}
+    return AjaxLazyAnswer(payload)
+
+
 def autocomplete_users(request):
     search_qs = get_user_model().objects.filter(username__icontains=request.REQUEST['q'])
     results = []
