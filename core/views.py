@@ -1033,7 +1033,7 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
         return get_user_model().objects.filter(id__in=followers)
 
 
-def redirect_page_not_found(request):
+def page_not_found(request):
     response = render_to_response('errors/404.html', {}, context_instance=RequestContext(request))
     response.status_code = 404
     return response
