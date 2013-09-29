@@ -9,6 +9,7 @@ import sys
 import types
 from datetime import datetime, timedelta
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.db import models
 from django.template.loader import render_to_string
@@ -360,5 +361,10 @@ def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
 #         #     pass
 #     return answer
 
+
+def query_user_pk_distinct(query):
+    result = query.values_list('pk', flat=True).distinct()
+    users = get_user_model().objects.filter(pk__in=result)
+    return users
 
 
