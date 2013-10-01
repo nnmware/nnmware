@@ -229,8 +229,6 @@ def room_price_average(context, room, rate):
 @register.simple_tag(takes_context=True)
 def room_full_amount(context, room, rate):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
-    # TODO Discount
-
     settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
         placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(valid_s=Count('pk')).\
         filter(valid_s__gte=delta).order_by('settlement').values_list('pk', flat=True).distinct()[0]
@@ -239,6 +237,23 @@ def room_full_amount(context, room, rate):
     result = PlacePrice.objects.filter(settlement__room=room, settlement__pk=settlement,
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     return convert_to_client_currency(result, rate)
+
+
+@register.assignment_tag(takes_context=True)
+def room_full_amount_discount(context, room, rate):
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
+    # TODO Discount
+    all_discount = RoomDiscount.objects.filter(date__range=date_period, room=room).annotate(Count('pk'))
+    return all_discount
+
+    #settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+    #    placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(valid_s=Count('pk')).\
+    #    filter(valid_s__gte=delta).order_by('settlement').values_list('pk', flat=True).distinct()[0]
+    #
+    #
+    #result = PlacePrice.objects.filter(settlement__room=room, settlement__pk=settlement,
+    #                                   date__range=date_period).aggregate(Sum('amount'))['amount__sum']
+    #return convert_to_client_currency(result, rate)
 
 
 @register.assignment_tag(takes_context=True)
