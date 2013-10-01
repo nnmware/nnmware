@@ -292,6 +292,13 @@ class AbstractName(AbstractImg):
 
         return Pic.objects.for_object(self).order_by('-primary')
 
+    @property
+    def obj_pic(self):
+        try:
+            return self.allpics[0].pic.url
+        except:
+            return None
+
     def save(self, *args, **kwargs):
         if not self.slug:
             if not self.id:
