@@ -295,7 +295,7 @@ class AbstractName(AbstractImg):
     @property
     def obj_pic(self):
         try:
-            return self.allpics[0].pic.url
+            return self.allpics[0]
         except:
             return None
 
