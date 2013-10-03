@@ -976,6 +976,11 @@ def addon_image_uploader(request, **kwargs):
         new.size = os.path.getsize(fullpath)
         new.save()
         try:
+            pics_count = dict(pics_count=new.content_object.pics.count)
+            result.update(pics_count)
+        except:
+            pass
+        try:
             addons = dict(html=render_to_string('upload/image_item.html', {'pic': new}))
         except:
             addons = {}
