@@ -289,7 +289,6 @@ class AbstractName(AbstractImg):
     @property
     def allpics(self):
         from nnmware.core.models import Pic
-
         return Pic.objects.for_object(self).order_by('-primary')
 
     @property
@@ -298,6 +297,11 @@ class AbstractName(AbstractImg):
             return self.allpics[0]
         except:
             return None
+
+    @property
+    def pics_count(self):
+        from nnmware.core.models import Pic
+        return Pic.objects.for_object(self).count()
 
     def save(self, *args, **kwargs):
         if not self.slug:
