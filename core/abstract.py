@@ -29,6 +29,10 @@ class AbstractDate(models.Model):
     class Meta:
         abstract = True
 
+    def save(self, **kwargs):
+        self.updated_date = now()
+        super(AbstractDate, self).save(**kwargs)
+
 
 class AbstractTeaser(models.Model):
     teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True, null=True)
@@ -135,7 +139,6 @@ class AbstractData(AbstractDate):
                 self.description = strip_tags(self.description_from_content())
             except:
                 self.description = ""
-        self.updated_date = now()
         if not self.slug:
             if not self.pk:
                 super(AbstractData, self).save(*args, **kwargs)
@@ -765,10 +768,6 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
         ordering = ("-created_date",)
         get_latest_by = "created_date"
         abstract = True
-
-    def save(self, **kwargs):
-        self.updated_date = now()
-        super(AbstractNnmcomment, self).save(**kwargs)
 
     def __str__(self):
         if len(self.comment) > 50:
