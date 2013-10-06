@@ -405,6 +405,19 @@ post_save.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware
 post_delete.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
 
 
+def update_post_date(sender, instance, **kwargs):
+    try:
+        what = instance.get_content_object()
+        what.comments = FlatNnmcomment.public.all_for_object(what).count()
+        what.updated_date = now()
+        what.save()
+    except:
+        pass
+
+post_save.connect(update_post_date, sender=FlatNnmcomment, dispatch_uid="nnmware_id")
+post_delete.connect(update_post_date, sender=FlatNnmcomment, dispatch_uid="nnmware_id")
+
+
 def update_pic_count(sender, instance, **kwargs):
     what = instance.get_content_object()
     what.pics = Pic.objects.for_object(what).count()
