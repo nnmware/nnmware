@@ -222,7 +222,6 @@ class Nnmcomment(AbstractNnmcomment):
     parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children')
 
     objects = NnmcommentManager()
-    public = PublicNnmcommentManager()
 
     class Meta:
         ordering = ('-created_date',)
