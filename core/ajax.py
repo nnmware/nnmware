@@ -767,7 +767,7 @@ def flat_comment_add(request, content_type, object_id):
     """
     Its Ajax flat posted comments
     """
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated():
             raise AccessError
         comment = FlatNnmcomment()
@@ -785,10 +785,10 @@ def flat_comment_add(request, content_type, object_id):
                     description=comment.comment, target=comment.content_object, request=request)
         html = render_to_string('comments/item_comment.html', {'comment': comment})
         payload = {'success': True, 'html': html}
-    except AccessError:
-        payload = {'success': False, 'error': _('You are not allowed for add comment')}
-    except:
-        payload = {'success': False}
+    #except AccessError:
+    #    payload = {'success': False, 'error': _('You are not allowed for add comment')}
+    #except:
+    #    payload = {'success': False}
     return AjaxLazyAnswer(payload)
 
 
