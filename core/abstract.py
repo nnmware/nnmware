@@ -348,6 +348,11 @@ class Tree(AbstractName):
         verbose_name_plural = _("Trees")
         abstract = True
 
+    def item(self):
+        if self.rootnode:
+            return False
+        return True
+
     def _recurse_for_parents(self, node):
         p_list = []
         if node.parent_id:
