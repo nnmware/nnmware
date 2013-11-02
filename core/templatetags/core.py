@@ -878,3 +878,10 @@ def repeat(parser, token):
     parser.delete_first_token()
     return RepeatNode(nodelist, count_from, count_to)
 
+@register.assignment_tag
+def multiply_2args(arg1, arg2):
+    result = arg1 * arg2
+    return result
+
+
+
