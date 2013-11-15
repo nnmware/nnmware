@@ -81,14 +81,3 @@ class ImageWithThumbnailWidget(FileInput):
             return super(ImageWithThumbnailWidget, self).value_from_datadict(data, files, name)
         else:
             return '__deleted__'
-
-
-class CLEditorWidget(Textarea):
-    def __init__(self, *args, **kwargs):
-        super(CLEditorWidget, self).__init__(*args, **kwargs)
-        self.attrs["class"] = "cleditor"
-
-    class Media:
-        css = {"all": ("css/jquery.cleditor.css",)}
-        js = ("js/jquery.cleditor.min.js",
-              "js/jquery.cleditor.icon.min.js")
