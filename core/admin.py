@@ -125,14 +125,14 @@ class PicAdmin(admin.ModelAdmin):
 
 
 class VisitorHitAdmin(admin.ModelAdmin):
-    readonly_fields = ('user', 'date', 'ip_address', 'session_key', 'user_agent', 'referer',
+    readonly_fields = ('user', 'date', 'ip', 'session_key', 'user_agent', 'referer',
                        'url', 'secure', 'hostname')
-    fieldsets = ((_('Visitor hit'), {'fields': [('user', 'date', 'secure'), ('ip_address', 'session_key'),
+    fieldsets = ((_('Visitor hit'), {'fields': [('user', 'date', 'secure'), ('ip', 'session_key'),
                                                 ('user_agent', 'referer'), ('url', 'hostname'), ]}),)
-    list_display = ('user', 'date', 'ip_address', 'user_agent', 'url', 'secure', 'referer')
-    list_filter = ('date', 'user', 'ip_address')
-    search_fields = ('user__username', 'user_agent', 'ip_address', 'url')
-    ordering = ('-date', 'user', 'ip_address')
+    list_display = ('user', 'date', 'ip', 'user_agent', 'url', 'secure', 'referer')
+    list_filter = ('date', 'user', 'ip')
+    search_fields = ('user__username', 'user_agent', 'ip', 'url')
+    ordering = ('-date', 'user', 'ip')
 
 
 class TagAdmin(admin.ModelAdmin):

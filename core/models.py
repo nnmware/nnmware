@@ -434,13 +434,11 @@ def update_doc_count(sender, instance, **kwargs):
 #signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
 
 
-class VisitorHit(models.Model):
+class VisitorHit(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
-    ip_address = models.GenericIPAddressField(verbose_name=_('IP'), blank=True, null=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
-    user_agent = models.CharField(max_length=255, verbose_name=_('User-agent'))
     referer = models.TextField(verbose_name=_('Referer'))
     url = models.CharField(max_length=255, verbose_name=_('URL'))
     secure = models.BooleanField(_('Is secure'), default=False)

@@ -50,7 +50,7 @@ class VisitorHitMiddleware(object):
         if request.user.is_authenticated():
             v.user = request.user
         v.user_agent = user_agent
-        v.ip_address = request.META.get('REMOTE_ADDR', '')
+        v.ip = request.META.get('REMOTE_ADDR', '')
         v.session_key = get_session_from_request(request)
         v.secure = request.is_secure()
         v.referer = request.META.get('HTTP_REFERER', '')
