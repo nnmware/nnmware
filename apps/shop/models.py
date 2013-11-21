@@ -344,8 +344,8 @@ class DeliveryAddress(AbstractLocation):
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
-    phone = models.CharField(max_length=20, verbose_name=_('Phone'), default='', blank=True, null=True)
-    skype = models.CharField(max_length=50, verbose_name=_('Skype'), default='', blank=True, null=True)
+    phone = models.CharField(max_length=20, verbose_name=_('Phone'), default='', blank=True)
+    skype = models.CharField(max_length=50, verbose_name=_('Skype'), default='', blank=True)
 
     class Meta:
         verbose_name = _("Delivery Address")
@@ -388,7 +388,7 @@ class Feedback(AbstractIP):
     name = std_text_field(_('Name'))
     email = std_text_field(_('Email'))
     message = models.TextField(verbose_name=_("Message"))
-    answer = models.TextField(verbose_name=_("Answer"), null=True, blank=True)
+    answer = models.TextField(verbose_name=_("Answer"), blank=True)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True,
                                related_name='%(class)s_seller')
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Buyer'), blank=True, null=True,
@@ -430,7 +430,7 @@ class Review(AbstractIP, AbstractImg):
 class ShopText(AbstractTeaser):
     created_date = models.DateTimeField(_("Created date"), default=now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
-    content = models.TextField(verbose_name=_("Content"), null=True, blank=True)
+    content = models.TextField(verbose_name=_("Content"), blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
 
     class Meta:
@@ -482,7 +482,7 @@ class ShopCallback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     clientname = std_text_field(_('Client Name'))
     clientphone = std_text_field(_('Client Phone'))
-    description = models.TextField(verbose_name=_("Description"), null=True, blank=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True)
     closed = models.BooleanField(verbose_name=_("Closed"), default=False)
     quickorder = models.BooleanField(verbose_name=_("Quick order"), default=False)
 

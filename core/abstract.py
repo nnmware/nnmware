@@ -35,8 +35,8 @@ class AbstractDate(models.Model):
 
 
 class AbstractTeaser(models.Model):
-    teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True, null=True)
-    teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True, null=True,
+    teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True)
+    teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True,
                                  db_index=True)
 
     class Meta:
@@ -242,12 +242,12 @@ class Material(AbstractImg):
 
 @python_2_unicode_compatible
 class AbstractName(AbstractImg):
-    name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, null=True, db_index=True)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, null=True, db_index=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True)
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True, db_index=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True, null=True)
-    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, null=True)
-    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True, db_index=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True)
+    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, db_index=True)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
                                                 blank=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
@@ -512,7 +512,7 @@ class AbstractFile(AbstractDate):
 
 class AbstractIP(models.Model):
     ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
-    user_agent = models.CharField(verbose_name=_('User Agent'), null=True, blank=True, max_length=255)
+    user_agent = models.CharField(verbose_name=_('User Agent'), blank=True, max_length=255)
 
     class Meta:
         abstract = True
@@ -668,9 +668,9 @@ class AbstractOffer(AbstractImg):
     start_date = models.DateTimeField(_("Start date"), default=now)
     end_date = models.DateTimeField(_("End date"), default=now)
     title = std_text_field(_('Title'))
-    text = models.TextField(verbose_name=_("Offer text"), null=True, blank=True)
+    text = models.TextField(verbose_name=_("Offer text"), blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
-    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, null=True)
+    slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True)
     order_in_list = models.IntegerField(_('Order in list'), default=0)
 
     objects = Manager()
@@ -741,7 +741,7 @@ class UserMixin(models.Model):
 @python_2_unicode_compatible
 class AbstractVendor(models.Model):
     name = models.CharField(_("Name of vendor"), max_length=200)
-    name_en = models.CharField(_("Name of vendor(english)"), max_length=200, null=True, blank=True)
+    name_en = models.CharField(_("Name of vendor(english)"), max_length=200, blank=True)
     website = std_url_field(_("URL"))
     description = models.TextField(_("Description of Vendor"), help_text=_("Description of Vendor"), default='',
                                    blank=True)
@@ -763,8 +763,8 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
                              related_name="%(app_label)s_%(class)s_user")
     viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
                                     related_name="%(app_label)s_%(class)s_view_comments")
-    comment = models.TextField(verbose_name=_('comment'), null=True, blank=True)
-    parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), null=True, blank=True)
+    comment = models.TextField(verbose_name=_('comment'), blank=True)
+    parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
 
     class Meta:

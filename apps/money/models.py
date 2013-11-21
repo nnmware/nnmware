@@ -78,13 +78,13 @@ class Transaction(MoneyBase):
 
     actor_ctype = models.ForeignKey(ContentType, verbose_name=_("Object Content Type"), null=True, blank=True,
         related_name='transaction_object', on_delete=models.SET_NULL)
-    actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), null=True, blank=True)
+    actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), blank=True)
     actor = GenericForeignKey('actor_ctype', 'actor_oid')
     date = models.DateTimeField(verbose_name=_("Date"), default=now)
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='transaction_target', on_delete=models.SET_NULL)
-    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
+    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), blank=True)
     target = GenericForeignKey('target_ctype', 'target_oid')
 
     objects = FinancialManager()
@@ -130,7 +130,7 @@ class Bill(MoneyBase):
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
     target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
         related_name='target_account_ctype', on_delete=models.SET_NULL)
-    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), null=True, blank=True)
+    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), blank=True)
     target = GenericForeignKey('target_ctype', 'target_oid')
     description = models.TextField(_("Description"), blank=True)
 

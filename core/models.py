@@ -274,7 +274,7 @@ class Notice(AbstractContent, AbstractIP):
     notice_type = models.IntegerField(_("Notice Type"), choices=NOTICE_CHOICES, default=NOTICE_UNKNOWN)
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender')
     verb = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
     timestamp = models.DateTimeField(default=now)
 
     class Meta:
@@ -288,7 +288,7 @@ class Message(AbstractIP):
     """
     A private message from user to user
     """
-    subject = models.CharField(_("Subject"), max_length=120, blank=True, null=True)
+    subject = models.CharField(_("Subject"), max_length=120, blank=True)
     body = models.TextField(_("Body"))
     sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender_messages', verbose_name=_("Sender"), )
     recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='receiver_messages', null=True, blank=True,
@@ -362,7 +362,7 @@ class Action(AbstractContent, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='actions')
     action_type = models.IntegerField(_("Action Type"), choices=ACTION_CHOICES, default=ACTION_UNKNOWN)
     verb = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
     timestamp = models.DateTimeField(default=now)
 
     class Meta:

@@ -33,7 +33,7 @@ class HotelPoints(models.Model):
 
 
 class HotelOptionCategory(AbstractName):
-    icon = models.ImageField(upload_to="ico/", blank=True, null=True)
+    icon = models.ImageField(upload_to="ico/", blank=True)
 
     class Meta:
         verbose_name = _("Hotel Option Category")
@@ -159,17 +159,16 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     in_top10 = models.BooleanField(verbose_name=_("In top 10"), default=False, db_index=True)
     current_amount = models.DecimalField(verbose_name=_('Current amount'), default=0, max_digits=20, decimal_places=3,
                                          db_index=True)
-    booking_terms = models.TextField(verbose_name=_("Booking terms"), blank=True, null=True)
-    schema_transit = models.TextField(verbose_name=_("Schema of transit"), blank=True, null=True)
-    booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True, null=True)
-    schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True, null=True)
+    booking_terms = models.TextField(verbose_name=_("Booking terms"), blank=True)
+    schema_transit = models.TextField(verbose_name=_("Schema of transit"), blank=True)
+    booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True)
+    schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True)
     payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
-    condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True, null=True)
-    condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True,
-                                                 null=True)
-    paid_services = models.TextField(verbose_name=_("Paid services"), blank=True, null=True)
-    paid_services_en = models.TextField(verbose_name=_("Paid services(English)"), blank=True, null=True)
+    condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True)
+    condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True)
+    paid_services = models.TextField(verbose_name=_("Paid services"), blank=True)
+    paid_services_en = models.TextField(verbose_name=_("Paid services(English)"), blank=True)
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
     work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False, db_index=True)
@@ -508,17 +507,16 @@ class Booking(MoneyBase, AbstractIP):
     to_date = models.DateField(_("To"))
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), null=True,
                                    on_delete=models.SET_NULL)
-    settlement_txt = models.CharField(verbose_name=_("Settlement Variant in text"), max_length=255, blank=True,
-                                      null=True)
+    settlement_txt = models.CharField(verbose_name=_("Settlement Variant in text"), max_length=255, blank=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), blank=True, null=True, on_delete=models.SET_NULL)
-    hotel_txt = models.CharField(verbose_name=_("Hotel in text"), max_length=255, blank=True, null=True)
+    hotel_txt = models.CharField(verbose_name=_("Hotel in text"), max_length=255, blank=True)
     status = models.IntegerField(_("Booking status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
     first_name = models.CharField(verbose_name=_("First name"), max_length=100)
     middle_name = models.CharField(verbose_name=_("Middle name"), max_length=100, blank=True)
     last_name = models.CharField(verbose_name=_("Last name"), max_length=100)
     phone = models.CharField(max_length=100, verbose_name=_('Phone'), blank=True)
     email = models.CharField(_('E-mail'), blank=True, max_length=100)
-    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, null=True, editable=False)
+    uuid = models.CharField(verbose_name=_("Unique ID"), max_length=64, blank=True, editable=False)
     commission = models.DecimalField(verbose_name=_('Commission'), default=0, max_digits=20, decimal_places=3)
     hotel_sum = models.DecimalField(verbose_name=_('Hotel Sum'), default=0, max_digits=20, decimal_places=3)
     card_number = models.CharField(verbose_name=_("Card number"), max_length=16, blank=True)
@@ -753,15 +751,15 @@ class PlacePrice(MoneyBase):
 class RequestAddHotel(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     register_date = models.DateTimeField(_("Register date"), default=now)
-    city = models.CharField(verbose_name=_("City"), max_length=100, null=True, blank=True)
-    address = models.CharField(verbose_name=_("Address"), max_length=100, null=True, blank=True)
-    name = models.CharField(verbose_name=_("Name"), max_length=100, null=True, blank=True)
-    email = models.CharField(verbose_name=_("Email"), max_length=100, null=True, blank=True)
-    phone = models.CharField(verbose_name=_("Phone"), max_length=100, null=True, blank=True)
-    fax = models.CharField(verbose_name=_("Fax"), max_length=100, null=True, blank=True)
-    contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, null=True, blank=True)
-    website = models.CharField(verbose_name=_("Website"), max_length=100, null=True, blank=True)
-    rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, null=True, blank=True)
+    city = models.CharField(verbose_name=_("City"), max_length=100, blank=True)
+    address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=100, blank=True)
+    email = models.CharField(verbose_name=_("Email"), max_length=100, blank=True)
+    phone = models.CharField(verbose_name=_("Phone"), max_length=100, blank=True)
+    fax = models.CharField(verbose_name=_("Fax"), max_length=100, blank=True)
+    contact_email = models.CharField(verbose_name=_("Contact email"), max_length=100, blank=True)
+    website = models.CharField(verbose_name=_("Website"), max_length=100, blank=True)
+    rooms_count = models.CharField(verbose_name=_("Count of rooms"), max_length=100, blank=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR)
 
     class Meta:
