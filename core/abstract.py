@@ -511,7 +511,7 @@ class AbstractFile(AbstractDate):
 
 
 class AbstractIP(models.Model):
-    ip = models.IPAddressField(verbose_name=_('IP'), null=True, blank=True)
+    ip = models.GenericIPAddressField(verbose_name=_('IP'), null=True, blank=True)
     user_agent = models.CharField(verbose_name=_('User Agent'), blank=True, max_length=255)
 
     class Meta:
