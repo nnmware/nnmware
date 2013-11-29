@@ -7,7 +7,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import permalink, signals, Avg, Min
 from django.db.models.manager import Manager
-from django.template.defaultfilters import floatformat, date
+from django.template.defaultfilters import date
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils.translation.trans_real import get_language
@@ -16,7 +16,6 @@ from django.core.cache import cache
 from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName, AbstractDate
-from nnmware.core.config import CURRENCY
 from nnmware.core.maps import places_near_object
 
 
@@ -268,15 +267,15 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         except IndexError:
             return None
 
-    def get_percent_on_date(self, date):
-        return AgentPercent.objects.filter(hotel=self).filter(date__lte=date).order_by('-date')[0].percent
+    def get_percent_on_date(self, on_date):
+        return AgentPercent.objects.filter(hotel=self).filter(date__lte=on_date).order_by('-date')[0].percent
 
     @property
     def min_current_amount(self):
         return self.amount_on_date(now())
 
-    def amount_on_date(self, date):
-        result = PlacePrice.objects.filter(settlement__room__hotel=self, settlement__enabled=True, date=date).\
+    def amount_on_date(self, on_date):
+        result = PlacePrice.objects.filter(settlement__room__hotel=self, settlement__enabled=True, date=on_date).\
             aggregate(Min('amount'))
         amount = result['amount__min']
         if amount:
@@ -400,29 +399,29 @@ class Room(AbstractName):
     def min_current_amount(self):
         return self.amount_on_date(now())
 
-    def amount_on_date(self, date, guests=None):
-        result = PlacePrice.objects.filter(settlement__room=self, settlement__enabled=True, date=date).\
+    def amount_on_date(self, on_date, guests=None):
+        result = PlacePrice.objects.filter(settlement__room=self, settlement__enabled=True, date=on_date).\
             aggregate(Min('amount'))
         amount = result['amount__min']
         if amount:
             return amount
         return 0
 
-    def amount_date_guests(self, date, guests):
+    def amount_date_guests(self, on_date, guests):
         try:
             s = SettlementVariant.objects.select_related().filter(room=self, enabled=True, settlement__gte=guests).\
                 order_by('settlement')[0]
-            return s.amount_on_date(date)
+            return s.amount_on_date(on_date)
         except:
             return None
 
-    def discount_on_date(self, date):
+    def discount_on_date(self, on_date):
         try:
-            return Discount.objects.get(room=self, date=date).discount
+            return Discount.objects.get(room=self, date=on_date).discount
         except:
             return None
 
-    def settlement_on_date_for_guests(self, date, guests):
+    def settlement_on_date_for_guests(self, on_date, guests):
         result = SettlementVariant.objects.filter(room=self, enabled=True, settlement__gte=guests).\
             aggregate(Min('settlement'))
         return result['settlement__min']
@@ -467,8 +466,8 @@ class SettlementVariant(models.Model):
         else:
             return 0
 
-    def amount_on_date(self, date):
-        result = PlacePrice.objects.filter(settlement=self, date__lte=date).order_by('-date')
+    def amount_on_date(self, on_date):
+        result = PlacePrice.objects.filter(settlement=self, date__lte=on_date).order_by('-date')
         if result:
             return result[0].amount
         else:
