@@ -11,3 +11,7 @@ class UserIsDisabled(Exception):
 
 class ShopError(Exception):
     pass
+
+
+class EmptyDataError(Exception):
+    pass
