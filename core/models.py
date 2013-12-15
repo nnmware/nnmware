@@ -439,7 +439,7 @@ class VisitorHit(AbstractIP):
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), db_index=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'), db_index=True)
-    referer = models.TextField(verbose_name=_('Referer'), db_index=True)
+    referer = models.TextField(verbose_name=_('Referer'))
     url = models.CharField(max_length=255, verbose_name=_('URL'), db_index=True)
     secure = models.BooleanField(_('Is secure'), default=False, db_index=True)
 
