@@ -436,12 +436,12 @@ def update_doc_count(sender, instance, **kwargs):
 
 class VisitorHit(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
-    session_key = models.CharField(max_length=40, verbose_name=_('Session key'))
-    hostname = models.CharField(max_length=100, verbose_name=_('Hostname'))
-    referer = models.TextField(verbose_name=_('Referer'))
-    url = models.CharField(max_length=255, verbose_name=_('URL'))
-    secure = models.BooleanField(_('Is secure'), default=False)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
+    session_key = models.CharField(max_length=40, verbose_name=_('Session key'), db_index=True)
+    hostname = models.CharField(max_length=100, verbose_name=_('Hostname'), db_index=True)
+    referer = models.TextField(verbose_name=_('Referer'), db_index=True)
+    url = models.CharField(max_length=255, verbose_name=_('URL'), db_index=True)
+    secure = models.BooleanField(_('Is secure'), default=False, db_index=True)
 
     class Meta:
         ordering = ['-date']
