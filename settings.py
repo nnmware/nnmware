@@ -140,6 +140,9 @@ INSTALLED_APPS = (
     'nnmware.apps.shop',
     'nnmware.apps.address',
     'nnmware.apps.dossier',
+    'nnmware.apps.business',
+    'nnmware.apps.realty',
+    'nnmware.apps.transport',
     'nnmware.demo',
     )
 
