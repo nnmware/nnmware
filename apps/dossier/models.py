@@ -11,12 +11,68 @@ from nnmware.core.utils import tuplify, current_year
 
 EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
 
-GROWTH = map(tuplify, range(50, 221))
-WEIGHT = map(tuplify, range(1, 150))
-CLOTHING_SIZE = map(tuplify, range(16, 74, 2))
-SHOE_SIZE = map(tuplify, range(16, 49))
-HEAD_SIZE = map(tuplify, range(34, 63))
 AGE_SIZE = map(tuplify, range(1, 101))
+
+
+DST_FOR_UNKNOWN = 0
+DST_FOR_CHILD = 1
+DST_FOR_WOMAN = 2
+DST_FOR_MAN = 3
+
+
+DST_FOR_CHOICES = (
+    (DST_FOR_UNKNOWN, _("Unknown")),
+    (DST_FOR_CHILD, _("Child")),
+    (DST_FOR_WOMAN, _("Woman")),
+    (DST_FOR_MAN, _("Man")),
+)
+
+
+class ClothingSize(models.Model):
+    international = std_text_field(_('International'))
+    russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
+    eu = models.PositiveSmallIntegerField(verbose_name=_('EU size'), blank=True, null=True, default=None)
+    uk = models.PositiveSmallIntegerField(verbose_name=_('UK size'), blank=True, null=True, default=None)
+    us = models.PositiveSmallIntegerField(verbose_name=_('US size'), blank=True, null=True, default=None)
+    dest = models.PositiveSmallIntegerField(verbose_name=_('Size for'), choices=DST_FOR_CHOICES,
+                                            default=DST_FOR_UNKNOWN)
+
+    class Meta:
+        verbose_name = _("Clothing size")
+        verbose_name_plural = _("Clothing sizes")
+
+
+class ShoesSize(models.Model):
+    cm = models.DecimalField(verbose_name=_('Centimeters'), default=0, max_digits=5, decimal_places=1)
+    ru = models.DecimalField(verbose_name=_('Russian'), default=0, max_digits=5, decimal_places=1)
+    eu = models.DecimalField(verbose_name=_('Europe'), default=0, max_digits=5, decimal_places=1)
+    us = models.DecimalField(verbose_name=_('USA'), default=0, max_digits=5, decimal_places=1)
+    dest = models.PositiveSmallIntegerField(verbose_name=_('Size for'), choices=DST_FOR_CHOICES,
+                                            default=DST_FOR_UNKNOWN)
+
+    class Meta:
+        verbose_name = _("Shoes size")
+        verbose_name_plural = _("Shoes sizes")
+
+
+class HeadSize(models.Model):
+    international = std_text_field(_('International'))
+    russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
+    dest = models.PositiveSmallIntegerField(verbose_name=_('Size for'), choices=DST_FOR_CHOICES,
+                                            default=DST_FOR_UNKNOWN)
+
+    class Meta:
+        verbose_name = _("Head size")
+        verbose_name_plural = _("Head sizes")
+
+
+class ChestSize(models.Model):
+    international = std_text_field(_('International'))
+    russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
+
+    class Meta:
+        verbose_name = _("Chest size")
+        verbose_name_plural = _("Chest sizes")
 
 
 class Education(AbstractImg):
@@ -201,11 +257,18 @@ class AbstractHumanAppearance(models.Model):
     feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True)
     another_feature = std_text_field(_('Text of Another feature of appearance'))
-    growth = models.IntegerField(_('Growth'), choices=GROWTH, blank=True, null=True, default=None)
-    weight = models.IntegerField(_('Weight'), choices=WEIGHT, blank=True, null=True, default=None)
-    clothing_size = models.IntegerField(_('Clothing size'), choices=CLOTHING_SIZE, blank=True, null=True, default=None)
-    shoe_size = models.IntegerField(_('Shoe size'), choices=SHOE_SIZE, blank=True, null=True, default=None)
-    head_size = models.IntegerField(_('Head size'), choices=HEAD_SIZE, blank=True, null=True, default=None)
+
+    growth = models.PositiveSmallIntegerField(verbose_name=_('Growth'), blank=True, null=True, default=None)
+    weight = models.PositiveSmallIntegerField(verbose_name=_('Weight'), blank=True, null=True, default=None)
+    girth_chest = models.PositiveSmallIntegerField(verbose_name=_('Girth chest'), blank=True, null=True, default=None)
+    girth_waist = models.PositiveSmallIntegerField(verbose_name=_('Girth waist'), blank=True, null=True, default=None)
+    girth_thigh = models.PositiveSmallIntegerField(verbose_name=_('Girth thigh'), blank=True, null=True, default=None)
+    girth_head = models.PositiveSmallIntegerField(verbose_name=_('Girth head'), blank=True, null=True, default=None)
+    size_clothing = models.ForeignKey(ClothingSize, blank=True, null=True, default=None)
+    size_shoes = models.ForeignKey(ShoesSize, blank=True, null=True, default=None)
+    size_head = models.ForeignKey(HeadSize, blank=True, null=True, default=None)
+    size_chest = models.ForeignKey(ChestSize, blank=True, null=True, default=None)
+
     hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'),
                                    related_name='hair_color', blank=True, null=True)
     natural_hair_color = models.ForeignKey(HairColor, verbose_name=_('Natural hair color'),
