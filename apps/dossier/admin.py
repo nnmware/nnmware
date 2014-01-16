@@ -282,6 +282,15 @@ class ChildAdmin(admin.ModelAdmin):
     ordering = ('name', 'gender')
 
 
+class ClothingSizeAdmin(admin.ModelAdmin):
+    list_display = ('international', 'russian')
+    search_fields = ('international',)
+    fieldsets = (
+        (_("Clothing size"), {"fields": [('international', 'russian'), ]}),
+    )
+    ordering = ('international', )
+
+
 admin.site.register(TypeDance, TypeDanceAdmin)
 admin.site.register(TypeVocal, TypeVocalAdmin)
 admin.site.register(TypeMusicInstrument, TypeMusicInstrumentAdmin)
@@ -320,4 +329,5 @@ admin.site.register(Child, ChildAdmin)
 admin.site.register(RequisiteType, RequisiteTypeAdmin)
 admin.site.register(Requisite, RequisiteAdmin)
 admin.site.register(ReadinessScene, ReadinessSceneAdmin)
+admin.site.register(ClothingSize, ClothingSizeAdmin)
 
