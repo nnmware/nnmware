@@ -27,7 +27,7 @@ DST_FOR_CHOICES = (
     (DST_FOR_MAN, _("Man")),
 )
 
-
+@python_2_unicode_compatible
 class ClothingSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -40,6 +40,9 @@ class ClothingSize(models.Model):
     class Meta:
         verbose_name = _("Clothing size")
         verbose_name_plural = _("Clothing sizes")
+
+    def __str__(self):
+        return "%s / %s" % (self.international, self.russian)
 
 
 class ShoesSize(models.Model):
