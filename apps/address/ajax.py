@@ -6,8 +6,8 @@ from nnmware.core.ajax import AjaxLazyAnswer
 
 def base_autocomplete(obj, request):
     search_qs = obj.objects.filter(
-        Q(name__icontains=request.REQUEST['q']) |
-        Q(name_en__icontains=request.REQUEST['q'])).order_by('name')
+        Q(name__icontains=request.POST['q']) |
+        Q(name_en__icontains=request.POST['q'])).order_by('name')
     results = []
     for r in search_qs:
         userstring = {'name': r.get_name, 'slug': r.slug}

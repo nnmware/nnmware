@@ -24,8 +24,8 @@ class BasketError(Exception):
 def autocomplete_search(request, size=16):
     results = []
     search_qs = Product.objects.filter(
-        Q(name__icontains=request.REQUEST['q']) |
-        Q(name_en__icontains=request.REQUEST['q'])).order_by('name')[:5]
+        Q(name__icontains=request.POST['q']) |
+        Q(name_en__icontains=request.POST['q'])).order_by('name')[:5]
     for r in search_qs:
         img = make_thumbnail(r.main_image, width=int(size))
         userstring = {'name': r.name, 'path': r.get_absolute_url(),
@@ -45,9 +45,9 @@ def add_param(request, object_id):
         param = ProductParameterValue()
         param.content_type = ctype
         param.object_id = p.pk
-        param.parameter = get_object_or_404(ProductParameter, pk=int(request.REQUEST['param']))
-        param.value = request.REQUEST['value']
-        if request.REQUEST['keyparam'] == 'on':
+        param.parameter = get_object_or_404(ProductParameter, pk=int(request.POST['param']))
+        param.value = request.POST['value']
+        if request.POST['keyparam'] == 'on':
             param.keyparam = True
         param.save()
         try:
@@ -84,7 +84,7 @@ def add_basket(request, object_id):
         if not p.avail or p.quantity < 1 or p.amount <= 0:
             raise AccessError
         try:
-            color_id = request.REQUEST['color']
+            color_id = request.POST['color']
             color = ProductColor.objects.get(pk=int(color_id))
             addon_text = color.name
         except:
@@ -299,9 +299,9 @@ def add_color(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         p = get_object_or_404(Product, pk=int(object_id))
-        color = get_object_or_404(ProductColor, pk=int(request.REQUEST['color']))
-        w = int(request.REQUEST['width'])
-        h = int(request.REQUEST['height'])
+        color = get_object_or_404(ProductColor, pk=int(request.POST['color']))
+        w = int(request.POST['width'])
+        h = int(request.POST['height'])
         p.colors.add(color)
         p.save()
         payload = {'success': True, 'name': color.name, 'id': color.pk,
@@ -334,7 +334,7 @@ def add_material(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         p = get_object_or_404(Product, pk=int(object_id))
-        material = get_object_or_404(ProductMaterial, pk=int(request.REQUEST['material']))
+        material = get_object_or_404(ProductMaterial, pk=int(request.POST['material']))
         p.materials.add(material)
         p.save()
         payload = {'success': True, 'name': material.name, 'id': material.pk}
@@ -366,7 +366,7 @@ def add_related_product(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         p = get_object_or_404(Product, pk=int(object_id))
-        product = get_object_or_404(Product, pk=int(request.REQUEST['product']))
+        product = get_object_or_404(Product, pk=int(request.POST['product']))
         p.related_products.add(product)
         p.save()
         payload = {'success': True, 'name': product.name, 'id': product.pk, 'url': product.get_absolute_url(),

@@ -292,7 +292,7 @@ def img_rotate(request):
     try:
         if not request.user.is_superuser:
             raise AccessError
-        img_pk = request.REQUEST['crop_id']
+        img_pk = request.POST['crop_id']
         pic = get_object_or_404(Pic, id=int(img_pk))
         img = get_path_from_url(pic.pic.url)
         im = Image.open(img)
@@ -328,7 +328,7 @@ def avatardelete(request):
 
 
 def get_video(request):
-    link = request.REQUEST['link']
+    link = request.POST['link']
     if not link[:7] == 'http://':
         link = 'http://%s' % link
     if link.find('youtu.be') != -1:
@@ -512,7 +512,7 @@ def follow_unfollow(request, content_type, object_id):
 
 
 def autocomplete_users(request):
-    search_qs = get_user_model().objects.filter(username__icontains=request.REQUEST['q'])
+    search_qs = get_user_model().objects.filter(username__icontains=request.POST['q'])
     results = []
     for r in search_qs:
         userstring = {'name': r.username, 'fullname': r.fullname}
@@ -522,7 +522,7 @@ def autocomplete_users(request):
 
 
 def autocomplete_tags(request):
-    search_qs = Tag.objects.filter(name__icontains=request.REQUEST['q'])
+    search_qs = Tag.objects.filter(name__icontains=request.POST['q'])
     results = []
     for r in search_qs:
         results.append(r.name)
@@ -584,7 +584,7 @@ def message_add(request):
     """
     Message add ajax
     """
-    recipients = request.REQUEST['recipients'].strip().split(',')
+    recipients = request.POST['recipients'].strip().split(',')
     recipients = filter(None, recipients)  # Remove empty values
     try:
         for u in recipients:
@@ -594,7 +594,7 @@ def message_add(request):
                 m.recipient = user
                 m.sent_at = now()
                 m.sender = request.user
-                m.body = request.REQUEST['body']
+                m.body = request.POST['body']
                 m.save()
         success = True
     except:
@@ -605,7 +605,7 @@ def message_add(request):
 
 
 def message_user_add(request):
-    user = get_object_or_404(get_user_model(), username=request.REQUEST['user'])
+    user = get_object_or_404(get_user_model(), username=request.POST['user'])
     result = dict()
     result['fullname'] = user.get_name()
     result['url'] = user.get_absolute_url()
@@ -669,10 +669,10 @@ def pic_getcrop(request, object_id):
 
 
 def AjaxGetThumbnail(request):
-    img_pk = int(request.REQUEST['image_id'])
+    img_pk = int(request.POST['image_id'])
     pic = get_object_or_404(Pic, id=int(img_pk))
-    width = request.REQUEST.get('width') or None
-    height = request.REQUEST.get('height') or None
+    width = request.POST.get('width') or None
+    height = request.POST.get('height') or None
     if width:
         width = int(width)
     if height:
@@ -687,7 +687,7 @@ def AjaxGetThumbnail(request):
 def ajax_image_crop(request):
     # Crop image
     try:
-        img_pk = request.REQUEST['crop_id']
+        img_pk = request.POST['crop_id']
         pic = get_object_or_404(Pic, id=int(img_pk))
         if not request.user.is_superuser:
             parent_object = pic.content_object.__class__.__name__
@@ -697,10 +697,10 @@ def ajax_image_crop(request):
             elif parent_object == 'Hotel':
                 if not request.user in pic.content_object.admins.all():
                     raise AccessError
-        left = int(request.REQUEST['crop_x1'])
-        right = int(request.REQUEST['crop_x2'])
-        top = int(request.REQUEST['crop_y1'])
-        bottom = int(request.REQUEST['crop_y2'])
+        left = int(request.POST['crop_x1'])
+        right = int(request.POST['crop_x2'])
+        top = int(request.POST['crop_y1'])
+        bottom = int(request.POST['crop_y2'])
         box = [left, top, right, bottom]
         img = get_path_from_url(pic.pic.url)
         im = Image.open(img)
@@ -733,7 +733,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.object_id = int(object_id)
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
-        comment.comment = request.REQUEST['comment']
+        comment.comment = request.POST['comment']
         if not len(comment.comment):
             raise AccessError
         kwargs = {'content_type': content_type, 'object_id': object_id}
@@ -776,7 +776,7 @@ def flat_comment_add(request, content_type, object_id):
         comment.object_id = int(object_id)
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
-        comment.comment = request.REQUEST['comment']
+        comment.comment = request.POST['comment']
         if not len(comment.comment):
             raise AccessError
         kwargs = {'content_type': content_type, 'object_id': object_id}

@@ -63,7 +63,7 @@ def associate_complete(request, backend, *args, **kwargs):
 def disconnect(request, backend, association_id=None):
     """Disconnects given backend from current logged in user."""
     backend.disconnect(request.user, association_id)
-    url = request.REQUEST.get(REDIRECT_FIELD_NAME, '') or \
+    url = request.POST.get(REDIRECT_FIELD_NAME, '') or \
           backend_setting(backend, 'SOCIAL_AUTH_DISCONNECT_REDIRECT_URL') or \
           DEFAULT_REDIRECT
     return HttpResponseRedirect(url)

@@ -205,25 +205,25 @@ class VKontakteAppAuth(VKontakteOAuth2):
                            'api_id')
 
         for param in required_params:
-            if not param in self.request.REQUEST:
+            if not param in self.request.POST:
                 return False, None
 
-        auth_key = self.request.REQUEST.get('auth_key')
+        auth_key = self.request.POST.get('auth_key')
 
         # Verify signature, if present
         if auth_key:
-            check_key = md5('_'.join([self.request.REQUEST.get('api_id'),
-                                  self.request.REQUEST.get('viewer_id'),
+            check_key = md5('_'.join([self.request.POST.get('api_id'),
+                                  self.request.POST.get('viewer_id'),
                                   USE_APP_AUTH['key']])).hexdigest()
 
             if check_key != auth_key:
                 raise ValueError('VKontakte authentication failed: invalid auth key')
 
         user_check = USE_APP_AUTH.get('user_mode', 0)
-        user_id = self.request.REQUEST.get('viewer_id')
+        user_id = self.request.POST.get('viewer_id')
 
         if user_check:
-            is_user = self.request.REQUEST.get('is_app_user') \
+            is_user = self.request.POST.get('is_app_user') \
                         if user_check == 1 else self.is_app_user(user_id)
 
             if not int(is_user):

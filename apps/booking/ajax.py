@@ -99,7 +99,7 @@ def room_rates(request):
 
 def room_variants(request):
     try:
-        room = Room.objects.get(id=request.REQUEST['room_id'])
+        room = Room.objects.get(id=request.POST['room_id'])
         if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         settlements = SettlementVariant.objects.filter(room=room, enabled=True).order_by('settlement')
@@ -146,17 +146,17 @@ def hotel_add(request):
     try:
         if not request.user.is_superuser:
             raise UserNotAllowed
-        request_id = request.REQUEST['request_id']
-        name = request.REQUEST['name']
-        c = request.REQUEST['city']
-        address = request.REQUEST['address']
-        email = request.REQUEST['email']
-        phone = request.REQUEST['phone']
-        fax = request.REQUEST['fax']
-        contact_email = request.REQUEST['contact_email']
-        website = request.REQUEST['website']
-        rooms_count = request.REQUEST['rooms_count']
-        starcount = request.REQUEST['starcount']
+        request_id = request.POST['request_id']
+        name = request.POST['name']
+        c = request.POST['city']
+        address = request.POST['address']
+        email = request.POST['email']
+        phone = request.POST['phone']
+        fax = request.POST['fax']
+        contact_email = request.POST['contact_email']
+        website = request.POST['website']
+        rooms_count = request.POST['rooms_count']
+        starcount = request.POST['starcount']
         try:
             city = City.objects.get(name=c)
         except:
@@ -194,12 +194,12 @@ def client_review(request, pk):
             raise UserNotAllowed
         if Review.objects.filter(hotel=hotel, user=request.user).count():
             raise UserNotAllowed
-        food = request.REQUEST['point_food']
-        service = request.REQUEST['point_service']
-        purity = request.REQUEST['point_purity']
-        transport = request.REQUEST['point_transport']
-        prices = request.REQUEST['point_prices']
-        review = request.REQUEST['review']
+        food = request.POST['point_food']
+        service = request.POST['point_service']
+        purity = request.POST['point_purity']
+        transport = request.POST['point_transport']
+        prices = request.POST['point_prices']
+        review = request.POST['review']
         r = Review()
         r.user = request.user
         r.username = request.user.first_name
@@ -219,7 +219,7 @@ def client_review(request, pk):
 
 def tourism_places(request):
     try:
-        h = request.REQUEST['hotel']
+        h = request.POST['hotel']
         hotel = Hotel.objects.get(pk=h)
         results = []
         for tourism in hotel.tourism_places().order_by('category'):
@@ -240,11 +240,11 @@ def tourism_places(request):
 def filter_hotels_on_map(request, hotels):
     try:
         searched = hotels
-        f_date = request.REQUEST.get('start_date') or None
-        amount_min = request.REQUEST.get('amount_min') or None
-        amount_max = request.REQUEST.get('amount_max') or None
-        options = request.REQUEST.getlist('options') or None
-        stars = request.REQUEST.getlist('stars') or None
+        f_date = request.POST.get('start_date') or None
+        amount_min = request.POST.get('amount_min') or None
+        amount_max = request.POST.get('amount_max') or None
+        options = request.POST.getlist('options') or None
+        stars = request.POST.getlist('stars') or None
         if amount_max and amount_min:
             if f_date:
                 from_date = convert_to_date(f_date)
@@ -279,8 +279,8 @@ def filter_hotels_on_map(request, hotels):
 
 def hotels_in_city(request):
     try:
-        c = request.REQUEST['city']
-        path = request.REQUEST['path'] or None
+        c = request.POST['city']
+        path = request.POST['path'] or None
         if path:
             key = sha1('%s' % (path,)).hexdigest()
             data_key = cache.get(key)
@@ -305,7 +305,7 @@ def hotels_in_country(request):
 
 def payment_method(request):
     try:
-        p_m = request.REQUEST['p_m']
+        p_m = request.POST['p_m']
         payment_method = PaymentMethod.objects.get(pk=p_m)
         payload = {'success': True, 'id': payment_method.pk, 'description': payment_method.description,
                    'card': payment_method.use_card}
@@ -316,11 +316,11 @@ def payment_method(request):
 
 def add_category(request):
     try:
-        hotel_pk = request.REQUEST['hotel']
+        hotel_pk = request.POST['hotel']
         hotel = Hotel.objects.get(pk=hotel_pk)
         if request.user not in hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
-        category_name = request.REQUEST['category_name']
+        category_name = request.POST['category_name']
         r = Room.objects.filter(hotel=hotel, name=category_name).count()
         if r > 0:
             raise UserNotAllowed
@@ -370,7 +370,7 @@ def booking_sysadm(request, pk, action):
 
 def edit_discount(request):
     try:
-        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        d = Discount.objects.get(pk=int(request.POST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         html = render_to_string('cabinet/edit_discount.html', {'discount': d})
@@ -382,7 +382,7 @@ def edit_discount(request):
 
 def delete_discount(request):
     try:
-        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        d = Discount.objects.get(pk=int(request.POST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         d.delete()
@@ -394,10 +394,10 @@ def delete_discount(request):
 
 def add_room_discount(request):
     try:
-        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        d = Discount.objects.get(pk=int(request.POST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
-        r = Room.objects.get(pk=int(request.REQUEST['room']))
+        r = Room.objects.get(pk=int(request.POST['room']))
         if not RoomDiscount.objects.filter(room=r, discount=d).exists():
             RoomDiscount(room=r, discount=d, date=now()).save()
         payload = {'success': True}
@@ -408,10 +408,10 @@ def add_room_discount(request):
 
 def delete_room_discount(request):
     try:
-        d = Discount.objects.get(pk=int(request.REQUEST['discount']))
+        d = Discount.objects.get(pk=int(request.POST['discount']))
         if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
-        r = Room.objects.get(pk=int(request.REQUEST['room']))
+        r = Room.objects.get(pk=int(request.POST['room']))
         RoomDiscount.objects.filter(room=r, discount=d).delete()
         payload = {'success': True}
     except:

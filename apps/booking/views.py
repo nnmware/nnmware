@@ -143,11 +143,11 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         guests = guests_from_request(self.request)
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
-        with_amount = self.request.REQUEST.get('with_amount') or None
-        amount_min = self.request.REQUEST.get('amount_min') or None
-        amount_max = self.request.REQUEST.get('amount_max') or None
-        options = self.request.REQUEST.getlist('options') or None
-        stars = self.request.REQUEST.getlist('stars') or None
+        with_amount = self.request.POST.get('with_amount') or None
+        amount_min = self.request.POST.get('amount_min') or None
+        amount_max = self.request.POST.get('amount_max') or None
+        options = self.request.POST.getlist('options') or None
+        stars = self.request.POST.getlist('stars') or None
         self.tab = {'css_name': 'asc', 'css_starcount': 'desc', 'css_current_amount': 'desc', 'css_point': 'desc',
                     'order_name': 'desc', 'order_starcount': 'desc', 'order_current_amount': 'desc',
                     'order_point': 'desc', 'tab': 'name'}
@@ -180,7 +180,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         self.result_count = None
         if self.request.is_ajax():
             self.template_name = "hotels/list_ajax.html"
-            path = self.request.REQUEST.get('path') or None
+            path = self.request.POST.get('path') or None
             if path:
                 key = sha1('%s' % (path,)).hexdigest()
         data_key = cache.get(key)
@@ -312,7 +312,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         guests = guests_from_request(self.request)
-        options = self.request.REQUEST.getlist('options') or None
+        options = self.request.POST.getlist('options') or None
         # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
         context['tab'] = 'description'
@@ -1048,14 +1048,14 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
 
     def form_valid(self, form):
         use_card = False
-        p_m = self.request.REQUEST.get('payment_method') or None
+        p_m = self.request.POST.get('payment_method') or None
         payload = None
         if p_m:
             payment_method = PaymentMethod.objects.get(pk=int(p_m))
-            card_number = self.request.REQUEST.get('card_number') or None
-            card_holder = self.request.REQUEST.get('card_holder') or None
-            card_valid = self.request.REQUEST.get('card_valid') or None
-            card_cvv2 = self.request.REQUEST.get('card_cvv2') or None
+            card_number = self.request.POST.get('card_number') or None
+            card_holder = self.request.POST.get('card_holder') or None
+            card_valid = self.request.POST.get('card_valid') or None
+            card_cvv2 = self.request.POST.get('card_cvv2') or None
             if payment_method.use_card:
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):

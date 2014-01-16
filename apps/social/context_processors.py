@@ -82,7 +82,7 @@ def backends_data(user):
 
 def social_auth_login_redirect(request):
     """Load current redirect to context."""
-    redirect_value = request.REQUEST.get(REDIRECT_FIELD_NAME)
+    redirect_value = request.POST.get(REDIRECT_FIELD_NAME)
     if redirect_value:
         redirect_querystring = REDIRECT_FIELD_NAME + '=' + redirect_value
     else:

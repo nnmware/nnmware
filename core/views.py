@@ -269,7 +269,7 @@ class AddPicView(TemplateResponseMixin, BaseFormView):
         new_pic = self.create_pic(self.target, self.request.FILES['pic'])
         if new_pic:
             messages.info(self.request, _("Successfully uploaded a new image."))
-        if self.request.is_ajax() or self.request.REQUEST.get('async', None) == 'true':
+        if self.request.is_ajax() or self.request.POST.get('async', None) == 'true':
             return self.ajax_form_valid(new_pic)
         else:
             return FormMixin.form_valid(self, form)
