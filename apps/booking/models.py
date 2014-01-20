@@ -723,8 +723,8 @@ class RoomDiscount(models.Model):
         verbose_name = _("Room discount")
         verbose_name_plural = _("Room discounts")
 
-    #def __str__(self):
-    #    return _('Discount on %s - %s') % (self.date, self.value)
+    def __str__(self):
+       return _('Discount on %s - %s') % (self.date, self.value)
 
 
 @python_2_unicode_compatible
