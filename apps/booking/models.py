@@ -710,7 +710,7 @@ class Discount(AbstractName, AbstractDate):
             return None
 
 
-#@python_2_unicode_compatible
+@python_2_unicode_compatible
 class RoomDiscount(models.Model):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"))
