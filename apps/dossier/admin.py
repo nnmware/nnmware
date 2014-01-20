@@ -283,12 +283,39 @@ class ChildAdmin(admin.ModelAdmin):
 
 
 class ClothingSizeAdmin(admin.ModelAdmin):
+    list_display = ('international', 'russian', 'dest')
+    search_fields = ('international',)
+    fieldsets = (
+        (_("Clothing size"), {"fields": [('international', 'russian'), ('eu', 'uk', 'us'), ('dest', )]}),
+    )
+    ordering = ('international', )
+
+
+class ShoesSizeAdmin(admin.ModelAdmin):
+    list_display = ('cm', 'ru', 'eu', 'us', 'dest')
+    search_fields = ('cm',)
+    fieldsets = (
+        (_("Shoes size"), {"fields": [('cm', 'ru'), ('eu', 'us'), ('dest', )]}),
+    )
+    ordering = ('cm', )
+
+
+class HeadSizeAdmin(admin.ModelAdmin):
+    list_display = ('international', 'russian', 'dest')
+    search_fields = ('international',)
+    fieldsets = (
+        (_("Head size"), {"fields": [('international', 'russian', 'dest')]}),
+    )
+    ordering = ('russian', )
+
+
+class ChestSizeAdmin(admin.ModelAdmin):
     list_display = ('international', 'russian')
     search_fields = ('international',)
     fieldsets = (
-        (_("Clothing size"), {"fields": [('international', 'russian'), ]}),
+        (_("Chest size"), {"fields": [('international', 'russian')]}),
     )
-    ordering = ('international', )
+    ordering = ('russian', )
 
 
 admin.site.register(TypeDance, TypeDanceAdmin)
@@ -330,4 +357,6 @@ admin.site.register(RequisiteType, RequisiteTypeAdmin)
 admin.site.register(Requisite, RequisiteAdmin)
 admin.site.register(ReadinessScene, ReadinessSceneAdmin)
 admin.site.register(ClothingSize, ClothingSizeAdmin)
-
+admin.site.register(ShoesSize, ShoesSizeAdmin)
+admin.site.register(HeadSize, HeadSizeAdmin)
+admin.site.register(ChestSize, ChestSizeAdmin)
