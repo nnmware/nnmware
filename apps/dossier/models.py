@@ -27,6 +27,7 @@ DST_FOR_CHOICES = (
     (DST_FOR_MAN, _("Man")),
 )
 
+
 @python_2_unicode_compatible
 class ClothingSize(models.Model):
     international = std_text_field(_('International'))
@@ -45,6 +46,7 @@ class ClothingSize(models.Model):
         return "%s / %s" % (self.international, self.russian)
 
 
+@python_2_unicode_compatible
 class ShoesSize(models.Model):
     cm = models.DecimalField(verbose_name=_('Centimeters'), default=0, max_digits=5, decimal_places=1)
     ru = models.DecimalField(verbose_name=_('Russian'), default=0, max_digits=5, decimal_places=1)
@@ -57,7 +59,11 @@ class ShoesSize(models.Model):
         verbose_name = _("Shoes size")
         verbose_name_plural = _("Shoes sizes")
 
+    def __str__(self):
+        return "%s / %s" % (self.cm, self.ru)
 
+
+@python_2_unicode_compatible
 class HeadSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -68,7 +74,11 @@ class HeadSize(models.Model):
         verbose_name = _("Head size")
         verbose_name_plural = _("Head sizes")
 
+    def __str__(self):
+        return "%s / %s" % (self.international, self.russian)
 
+
+@python_2_unicode_compatible
 class ChestSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -76,6 +86,9 @@ class ChestSize(models.Model):
     class Meta:
         verbose_name = _("Chest size")
         verbose_name_plural = _("Chest sizes")
+
+    def __str__(self):
+        return "%s / %s" % (self.international, self.russian)
 
 
 class Education(AbstractImg):
