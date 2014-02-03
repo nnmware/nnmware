@@ -59,7 +59,7 @@ def booking_new_sysadm_mail(booking):
 
 
 def request_add_hotel_mail(req_add):
-    recipients = settings.BOOKING_MANAGERS
+    recipients = settings.ADDHOTEL_MANAGERS
     mail_dict = {'req_add': req_add, 'site_name': settings.SITENAME}
     subject = 'booking/request_add_hotel_subject.txt'
     body = 'booking/request_add_hotel.txt'

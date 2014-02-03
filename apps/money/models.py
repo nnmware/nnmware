@@ -50,7 +50,7 @@ class ExchangeRate(models.Model):
 
 #---------------------------------------------------------------------------
 class MoneyBase(models.Model):
-    amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=20, decimal_places=3, db_index=True)
+    amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=22, decimal_places=5, db_index=True)
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, blank=True, null=True)
 
     class Meta:
