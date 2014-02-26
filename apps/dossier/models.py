@@ -113,6 +113,7 @@ class TypeAppearanceHuman(AbstractOrder):
     name = std_text_field(_('Type of appearance'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type of appearance")
         verbose_name_plural = _("Types of appearance")
 
@@ -285,21 +286,23 @@ class AbstractHumanAppearance(models.Model):
     size_shoes = models.ForeignKey(ShoesSize, blank=True, null=True, default=None)
     size_head = models.ForeignKey(HeadSize, blank=True, null=True, default=None)
     size_chest = models.ForeignKey(ChestSize, blank=True, null=True, default=None)
-
     hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'),
                                    related_name='hair_color', blank=True, null=True)
     natural_hair_color = models.ForeignKey(HairColor, verbose_name=_('Natural hair color'),
                                    related_name='naturalhair_color', blank=True, null=True)
-    have_wig = models.BooleanField(_('Have wig'), default=False)
+    have_wig = models.BooleanField(verbose_name=_('Have wig'), default=False)
     hair_length = models.ForeignKey(HairLength, verbose_name=_('Length of hair'),
                                     related_name='hair_length', blank=True, null=True)
     hair_texture = models.ForeignKey(HairTexture, verbose_name=_('Texture of hair'),
                                      related_name='hair_texture', blank=True, null=True)
+
+
     eye_color = models.ForeignKey(EyeColor, verbose_name=_('Eye color'),
                                   related_name='eye_color', blank=True, null=True)
     wear_glasses = models.BooleanField(_('Wear glasses'), default=False)
     wear_colour_lens = models.BooleanField(_('Wear colour lens'), default=False)
     have_glasses_collection = models.BooleanField(_('Have collection of glasses'), default=False)
+
     skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
                                    related_name='color_skin', blank=True, null=True)
     piercing = std_text_field(_('Piercing'))
