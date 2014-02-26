@@ -354,8 +354,6 @@ class AbstractHumanAppearance(models.Model):
     skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
                                    related_name='color_skin', blank=True, null=True)
 
-    piercing = std_text_field(_('Piercing'))
-    tattoo = std_text_field(_('Tattoo'))
     feature_physique = std_text_field(_('Feature of physique'))
     feature_structure_body = std_text_field(_('Which feature of structure body'))
     nonstandard_growth = models.BooleanField(_('Non-standard growth'), default=False)
