@@ -251,6 +251,15 @@ class TypeHistorical(AbstractOrder):
         verbose_name_plural = _("Types in historical projects")
 
 
+class TypeBodyModification(AbstractOrder):
+    name = std_text_field(_('Type body modification'))
+
+    class Meta:
+        ordering = ['name', ]
+        verbose_name = _("Type body modification")
+        verbose_name_plural = _("Types body modifications")
+
+
 class TypeSurvey(AbstractOrder):
     name = std_text_field(_('Type of survey'))
 

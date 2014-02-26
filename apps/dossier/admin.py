@@ -88,6 +88,12 @@ class TypeHistoricalAdmin(TypeBaseAdmin):
     ordering = ('-order_in_list', 'name')
 
 
+class TypeBodyModificationAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
+    fieldsets = ((_("Type body modification"), {"fields": [('name', 'order_in_list'), ]}),)
+    ordering = ('-order_in_list', 'name')
+
+
 class TypeSurveyAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'order_in_list'), ]}),)
@@ -340,6 +346,7 @@ admin.site.register(TypeProfession, TypeProfessionAdmin)
 admin.site.register(TypeLifestyle, TypeLifestyleAdmin)
 admin.site.register(TypeBrightAppearance, TypeBrightAppearanceAdmin)
 admin.site.register(TypeHistorical, TypeHistoricalAdmin)
+admin.site.register(TypeBodyModification, TypeBodyModificationAdmin)
 admin.site.register(CreativeActivity, CreativeActivityAdmin)
 admin.site.register(TypeSurvey, TypeSurveyAdmin)
 admin.site.register(TransportType, TTypeAdmin)
