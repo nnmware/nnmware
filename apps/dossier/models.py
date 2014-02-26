@@ -122,6 +122,7 @@ class TypeNationalHuman(AbstractOrder):
     name = std_text_field(_('National Type'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("National Type")
         verbose_name_plural = _("National Types")
 
@@ -130,6 +131,7 @@ class TypeBodyHuman(AbstractOrder):
     name = std_text_field(_('Body Type'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Body Type")
         verbose_name_plural = _("Body Types")
 
@@ -138,6 +140,7 @@ class TypeFeatureAppearanceHuman(AbstractOrder):
     name = std_text_field(_('Feature of appearance'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Feature appearance type")
         verbose_name_plural = _("Feature appearances types")
 
@@ -146,6 +149,7 @@ class HairColor(AbstractOrder):
     name = std_text_field(_('Hair color'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Hair color")
         verbose_name_plural = _("Hair colors")
 
@@ -154,6 +158,7 @@ class HairLength(AbstractOrder):
     name = std_text_field(_('Length of hair'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Length of hair")
         verbose_name_plural = _("Length of hair")
 
@@ -162,6 +167,7 @@ class HairTexture(AbstractOrder):
     name = std_text_field(_('Texture of hair'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Texture of hair")
         verbose_name_plural = _("Textures of hair")
 
@@ -170,6 +176,7 @@ class EyeColor(AbstractOrder):
     name = std_text_field(_('Eye color'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Eye color")
         verbose_name_plural = _("Eyes colors")
 
