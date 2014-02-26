@@ -294,6 +294,7 @@ class AbstractHumanAppearance(models.Model):
     body = models.ForeignKey(TypeBodyHuman, verbose_name=_('Body Type'),
                              related_name='body_human', blank=True, null=True)
     body_desc = std_text_field(_('Explain body'))
+    body_modification_desc = std_text_field(_('Explain body modification'))
     feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True)
     another_feature = std_text_field(_('Text of Another feature of appearance'))
