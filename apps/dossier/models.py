@@ -662,14 +662,19 @@ class AbstractPersonalData(models.Model):
 class AbstractTypeActor(models.Model):
     type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'),
                                            blank=True, null=True)
+    type_national_desc = std_text_field(_('Explain type national'))
     type_profession = models.ManyToManyField(TypeProfession, verbose_name=_('Type on profession'),
                                              blank=True, null=True)
+    type_profession_desc = std_text_field(_('Explain type profession'))
     type_lifestyle = models.ManyToManyField(TypeLifestyle, verbose_name=_('Type on lifestyle'),
                                             blank=True, null=True)
+    type_lifestyle_desc = std_text_field(_('Explain type lifestyle'))
     type_bright_appearance = models.ManyToManyField(TypeBrightAppearance,
                                                     verbose_name=_('Type on bright appearance'), blank=True, null=True)
+    type_bright_appearance_desc = std_text_field(_('Explain type bright appearance'))
     type_historical = models.ManyToManyField(TypeHistorical,
                                              verbose_name=_('Type in historical projects'), blank=True, null=True)
+    type_historical_desc = std_text_field(_('Explain type historical'))
 
     class Meta:
         verbose_name = _("Type of actor")
