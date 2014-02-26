@@ -22,7 +22,7 @@ class TypeBodyHumanAdmin(TypeBaseAdmin):
     ordering = ('-order_in_list', 'name')
 
 
-class TypeFeatureAppearanceHumanAdmin(TypeBaseAdmin):
+class TypeFeatureAppearanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Feature appearance"), {"fields": ['name', ]}),)
     ordering = ('-order_in_list', 'name')
@@ -335,7 +335,7 @@ admin.site.register(LanguageSpeak, LanguageSpeakAdmin)
 admin.site.register(TypeNationalHuman, TypeNationalHumanAdmin)
 admin.site.register(TypeBodyHuman, TypeBodyHumanAdmin)
 admin.site.register(TypeAppearanceHuman, TypeAppearanceHumanAdmin)
-admin.site.register(TypeFeatureAppearanceHuman, TypeFeatureAppearanceHumanAdmin)
+admin.site.register(TypeFeatureAppearance, TypeFeatureAppearanceAdmin)
 admin.site.register(HairColor, HairColorAdmin)
 admin.site.register(EyeColor, EyeColorAdmin)
 admin.site.register(SkinColor, SkinColorAdmin)

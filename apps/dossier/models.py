@@ -136,13 +136,25 @@ class TypeBodyHuman(AbstractOrder):
         verbose_name_plural = _("Body Types")
 
 
-class TypeFeatureAppearanceHuman(AbstractOrder):
+class TypeFeatureAppearance(AbstractOrder):
     name = std_text_field(_('Feature of appearance'))
 
     class Meta:
         ordering = ['name', ]
         verbose_name = _("Feature appearance type")
         verbose_name_plural = _("Feature appearances types")
+
+
+@python_2_unicode_compatible
+class FeatureAppearance(AbstractName):
+    appearance = models.ForeignKey(TypeFeatureAppearance, verbose_name=_('Feature appearance'), related_name='featureappearances')
+
+    class Meta:
+        verbose_name = _("Feature Appearance")
+        verbose_name_plural = _("Feature Appearance")
+
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.appearance.name)
 
 
 class HairColor(AbstractOrder):
@@ -309,9 +321,9 @@ class AbstractHumanAppearance(models.Model):
     body_modification = models.ManyToManyField(BodyModification, verbose_name=_('Body modification'),
                                            blank=True, null=True)
     body_modification_desc = std_text_field(_('Explain body modification'))
-    feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
+    feature_appearance = models.ManyToManyField(TypeFeatureAppearance, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True)
-    another_feature = std_text_field(_('Text of Another feature of appearance'))
+    feature_appearance_desc = std_text_field(_('Description of another feature of appearance'))
 
     growth = models.PositiveSmallIntegerField(verbose_name=_('Growth'), blank=True, null=True, default=None)
     weight = models.PositiveSmallIntegerField(verbose_name=_('Weight'), blank=True, null=True, default=None)
@@ -340,6 +352,7 @@ class AbstractHumanAppearance(models.Model):
 
     skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
                                    related_name='color_skin', blank=True, null=True)
+
     piercing = std_text_field(_('Piercing'))
     tattoo = std_text_field(_('Tattoo'))
     feature_physique = std_text_field(_('Feature of physique'))
