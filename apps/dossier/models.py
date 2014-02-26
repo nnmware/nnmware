@@ -260,6 +260,18 @@ class TypeBodyModification(AbstractOrder):
         verbose_name_plural = _("Types body modifications")
 
 
+@python_2_unicode_compatible
+class BodyModification(AbstractName):
+    modification = models.ForeignKey(TypeBodyModification, verbose_name=_('Modification'), related_name='modifications')
+
+    class Meta:
+        verbose_name = _("Modification")
+        verbose_name_plural = _("Modification")
+
+    def __str__(self):
+        return "%s :: %s" % (self.name, self.modification.name)
+
+
 class TypeSurvey(AbstractOrder):
     name = std_text_field(_('Type of survey'))
 
@@ -294,6 +306,8 @@ class AbstractHumanAppearance(models.Model):
     body = models.ForeignKey(TypeBodyHuman, verbose_name=_('Body Type'),
                              related_name='body_human', blank=True, null=True)
     body_desc = std_text_field(_('Explain body'))
+    body_modification = models.ManyToManyField(BodyModification, verbose_name=_('Body modification'),
+                                           blank=True, null=True)
     body_modification_desc = std_text_field(_('Explain body modification'))
     feature_appearance = models.ManyToManyField(TypeFeatureAppearanceHuman, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True)
@@ -318,8 +332,6 @@ class AbstractHumanAppearance(models.Model):
                                     related_name='hair_length', blank=True, null=True)
     hair_texture = models.ForeignKey(HairTexture, verbose_name=_('Texture of hair'),
                                      related_name='hair_texture', blank=True, null=True)
-
-
     eye_color = models.ForeignKey(EyeColor, verbose_name=_('Eye color'),
                                   related_name='eye_color', blank=True, null=True)
     wear_glasses = models.BooleanField(_('Wear glasses'), default=False)
