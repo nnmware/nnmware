@@ -148,7 +148,7 @@ class TypeFeatureAppearance(AbstractOrder):
 @python_2_unicode_compatible
 class FeatureAppearance(AbstractName):
     appearance = models.ForeignKey(TypeFeatureAppearance, verbose_name=_('Feature appearance'),
-                                   related_name='featureappearances')
+                                   related_name='feature_app')
 
     class Meta:
         verbose_name = _("Feature Appearance")
@@ -323,7 +323,7 @@ class AbstractHumanAppearance(models.Model):
                                            blank=True, null=True)
     body_modification_desc = std_text_field(_('Explain body modification'))
     feature_appearance = models.ManyToManyField(FeatureAppearance, verbose_name=_('Feature appearance'),
-                                                blank=True, null=True)
+                                                blank=True, null=True, related_name='appearance_future')
     feature_appearance_desc = std_text_field(_('Description of another feature of appearance'))
 
     growth = models.PositiveSmallIntegerField(verbose_name=_('Growth'), blank=True, null=True, default=None)
