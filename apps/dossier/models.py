@@ -185,6 +185,7 @@ class SkinColor(AbstractOrder):
     name = std_text_field(_('Skin color'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Color of skin")
         verbose_name_plural = _("Colors of skin")
 
@@ -209,6 +210,7 @@ class TypeNational(AbstractOrder):
     name = std_text_field(_('Type on national sign'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type on national sign")
         verbose_name_plural = _("Types on national sign")
 
@@ -217,6 +219,7 @@ class TypeProfession(AbstractOrder):
     name = std_text_field(_('Type on profession'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type on profession")
         verbose_name_plural = _("Types on profession")
 
@@ -225,6 +228,7 @@ class TypeLifestyle(AbstractOrder):
     name = std_text_field(_('Type on lifestyle'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type on lifestyle")
         verbose_name_plural = _("Types on lifestyle")
 
@@ -233,6 +237,7 @@ class TypeBrightAppearance(AbstractOrder):
     name = std_text_field(_('Type on bright appearance'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type on bright appearance")
         verbose_name_plural = _("Types on bright appearance")
 
@@ -241,6 +246,7 @@ class TypeHistorical(AbstractOrder):
     name = std_text_field(_('Type in historical projects'))
 
     class Meta:
+        ordering = ['name', ]
         verbose_name = _("Type in historical projects")
         verbose_name_plural = _("Types in historical projects")
 
