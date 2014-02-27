@@ -354,32 +354,12 @@ class AbstractHumanAppearance(models.Model):
     skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
                                    related_name='color_skin', blank=True, null=True)
 
-    feature_physique = std_text_field(_('Feature of physique'))
-    feature_structure_body = std_text_field(_('Which feature of structure body'))
-    nonstandard_growth = models.BooleanField(_('Non-standard growth'), default=False)
-    pregnant = models.BooleanField(_('Pregnant'), default=False)
-    similarity = std_text_field(_('Which person similarity'))
     twins = std_text_field(_('Have brother(sister) twins'))
 
     class Meta:
         verbose_name = _("Human appearance")
         verbose_name_plural = _("Human appearances")
         abstract = True
-
-    @property
-    def another_feature_split(self):
-        result = self.another_feature.split(',')
-        return map(lambda x: ' '.join(x.split()),result)
-
-    @property
-    def tattoo_split(self):
-        result = self.tattoo.split(',')
-        return map(lambda x: ' '.join(x.split()),result)
-
-    @property
-    def piercing_split(self):
-        result = self.piercing.split(',')
-        return map(lambda x: ' '.join(x.split()),result)
 
 
 class LanguageSpeak(AbstractName):
