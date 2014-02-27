@@ -322,7 +322,7 @@ class AbstractHumanAppearance(models.Model):
     body_modification = models.ManyToManyField(BodyModification, verbose_name=_('Body modification'),
                                            blank=True, null=True)
     body_modification_desc = std_text_field(_('Explain body modification'))
-    feature_appearance = models.ManyToManyField(FeatureAppearance, verbose_name=_('Feature appearance'),
+    feature_appear = models.ManyToManyField(FeatureAppearance, verbose_name=_('Feature appearance'),
                                                 blank=True, null=True, related_name='appearance_future')
     feature_appearance_desc = std_text_field(_('Description of another feature of appearance'))
 
