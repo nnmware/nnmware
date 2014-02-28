@@ -273,8 +273,7 @@ class AnimalAdmin(admin.ModelAdmin):
     list_display = ('animal', 'animalkind', 'name')
     search_fields = ('description',)
     fieldsets = (
-        (_("Animal"), {"fields": [('animal', 'name'),('animalkind',),
-                                         ('description',), ]}),
+        (_("Animal"), {"fields": [('animal', 'name'), ('animalkind',), ('description',), ]}),
     )
     ordering = ('animal', 'name')
 
