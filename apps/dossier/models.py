@@ -754,3 +754,52 @@ class HumanSkill(models.Model):
         verbose_name = _("Skill")
         verbose_name_plural = _("Skills")
         abstract = True
+
+    @property
+    def percent_complete_language(self):
+        if self.language.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_dance(self):
+        if self.dance.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_drive(self):
+        if self.drive.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_sport(self):
+        if self.sport.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_special(self):
+        if self.special.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_music(self):
+        if self.music.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_vocal(self):
+        if self.vocal.count():
+            return 100
+        return 0
+
+    @property
+    def percent_complete_other(self):
+        if self.other.count():
+            return 100
+        return 0
+
