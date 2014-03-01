@@ -123,6 +123,12 @@ class LanguageSpeakAdmin(TypeBaseAdmin):
     ordering = ('-order_in_list', 'name')
 
 
+class SpokenDialectAdmin(TypeBaseAdmin):
+    list_display = ('name', 'order_in_list')
+    fieldsets = ((_("Spoken dialect"), {"fields": ['name', ]}),)
+    ordering = ('-order_in_list', 'name')
+
+
 class TypeDanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list')
     fieldsets = ((_("Type of dance"), {"fields": ['name', ]}),)
@@ -331,6 +337,7 @@ admin.site.register(TypeSport, TypeSportAdmin)
 admin.site.register(TypeSpecialSkill, TypeSpecialSkillAdmin)
 admin.site.register(TypeOtherSkill, TypeOtherSkillAdmin)
 admin.site.register(LanguageSpeak, LanguageSpeakAdmin)
+admin.site.register(SpokenDialect, SpokenDialectAdmin)
 admin.site.register(TypeNationalHuman, TypeNationalHumanAdmin)
 admin.site.register(TypeBodyHuman, TypeBodyHumanAdmin)
 admin.site.register(TypeAppearanceHuman, TypeAppearanceHumanAdmin)

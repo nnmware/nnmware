@@ -370,6 +370,14 @@ class LanguageSpeak(AbstractName):
         verbose_name_plural = _("Languages")
 
 
+class SpokenDialect(AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Spoken dialect")
+        verbose_name_plural = _("Spoken dialects")
+
+
 LNG_SKILL_UNKNOWN = 0
 LNG_SKILL_BASE = 1
 LNG_SKILL_CONVERSATIONAL = 2
@@ -748,7 +756,8 @@ class HumanSkill(models.Model):
     special_desc = std_text_field(_('Special skill addon text'))
     voice_tone = models.IntegerField(verbose_name=_('Voice tone'), choices=VOICE_CHOICES,
                                      blank=True, null=True, default=VOICE_UNKNOWN)
-    spoken_dialect = std_text_field(_('Spoken dialect'))
+    spoken_dialect = models.ManyToManyField(SpokenDialect, verbose_name=_('Spoken dialect'),
+                                     blank=True, null=True, related_name='spc_skill')
 
     class Meta:
         verbose_name = _("Skill")
