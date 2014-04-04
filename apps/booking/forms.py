@@ -155,26 +155,11 @@ class RequestAddHotelForm(forms.ModelForm):
 
 
 class UserCabinetInfoForm(UserFromRequestForm):
-    password = forms.CharField(label=_('New Password'), max_length=30, required=False)
 
     class Meta:
         model = get_user_model()
         fields = (
             'first_name', 'last_name', 'subscribe')
-
-    def clean_password(self):
-        password = self.cleaned_data["password"]
-        if len(password.strip(' ')) > 0:
-            if not self._user.check_password(password):
-                self._user.set_password(password)
-                self._user.save()
-        return password
-
-    # def clean_email(self):
-    #     email = self.cleaned_data["email"]
-    #     if get_user_model().objects.exclude(username=self.current_user.username).filter(email=email).exists():
-    #         raise forms.ValidationError(_("Email already exist."))
-    #     return email
 
 
 class BookingAddForm(UserFromRequestForm):

@@ -942,6 +942,11 @@ class UserCabinet(AjaxFormMixin, CurrentUserCabinetAccess, UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
+        password = self.request.POST["password"]
+        if len(password.strip(' ')) > 0:
+            if not self.request.user.check_password(password):
+                self.request.user.set_password(password)
+                self.request.user.save()
         return super(UserCabinet, self).form_valid(form)
 
 

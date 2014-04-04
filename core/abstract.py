@@ -518,6 +518,15 @@ class AbstractIP(models.Model):
         abstract = True
 
 
+class AbstractContactType(AbstractImg):
+    name = std_text_field(_("Name"))
+    name_en = std_text_field(_("Name(English)"))
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
+
+    pass
+
+
+
 class AbstractContact(AbstractImg):
     mobile_personal = std_text_field(_('Personal mobile phone'), max_length=12)
     mobile_work = std_text_field(_('Work mobile phone '), max_length=12)
