@@ -1,5 +1,4 @@
 from hashlib import md5
-from os import path as op
 import os
 from time import time
 import urlparse
@@ -11,14 +10,14 @@ def upload_to(instance, filename, prefix=None, unique=False):
     """
     basedir = 'storage/'
 
-    ext = op.splitext(filename)[1]
+    ext = os.path.splitext(filename)[1]
     name = str(instance.pk or '') + filename + (str(time()) if unique else '')
 
     # We think that we use utf8 based OS file system
     filename = md5(name.encode('utf8')).hexdigest() + ext
     if prefix:
-        basedir = op.join(basedir, prefix)
-    return op.join(basedir, filename[:2], filename[2:4], filename)
+        basedir = os.path.join(basedir, prefix)
+    return os.path.join(basedir, filename[:2], filename[2:4], filename)
 
 
 def get_path_from_url(url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
