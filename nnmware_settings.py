@@ -13,31 +13,7 @@ GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2013 framework for python/django coders'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.NnmwareDashboard'
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
 NNMWARE_INI_FILE =  os.path.join(settings.PROJECT_ROOT, 'nnmware.ini')
-# Social settings 
-TWITTER_CONSUMER_KEY              = ''
-TWITTER_CONSUMER_SECRET           = ''
-
-FACEBOOK_APP_ID                   = ''
-FACEBOOK_API_SECRET               = ''
-GOOGLE_OAUTH2_CLIENT_ID           = ''
-GOOGLE_OAUTH2_CLIENT_SECRET       = ''
-SOCIAL_AUTH_CREATE_USERS          = True
-SOCIAL_AUTH_FORCE_RANDOM_USERNAME = False
-SOCIAL_AUTH_DEFAULT_USERNAME      = 'socialauth_user'
-SOCIAL_AUTH_COMPLETE_URL_NAME     = 'socialauth_complete'
 LOGIN_ERROR_URL                   = '/login/error/'
-SOCIAL_AUTH_ERROR_KEY             = 'socialauth_error'
-
-SOCIAL_AUTH_PIPELINE = (
-    'nnmware.apps.social.backends.pipeline.social.social_auth_user',
-    'nnmware.apps.social.backends.pipeline.misc.save_status_to_session',
-    'nnmware.apps.social.backends.pipeline.user.get_username',
-    'nnmware.apps.social.backends.pipeline.user.create_user',
-    'nnmware.apps.social.backends.pipeline.social.associate_user',
-    'nnmware.apps.social.backends.pipeline.social.load_extra_data',
-    'nnmware.apps.social.backends.pipeline.user.update_user_details',
-)
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/welcome/step1/'
 
 # Site account settings
 LOGIN_URL = '/login'

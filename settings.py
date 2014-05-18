@@ -93,9 +93,6 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'nnmware.core.backends.UsernameOrEmailAuthBackend',
-    'nnmware.apps.social.backends.twitter.TwitterBackend',
-    'nnmware.apps.social.backends.facebook.FacebookBackend',
-    'nnmware.apps.social.backends.google.GoogleOAuth2Backend',
     )
 
 ROOT_URLCONF = 'urls'
@@ -113,7 +110,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    'nnmware.apps.social.context_processors.social_auth_by_type_backends',
     )
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
@@ -134,7 +130,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.syndication',
     'nnmware.core',
-    'nnmware.apps.social',
     'nnmware.apps.money',
     'nnmware.apps.booking',
     'nnmware.apps.shop',

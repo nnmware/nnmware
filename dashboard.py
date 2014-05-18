@@ -66,7 +66,7 @@ class NnmwareDashboard(Dashboard):
                     css_classes=('grp-collapse grp-closed',),
                     models=( 'django.contrib.auth.*','nnmware.demo.*',
                 	    'django.contrib.sites.models.Site',
-                	    'django.contrib.flatpages.models.FlatPage','nnmware.apps.social.models.UserSocialAuth',
+                	    'django.contrib.flatpages.models.FlatPage',
                 	    ),
                 )
 

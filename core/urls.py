@@ -30,7 +30,6 @@ urlpatterns = patterns('',
     url(r'^tags/$', TagsView.as_view(), name="tags"),
     url(r'^tags/(?P<letter>[a-zA-Z0-9-])/$', TagsLetterView.as_view(), name="tags_letter"),
     url(r'^tag/(?P<slug>[a-zA-Z0-9-]+)/$', TagDetail.as_view(), name='tag_detail'),
-    url(r'^social/', include('nnmware.apps.social.urls')),
 )
 
 
