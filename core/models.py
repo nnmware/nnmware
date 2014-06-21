@@ -632,7 +632,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return "%s" % self.username
 
     @property
-    def avatar(self):
+    def ava(self):
         try:
             return self.img.url
         except:
