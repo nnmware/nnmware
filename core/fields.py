@@ -2,12 +2,10 @@ import json
 from django import forms
 from django.conf import settings
 from django.db import models
-from django.db.models.fields import TextField
 from django.db.models.fields.files import ImageField
 from django.core.exceptions import ValidationError
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
-from south.modelsinspector import add_introspection_rules
 from nnmware.core.widgets import ReCaptchaWidget
 from nnmware.core.captcha import submit
 
@@ -94,6 +92,3 @@ class JSONField(models.TextField):
     def value_from_object(self, obj):
         """Return value dumped to string."""
         return self.get_prep_value(self._get_val_from_obj(obj))
-
-
-add_introspection_rules([], ['^nnmware\.core\.fields\.JSONField'])
