@@ -632,7 +632,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return "%s" % self.username
 
     @property
-    def ava(self):
+    def avatar(self):
         try:
             return self.img.url
         except:
@@ -693,6 +693,17 @@ class NnmwareUser(AbstractUser, AbstractImg):
     def save(self, *args, **kwargs):
         self.date_modified = now()
         super(NnmwareUser, self).save(*args, **kwargs)
+
+    def thumbnail(self):
+        if self.avatar:
+            path = self.avatar.url
+            tmb = make_thumbnail(path, height=60, width=60)
+            return '<a style="display:block;text-align:center;" target="_blank" href="%s"><img src="%s" /></a>' \
+                   '<p style="text-align:center;margin-top:5px;">%sx%s px</p>' % (path, tmb, self.avatar_width,
+                                                                                  self.avatar_height)
+        return "No image"
+    thumbnail.allow_tags = True
+    thumbnail.short_description = 'Thumbnail'
 
 
 class Like(AbstractLike):

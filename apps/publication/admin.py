@@ -12,6 +12,7 @@ class PublicationCategoryAdmin(TreeAdmin):
     )
 
 
+@admin.register(Publication)
 class PublicationAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Publication'), {'fields': [('user', 'enabled', 'category', 'region')]}),
@@ -24,5 +25,5 @@ class PublicationAdmin(admin.ModelAdmin):
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
 
-admin.site.register(Publication, PublicationAdmin)
+#admin.site.register(Publication, PublicationAdmin)
 admin.site.register(PublicationCategory, PublicationCategoryAdmin)
