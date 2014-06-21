@@ -2,7 +2,7 @@
 # Base abstract classed nnmware(c)2013
 
 from django.conf import settings
-from django.contrib.contenttypes.generic import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
