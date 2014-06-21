@@ -26,7 +26,7 @@ class FlatNnmcommentAdmin(admin.ModelAdmin):
         (_('Meta'), {'fields': [('created_date', 'updated_date',
                                  'ip')]}),
     )
-    list_display = ('user', 'created_date', 'content_type', 'content_object', 'status', 'comment')
+    list_display = ('user', 'created_date', 'content_type', 'status', 'comment')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
@@ -150,7 +150,7 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Action)
 class ActionAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
-    list_display = ('user', 'verb', 'content_object', 'timestamp', 'ip', 'user_agent')
+    list_display = ('user', 'verb', 'timestamp', 'ip', 'user_agent')
     list_filter = ('timestamp',)
 
 
@@ -171,7 +171,7 @@ class MaterialAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'user', 'content_object')
+    list_display = ('__unicode__', 'user')
     list_editable = ('user',)
     list_filter = ('user',)
 
@@ -261,7 +261,7 @@ class LikeAdmin(admin.ModelAdmin):
         ('Like', {'fields': [('user', 'content_type', 'object_id')]}),
         ('Variants', {'fields': [('like', 'dislike')]}),
     )
-    list_display = ('user', 'content_object', 'like', 'dislike')
+    list_display = ('user', 'like', 'dislike')
     readonly_fields = ('user', 'content_type', 'object_id', 'like', 'dislike')
 
 
