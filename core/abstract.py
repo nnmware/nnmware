@@ -788,3 +788,18 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
         return self.comment[:50]
 
     public = PublicNnmcommentManager()
+
+
+@python_2_unicode_compatible
+class AbstractLike(AbstractContent):
+    like = models.BooleanField(verbose_name="Like", default=False, db_index=True)
+    dislike = models.BooleanField(verbose_name="Dislike", default=False, db_index=True)
+
+    class Meta:
+        ordering = ('-pk',)
+        verbose_name = "Like"
+        verbose_name_plural = "Likes"
+        abstract = True
+
+    def __str__(self):
+        return 'Likes for %s' % self.content_object

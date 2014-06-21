@@ -22,7 +22,7 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment
+from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment, AbstractLike
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -694,3 +694,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
         self.date_modified = now()
         super(NnmwareUser, self).save(*args, **kwargs)
 
+
+class Like(AbstractLike):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)

@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from nnmware.core.models import Nnmcomment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
-    EmailValidation, FlatNnmcomment
+    EmailValidation, FlatNnmcomment, Like
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -17,6 +18,7 @@ class BaseSkillInline(admin.StackedInline):
     fields = (('skill', 'level', 'addon'),)
 
 
+@admin.register(FlatNnmcomment)
 class FlatNnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Comment'), {'fields': [('content_type', 'object_id', 'status')]}),
@@ -30,6 +32,7 @@ class FlatNnmcommentAdmin(admin.ModelAdmin):
     search_fields = ('comment', 'user__username')
 
 
+@admin.register(Nnmcomment)
 class NnmcommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Comment'), {'fields': [('parent', 'content_type', 'object_id')]}),
@@ -97,6 +100,7 @@ class AbstractDataAdmin(admin.ModelAdmin):
         return qs.filter(user__id=request.user.id)
 
 
+@admin.register(Doc)
 class DocAdmin(admin.ModelAdmin):
     """
      Admin class for Doc.
@@ -110,6 +114,7 @@ class DocAdmin(admin.ModelAdmin):
     list_display = ('description', 'doc', 'created_date', 'user', 'locked', 'size')
 
 
+@admin.register(Pic)
 class PicAdmin(admin.ModelAdmin):
 #   readonly_fields = ('pic',)
     fieldsets = (
@@ -124,6 +129,7 @@ class PicAdmin(admin.ModelAdmin):
     search_fields = ('description', 'user__username')
 
 
+@admin.register(VisitorHit)
 class VisitorHitAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'date', 'ip', 'session_key', 'user_agent', 'referer',
                        'url', 'secure', 'hostname')
@@ -135,11 +141,13 @@ class VisitorHitAdmin(admin.ModelAdmin):
     ordering = ('-date', 'user', 'ip')
 
 
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     fieldsets = ((_('nnmware'), {'fields': [('name', 'slug')]}),)
     list_display = ('name', 'slug')
 
 
+@admin.register(Action)
 class ActionAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
     list_display = ('user', 'verb', 'content_object', 'timestamp', 'ip', 'user_agent')
@@ -161,17 +169,20 @@ class MaterialAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+@admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'user', 'content_object')
     list_editable = ('user',)
     list_filter = ('user',)
 
 
+@admin.register(Notice)
 class NoticeAdmin(admin.ModelAdmin):
     list_display = ('user', 'timestamp', 'verb', 'sender', 'ip', 'user_agent')
     list_filter = ('user',)
 
 
+@admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Main'), {
@@ -220,11 +231,13 @@ class MessageAdmin(admin.ModelAdmin):
             obj.save()
 
 
+@admin.register(EmailValidation)
 class EmailValidationAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('username', 'email')
 
 
+@admin.register(Video)
 class VideoAdmin(admin.ModelAdmin):
     list_display = ('project_name', 'user', 'slug', 'description')
     list_filter = ('user', 'project_name')
@@ -242,18 +255,14 @@ class VideoAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(EmailValidation, EmailValidationAdmin)
-admin.site.register(Message, MessageAdmin)
-admin.site.register(Doc, DocAdmin)
-admin.site.register(Pic, PicAdmin)
-admin.site.register(Tag, TagAdmin)
-admin.site.register(Action, ActionAdmin)
-admin.site.register(Follow, FollowAdmin)
-admin.site.register(Notice, NoticeAdmin)
-admin.site.register(VisitorHit, VisitorHitAdmin)
-admin.site.register(Video, VideoAdmin)
-admin.site.register(FlatNnmcomment, FlatNnmcommentAdmin)
-admin.site.register(Nnmcomment, NnmcommentAdmin)
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Like', {'fields': [('user', 'content_type', 'object_id')]}),
+        ('Variants', {'fields': [('like', 'dislike')]}),
+    )
+    list_display = ('user', 'content_object', 'like', 'dislike')
+    readonly_fields = ('user', 'content_type', 'object_id', 'like', 'dislike')
 
 
 #class ReadOnlyAdmin(admin.UserAdmin):
