@@ -24,8 +24,7 @@ class TopicAddForm(ModelForm):
 class AdminTopicForm(forms.ModelForm):
     class Meta:
         model = Topic
-
-#        fields = ('is_sticky','is_closed','is_hidden','is_private')
+        fields = '__all__'
 
 
 class AddTopicForm(forms.ModelForm):
