@@ -670,7 +670,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
     def follow_count(self):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
 
-    @property
     def get_absolute_url(self):
         return reverse("user_detail", args=[self.username])
 
