@@ -10,7 +10,7 @@ from nnmware.core.abstract import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELET
     STATUS_PUBLISHED
 from nnmware.apps.topic.forms import TopicAddForm
 
-from nnmware.apps.topic.models import Category, Topic
+from nnmware.apps.topic.models import TopicCategory, Topic
 from nnmware.apps.topic.forms import TopicForm
 from nnmware.core.data import get_queryset_category
 from django.contrib import messages
