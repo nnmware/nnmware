@@ -5,6 +5,7 @@ from nnmware.apps.realty.models import *
 from django.utils.translation import ugettext_lazy as _
 
 
+@admin.register(Compass)
 class CompassAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'abbreviation')
     search_fields = ('name', )
@@ -15,6 +16,7 @@ class CompassAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(MaterialKind)
 class MaterialKindAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled')
     search_fields = ('name', )
@@ -25,6 +27,7 @@ class MaterialKindAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(EstateType)
 class EstateTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled')
     search_fields = ('name', )
@@ -35,6 +38,7 @@ class EstateTypeAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(EstateFeature)
 class EstateFeatureAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
     search_fields = ('name', )
@@ -45,6 +49,7 @@ class EstateFeatureAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(TrimKind)
 class TrimKindAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
     search_fields = ('name', )
@@ -55,6 +60,7 @@ class TrimKindAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(RmFeature)
 class RmFeatureAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
     search_fields = ('name', )
@@ -65,6 +71,7 @@ class RmFeatureAdmin(admin.ModelAdmin):
             ('name_en', )]}),)
 
 
+@admin.register(RmType)
 class RmTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'internal', 'external')
     search_fields = ('name', )
@@ -87,6 +94,7 @@ class RmInline(admin.StackedInline):
     )
 
 
+@admin.register(Estate)
 class EstateAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'company', 'enabled', 'housing')
     fieldsets = (
@@ -113,13 +121,3 @@ class EstateAdmin(admin.ModelAdmin):
                         "fields": [("name_en", ), ("description_en",)]}))
     ordering = ('-created_date', 'name')
     inlines = [RmInline, ]
-
-
-admin.site.register(Compass, CompassAdmin)
-admin.site.register(MaterialKind, MaterialKindAdmin)
-admin.site.register(EstateType, EstateTypeAdmin)
-admin.site.register(EstateFeature, EstateFeatureAdmin)
-admin.site.register(TrimKind, TrimKindAdmin)
-admin.site.register(RmFeature, RmFeatureAdmin)
-admin.site.register(RmType, RmTypeAdmin)
-admin.site.register(Estate, EstateAdmin)

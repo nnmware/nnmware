@@ -13,6 +13,7 @@ class ProductParameterValueInline(generic.GenericStackedInline):
     fields = (('parameter', 'value'),)
 
 
+@admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
     list_display = ("name", "category", 'vendor', "created_date", 'quantity', 'amount', 'shop_pn', 'vendor_pn',
@@ -31,6 +32,7 @@ class ProductAdmin(admin.ModelAdmin):
                                    ('colors',), ('materials',), ('related_products',)]}),)
 
 
+@admin.register(ProductCategory)
 class ProductCategoryAdmin(TreeAdmin):
     pass
 
@@ -40,19 +42,23 @@ class ProductCategoryAdmin(TreeAdmin):
         #list_display = ("name", "_parents_repr")
 
 
+@admin.register(ProductParameter)
 class ProductParameterAdmin(admin.ModelAdmin):
     list_display = ("name", 'category', "unit")
 
 
+@admin.register(ProductParameterCategory)
 class ProductParameterCategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
 
 
+@admin.register(Vendor)
 class VendorAdmin(admin.ModelAdmin):
     fieldsets = ((_('Vendor'), {'fields': [('name', 'country', 'website'), ('description',)]}),)
     list_display = ('name', 'country', 'website')
 
 
+@admin.register(Basket)
 class BasketAdmin(admin.ModelAdmin):
     list_display = ("user", "product", 'quantity', 'created_date', 'updated_date')
 
@@ -65,6 +71,7 @@ class OrderItemInline(admin.StackedInline):
         ('is_delivery', 'addon'))
 
 
+@admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     change_form_template = 'admin_form/change_form.html'
     readonly_fields = ('created_date', 'updated_date')
@@ -94,6 +101,7 @@ class OrderAdmin(admin.ModelAdmin):
     readonly_fields = ('amount_order', 'updated_date')
 
 
+@admin.register(DeliveryAddress)
 class DeliveryAddressAdmin(admin.ModelAdmin):
     list_display = ("user", "zipcode", 'city', "street", 'house_number', 'last_name', 'first_name')
     fieldsets = (
@@ -105,6 +113,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
                                             ('phone', 'skype')]}),)
 
 
+@admin.register(Feedback)
 class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date', "ip", 'user_agent')
     fieldsets = (
@@ -115,6 +124,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip', 'user_agent', 'created_date')
 
 
+@admin.register(ShopCallback)
 class ShopCallbackAdmin(admin.ModelAdmin):
     list_display = ("clientname", "clientphone", 'created_date', 'closed', 'quickorder', "ip", 'user_agent')
     fieldsets = (
@@ -125,6 +135,7 @@ class ShopCallbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip', 'user_agent', 'created_date')
 
 
+@admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'slide_thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
     fieldsets = (
@@ -135,6 +146,7 @@ class ReviewAdmin(admin.ModelAdmin):
     readonly_fields = ('ip', 'user_agent', 'created_date')
 
 
+@admin.register(ShopSlider)
 class ShopSliderAdmin(admin.ModelAdmin):
     list_display = ('pk', 'slide_thumbnail', 'slider_link', 'visible')
     fieldsets = (
@@ -143,6 +155,7 @@ class ShopSliderAdmin(admin.ModelAdmin):
     ordering = ('visible',)
 
 
+@admin.register(SpecialOffer)
 class SpecialOfferAdmin(admin.ModelAdmin):
     class Media:
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
@@ -156,6 +169,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     ordering = ('-start_date', '-end_date')
 
 
+@admin.register(ShopNews)
 class ShopNewsAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
@@ -163,6 +177,7 @@ class ShopNewsAdmin(admin.ModelAdmin):
     ordering = ('-created_date', 'title')
 
 
+@admin.register(ShopArticle)
 class ShopArticleAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
@@ -170,6 +185,7 @@ class ShopArticleAdmin(admin.ModelAdmin):
     ordering = ('-created_date', 'title')
 
 
+@admin.register(DeliveryMethod)
 class DeliveryMethodAdmin(admin.ModelAdmin):
     list_display = ("name", "amount", 'enabled_for_registered', 'enabled_for_unregistered', 'order_in_list')
     fieldsets = (
@@ -179,6 +195,7 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
     ordering = ('-order_in_list', 'name')
 
 
+@admin.register(ServiceCategory)
 class ServiceCategoryAdmin(TreeAdmin):
     pass
 
@@ -187,6 +204,7 @@ class ServiceCategoryAdmin(TreeAdmin):
               '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
 
+@admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
     list_display = ("name", "category", "created_date", 'amount', 'shop_pn', 'vendor_pn', 'visible')
@@ -201,27 +219,3 @@ class ServiceAdmin(admin.ModelAdmin):
                                    ('order_in_list', 'enabled', 'on_main'),
                                    ('discount', 'discount_percent', 'special_offer'),
                                    ('related_services',)]}),)
-
-
-admin.site.register(Product, ProductAdmin)
-admin.site.register(ProductCategory, ProductCategoryAdmin)
-admin.site.register(ParameterUnit, UnitAdmin)
-admin.site.register(ProductParameter, ProductParameterAdmin)
-admin.site.register(ProductColor, ColorAdmin)
-admin.site.register(ProductMaterial, MaterialAdmin)
-admin.site.register(Vendor, VendorAdmin)
-admin.site.register(CargoService, VendorAdmin)
-admin.site.register(Basket, BasketAdmin)
-admin.site.register(ProductParameterCategory, ProductParameterCategoryAdmin)
-admin.site.register(Order, OrderAdmin)
-admin.site.register(DeliveryAddress, DeliveryAddressAdmin)
-admin.site.register(Feedback, FeedbackAdmin)
-admin.site.register(ShopNews, ShopNewsAdmin)
-admin.site.register(ShopArticle, ShopArticleAdmin)
-admin.site.register(Review, ReviewAdmin)
-admin.site.register(SpecialOffer, SpecialOfferAdmin)
-admin.site.register(DeliveryMethod, DeliveryMethodAdmin)
-admin.site.register(ShopCallback, ShopCallbackAdmin)
-admin.site.register(ShopSlider, ShopSliderAdmin)
-admin.site.register(ServiceCategory, ServiceCategoryAdmin)
-admin.site.register(Service, ServiceAdmin)

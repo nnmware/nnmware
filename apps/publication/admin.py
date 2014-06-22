@@ -4,6 +4,7 @@ from nnmware.apps.publication.models import Publication, PublicationCategory
 from nnmware.core.admin import TreeAdmin
 
 
+@admin.register(PublicationCategory)
 class PublicationCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
@@ -25,5 +26,3 @@ class PublicationAdmin(admin.ModelAdmin):
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
 
-#admin.site.register(Publication, PublicationAdmin)
-admin.site.register(PublicationCategory, PublicationCategoryAdmin)

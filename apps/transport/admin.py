@@ -17,6 +17,7 @@ class VehicleBaseParamAdmin(admin.ModelAdmin):
     ordering = ('-order_in_list', 'name',)
 
 
+@admin.register(VehicleKind)
 class VehicleKindAdmin(VehicleBaseParamAdmin):
     pass
 
@@ -29,26 +30,32 @@ class VehicleBaseParamForAdmin(VehicleBaseParamAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(VehicleTransmission)
 class VehicleTransmissionAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+@admin.register(VehicleCarcass)
 class VehicleCarcassAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+@admin.register(VehicleEngine)
 class VehicleEngineAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+@admin.register(VehicleFeature)
 class VehicleFeatureAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+@admin.register(VehicleMark)
 class VehicleMarkAdmin(VehicleBaseParamForAdmin):
     pass
 
 
+@admin.register(VehicleVendor)
 class VehicleVendorAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Vendor'), {'fields': [('name', 'country', 'website'), ('description',)]}),
@@ -57,6 +64,7 @@ class VehicleVendorAdmin(admin.ModelAdmin):
     list_display = ('name', 'country', 'website')
 
 
+@admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
@@ -74,12 +82,6 @@ class VehicleAdmin(admin.ModelAdmin):
     ordering = ('-order_in_list', 'name',)
 
 
-admin.site.register(VehicleColor, ColorAdmin)
-admin.site.register(VehicleKind, VehicleKindAdmin)
-admin.site.register(VehicleTransmission, VehicleTransmissionAdmin)
-admin.site.register(VehicleCarcass, VehicleCarcassAdmin)
-admin.site.register(VehicleEngine, VehicleEngineAdmin)
-admin.site.register(VehicleFeature, VehicleFeatureAdmin)
-admin.site.register(VehicleMark, VehicleMarkAdmin)
-admin.site.register(VehicleVendor, VehicleVendorAdmin)
-admin.site.register(Vehicle, VehicleAdmin)
+@admin.register(VehicleColor)
+class VehicleColorAdmin(ColorAdmin):
+    pass

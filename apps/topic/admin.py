@@ -4,6 +4,7 @@ from nnmware.apps.topic.models import Topic, TopicCategory
 from nnmware.core.admin import TreeAdmin
 
 
+@admin.register(TopicCategory)
 class TopicCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
@@ -12,6 +13,7 @@ class TopicCategoryAdmin(TreeAdmin):
     )
 
 
+@admin.register(Topic)
 class TopicAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Topic'), {'fields': [('user', 'enabled', 'category', 'region')]}),
@@ -23,6 +25,3 @@ class TopicAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
-
-admin.site.register(Topic, TopicAdmin)
-admin.site.register(TopicCategory, TopicCategoryAdmin)

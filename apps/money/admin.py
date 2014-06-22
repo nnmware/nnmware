@@ -3,6 +3,7 @@ from nnmware.apps.money.models import *
 from django.utils.translation import ugettext_lazy as _
 
 
+@admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ('user', 'date', 'actor', 'status', 'amount', 'currency', 'target')
     search_fields = ('name', )
@@ -25,6 +26,7 @@ class TransactionAdmin(admin.ModelAdmin):
         return readonly
 
 
+@admin.register(Bill)
 class BillAdmin(admin.ModelAdmin):
     list_display = ('user', 'date_billed', 'target', 'status', 'amount', 'currency')
     search_fields = ('name',)
@@ -39,20 +41,16 @@ class BillAdmin(admin.ModelAdmin):
             ('status', 'date')]}),)
 
 
+@admin.register(Currency)
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ('code',)
     search_fields = ('name',)
 
 
+@admin.register(ExchangeRate)
 class ExchangeRateAdmin(admin.ModelAdmin):
     list_display = ('currency', 'date', 'nominal', 'official_rate', 'rate')
     search_fields = ('currency',)
     fieldsets = (
         (_("Exchange Rate"), {"fields": [("currency", "date"),
             ('nominal', 'official_rate', 'rate'), ]}),)
-
-
-admin.site.register(Transaction, TransactionAdmin)
-admin.site.register(Currency, CurrencyAdmin)
-admin.site.register(ExchangeRate, ExchangeRateAdmin)
-admin.site.register(Bill, BillAdmin)

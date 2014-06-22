@@ -26,6 +26,7 @@ class AgentPercentInline(admin.StackedInline):
     fields = (('date', 'percent'),)
 
 
+@admin.register(Hotel)
 class HotelAdmin(admin.ModelAdmin):
     form = HotelAdminForm
     list_display = ('name', 'register_date', 'city', 'address', 'contact_email', 'contact_name', 'room_count',
@@ -65,6 +66,7 @@ class HotelAdmin(admin.ModelAdmin):
     ordering = ('-register_date', 'name')
 
 
+@admin.register(HotelOption)
 class HotelOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'order_in_list')
     list_filter = ('name', 'category', 'in_search', 'sticky_in_search')
@@ -79,6 +81,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
 #    ordering = ('category','order_in_list','name')
 
 
+@admin.register(Room)
 class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'places', 'hotel')
     search_fields = ('name',)
@@ -89,6 +92,7 @@ class RoomAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(RoomOption)
 class RoomOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'order_in_list')
     search_fields = ('name',)
@@ -101,6 +105,7 @@ class RoomOptionAdmin(admin.ModelAdmin):
     ordering = ('category', 'order_in_list', 'name')
 
 
+@admin.register(PaymentMethod)
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
@@ -111,6 +116,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(HotelType)
 class HotelTypeAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
@@ -120,6 +126,7 @@ class HotelTypeAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(RoomOptionCategory)
 class RoomOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'slug')
     search_fields = ('name',)
@@ -130,6 +137,7 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("grp-collapse grp-closed",), "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(HotelOptionCategory)
 class HotelOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('name',)
@@ -141,6 +149,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('user', 'from_date', 'to_date', 'settlement', 'guests', 'amount', 'status', 'date',
                     'uuid', 'enabled')
@@ -181,6 +190,7 @@ class BookingAdmin(admin.ModelAdmin):
         return self.fieldsets
 
 
+@admin.register(RequestAddHotel)
 class RequestAddHotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'register_date', 'city', 'address', 'phone', 'fax', 'contact_email', 'website')
     search_fields = ('date', 'name')
@@ -192,6 +202,7 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
                                                  ('website', 'rooms_count')]}),)
 
 
+@admin.register(AgentPercent)
 class AgentPercentAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'city_of_hotel', 'date', 'percent')
     search_fields = ('date', 'percent', 'hotel__name')
@@ -206,6 +217,7 @@ class AgentPercentAdmin(admin.ModelAdmin):
     ordering = ('-date',)
 
 
+@admin.register(Discount)
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice', 'percentage', 'enabled')
 #    search_fields = ('date',)
@@ -216,11 +228,13 @@ class DiscountAdmin(admin.ModelAdmin):
             ('days', 'at_price_days')]}),)
 
 
+@admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', )
     search_fields = ('date',)
 
 
+@admin.register(SettlementVariant)
 class SettlementVariantAdmin(admin.ModelAdmin):
     list_display = ('room', 'settlement', 'enabled')
     search_fields = ('date',)
@@ -228,6 +242,7 @@ class SettlementVariantAdmin(admin.ModelAdmin):
         (_("Settlement Variant"), {"fields": [("room", 'settlement'), ]}),)
 
 
+@admin.register(Availability)
 class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ('room', 'date', 'placecount')
     search_fields = ('date',)
@@ -235,6 +250,7 @@ class AvailabilityAdmin(admin.ModelAdmin):
         (_("Availability"), {"fields": [("room", 'date', 'placecount')]}),)
 
 
+@admin.register(PlacePrice)
 class PlacePriceAdmin(admin.ModelAdmin):
     list_display = ('settlement', 'date', 'amount', 'currency')
     search_fields = ('date',)
@@ -243,6 +259,7 @@ class PlacePriceAdmin(admin.ModelAdmin):
     ordering = ('amount',)
 
 
+@admin.register(RoomDiscount)
 class RoomDiscountAdmin(admin.ModelAdmin):
     list_display = ('room', 'discount', 'date', 'value')
     search_fields = ('date',)
@@ -251,21 +268,3 @@ class RoomDiscountAdmin(admin.ModelAdmin):
     ordering = ('value',)
     # raw_id_fields = ('room', 'discount')
     # autocomplete_lookup_fields = {'fk': ['room', 'discount']}
-
-admin.site.register(Hotel, HotelAdmin)
-admin.site.register(HotelOption, HotelOptionAdmin)
-admin.site.register(Room, RoomAdmin)
-admin.site.register(RoomOption, RoomOptionAdmin)
-admin.site.register(RoomOptionCategory, RoomOptionCategoryAdmin)
-admin.site.register(HotelOptionCategory, HotelOptionCategoryAdmin)
-admin.site.register(Booking, BookingAdmin)
-admin.site.register(AgentPercent, AgentPercentAdmin)
-admin.site.register(Review, ReviewAdmin)
-admin.site.register(Availability, AvailabilityAdmin)
-admin.site.register(RequestAddHotel, RequestAddHotelAdmin)
-admin.site.register(SettlementVariant, SettlementVariantAdmin)
-admin.site.register(PlacePrice, PlacePriceAdmin)
-admin.site.register(PaymentMethod, PaymentMethodAdmin)
-admin.site.register(Discount, DiscountAdmin)
-admin.site.register(RoomDiscount, RoomDiscountAdmin)
-admin.site.register(HotelType, HotelTypeAdmin)

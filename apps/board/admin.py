@@ -4,6 +4,7 @@ from nnmware.apps.board.models import Board, BoardCategory
 from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
 
 
+@admin.register(BoardCategory)
 class BoardCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
@@ -12,6 +13,7 @@ class BoardCategoryAdmin(TreeAdmin):
     )
 
 
+@admin.register(Board)
 class BoardAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Board'), {'fields': [('user', 'enabled', 'category', 'region')]}),
@@ -23,6 +25,3 @@ class BoardAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
-
-admin.site.register(Board, BoardAdmin)
-admin.site.register(BoardCategory, BoardCategoryAdmin)

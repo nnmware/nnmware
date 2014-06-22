@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin, TreeAdmin
 
 
+@admin.register(TypeEmployerProfile)
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
     list_display = ('name', 'employer_type', 'is_radio', 'order_in_list', 'slug')
     list_filter = ('name',)
@@ -13,6 +14,7 @@ class TypeEmployerProfileAdmin(TypeBaseAdmin):
                                                              ('order_in_list', 'is_radio'), ]}),)
 
 
+@admin.register(TypeEmployerOther)
 class TypeEmployerOtherAdmin(TypeBaseAdmin):
     list_display = ('name', 'employer_type', 'is_radio')
     list_filter = ('name',)
@@ -21,6 +23,7 @@ class TypeEmployerOtherAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of other employer sphere"), {"fields": [('name', 'employer_type'), ]}),)
 
 
+@admin.register(TypeEmployer)
 class TypeEmployerAdmin(TypeBaseAdmin):
     list_display = ('name', 'order_in_list', 'slug')
     fieldsets = (
@@ -28,11 +31,13 @@ class TypeEmployerAdmin(TypeBaseAdmin):
     ordering = ('-order_in_list', 'name',)
 
 
+@admin.register(Agency)
 class AgencyAdmin(TypeBaseAdmin):
     fieldsets = (
         (_("Agency name"), {"fields": [('name', ), ]}),)
 
 
+@admin.register(CompanyCategory)
 class CompanyCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent",
@@ -55,6 +60,7 @@ class CompanyDetailInline(admin.StackedInline):
     )
 
 
+@admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     model = Company
     list_display = ('name', 'region', 'work_on', 'work_off')
@@ -83,6 +89,7 @@ class CompanyAdmin(admin.ModelAdmin):
     inlines = [CompanyDetailInline, ]
 
 
+@admin.register(VacancyCategory)
 class VacancyCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent",
@@ -92,6 +99,7 @@ class VacancyCategoryAdmin(TreeAdmin):
     )
 
 
+@admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     list_display = ('name', 'vacancy_type', 'user', 'company', 'enabled')
     fieldsets = (
@@ -104,13 +112,3 @@ class VacancyAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", ), ("description_en",)]}))
     ordering = ('-created_date', 'name')
-
-
-admin.site.register(Agency, AgencyAdmin)
-admin.site.register(TypeEmployer, TypeEmployerAdmin)
-admin.site.register(TypeEmployerProfile, TypeEmployerProfileAdmin)
-admin.site.register(TypeEmployerOther, TypeEmployerOtherAdmin)
-admin.site.register(CompanyCategory, CompanyCategoryAdmin)
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(VacancyCategory, VacancyCategoryAdmin)
-admin.site.register(Vacancy, VacancyAdmin)

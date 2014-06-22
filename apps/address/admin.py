@@ -4,6 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.admin import TypeBaseAdmin
 
 
+@admin.register(City)
 class CityAdmin(admin.ModelAdmin):
     list_display = ('name', 'region', 'country', 'slug', 'longitude', 'latitude')
     search_fields = ('name',)
@@ -18,6 +19,7 @@ class CityAdmin(admin.ModelAdmin):
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
+@admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
     list_display = ('__unicode__',)
     search_fields = ('name',)
@@ -30,6 +32,7 @@ class RegionAdmin(admin.ModelAdmin):
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
+@admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'slug')
     search_fields = ('name',)
@@ -42,6 +45,7 @@ class CountryAdmin(admin.ModelAdmin):
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
+@admin.register(TourismCategory)
 class TourismCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en')
     search_fields = ('name',)
@@ -53,6 +57,7 @@ class TourismCategoryAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
+@admin.register(Tourism)
 class TourismAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'country', 'city', 'address')
     search_fields = ('name',)
@@ -64,6 +69,7 @@ class TourismAdmin(admin.ModelAdmin):
                         "fields": [("name_en", ), ("description_en", )]}),)
 
 
+@admin.register(StationMetro)
 class StationMetroAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
@@ -75,15 +81,8 @@ class StationMetroAdmin(admin.ModelAdmin):
                         "fields": [("name_en",), ("description_en",)]}),)
 
 
+@admin.register(Institution)
 class InstitutionAdmin(TypeBaseAdmin):
     fieldsets = (
         (_("Institution"), {"fields": [('name', 'order_in_list'),
                                        ('city', 'country')]}),)
-
-admin.site.register(City, CityAdmin)
-admin.site.register(Region, RegionAdmin)
-admin.site.register(Country, CountryAdmin)
-admin.site.register(TourismCategory, TourismCategoryAdmin)
-admin.site.register(Tourism, TourismAdmin)
-admin.site.register(StationMetro, StationMetroAdmin)
-admin.site.register(Institution, InstitutionAdmin)
