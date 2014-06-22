@@ -12,8 +12,10 @@ except:
 
 
 class HotelAdminForm(forms.ModelForm):
+
     class Meta:
         model = Hotel
+        fields = '__all__'
         widgets = {
             'time_on': AdminTimeWidget(),
             'time_off': AdminTimeWidget()
