@@ -587,9 +587,9 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
 @register.simple_tag
 def menu(app=None):
     if app == 'topic':
-        from nnmware.apps.topic.models import Category as MenuCategory
+        from nnmware.apps.topic.models import TopicCategory as MenuCategory
     elif app == 'board':
-        from nnmware.apps.board.models import Category as MenuCategory
+        from nnmware.apps.board.models import BoardCategory as MenuCategory
     elif app == 'shop':
         from nnmware.apps.shop.models import ProductCategory as MenuCategory
     elif app == 'article':
