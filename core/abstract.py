@@ -195,7 +195,10 @@ class AbstractData(AbstractDate):
 
 
 class AbstractImg(models.Model):
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="img/%Y/%m/%d/", blank=True,
+                            height_field='img_height', width_field='img_width')
+    img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
+    img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
 
     class Meta:
         abstract = True
@@ -225,6 +228,18 @@ class AbstractImg(models.Model):
         return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
 
     slide_thumbnail.allow_tags = True
+
+    def thumbnail(self):
+        if self.img:
+            path = self.img.url
+            tmb = make_thumbnail(path, height=60, width=60)
+            return '<a style="display:block;text-align:center;" target="_blank" href="%s"><img src="%s" /></a>' \
+                   '<p style="text-align:center;margin-top:5px;">%sx%s px</p>' % (path, tmb, self.img_width,
+                                                                                  self.img_height)
+        return "No image"
+    thumbnail.allow_tags = True
+    thumbnail.short_description = 'Thumbnail'
+
 
 
 @python_2_unicode_compatible
