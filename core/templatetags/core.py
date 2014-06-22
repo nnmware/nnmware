@@ -593,7 +593,7 @@ def menu(app=None):
     elif app == 'shop':
         from nnmware.apps.shop.models import ProductCategory as MenuCategory
     elif app == 'article':
-        from nnmware.apps.article.models import Category as MenuCategory
+        from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
         pass
 

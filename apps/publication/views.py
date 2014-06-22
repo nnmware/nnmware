@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.contrib import messages
 from django.db.models import Q
 from django.views.generic import ListView, DateDetailView, YearArchiveView,\
@@ -5,10 +6,10 @@ from django.views.generic import ListView, DateDetailView, YearArchiveView,\
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.data import get_queryset_category
 
-from nnmware.apps.library.forms import *
+from nnmware.apps.publication.forms import *
 from nnmware.core.views import *
 from nnmware.core.abstract import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
-from nnmware.apps.library.models import Publication
+from nnmware.apps.publication.models import Publication
 
 
 class PublicationDetail(AttachedFilesMixin, DateDetailView):
