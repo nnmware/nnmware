@@ -676,10 +676,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
     def basket_sum(self):
         from nnmware.apps.shop.models import Basket
         all_sum = Basket.objects.filter(user=self).aggregate(Sum('sum'))
-        #        basket_user = Basket.objects.filter(user=self.user)
-        #        all_sum = 0
-        #        for item in basket_user:
-        #            all_sum += item.sum
         return "%0.2f" % (all_sum,)
 
     @property
