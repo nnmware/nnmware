@@ -549,21 +549,21 @@ def watermark(url, arg=''):
 #from nnmware.apps.forum.models import Category
 
 
-def recurse_for_children(current_node, parent_node, show_empty=True):
-    child_count = current_node.children.count()
-
-    if show_empty or child_count > 0:
-        temp_parent = SubElement(parent_node, 'li')
-        attrs = {'href': current_node.get_absolute_url()}
-        link = SubElement(temp_parent, 'a', attrs)
-        link.text = current_node.name
-        myval = SubElement(temp_parent, 'b')
-        myval.text = " %s/%s" % (current_node.get_updated_count, current_node.get_valid_count)
-        if child_count > 0:
-            new_parent = SubElement(temp_parent, 'ul')
-            children = current_node.children.all()
-            for child in children:
-                recurse_for_children(child, new_parent)
+# def recurse_for_children(current_node, parent_node, show_empty=True):
+#     child_count = current_node.children.count()
+#
+#     if show_empty or child_count > 0:
+#         temp_parent = SubElement(parent_node, 'li')
+#         attrs = {'href': current_node.get_absolute_url()}
+#         link = SubElement(temp_parent, 'a', attrs)
+#         link.text = current_node.name
+#         myval = SubElement(temp_parent, 'b')
+#         myval.text = " %s/%s" % (current_node.get_updated_count, current_node.get_valid_count)
+#         if child_count > 0:
+#             new_parent = SubElement(temp_parent, 'ul')
+#             children = current_node.children.all()
+#             for child in children:
+#                 recurse_for_children(child, new_parent)
 
 
 #@register.simple_tag
