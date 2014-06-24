@@ -24,7 +24,7 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
 
     if show_empty or child_count > 0:
         temp_parent = SubElement(parent_node, 'li')
-        attrs = {'href': current_node.get_absolute_url()}
+        attrs = {'href': current_node.get_absolute_url(), 'id': 'category' + str(int(current_node.pk))}
         link = SubElement(temp_parent, 'a', attrs)
         link.text = current_node.name
         counter = current_node._active_set.count()
