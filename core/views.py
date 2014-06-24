@@ -90,6 +90,15 @@ class AjaxViewMixin(View):
         return super(AjaxViewMixin, self).render_to_response(context, **response_kwargs)
 
 
+class TabMixinView(object):
+    tab = None
+
+    def get_context_data(self, **kwargs):
+        context = super(TabMixinView, self).get_context_data(**kwargs)
+        context['tab'] = self.tab
+        return context
+
+
 class DocEdit(UpdateView):
     model = Doc
     form_class = DocForm
