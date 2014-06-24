@@ -53,7 +53,7 @@ def recurse_for_children_with_span(current_node, parent_node, show_empty=True):
         for child in current_node.get_all_children():
             counter += child._active_set.count()
         if counter > 0:
-            count_txt = SubElement(temp_parent, 'sup', {'class': 'amount'})
+            count_txt = SubElement(link, 'i')
             count_txt.text = str(counter)
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul')
