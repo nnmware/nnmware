@@ -39,6 +39,28 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
             for child in children:
                 recurse_for_children(child, new_parent)
 
+
+def recurse_for_children_with_span(current_node, parent_node, show_empty=True):
+    child_count = current_node.children.count()
+
+    if show_empty or child_count > 0:
+        temp_parent = SubElement(parent_node, 'li')
+        attrs = {'href': current_node.get_absolute_url(), 'id': 'category' + str(int(current_node.pk))}
+        link = SubElement(temp_parent, 'a', attrs)
+        span = SubElement(link, 'span')
+        span.text = current_node.name
+        counter = current_node._active_set.count()
+        for child in current_node.get_all_children():
+            counter += child._active_set.count()
+        if counter > 0:
+            count_txt = SubElement(temp_parent, 'sup', {'class': 'amount'})
+            count_txt.text = str(counter)
+        if child_count > 0:
+            new_parent = SubElement(temp_parent, 'ul')
+            children = current_node.children.all()
+            for child in children:
+                recurse_for_children_with_span(child, new_parent)
+
 MONTH = ['Jan', 'Feb', 'Mar', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
          'Oct', 'Nov', 'Dec']
 

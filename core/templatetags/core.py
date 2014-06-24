@@ -607,6 +607,26 @@ def menu(app=None):
 #    except:
 #        return 'error'
 
+@register.simple_tag
+def menu_span(app=None):
+    if app == 'topic':
+        from nnmware.apps.topic.models import TopicCategory as MenuCategory
+    elif app == 'board':
+        from nnmware.apps.board.models import BoardCategory as MenuCategory
+    elif app == 'shop':
+        from nnmware.apps.shop.models import ProductCategory as MenuCategory
+    elif app == 'article':
+        from nnmware.apps.publication.models import PublicationCategory as MenuCategory
+    else:
+        pass
+
+    if 1 > 0:  # try:
+        html = Element("ul")
+        for node in MenuCategory.objects.all():
+            if not node.parent:
+                recurse_for_children_with_span(node, html)
+        return tostring(html, 'utf-8')
+
 
 @register.simple_tag
 def category_tree_series():
