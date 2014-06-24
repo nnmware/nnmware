@@ -615,7 +615,7 @@ def menu_span(app=None):
         from nnmware.apps.board.models import BoardCategory as MenuCategory
     elif app == 'shop':
         from nnmware.apps.shop.models import ProductCategory as MenuCategory
-    elif app == 'article':
+    elif app == 'publication':
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
         pass
