@@ -47,7 +47,7 @@ class Publication(AbstractDate, AbstractName):
 
     def carma(self):
         liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
-        disliked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
+        disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
         return liked - disliked
 
     # def users_liked(self):
