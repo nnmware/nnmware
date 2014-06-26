@@ -541,7 +541,6 @@ class AbstractContactType(AbstractImg):
     pass
 
 
-
 class AbstractContact(AbstractImg):
     mobile_personal = std_text_field(_('Personal mobile phone'), max_length=12)
     mobile_work = std_text_field(_('Work mobile phone '), max_length=12)

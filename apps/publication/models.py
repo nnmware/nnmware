@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.db import models
-from django.db.models import permalink
+from django.db.models import permalink, Count
 from django.utils.translation import ugettext_lazy as _
+from nnmware.core.models import Like
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import PublicationManager
@@ -43,3 +44,14 @@ class Publication(AbstractDate, AbstractName):
     @permalink
     def get_edit_url(self):
         return 'publication_edit', (), {'pk': self.pk}
+
+    def carma(self):
+        liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
+        disliked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
+        return liked - disliked
+
+    # def users_liked(self):
+    #     return self.liked().values_list('user__pk', flat=True)
+    #
+    # def users_disliked(self):
+    #     return self.disliked().values_list('user__pk', flat=True)

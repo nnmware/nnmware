@@ -309,6 +309,12 @@ def get_follow_url(content_object):
     return reverse('follow', kwargs=kwargs)
 
 
+@register.simple_tag
+def get_like_url(content_object):
+    kwargs = get_contenttype_kwargs(content_object)
+    return reverse('like', kwargs=kwargs)
+
+
 @register.tag
 def get_j_comment_tree(token):
     """
