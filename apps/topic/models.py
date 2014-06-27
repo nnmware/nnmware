@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import TopicManager
+from nnmware.core.models import LikeMixin
 
 
 class TopicCategory(Tree):
@@ -20,7 +21,7 @@ class TopicCategory(Tree):
         return Topic.objects.filter(category=self)
 
 
-class Topic(AbstractDate, AbstractName):
+class Topic(AbstractDate, AbstractName, LikeMixin):
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
     category = models.ForeignKey(TopicCategory, verbose_name=_('Category'), null=True, blank=True,

@@ -14,7 +14,7 @@ from django.contrib.sites.models import Site
 from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import permalink, Manager, Sum
+from django.db.models import permalink, Manager, Sum, Count
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
@@ -692,3 +692,17 @@ class NnmwareUser(AbstractUser, AbstractImg):
 
 class Like(AbstractLike):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)
+
+
+class LikeMixin(object):
+
+    def carma(self):
+        liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
+        disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
+        return liked - disliked
+
+    def users_liked(self):
+        return Like.objects.for_object(self).filter(like=True).values_list('user__pk', flat=True)
+
+    def users_disliked(self):
+        return Like.objects.for_object(self).filter(dislike=True).values_list('user__pk', flat=True)
