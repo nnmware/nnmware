@@ -1,6 +1,6 @@
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, \
     YearArchiveView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
@@ -15,7 +15,7 @@ from nnmware.apps.topic.forms import TopicForm
 from nnmware.core.data import get_queryset_category
 from django.contrib import messages
 from nnmware.core.views import CurrentUserAuthor, CurrentUserSuperuser, \
-    CurrentUserEditor, CurrentUserAuthenticated
+    CurrentUserEditor, CurrentUserAuthenticated, AttachedCommentMixin
 
 
 class TopicList(ListView):
@@ -104,8 +104,18 @@ class TopicAdd(CreateView):
         return context
 
 
-class TopicDetail(DetailView):
+class TopicDetail(AttachedCommentMixin, SingleObjectMixin, ListView):
+    paginate_by = 20
     model = Topic
+    template_name = 'topic/one.html'
+
+    def get_object(self, queryset=None):
+        return Topic.objects.get(pk=self.kwargs['pk'])
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super(TopicDetail, self).get_context_data(**kwargs)
+        return context
 
 
 class TopicEdit(CurrentUserAuthor, UpdateView):
