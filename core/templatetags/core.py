@@ -92,8 +92,8 @@ def multiply(value, times):
 
 @register.filter
 def no_minus_sign(value):
-    if value[0] == '-':
-        return value[1:]
+    if value < 0:
+        return value * (-1)
     return value
 
 
