@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink, Count
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import Like
+from nnmware.core.models import LikeMixin
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import PublicationManager
@@ -22,7 +22,7 @@ class PublicationCategory(Tree):
         return Publication.objects.filter(category=self)
 
 
-class Publication(AbstractDate, AbstractName):
+class Publication(AbstractDate, AbstractName, LikeMixin):
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
     category = models.ForeignKey(PublicationCategory, verbose_name=_('Category'), null=True, blank=True,
@@ -44,14 +44,3 @@ class Publication(AbstractDate, AbstractName):
     @permalink
     def get_edit_url(self):
         return 'publication_edit', (), {'pk': self.pk}
-
-    def carma(self):
-        liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
-        disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
-        return liked - disliked
-
-    def users_liked(self):
-        return Like.objects.for_object(self).filter(like=True).values_list('user__pk', flat=True)
-
-    def users_disliked(self):
-        return Like.objects.for_object(self).filter(dislike=True).values_list('user__pk', flat=True)
