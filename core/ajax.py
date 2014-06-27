@@ -23,7 +23,8 @@ from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
-from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, Nnmcomment, ACTION_COMMENTED, FlatNnmcomment
+from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, \
+    Nnmcomment, ACTION_COMMENTED, FlatNnmcomment, Like
 from nnmware.core.backends import DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
@@ -986,3 +987,43 @@ def addon_image_uploader(request, **kwargs):
             addons = {}
         result.update(addons)
     return AjaxAnswer(result)
+
+
+def like(request, content_type, object_id):
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        mode = request.POST['mode']
+        content_type = get_object_or_404(ContentType, id=int(content_type))
+        object_id = int(object_id)
+        try:
+            thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)
+        except:
+            thelike = Like(user=request.user, content_type=content_type, object_id=object_id)
+            thelike.save()
+        if mode == 'like':
+            if not thelike.like:
+                thelike.like = True
+                thelike.dislike = False
+                like_en = True
+            else:
+                thelike.like = False
+                like_en = False
+            dislike_en = False
+        else:
+            if not thelike.dislike:
+                thelike.dislike = True
+                thelike.like = False
+                dislike_en = True
+            else:
+                thelike.dislike = False
+                dislike_en = False
+            like_en = False
+        thelike.save()
+        carma = thelike.content_object.carma()
+        payload = {'success': True, 'carma': carma, 'liked': like_en, 'disliked': dislike_en}
+    except AccessError:
+        payload = {'success': False, 'error':'Not allowed'}
+    except:
+        payload = {'success': False}
+    return AjaxLazyAnswer(payload)
