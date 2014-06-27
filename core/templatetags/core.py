@@ -91,6 +91,13 @@ def multiply(value, times):
 
 
 @register.filter
+def no_minus_sign(value):
+    if value[0] == '-':
+        return value[1:]
+    return value
+
+
+@register.filter
 def to_2_digits(value):
     return format(value, '.2f')
 
