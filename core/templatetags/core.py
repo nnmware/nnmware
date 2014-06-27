@@ -929,3 +929,7 @@ def get_range(value):
     """
     return range(value)
 
+
+@register.filter
+def margin_comment(value):
+    return 25 * value
