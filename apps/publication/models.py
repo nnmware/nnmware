@@ -50,8 +50,8 @@ class Publication(AbstractDate, AbstractName):
         disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
         return liked - disliked
 
-    # def users_liked(self):
-    #     return self.liked().values_list('user__pk', flat=True)
-    #
-    # def users_disliked(self):
-    #     return self.disliked().values_list('user__pk', flat=True)
+    def users_liked(self):
+        return Like.objects.for_object(self).filter(like=True).values_list('user__pk', flat=True)
+
+    def users_disliked(self):
+        return Like.objects.for_object(self).filter(dislike=True).values_list('user__pk', flat=True)
