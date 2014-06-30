@@ -258,8 +258,8 @@ class VideoAdmin(admin.ModelAdmin):
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
     fieldsets = (
-        ('Like', {'fields': [('user', 'content_type', 'object_id')]}),
-        ('Variants', {'fields': [('like', 'dislike')]}),
+        (_('Like'), {'fields': [('user', 'content_type', 'object_id')]}),
+        (_('Variants'), {'fields': [('like', 'dislike')]}),
     )
     list_display = ('user', 'like', 'dislike')
     readonly_fields = ('user', 'content_type', 'object_id', 'like', 'dislike')
@@ -268,9 +268,9 @@ class LikeAdmin(admin.ModelAdmin):
 @admin.register(ContentBlock)
 class ContentBlockAdmin(admin.ModelAdmin):
     fieldsets = (
-        ('Content block', {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
+        (_('Content block'), {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
             ('container',), ('parsed_container',), ('description',)]}),
-        ('Origin', {'fields': [('origin_url', 'author')]}),
+        (_('Origin'), {'fields': [('origin_url', 'author')]}),
     )
     list_display = ('user', 'status', 'content_style')
     readonly_fields = ('user', 'content_type', 'object_id')
