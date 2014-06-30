@@ -22,7 +22,7 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment, AbstractLike
+from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment, AbstractLike, STATUS_DRAFT
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -706,3 +706,49 @@ class LikeMixin(object):
 
     def users_disliked(self):
         return Like.objects.for_object(self).filter(dislike=True).values_list('user__pk', flat=True)
+
+
+CONTENT_UNKNOWN = 0
+CONTENT_TEXT = 1
+CONTENT_IMAGE = 2
+CONTENT_VIDEO = 3
+CONTENT_CODE = 4
+CONTENT_QUOTE = 5
+CONTENT_URL = 6
+
+
+CONTENT_CHOICES = (
+    (CONTENT_UNKNOWN, _("Unknown")),
+    (CONTENT_TEXT, _("Text")),
+    (CONTENT_IMAGE, _("Image")),
+    (CONTENT_VIDEO, _("Video")),
+    (CONTENT_CODE, _("Code")),
+    (CONTENT_QUOTE, _("Quote")),
+    (CONTENT_URL, _("Url")),
+)
+
+
+@python_2_unicode_compatible
+class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
+                             related_name="%(app_label)s_%(class)s_user")
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
+                                                blank=True)
+    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    content_style = models.IntegerField(_("Content style"), choices=CONTENT_CHOICES, default=CONTENT_UNKNOWN)
+    container = models.TextField(verbose_name=_('Container'), blank=True, default='')
+    parsed_container = models.TextField(verbose_name=_('Container'), blank=True, default='')
+    description = models.TextField(verbose_name=_('Description'), blank=True, default='')
+    origin_url = models.URLField(verbose_name=_('Origin url'), blank=True, default='')
+    author = models.CharField(max_length=255, verbose_name=_('Author'), blank=True, default='')
+
+    class Meta:
+        verbose_name = _("Content block")
+        verbose_name_plural = _("Content blocks")
+        ordering = ("-created_date",)
+        get_latest_by = "created_date"
+
+    def __str__(self):
+        if len(self.description) > 50:
+            return self.description[:50] + "..."
+        return self.pk

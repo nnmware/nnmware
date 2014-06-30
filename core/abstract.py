@@ -780,7 +780,6 @@ class AbstractVendor(models.Model):
 
 @python_2_unicode_compatible
 class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
                              related_name="%(app_label)s_%(class)s_user")
     viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
