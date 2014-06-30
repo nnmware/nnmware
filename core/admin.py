@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from nnmware.core.models import Nnmcomment, Doc, Pic, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
-    EmailValidation, FlatNnmcomment, Like
+    EmailValidation, FlatNnmcomment, Like, ContentBlock
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -263,6 +263,17 @@ class LikeAdmin(admin.ModelAdmin):
     )
     list_display = ('user', 'like', 'dislike')
     readonly_fields = ('user', 'content_type', 'object_id', 'like', 'dislike')
+
+
+@admin.register(ContentBlock)
+class ContentBlockAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ('Content block', {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
+            ('container',), ('parsed_container',), ('description',)]}),
+        ('Origin', {'fields': [('origin_url', 'author')]}),
+    )
+    list_display = ('user', 'status', 'content_style')
+    readonly_fields = ('user', 'content_type', 'object_id')
 
 
 #class ReadOnlyAdmin(admin.UserAdmin):
