@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import permalink, Count
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import LikeMixin
+from nnmware.core.models import LikeMixin, ContentBlock
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import PublicationManager
@@ -44,3 +44,6 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
     @permalink
     def get_edit_url(self):
         return 'publication_edit', (), {'pk': self.pk}
+
+    def blocks(self):
+        return ContentBlock.object.for_object(self).order_by('-position')
