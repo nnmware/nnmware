@@ -751,4 +751,4 @@ class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
     def __str__(self):
         if len(self.description) > 50:
             return self.description[:50] + "..."
-        return self.pk
+        return str(self.pk)
