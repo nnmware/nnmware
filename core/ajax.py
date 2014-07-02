@@ -869,14 +869,14 @@ def set_paginator(request, num):
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
-    def __init__(self, filetype='file', uploadDirectory='files', sizeLimit=10485760):
-        self._upload_dir = os.path.join(settings.MEDIA_ROOT, uploadDirectory, get_date_directory())
+    def __init__(self, filetype='file', upload_dir='files', size_limit=10485760):
+        self._upload_dir = os.path.join(settings.MEDIA_ROOT, upload_dir, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
             self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPEG')
         else:
             self._save_format = None
-        self._size_limit = sizeLimit
+        self._size_limit = size_limit
 
     def max_size(self):
         """
@@ -897,7 +897,7 @@ class AjaxUploader(object):
             pass
         self._destination = BufferedWriter(FileIO(self._path, "w"))
 
-    def handleUpload(self, request):
+    def handle_upload(self, request):
         is_raw = True
         if request.FILES:
             is_raw = False
@@ -968,9 +968,9 @@ class AjaxUploader(object):
 
 
 def file_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'),
-                            sizeLimit=setting('IMAGE_UPLOAD_SIZE', 10485760))
-    result = uploader.handleUpload(request)
+    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'images'),
+                            size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
+    result = uploader.handle_upload(request)
     if result['success']:
         ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
         object_id = int(kwargs['object_id'])
@@ -993,9 +993,9 @@ def file_uploader(request, **kwargs):
 
 
 def addon_image_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', uploadDirectory=setting('IMAGE_UPLOAD_DIR', 'images'),
-                            sizeLimit=setting('IMAGE_UPLOAD_SIZE', 10485760))
-    result = uploader.handleUpload(request)
+    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'images'),
+                            size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
+    result = uploader.handle_upload(request)
     if result['success']:
         new = Pic()
         new.content_type = get_object_or_404(ContentType, id=int(kwargs['content_type']))
