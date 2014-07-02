@@ -46,4 +46,4 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
         return 'publication_edit', (), {'pk': self.pk}
 
     def blocks(self):
-        return ContentBlock.objects.for_object(self).order_by('-position')
+        return ContentBlock.objects.for_object(self).order_by('position')
