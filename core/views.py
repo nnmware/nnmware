@@ -796,13 +796,13 @@ class VideoAdd(AjaxFormMixin, FormView):
         # TODO: more code security here - big chance to get fatal error
         endpoint = get_oembed_end_point(link)
         #
-        consumer.addEndpoint(endpoint)
+        consumer.add_endpoint(endpoint)
         response = consumer.embed(link)
-        result = response.getData()
+        result = response.get_data()
         obj = Video()
         obj.embedcode = result['html']
         obj.thumbnail = image_from_url(result['thumbnail_url'])
-        if result.has_key('duration'):
+        if 'duration' in result:
             obj.duration = result['duration']
         obj.user = self.request.user
         obj.project_name = form.cleaned_data.get('project_name')

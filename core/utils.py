@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import hashlib
 import re
 import string
@@ -11,13 +13,15 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from django.db import models
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.timezone import now
 from nnmware.core import oembed
 import unidecode
 from BeautifulSoup import BeautifulSoup
+
+
+VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'
 
 
 def make_key(name):
@@ -41,10 +45,6 @@ def get_oembed_end_point(link=''):
         return oembed.OEmbedEndpoint('http://www.youtube.com/oembed', ['http://*.youtube.com/*'])
     elif link.find('vimeo.com') != -1:
         return oembed.OEmbedEndpoint('http://vimeo.com/api/oembed.json', ['http://vimeo.com/*'])
-    elif link.find('metacafe.com') != -1:
-        return oembed.OEmbedEndpoint('http://api.embed.ly/v1/api/oembed', ['http://*.metacafe.com/*'])
-    elif link.find('dailymotion.com') != -1:
-        return oembed.OEmbedEndpoint('http://api.embed.ly/v1/api/oembed', ['http://*.dailymotion.com/*'])
     else:
         return None
 
@@ -54,10 +54,6 @@ def get_video_provider_from_link(link):
         return "youtube.com"
     elif link.find('vimeo.com') != -1:
         return "vimeo.com"
-    elif link.find('metacafe.com') != -1:
-        return "metacafe.com"
-    elif link.find('dailymotion.com') != -1:
-        return "dailymotion.com"
     else:
         return None
 
@@ -93,7 +89,6 @@ def gen_shortcut(num):
     Generates a short URL for any URL on Django site.  It is intended to
     make long URLs short, a la TinyURL.com.
     """
-    VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'
     short = ''
     if num:
         num, remainder = divmod(num - 1, len(VALID))
@@ -115,28 +110,6 @@ def slugify(s):
         elif cat == "Z":
             chars.append(" ")
     return re.sub("[-\s]+", "-", "".join(chars).strip()).lower()
-
-
-def is_editable(obj, request):
-    """
-    Returns ``True`` if the object is editable for the request. First check
-    for a custom ``editable`` handler on the object, otherwise use the logged
-    in user and check change permissions for the object's model.
-    """
-    if hasattr(obj, "is_editable"):
-        return obj.is_editable(request)
-    else:
-        perm = obj._meta.app_label + "." + obj._meta.get_change_permission()
-        return request.user.is_authenticated() and request.user.has_perm(perm)
-
-
-def app_enabled(appname):
-    """Check the app list to see if a named app is installed."""
-    for app in models.get_apps():
-        n = app.__name__.split('.')[-2]
-        if n == appname:
-            return True
-    return False
 
 
 def can_loop_over(maybe):
@@ -352,9 +325,9 @@ def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
 #                 url = url.replace('youtu.be/', 'www.youtube.com/watch?v=')
 #                 consumer = oembed.OEmbedConsumer()
 #                 endpoint = get_oembed_end_point(url)
-#                 consumer.addEndpoint(endpoint)
+#                 consumer.add_endpoint(endpoint)
 #                 response = consumer.embed(url)
-#                 result = response.getData()
+#                 result = response.get_data()
 #                 video_code = update_video_size(result['html'], 500, 280)
 #                 answer.replace(url, video_code)
 #         # except:
@@ -366,5 +339,3 @@ def query_user_pk_distinct(query):
     result = query.values_list('pk', flat=True).distinct()
     users = get_user_model().objects.filter(pk__in=result)
     return users
-
-

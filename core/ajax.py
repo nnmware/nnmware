@@ -345,9 +345,9 @@ def get_video(request):
     else:  # try:
         consumer = oembed.OEmbedConsumer()
         endpoint = get_oembed_end_point(link)
-        consumer.addEndpoint(endpoint)
+        consumer.add_endpoint(endpoint)
         response = consumer.embed(link)
-        result = response.getData()
+        result = response.get_data()
         result['html'] = update_video_size(result['html'], 500, 280)
         payload = {'success': True, 'data': result}
         #    except:
