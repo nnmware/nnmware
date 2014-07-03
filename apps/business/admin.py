@@ -77,12 +77,8 @@ class CompanyAdmin(admin.ModelAdmin):
             ('employer_profile',),
             ('employer_other',)]}),
         (_("Address"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("country", 'region'),
-                                   ('city', 'zipcode'),
-                                   ('street', 'stationmetro'),
-                                   ('house_number', 'building'), ('flat_number', ),
-                                   ('longitude', 'latitude')
-                        ]}),
+                        "fields": [("country", 'region'), ('city', 'zipcode'), ('street', 'stationmetro'),
+                                   ('house_number', 'building'), ('flat_number',), ('longitude', 'latitude')]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", 'fullname_en'), ('teaser_en', ), ("description_en",)]}))
     ordering = ('region', 'name')

@@ -46,9 +46,7 @@ class ObjectActivityFeed(Feed):
 #        return []
 
     def item_extra_kwargs(self, obj):
-        return  {
-            'content': obj.description,
-        }
+        return {'content': obj.description}
 
 
 class AtomObjectActivityFeed(ObjectActivityFeed):

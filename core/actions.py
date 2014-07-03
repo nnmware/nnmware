@@ -1,8 +1,8 @@
+# -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 
 from nnmware.core.models import NOTICE_UNKNOWN, ACTION_UNKNOWN
 from nnmware.core.signals import action, notice
-
 
 
 def follow(user, actor, send_action=True):
@@ -24,9 +24,8 @@ def follow(user, actor, send_action=True):
     """
     from nnmware.core.models import Follow
 
-    follow, created = Follow.objects.get_or_create(user=user,
-        object_id=actor.pk,
-        content_type=ContentType.objects.get_for_model(actor))
+    follow_, created = Follow.objects.get_or_create(user=user, object_id=actor.pk,
+                                                    content_type=ContentType.objects.get_for_model(actor))
     return created
 
 
@@ -50,6 +49,7 @@ def unfollow(user, actor, send_action=False):
         content_type=ContentType.objects.get_for_model(actor)).delete()
     return True
 
+
 def is_following(user, actor):
     """
     Checks if a ``User`` -> ``Actor`` relationship exists.
@@ -69,6 +69,7 @@ def is_following(user, actor):
     return bool(Follow.objects.filter(user=user, object_id=actor.pk,
         content_type=ContentType.objects.get_for_model(actor)).count())
 
+
 def action_handler(verb, **kwargs):
     """
     Handler function to create Action instance upon action signal call.
@@ -77,19 +78,20 @@ def action_handler(verb, **kwargs):
 
     kwargs.pop('signal', None)
     target = kwargs.pop('target', None)
-    action = Action()
-    action.user = kwargs.pop('sender')
+    action_ = Action()
+    action_.user = kwargs.pop('sender')
     if target:
-        action.content_type=ContentType.objects.get_for_model(target)
-        action.object_id=target.pk
-    action.verb=unicode(verb)
-    action.action_type =kwargs.pop('action_type', ACTION_UNKNOWN)
-    action.description=kwargs.pop('description', None)
+        action_.content_type = ContentType.objects.get_for_model(target)
+        action_.object_id = target.pk
+    action_.verb = unicode(verb)
+    action_.action_type = kwargs.pop('action_type', ACTION_UNKNOWN)
+    action_.description = kwargs.pop('description', None)
     request = kwargs.pop('request', None)
     if request:
-        action.ip = request.META['REMOTE_ADDR']
-        action.user_agent = request.META['HTTP_USER_AGENT']
-    action.save()
+        action_.ip = request.META['REMOTE_ADDR']
+        action_.user_agent = request.META['HTTP_USER_AGENT']
+    action_.save()
+
 
 def notice_handler(verb, **kwargs):
     """
@@ -99,20 +101,20 @@ def notice_handler(verb, **kwargs):
 
     kwargs.pop('signal', None)
     target = kwargs.pop('target', None)
-    notice = Notice()
-    notice.user = kwargs.pop('user')
-    notice.sender = kwargs.pop('sender')
+    notice_ = Notice()
+    notice_.user = kwargs.pop('user')
+    notice_.sender = kwargs.pop('sender')
     if target:
-        notice.content_type=ContentType.objects.get_for_model(target)
-        notice.object_id=target.pk
-    notice.verb=unicode(verb)
-    notice.notice_type =kwargs.pop('notice_type', NOTICE_UNKNOWN)
-    notice.description=kwargs.pop('description', None)
+        notice_.content_type = ContentType.objects.get_for_model(target)
+        notice_.object_id = target.pk
+    notice_.verb = unicode(verb)
+    notice_.notice_type = kwargs.pop('notice_type', NOTICE_UNKNOWN)
+    notice_.description = kwargs.pop('description', None)
     request = kwargs.pop('request', None)
     if request:
-        notice.ip = request.META['REMOTE_ADDR']
-        notice.user_agent = request.META['HTTP_USER_AGENT']
-    notice.save()
+        notice_.ip = request.META['REMOTE_ADDR']
+        notice_.user_agent = request.META['HTTP_USER_AGENT']
+    notice_.save()
 
 action.connect(action_handler, dispatch_uid='nnmware_action')
 notice.connect(notice_handler, dispatch_uid='notice_sender')

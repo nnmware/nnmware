@@ -241,7 +241,6 @@ class AbstractImg(models.Model):
     thumbnail.short_description = 'Thumbnail'
 
 
-
 @python_2_unicode_compatible
 class Material(AbstractImg):
     name = std_text_field(_('Material'))

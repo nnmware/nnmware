@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.contrib.syndication.views import Feed, FeedDoesNotExist
 from django.contrib.sites.models import Site
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.utils.feedgenerator import Atom1Feed
-
-from nnmware.apps.article.models import Article, Tag
+from nnmware.core.models import Tag
+from nnmware.apps.publication.models import Publication
 
 # default to 24 hours for feed caching
 FEED_TIMEOUT = getattr(settings, 'ARTICLE_FEED_TIMEOUT', 86400)
@@ -33,7 +35,7 @@ class LatestEntries(Feed, SiteMixin):
 
         if articles is None:
             articles = \
-                list(Article.objects.live().order_by('-created_date')[:15])
+                list(Publication.objects.live().order_by('-created_date')[:15])
             cache.set(key, articles, FEED_TIMEOUT)
 
         return articles

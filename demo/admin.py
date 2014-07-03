@@ -9,20 +9,23 @@ from django.contrib.flatpages.models import FlatPage
 from django.contrib.flatpages.admin import FlatPageAdmin
 from django import forms
 
+
 #Flatpages
 class FlatPageAdmin(FlatPageAdmin):
     class Media:
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js',]
+              '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
 # Re-register admin FlatPage
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, FlatPageAdmin)
 
+
 class MyUserChangeForm(UserChangeForm):
 
     class Meta:
         model = get_user_model()
+
 
 class MyUserCreationForm(UserCreationForm):
 
@@ -42,11 +45,9 @@ class NnmwareUserAdmin(UserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = (
-        (None, {'fields': [('username', 'password'),]}),
+        (None, {'fields': [('username', 'password'), ]}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
-                                       'groups', 'user_permissions')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
-        )
+    )
 admin.site.register(get_user_model(), NnmwareUserAdmin)
-

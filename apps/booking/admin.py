@@ -47,15 +47,13 @@ class HotelAdmin(admin.ModelAdmin):
         (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('translit_name', 'addon_city'),
                                  ('description',),
                                  ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
-                                 ('longitude', 'latitude'), ('schema_transit',)
-        ]}),
+                                 ('longitude', 'latitude'), ('schema_transit',)]}),
         (_("Contacts"), {"fields": [('phone', 'fax'), ('website',), ('contact_email', 'contact_name'),
-                                    ('register_date', )
-        ]}),
+                                    ('register_date', )]}),
         (_("Booking"), {"classes": ("grp-collapse grp-closed",), "fields": [('payment_method',), ('booking_terms',),
                                                                             ('condition_cancellation',),
                                                                             ('paid_services',), ('time_on', 'time_off')
-        ]}),
+                                                                            ]}),
         (_("Hotel admins"), {"classes": ("grp-collapse grp-closed",), "fields": [
             ('admins',)]}),
         (_("Hotel options"), {"classes": ("grp-collapse grp-closed",), "fields": [
@@ -63,8 +61,7 @@ class HotelAdmin(admin.ModelAdmin):
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "address_en"), ("description_en",),
                                    ('schema_transit_en',), ("booking_terms_en",),
-                                   ('paid_services_en',), ('condition_cancellation_en',)]})
-        ,)
+                                   ('paid_services_en',), ('condition_cancellation_en',)]}),)
     ordering = ('-register_date', 'name')
 
 
@@ -76,7 +73,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Hotel Option"), {"fields": [("name",),
                                         ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'order_in_list'), ( 'enabled', 'in_search', 'sticky_in_search'), ]}),
+        (_("Addons"), {"fields": [('category', 'order_in_list'), ('enabled', 'in_search', 'sticky_in_search'), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 

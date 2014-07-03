@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from django import forms
 from django.conf import settings
@@ -46,6 +47,7 @@ def std_url_field(verbose, max_length=150):
 
 def std_email_field(verbose):
     return models.EmailField(verbose_name=verbose, blank=True, default='')
+
 
 class JSONField(models.TextField):
     """Simple JSON field that stores python structures as JSON strings

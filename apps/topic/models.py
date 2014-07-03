@@ -40,7 +40,6 @@ class Topic(AbstractDate, AbstractName, LikeMixin):
     def get_absolute_url(self):
         return "topic_detail", (), {'pk': self.pk}
 
-
     @permalink
     def get_edit_url(self):
         return 'topic_edit', (), {'pk': self.pk}

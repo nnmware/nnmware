@@ -6,24 +6,28 @@ from nnmware.core.http import get_session_from_request
 from nnmware.core.exceptions import ShopError
 from nnmware.core.utils import send_template_mail
 
+
 def get_basket(request):
     if not request.user.is_authenticated():
         session_key = get_session_from_request(request)
         return Basket.objects.filter(session_key=session_key)
     return Basket.objects.filter(user=request.user)
 
+
 def send_new_order_seller(order):
     recipients = [settings.SHOP_MANAGER]
     mail_dict = {'order': order}
     subject = 'emails/neworder_admin_subject.txt'
     body = 'emails/neworder_admin_body.txt'
-    send_template_mail(subject,body,mail_dict,recipients)
+    send_template_mail(subject, body, mail_dict, recipients)
+
 
 def send_new_order_buyer(order, recipients):
     mail_dict = {'order': order}
     subject = 'emails/neworder_client_subject.txt'
     body = 'emails/neworder_client_body.txt'
-    send_template_mail(subject,body,mail_dict,recipients)
+    send_template_mail(subject, body, mail_dict, recipients)
+
 
 def make_order_from_basket(order, basket):
     try:

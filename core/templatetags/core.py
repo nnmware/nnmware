@@ -620,6 +620,7 @@ def menu(app=None):
 #    except:
 #        return 'error'
 
+
 @register.simple_tag
 def menu_span(app=None):
     if app == 'topic':
@@ -859,7 +860,7 @@ def path_without_i18n(context):
 
 @register.assignment_tag
 def is_holiday(date):
-    if date.isoweekday() in [6,7]:
+    if date.isoweekday() in [6, 7]:
         return True
     return False
 
@@ -877,6 +878,7 @@ class SetVarNode(Node):
             value = ""
         context[self.var_name] = value
         return u""
+
 
 @register.tag
 def set_var(parser, token):
@@ -899,6 +901,7 @@ class RepeatNode(Node):
         output = self.nodelist.render(context)
         return output * (int(self.count_from.resolve(context)) - int(self.count_to.resolve(context)))
 
+
 @register.tag
 def repeat(parser, token):
     bits = token.split_contents()
@@ -910,6 +913,7 @@ def repeat(parser, token):
     nodelist = parser.parse(('endrepeat',))
     parser.delete_first_token()
     return RepeatNode(nodelist, count_from, count_to)
+
 
 @register.assignment_tag
 def multiply_2args(arg1, arg2):

@@ -22,7 +22,7 @@ from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVaria
     STATUS_ACCEPTED, HotelOption, Discount
 from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
-from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.core.config import CURRENCY
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
@@ -438,7 +438,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 date_period = (from_date, to_date - timedelta(days=1))
                 if SettlementVariant.objects.filter(enabled=True, settlement__gte=guests, room=self.object,
                     placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(num_days=Count('pk')).\
-                    filter(num_days__gte=need_days).exists():
+                        filter(num_days__gte=need_days).exists():
                     # searched_room_list = Availability.objects.filter(room=self.object, date__range=date_period,
                     #     min_days__lte=need_days, placecount__gt=0).annotate(num_days=Sum('room')).\
                     #     filter(num_days__gte=need_days).order_by('room').values_list('room__pk', flat=True).distinct()
@@ -1080,7 +1080,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         else:
             payload = {'success': False, 'engine_error': _('You are not select payment method.')}
         if payload:
-            return AjaxLazyAnswer(payload)
+            return ajax_answer_lazy(payload)
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user

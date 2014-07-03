@@ -12,6 +12,7 @@ from nnmware.core.managers import FinancialManager
 from nnmware.core.models import Doc
 from django.utils.encoding import python_2_unicode_compatible
 
+
 #---------------------------------------------------------------------------
 @python_2_unicode_compatible
 class Currency(models.Model):
@@ -27,6 +28,7 @@ class Currency(models.Model):
 
     def __str__(self):
         return "%s :: %s" % (self.code, self.name)
+
 
 #---------------------------------------------------------------------------
 @python_2_unicode_compatible
@@ -66,7 +68,8 @@ TRANSACTION_STATUS = (
     (TRANSACTION_ACCEPTED, _("Accepted")),
     (TRANSACTION_COMPLETED, _("Completed")),
     (TRANSACTION_CANCELED, _("Cancelled")),
-    )
+)
+
 
 #---------------------------------------------------------------------------
 @python_2_unicode_compatible
@@ -90,7 +93,7 @@ class Transaction(MoneyBase):
     objects = FinancialManager()
 
     class Meta:
-        unique_together = ('user', 'actor_ctype', 'actor_oid', 'date', 'amount','currency')
+        unique_together = ('user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency')
         verbose_name = _("Transaction")
         verbose_name_plural = _("Transactions")
 
@@ -98,12 +101,9 @@ class Transaction(MoneyBase):
 #        return '%s -> %s' % (self.user, self.date)
 
     def __str__(self):
-        return _("User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s %(currency)s") %\
-                   { 'user': self.user.username,
-                     'date': self.date,
-                     'actor': self.actor,
-                     'amount': self.amount,
-                     'currency': self.currency}
+        return _("User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s %(currency)s") % \
+            {'user': self.user.username, 'date': self.date, 'actor': self.actor, 'amount': self.amount,
+             'currency': self.currency}
 
 #---------------------------------------------------------------------------
 BILL_UNKNOWN = 0
@@ -116,7 +116,7 @@ BILL_STATUS = (
     (BILL_BILLED, _("Billed")),
     (BILL_PAID, _("Paid")),
     (BILL_CANCELED, _("Cancelled")),
-    )
+)
 
 
 @python_2_unicode_compatible
@@ -142,11 +142,8 @@ class Bill(MoneyBase):
 
     def __str__(self):
         return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\
-               { 'user': self.user,
-                 'date': self.date,
-                 'target': self.target,
-                 'amount': self.amount,
-                 'currency': self.currency}
+            {'user': self.user, 'date': self.date, 'target': self.target, 'amount': self.amount,
+             'currency': self.currency}
 
     def docs(self):
         return Doc.objects.for_object(self)

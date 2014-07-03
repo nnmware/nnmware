@@ -21,7 +21,7 @@ import time
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date
-from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.ajax import ajax_answer_lazy
 from django.views.decorators.cache import never_cache
 from hashlib import sha1
 from django.core.cache import cache
@@ -94,7 +94,7 @@ def room_rates(request):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def room_variants(request):
@@ -111,7 +111,7 @@ def room_variants(request):
         payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def room_delete(request, pk):
@@ -125,7 +125,7 @@ def room_delete(request, pk):
         payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def request_hotel_delete(request, pk):
@@ -139,7 +139,7 @@ def request_hotel_delete(request, pk):
         payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def hotel_add(request):
@@ -179,7 +179,7 @@ def hotel_add(request):
         payload = {'success': True, 'location': location}
     except UserNotAllowed:
         payload = {'success': False, 'error_msg': _('You are not allowed add hotel.')}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def client_review(request, pk):
@@ -214,7 +214,7 @@ def client_review(request, pk):
         payload = {'success': True, 'message': message}
     except UserNotAllowed:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def tourism_places(request):
@@ -234,7 +234,7 @@ def tourism_places(request):
         payload = {'success': True, 'tourism': results}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def filter_hotels_on_map(request, hotels):
@@ -274,7 +274,7 @@ def filter_hotels_on_map(request, hotels):
         payload = {'success': True, 'hotels': results}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def hotels_in_city(request):
@@ -291,7 +291,7 @@ def hotels_in_city(request):
         return filter_hotels_on_map(request, searched)
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def hotels_in_country(request):
@@ -300,7 +300,7 @@ def hotels_in_country(request):
         return filter_hotels_on_map(request, searched)
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def payment_method(request):
@@ -311,7 +311,7 @@ def payment_method(request):
                    'card': payment_method.use_card}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_category(request):
@@ -331,7 +331,8 @@ def add_category(request):
         payload = {'success': True, 'file_path': file_path, 'form_path': form_path}
     except UserNotAllowed:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
+
 
 @transaction.atomic
 def booking_sysadm(request, pk, action):
@@ -365,7 +366,7 @@ def booking_sysadm(request, pk, action):
         payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def edit_discount(request):
@@ -377,7 +378,7 @@ def edit_discount(request):
         payload = {'success': True, 'html': html}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_discount(request):
@@ -389,7 +390,7 @@ def delete_discount(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_room_discount(request):
@@ -403,7 +404,7 @@ def add_room_discount(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_room_discount(request):
@@ -416,4 +417,4 @@ def delete_room_discount(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)

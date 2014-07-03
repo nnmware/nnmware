@@ -1,13 +1,16 @@
-import urllib2, urllib
+import urllib2
+import urllib
 
-API_SSL_SERVER="https://www.google.com/recaptcha/api"
-API_SERVER="http://www.google.com/recaptcha/api"
-VERIFY_SERVER="www.google.com"
+API_SSL_SERVER = "https://www.google.com/recaptcha/api"
+API_SERVER = "http://www.google.com/recaptcha/api"
+VERIFY_SERVER = "www.google.com"
+
 
 class RecaptchaResponse(object):
     def __init__(self, is_valid, error_code=None):
         self.is_valid = is_valid
         self.error_code = error_code
+
 
 def displayhtml(public_key, use_ssl=False, error=None):
     """Gets the HTML to display for reCAPTCHA
@@ -28,15 +31,14 @@ def displayhtml(public_key, use_ssl=False, error=None):
     return """<script type="text/javascript" src="%(ApiServer)s/challenge?k=%(PublicKey)s%(ErrorParam)s"></script>
 
 <noscript>
-  <iframe src="%(ApiServer)s/noscript?k=%(PublicKey)s%(ErrorParam)s" height="300" width="500" frameborder="0"></iframe><br />
-  <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+  <iframe src="%(ApiServer)s/noscript?k=%(PublicKey)s%(ErrorParam)s" height="300" width="500" frameborder="0"></iframe>
+  <br /><textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
   <input type='hidden' name='recaptcha_response_field' value='manual_challenge' />
 </noscript>
 """ % {
-        'ApiServer' : server,
-        'PublicKey' : public_key,
-        'ErrorParam' : error_param,
-        }
+        'ApiServer': server,
+        'PublicKey': public_key,
+        'ErrorParam': error_param}
 
 
 def submit(recaptcha_challenge_field, recaptcha_response_field, private_key, remoteip):
@@ -60,29 +62,17 @@ def submit(recaptcha_challenge_field, recaptcha_response_field, private_key, rem
         return s
 
     params = urllib.urlencode({
-            'privatekey': encode_if_necessary(private_key),
-            'remoteip' :  encode_if_necessary(remoteip),
-            'challenge':  encode_if_necessary(recaptcha_challenge_field),
-            'response' :  encode_if_necessary(recaptcha_response_field),
-            })
-
-    request = urllib2.Request(
-        url = "http://%s/recaptcha/api/verify" % VERIFY_SERVER,
-        data = params,
-        headers = {
-            "Content-type": "application/x-www-form-urlencoded",
-            "User-agent": "reCAPTCHA Python"
-            }
-        )
-    
+        'privatekey': encode_if_necessary(private_key),
+        'remoteip': encode_if_necessary(remoteip),
+        'challenge': encode_if_necessary(recaptcha_challenge_field),
+        'response': encode_if_necessary(recaptcha_response_field)})
+    request = urllib2.Request(url="http://%s/recaptcha/api/verify" % VERIFY_SERVER, data=params,
+        headers={"Content-type": "application/x-www-form-urlencoded", "User-agent": "reCAPTCHA Python"})
     httpresp = urllib2.urlopen(request)
-
     return_values = httpresp.read().splitlines()
     httpresp.close()
-
     return_code = return_values[0]
-
     if return_code == "true":
         return RecaptchaResponse(is_valid=True)
     else:
-        return RecaptchaResponse(is_valid=False, error_code = return_values [1])
+        return RecaptchaResponse(is_valid=False, error_code=return_values[1])

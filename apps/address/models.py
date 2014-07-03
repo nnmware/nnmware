@@ -8,6 +8,7 @@ from nnmware.core.maps import osm_geocoder
 from nnmware.core.abstract import AbstractName
 from django.utils.encoding import python_2_unicode_compatible
 
+
 @python_2_unicode_compatible
 class Address(AbstractName):
     name_add = models.CharField(max_length=100, blank=True)
@@ -27,7 +28,7 @@ class Address(AbstractName):
             if get_language() == 'en':
                 if self.name_add_en:
                     return self.name_add_en
-        except :
+        except:
             pass
         if self.name_add:
             return self.name_add
@@ -58,7 +59,6 @@ class Region(Address):
         unique_together = (('name', 'country'),)
         verbose_name = _("Region")
         verbose_name_plural = _("Regions")
-
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -135,7 +135,7 @@ class AbstractGeo(MetaGeo):
         try:
             r = int(addr[1])
             result = "%s %s" % (addr[1], addr[0])
-        except :
+        except:
             pass
         return "%s, %s" % (result, self.city)
 
@@ -149,7 +149,7 @@ class TourismCategory(AbstractName):
     class Meta:
         verbose_name = _("Tourism Place Category")
         verbose_name_plural = _("Tourism Places Categories")
-        ordering = ['order_in_list',]
+        ordering = ['order_in_list', ]
 
 
 @python_2_unicode_compatible
@@ -174,6 +174,7 @@ class Tourism(Address, AbstractGeo):
             if Tourism.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         super(Tourism, self).save(*args, **kwargs)
+
 
 @python_2_unicode_compatible
 class StationMetro(Address, AbstractGeo):
@@ -236,7 +237,7 @@ class AbstractLocation(models.Model):
 @python_2_unicode_compatible
 class Institution(AbstractName):
     city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'),related_name='edu_country', null=True, blank=True)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), related_name='edu_country', null=True, blank=True)
 
     class Meta:
         verbose_name = _("Institution")

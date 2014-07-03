@@ -17,36 +17,30 @@ class NnmwareDashboard(Dashboard):
             _('nnmware system boot:'),
             collapsible=True,
             column=1,
-            children = [
+            children=[
                 modules.AppList(
                     _('Core'),
                     column=1,
                     css_classes=('grp-collapse',),
-                    models=('nnmware.core.*',
-                	    ),
+                    models=('nnmware.core.*',),
                 ),
                 modules.AppList(
                     _('Money :: Addresses :: Video'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'nnmware.apps.money.*',
-                	    'nnmware.apps.address.*',
-                	    'nnmware.apps.video.*',
-                	    ),
+                    models=('nnmware.apps.money.*', 'nnmware.apps.address.*', 'nnmware.apps.video.*',),
                 ),
                 modules.AppList(
                     _('Shop'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'nnmware.apps.shop.*',
-                	    ),
+                    models=('nnmware.apps.shop.*',),
                 ),
                 modules.AppList(
                     _('Booking'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'nnmware.apps.booking.*',
-                	    ),
+                    models=( 'nnmware.apps.booking.*',),
                 ),
                 modules.AppList(
                     _('Dossier'),
@@ -64,14 +58,9 @@ class NnmwareDashboard(Dashboard):
                     _('Administration Module'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'django.contrib.auth.*','nnmware.demo.*',
-                	    'django.contrib.sites.models.Site',
-                	    'django.contrib.flatpages.models.FlatPage',
-                	    ),
-                )
-
+                    models=('django.contrib.auth.*', 'nnmware.demo.*', 'django.contrib.sites.models.Site',
+                            'django.contrib.flatpages.models.FlatPage'),)
             ]
-
         ))
         # append a recent actions module
         self.children.append(modules.RecentActions(
@@ -79,7 +68,6 @@ class NnmwareDashboard(Dashboard):
             limit=10,
             column=2,
         ))
-
 
         # append another link list module for "support".
         self.children.append(modules.LinkList(

@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from nnmware.core.data import get_queryset_category
-from nnmware.apps.board.models import Board, Category
+from nnmware.apps.board.models import Board, BoardCategory
 from nnmware.apps.board.forms import BoardForm
 
 
@@ -49,14 +49,14 @@ class BoardCategory(ListView):
     model = Board
 
     def get_queryset(self):
-        return get_queryset_category(self, Board, Category)
+        return get_queryset_category(self, Board, BoardCategory)
 
 
 class BoardDetail(DetailView):
     model = Board
 
 
-class  BoardSearch(ListView):
+class BoardSearch(ListView):
     model = Board
 
     def get_queryset(self):

@@ -30,14 +30,14 @@ from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTI
 from nnmware.core.backends import DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
-from nnmware.core.utils import get_oembed_end_point, update_video_size, setting, get_date_directory
+from nnmware.core.utils import update_video_size, setting, get_date_directory
 
 
-def AjaxAnswer(payload):
+def ajax_answer(payload):
     return HttpResponse(json.dumps(payload), content_type='application/json')
 
 
-def AjaxLazyAnswer(payload):
+def ajax_answer_lazy(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
@@ -120,7 +120,7 @@ class AjaxFileUploader(AjaxAbstractUploader):
             payload = {'success': self.success, 'filename': self.filename}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
-            return AjaxAnswer(payload)
+            return ajax_answer(payload)
 
 
 class AjaxImageUploader(AjaxAbstractUploader):
@@ -160,7 +160,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
                 payload.update(self.extra_context)
             if addons:
                 payload.update(addons)
-            return AjaxAnswer(payload)
+            return ajax_answer(payload)
 
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
@@ -201,7 +201,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
             payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
             if self.extra_context is not None:
                 payload.update(self.extra_context)
-            return AjaxAnswer(payload)
+            return ajax_answer(payload)
 
 
 class AjaxImgUploader(AjaxAbstractUploader):
@@ -242,7 +242,7 @@ class AjaxImgUploader(AjaxAbstractUploader):
                 payload.update(self.extra_context)
             if addons:
                 payload.update(addons)
-            return AjaxAnswer(payload)
+            return ajax_answer(payload)
 
 
 def as_json(errors):
@@ -266,7 +266,7 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
         payload = {'success': True, 'src': make_thumbnail(pic.pic.url, width=int(img_w), height=int(img_h), aspect=1)}
     else:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def img_delete(request, object_id):
@@ -277,7 +277,7 @@ def img_delete(request, object_id):
         payload = {'success': True}
     else:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def img_getcrop(request, object_id):
@@ -287,7 +287,7 @@ def img_getcrop(request, object_id):
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = dict(success=False)
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def img_rotate(request):
@@ -309,7 +309,7 @@ def img_rotate(request):
         payload = {'success': False, 'error': _('You are not allowed rotate this image')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 @login_required
@@ -325,7 +325,7 @@ def avatardelete(request):
             payload = {'success': True}
         except:
             payload = {'success': False}
-        return AjaxLazyAnswer(payload)
+        return ajax_answer_lazy(payload)
     else:
         raise Http404()
 
@@ -343,16 +343,14 @@ def get_video(request):
     if search_qs:
         payload = dict(success=False, location=search_qs.get_absolute_url())
     else:  # try:
-        consumer = oembed.OEmbedConsumer()
-        endpoint = get_oembed_end_point(link)
-        consumer.add_endpoint(endpoint)
-        response = consumer.embed(link)
-        result = response.get_data()
-        result['html'] = update_video_size(result['html'], 500, 280)
+        consumer = oembed.OEmbedConsumer(link)
+        result = consumer.result()
+        if result is not None:
+            result['html'] = update_video_size(result['html'], 500, 280)
         payload = {'success': True, 'data': result}
         #    except:
     #        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_video(request, object_id):
@@ -382,7 +380,7 @@ def push_video(request, object_id):
         payload = {'success': True, 'count': result, 'id': video.pk, 'status': status}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_tag(request, object_id):
@@ -412,7 +410,7 @@ def push_tag(request, object_id):
         payload = {'success': True, 'count': result, 'id': tag.pk, 'status': status}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_notify(request):
@@ -426,7 +424,7 @@ def push_notify(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_user(request, object_id):
@@ -459,7 +457,7 @@ def push_user(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def follow_object(request, content_type_id, object_id):
@@ -476,7 +474,7 @@ def follow_object(request, content_type_id, object_id):
         success = False
     count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
     payload = {'success': success, 'count': count}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def unfollow_object(request, content_type_id, object_id):
@@ -493,12 +491,12 @@ def unfollow_object(request, content_type_id, object_id):
         success = False
     count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
     payload = {'success': success, 'count': count}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def follow_unfollow(request, content_type, object_id):
     count = None
-    if 1>0: #try:
+    try:
         ctype = get_object_or_404(ContentType, id=content_type)
         follow_count = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
         actor = ctype.get_object_for_this_type(id=object_id)
@@ -508,10 +506,10 @@ def follow_unfollow(request, content_type, object_id):
             unfollow(request.user, actor, send_action=True)
         count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
         success = True
-    # except:
-    #     success = False
+    except:
+        success = False
     payload = {'success': success, 'count': count}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def autocomplete_users(request):
@@ -521,7 +519,7 @@ def autocomplete_users(request):
         userstring = {'name': r.username, 'fullname': r.fullname}
         results.append(userstring)
     payload = {'userlist': results}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def autocomplete_tags(request):
@@ -530,7 +528,7 @@ def autocomplete_tags(request):
     for r in search_qs:
         results.append(r.name)
     payload = {'q': results}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 doc_uploader = AjaxFileUploader()
@@ -547,7 +545,7 @@ def notice_delete(request, object_id):
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_message(request, object_id):
@@ -567,7 +565,7 @@ def delete_message(request, object_id):
         payload = {'success': True, 'count': result}
     else:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def avatar_delete(request):
@@ -580,7 +578,7 @@ def avatar_delete(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def message_add(request):
@@ -604,7 +602,7 @@ def message_add(request):
         success = False
     location = reverse('user_messages')
     payload = {'success': success, 'location': location}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def message_user_add(request):
@@ -621,7 +619,7 @@ def message_user_add(request):
     payload = {'success': True, 'data': result}
     #    except:
     #        payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def pic_delete(request, object_id):
@@ -632,7 +630,7 @@ def pic_delete(request, object_id):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def pic_setmain(request, object_id):
@@ -647,7 +645,7 @@ def pic_setmain(request, object_id):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def doc_delete(request, object_id):
@@ -658,7 +656,7 @@ def doc_delete(request, object_id):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def pic_getcrop(request, object_id):
@@ -668,7 +666,7 @@ def pic_getcrop(request, object_id):
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=settings.MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def AjaxGetThumbnail(request):
@@ -684,7 +682,7 @@ def AjaxGetThumbnail(request):
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=width, height=height), id=pic.pk)
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def ajax_image_crop(request):
@@ -720,7 +718,7 @@ def ajax_image_crop(request):
         payload = {'success': False, 'error': _('You are not allowed change this image')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def comment_add_oldver(request, content_type, object_id, parent_id=None):
@@ -763,7 +761,7 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
         payload = {'success': False, 'error': _('You are not allowed for add comment')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def comment_add(request, content_type, object_id, parent_id=None):
@@ -793,7 +791,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         payload = {'success': False, 'error': 'You are not allowed for add comment'}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def flat_comment_add(request, content_type, object_id):
@@ -822,7 +820,7 @@ def flat_comment_add(request, content_type, object_id):
         payload = {'success': False, 'error': _('You are not allowed for add comment')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_message(request, object_id):
@@ -854,7 +852,7 @@ def push_message(request, object_id):
         payload = {'success': False, 'error': _('You are not allowed for send message')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def set_paginator(request, num):
@@ -863,7 +861,7 @@ def set_paginator(request, num):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 class AjaxUploader(object):
@@ -989,7 +987,7 @@ def file_uploader(request, **kwargs):
         except:
             addons = {}
         result.update(addons)
-    return AjaxAnswer(result)
+    return ajax_answer(result)
 
 
 def addon_image_uploader(request, **kwargs):
@@ -1018,7 +1016,7 @@ def addon_image_uploader(request, **kwargs):
         except:
             addons = {}
         result.update(addons)
-    return AjaxAnswer(result)
+    return ajax_answer(result)
 
 
 def like(request, content_type, object_id):
@@ -1055,10 +1053,10 @@ def like(request, content_type, object_id):
         karma = thelike.content_object.karma()
         payload = {'success': True, 'karma': karma, 'liked': like_en, 'disliked': dislike_en}
     except AccessError:
-        payload = {'success': False, 'error':'Not allowed'}
+        payload = {'success': False, 'error': 'Not allowed'}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_comment(request, object_id):
@@ -1078,4 +1076,4 @@ def delete_comment(request, object_id):
         pass
     except:
         pass
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)

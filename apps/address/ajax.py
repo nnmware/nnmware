@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db.models.query_utils import Q
 from nnmware.apps.address.models import City, Country, Region, StationMetro
-from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.ajax import ajax_answer_lazy
 
 
 def base_autocomplete(obj, request):
@@ -13,7 +13,7 @@ def base_autocomplete(obj, request):
         userstring = {'name': r.get_name, 'slug': r.slug}
         results.append(userstring)
     payload = {'answer': results}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def autocomplete_city(request):

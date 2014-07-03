@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.board.models import Board, BoardCategory
-from nnmware.core.admin import TreeAdmin, AbstractDataAdmin
+from nnmware.core.admin import TreeAdmin
 
 
 @admin.register(BoardCategory)

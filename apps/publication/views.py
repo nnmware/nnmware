@@ -21,13 +21,9 @@ class PublicationList(ListView):
     model = Publication
 
     def get_queryset(self):
-        result = Publication.objects.exclude(
-            Q(status=STATUS_DELETE) |
-            Q(status=STATUS_MODERATION) |
-            Q(status=STATUS_LOCKED)
-            ).order_by('-created_date')
-        messages.add_message(self.request, messages.INFO,
-            _('Found %(len)s articles') % {'len': len(result)})
+        result = Publication.objects.exclude(Q(status=STATUS_DELETE) | Q(status=STATUS_MODERATION) |
+                                             Q(status=STATUS_LOCKED)).order_by('-created_date')
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles') % {'len': len(result)})
         return result
 
 
@@ -95,7 +91,8 @@ class PublicationModerationList(CurrentUserEditor, ListView):
 
     def get_queryset(self):
         result = Publication.objects.filter(status=STATUS_MODERATION)
-        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles on moderation') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('Found %(len)s articles on moderation') %
+                             {'len': len(result)})
         return result
 
 
@@ -115,7 +112,8 @@ class PublicationAuthor(ListView):
     def get_queryset(self):
         author = get_object_or_404(get_user_model(), username__iexact=self.kwargs['username'])
         result = Publication.objects.filter(user=author)
-        messages.add_message(self.request, messages.INFO, _('For this author found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('For this author found- %(len)s results ') %
+                             {'len': len(result)})
         return result
 
 
@@ -125,7 +123,8 @@ class PublicationCategory(ListView):
 
     def get_queryset(self):
         result = get_queryset_category(self, Publication, PublicationCategory)
-        messages.add_message(self.request, messages.INFO, _('It this category found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('It this category found- %(len)s results ') %
+                             {'len': len(result)})
         return result
 
 
@@ -135,7 +134,8 @@ class PublicationSearch(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         result = Publication.objects.filter(content__icontains=query)
-        messages.add_message(self.request, messages.INFO, _('On search in articles found- %(len)s results ') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('On search in articles found- %(len)s results ') %
+                             {'len': len(result)})
         return result
 
 
@@ -150,7 +150,7 @@ class PublicationEdit(CurrentUserAuthor, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PublicationEdit, self).get_context_data(**kwargs)
-        context['action'] = reverse("article_edit",  args=[self.object.id])
+        context['action'] = reverse("article_edit", args=[self.object.id])
         return context
 
 
@@ -188,7 +188,7 @@ class PublicationStatus(CurrentUserAuthor, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PublicationStatus, self).get_context_data(**kwargs)
-        context['action'] = reverse("article_status",  args=[self.object.id])
+        context['action'] = reverse("article_status", args=[self.object.id])
         return context
 
 

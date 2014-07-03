@@ -1,10 +1,13 @@
+# -*- coding: utf-8 -*-
+
 from django.conf.urls import *
 from nnmware.core import feeds
 from nnmware.core.views import *
 
 urlpatterns = patterns('',
     ### Comments ###
-    #    url(r'^comment/(?P<content_type>\d+)/(?P<object_id>\d+)/(?P<parent_id>\d+)/$', NnmcommentAdd.as_view(), name="jcomment_parent_add"),
+    #    url(r'^comment/(?P<content_type>\d+)/(?P<object_id>\d+)/(?P<parent_id>\d+)/$', NnmcommentAdd.as_view(),
+    # name="jcomment_parent_add"),
     url(r'^comment/(?P<content_type>\d+)/(?P<object_id>\d+)/add/$', NnmcommentAdd.as_view(), name="jcomment_add"),
     url(r'^comment/(?P<content_type>\d+)/(?P<object_id>\d+)/(?P<parent_id>\d+)/$', NnmcommentAdd.as_view(),
         name="jcomment_parent_add"),

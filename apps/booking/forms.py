@@ -8,7 +8,9 @@ from django.utils.translation import ugettext_lazy as _, get_language
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from nnmware.apps.booking.models import Hotel, Room, Booking, Discount, DISCOUNT_SPECIAL
-from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod, DISCOUNT_NOREFUND, DISCOUNT_CREDITCARD, DISCOUNT_EARLY, DISCOUNT_LATER, DISCOUNT_PERIOD, DISCOUNT_PACKAGE, DISCOUNT_NORMAL, DISCOUNT_HOLIDAY, DISCOUNT_LAST_MINUTE
+from nnmware.apps.booking.models import RequestAddHotel, PaymentMethod, DISCOUNT_NOREFUND, DISCOUNT_CREDITCARD, \
+    DISCOUNT_EARLY, DISCOUNT_LATER, DISCOUNT_PERIOD, DISCOUNT_PACKAGE, DISCOUNT_NORMAL, DISCOUNT_HOLIDAY, \
+    DISCOUNT_LAST_MINUTE
 from nnmware.apps.money.models import Bill
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.forms import UserFromRequestForm
@@ -265,4 +267,3 @@ class AddDiscountForm(LocaleNamedForm):
             need_del = ['days', 'at_price_days', 'apply_norefund', 'apply_creditcard', 'apply_package', 'apply_period']
         for i in need_del:
             del cleaned_data[i]
-

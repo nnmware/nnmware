@@ -15,7 +15,7 @@ TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ('YOU NAME', 'user@mail.com'),
-    )
+)
 
 MANAGERS = ADMINS
 
@@ -27,12 +27,12 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '',
         'PORT': '',
-        }
+    }
 }
 
 LOCALE_PATHS = (
     '/usr/src/nnmware/locale',
-    )
+)
 
 
 TIME_ZONE = 'Europe/Moscow'
@@ -48,12 +48,12 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     '/usr/src/nnmware/static',
-    )
+)
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    )
+)
 
 # Don't share it with anybody
 SECRET_FILE = os.path.join(DIRNAME, 'secret.txt')
@@ -68,8 +68,7 @@ except IOError:
         secret.write(SECRET_KEY)
         secret.close()
     except IOError:
-        raise Exception('Please create a %s file with random ' \
-             'characters to generate your secret key!' % SECRET_FILE)
+        raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -88,18 +87,17 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-
-    )
+)
 
 AUTHENTICATION_BACKENDS = (
     'nnmware.core.backends.UsernameOrEmailAuthBackend',
-    )
+)
 
 ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     os.path.join(DIRNAME, "templates"),
-    )
+)
 
 #this is used to add additional config variables to each request
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -110,7 +108,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.csrf',
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',
-    )
+)
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
@@ -139,7 +137,7 @@ INSTALLED_APPS = (
     'nnmware.apps.realty',
     'nnmware.apps.transport',
     'nnmware.demo',
-    )
+)
 
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: "/user/%s/" % u.username,

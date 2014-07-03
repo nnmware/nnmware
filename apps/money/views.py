@@ -1,5 +1,7 @@
+# -*- coding: utf-8 -*-
 from django.views.generic.list import ListView
 from nnmware.apps.money.models import Bill
+
 
 class BillsList(ListView):
     model = Bill

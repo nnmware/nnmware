@@ -112,11 +112,8 @@ class EstateAdmin(admin.ModelAdmin):
             ('compass', 'contact_name',), ('contact_email', 'contact_phone')
         ]}),
         (_("Address"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [('country', 'region'),
-                                   ('city', 'stationmetro'),
-                            ('zipcode', 'street'),
-                            ('house_number', 'building'), ('flat_number', )
-        ]}),
+                        "fields": [('country', 'region'), ('city', 'stationmetro'), ('zipcode', 'street'),
+                            ('house_number', 'building'), ('flat_number', )]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", ), ("description_en",)]}))
     ordering = ('-created_date', 'name')

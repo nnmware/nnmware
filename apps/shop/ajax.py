@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from nnmware.apps.address.models import Country, Region, City
 from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, \
     Feedback, ProductColor, ProductMaterial
-from nnmware.core.ajax import AjaxLazyAnswer
+from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.core.http import get_session_from_request
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
@@ -33,7 +33,7 @@ def autocomplete_search(request, size=16):
                       'slug': r.slug, 'amount': "%0.2f" % (r.amount,), 'id': r.pk}
         results.append(userstring)
     payload = {'answer': results}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_param(request, object_id):
@@ -60,7 +60,7 @@ def add_param(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def param_value_delete(request, object_id):
@@ -74,7 +74,7 @@ def param_value_delete(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_basket(request, object_id):
@@ -118,7 +118,7 @@ def add_basket(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_basket(request, object_id):
@@ -139,7 +139,7 @@ def delete_basket(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_address(request):
@@ -199,7 +199,7 @@ def add_address(request):
         payload = {'success': False, 'error': _('You are not allowed for add address')}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_address(request, object_id):
@@ -213,7 +213,7 @@ def delete_address(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_feedback(request):
@@ -231,7 +231,7 @@ def push_feedback(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_answer(request, object_id):
@@ -247,7 +247,7 @@ def push_answer(request, object_id):
         payload = {'success': True, 'location': f.get_absolute_url()}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_product(request, object_id):
@@ -263,7 +263,7 @@ def delete_product(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_feedback(request, object_id):
@@ -277,7 +277,7 @@ def delete_feedback(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_comment(request, object_id):
@@ -291,7 +291,7 @@ def delete_comment(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_color(request, object_id):
@@ -310,7 +310,7 @@ def add_color(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_color(request, object_id, color_id):
@@ -326,7 +326,7 @@ def delete_color(request, object_id, color_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_material(request, object_id):
@@ -342,7 +342,7 @@ def add_material(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_material(request, object_id, material_id):
@@ -358,7 +358,7 @@ def delete_material(request, object_id, material_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def add_related_product(request, object_id):
@@ -376,7 +376,7 @@ def add_related_product(request, object_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def delete_related_product(request, object_id, product_id):
@@ -392,7 +392,7 @@ def delete_related_product(request, object_id, product_id):
         payload = {'success': False}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def basket_avail(user):
@@ -418,7 +418,7 @@ def add_compare_product(request, object_id):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def del_compare_product(request, object_id):
@@ -434,7 +434,7 @@ def del_compare_product(request, object_id):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_shopcallback(request):
@@ -456,7 +456,7 @@ def push_shopcallback(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)
 
 
 def push_quickorder(request):
@@ -480,4 +480,4 @@ def push_quickorder(request):
         payload = {'success': True}
     except:
         payload = {'success': False}
-    return AjaxLazyAnswer(payload)
+    return ajax_answer_lazy(payload)

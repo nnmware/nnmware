@@ -9,11 +9,11 @@ import os
 from PIL import Image
 import settings
 
-GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2013 framework for python/django coders'
+GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2014 framework for python/django coders'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.NnmwareDashboard'
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
-NNMWARE_INI_FILE =  os.path.join(settings.PROJECT_ROOT, 'nnmware.ini')
-LOGIN_ERROR_URL                   = '/login/error/'
+NNMWARE_INI_FILE = os.path.join(settings.PROJECT_ROOT, 'nnmware.ini')
+LOGIN_ERROR_URL = '/login/error/'
 
 # Site account settings
 LOGIN_URL = '/login'
@@ -71,8 +71,7 @@ SITE_NAME = "NNMWARE TEST"
 # These can override or add to the default URLs
 from django.conf.urls import *
 
-URLS = patterns('',
-)
+URLS = patterns('',)
 APPEND_SLASH = True
 PAGINATE_BY = 10
 PAGINATE_BOARD = 2
@@ -118,12 +117,12 @@ LOGGING = {
     },
     'handlers': {
         'null': {
-            'level':'DEBUG',
-            'class':'django.utils.log.NullHandler',
+            'level': 'DEBUG',
+            'class': 'django.utils.log.NullHandler',
         },
-        'console':{
-            'level':'DEBUG',
-            'class':'logging.StreamHandler',
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
         'mail_admins': {
@@ -131,17 +130,17 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
         },
         'file': {
-             'level': 'DEBUG',
-             'class': 'logging.FileHandler',
-             'filename': '/var/log/nnmware.log',
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/nnmware.log',
         }
 
     },
     'loggers': {
         'django': {
-            'handlers':['null'],
+            'handlers': ['null'],
             'propagate': True,
-            'level':'INFO',
+            'level': 'INFO',
         },
         'django.request': {
             'handlers': ['file'],

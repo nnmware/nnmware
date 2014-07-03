@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from reportlab.graphics.shapes import Drawing, String
 from reportlab.graphics.charts.lineplots import LinePlot
 from reportlab.lib import colors

@@ -23,14 +23,14 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.decorators import ssl_required, ssl_not_required
-from nnmware.core.ajax import as_json, AjaxLazyAnswer
+from nnmware.core.ajax import as_json, ajax_answer_lazy
 from nnmware.core.http import LazyEncoder
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
 from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
 from nnmware.core.forms import *
 from nnmware.core.signals import action
-from nnmware.core.utils import send_template_mail, make_key, get_oembed_end_point, get_video_provider_from_link, \
-    gen_shortcut, update_video_size
+from nnmware.core.utils import send_template_mail, make_key, get_video_provider_from_link, gen_shortcut, \
+    update_video_size
 
 
 class UserPathMixin(object):
@@ -58,7 +58,7 @@ class AjaxFormMixin(object):
                 payload['status_msg'] = self.status_msg
             except:
                 pass
-            return AjaxLazyAnswer(payload)
+            return ajax_answer_lazy(payload)
         else:
             return HttpResponseRedirect(self.success_url)
 
@@ -69,7 +69,7 @@ class AjaxFormMixin(object):
         payload = {'success': self.success, 'data': self.data}
 
         if self.request.is_ajax():
-            return AjaxLazyAnswer(payload)
+            return ajax_answer_lazy(payload)
         else:
             return super(AjaxFormMixin, self).form_invalid(form, *args, **kwargs)
 
@@ -591,7 +591,7 @@ class AjaxLogoutView(TemplateView):
         except:
             self.success = False
         payload = {'success': self.success, 'location': location}
-        return AjaxLazyAnswer(payload)
+        return ajax_answer_lazy(payload)
 
 
 class UserSettings(UpdateView):
@@ -788,17 +788,8 @@ class VideoAdd(AjaxFormMixin, FormView):
 
     def form_valid(self, form):
         link = form.cleaned_data.get('video_url')
-        if not link[:7] == 'http://':
-            link = 'http://%s' % link
-        if link.find('youtu.be') != -1:
-            link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
-        consumer = oembed.OEmbedConsumer()
-        # TODO: more code security here - big chance to get fatal error
-        endpoint = get_oembed_end_point(link)
-        #
-        consumer.add_endpoint(endpoint)
-        response = consumer.embed(link)
-        result = response.get_data()
+        consumer = oembed.OEmbedConsumer(link)
+        result = consumer.result()
         obj = Video()
         obj.embedcode = result['html']
         obj.thumbnail = image_from_url(result['thumbnail_url'])

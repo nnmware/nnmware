@@ -16,7 +16,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.timezone import now
-from nnmware.core import oembed
 import unidecode
 from BeautifulSoup import BeautifulSoup
 
@@ -38,20 +37,6 @@ def convert_to_date(d):
 
 def get_date_directory():
     return now().strftime("%Y/%m/%d/%H/%M/%S")
-
-
-def get_oembed_end_point(link=''):
-    if link.find('youtu.be') != -1:
-        link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
-    prefix = 'http'
-    if link.find('https://') != -1:
-        prefix += 's'
-    if link.find('youtube.com') != -1:
-        return oembed.OEmbedEndpoint(prefix + '://www.youtube.com/oembed', [prefix + '://*.youtube.com/*'])
-    elif link.find('vimeo.com') != -1:
-        return oembed.OEmbedEndpoint(prefix + '://vimeo.com/api/oembed.json', [prefix + '://vimeo.com/*'])
-    else:
-        return None
 
 
 def get_video_provider_from_link(link):
@@ -328,13 +313,11 @@ def random_pw(size=6, chars=string.ascii_uppercase + string.digits):
 #         if 1>0: #try:
 #             if url.find('youtu.be') != -1:
 #                 url = url.replace('youtu.be/', 'www.youtube.com/watch?v=')
-#                 consumer = oembed.OEmbedConsumer()
-#                 endpoint = get_oembed_end_point(url)
-#                 consumer.add_endpoint(endpoint)
-#                 response = consumer.embed(url)
-#                 result = response.get_data()
-#                 video_code = update_video_size(result['html'], 500, 280)
-#                 answer.replace(url, video_code)
+#                 consumer = oembed.OEmbedConsumer(link)
+#                 result = consumer.result()
+#                 if result is not None:
+#                     video_code = update_video_size(result['html'], 500, 280)
+#                     answer.replace(url, video_code)
 #         # except:
 #         #     pass
 #     return answer
