@@ -41,10 +41,13 @@ def get_date_directory():
 
 
 def get_oembed_end_point(link=''):
+    prefix = 'http'
+    if link.find('https://') != -1:
+        prefix += 's'
     if link.find('youtube.com') != -1:
-        return oembed.OEmbedEndpoint('http://www.youtube.com/oembed', ['http://*.youtube.com/*'])
+        return oembed.OEmbedEndpoint(prefix + '://www.youtube.com/oembed', [prefix + '://*.youtube.com/*'])
     elif link.find('vimeo.com') != -1:
-        return oembed.OEmbedEndpoint('http://vimeo.com/api/oembed.json', ['http://vimeo.com/*'])
+        return oembed.OEmbedEndpoint(prefix + '://vimeo.com/api/oembed.json', [prefix + '://vimeo.com/*'])
     else:
         return None
 
