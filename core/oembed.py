@@ -437,5 +437,8 @@ class OEmbedConsumer(object):
     def result(self):
         if not self._endpoints:
             return None
-        response = self.embed()
-        return response.get_data()
+        try:
+            response = self.embed()
+            return response.get_data()
+        except:
+            return None
