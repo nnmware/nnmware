@@ -351,18 +351,33 @@ class OEmbedConsumer(object):
     the data. 
 
     """    
-    def __init__(self):
+    def __init__(self, link):
         self._endpoints = []
-    
+        self.url = link
+        self.set_end_point()
+
     def add_endpoint(self, endpoint):
         """
         Add a new OEmbedEndpoint to be manage by the consumer.
-        
+
         Args:
             endpoint: An instance of an OEmbedEndpoint class.
-        
+
         """
         self._endpoints.append(endpoint)
+
+    def set_end_point(self):
+        if self.url[:8] != 'https://' and self.url[:7] != 'http://':
+            self.url = 'http://%s' % self.url
+        if self.url.find('youtu.be') != -1:
+            self.url = self.url.replace('youtu.be/', 'www.youtube.com/watch?v=')
+        prefix = 'http'
+        if self.url.find('https://') != -1:
+            prefix += 's'
+        if self.url.find('youtube.com') != -1:
+            self.add_endpoint(OEmbedEndpoint(prefix + '://www.youtube.com/oembed', [prefix + '://*.youtube.com/*']))
+        elif self.url.find('vimeo.com') != -1:
+            self.add_endpoint(OEmbedEndpoint(prefix + '://vimeo.com/api/oembed.json', [prefix + '://vimeo.com/*']))
 
     def del_endpoint(self, endpoint):
         """
@@ -400,7 +415,7 @@ class OEmbedConsumer(object):
             raise OEmbedError('There are no endpoints available for %s' % url)
         return endpoint.get(url, **opt)
                     
-    def embed(self, url, fmt='json', **opt):
+    def embed(self, fmt='json', **opt):
         """
         Get an OEmbedResponse from one of the providers configured in this 
         consumer according to the resource url.
@@ -417,4 +432,10 @@ class OEmbedConsumer(object):
         if fmt not in ['json', 'xml']:
             raise OEmbedError('Format must be json or xml')
         opt['format'] = fmt
-        return self._request(url, **opt)
+        return self._request(self.url, **opt)
+
+    def result(self):
+        if not self._endpoints:
+            return None
+        response = self.embed()
+        return response.get_data()
