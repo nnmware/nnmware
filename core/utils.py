@@ -41,8 +41,6 @@ def get_date_directory():
 
 
 def get_oembed_end_point(link=''):
-    if link[:8] != 'https://' and link[:7] != 'http://':
-        link = 'http://%s' % link
     if link.find('youtu.be') != -1:
         link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
     prefix = 'http'
