@@ -739,6 +739,7 @@ class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
     description = models.TextField(verbose_name=_('Content'), blank=True, default='')
     url = models.URLField(verbose_name=_('Origin url'), max_length=255, blank=True, default='')
     author = models.CharField(max_length=255, verbose_name=_('Author'), blank=True, default='')
+    teaser = models.BooleanField(verbose_name=_('Block in teaser?'), default=False)
 
     class Meta:
         verbose_name = _("Content block")

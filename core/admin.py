@@ -270,9 +270,9 @@ class ContentBlockAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Content block'), {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
             ('description',)]}),
-        (_('Origin'), {'fields': [('url', 'author')]}),
+        (_('Origin'), {'fields': [('url', 'author', 'teaser')]}),
     )
-    list_display = ('user', 'status', 'content_style')
+    list_display = ('user', 'status', 'content_style', 'teaser')
     readonly_fields = ('user', 'content_type', 'object_id')
 
 
