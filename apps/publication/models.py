@@ -47,3 +47,7 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
 
     def blocks(self):
         return ContentBlock.objects.for_object(self).order_by('position')
+
+    def delete(self, *args, **kwargs):
+        self.blocks().delete()
+        super(Publication, self).delete(*args, **kwargs)

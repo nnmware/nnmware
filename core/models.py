@@ -736,10 +736,8 @@ class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
                                                 blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
     content_style = models.IntegerField(_("Content style"), choices=CONTENT_CHOICES, default=CONTENT_UNKNOWN)
-    container = models.TextField(verbose_name=_('Container'), blank=True, default='')
-    parsed_container = models.TextField(verbose_name=_('Container'), blank=True, default='')
-    description = models.TextField(verbose_name=_('Description'), blank=True, default='')
-    origin_url = models.URLField(verbose_name=_('Origin url'), blank=True, default='')
+    description = models.TextField(verbose_name=_('Content'), blank=True, default='')
+    url = models.URLField(verbose_name=_('Origin url'), max_length=255, blank=True, default='')
     author = models.CharField(max_length=255, verbose_name=_('Author'), blank=True, default='')
 
     class Meta:

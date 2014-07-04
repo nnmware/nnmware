@@ -269,8 +269,8 @@ class LikeAdmin(admin.ModelAdmin):
 class ContentBlockAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Content block'), {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
-            ('container',), ('parsed_container',), ('description',)]}),
-        (_('Origin'), {'fields': [('origin_url', 'author')]}),
+            ('description',)]}),
+        (_('Origin'), {'fields': [('url', 'author')]}),
     )
     list_display = ('user', 'status', 'content_style')
     readonly_fields = ('user', 'content_type', 'object_id')
