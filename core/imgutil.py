@@ -5,6 +5,7 @@ import urlparse
 from PIL import Image, ImageOps
 from django.conf import settings
 from django.db.models.fields.files import ImageField
+from nnmware.core.utils import setting
 from nnmware.core.file import get_path_from_url
 
 TMB_MASKS = ['%s_t*%s', '%s_aspect*%s', '%s_wm*%s']
@@ -99,7 +100,7 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
         if aspect:
             img = ImageOps.fit(img, size, Image.ANTIALIAS, (0.5, 0.5))
         img.thumbnail(size, Image.ANTIALIAS)
-        img.save(th_path, quality=settings.THUMBNAIL_QUALITY)
+        img.save(th_path, quality=setting('THUMBNAIL_QUALITY', 85))
     except:
         return photo_url
     return th_url
