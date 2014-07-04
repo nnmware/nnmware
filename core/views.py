@@ -583,14 +583,14 @@ class LogoutView(TemplateView):
 
 class AjaxLogoutView(TemplateView):
     def post(self, request, *args, **kwargs):
-        self.success = True
+        success = True
         location = None
         try:
             logout(self.request)
             location = '/'
         except:
-            self.success = False
-        payload = {'success': self.success, 'location': location}
+            success = False
+        payload = {'success': success, 'location': location}
         return ajax_answer_lazy(payload)
 
 
