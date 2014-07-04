@@ -124,6 +124,7 @@ class AjaxFileUploader(AjaxAbstractUploader):
 
 
 class AjaxImageUploader(AjaxAbstractUploader):
+    # TODO Later is deprecated
     def __init__(self, backend=None, **kwargs):
         if backend is None:
             backend = ImgUploadBackend
@@ -164,6 +165,7 @@ class AjaxImageUploader(AjaxAbstractUploader):
 
 
 class AjaxAvatarUploader(AjaxAbstractUploader):
+    # TODO Later is deprecated
     def __init__(self, backend=None, **kwargs):
         if backend is None:
             backend = AvatarUploadBackend
@@ -205,6 +207,7 @@ class AjaxAvatarUploader(AjaxAbstractUploader):
 
 
 class AjaxImgUploader(AjaxAbstractUploader):
+    # TODO Later is deprecated
     def __init__(self, backend=None, **kwargs):
         if backend is None:
             backend = ImgUploadBackend
@@ -532,6 +535,7 @@ def autocomplete_tags(request):
 
 
 doc_uploader = AjaxFileUploader()
+# TODO Later is deprecated
 pic_uploader = AjaxImageUploader()
 avatar_uploader = AjaxAvatarUploader()
 img_uploader = AjaxImgUploader()
