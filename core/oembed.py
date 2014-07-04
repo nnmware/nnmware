@@ -381,10 +381,8 @@ class OEmbedConsumer(object):
         elif self.url.find('soundcloud.com') != -1:
             self.add_endpoint(OEmbedEndpoint(prefix + '://soundcloud.com/oembed', [prefix + '://soundcloud.com/*']))
         elif self.url.find('kickstarter.com') != -1:
-            self.add_endpoint(OEmbedEndpoint(prefix + '://www.kickstarter.com/services/oembed', [prefix + '://www.kickstarter.com/projects/*']))
-        elif self.url.find('coub.com') != -1:
-            self.add_endpoint(OEmbedEndpoint(prefix + '://coub.com/api/oembed.json', [prefix + '://coub.com/embed/*']))
-
+            self.add_endpoint(OEmbedEndpoint(prefix + '://www.kickstarter.com/services/oembed',
+                                             [prefix + '://www.kickstarter.com/projects/*']))
 
     def del_endpoint(self, endpoint):
         """
