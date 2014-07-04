@@ -8,7 +8,7 @@ from PIL import Image
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from nnmware.core.imgutil import fit, aspect_ratio
-from nnmware.core.utils import get_date_directory
+from nnmware.core.utils import get_date_directory, setting
 
 
 class EmailAuthBackend(object):
@@ -124,18 +124,18 @@ class AbstractUploadBackend(object):
 
 
 class DocUploadBackend(AbstractUploadBackend):
-    upload_dir = settings.DOC_UPLOAD_DIR
-    upload_size = settings.DOC_UPLOAD_SIZE
+    upload_dir = setting('DOC_UPLOAD_DIR', 'docs')
+    upload_size = setting('DOC_UPLOAD_SIZE', 1024000)
 
 
 class AvatarUploadBackend(AbstractUploadBackend):
-    upload_dir = settings.AVATAR_UPLOAD_DIR
-    upload_size = settings.AVATAR_UPLOAD_SIZE
+    upload_dir = setting('AVATAR_UPLOAD_DIR', 'avatars')
+    upload_size = setting('AVATAR_UPLOAD_SIZE', 1024000)
 
 
 class ImgUploadBackend(AbstractUploadBackend):
-    upload_dir = settings.IMG_UPLOAD_DIR
-    upload_size = settings.IMG_UPLOAD_SIZE
+    upload_dir = setting('IMG_UPLOAD_DIR', 'images')
+    upload_size = setting('IMG_UPLOAD_SIZE', 1024000)
 
 
 def image_from_url(url):

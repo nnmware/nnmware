@@ -37,19 +37,7 @@ IMG_RESIZE_METHOD = getattr(settings, 'PIC_RESIZE_METHOD', Image.ANTIALIAS)
 IMG_DEFAULT_SIZE = getattr(settings, 'PIC_DEFAULT_SIZE', 96)
 IMG_ALLOWED_FILE_EXTS = getattr(settings, 'PIC_ALLOWED_FILE_EXTS', None)
 
-IMG_UPLOAD_DIR = getattr(settings, 'IMG_UPLOAD_DIR', 'img')
-DOC_UPLOAD_DIR = getattr(settings, 'DOC_UPLOAD_DIR', 'doc')
-AVATAR_UPLOAD_DIR = getattr(settings, 'DOC_UPLOAD_DIR', 'doc')
-IMG_UPLOAD_SIZE = getattr(settings, 'IMG_UPLOAD_SIZE', 10485760)
-DOC_UPLOAD_SIZE = getattr(settings, 'DOC_UPLOAD_SIZE', 10485760)
-
-AVATAR_UPLOAD_DIR = getattr(settings, 'AVATAR_UPLOAD_DIR', 'avatar')
-AVATAR_UPLOAD_SIZE = getattr(settings, 'AVATAR_UPLOAD_SIZE', 10485760)
-
 THUMBNAIL_DIR = getattr(settings, 'THUMBNAIL_DIR', 'thumbnail')
-AVATARS_DIR = getattr(settings, 'AVATARS_DIR', 'avatars')
-
-DEFAULT_AVATAR = os.path.join(settings.MEDIA_URL, 'generic.png')
 DEFAULT_AVATAR_WIDTH = 96
 CAPTCHA_ENABLED = True
 SITE_PROTOCOL = 'http'
