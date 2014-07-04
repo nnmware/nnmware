@@ -48,6 +48,9 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
     def blocks(self):
         return ContentBlock.objects.for_object(self).order_by('position')
 
+    def teasers(self):
+        return self.blocks().filter(teaser=True)
+
     def delete(self, *args, **kwargs):
         self.blocks().delete()
         super(Publication, self).delete(*args, **kwargs)
