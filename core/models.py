@@ -644,6 +644,17 @@ class NnmwareUser(AbstractUser, AbstractImg):
             return self.avatar.url
         return setting('DEFAULT_AVATAR', 'noavatar.png')
 
+    def thumbnail(self):
+        if self.img:
+            path = self.img.url
+            tmb = make_thumbnail(path, height=60, width=60)
+            return '<a style="display:block;text-align:center;" target="_blank" href="%s"><img src="%s" /></a>' \
+                   '<p style="text-align:center;margin-top:5px;">%sx%s px</p>' % (path, tmb, self.img_width,
+                                                                                  self.img_height)
+        return "No image"
+    thumbnail.allow_tags = True
+    thumbnail.short_description = 'Thumbnail'
+
     @property
     def get_name(self):
         if self.fullname:
