@@ -27,7 +27,6 @@ from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
 from nnmware.core.models import Pic, Doc, Video, Follow, ACTION_LIKED, Tag, ACTION_FOLLOWED, Notice, Message, \
     Nnmcomment, ACTION_COMMENTED, FlatNnmcomment, Like
-from nnmware.core.backends import DocUploadBackend, AvatarUploadBackend, ImgUploadBackend
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action
 from nnmware.core.utils import update_video_size, setting, get_date_directory
@@ -41,211 +40,211 @@ def ajax_answer_lazy(payload):
     return HttpResponse(json.dumps(payload, cls=LazyEncoder), content_type='application/json')
 
 
-class AjaxAbstractUploader(object):
-    def __call__(self, request, **kwargs):
-        return self._ajax_upload(request, **kwargs)
-
-    def _ajax_upload(self, request, **kwargs):
-        raise NotImplemented
-
-    def get_backend(self):
-        raise NotImplemented
-
-    def _upload_file(self, request, **kwargs):
-        if request.is_ajax():
-            # the file is stored raw in the request
-            self.upload = request
-            self.is_raw = True
-            # AJAX Upload will pass the filename in the querystring if it
-            # is the "advanced" ajax upload
-            try:
-                self.filename = request.GET['qqfile']
-            except KeyError:
-                return HttpResponseBadRequest("AJAX request not valid")
-                # not an ajax upload, so it was the "basic" iframe version with
-                # submission via form
-        else:
-            self.is_raw = False
-            if len(request.FILES) == 1:
-                # FILES is a dictionary in Django but Ajax Upload gives
-                # the uploaded file an ID based on a random number, so it
-                # cannot be guessed here in the code. Rather than editing
-                # Ajax Upload to pass the ID in the querystring, observe
-                # that each upload is a separate request, so FILES should
-                # only have one entry. Thus, we can just grab the first
-                # (and only) value in the dict.
-                self.upload = request.FILES.values()[0]
-            else:
-                raise Http404("Bad Upload")
-            self.filename = self.upload.name
-        backend = self.get_backend()
-
-        # custom filename handler
-        self.filename = (backend.update_filename(request, self.filename)
-                         or self.filename)
-        # save the file
-        backend.setup(self.filename)
-        self.success = backend.upload(self.upload, self.filename, self.is_raw)
-        # callback
-        self.extra_context = backend.upload_complete(request, self.filename)
-
-    def _new_obj(self, target, request, **kwargs):
-        target.content_type = get_object_or_404(ContentType, id=int(kwargs['content_type']))
-        target.object_id = int(kwargs['object_id'])
-        target.description = self.extra_context['oldname']
-        target.user = request.user
-        target.created_date = now()
-
-
-class AjaxFileUploader(AjaxAbstractUploader):
-    def __init__(self, backend=None, **kwargs):
-        if backend is None:
-            backend = DocUploadBackend
-        self.get_backend = lambda: backend(**kwargs)
-
-    def _ajax_upload(self, request, **kwargs):
-        if request.method == "POST":
-            self._upload_file(request, **kwargs)
-            if self.success:
-                new = Doc()
-                self._new_obj(new, request, **kwargs)
-                new.file = self.extra_context['path']
-                new.filetype = 0
-                fullpath = os.path.join(settings.MEDIA_ROOT,
-                                        new.file.field.upload_to, new.file.path)
-                new.size = os.path.getsize(fullpath)
-                new.save()
-                messages.success(request, _("File %s successfully uploaded") % new.description)
-                # let Ajax Upload know whether we saved it or not
-            payload = {'success': self.success, 'filename': self.filename}
-            if self.extra_context is not None:
-                payload.update(self.extra_context)
-            return ajax_answer(payload)
+# class AjaxAbstractUploader(object):
+#     def __call__(self, request, **kwargs):
+#         return self._ajax_upload(request, **kwargs)
+#
+#     def _ajax_upload(self, request, **kwargs):
+#         raise NotImplemented
+#
+#     def get_backend(self):
+#         raise NotImplemented
+#
+#     def _upload_file(self, request, **kwargs):
+#         if request.is_ajax():
+#             # the file is stored raw in the request
+#             self.upload = request
+#             self.is_raw = True
+#             # AJAX Upload will pass the filename in the querystring if it
+#             # is the "advanced" ajax upload
+#             try:
+#                 self.filename = request.GET['qqfile']
+#             except KeyError:
+#                 return HttpResponseBadRequest("AJAX request not valid")
+#                 # not an ajax upload, so it was the "basic" iframe version with
+#                 # submission via form
+#         else:
+#             self.is_raw = False
+#             if len(request.FILES) == 1:
+#                 # FILES is a dictionary in Django but Ajax Upload gives
+#                 # the uploaded file an ID based on a random number, so it
+#                 # cannot be guessed here in the code. Rather than editing
+#                 # Ajax Upload to pass the ID in the querystring, observe
+#                 # that each upload is a separate request, so FILES should
+#                 # only have one entry. Thus, we can just grab the first
+#                 # (and only) value in the dict.
+#                 self.upload = request.FILES.values()[0]
+#             else:
+#                 raise Http404("Bad Upload")
+#             self.filename = self.upload.name
+#         backend = self.get_backend()
+#
+#         # custom filename handler
+#         self.filename = (backend.update_filename(request, self.filename)
+#                          or self.filename)
+#         # save the file
+#         backend.setup(self.filename)
+#         self.success = backend.upload(self.upload, self.filename, self.is_raw)
+#         # callback
+#         self.extra_context = backend.upload_complete(request, self.filename)
+#
+#     def _new_obj(self, target, request, **kwargs):
+#         target.content_type = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+#         target.object_id = int(kwargs['object_id'])
+#         target.description = self.extra_context['oldname']
+#         target.user = request.user
+#         target.created_date = now()
 
 
-class AjaxImageUploader(AjaxAbstractUploader):
-    # TODO Later is deprecated
-    def __init__(self, backend=None, **kwargs):
-        if backend is None:
-            backend = ImgUploadBackend
-        self.get_backend = lambda: backend(**kwargs)
-
-    def _ajax_upload(self, request, **kwargs):
-        if request.method == "POST":
-            self._upload_file(request, **kwargs)
-            fullpath = os.path.join(settings.MEDIA_ROOT,
-                                    self.extra_context['path'])
-            try:
-                i = Image.open(fullpath)
-            except:
-                messages.error(request, "File is not image format")
-                os.remove(fullpath)
-                self.success = False
-                self.pic_id = None
-                addons = None
-            if self.success:
-                new = Pic()
-                self._new_obj(new, request, **kwargs)
-                new.pic = self.extra_context['path']
-                fullpath = os.path.join(settings.MEDIA_ROOT,
-                                        new.pic.field.upload_to, new.pic.path)
-                new.size = os.path.getsize(fullpath)
-                new.save()
-                self.pic_id = new.pk
-                # let Ajax Upload know whether we saved it or not
-                addons = {'size': os.path.getsize(fullpath),
-                          'thumbnail': make_thumbnail(new.pic.url, width=settings.DEFAULT_THUMBNAIL_WIDTH,
-                                                      height=settings.DEFAULT_THUMBNAIL_HEIGHT, aspect=1)}
-            payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
-            if self.extra_context is not None:
-                payload.update(self.extra_context)
-            if addons:
-                payload.update(addons)
-            return ajax_answer(payload)
+# class AjaxFileUploader(AjaxAbstractUploader):
+#     def __init__(self, backend=None, **kwargs):
+#         if backend is None:
+#             backend = DocUploadBackend
+#         self.get_backend = lambda: backend(**kwargs)
+#
+#     def _ajax_upload(self, request, **kwargs):
+#         if request.method == "POST":
+#             self._upload_file(request, **kwargs)
+#             if self.success:
+#                 new = Doc()
+#                 self._new_obj(new, request, **kwargs)
+#                 new.file = self.extra_context['path']
+#                 new.filetype = 0
+#                 fullpath = os.path.join(settings.MEDIA_ROOT,
+#                                         new.file.field.upload_to, new.file.path)
+#                 new.size = os.path.getsize(fullpath)
+#                 new.save()
+#                 messages.success(request, _("File %s successfully uploaded") % new.description)
+#                 # let Ajax Upload know whether we saved it or not
+#             payload = {'success': self.success, 'filename': self.filename}
+#             if self.extra_context is not None:
+#                 payload.update(self.extra_context)
+#             return ajax_answer(payload)
 
 
-class AjaxAvatarUploader(AjaxAbstractUploader):
-    # TODO Later is deprecated
-    def __init__(self, backend=None, **kwargs):
-        if backend is None:
-            backend = AvatarUploadBackend
-        self.get_backend = lambda: backend(**kwargs)
+# class AjaxImageUploader(AjaxAbstractUploader):
+#     # TODO Later is deprecated
+#     def __init__(self, backend=None, **kwargs):
+#         if backend is None:
+#             backend = ImgUploadBackend
+#         self.get_backend = lambda: backend(**kwargs)
+#
+#     def _ajax_upload(self, request, **kwargs):
+#         if request.method == "POST":
+#             self._upload_file(request, **kwargs)
+#             fullpath = os.path.join(settings.MEDIA_ROOT,
+#                                     self.extra_context['path'])
+#             try:
+#                 i = Image.open(fullpath)
+#             except:
+#                 messages.error(request, "File is not image format")
+#                 os.remove(fullpath)
+#                 self.success = False
+#                 self.pic_id = None
+#                 addons = None
+#             if self.success:
+#                 new = Pic()
+#                 self._new_obj(new, request, **kwargs)
+#                 new.pic = self.extra_context['path']
+#                 fullpath = os.path.join(settings.MEDIA_ROOT,
+#                                         new.pic.field.upload_to, new.pic.path)
+#                 new.size = os.path.getsize(fullpath)
+#                 new.save()
+#                 self.pic_id = new.pk
+#                 # let Ajax Upload know whether we saved it or not
+#                 addons = {'size': os.path.getsize(fullpath),
+#                           'thumbnail': make_thumbnail(new.pic.url, width=settings.DEFAULT_THUMBNAIL_WIDTH,
+#                                                       height=settings.DEFAULT_THUMBNAIL_HEIGHT, aspect=1)}
+#             payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
+#             if self.extra_context is not None:
+#                 payload.update(self.extra_context)
+#             if addons:
+#                 payload.update(addons)
+#             return ajax_answer(payload)
 
-    def _ajax_upload(self, request, **kwargs):
-        if request.method == "POST":
-            self._upload_file(request, **kwargs)
-            fullpath = os.path.join(settings.MEDIA_ROOT,
-                                    self.extra_context['path'])
-            try:
-                i = Image.open(fullpath)
-            except:
-                messages.error(request, "File is not image format")
-                os.remove(fullpath)
-                self.success = False
-                self.pic_id = None
-            if self.success:
-                try:
-                    request.user.img.delete()
-                except:
-                    pass
-                new = Pic()
-                new.content_type = ContentType.objects.get_for_model(get_user_model())
-                new.object_id = request.user.pk
-                new.description = self.extra_context['oldname']
-                new.user = request.user
-                new.created_date = now()
-                new.pic = self.extra_context['path']
-                new.save()
-                request.user.img = new
-                request.user.save()
-                self.pic_id = new.pk
-                # let Ajax Upload know whether we saved it or not
-            payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
-            if self.extra_context is not None:
-                payload.update(self.extra_context)
-            return ajax_answer(payload)
+
+# class AjaxAvatarUploader(AjaxAbstractUploader):
+#     # TODO Later is deprecated
+#     def __init__(self, backend=None, **kwargs):
+#         if backend is None:
+#             backend = AvatarUploadBackend
+#         self.get_backend = lambda: backend(**kwargs)
+#
+#     def _ajax_upload(self, request, **kwargs):
+#         if request.method == "POST":
+#             self._upload_file(request, **kwargs)
+#             fullpath = os.path.join(settings.MEDIA_ROOT,
+#                                     self.extra_context['path'])
+#             try:
+#                 i = Image.open(fullpath)
+#             except:
+#                 messages.error(request, "File is not image format")
+#                 os.remove(fullpath)
+#                 self.success = False
+#                 self.pic_id = None
+#             if self.success:
+#                 try:
+#                     request.user.img.delete()
+#                 except:
+#                     pass
+#                 new = Pic()
+#                 new.content_type = ContentType.objects.get_for_model(get_user_model())
+#                 new.object_id = request.user.pk
+#                 new.description = self.extra_context['oldname']
+#                 new.user = request.user
+#                 new.created_date = now()
+#                 new.pic = self.extra_context['path']
+#                 new.save()
+#                 request.user.img = new
+#                 request.user.save()
+#                 self.pic_id = new.pk
+#                 # let Ajax Upload know whether we saved it or not
+#             payload = {'success': self.success, 'filename': self.filename, 'id': self.pic_id}
+#             if self.extra_context is not None:
+#                 payload.update(self.extra_context)
+#             return ajax_answer(payload)
 
 
-class AjaxImgUploader(AjaxAbstractUploader):
-    # TODO Later is deprecated
-    def __init__(self, backend=None, **kwargs):
-        if backend is None:
-            backend = ImgUploadBackend
-        self.get_backend = lambda: backend(**kwargs)
-
-    def _ajax_upload(self, request, **kwargs):
-        if request.method == "POST":
-            tmb = None
-            self._upload_file(request, **kwargs)
-            fullpath = os.path.join(settings.MEDIA_ROOT, self.extra_context['path'])
-            try:
-                i = Image.open(fullpath)
-            except:
-                messages.error(request, "File is not image format")
-                os.remove(fullpath)
-                self.success = False
-                self.pic_id = None
-            if self.success:
-                ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
-                object_id = int(kwargs['object_id'])
-                obj = ctype.get_object_for_this_type(pk=object_id)
-                try:
-                    remove_thumbnails(obj.img.path)
-                    remove_file(obj.img.path)
-                    obj.img.delete()
-                except:
-                    pass
-                obj.img = self.extra_context['path']
-                obj.save()
-                # let Ajax Upload know whether we saved it or not
-                addons = {'tmb': make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
-                                                aspect=int(kwargs['aspect']))}
-            payload = {'success': self.success, 'filename': self.filename}
-            if self.extra_context is not None:
-                payload.update(self.extra_context)
-            if addons:
-                payload.update(addons)
-            return ajax_answer(payload)
+# class AjaxImgUploader(AjaxAbstractUploader):
+#     # TODO Later is deprecated
+#     def __init__(self, backend=None, **kwargs):
+#         if backend is None:
+#             backend = ImgUploadBackend
+#         self.get_backend = lambda: backend(**kwargs)
+#
+#     def _ajax_upload(self, request, **kwargs):
+#         if request.method == "POST":
+#             tmb = None
+#             self._upload_file(request, **kwargs)
+#             fullpath = os.path.join(settings.MEDIA_ROOT, self.extra_context['path'])
+#             try:
+#                 i = Image.open(fullpath)
+#             except:
+#                 messages.error(request, "File is not image format")
+#                 os.remove(fullpath)
+#                 self.success = False
+#                 self.pic_id = None
+#             if self.success:
+#                 ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+#                 object_id = int(kwargs['object_id'])
+#                 obj = ctype.get_object_for_this_type(pk=object_id)
+#                 try:
+#                     remove_thumbnails(obj.img.path)
+#                     remove_file(obj.img.path)
+#                     obj.img.delete()
+#                 except:
+#                     pass
+#                 obj.img = self.extra_context['path']
+#                 obj.save()
+#                 # let Ajax Upload know whether we saved it or not
+#                 addons = {'tmb': make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
+#                                                 aspect=int(kwargs['aspect']))}
+#             payload = {'success': self.success, 'filename': self.filename}
+#             if self.extra_context is not None:
+#                 payload.update(self.extra_context)
+#             if addons:
+#                 payload.update(addons)
+#             return ajax_answer(payload)
 
 
 def as_json(errors):
@@ -534,11 +533,11 @@ def autocomplete_tags(request):
     return ajax_answer_lazy(payload)
 
 
-doc_uploader = AjaxFileUploader()
+# doc_uploader = AjaxFileUploader()
 # TODO Later is deprecated
-pic_uploader = AjaxImageUploader()
-avatar_uploader = AjaxAvatarUploader()
-img_uploader = AjaxImgUploader()
+# pic_uploader = AjaxImageUploader()
+# avatar_uploader = AjaxAvatarUploader()
+# img_uploader = AjaxImgUploader()
 
 
 def notice_delete(request, object_id):
