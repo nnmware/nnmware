@@ -22,6 +22,7 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from nnmware.core.utils import setting
 from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment, AbstractLike, STATUS_DRAFT
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
@@ -636,6 +637,12 @@ class NnmwareUser(AbstractUser, AbstractImg):
         if self.img:
             return self.img
         return None
+
+    @property
+    def get_avatar(self):
+        if self.img:
+            return self.avatar.url
+        return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     @property
     def get_name(self):
