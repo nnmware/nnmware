@@ -21,7 +21,7 @@ class PublicationAdmin(admin.ModelAdmin):
         (_('Content'), {'fields': [('name',), ('description',)]}),
         (_('Meta'), {'fields': [('created_date', 'updated_date')]}),
     )
-    list_display = ('user', 'created_date', 'name')
+    list_display = ('user', 'created_date', 'name', 'status')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('name', 'user__username')
