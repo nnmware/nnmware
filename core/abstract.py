@@ -79,14 +79,16 @@ class Parameter(models.Model):
             return "%s" % self.name
 
 
-STATUS_DELETE = 0
-STATUS_LOCKED = 1
-STATUS_PUBLISHED = 2
-STATUS_STICKY = 3
-STATUS_MODERATION = 4
-STATUS_DRAFT = 5
+STATUS_UNKNOWN = 0
+STATUS_DELETE = 1
+STATUS_LOCKED = 2
+STATUS_PUBLISHED = 3
+STATUS_STICKY = 4
+STATUS_MODERATION = 5
+STATUS_DRAFT = 6
 
 STATUS_CHOICES = (
+    (STATUS_UNKNOWN, _("Unknown")),
     (STATUS_DELETE, _("Deleted")),
     (STATUS_LOCKED, _("Locked")),
     (STATUS_PUBLISHED, _("Published")),

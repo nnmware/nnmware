@@ -5,7 +5,7 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import LikeMixin, ContentBlock
 from nnmware.apps.address.models import Region
-from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
+from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_UNKNOWN
 from nnmware.core.managers import PublicationManager
 
 
@@ -28,7 +28,7 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
     category = models.ForeignKey(PublicationCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.PROTECT)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
-    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
+    status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_UNKNOWN)
 
     objects = PublicationManager()
 
