@@ -722,6 +722,7 @@ CONTENT_VIDEO = 3
 CONTENT_CODE = 4
 CONTENT_QUOTE = 5
 CONTENT_URL = 6
+CONTENT_RAW = 7
 
 
 CONTENT_CHOICES = (
@@ -732,6 +733,7 @@ CONTENT_CHOICES = (
     (CONTENT_CODE, _("Code")),
     (CONTENT_QUOTE, _("Quote")),
     (CONTENT_URL, _("Url")),
+    (CONTENT_RAW, _("Raw input")),
 )
 
 
