@@ -1080,3 +1080,18 @@ def delete_comment(request, object_id):
     except:
         pass
     return ajax_answer_lazy(payload)
+
+
+def avatar_set(request):
+    uploader = AjaxUploader(filetype='image', upload_dir=setting('AVATAR_UPLOAD_DIR','avatars'),
+                            size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
+    result = uploader.handle_upload(request)
+    if result['success']:
+        request.user.img = result['path']
+        request.user.save()
+        try:
+            addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
+        except:
+            addons = {}
+        result.update(addons)
+    return ajax_answer_lazy(result)
