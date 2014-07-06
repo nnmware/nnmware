@@ -19,7 +19,7 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404, HttpResponseBadRequest
-from nnmware.core.abstract import STATUS_LOCKED
+from nnmware.core.constants import STATUS_LOCKED
 from nnmware.core import oembed
 from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError

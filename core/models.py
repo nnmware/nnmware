@@ -8,7 +8,6 @@ import os
 from PIL import Image
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
-from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.utils.timezone import now
@@ -22,14 +21,16 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
+    STATUS_DRAFT, GENDER_CHOICES
 from nnmware.core.utils import setting
-from nnmware.core.abstract import AbstractDate, GENDER_CHOICES, AbstractNnmcomment, AbstractLike, STATUS_DRAFT
+from nnmware.core.abstract import AbstractDate, AbstractNnmcomment, AbstractLike
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
     FollowManager, MessageManager
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.file import get_path_from_url
 from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
-from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP, STATUS_PUBLISHED, STATUS_CHOICES
+from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP
 from django.utils.encoding import python_2_unicode_compatible
 
 
@@ -248,23 +249,6 @@ class Follow(AbstractContent):
 
     def __str__(self):
         return '%s -> %s' % (self.user, self.content_object)
-
-
-NOTICE_UNKNOWN = 0
-NOTICE_SYSTEM = 1
-NOTICE_VIDEO = 2
-NOTICE_TAG = 3
-NOTICE_ACCOUNT = 4
-NOTICE_PROFILE = 5
-
-NOTICE_CHOICES = (
-    (NOTICE_UNKNOWN, _("Unknown")),
-    (NOTICE_SYSTEM, _("System")),
-    (NOTICE_VIDEO, _("Video")),
-    (NOTICE_TAG, _("Tag")),
-    (NOTICE_ACCOUNT, _("Account")),
-    (NOTICE_PROFILE, _("Profile")),
-)
 
 
 class Notice(AbstractContent, AbstractIP):
@@ -713,28 +697,6 @@ class LikeMixin(object):
 
     def users_disliked(self):
         return Like.objects.for_object(self).filter(dislike=True).values_list('user__pk', flat=True)
-
-
-CONTENT_UNKNOWN = 0
-CONTENT_TEXT = 1
-CONTENT_IMAGE = 2
-CONTENT_VIDEO = 3
-CONTENT_CODE = 4
-CONTENT_QUOTE = 5
-CONTENT_URL = 6
-CONTENT_RAW = 7
-
-
-CONTENT_CHOICES = (
-    (CONTENT_UNKNOWN, _("Unknown")),
-    (CONTENT_TEXT, _("Text")),
-    (CONTENT_IMAGE, _("Image")),
-    (CONTENT_VIDEO, _("Video")),
-    (CONTENT_CODE, _("Code")),
-    (CONTENT_QUOTE, _("Quote")),
-    (CONTENT_URL, _("Url")),
-    (CONTENT_RAW, _("Raw input")),
-)
 
 
 @python_2_unicode_compatible

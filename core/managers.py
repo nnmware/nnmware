@@ -3,10 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
-
-
-STATUS_PUBLISHED = 3
-STATUS_STICKY = 4
+from nnmware.core.constants import STATUS_PUBLISHED, STATUS_STICKY
 
 
 class AbstractContentManager(Manager):

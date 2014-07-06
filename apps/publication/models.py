@@ -5,7 +5,8 @@ from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import LikeMixin, ContentBlock
 from nnmware.apps.address.models import Region
-from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_UNKNOWN
+from nnmware.core.abstract import Tree, AbstractDate, AbstractName
+from nnmware.core.constants import STATUS_CHOICES, STATUS_UNKNOWN
 from nnmware.core.managers import PublicationManager
 
 

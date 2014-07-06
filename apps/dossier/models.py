@@ -6,7 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.apps.address.models import Institution
-from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg, GENDER_CHOICES
+from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
+from nnmware.core.constants GENDER_CHOICES
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
 

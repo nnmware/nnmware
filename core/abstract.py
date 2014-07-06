@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Base abstract classed nnmware(c)2013
+# Base abstract classed nnmware(c)2013-2014
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -14,12 +14,11 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
 from nnmware.core.fields import std_text_field, std_url_field, std_email_field
 from django.utils.encoding import python_2_unicode_compatible
-
-GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')), ('N', _('None')))
 
 
 class AbstractDate(models.Model):
@@ -77,25 +76,6 @@ class Parameter(models.Model):
             return "%s (%s)" % (self.name, self.unit.name)
         except:
             return "%s" % self.name
-
-
-STATUS_UNKNOWN = 0
-STATUS_DELETE = 1
-STATUS_LOCKED = 2
-STATUS_PUBLISHED = 3
-STATUS_STICKY = 4
-STATUS_MODERATION = 5
-STATUS_DRAFT = 6
-
-STATUS_CHOICES = (
-    (STATUS_UNKNOWN, _("Unknown")),
-    (STATUS_DELETE, _("Deleted")),
-    (STATUS_LOCKED, _("Locked")),
-    (STATUS_PUBLISHED, _("Published")),
-    (STATUS_STICKY, _("Sticky")),
-    (STATUS_MODERATION, _("Moderation")),
-    (STATUS_DRAFT, _("Draft")),
-)
 
 
 class AbstractData(AbstractDate):

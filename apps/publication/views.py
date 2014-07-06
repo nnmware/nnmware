@@ -8,7 +8,7 @@ from nnmware.core.data import get_queryset_category
 
 from nnmware.apps.publication.forms import *
 from nnmware.core.views import *
-from nnmware.core.abstract import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
+from nnmware.core.constants import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
 from nnmware.apps.publication.models import Publication
 
 

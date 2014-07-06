@@ -3,7 +3,8 @@ from django.db import models
 from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
-from nnmware.core.abstract import Tree, AbstractDate, AbstractName, STATUS_CHOICES, STATUS_DRAFT
+from nnmware.core.abstract import Tree, AbstractDate, AbstractName
+from nnmware.core.constants import STATUS_CHOICES, STATUS_DRAFT
 from nnmware.core.managers import TopicManager
 from nnmware.core.models import LikeMixin
 

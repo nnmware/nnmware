@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.contenttypes.models import ContentType
 
-from nnmware.core.models import NOTICE_UNKNOWN, ACTION_UNKNOWN
+from nnmware.core.constants import NOTICE_UNKNOWN, ACTION_UNKNOWN
 from nnmware.core.signals import action, notice
 
 

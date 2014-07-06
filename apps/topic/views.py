@@ -6,7 +6,7 @@ from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
-from nnmware.core.abstract import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, \
+from nnmware.core.constants import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, \
     STATUS_PUBLISHED
 from nnmware.apps.topic.forms import TopicAddForm
 
