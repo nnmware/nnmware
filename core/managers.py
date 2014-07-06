@@ -110,8 +110,6 @@ class PublicNnmcommentManager(NnmcommentManager):
      """
 
     def get_queryset(self):
-        from nnmware.core.abstract import STATUS_PUBLISHED, STATUS_STICKY
-
         return super(NnmcommentManager, self).get_queryset().filter(
             Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
@@ -261,7 +259,7 @@ class NewsManager(Manager):
 
 class PublicationManager(Manager):
     def active(self):
-        return self.filter(Q(enabled=True)|Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
+        return self.filter(Q(enabled=True) | Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
 
 
 class BoardManager(Manager):
