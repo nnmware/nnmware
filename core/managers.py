@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
+from nnmware.core.abstract import STATUS_STICKY, STATUS_PUBLISHED
 
 
 class AbstractContentManager(Manager):
@@ -260,7 +261,7 @@ class NewsManager(Manager):
 
 class PublicationManager(Manager):
     def active(self):
-        return self.filter(enabled=True)
+        return self.filter(Q(enabled=True)|Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
 
 
 class BoardManager(Manager):
