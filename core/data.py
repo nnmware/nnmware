@@ -139,3 +139,19 @@ def create_userdate_list(_query):
             archive_list[_year][_month].append(_day)
 
     return archive_list
+
+
+def recurse_for_children_select(current_node, parent_node, show_empty=True):
+    child_count = current_node.children.count()
+
+    if show_empty or child_count > 0:
+        temp_parent = SubElement(parent_node, 'li')
+        category_pk = SubElement(temp_parent, 'i')
+        category_pk.text = str(int(current_node.pk))
+        span = SubElement(temp_parent, 'span')
+        span.text = current_node.name
+        if child_count > 0:
+            new_parent = SubElement(temp_parent, 'ul')
+            children = current_node.children.all()
+            for child in children:
+                recurse_for_children_select(child, new_parent)
