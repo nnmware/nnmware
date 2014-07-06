@@ -22,7 +22,7 @@ from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
-    STATUS_DRAFT, GENDER_CHOICES
+    STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
 from nnmware.core.utils import setting
 from nnmware.core.abstract import AbstractDate, AbstractNnmcomment, AbstractLike
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, PublicNnmcommentManager, \
@@ -320,23 +320,6 @@ class Message(AbstractIP):
         ordering = ['-sent_at']
         verbose_name = _("Message")
         verbose_name_plural = _("Messages")
-
-
-ACTION_UNKNOWN = 0
-ACTION_SYSTEM = 1
-ACTION_ADDED = 2
-ACTION_COMMENTED = 3
-ACTION_FOLLOWED = 4
-ACTION_LIKED = 5
-
-ACTION_CHOICES = (
-    (ACTION_UNKNOWN, _("Unknown")),
-    (ACTION_SYSTEM, _("System")),
-    (ACTION_ADDED, _("Added")),
-    (ACTION_COMMENTED, _("Commented")),
-    (ACTION_FOLLOWED, _("Followed")),
-    (ACTION_LIKED, _("Liked")),
-)
 
 
 @python_2_unicode_compatible

@@ -59,4 +59,21 @@ NOTICE_CHOICES = (
 )
 
 
+ACTION_UNKNOWN = 0
+ACTION_SYSTEM = 1
+ACTION_ADDED = 2
+ACTION_COMMENTED = 3
+ACTION_FOLLOWED = 4
+ACTION_LIKED = 5
+
+ACTION_CHOICES = (
+    (ACTION_UNKNOWN, _("Unknown")),
+    (ACTION_SYSTEM, _("System")),
+    (ACTION_ADDED, _("Added")),
+    (ACTION_COMMENTED, _("Commented")),
+    (ACTION_FOLLOWED, _("Followed")),
+    (ACTION_LIKED, _("Liked")),
+)
+
+
 GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')), ('N', _('None')))

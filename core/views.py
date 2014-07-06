@@ -26,9 +26,10 @@ from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, ajax_answer_lazy
 from nnmware.core.http import LazyEncoder
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
-from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation, ACTION_ADDED
+from nnmware.core.models import Nnmcomment, Doc, Pic, Follow, Notice, Message, Action, EmailValidation
 from nnmware.core.forms import *
 from nnmware.core.signals import action
+from nnmware.core.constants import ACTION_ADDED
 from nnmware.core.utils import send_template_mail, make_key, get_video_provider_from_link, gen_shortcut, \
     update_video_size
 
