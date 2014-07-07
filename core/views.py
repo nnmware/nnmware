@@ -423,11 +423,7 @@ class NoticeView(ListView):
 
 
 class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
-    paginate_by = 20
-    model = Message
     template_name = "messages/list.html"
-    context_object_name = "object_list"
-    make_object_list = True
 
     def get_queryset(self):
         self.object = self.get_object()
@@ -436,8 +432,6 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
         return result
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        kwargs['object'] = self.object
         context = super(MessagesView, self).get_context_data(**kwargs)
         return context
 
