@@ -833,7 +833,7 @@ def push_message(request, pk):
         recipient = get_user_model().objects.get(pk=pk)
         if recipient == request.user:
             raise AccessError
-        body = request.POST.get('msg') or None
+        body = request.POST.get('message') or None
         if body is None:
             raise AccessError
         msg = Message()
