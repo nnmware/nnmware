@@ -427,7 +427,7 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
-        result = Message.objects.concrete_user(self.request.user, self.object)
+        result = Message.objects.concrete_user(self.request.user, self.object).order_by('-sent_at')
         answ = result.filter(recipient=self.request.user).update(read_at=now())
         return result
 
