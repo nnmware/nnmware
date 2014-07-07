@@ -423,7 +423,6 @@ class NoticeView(ListView):
 
 
 class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
-    model = Message
     template_name = "messages/list.html"
 
     def get_queryset(self):
