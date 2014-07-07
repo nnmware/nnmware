@@ -423,7 +423,7 @@ class NoticeView(ListView):
 
 
 class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
-    template_name = "messages/list.html"
+    template_name = "user/messages_with_user.html"
 
     def get_queryset(self):
         self.object = self.get_object()
