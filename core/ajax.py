@@ -826,33 +826,31 @@ def flat_comment_add(request, content_type, object_id):
     return ajax_answer_lazy(payload)
 
 
-def push_message(request, object_id):
-    """
-    Its Ajax posted message
-    """
+def push_message(request, pk):
     try:
         if not request.user.is_authenticated():
             raise AccessError
+        recipient = get_user_model().objects.get(pk=pk)
+        if recipient == request.user:
+            raise AccessError
+        body = request.POST.get('msg') or None
+        if body is None:
+            raise AccessError
         msg = Message()
+        msg.subject = request.POST.get('subject') or None
         msg.ip = request.META['REMOTE_ADDR']
         msg.user_agent = request.META['HTTP_USER_AGENT']
-        msg.subject = request.POST.get('message_subject') or None
-        msg.body = request.POST.get('message_body') or None
+        msg.body = body
         msg.sender = request.user
-        msg.recipient = get_user_model().objects.get(id=object_id)
+        msg.recipient = recipient
         msg.sent_at = now()
         msg.save()
-        try:
-            avatar_id = request.user.avatar.pk
-        except:
-            avatar_id = False
-        message_date = msg.sent_at.strftime(settings.COMMENT_DATE_FORMAT)
-        payload = {'success': True, 'id': msg.pk, 'username': msg.sender.get_name,
-                   'username_url': msg.sender.get_absolute_url(),
-                   'message_subject': msg.subject, 'avatar_id': avatar_id,
-                   'message_date': message_date, 'message_body': msg.body}
+        result = Message.objects.concrete_user(request.user, recipient).count()
+        html = render_to_string('user/one_message.html', {'object': msg, 'user': request.user})
+        payload = {'success': True, 'html': html, 'count': result, 'id': recipient.pk,
+                   'total': request.user.messages_count}
     except AccessError:
-        payload = {'success': False, 'error': _('You are not allowed for send message')}
+        payload = {'success': False, 'error': 'You are not allowed for send message'}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
