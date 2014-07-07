@@ -1029,6 +1029,9 @@ def like(request, content_type, object_id):
         mode = request.POST['mode']
         content_type = get_object_or_404(ContentType, id=int(content_type))
         object_id = int(object_id)
+        if content_type == ContentType.objects.get_for_model(get_user_model()):
+            if object_id == request.user.pk:
+                raise AccessError
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)
         except:
