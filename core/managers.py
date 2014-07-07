@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
-from nnmware.core.constants import STATUS_PUBLISHED, STATUS_STICKY
+from nnmware.core.constants import STATUS_PUBLISHED, STATUS_STICKY, STATUS_DRAFT, STATUS_MODERATION
 
 
 class AbstractContentManager(Manager):
@@ -259,7 +259,13 @@ class NewsManager(Manager):
 
 class PublicationManager(Manager):
     def active(self):
-        return self.filter(Q(enabled=True) | Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
+        return self.filter(Q(enabled=True), Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
+
+    def drafts(self):
+        return self.filter(Q(enabled=True), Q(status__in=[STATUS_DRAFT]))
+
+    def moderated(self):
+        return self.filter(Q(enabled=True), Q(status__in=[STATUS_MODERATION]))
 
 
 class BoardManager(Manager):
