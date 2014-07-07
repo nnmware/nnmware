@@ -39,11 +39,6 @@ class UserPathMixin(object):
     def get_object(self, queryset=None):
         return get_object_or_404(get_user_model(), username=self.kwargs['username'])
 
-    # def get_context_data(self, **kwargs):
-    #     self.object = self.get_object()
-    #     context = super(UserPathMixin, self).get_context_data(**kwargs)
-    #     return context
-
 
 class UserToFormMixin(object):
     def get_form_kwargs(self):
