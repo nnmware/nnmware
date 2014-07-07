@@ -827,7 +827,7 @@ def flat_comment_add(request, content_type, object_id):
 
 
 def push_message(request, pk):
-    if 1>0: #try:
+    try:
         if not request.user.is_authenticated():
             raise AccessError
         recipient = get_user_model().objects.get(pk=pk)
@@ -849,10 +849,10 @@ def push_message(request, pk):
         html = render_to_string('user/one_message.html', {'object': msg, 'user': request.user})
         payload = {'success': True, 'html': html, 'count': result, 'id': recipient.pk,
                    'total': request.user.messages_count}
-    # except AccessError:
-    #     payload = {'success': False, 'error': 'You are not allowed for send message'}
-    # except:
-    #     payload = {'success': False}
+    except AccessError:
+        payload = {'success': False, 'error': 'You are not allowed for send message'}
+    except:
+        payload = {'success': False}
     return ajax_answer_lazy(payload)
 
 

@@ -663,6 +663,10 @@ class NnmwareUser(AbstractUser, AbstractImg):
         self.date_modified = now()
         super(NnmwareUser, self).save(*args, **kwargs)
 
+    @property
+    def messages_count(self):
+        return Message.objects.messages(self).count()
+
 
 class Like(AbstractLike):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)
