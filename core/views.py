@@ -37,11 +37,8 @@ from nnmware.core.utils import send_template_mail, make_key, get_video_provider_
 class UserPathMixin(object):
 
     def dispatch(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        self.object = get_object_or_404(get_user_model(), username=kwargs['username'])
         return super(UserPathMixin, self).dispatch(request, *args, **kwargs)
-
-    def get_object(self, queryset=None):
-        return get_object_or_404(get_user_model(), username=self.kwargs['username'])
 
 
 class UserToFormMixin(object):
