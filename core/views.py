@@ -427,12 +427,28 @@ class MessagesView(UserPathMixin, SingleObjectMixin, ListView):
 
     def get_queryset(self):
         self.object = self.get_object()
+        if self.object == self.request.user:
+            raise Http404
         result = Message.objects.concrete_user(self.request.user, self.object).order_by('-sent_at')
         answ = result.filter(recipient=self.request.user).update(read_at=now())
         return result
 
     def get_context_data(self, **kwargs):
         context = super(MessagesView, self).get_context_data(**kwargs)
+        context['view_tab'] = 'user_messages'
+        return context
+
+
+class MessagesNewView(MessagesView):
+    template_name = "user/messages_new.html"
+
+    def get_queryset(self):
+        result = Message.objects.unread(self.request.user)
+        return result
+
+    def get_context_data(self, **kwargs):
+        context = super(MessagesNewView, self).get_context_data(**kwargs)
+        context['view_tab'] = 'new_messages'
         return context
 
 
