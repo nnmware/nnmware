@@ -654,7 +654,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
 
     @property
     def unread_msg_count(self):
-        result = Message.objects.unread(self.user).count()
+        result = Message.objects.unread(self).count()
         if result > 0:
             return result
         return None
