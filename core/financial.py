@@ -1,19 +1,21 @@
+# -*- coding: utf-8 -*-
+from datetime import datetime, date, time
+
 from django.db.models.query import QuerySet, ValuesQuerySet
 from django.http import HttpResponse
-
-from datetime import datetime, date, time
 from django.utils.timezone import now
+
+from nnmware.core.utils import setting
 from nnmware.apps.money.models import ExchangeRate, Currency
-from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 
 
 def convert_from_client_currency(request, amount):
     try:
-        if request.COOKIES['currency'] == CURRENCY:
+        if request.COOKIES['currency'] == setting('CURRENCY', 'RUB'):
             return amount
         currency = Currency.objects.get(code=request.COOKIES['currency'])
         rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
+        if setting('OFFICIAL_RATE', True):
             exchange = rate.official_rate
         else:
             exchange = rate.rate

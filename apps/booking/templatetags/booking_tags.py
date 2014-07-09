@@ -11,10 +11,9 @@ from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, \
     HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount
 from nnmware.apps.money.models import ExchangeRate, Currency
-from nnmware.core.config import OFFICIAL_RATE, CURRENCY
 from nnmware.core.maps import distance_to_object
 from nnmware.core.models import VisitorHit
-from nnmware.core.utils import convert_to_date
+from nnmware.core.utils import convert_to_date, setting
 
 
 register = Library()
@@ -277,7 +276,7 @@ def client_currency(context):
     try:
         currency = request.COOKIES['currency']
     except:
-        currency = CURRENCY
+        currency = setting('CURRENCY', 'RUB')
     if currency == 'USD':
         return '$'
     elif currency == 'EUR':
@@ -296,7 +295,7 @@ def view_currency(context):
     try:
         currency = request.COOKIES['currency']
     except:
-        currency = CURRENCY
+        currency = setting('CURRENCY', 'RUB')
     if currency == 'USD':
         return _('US Dollars')
     elif currency == 'EUR':
@@ -308,7 +307,7 @@ def view_currency(context):
 @register.simple_tag
 def convert_to_client_currency(amount, rate):
     try:
-        if OFFICIAL_RATE:
+        if setting('OFFICIAL_RATE', True):
             exchange = rate.official_rate
         else:
             exchange = rate.rate
@@ -321,7 +320,7 @@ def amount_request_currency(request, amount):
     try:
         currency = Currency.objects.get(code=request.COOKIES['currency'])
         rate = ExchangeRate.objects.filter(currency=currency).filter(date__lte=now()).order_by('-date')[0]
-        if OFFICIAL_RATE:
+        if setting('OFFICIAL_RATE', True):
             exchange = rate.official_rate
         else:
             exchange = rate.rate
@@ -334,7 +333,7 @@ def user_rate_from_request(request):
     try:
         user_currency = request.COOKIES['currency']
     except:
-        user_currency = CURRENCY
+        user_currency = setting('CURRENCY', 'RUB')
     try:
         rate = ExchangeRate.objects.select_related().filter(currency__code=user_currency).\
             filter(date__lte=now()).order_by('-date')[0]

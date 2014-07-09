@@ -3,6 +3,7 @@
 from datetime import timedelta, datetime
 from decimal import Decimal
 from hashlib import sha1
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
@@ -18,17 +19,17 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
+
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
     STATUS_ACCEPTED, HotelOption, Discount
 from nnmware.apps.booking.forms import *
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import ajax_answer_lazy
-from nnmware.core.config import CURRENCY
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
 from nnmware.apps.money.models import Bill, Currency
-from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail
+from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail, setting
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
@@ -1124,7 +1125,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
-        currency = Currency.objects.get(code=CURRENCY)
+        currency = Currency.objects.get(code=setting('CURRENCY', 'RUB'))
         self.object.currency = currency
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
