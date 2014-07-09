@@ -1,6 +1,6 @@
 Thanks for using this django application.
 
-NNMWARE CMF @ 2012
+NNMWARE CMF @ 2012-2014
 
 Install django-current, unidecode, oauth2, xlwt, openid, django-grappelli, PIL and ReportLab(recommended)
 

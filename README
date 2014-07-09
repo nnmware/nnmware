@@ -47,7 +47,7 @@ Licensed under GPL3
 
 nnmware@gmail.com
 
-required django(bleeding edge or 1.6), south, unidecode, xlwt
+required django(bleeding edge or 1.7), south, unidecode, xlwt
 recommended django-grappelli
 
 

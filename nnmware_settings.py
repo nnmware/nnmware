@@ -19,24 +19,12 @@ LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = "demo.User"
 PROFILE_DEFAULT_TIME_ZONE = 10
-ACCOUNT_ACTIVATION_DAYS = 7
 SITENAME = 'NNMWARE.COM'
 
 RATINGS_MIN = 1
 RATINGS_MAX = 10
 
-TAGS_MAX = 20
-
-IMG_MAX_PER_OBJECT = getattr(settings, 'PIC_MAX_PER_OBJECT', 42)
-DOC_MAX_PER_OBJECT = getattr(settings, 'DOC_MAX_PER_OBJECT', 42)
-IMG_MAX_SIZE = getattr(settings, 'PIC_MAX_SIZE', 1024 * 1024)
-IMG_DEFAULT_SIZE = getattr(settings, 'PIC_DEFAULT_SIZE', 96)
-IMG_ALLOWED_FILE_EXTS = getattr(settings, 'PIC_ALLOWED_FILE_EXTS', None)
-
-THUMBNAIL_DIR = getattr(settings, 'THUMBNAIL_DIR', 'thumbnail')
-DEFAULT_AVATAR_WIDTH = 96
 CAPTCHA_ENABLED = True
-SITE_PROTOCOL = 'http'
 REQUIRE_EMAIL_CONFIRMATION = False
 DATETIME_FORMAT = 'd M Y  H:i:s'
 
@@ -57,22 +45,11 @@ from django.conf.urls import *
 
 URLS = patterns('',)
 APPEND_SLASH = True
-PAGINATE_BY = 10
-PAGINATE_BOARD = 2
 
 NAME_LENGTH = 256
 DATE_FORMAT = "j.m.Y"
 TIME_FORMAT = "G:i"
 ACTION_RECORD_DAYS = 3
-
-# Image settings
-THUMBNAIL_QUALITY = 85
-
-# Rename images?"),
-# Automatically rename images on upload?
-RENAME_IMAGES = True
-
-WYSIWYG_ENABLE = True
 
 CACHES = {
     'default': {
