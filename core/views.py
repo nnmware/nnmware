@@ -151,53 +151,6 @@ class PicView(DetailView):
         return context
 
 
-class PicEditor(UpdateView):
-    model = Pic
-    form_class = PicEditorForm
-    template_name = "upload/pic_editor.html"
-
-    def get_success_url(self):
-        return self.object.content_object.get_absolute_url()
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PicEditor, self).get_context_data(**kwargs)
-        context['action'] = reverse("pic_editor", args=[self.object.id])
-        return context
-
-    def form_valid(self, form):
-        action = form.cleaned_data.get('editor_action')
-        if action == 'resize':
-            top = int(form.cleaned_data.get('top'))
-            left = int(form.cleaned_data.get('left'))
-            right = int(form.cleaned_data.get('right'))
-            bottom = int(form.cleaned_data.get('bottom'))
-            if not (top - bottom) or not (left - right):
-                return super(PicEditor, self).form_valid(form)
-            image = Image.open(self.object.pic.path)
-            box = [left, top, right, bottom]
-            image = image.crop(box)
-            if image.mode not in ('L', 'RGB'):
-                image = image.convert('RGB')
-            image.save(self.object.pic.path)
-        elif action == 'rotate90':
-            image = Image.open(self.object.pic.path)
-            image = image.rotate(90)
-            if image.mode not in ('L', 'RGB'):
-                image = image.convert('RGB')
-            image.save(self.object.pic.path)
-        elif action == 'rotate270':
-            image = Image.open(self.object.pic.path)
-            image = image.rotate(270)
-            if image.mode not in ('L', 'RGB'):
-                image = image.convert('RGB')
-            image.save(self.object.pic.path)
-
-        remove_thumbnails(self.object.pic.path)
-        self.object.save()
-        return super(PicEditor, self).form_valid(form)
-
-
 class PicList(ListView):
     template_name = 'upload/pic_list.html'
     model = Pic
@@ -260,26 +213,6 @@ class DocDayList(DayArchiveView):
 
 class DocAdd(TemplateView):
     template_name = "upload/doc_upload.html"
-
-
-class AddPicView(TemplateResponseMixin, BaseFormView):
-    form_class = UploadPicForm
-    template_name = "upload/pic_form.html"
-
-    def create_pic(self, target, pic_file):
-        img = Pic(content_object=target)
-        img.pic.save(pic_file.name, pic_file)
-        img.save()
-        return img
-
-    def form_valid(self, form):
-        new_pic = self.create_pic(self.target, self.request.FILES['pic'])
-        if new_pic:
-            messages.info(self.request, _("Successfully uploaded a new image."))
-        if self.request.is_ajax() or self.request.POST.get('async', None) == 'true':
-            return self.ajax_form_valid(new_pic)
-        else:
-            return FormMixin.form_valid(self, form)
 
 
 class CurrentUserAuthor(object):

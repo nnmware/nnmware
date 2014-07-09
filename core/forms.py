@@ -47,53 +47,6 @@ class DocDeleteForm(forms.ModelForm):
         fields = ()
 
 
-EDITOR_ACTION = (('rotate90', _('Rotate 90')), ('rotate270', _('Rotate 270')),
-                 ('resize', _('Resize')))
-
-
-class PicEditorForm(forms.ModelForm):
-    """
-    Crop dimensions form
-    """
-    top = forms.IntegerField()
-    left = forms.IntegerField()
-    right = forms.IntegerField()
-    bottom = forms.IntegerField()
-    editor_action = forms.ChoiceField(widget=RadioSelect, choices=EDITOR_ACTION)
-
-
-class UploadPicForm(forms.Form):
-    pic = forms.ImageField()
-
-    def __init__(self, *args, **kwargs):
-        kwargs.pop('size', settings.IMG_DEFAULT_SIZE)
-        super(UploadPicForm, self).__init__(*args, **kwargs)
-
-    def clean_pic(self):
-        data = self.cleaned_data['pic']
-        if settings.IMG_ALLOWED_FILE_EXTS:
-            (root, ext) = os.path.splitext(data.name.lower())
-            if ext not in settings.IMG_ALLOWED_FILE_EXTS:
-                raise forms.ValidationError(
-                    _("%(ext)s is an invalid file extension. "
-                      "Authorized extensions are : %(valid_exts_list)s") %
-                    {'ext': ext,
-                     'valid_exts_list': ", ".join(settings.IMG_ALLOWED_FILE_EXTS)})
-        if data.size > settings.IMG_MAX_SIZE:
-            raise forms.ValidationError(
-                _("Your file is too big (%(size)s), "
-                  "the maximum allowed size is %(max_valid_size)s") %
-                {'size': filesizeformat(data.size),
-                 'max_valid_size': filesizeformat(settings.AVATAR_MAX_SIZE)})
-        count = Pic.objects.for_object(self.target).count()
-        if count >= settings.IMG_MAX_PER_OBJECT > 1:
-            raise forms.ValidationError(
-                _("You already have %(nb_pic)d image, and the "
-                  "maximum allowed is %(nb_max_pic)d.") %
-                {'nb_pic': count, 'nb_max_pic': settings.IMG_MAX_PER_OBJECT})
-        return
-
-
 class EmailQuickRegisterForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
@@ -105,17 +58,17 @@ class EmailQuickRegisterForm(forms.ModelForm):
         """
         email = self.cleaned_data.get("email")
         if not email:
-            raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
+            raise forms.ValidationError(_("E-MAIL IS REQUIRED"), code='invalid')
         try:
             get_user_model().objects.get(email=email)
-            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
+            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"), code='invalid')
         except:
             return email
 
     def clean_password(self):
         password = self.cleaned_data.get('password')
         if not password:
-            raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
+            raise forms.ValidationError(_("PASSWORD IS REQUIRED"), code='invalid')
         return password
 
 
@@ -134,7 +87,7 @@ class PassChangeForm(forms.Form):
     def clean_old_password(self):
         old_password = self.cleaned_data["old_password"]
         if not self.current_user.check_password(old_password):
-            raise forms.ValidationError(_("Old password is wrong."))
+            raise forms.ValidationError(_("Old password is wrong."), code='invalid')
         return old_password
 
     def clean_new_password2(self):
@@ -142,12 +95,12 @@ class PassChangeForm(forms.Form):
         password2 = self.cleaned_data.get('new_password2')
         if password1 and password2:
             if password1 != password2:
-                raise forms.ValidationError(_("Passwords mismatch."))
+                raise forms.ValidationError(_("Passwords mismatch."), code='invalid')
         return password2
 
     def clean(self):
         if self.cleaned_data.get('old_password') == self.cleaned_data.get('new_password2'):
-            raise forms.ValidationError(_("Old and new passwords are equal."))
+            raise forms.ValidationError(_("Old and new passwords are equal."), code='invalid')
         return self.cleaned_data
 
 
@@ -161,7 +114,7 @@ class LoginForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data["username"]
         if not username:
-            raise forms.ValidationError(_("THIS FIELD IS REQUIRED"))
+            raise forms.ValidationError(_("THIS FIELD IS REQUIRED"), code='invalid')
         try:
             user = get_user_model().objects.get(username=username)
             if not user.is_active:
@@ -176,16 +129,16 @@ class LoginForm(forms.Form):
             except UserIsDisabled:
                 raise UserIsDisabled
             except:
-                raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"))
+                raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"), code='invalid')
         except UserIsDisabled:
-            raise forms.ValidationError(_("THE USER IS DISABLED"))
+            raise forms.ValidationError(_("THE USER IS DISABLED"), code='invalid')
 
     def clean_password(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         if not user:
-            raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"))
+            raise forms.ValidationError(_("THIS PASSWORD IS INCORRECT"), code='invalid')
         return password
 
 
@@ -223,16 +176,15 @@ class RegistrationForm(UserCreationForm):
         email = self.cleaned_data.get("email")
 
         if not email:
-            raise forms.ValidationError(_("E-mail is required."))
+            raise forms.ValidationError(_("E-mail is required."), code='invalid')
 
         try:
             get_user_model().objects.get(email=email)
-            raise forms.ValidationError(_("That e-mail is already used."))
+            raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
         except get_user_model().DoesNotExist:
             try:
                 EmailValidation.objects.get(email=email)
-                raise forms.ValidationError(_("That e-mail is already "
-                                              "being confirmed."))
+                raise forms.ValidationError(_("That e-mail is already being confirmed."), code='invalid')
             except EmailValidation.DoesNotExist:
                 return email
 
@@ -240,11 +192,10 @@ class RegistrationForm(UserCreationForm):
         """
         Verify that the 2 passwords fields are equal
         """
-        if self.cleaned_data.get("password1") == \
-                self.cleaned_data.get("password2"):
+        if self.cleaned_data.get("password1") == self.cleaned_data.get("password2"):
             return self.cleaned_data
         else:
-            raise forms.ValidationError(_("The passwords inserted are different."))
+            raise forms.ValidationError(_("The passwords inserted are different."), code='invalid')
 
 
 class SignupForm(UserCreationForm):
@@ -259,10 +210,10 @@ class SignupForm(UserCreationForm):
     def clean_username(self):
         username = self.cleaned_data.get('username')
         if not username:
-            raise forms.ValidationError(_("USERNAME IS REQUIRED"))
+            raise forms.ValidationError(_("USERNAME IS REQUIRED"), code='invalid')
         try:
             get_user_model().objects.get(username=username)
-            raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"))
+            raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"), code='invalid')
         except:
             return username
 
@@ -273,30 +224,30 @@ class SignupForm(UserCreationForm):
         email = self.cleaned_data.get("email")
 
         if not email:
-            raise forms.ValidationError(_("E-MAIL IS REQUIRED"))
+            raise forms.ValidationError(_("E-MAIL IS REQUIRED"), code='invalid')
 
         try:
             get_user_model().objects.get(email=email)
-            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"))
+            raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"), code='invalid')
         except get_user_model().DoesNotExist:
             try:
                 EmailValidation.objects.get(email=email)
-                raise forms.ValidationError(_("THAT E-MAIL IS ALREADY CONFIRMED"))
+                raise forms.ValidationError(_("THAT E-MAIL IS ALREADY CONFIRMED"), code='invalid')
             except EmailValidation.DoesNotExist:
                 return email
 
     def clean_password1(self):
         password1 = self.cleaned_data.get('password1')
         if not password1:
-            raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
+            raise forms.ValidationError(_("PASSWORD IS REQUIRED"), code='invalid')
         return password1
 
     def clean_password2(self):
         password2 = self.cleaned_data.get('password2')
         if not password2:
-            raise forms.ValidationError(_("PASSWORD IS REQUIRED"))
+            raise forms.ValidationError(_("PASSWORD IS REQUIRED"), code='invalid')
         if not password2 == self.cleaned_data.get('password1'):
-            raise forms.ValidationError(_("PASSWORDS ARE MISMATCH"))
+            raise forms.ValidationError(_("PASSWORDS ARE MISMATCH"), code='invalid')
         return password2
 
 
@@ -315,7 +266,8 @@ class AvatarCropForm(forms.ModelForm):
 
     def clean(self):
         if int(self.cleaned_data.get('right')) - int(self.cleaned_data.get('left')) < 4:
-            raise forms.ValidationError(_("You must select a portion of the image with a minimum of 4x4 pixels."))
+            raise forms.ValidationError(_("You must select a portion of the image with a minimum of 4x4 pixels."),
+                                        code='invalid')
         else:
             return self.cleaned_data
 
@@ -331,7 +283,7 @@ class AvatarForm(forms.ModelForm):
 
     def clean(self):
         if not (self.cleaned_data.get('img')):
-            raise forms.ValidationError(_('You must enter one of the options'))
+            raise forms.ValidationError(_('You must enter one of the options'), code='invalid')
         return self.cleaned_data
 
 
@@ -346,7 +298,7 @@ class EmailValidationForm(forms.Form):
         if not (get_user_model().objects.filter(email=email) or EmailValidation.objects.filter(email=email)):
             return email
 
-        raise forms.ValidationError(_("That e-mail is already used."))
+        raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
 
 
 class ResendEmailValidationForm(forms.Form):
@@ -361,7 +313,7 @@ class ResendEmailValidationForm(forms.Form):
                 EmailValidation.objects.filter(email=email):
             return email
 
-        raise forms.ValidationError(_("That e-mail isn't registered."))
+        raise forms.ValidationError(_("That e-mail isn't registered."), code='invalid')
 
 
 class ProfileForm(forms.ModelForm):
@@ -442,3 +394,12 @@ class UserFromRequestForm(forms.ModelForm):
         user = kwargs.pop('user')
         super(UserFromRequestForm, self).__init__(*args, **kwargs)
         self._user = user
+
+
+class CategoryMixinForm(forms.ModelForm):
+
+    def clean_category(self):
+        category = self.cleaned_data.get('category')
+        if not category:
+            raise forms.ValidationError(_('Category is required'), code='invalid')
+        return category
