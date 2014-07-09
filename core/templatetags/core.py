@@ -937,3 +937,15 @@ def get_range(value):
 @register.filter
 def margin_comment(value):
     return 25 * value
+
+
+@register.assignment_tag(takes_context=True)
+def last_message_with_count_new(context, another):
+    """
+    Get last message with concrete user + count of unread messages
+    """
+    user = context['user']
+    msg = Message.objects.concrete_user(user, another).extra(select={'new': """SELECT COUNT(*) FROM core_message
+        WHERE (core_message.read_at IS NULL AND core_message.sender_id = '%s')""" % another.pk}).\
+        order_by('sent_at').last()
+    return msg
