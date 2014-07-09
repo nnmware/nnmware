@@ -31,20 +31,6 @@ class TagsMixinForm(forms.ModelForm):
         return tags
 
 
-class DocForm(forms.ModelForm):
-
-    class Meta:
-        model = Doc
-        fields = ('doc', 'description', 'created_date', 'locked', 'filetype')
-
-
-class DocDeleteForm(forms.ModelForm):
-
-    class Meta:
-        model = Doc
-        fields = ()
-
-
 class EmailQuickRegisterForm(forms.ModelForm):
     class Meta:
         model = get_user_model()

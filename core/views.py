@@ -2,7 +2,6 @@
 from datetime import timedelta
 import json
 from PIL import Image
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -97,60 +96,6 @@ class TabMixinView(object):
         return context
 
 
-class DocEdit(UpdateView):
-    model = Doc
-    form_class = DocForm
-    template_name = "upload/doc_form.html"
-
-    def get_success_url(self):
-        return self.object.content_object.get_absolute_url()
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(DocEdit, self).get_context_data(**kwargs)
-        context['action'] = reverse("doc_edit", args=[self.object.id])
-        return context
-
-
-class DocDelete(DeleteView):
-    model = Doc
-    #form_class = JDocDeleteForm
-    template_name = "upload/doc_delete.html"
-
-    def get_success_url(self):
-        return self.object.content_object.get_absolute_url()
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(DocDelete, self).get_context_data(**kwargs)
-        context['action'] = reverse("doc_del", args=[self.object.id])
-        return context
-
-
-class PicDelete(DeleteView):
-    model = Pic
-    template_name = "upload/pic_delete.html"
-
-    def get_success_url(self):
-        return self.object.content_object.get_absolute_url()
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PicDelete, self).get_context_data(**kwargs)
-        context['action'] = reverse("pic_del", args=[self.object.id])
-        return context
-
-
-class PicView(DetailView):
-    model = Pic
-    template_name = "upload/pic_view.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(PicView, self).get_context_data(**kwargs)
-        context['pic'] = self.object.pic.url
-        return context
-
-
 class PicList(ListView):
     template_name = 'upload/pic_list.html'
     model = Pic
@@ -209,10 +154,6 @@ class DocDayList(DayArchiveView):
     date_field = 'created_date'
     context_object_name = "object_list"
     make_object_list = True
-
-
-class DocAdd(TemplateView):
-    template_name = "upload/doc_upload.html"
 
 
 class CurrentUserAuthor(object):
