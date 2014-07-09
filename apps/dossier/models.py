@@ -7,7 +7,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
-from nnmware.core.constants GENDER_CHOICES
+from nnmware.core.constants import GENDER_CHOICES
 from nnmware.core.fields import std_text_field
 from nnmware.core.utils import tuplify, current_year
 
