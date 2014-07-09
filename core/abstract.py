@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Base abstract classed nnmware(c)2013-2014
 
+import os
+
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -14,11 +16,15 @@ from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+from django.utils.encoding import python_2_unicode_compatible
+
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
 from nnmware.core.fields import std_text_field, std_url_field, std_email_field
-from django.utils.encoding import python_2_unicode_compatible
+from nnmware.core.utils import setting
+
+DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG','generic.png'))
 
 
 class AbstractDate(models.Model):
@@ -190,7 +196,7 @@ class AbstractImg(models.Model):
         try:
             return self.img.url
         except:
-            return settings.DEFAULT_IMG
+            return DEFAULT_IMG
 
     def delete(self, *args, **kwargs):
         try:
@@ -283,7 +289,7 @@ class AbstractName(AbstractImg):
         try:
             return self.allpics[0].pic.url
         except:
-            return settings.DEFAULT_IMG
+            return DEFAULT_IMG
 
     @property
     def allpics(self):
@@ -643,7 +649,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         try:
             return self.allpics[0].pic.url
         except:
-            return settings.DEFAULT_IMG
+            return DEFAULT_IMG
 
     @property
     def allpics(self):
@@ -658,7 +664,7 @@ class PicsMixin(object):
         try:
             return self.allpics[0].pic.url
         except:
-            return settings.DEFAULT_IMG
+            return DEFAULT_IMG
 
     @property
     def allpics(self):

@@ -5,8 +5,7 @@ from time import localtime, strftime
 import urllib2
 import xml.dom.minidom
 
-#---------------------------------------------------------------------------
-from django.conf import settings
+from nnmware.core.utils import setting
 
 
 def currency_xml_input(sdate):
@@ -43,7 +42,7 @@ def parse_currency(on_date=None):
     currencies = Currency.objects.all().values_list('code', flat=True)
     for currency in lst_currency:
         charcode = currency['CharCode']
-        if charcode in currencies and charcode != settings.DEFAULT_CURRENCY:
+        if charcode in currencies and charcode != setting('DEFAULT_CURRENCY', 'RUB'):
             curr = Currency.objects.get(code=charcode)
             try:
                 rate = ExchangeRate.objects.get(date=rate_date, currency=curr)

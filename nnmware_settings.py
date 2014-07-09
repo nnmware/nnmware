@@ -12,7 +12,6 @@ import settings
 GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2014 framework for python/django coders'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.NnmwareDashboard'
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
-NNMWARE_INI_FILE = os.path.join(settings.PROJECT_ROOT, 'nnmware.ini')
 LOGIN_ERROR_URL = '/login/error/'
 
 # Site account settings

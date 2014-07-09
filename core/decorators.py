@@ -5,6 +5,7 @@ import urlparse
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from nnmware.core.utils import setting
 
 from nnmware.core.http import JSONResponse
 
@@ -58,7 +59,7 @@ def ajax_request(func):
 
 def ssl_required(view_func):
     def _checkssl(request, *args, **kwargs):
-        if not request.is_secure() and not settings.DEBUG and not settings.NOHTTPS:
+        if not request.is_secure() and not settings.DEBUG and not setting('NOHTTPS', True):
             if hasattr(settings, 'SSL_DOMAIN'):
                 url_str = urlparse.urljoin(
                     settings.SSL_DOMAIN,

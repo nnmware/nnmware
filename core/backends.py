@@ -1,12 +1,15 @@
+# -*- coding: utf-8 -*-
+
 from cStringIO import StringIO
-from io import FileIO, BufferedWriter
 import os
 from hashlib import md5
 import urllib2
 from urlparse import urlparse
 from PIL import Image
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
+
 from nnmware.core.imgutil import fit, aspect_ratio
 from nnmware.core.utils import get_date_directory, setting
 
@@ -59,87 +62,8 @@ class UsernameOrEmailAuthBackend(object):
             return None
 
 
-# class AbstractUploadBackend(object):
-#     BUFFER_SIZE = 10485760  # 10MB
-#     upload_dir = None
-#     upload_size = None
-#
-#     def __init__(self, **kwargs):
-#         self._timedir = get_date_directory()
-#         self.__dict__.update(kwargs)
-#
-#     def update_filename(self, request, filename):
-#         """Returns a new name for the file being uploaded."""
-#         self.oldname = filename
-#         ext = os.path.splitext(filename)[1]
-#         return md5(filename.encode('utf8')).hexdigest() + ext
-#
-#     def upload_chunk(self, chunk):
-#         """Called when a string was read from the client, responsible for
-#         writing that string to the destination file."""
-#         self._dest.write(chunk)
-#
-#     def max_size(self):
-#         """
-#         Checking file max size
-#         """
-#         if int(self._dest.tell()) > self.upload_size:
-#             self._dest.close()
-#             os.remove(self._path)
-#             return True
-#
-#     def upload(self, uploaded, filename, raw_data):
-#         try:
-#             if raw_data:
-#                 # File was uploaded via ajax, and is streaming in.
-#                 chunk = uploaded.read(self.BUFFER_SIZE)
-#                 while len(chunk) > 0:
-#                     self.upload_chunk(chunk)
-#                     if self.max_size():
-#                         return False
-#                     chunk = uploaded.read(self.BUFFER_SIZE)
-#             else:
-#                 # File was uploaded via a POST, and is here.
-#                 for chunk in uploaded.chunks():
-#                     self.upload_chunk(chunk)
-#                     if self.max_size():
-#                         return False
-#             return True
-#         except:
-#             # things went badly.
-#             return False
-#
-#     def setup(self, filename):
-#         self._path = os.path.join(settings.MEDIA_ROOT, self.upload_dir, self._timedir, filename)
-#         try:
-#             os.makedirs(os.path.realpath(os.path.dirname(self._path)))
-#         except:
-#             pass
-#         self._dest = BufferedWriter(FileIO(self._path, "w"))
-#
-#     def upload_complete(self, request, filename):
-#         path = self.upload_dir + "/" + self._timedir + "/" + filename
-#         self._dest.close()
-#         return {"path": path, 'oldname': self.oldname}
-
-
-# class DocUploadBackend(AbstractUploadBackend):
-#     upload_dir = setting('DOC_UPLOAD_DIR', 'docs')
-#     upload_size = setting('DOC_UPLOAD_SIZE', 1024000)
-
-
-# class AvatarUploadBackend(AbstractUploadBackend):
-#     upload_dir = setting('AVATAR_UPLOAD_DIR', 'avatars')
-#     upload_size = setting('AVATAR_UPLOAD_SIZE', 1024000)
-#
-#
-# class ImgUploadBackend(AbstractUploadBackend):
-#     upload_dir = setting('IMG_UPLOAD_DIR', 'images')
-#     upload_size = setting('IMG_UPLOAD_SIZE', 1024000)
-
-
 def image_from_url(url):
-    upload_dir = settings.THUMBNAIL_DIR
+    upload_dir = setting('THUMBNAIL_DIR', 'thumbnails')
     img_file = urllib2.urlopen(url)
     im = StringIO(img_file.read())
     image = Image.open(im)
@@ -158,19 +82,3 @@ def image_from_url(url):
         pass
     image.save(path, 'jpeg')
     return upload_dir + "/" + timedir + "/" + new_filename
-
-
-#TODO Check and remove(deprecated)
-# def upload_avatar_dir(instance, filename):
-#     upload_dir = settings.AVATARS_DIR
-#     new_filename = md5(filename.encode('utf8')).hexdigest() + os.path.splitext(filename)[1]
-#     timedir = get_date_directory()
-#     return upload_dir + "/" + timedir + "/" + new_filename
-
-
-#TODO Check and remove(deprecated)
-# def upload_media_dir(instance, filename):
-#     upload_dir = settings.MEDIAFILES
-#     new_filename = md5(filename.encode('utf8')).hexdigest() + os.path.splitext(filename)[1]
-#     timedir = get_date_directory()
-#     return upload_dir + "/" + timedir + "/" + new_filename

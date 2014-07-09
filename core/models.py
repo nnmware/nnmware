@@ -456,8 +456,8 @@ class EmailValidationManager(Manager):
                 break
 
         if settings.REQUIRE_EMAIL_CONFIRMATION:
-            template_body = "userprofile/email/validation.txt"
-            template_subject = "userprofile/email/validation_subject.txt"
+            template_body = "email/validation.txt"
+            template_subject = "email/validation_subject.txt"
             site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
             body = loader.get_template(template_body).render(Context(locals()))
             subject = loader.get_template(template_subject)
@@ -496,8 +496,8 @@ class EmailValidation(models.Model):
         """
         Resend validation email
         """
-        template_body = "userprofile/email/validation.txt"
-        template_subject = "userprofile/email/validation_subject.txt"
+        template_body = "email/validation.txt"
+        template_subject = "email/validation_subject.txt"
         site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
         key = self.key
         body = loader.get_template(template_body).render(Context(locals()))

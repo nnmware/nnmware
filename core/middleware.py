@@ -2,6 +2,7 @@ import json
 from django.conf import settings
 from django.contrib import messages
 from django.utils.timezone import now
+from nnmware.core.utils import setting
 from nnmware.core.http import get_session_from_request
 
 
@@ -36,7 +37,7 @@ class VisitorHitMiddleware(object):
     def process_request(self, request):
         if request.is_ajax():
             return
-        if request.path.startswith(settings.ADMIN_SYSTEM_PREFIX):
+        if request.path.startswith(setting('ADMIN_SYSTEM_PREFIX', '/admin/')):
             return
             # see if the user agent is not supposed to be tracked
         user_agent = request.META.get('HTTP_USER_AGENT', '')[:255]
