@@ -202,34 +202,6 @@ class MessageAdmin(admin.ModelAdmin):
     list_filter = ('sent_at', 'sender', 'recipient')
     search_fields = ('subject', 'body')
 
-    def save_model(self, request, obj, form, change):
-        """
-        Saves the message for the recipient and looks in the form instance
-        for other possible recipients. Prevents duplication by exclude the
-        original recipient from the list of optional recipients.
-
-        When changing an existing message and choosing optional recipients,
-        the message is effectively resent to those users.
-        """
-        obj.save()
-
-        if form.cleaned_data['group'] == 'all':
-            # send to all users
-            recipients = get_user_model().objects.exclude(pk=obj.recipient.pk)
-        else:
-            # send to a group of users
-            recipients = []
-            group = form.cleaned_data['group']
-            if group:
-                group = Group.objects.get(pk=group)
-                recipients.extend(
-                    list(group.user_set.exclude(pk=obj.recipient.pk)))
-                # create messages for all found recipients
-        for user in recipients:
-            obj.pk = None
-            obj.recipient = user
-            obj.save()
-
 
 @admin.register(EmailValidation)
 class EmailValidationAdmin(admin.ModelAdmin):
