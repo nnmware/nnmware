@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-from nnmware.core.utils import send_template_mail
+from nnmware.core.utils import send_template_mail, setting
+
+SITENAME = setting('SITENAME', 'www.nnmware.com')
 
 
 def guests_from_request(request):
@@ -17,7 +19,7 @@ def booking_new_client_mail(booking, username=''):
     if booking.email:
         recipients = [booking.email]
         mail_dict = {'booking': booking,
-                     'site_name': settings.SITENAME, 'username': username}
+                     'site_name': SITENAME, 'username': username}
         subject = 'booking/on_create_to_client_subject.txt'
         body = 'booking/on_create_to_client.txt'
         send_template_mail(subject, body, mail_dict, recipients)
@@ -27,7 +29,7 @@ def booking_delete_client_mail(booking, username=''):
     if booking.email:
         recipients = [booking.email]
         mail_dict = {'booking': booking,
-                     'site_name': settings.SITENAME, 'username': username}
+                     'site_name': SITENAME, 'username': username}
         subject = 'booking/on_delete_to_client_subject.txt'
         body = 'booking/on_delete_to_client.txt'
         send_template_mail(subject, body, mail_dict, recipients)
@@ -42,8 +44,7 @@ def booking_new_hotel_mail(booking):
     for admin in booking.hotel.admins.all():
         if admin.email:
             hotel_recipients.append(admin.email)
-    mail_dict = {'booking': booking,
-                 'site_name': settings.SITENAME}
+    mail_dict = {'booking': booking, 'site_name': SITENAME}
     subject = 'booking/on_create_to_hotel_subject.txt'
     body = 'booking/on_create_to_hotel.txt'
     send_template_mail(subject, body, mail_dict, hotel_recipients)

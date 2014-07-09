@@ -534,8 +534,8 @@ class SignupView(AjaxFormMixin, FormView):
             e.key = make_key(username)
             e.save()
         mail_dict = {'key': e.key,
-                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                     'site_name': settings.SITENAME, 'email': email}
+                     'expiration_days': setting('ACCOUNT_ACTIVATION_DAYS', 7),
+                     'site_name': setting('SITENAME', 'NNMWARE'), 'email': email}
         subject = 'registration/activation_subject.txt'
         body = 'registration/activation.txt'
         send_template_mail(subject, body, mail_dict, [e.email])

@@ -19,8 +19,7 @@ from nnmware.apps.shop.models import Product, ProductCategory, Order, ShopNews, 
 from nnmware.core.data import get_queryset_category
 from nnmware.core.http import get_session_from_request
 from nnmware.core.models import Nnmcomment
-from nnmware.core.templatetags.core import _get_basket
-from nnmware.core.utils import send_template_mail, convert_to_date
+from nnmware.core.utils import send_template_mail, convert_to_date, setting
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
 from django.contrib.contenttypes.models import ContentType
 from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT, DeliveryAddress
@@ -45,7 +44,7 @@ class CurrentUserOrderAccess(object):
 
 class ShopBaseView(ListView):
     template_name = 'shop/product_list.html'
-    paginate_by = settings.PAGINATE_BY
+    paginate_by = setting('PAGINATE_BY', 20)
     model = Product
 
     def get_paginate_by(self, queryset):
@@ -138,7 +137,7 @@ class BasketView(TemplateView):
     template_name = 'shop/basket.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if _get_basket(request).count() < 1:
+        if self.request.user.basket_.count() < 1:
             return HttpResponseRedirect('/')
         return super(BasketView, self).dispatch(request, *args, **kwargs)
 

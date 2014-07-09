@@ -30,9 +30,6 @@ TAGS_MAX = 20
 IMG_MAX_PER_OBJECT = getattr(settings, 'PIC_MAX_PER_OBJECT', 42)
 DOC_MAX_PER_OBJECT = getattr(settings, 'DOC_MAX_PER_OBJECT', 42)
 IMG_MAX_SIZE = getattr(settings, 'PIC_MAX_SIZE', 1024 * 1024)
-IMG_THUMB_FORMAT = getattr(settings, 'PIC_THUMB_FORMAT', "JPEG")
-IMG_THUMB_QUALITY = getattr(settings, 'PIC_THUMB_QUALITY', 85)
-IMG_RESIZE_METHOD = getattr(settings, 'PIC_RESIZE_METHOD', Image.ANTIALIAS)
 IMG_DEFAULT_SIZE = getattr(settings, 'PIC_DEFAULT_SIZE', 96)
 IMG_ALLOWED_FILE_EXTS = getattr(settings, 'PIC_ALLOWED_FILE_EXTS', None)
 

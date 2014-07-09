@@ -20,7 +20,7 @@ from nnmware.apps.money.models import Currency
 import time
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
-from nnmware.core.utils import convert_to_date
+from nnmware.core.utils import convert_to_date, setting
 from nnmware.core.ajax import ajax_answer_lazy
 from django.views.decorators.cache import never_cache
 from hashlib import sha1
@@ -39,7 +39,7 @@ class RatesError(Exception):
 def room_rates(request):
     try:
         json_data = json.loads(request.body)
-        currency = Currency.objects.get(code=settings.DEFAULT_CURRENCY)
+        currency = Currency.objects.get(code=setting('DEFAULT_CURRENCY', 'RUB'))
         room = Room.objects.get(id=int(json_data['room_id']))
         if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed

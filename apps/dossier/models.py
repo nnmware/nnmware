@@ -9,10 +9,10 @@ from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.constants import GENDER_CHOICES
 from nnmware.core.fields import std_text_field
-from nnmware.core.utils import tuplify, current_year
+from nnmware.core.utils import tuplify, current_year, setting
 
 EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
-
+DEFAULT_AVATAR = setting('DEFAULT_AVATAR', 'avatar.png')
 AGE_SIZE = map(tuplify, range(1, 101))
 
 
@@ -215,9 +215,9 @@ class ActorCategory(AbstractOrder):
     def get_random_img(self):
         all_actors = self.actor_set.order_by('?')
         for actor in all_actors:
-            if actor.ava != settings.DEFAULT_AVATAR:
+            if actor.ava != DEFAULT_AVATAR:
                 return actor.ava
-        return settings.DEFAULT_AVATAR
+        return DEFAULT_AVATAR
 
 
 class TypeNational(AbstractOrder):

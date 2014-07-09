@@ -9,8 +9,10 @@ from django.utils.translation import ugettext_lazy as _
 
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.models import Tag, Doc, EmailValidation, Video
-from nnmware.core.utils import tags_normalize
+from nnmware.core.utils import tags_normalize, setting
 from nnmware.core.exceptions import UserIsDisabled
+
+TAGS_MAX = setting('TAGS_MAX', 10)
 
 
 class TagsMixinForm(forms.ModelForm):
@@ -22,8 +24,8 @@ class TagsMixinForm(forms.ModelForm):
         If not found - make new tag
         """
         tags = set(tags_normalize(self.cleaned_data.get("tags")))
-        if len(tags) > settings.TAGS_MAX:
-            raise forms.ValidationError(_("Max number or tags - %s.") % settings.TAGS_MAX)
+        if len(tags) > TAGS_MAX:
+            raise forms.ValidationError(_("Max number or tags - %s.") % TAGS_MAX)
         alltags = Tag.objects.filter(name__in=tags).values_list('name', flat=True)
         for tag in tags:
             if tag not in alltags:

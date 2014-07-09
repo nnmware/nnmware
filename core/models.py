@@ -33,6 +33,12 @@ from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP
 from django.utils.encoding import python_2_unicode_compatible
 
+DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
+IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
+IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
+IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
+IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
+
 
 @python_2_unicode_compatible
 class Tag(models.Model):
@@ -90,7 +96,7 @@ class Doc(AbstractContent, AbstractFile):
             docs = Doc.objects.for_object(self.content_object)
             if self.pk:
                 docs = docs.exclude(pk=self.pk)
-            if settings.DOC_MAX_PER_OBJECT > 1:
+            if DOC_MAX_PER_OBJECT > 1:
                 if self.primary:
                     docs = docs.filter(primary=True)
                     docs.update(primary=False)
@@ -139,7 +145,7 @@ class Pic(AbstractContent, AbstractFile):
         pics = Pic.objects.for_object(self.content_object)
         if self.pk:
             pics = pics.exclude(pk=self.pk)
-        if settings.IMG_MAX_PER_OBJECT > 1:
+        if IMG_MAX_PER_OBJECT > 1:
             if self.primary:
                 pics = pics.filter(primary=True)
                 pics.update(primary=False)
@@ -167,7 +173,7 @@ class Pic(AbstractContent, AbstractFile):
             image = Image.open(StringIO(orig))
         except IOError:
             return  # What should we do here?  Render a "sorry, didn't work" img?
-        quality = quality or settings.IMG_THUMB_QUALITY
+        quality = quality or IMG_THUMB_QUALITY
         (w, h) = image.size
         if w != size or h != size:
             if w > h:
@@ -178,9 +184,9 @@ class Pic(AbstractContent, AbstractFile):
                 image = image.crop((0, diff, w, h - diff))
             if image.mode != "RGB":
                 image = image.convert("RGB")
-            image = image.resize((size, size), settings.IMG_RESIZE_METHOD)
+            image = image.resize((size, size), IMG_RESIZE_METHOD)
             thumb = StringIO()
-            image.save(thumb, settings.IMG_THUMB_FORMAT, quality=quality)
+            image.save(thumb, IMG_THUMB_FORMAT, quality=quality)
             thumb_file = ContentFile(thumb.getvalue())
         else:
             thumb_file = ContentFile(orig)
@@ -455,7 +461,7 @@ class EmailValidationManager(Manager):
                 self.key = key
                 break
 
-        if settings.REQUIRE_EMAIL_CONFIRMATION:
+        if setting('REQUIRE_EMAIL_CONFIRMATION', True):
             template_body = "email/validation.txt"
             template_subject = "email/validation_subject.txt"
             site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain

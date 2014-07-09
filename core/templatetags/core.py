@@ -10,6 +10,7 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
+from nnmware.core.utils import setting
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
 from nnmware.core.abstract import Tree
@@ -830,7 +831,7 @@ def sum_discount(amount, discount):
 
 @register.simple_tag(takes_context=True)
 def get_paginator_value(context):
-    result = context['request'].session.get('paginator', str(settings.PAGINATE_BY))
+    result = context['request'].session.get('paginator', str(setting('PAGINATE_BY', 20)))
     return result
 
 
