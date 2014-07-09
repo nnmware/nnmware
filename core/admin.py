@@ -198,7 +198,7 @@ class MessageAdmin(admin.ModelAdmin):
                                                                                'recipient_deleted_at'),
                                                                               ('ip', 'user_agent')]}),
     )
-    list_display = ('__unicode__', 'sender', 'ip', 'recipient', 'sent_at', 'read_at')
+    list_display = ('pk', 'sender', 'ip', 'recipient', 'sent_at', 'read_at')
     list_filter = ('sent_at', 'sender', 'recipient')
     search_fields = ('subject', 'body')
 
