@@ -946,7 +946,13 @@ def last_message_with_count_new(context, another):
     Get last message with concrete user + count of unread messages
     """
     user = context['user']
-    msg = Message.objects.concrete_user(user, another).extra(select={'new': """SELECT COUNT(*) FROM core_message
+    tab = context['tab']
+    messages = Message.objects.concrete_user(user, another)
+    if tab == 'inbox':
+        messages = messages.filter(recipient=user)
+    elif tab == 'send':
+        messages = messages.filter(sender=user)
+    msg = messages.extra(select={'new': """SELECT COUNT(*) FROM core_message
         WHERE (core_message.read_at IS NULL AND core_message.sender_id = '%s')""" % another.pk}).\
         order_by('sent_at').last()
     return msg
