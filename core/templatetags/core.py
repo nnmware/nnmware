@@ -950,7 +950,7 @@ def last_message_with_count_new(context, another):
     messages = Message.objects.concrete_user(user, another)
     if tab == 'inbox':
         messages = messages.filter(recipient=user)
-    elif tab == 'send':
+    elif tab == 'sent':
         messages = messages.filter(sender=user)
     msg = messages.extra(select={'new': """SELECT COUNT(*) FROM core_message
         WHERE (core_message.read_at IS NULL AND core_message.sender_id = '%s')""" % another.pk}).\
