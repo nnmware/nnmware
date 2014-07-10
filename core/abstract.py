@@ -342,7 +342,7 @@ class Tree(AbstractName):
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
         "Enable this if users must login before access with this objects."))
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Category Admins'),
-                                    related_name='%(app_label)s_%(class)s_adm', blank=True, null=True)
+                                    related_name='%(app_label)s_%(class)s_adm', blank=True)
 
     class Meta:
         ordering = ['ordering', ]
@@ -769,7 +769,7 @@ class AbstractVendor(models.Model):
 class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
                              related_name="%(app_label)s_%(class)s_user")
-    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), null=True, blank=True,
+    viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), blank=True,
                                     related_name="%(app_label)s_%(class)s_view_comments")
     comment = models.TextField(verbose_name=_('comment'), blank=True)
     parsed_comment = models.TextField(verbose_name=_('parsed content of comment'), blank=True)
