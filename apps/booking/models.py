@@ -147,11 +147,11 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     room_count = models.IntegerField(_('Count of Rooms'), blank=True, default=0)
-    option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'), blank=True, null=True)
+    option = models.ManyToManyField(HotelOption, verbose_name=_('Hotel Options'), blank=True)
     starcount = models.IntegerField(_("Count of Stars"), choices=STAR_CHOICES, default=UNKNOWN_STAR, db_index=True)
     choice = models.IntegerField(_("Type of Hotel"), choices=HOTEL_CHOICES, default=HOTEL_HOTEL, editable=False,
                                  db_index=True)
-    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Hotel Admins'), null=True, blank=True)
+    admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Hotel Admins'), blank=True)
     point = models.DecimalField(_("Point of hotel"), editable=False, default=0, decimal_places=1, max_digits=4,
                                 db_index=True)
     best_offer = models.BooleanField(verbose_name=_("Best offer"), default=False, db_index=True)
@@ -162,7 +162,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     schema_transit = models.TextField(verbose_name=_("Schema of transit"), blank=True)
     booking_terms_en = models.TextField(verbose_name=_("Booking terms(English)"), blank=True)
     schema_transit_en = models.TextField(verbose_name=_("Schema of transit(English)"), blank=True)
-    payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), null=True, blank=True)
+    payment_method = models.ManyToManyField(PaymentMethod, verbose_name=_('Payment methods'), blank=True)
     updated_date = models.DateTimeField(_("Updated date"), null=True, blank=True)
     condition_cancellation = models.TextField(verbose_name=_("Condition cancellation"), blank=True)
     condition_cancellation_en = models.TextField(verbose_name=_("Condition cancellation(English)"), blank=True)
@@ -370,7 +370,7 @@ PLACES_CHOICES = (
 
 @python_2_unicode_compatible
 class Room(AbstractName):
-    option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True, null=True)
+    option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN, db_index=True)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO, db_index=True)

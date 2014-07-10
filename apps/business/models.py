@@ -70,9 +70,8 @@ class AbstractWTime(models.Model):
     phone_on = models.TimeField(verbose_name=_('Phone time from'), blank=True, null=True)
     phone_off = models.TimeField(verbose_name=_('Phone time to'), blank=True, null=True)
     employer_profile = models.ManyToManyField(TypeEmployerProfile, verbose_name=_('Types of employer profile'),
-                                              blank=True, null=True)
-    employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'), blank=True,
-                                            null=True)
+                                              blank=True)
+    employer_other = models.ManyToManyField(TypeEmployerOther, verbose_name=_('Types of employer'), blank=True)
 
     class Meta:
         abstract = True
@@ -136,8 +135,8 @@ class AbstractEmployee(AbstractImg):
     payment_to = models.IntegerField(verbose_name=_('Amount payment to'), null=True, blank=True)
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
-    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True, null=True)
-    agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True, null=True)
+    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True)
+    agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True)
 
     class Meta:
         verbose_name = _("Employee")
@@ -160,7 +159,7 @@ class CompanyCategory(Tree):
 
 class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDate, AbstractTeaser):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
-                                    null=True, blank=True, related_name='%(class)s_comp_adm')
+                                    blank=True, related_name='%(class)s_comp_adm')
     main_category = models.ForeignKey(CompanyCategory, blank=True, null=True, verbose_name=_('Company category'),
                                       related_name='company', on_delete=models.SET_NULL)
     category = models.ManyToManyField(CompanyCategory, verbose_name=_('All company category'),
@@ -254,7 +253,7 @@ VACANCY_TYPE = (
 
 class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Company Admins'),
-                                    null=True, blank=True, related_name='%(app_label)s_%(class)s_vac_adm')
+                                    blank=True, related_name='%(app_label)s_%(class)s_vac_adm')
     category = models.ForeignKey(VacancyCategory, blank=True, null=True, verbose_name=_('Vacancy category'),
                                  related_name='vacancy', on_delete=models.SET_NULL)
     vacancy_type = models.IntegerField(_("Type of vacancy"), choices=VACANCY_TYPE, default=VACANCY_UNKNOWN,

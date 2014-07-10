@@ -21,7 +21,7 @@ class VehicleKind(AbstractName):
 
 
 class ForVehicles(models.Model):
-    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True, null=True)
+    type_vehicles = models.ManyToManyField(VehicleKind, verbose_name=_('Using in vehicles'), blank=True)
 
     class Meta:
         abstract = True

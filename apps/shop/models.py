@@ -57,9 +57,9 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.SET_NULL, related_name='shopcat')
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
-    colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), null=True, blank=True)
-    materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), null=True, blank=True)
-    related_products = models.ManyToManyField('self', verbose_name=_('Related products'), null=True, blank=True)
+    colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), blank=True)
+    materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), blank=True)
+    related_products = models.ManyToManyField('self', verbose_name=_('Related products'), blank=True)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
@@ -81,7 +81,7 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     maincatid = models.IntegerField(_('Main category id'), default=0, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Product Admins'),
-                                    null=True, blank=True, related_name='%(class)s_adm')
+                                    blank=True, related_name='%(class)s_adm')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
@@ -525,7 +525,7 @@ class ServiceCategory(Tree):
 class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ServiceCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.SET_NULL, related_name='servicecat')
-    related_services = models.ManyToManyField('self', verbose_name=_('Related services'), null=True, blank=True)
+    related_services = models.ManyToManyField('self', verbose_name=_('Related services'), blank=True)
     shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
@@ -539,7 +539,7 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
                                            decimal_places=1, max_digits=4, default=0)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Service Admins'),
-                                    null=True, blank=True, related_name='%(class)s_adm')
+                                    blank=True, related_name='%(class)s_adm')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
