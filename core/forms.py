@@ -389,3 +389,21 @@ class CategoryMixinForm(forms.ModelForm):
         if not category:
             raise forms.ValidationError(_('Category is required'), code='invalid')
         return category
+
+
+class NameMixinForm(forms.ModelForm):
+
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if name is None or len(name.strip()) == 0:
+            raise forms.ValidationError(_('Name is required'), code='invalid')
+        return name
+
+
+class DescriptionMixinForm(forms.ModelForm):
+
+    def clean_description(self):
+        description = self.cleaned_data.get('description')
+        if description is None or len(description.strip()) == 0:
+            raise forms.ValidationError(_('Description is required'), code='invalid')
+        return description
