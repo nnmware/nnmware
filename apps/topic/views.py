@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, \
     YearArchiveView
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -6,16 +8,14 @@ from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
-from nnmware.core.constants import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, \
-    STATUS_PUBLISHED
+from nnmware.core.constants import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, STATUS_PUBLISHED
 from nnmware.apps.topic.forms import TopicAddForm
-
 from nnmware.apps.topic.models import TopicCategory, Topic
 from nnmware.apps.topic.forms import TopicForm
 from nnmware.core.data import get_queryset_category
 from django.contrib import messages
 from nnmware.core.views import CurrentUserAuthor, CurrentUserSuperuser, \
-    CurrentUserEditor, CurrentUserAuthenticated, AttachedCommentMixin
+    CurrentUserEditor, CurrentUserAuthenticated, AttachedCommentMixin, TabMixinView
 
 
 class TopicList(ListView):
@@ -73,35 +73,34 @@ class TopicDayList(TopicDateTemplate, DayArchiveView):
     pass
 
 
-class TopicCategory(ListView):
+class TopicCategoryView(ListView):
     template_name = 'topic/topic_list.html'
     model = Topic
 
     def get_queryset(self):
-        result = get_queryset_category(self, Topic, Category)
+        result = get_queryset_category(self, Topic, TopicCategory)
         messages.info(self.request,
             _('In this category found- %(len)s results ') %
             {'len': len(result)})
         return result
 
 
-class TopicAdd(CreateView):
+class TopicAdd(TabMixinView, CurrentUserAuthenticated, CreateView):
     model = Topic
     form_class = TopicAddForm
-    template_name = "topic/form.html"
+    template_name = "topic/add.html"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.status = STATUS_PUBLISHED
-        self.object.allow_comments = True
+        self.object.ip = self.request.META['REMOTE_ADDR']
+        self.object.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.save()
         return super(TopicAdd, self).form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(TopicAdd, self).get_context_data(**kwargs)
-        context['action'] = reverse("topic_add")
-        return context
+    def get_success_url(self):
+        return reverse('topic_detail', args=[self.object.pk])
 
 
 class TopicDetail(AttachedCommentMixin, SingleObjectMixin, ListView):
