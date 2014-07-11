@@ -19,7 +19,7 @@ class AdminTopicForm(forms.ModelForm):
         fields = '__all__'
 
 
-class TopicAddForm(CategoryMixinForm, NameMixinForm, DescriptionMixinForm):
+class TopicAddForm(NameMixinForm, CategoryMixinForm, DescriptionMixinForm):
 
     class Meta:
         model = Topic
