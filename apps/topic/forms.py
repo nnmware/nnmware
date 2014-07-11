@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from nnmware.core.forms import CategoryMixinForm
+from nnmware.core.forms import CategoryMixinForm, DescriptionMixinForm, NameMixinForm
 from nnmware.apps.topic.models import TopicCategory, Topic
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,7 +19,7 @@ class AdminTopicForm(forms.ModelForm):
         fields = '__all__'
 
 
-class TopicAddForm(CategoryMixinForm):
+class TopicAddForm(CategoryMixinForm, NameMixinForm, DescriptionMixinForm):
 
     class Meta:
         model = Topic
