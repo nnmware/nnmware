@@ -41,7 +41,7 @@ class NnmcommentAdmin(admin.ModelAdmin):
                                  'ip')]}),
     )
     list_display = ('user', 'created_date', 'content_type',
-                    'parent', '__unicode__')
+                    'parent', '__unicode__', 'status')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
