@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Manager
 from django.db.models import Q
-from nnmware.core.constants import STATUS_PUBLISHED, STATUS_STICKY, STATUS_DRAFT, STATUS_MODERATION
+from nnmware.core.constants import STATUS_PUBLISHED, STATUS_STICKY, STATUS_DRAFT, STATUS_MODERATION, STATUS_DELETE, \
+    STATUS_LOCKED
 
 
 class AbstractContentManager(Manager):
@@ -111,7 +112,7 @@ class PublicNnmcommentManager(NnmcommentManager):
 
     def get_queryset(self):
         return super(NnmcommentManager, self).get_queryset().filter(
-            Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
+            Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY) | Q(status=STATUS_DELETE) | Q(status=STATUS_LOCKED))
 
 
 class FollowManager(AbstractContentManager):
