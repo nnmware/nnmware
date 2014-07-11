@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.forms.models import ModelForm
+from nnmware.core.forms import CategoryMixinForm
 from nnmware.apps.topic.models import TopicCategory, Topic
 from django.utils.translation import ugettext_lazy as _
 
@@ -27,14 +28,8 @@ class AdminTopicForm(forms.ModelForm):
         fields = '__all__'
 
 
-class AddTopicForm(forms.ModelForm):
+class AddTopicForm(CategoryMixinForm):
 
     class Meta:
         model = Topic
         fields = ('name', 'category', 'description')
-
-    def clean_category(self):
-        category = self.cleaned_data.get('category')
-        if not category:
-            raise forms.ValidationError(_("Category is required"))
-        return category
