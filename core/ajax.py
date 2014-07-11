@@ -857,7 +857,7 @@ def like(request, content_type, object_id):
 
 def delete_comment(request, object_id):
     payload = {'success': False}
-    try:
+    if 1>0: #try:
         if not request.user.is_authenticated:
             raise AccessError
         comment = Nnmcomment.objects.get(pk=int(object_id))
@@ -868,10 +868,10 @@ def delete_comment(request, object_id):
             payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
         else:
             raise AccessError
-    except AccessError:
-        pass
-    except:
-        pass
+    # except AccessError:
+    #     pass
+    # except:
+    #     pass
     return ajax_answer_lazy(payload)
 
 
