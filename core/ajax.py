@@ -820,7 +820,7 @@ def like(request, content_type, object_id):
                 raise AccessError
         else:
             obj = content_type.get_object_for_this_type(pk=object_id)
-            if obj.user == request.user.pk:
+            if obj.user == request.user:
                 raise AccessError
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)
