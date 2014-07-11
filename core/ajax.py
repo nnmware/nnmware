@@ -636,7 +636,7 @@ def push_message(request, pk):
         msg.sent_at = now()
         msg.save()
         result = Message.objects.concrete_user(request.user, recipient).count()
-        html = render_to_string('user/message_one.html', {'object': msg, 'user': request.user})
+        html = render_to_string('user/message_one.html', {'message': msg, 'user': request.user})
         payload = {'success': True, 'html': html, 'count': result, 'id': recipient.pk,
                    'total': request.user.messages_count}
     except AccessError:
