@@ -239,7 +239,7 @@ class ServiceManager(Manager):
 
 class TopicManager(Manager):
     def active(self):
-        return self.filter(enabled=True)
+        return self.filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
 
 
 class CompanyManager(Manager):
