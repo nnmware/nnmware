@@ -855,7 +855,7 @@ def like(request, content_type, object_id):
     return ajax_answer_lazy(payload)
 
 
-def delete_comment(request, object_id):
+def delete_comment(request, object_id, depth):
     payload = {'success': False}
     if 1>0: #try:
         if not request.user.is_authenticated:
@@ -864,7 +864,7 @@ def delete_comment(request, object_id):
         if comment.user == request.user or request.user.is_superuser:
             comment.status = STATUS_LOCKED
             comment.save()
-            html = render_to_string('comments/comment_one.html', {'comment': comment, 'user': request.user})
+            html = render_to_string('comments/comment_one.html', {'comment': comment, 'user': request.user, 'depth': depth})
             payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
         else:
             raise AccessError
