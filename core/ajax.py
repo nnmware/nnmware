@@ -862,7 +862,7 @@ def delete_comment(request, object_id):
             raise AccessError
         comment = Nnmcomment.objects.get(pk=int(object_id))
         if comment.user == request.user or request.user.is_superuser:
-            comment.status = STATUS_DELETE
+            comment.status = STATUS_LOCKED
             comment.save()
             html = render_to_string('comments/comment_one.html', {'comment': comment, 'user': request.user})
             payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
