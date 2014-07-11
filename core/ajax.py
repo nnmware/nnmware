@@ -340,21 +340,23 @@ def notice_delete(request, object_id):
 
 
 def delete_message(request, object_id):
-    # Link used when User delete the Message
-    msg = None
-    if Message.objects.filter(sender=request.user, id=object_id).count():
-        msg = Message.objects.get(sender=request.user, id=object_id)
-        another_user = msg.recipient
-        msg.sender_deleted_at = now()
-    elif Message.objects.filter(recipient=request.user, id=object_id).count():
-        msg = Message.objects.get(recipient=request.user, id=object_id)
-        another_user = msg.sender
-        msg.recipient_deleted_at = now()
-    if msg is not None:
-        msg.save()
-        result = Message.objects.concrete_user(request.user, another_user).count()
-        payload = {'success': True, 'count': result}
-    else:
+    try:
+        if not request.user.is_authenticated():
+            raise AccessError
+        msg = Message.objects.get(id=object_id)
+        if msg.sender == request.user or msg.recipient == request.user:
+            if msg.sender == request.user:
+                msg.sender_deleted_at = now()
+                another_user = msg.recipient
+            else:
+                msg.recipient_deleted_at = now()
+                another_user = msg.sender
+            msg.save()
+            result = Message.objects.concrete_user(request.user, another_user).count()
+            payload = {'success': True, 'count': result, 'id': another_user.pk, 'sys': request.user.messages_count}
+        else:
+            raise AccessError
+    except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
