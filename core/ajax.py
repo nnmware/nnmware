@@ -19,7 +19,7 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404
-from nnmware.core.constants import STATUS_LOCKED, ACTION_LIKED, ACTION_COMMENTED, ACTION_FOLLOWED
+from nnmware.core.constants import STATUS_LOCKED, ACTION_LIKED, ACTION_COMMENTED, ACTION_FOLLOWED, STATUS_DELETE
 from nnmware.core import oembed
 from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError
@@ -862,7 +862,7 @@ def delete_comment(request, object_id):
             raise AccessError
         comment = Nnmcomment.objects.get(pk=int(object_id))
         if comment.user == request.user or request.user.is_superuser:
-            comment.status = STATUS_LOCKED
+            comment.status = STATUS_DELETE
             comment.save()
             html = render_to_string('comments/comment_one.html', {'comment': comment, 'user': request.user})
             payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
