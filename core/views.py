@@ -35,7 +35,7 @@ from nnmware.core.utils import send_template_mail, make_key, get_video_provider_
 
 class UserPathMixin(object):
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return get_object_or_404(get_user_model(), username=self.kwargs['username'])
 
 
