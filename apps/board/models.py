@@ -16,7 +16,7 @@ class BoardCategory(Tree):
         verbose_name_plural = _("BoardCategories")
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Board.objects.filter(category=self)
 
 

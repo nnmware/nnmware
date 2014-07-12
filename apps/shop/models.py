@@ -28,7 +28,7 @@ class ProductCategory(Tree):
         verbose_name_plural = _('Product Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Product.objects.active().filter(category=self)
 
 
@@ -518,7 +518,7 @@ class ServiceCategory(Tree):
         verbose_name_plural = _('Service Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Service.objects.filter(category=self, visible=True)
 
 

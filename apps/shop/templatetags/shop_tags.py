@@ -100,9 +100,9 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
         link = SubElement(temp_parent, 'a', attrs)
         cat_name = SubElement(link, 'span')
         cat_name.text = current_node.get_name
-        counter = current_node._active_set.count()
+        counter = current_node.obj_active_set.count()
         for child in current_node.get_all_children():
-            counter += child._active_set.count()
+            counter += child.obj_active_set.count()
             #        if counter > 0:
         #            count_txt = SubElement(link, 'sup')
         #            count_txt.text = ' ' + str(counter)

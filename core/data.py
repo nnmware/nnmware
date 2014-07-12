@@ -27,9 +27,9 @@ def recurse_for_children(current_node, parent_node, show_empty=True):
         attrs = {'href': current_node.get_absolute_url(), 'id': 'category' + str(int(current_node.pk))}
         link = SubElement(temp_parent, 'a', attrs)
         link.text = current_node.name
-        counter = current_node._active_set.count()
+        counter = current_node.obj_active_set.count()
         for child in current_node.get_all_children():
-            counter += child._active_set.count()
+            counter += child.obj_active_set.count()
         if counter > 0:
             count_txt = SubElement(temp_parent, 'sup', {'class': 'amount'})
             count_txt.text = str(counter)
@@ -49,9 +49,9 @@ def recurse_for_children_with_span(current_node, parent_node, show_empty=True):
         link = SubElement(temp_parent, 'a', attrs)
         span = SubElement(link, 'span')
         span.text = current_node.name
-        counter = current_node._active_set.count()
+        counter = current_node.obj_active_set.count()
         for child in current_node.get_all_children():
-            counter += child._active_set.count()
+            counter += child.obj_active_set.count()
         if counter > 0:
             count_txt = SubElement(link, 'i')
             count_txt.text = str(counter)

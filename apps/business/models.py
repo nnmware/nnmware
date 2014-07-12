@@ -153,7 +153,7 @@ class CompanyCategory(Tree):
         verbose_name_plural = _('Companies Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Company.objects.filter(category=self)
 
 
@@ -233,7 +233,7 @@ class VacancyCategory(Tree):
         verbose_name_plural = _('Vacancy Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Vacancy.objects.filter(category=self)
 
 VACANCY_UNKNOWN = 0

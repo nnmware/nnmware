@@ -19,7 +19,7 @@ class PublicationCategory(Tree):
         verbose_name_plural = _('Publication Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Publication.objects.filter(category=self)
 
 

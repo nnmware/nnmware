@@ -17,7 +17,7 @@ class NewsCategory(Tree):
         verbose_name_plural = _('News Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return News.objects.filter(category=self)
 
 

@@ -18,7 +18,7 @@ class TopicCategory(Tree):
         verbose_name_plural = _('Topic Categories')
 
     @property
-    def _active_set(self):
+    def obj_active_set(self):
         return Topic.objects.filter(category=self)
 
 

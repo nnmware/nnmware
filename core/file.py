@@ -27,7 +27,7 @@ def get_path_from_url(url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL
     return os.path.normpath(os.path.join(root, url))
 
 
-def get_url_from_path(path, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
+def get_url_from_path(path, root=settings.MEDIA_ROOT):
     """ make url from filesystem path """
     if path.startswith(root):
         path = path[len(root):]   # strip media root
