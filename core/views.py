@@ -98,10 +98,12 @@ class AjaxViewMixin(View):
 
 class TabMixinView(object):
     tab = None
+    usertab = None
 
     def get_context_data(self, **kwargs):
         context = super(TabMixinView, self).get_context_data(**kwargs)
         context['tab'] = self.tab
+        context['usertab'] = self.usertab
         return context
 
 
