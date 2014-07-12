@@ -297,7 +297,7 @@ def tag_cloud():
     cache_key = 'tag_cloud_tags'
     tags = cache.get(cache_key)
     if tags is None:
-        MAX_WEIGHT = 7
+        max_weight = 7
         tags = Tag.objects.annotate(count=Count('article'))
 
         if not len(tags):
@@ -318,7 +318,7 @@ def tag_cloud():
 
         # calculate tag weights
         for tag in tags:
-            tag.weight = int(MAX_WEIGHT * (tag.count - min_count) / _range)
+            tag.weight = int(max_weight * (tag.count - min_count) / _range)
 
         cache.set(cache_key, tags)
 

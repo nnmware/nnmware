@@ -602,8 +602,8 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             from_date = now()
             to_date = from_date + timedelta(days=14)
             date_gen = daterange(from_date, to_date)
-            f_date = datetime.strftime(from_date, "%d.%m.%Y")
-            t_date = datetime.strftime(to_date, "%d.%m.%Y")
+            f_date = from_date.strftime('%d.%m.%Y')
+            t_date = to_date.strftime('%d.%m.%Y')
         if from_date < to_date:
             context['search_dates'] = {'from_date': f_date, 'to_date': t_date}
         else:
@@ -703,7 +703,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
                 f_date, t_date = t_date, f_date
             if (to_date - from_date).days > 365:
                 to_date = from_date + timedelta(days=365)
-                t_date = datetime.strftime(to_date, "%d.%m.%Y")
+                t_date = to_date.strftime('%d.%m.%Y')
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
             bookings = bookings.filter(date__range=(from_date, to_date))
         return bookings.filter(enabled=True)
@@ -737,7 +737,7 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
                 f_date, t_date = t_date, f_date
             if (to_date - from_date).days > 365:
                 to_date = from_date + timedelta(days=365)
-                t_date = datetime.strftime(to_date, "%d.%m.%Y")
+                t_date = to_date.strftime('%d.%m.%Y')
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
             bills = bills.filter(date__range=(from_date, to_date))
         return bills

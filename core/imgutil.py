@@ -207,12 +207,12 @@ def fit(image, size):
 
 def aspect_ratio(image, w, h):
     # Function for make Aspect Ratio of Image(i.e 16:9)
-    imageWidth = image.size[0]
-    imageHeight = image.size[1]
-    newImageHeight = int((imageWidth / w) * h)
-    topCrop = int((imageHeight - newImageHeight) / 2)
-    bottomCrop = imageHeight - topCrop
-    box = (0, topCrop, imageWidth, bottomCrop)
+    image_width = image.size[0]
+    image_height = image.size[1]
+    new_image_height = int((image_width / w) * h)
+    top_crop = int((image_height - new_image_height) / 2)
+    bottom_crop = image_height - top_crop
+    box = (0, top_crop, image_width, bottom_crop)
     image = image.crop(box)
     return image
 
