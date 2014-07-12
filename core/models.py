@@ -6,6 +6,7 @@ Base model library.
 from StringIO import StringIO
 import os
 from PIL import Image
+from django.utils.timesince import timesince
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
@@ -349,16 +350,14 @@ class Action(AbstractContent, AbstractIP):
         return ContentType.objects.get_for_model(self.content_object).model
 
     def __str__(self):
-        return '%s %s %s ago' % (self.user, self.verb, self.timesince())
+        return '%s %s %s ago' % (self.user, self.verb, self.time_since())
 
-    def timesince(self, now=None):
+    def time_since(self, dt_now=None):
         """
         Shortcut for the ``django.utils.timesince.timesince`` function of the
         current timestamp.
         """
-        from django.utils.timesince import timesince as timesince_
-
-        return timesince_(self.timestamp, now)
+        return timesince(self.timestamp, dt_now)
 
     @models.permalink
     def get_absolute_url(self):
@@ -649,9 +648,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
 
     def follow_count(self):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
-
-    def get_absolute_url(self):
-        return reverse("user_detail", args=[self.username])
 
     def basket_sum(self):
         from nnmware.apps.shop.models import Basket

@@ -72,8 +72,8 @@ def get_map_url(api_key, longitude, latitude, zoom, width, height):
 def geocode(api_key, address, timeout=2):
     """ returns (longtitude, latitude,) tuple for given address """
     try:
-        xml = _get_geocode_xml(api_key, address, timeout)
-        return _get_coords(xml)
+        xml_ = _get_geocode_xml(api_key, address, timeout)
+        return _get_coords(xml_)
     except IOError:
         return None, None
 
@@ -107,11 +107,11 @@ RADIUS = 6371  # Earth's mean radius in km
 def distance(origin, destiny):
     (latitude1, longitude1) = (origin[0], origin[1])
     (latitude2, longitude2) = (destiny[0], destiny[1])
-    dLat = radians(latitude1 - latitude2)
-    dLong = radians(longitude1 - longitude2)
+    d_lat = radians(latitude1 - latitude2)
+    d_long = radians(longitude1 - longitude2)
     # matter of faith
-    a = sin(dLat / 2) * sin(dLat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(dLong / 2) * sin(
-        dLong / 2)
+    a = sin(d_lat / 2) * sin(d_lat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(d_long / 2) * sin(
+        d_long / 2)
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return RADIUS * c
 
@@ -120,12 +120,12 @@ def distance_to_object(origin, destiny):
     (latitude1, longitude1) = (origin.latitude, origin.longitude)
     (latitude2, longitude2) = (destiny.latitude, destiny.longitude)
 
-    dLat = radians(latitude1 - latitude2)
-    dLong = radians(longitude1 - longitude2)
+    d_lat = radians(latitude1 - latitude2)
+    d_long = radians(longitude1 - longitude2)
 
     # matter of faith
-    a = sin(dLat / 2) * sin(dLat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(dLong / 2) * sin(
-        dLong / 2)
+    a = sin(d_lat / 2) * sin(d_lat / 2) + cos(radians(latitude1)) * cos(radians(latitude2)) * sin(d_long / 2) * sin(
+        d_long / 2)
     c = 2 * atan2(sqrt(a), sqrt(1 - a))
 
     return RADIUS * c

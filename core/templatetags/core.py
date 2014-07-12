@@ -655,12 +655,12 @@ def category_tree_series():
 @register.simple_tag
 def menu_user(app=None):
     if app == 'users':
-        Alldata = get_user_model()
-    query = Alldata.objects.all().order_by('-date_joined')
+        allusers = get_user_model()
+    query = allusers.objects.all().order_by('-date_joined')
     objects_years_dict = create_userdate_list(query)
     html = Element("ul")
-    keyList = objects_years_dict.keys()
-    for key in keyList:
+    key_lst = objects_years_dict.keys()
+    for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
     return tostring(html, 'utf-8')
 
@@ -678,8 +678,8 @@ def menu_date(app=None):
     query = Alldata.objects.all().order_by('-created_date')
     objects_years_dict = create_archive_list(query)
     html = Element("ul")
-    keyList = objects_years_dict.keys()
-    for key in keyList:
+    key_lst = objects_years_dict.keys()
+    for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
     return tostring(html, 'utf-8')
 

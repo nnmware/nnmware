@@ -24,7 +24,7 @@ from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManage
 from nnmware.core.fields import std_text_field, std_url_field, std_email_field
 from nnmware.core.utils import setting
 
-DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG','generic.png'))
+DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG', 'generic.png'))
 
 
 class AbstractDate(models.Model):
@@ -435,15 +435,15 @@ class Tree(AbstractName):
                     raise ValidationError(_("You must not save a category in itself!"))
         super(Tree, self).save(*args, **kwargs)
 
-    def _flatten(self, L):
+    def _flatten(self, ll):
         """
         Taken from a python newsgroup post
         """
-        if not isinstance(L, list):
-            return [L]
-        if not L:
-            return L
-        return self._flatten(L[0]) + self._flatten(L[1:])
+        if not isinstance(ll, list):
+            return [ll]
+        if not ll:
+            return ll
+        return self._flatten(ll[0]) + self._flatten(ll[1:])
 
     def _recurse_for_children(self, node, only_active=False):
         children = [node]

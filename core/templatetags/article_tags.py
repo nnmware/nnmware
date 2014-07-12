@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django import template
 from django.core.cache import cache
 from django.core.urlresolvers import resolve, reverse, Resolver404
 from django.db.models import Count
 from datetime import datetime
 import math
-from nnmware.apps.article.models import Article
+from nnmware.apps.publication.models import Publication
 from nnmware.core.models import Tag
 
 register = template.Library()
@@ -39,7 +41,7 @@ def get_article_tags(parser, token):
     return GetCategoriesNode(args[2])
 
 
-class GetArticlesNode(template.Node):
+class GetPublicationsNode(template.Node):
     """
     Retrieves a set of article objects.
 
@@ -71,7 +73,7 @@ class GetArticlesNode(template.Node):
         user = context.get('user', None)
 
         # get the live articles in the appropriate order
-        articles = Article.objects.order_by(order).select_related()
+        articles = Publication.objects.order_by(order).select_related()
 
         if self.count:
             # if we have a number of articles to retrieve, pull the first of them
@@ -91,7 +93,7 @@ class GetArticlesNode(template.Node):
 
 def get_articles(parser, token):
     """
-    Retrieves a list of Article objects for use in a template.
+    Retrieves a list of Publication objects for use in a template.
     """
     args = token.split_contents()
     argc = len(args)
@@ -113,14 +115,14 @@ def get_articles(parser, token):
     elif argc == 7:
         t, start, t, end, a, varname, order = args
 
-    return GetArticlesNode(count=count,
+    return GetPublicationsNode(count=count,
         start=start,
         end=end,
         order=order,
         varname=varname)
 
 
-class GetArticleArchivesNode(template.Node):
+class GetPublicationArchivesNode(template.Node):
     """
     Retrieves a list of years and months in which articles have been posted.
     """
@@ -136,7 +138,7 @@ class GetArticleArchivesNode(template.Node):
             user = context.get('user', None)
 
             # iterate over all live articles
-            for article in Article.objects.live(user=user).select_related():
+            for article in Publication.objects.live(user=user).select_related():
                 pub = article.created_date
 
                 # see if we already have an article in this year
@@ -187,7 +189,7 @@ def get_article_archives(parser, token):
     except AssertionError:
         raise template.TemplateSyntaxError('get_article_archives syntax: {% get_article_archives as varname %}')
 
-    return GetArticleArchivesNode(args[2])
+    return GetPublicationArchivesNode(args[2])
 
 
 class DivideObjectListByNode(template.Node):

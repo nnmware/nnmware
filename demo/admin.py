@@ -11,14 +11,15 @@ from django import forms
 
 
 #Flatpages
-class FlatPageAdmin(FlatPageAdmin):
+class FlatPageWysiwygAdmin(FlatPageAdmin):
+
     class Media:
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
               '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
 # Re-register admin FlatPage
 admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageAdmin)
+admin.site.register(FlatPage, FlatPageWysiwygAdmin)
 
 
 class MyUserChangeForm(UserChangeForm):

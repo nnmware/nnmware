@@ -44,7 +44,7 @@ class BoardUserList(ListView):
         return Board.objects.filter(user=self.request.user)
 
 
-class BoardCategory(ListView):
+class BoardCategoryView(ListView):
     template_name = 'board/board_list.html'
     model = Board
 

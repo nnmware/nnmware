@@ -26,7 +26,7 @@ def convert_from_client_currency(request, amount):
 
 def luhn_checksum(card_number):
     def digits_of(n):
-        return [int(d) for d in str(n)]
+        return [int(dig) for dig in str(n)]
 
     digits = digits_of(card_number)
     odd_digits = digits[-1::-2]

@@ -4,8 +4,6 @@
 #
 # Normal Exit - "cdrdaemon stop"
 #
-import os
-import sys
 import time
 from socket import *
 
@@ -16,7 +14,7 @@ pidfile = "nnmware.pid"
 statHost = ""
 statPort = 9000
 child = 5   # allow 5 simultaneous pending connections
-buffer = 1024  # 1K buffer of data
+buf = 1024  # 1K buffer of data
 ###########################################################################
 sys.path.insert(0, '/PATH/TO/YOU/PROJECT')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'nnmware.settings'
@@ -35,8 +33,8 @@ class Log:
 
 def get_daemon_pid():
     if os.path.exists(pidfile):
-        pid = open(pidfile, 'r').read()
-        return int(pid)
+        pid_ = open(pidfile, 'r').read()
+        return int(pid_)
     else:
         return None
 
@@ -46,10 +44,10 @@ def stopd():
     if not os.path.exists('%s/%s' % (workdir, pidfile)):
         print 'Daemon does not appear to be running'
         return
-    pid = get_daemon_pid()
+    pid_ = get_daemon_pid()
     sys.stdout = sys.stderr = Log(open('%s/%s' % (workdir, logfile), 'a+'))
     print 'Daemon stopped at ' + time.strftime("%Y/%m/%d %H.%M.%S")
-    os.popen('kill -9 %d' % pid)
+    os.popen('kill -9 %d' % pid_)
     os.remove('%s/%s' % (workdir, pidfile))
 
 
@@ -75,7 +73,7 @@ def main():
     (connection, address) = s.accept()  # connection is a new socket
     try:
         while 1:
-            data = connection.recv(buffer)  # receive up to 1K bytes
+            data = connection.recv(buf)  # receive up to 1K bytes
             if data:
                 store(address[0])
                 r = data.split()

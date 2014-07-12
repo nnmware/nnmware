@@ -40,7 +40,7 @@ class NnmwareDashboard(Dashboard):
                     _('Booking'),
                     column=1,
                     css_classes=('grp-collapse grp-closed',),
-                    models=( 'nnmware.apps.booking.*',),
+                    models=('nnmware.apps.booking.*',),
                 ),
                 modules.AppList(
                     _('Dossier'),

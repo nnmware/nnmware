@@ -3,7 +3,6 @@
 from datetime import datetime, timedelta
 from exceptions import ValueError, Exception
 import json
-from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
@@ -306,9 +305,9 @@ def hotels_in_country(request):
 def payment_method(request):
     try:
         p_m = request.POST['p_m']
-        payment_method = PaymentMethod.objects.get(pk=p_m)
-        payload = {'success': True, 'id': payment_method.pk, 'description': payment_method.description,
-                   'card': payment_method.use_card}
+        paymnt_method = PaymentMethod.objects.get(pk=p_m)
+        payload = {'success': True, 'id': paymnt_method.pk, 'description': paymnt_method.description,
+                   'card': paymnt_method.use_card}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)

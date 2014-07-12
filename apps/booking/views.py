@@ -1095,7 +1095,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             u.set_password(password)
             u.is_active = True
             u.save()
-            mail_dict = {'username': username, 'password': password, 'site_name': setting('SITENAME', 'www.nnmware.com')}
+            mail_dict = {'username': username, 'password': password,
+                         'site_name': setting('SITENAME', 'www.nnmware.com')}
             subject = 'registration/new_user_subject.txt'
             body = 'registration/new_user.txt'
             send_template_mail(subject, body, mail_dict, [email])

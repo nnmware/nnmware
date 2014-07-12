@@ -462,7 +462,7 @@ def pic_getcrop(request, object_id):
     return ajax_answer_lazy(payload)
 
 
-def AjaxGetThumbnail(request):
+def ajax_get_thumbnail(request):
     img_pk = int(request.POST['image_id'])
     pic = get_object_or_404(Pic, id=int(img_pk))
     width = request.POST.get('width') or None
@@ -880,7 +880,7 @@ def delete_comment(request, object_id, depth):
 
 
 def avatar_set(request):
-    uploader = AjaxUploader(filetype='image', upload_dir=setting('AVATAR_UPLOAD_DIR','avatars'),
+    uploader = AjaxUploader(filetype='image', upload_dir=setting('AVATAR_UPLOAD_DIR', 'avatars'),
                             size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
     result = uploader.handle_upload(request)
     if result['success']:

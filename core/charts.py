@@ -12,9 +12,7 @@ class MyLineChartDrawing(Drawing):
     def __init__(self, width=600, height=400, *args, **kwargs):
         super(MyLineChartDrawing, self).__init__(width, height, *args, **kwargs)
         self.add(LinePlot(), name='chart')
-
         self.add(String(200, 180, 'Hello World'), name='title')
-
         #set any shapes, fonts, colors you want here.  We'll just
         #set a title font and place the chart within the drawing.
         #pick colors for all the lines, do as many as you need
@@ -22,15 +20,15 @@ class MyLineChartDrawing(Drawing):
         self.chart.y = 30
         self.chart.width = self.width - 100
         self.chart.height = self.height - 75
-        self.chart.lines[0].strokeColor = colors.blue
-        self.chart.lines[1].strokeColor = colors.green
-        self.chart.lines[2].strokeColor = colors.yellow
-        self.chart.lines[3].strokeColor = colors.red
-        self.chart.lines[4].strokeColor = colors.black
-        self.chart.lines[5].strokeColor = colors.orange
-        self.chart.lines[6].strokeColor = colors.cyan
-        self.chart.lines[7].strokeColor = colors.magenta
-        self.chart.lines[8].strokeColor = colors.brown
+        self.chart.lines[0].stroke_color = colors.blue
+        self.chart.lines[1].stroke_color = colors.green
+        self.chart.lines[2].stroke_color = colors.yellow
+        self.chart.lines[3].stroke_color = colors.red
+        self.chart.lines[4].stroke_color = colors.black
+        self.chart.lines[5].stroke_color = colors.orange
+        self.chart.lines[6].stroke_color = colors.cyan
+        self.chart.lines[7].stroke_color = colors.magenta
+        self.chart.lines[8].stroke_color = colors.brown
 
         self.chart.fillColor = colors.white
         self.title.fontName = 'Times-Roman'

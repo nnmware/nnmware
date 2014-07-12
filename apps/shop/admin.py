@@ -74,7 +74,7 @@ class OrderItemInline(admin.StackedInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     change_form_template = 'admin_form/change_form.html'
-    readonly_fields = ('created_date', 'updated_date')
+    readonly_fields = ('created_date', 'updated_date', 'amount_order')
     list_display = (
         "number_order", "user", "created_date", 'status', "amount_order", 'address', 'last_name', 'first_name')
     list_filter = ('user', 'id', 'status')
@@ -98,7 +98,6 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.fullamount
 
     amount_order.short_description = _('Amount')
-    readonly_fields = ('amount_order', 'updated_date')
 
 
 @admin.register(DeliveryAddress)
