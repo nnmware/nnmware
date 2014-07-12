@@ -953,6 +953,6 @@ def last_message_with_count_new(context, another):
     elif tab == 'sent':
         messages = messages.filter(sender=user)
     msg = messages.extra(select={'new': """SELECT COUNT(*) FROM core_message
-        WHERE (core_message.read_at IS NULL AND core_message.recipient_id = '%s')""" % another.pk}).\
+        WHERE (core_message.read_at IS NULL AND core_message.recipient_id = '%s')""" % user.pk}).\
         order_by('sent_at').last()
     return msg
