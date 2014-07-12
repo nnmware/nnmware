@@ -46,6 +46,13 @@ class UserToFormMixin(object):
         return kwargs
 
 
+class RequestToFormMixin(object):
+    def get_form_kwargs(self):
+        kwargs = super(RequestToFormMixin, self).get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
+
+
 class AjaxFormMixin(object):
     def form_valid(self, form):
         if self.request.is_ajax():
@@ -349,7 +356,7 @@ class RedirectHttpView(object):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)
 
 
-class ChangePasswordView(AjaxFormMixin, FormView):
+class ChangePasswordView(UserToFormMixin, AjaxFormMixin, FormView):
     form_class = PassChangeForm
     template_name = 'user/pwd_change.html'
     success_url = reverse_lazy('password_change_done')
