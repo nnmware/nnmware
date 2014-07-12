@@ -117,7 +117,7 @@ class AbstractData(AbstractDate):
         self.status = STATUS_DELETE
         self.save()
 
-    def save(self, *args, **kwargs):
+    def save(self, **kwargs):
         """
         Set default for ``description`` if none
         given.
@@ -129,9 +129,9 @@ class AbstractData(AbstractDate):
                 self.description = ""
         if not self.slug:
             if not self.pk:
-                super(AbstractData, self).save(*args, **kwargs)
+                super(AbstractData, self).save(**kwargs)
             self.slug = self.pk
-        super(AbstractData, self).save(*args, **kwargs)
+        super(AbstractData, self).save(**kwargs)
 
     def description_from_content(self):
         """
