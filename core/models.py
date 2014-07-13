@@ -690,6 +690,9 @@ post_delete.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
 class LikeMixin(models.Model):
     karma = models.IntegerField(verbose_name=_("Karma"), default=0, db_index=True)
 
+    class Meta:
+        abstract = True
+
     def set_karma(self):
         liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
         disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
