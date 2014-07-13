@@ -675,11 +675,12 @@ class Like(AbstractLike):
 
 
 class LikeMixin(object):
+    karma = models.IntegerField(verbose_name=_("Karma"), default=0, db_index=True)
 
-    def karma(self):
+    def set_karma(self):
         liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
         disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
-        return liked - disliked
+        self.karma = liked - disliked
 
     def users_liked(self):
         return Like.objects.for_object(self).filter(like=True).values_list('user__pk', flat=True)
