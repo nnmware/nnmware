@@ -687,7 +687,7 @@ post_save.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
 post_delete.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
 
 
-class LikeMixin(object):
+class LikeMixin(models.Model):
     karma = models.IntegerField(verbose_name=_("Karma"), default=0, db_index=True)
 
     def set_karma(self):
