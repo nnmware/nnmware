@@ -848,7 +848,7 @@ def like(request, content_type, object_id):
                 dislike_en = False
             like_en = False
         thelike.save()
-        karma = thelike.content_object.karma()
+        karma = thelike.content_object.karma
         payload = {'success': True, 'karma': karma, 'liked': like_en, 'disliked': dislike_en}
     except AccessError:
         payload = {'success': False, 'error': 'Not allowed'}
