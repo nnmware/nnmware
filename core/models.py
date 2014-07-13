@@ -678,7 +678,6 @@ def update_karma(sender, instance, **kwargs):
     what = instance.get_content_object()
     try:
         what.set_karma()
-        what.save()
     except:
         pass
 
@@ -697,6 +696,7 @@ class LikeMixin(models.Model):
         liked = Like.objects.for_object(self).filter(like=True).aggregate(Count("id"))['id__count']
         disliked = Like.objects.for_object(self).filter(dislike=True).aggregate(Count("id"))['id__count']
         self.karma = liked - disliked
+        self.save()
 
     def users_liked(self):
         return Like.objects.for_object(self).filter(like=True).values_list('user__pk', flat=True)
