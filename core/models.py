@@ -674,6 +674,19 @@ class Like(AbstractLike):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)
 
 
+def update_karma(sender, instance, **kwargs):
+    what = instance.get_content_object()
+    try:
+        what.set_karma()
+        what.save()
+    except:
+        pass
+
+
+post_save.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
+post_delete.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
+
+
 class LikeMixin(object):
     karma = models.IntegerField(verbose_name=_("Karma"), default=0, db_index=True)
 
