@@ -20,7 +20,7 @@ class PublicationCategory(Tree):
 
     @property
     def obj_active_set(self):
-        return Publication.objects.filter(category=self)
+        return Publication.objects.active().filter(category=self)
 
 
 class Publication(AbstractDate, AbstractName, LikeMixin):
