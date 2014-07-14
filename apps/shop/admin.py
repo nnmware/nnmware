@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.admin import GenericStackedInline
 from nnmware.core.admin import TreeAdmin, UnitAdmin
 from django.utils.translation import ugettext as _
 from nnmware.apps.shop.models import *
 from nnmware.core.admin import ColorAdmin, MaterialAdmin
 
 
-class ProductParameterValueInline(generic.GenericStackedInline):
+class ProductParameterValueInline(GenericStackedInline):
     model = ProductParameterValue
     extra = 0
     fields = (('parameter', 'value'),)
