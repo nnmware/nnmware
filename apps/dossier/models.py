@@ -312,7 +312,7 @@ class CreativeActivity(AbstractOrder):
 
 class AbstractHumanAppearance(models.Model):
     appearance = models.ManyToManyField(TypeAppearanceHuman, verbose_name=_('Type of Appearance'),
-                                        related_name='appearance_human', blank=True, null=True)
+                                        related_name='appearance_human', blank=True)
     appearance_desc = std_text_field(_('Explain type of appearance'))
     national = models.ForeignKey(TypeNationalHuman, verbose_name=_('National Type'),
                                  related_name='national_human', blank=True, null=True)
@@ -321,10 +321,10 @@ class AbstractHumanAppearance(models.Model):
                              related_name='body_human', blank=True, null=True)
     body_desc = std_text_field(_('Explain body'))
     body_modification = models.ManyToManyField(BodyModification, verbose_name=_('Body modification'),
-                                           blank=True, null=True)
+                                           blank=True)
     body_modification_desc = std_text_field(_('Explain body modification'))
     feat_appearance = models.ManyToManyField(FeatureAppearance, verbose_name=_('Feature appearance'),
-                                             blank=True, null=True, related_name='appearance_future')
+                                             blank=True, related_name='appearance_future')
     feat_appearance_desc = std_text_field(_('Description of another feature of appearance'))
 
     growth = models.PositiveSmallIntegerField(verbose_name=_('Growth'), blank=True, null=True, default=None)
@@ -689,20 +689,16 @@ class AbstractPersonalData(models.Model):
 
 
 class AbstractTypeActor(models.Model):
-    type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'),
-                                           blank=True, null=True)
+    type_national = models.ManyToManyField(TypeNational, verbose_name=_('Type of national sign'), blank=True)
     type_national_desc = std_text_field(_('Explain type national'))
-    type_profession = models.ManyToManyField(TypeProfession, verbose_name=_('Type on profession'),
-                                             blank=True, null=True)
+    type_profession = models.ManyToManyField(TypeProfession, verbose_name=_('Type on profession'), blank=True)
     type_profession_desc = std_text_field(_('Explain type profession'))
-    type_lifestyle = models.ManyToManyField(TypeLifestyle, verbose_name=_('Type on lifestyle'),
-                                            blank=True, null=True)
+    type_lifestyle = models.ManyToManyField(TypeLifestyle, verbose_name=_('Type on lifestyle'), blank=True)
     type_lifestyle_desc = std_text_field(_('Explain type lifestyle'))
-    type_bright_appearance = models.ManyToManyField(TypeBrightAppearance,
-                                                    verbose_name=_('Type on bright appearance'), blank=True, null=True)
+    type_bright_appearance = models.ManyToManyField(TypeBrightAppearance, verbose_name=_('Type on bright appearance'),
+                                                    blank=True)
     type_bright_appearance_desc = std_text_field(_('Explain type bright appearance'))
-    type_historical = models.ManyToManyField(TypeHistorical,
-                                             verbose_name=_('Type in historical projects'), blank=True, null=True)
+    type_historical = models.ManyToManyField(TypeHistorical, verbose_name=_('Type in historical projects'), blank=True)
     type_historical_desc = std_text_field(_('Explain type historical'))
 
     class Meta:
@@ -731,22 +727,14 @@ VOICE_CHOICES = (
 
 
 class HumanSkill(models.Model):
-    language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'),
-                                      blank=True, null=True, related_name='lng_skill')
-    dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'),
-                                   blank=True, null=True, related_name='dnc_skill')
-    drive = models.ManyToManyField(DriveSkill, verbose_name=_('Drive skill'),
-                                   blank=True, null=True, related_name='drv_skill')
-    other = models.ManyToManyField(OtherSkill, verbose_name=_('Other skill'),
-                                   blank=True, null=True, related_name='oth_skill')
-    music = models.ManyToManyField(MusicSkill, verbose_name=_('Music skill'),
-                                   blank=True, null=True, related_name='msc_skill')
-    vocal = models.ManyToManyField(VocalSkill, verbose_name=_('Vocal skill'),
-                                   blank=True, null=True, related_name='vlc_skill')
-    sport = models.ManyToManyField(SportSkill, verbose_name=_('Sport skill'),
-                                   blank=True, null=True, related_name='spr_skill')
-    special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'),
-                                     blank=True, null=True, related_name='spc_skill')
+    language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'), blank=True, related_name='lng_skill')
+    dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'), blank=True, related_name='dnc_skill')
+    drive = models.ManyToManyField(DriveSkill, verbose_name=_('Drive skill'), blank=True, related_name='drv_skill')
+    other = models.ManyToManyField(OtherSkill, verbose_name=_('Other skill'), blank=True, related_name='oth_skill')
+    music = models.ManyToManyField(MusicSkill, verbose_name=_('Music skill'), blank=True, related_name='msc_skill')
+    vocal = models.ManyToManyField(VocalSkill, verbose_name=_('Vocal skill'), blank=True, related_name='vlc_skill')
+    sport = models.ManyToManyField(SportSkill, verbose_name=_('Sport skill'), blank=True, related_name='spr_skill')
+    special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'), blank=True, related_name='spc_skill')
     language_desc = std_text_field(_('Language addon text'))
     dance_desc = std_text_field(_('Dance addon text'))
     drive_desc = std_text_field(_('Drive skill addon text'))
@@ -757,8 +745,8 @@ class HumanSkill(models.Model):
     special_desc = std_text_field(_('Special skill addon text'))
     voice_tone = models.IntegerField(verbose_name=_('Voice tone'), choices=VOICE_CHOICES,
                                      blank=True, null=True, default=VOICE_UNKNOWN)
-    spoken_dialect = models.ManyToManyField(SpokenDialect, verbose_name=_('Spoken dialect'),
-                                     blank=True, null=True, related_name='spc_skill')
+    spoken_dialect = models.ManyToManyField(SpokenDialect, verbose_name=_('Spoken dialect'), blank=True,
+                                            related_name='spc_skill')
 
     class Meta:
         verbose_name = _("Skill")
@@ -812,4 +800,3 @@ class HumanSkill(models.Model):
         if self.other.count():
             return 100
         return 0
-
