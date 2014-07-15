@@ -255,10 +255,10 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                                                                                                    'name').distinct()
 
     def get_absolute_url(self):
-        return reverse('hotel_detail', (), {'city': self.city.slug, 'slug': self.slug})
+        return reverse('hotel_detail', kwargs={'city': self.city.slug, 'slug': self.slug})
 
     def get_cabinet_url(self):
-        return reverse('cabinet_info', (), {'city': self.city.slug, 'slug': self.slug})
+        return reverse('cabinet_info', kwargs={'city': self.city.slug, 'slug': self.slug})
 
     def get_current_percent(self):
         try:
@@ -429,7 +429,7 @@ class Room(AbstractName):
         return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
 
     def get_absolute_url(self):
-        return reverse('room_detail', (), {'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk})
+        return reverse('room_detail', kwargs={'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk})
 
     def active_discounts(self):
         discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
@@ -541,12 +541,12 @@ class Booking(MoneyBase, AbstractIP):
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
-        return reverse('booking_hotel_detail', (), {'slug': self.uuid})
+        return reverse('booking_hotel_detail', kwargs={'slug': self.uuid})
 
     def get_client_url(self):
         if not self.uuid:
             self.save()
-        return reverse('booking_user_detail', (), {'slug': self.uuid})
+        return reverse('booking_user_detail', kwargs={'slug': self.uuid})
 
     @property
     def days(self):

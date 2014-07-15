@@ -77,7 +77,7 @@ class Tag(models.Model):
         return get_user_model().objects.filter(pk__in=users)
 
     def get_absolute_url(self):
-        return reverse('tag_detail', (), {'slug': self.slug})
+        return reverse('tag_detail', args=[self.slug])
 
 
 class Doc(AbstractContent, AbstractFile):
@@ -115,10 +115,10 @@ class Doc(AbstractContent, AbstractFile):
         return os.path.join(settings.MEDIA_URL, self.doc.url)
 
     def get_del_url(self):
-        return reverse("doc_del", self.id)
+        return reverse("doc_del", args=[self.id])
 
     def get_edit_url(self):
-        return reverse("doc_edit", self.id)
+        return reverse("doc_edit", args=[self.id])
 
 
 @python_2_unicode_compatible
@@ -195,13 +195,13 @@ class Pic(AbstractContent, AbstractFile):
         return "pic_del", (), {'object_id': self.pk}
 
     def get_edit_url(self):
-        return reverse("pic_edit", self.pk)
+        return reverse("pic_edit", args=[self.pk])
 
     def get_view_url(self):
-        return reverse("pic_view", self.pk)
+        return reverse("pic_view", args=[self.pk])
 
     def get_editor_url(self):
-        return reverse("pic_editor", self.pk)
+        return reverse("pic_editor", args=[self.pk])
 
     def slide_thumbnail(self):
         if self.pic:
@@ -550,7 +550,7 @@ class Video(AbstractDate, AbstractImg):
         return get_user_model().objects.filter(pk__in=users)
 
     def get_absolute_url(self):
-        return reverse('video_detail', (), {'slug': self.slug})
+        return reverse('video_detail', kwargs={'slug': self.slug})
 
     def tags2(self):
         return self.tags.all()[:2]

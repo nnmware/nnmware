@@ -36,19 +36,19 @@ class Board(AbstractName, AbstractDate, AbstractSeller):
         default=False)
 
     def get_absolute_url(self):
-        return "/board/%i/" % self.id
+        return reverse("board_detail", args=[self.id])
 
     def get_edit_url(self):
-        return reverse("board_edit", self.id)
+        return reverse("board_edit", args=[self.id])
 
     def get_del_url(self):
-        return reverse("board_del", self.id)
+        return reverse("board_del", args=[self.id])
 
     def get_lock_url(self):
-        return reverse("board_lock", self.id)
+        return reverse("board_lock", args=[self.id])
 
     def get_unlock_url(self):
-        return reverse("board_unlock", self.id)
+        return reverse("board_unlock", args=[self.id])
 
     def view_link(self):
         return '<a href="%s">%s</a>' % (self.get_absolute_url(), _('view'))

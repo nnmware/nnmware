@@ -161,7 +161,7 @@ class AbstractData(AbstractDate):
             slug = self.slug
         else:
             slug = self.pk
-        return reverse(self.slug_detail, (), {
+        return reverse(self.slug_detail, kwargs={
             'year': self.created_date.year,
             'month': self.created_date.strftime('%b').lower(),
             'day': self.created_date.day,
@@ -382,8 +382,7 @@ class Tree(AbstractName):
             slug_list = "/".join(slug_list) + "/"
         else:
             slug_list = ""
-        return reverse(self.slug_detail,
-                       kwargs={'parent_slugs': slug_list, 'slug': self.slug})
+        return reverse(self.slug_detail, kwargs={'parent_slugs': slug_list, 'slug': self.slug})
 
     def get_separator(self):
         return ' > '
@@ -639,7 +638,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         abstract = True
 
     def get_absolute_url(self):
-        return reverse('employer_view', (), {'pk': self.pk})
+        return reverse('employer_view', args=[self.pk])
 
     @property
     def main_image(self):

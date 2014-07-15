@@ -97,7 +97,7 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
         return ProductParameterValue.objects.for_object(self)
 
     def get_absolute_url(self):
-        return reverse('product_detail', (), {'pk': self.pk})
+        return reverse('product_detail', kwargs={'pk': self.pk})
 
     def allitems(self):
         active = Order.objects.active()
@@ -285,10 +285,10 @@ class Order(AbstractDate, AbstractIP):
         return result
 
     def get_absolute_url(self):
-        return reverse('order_view', (), {'pk': self.pk})
+        return reverse('order_view', kwargs={'pk': self.pk})
 
     def get_complete_url(self):
-        return reverse('order_complete', (), {'pk': self.pk})
+        return reverse('order_complete', kwargs={'pk': self.pk})
 
     @property
     def receiver(self):
@@ -470,7 +470,7 @@ class SpecialOffer(AbstractOffer):
         super(SpecialOffer, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('special_offer', (), {'pk': self.pk})
+        return reverse('special_offer', kwargs={'pk': self.pk})
 
 
 @python_2_unicode_compatible
@@ -547,4 +547,4 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
         verbose_name_plural = _("Services")
 
     def get_absolute_url(self):
-        return reverse('service_detail', (), {'pk': self.pk})
+        return reverse('service_detail', kwargs={'pk': self.pk})

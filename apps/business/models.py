@@ -30,7 +30,7 @@ class TypeEmployer(AbstractName):
         return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list', 'name')
 
     def get_absolute_url(self):
-        return reverse('employers_profile', (), {'slug': self.slug})
+        return reverse('employers_profile', kwargs={'slug': self.slug})
 
 
 @python_2_unicode_compatible
@@ -46,7 +46,7 @@ class TypeEmployerProfile(AbstractName):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
     def get_absolute_url(self):
-        return reverse('employers_group', (), {'slug': self.slug})
+        return reverse('employers_group', kwargs={'slug': self.slug})
 
 
 @python_2_unicode_compatible
@@ -185,7 +185,7 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
         return self.get_name
 
     def get_absolute_url(self):
-        return reverse('company_detail', (self.pk, ), {})
+        return reverse('company_detail', args=[self.pk])
 
 
 class CompanyDetail(models.Model):
@@ -268,7 +268,7 @@ class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
         verbose_name_plural = _('Vacancies')
 
     def get_absolute_url(self):
-        return reverse('vacancy_detail', (self.pk, ), {})
+        return reverse('vacancy_detail', args=[self.pk])
 
 
 class AbstractSeller(models.Model):

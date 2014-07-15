@@ -37,7 +37,7 @@ class News(AbstractDate, AbstractName, AbstractTeaser):
         verbose_name_plural = _('Many news')
 
     def get_absolute_url(self):
-        return reverse('news_detail', (), {'pk': self.pk})
+        return reverse('news_detail', kwargs={'pk': self.pk})
 
     def get_edit_url(self):
-        return reverse('news_edit', (), {'pk': self.pk})
+        return reverse('news_edit', kwargs={'pk': self.pk})
