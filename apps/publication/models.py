@@ -42,7 +42,7 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
         return reverse('publication_detail', args=[self.pk])
 
     def get_edit_url(self):
-        return reverse('publication_edit', (), {'pk': self.pk})
+        return reverse('publication_edit', args=[self.pk])
 
     def blocks(self):
         return ContentBlock.objects.for_object(self).order_by('position')

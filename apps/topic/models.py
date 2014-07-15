@@ -38,7 +38,7 @@ class Topic(AbstractDate, AbstractName, LikeMixin, AbstractIP):
         verbose_name_plural = _('Topics')
 
     def get_absolute_url(self):
-        return reverse('topic_detail', (), {'pk': self.pk})
+        return reverse('topic_detail', args=[self.pk])
 
     def get_edit_url(self):
-        return reverse('topic_edit', (), {'pk': self.pk})
+        return reverse('topic_edit', args=[self.pk])
