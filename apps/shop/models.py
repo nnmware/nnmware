@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink, Q
+from django.db.models import Q
 from django.template.defaultfilters import floatformat
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
@@ -96,9 +96,8 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     def parameters(self):
         return ProductParameterValue.objects.for_object(self)
 
-    @permalink
     def get_absolute_url(self):
-        return "product_detail", (), {'pk': self.pk}
+        return reverse('product_detail', (), {'pk': self.pk})
 
     def allitems(self):
         active = Order.objects.active()
@@ -285,13 +284,11 @@ class Order(AbstractDate, AbstractIP):
             result += i.fullamount
         return result
 
-    @permalink
     def get_absolute_url(self):
-        return "order_view", (), {'pk': self.pk}
+        return reverse('order_view', (), {'pk': self.pk})
 
-    @permalink
     def get_complete_url(self):
-        return "order_complete", (), {'pk': self.pk}
+        return reverse('order_complete', (), {'pk': self.pk})
 
     @property
     def receiver(self):
@@ -472,9 +469,8 @@ class SpecialOffer(AbstractOffer):
                 self.slug = self.pk
         super(SpecialOffer, self).save(*args, **kwargs)
 
-    @permalink
     def get_absolute_url(self):
-        return "special_offer", (), {'pk': self.pk}
+        return reverse('special_offer', (), {'pk': self.pk})
 
 
 @python_2_unicode_compatible
@@ -550,6 +546,5 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
         verbose_name = _("Service")
         verbose_name_plural = _("Services")
 
-    @permalink
     def get_absolute_url(self):
-        return "service_detail", (), {'pk': self.pk}
+        return reverse('service_detail', (), {'pk': self.pk})

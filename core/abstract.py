@@ -10,7 +10,6 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.db import models
-from django.db.models import permalink
 from django.db.models.manager import Manager
 from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
@@ -157,13 +156,12 @@ class AbstractData(AbstractDate):
             description = truncatewords_html(description, 256)
         return description
 
-    @permalink
     def get_absolute_url(self):
         if self.slug:
             slug = self.slug
         else:
             slug = self.pk
-        return (self.slug_detail, (), {
+        return reverse(self.slug_detail, (), {
             'year': self.created_date.year,
             'month': self.created_date.strftime('%b').lower(),
             'day': self.created_date.day,
@@ -640,9 +638,8 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
         verbose_name_plural = _("Profiles")
         abstract = True
 
-    @permalink
     def get_absolute_url(self):
-        return "employer_view", (), {'pk': self.pk}
+        return reverse('employer_view', (), {'pk': self.pk})
 
     @property
     def main_image(self):

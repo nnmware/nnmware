@@ -3,9 +3,10 @@
 from decimal import Decimal
 from uuid import uuid4
 import random
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
-from django.db.models import permalink, signals, Avg, Min
+from django.db.models import signals, Avg, Min
 from django.db.models.manager import Manager
 from django.template.defaultfilters import date
 from django.utils.timezone import now
@@ -253,13 +254,11 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
                                                                                                    'order_in_list',
                                                                                                    'name').distinct()
 
-    @permalink
     def get_absolute_url(self):
-        return "hotel_detail", (), {'city': self.city.slug, 'slug': self.slug}
+        return reverse('hotel_detail', (), {'city': self.city.slug, 'slug': self.slug})
 
-    @permalink
     def get_cabinet_url(self):
-        return "cabinet_info", (), {'city': self.city.slug, 'slug': self.slug}
+        return reverse('cabinet_info', (), {'city': self.city.slug, 'slug': self.slug})
 
     def get_current_percent(self):
         try:
@@ -429,9 +428,8 @@ class Room(AbstractName):
     def active_settlements(self):
         return SettlementVariant.objects.filter(room=self, enabled=True).order_by('settlement')
 
-    @permalink
     def get_absolute_url(self):
-        return "room_detail", (), {'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk}
+        return reverse('room_detail', (), {'city': self.hotel.city.slug, 'slug': self.hotel.slug, 'pk': self.pk})
 
     def active_discounts(self):
         discounts = RoomDiscount.objects.filter(room=self, discount__enabled=True).\
@@ -540,17 +538,15 @@ class Booking(MoneyBase, AbstractIP):
     def days(self):
         return (self.to_date - self.from_date).days
 
-    @permalink
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
-        return 'booking_hotel_detail', (), {'slug': self.uuid}
+        return reverse('booking_hotel_detail', (), {'slug': self.uuid})
 
-    @permalink
     def get_client_url(self):
         if not self.uuid:
             self.save()
-        return 'booking_user_detail', (), {'slug': self.uuid}
+        return reverse('booking_user_detail', (), {'slug': self.uuid})
 
     @property
     def days(self):

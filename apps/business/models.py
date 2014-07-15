@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
@@ -29,9 +29,8 @@ class TypeEmployer(AbstractName):
     def multi(self):
         return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list', 'name')
 
-    @permalink
     def get_absolute_url(self):
-        return 'employers_profile', (), {'slug': self.slug}
+        return reverse('employers_profile', (), {'slug': self.slug})
 
 
 @python_2_unicode_compatible
@@ -46,9 +45,8 @@ class TypeEmployerProfile(AbstractName):
     def __str__(self):
         return "%s :: %s" % (self.employer_type.name, self.name)
 
-    @permalink
     def get_absolute_url(self):
-        return 'employers_group', (), {'slug': self.slug}
+        return reverse('employers_group', (), {'slug': self.slug})
 
 
 @python_2_unicode_compatible
@@ -186,9 +184,8 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
             return self.fullname
         return self.get_name
 
-    @permalink
     def get_absolute_url(self):
-        return 'company_detail', (self.pk, ), {}
+        return reverse('company_detail', (self.pk, ), {})
 
 
 class CompanyDetail(models.Model):
@@ -270,9 +267,8 @@ class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
         verbose_name = _('Vacancy')
         verbose_name_plural = _('Vacancies')
 
-    @permalink
     def get_absolute_url(self):
-        return 'vacancy_detail', (self.pk, ), {}
+        return reverse('vacancy_detail', (self.pk, ), {})
 
 
 class AbstractSeller(models.Model):

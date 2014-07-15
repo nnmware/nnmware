@@ -1,6 +1,6 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, AbstractIP
@@ -37,10 +37,8 @@ class Topic(AbstractDate, AbstractName, LikeMixin, AbstractIP):
         verbose_name = _('Topic')
         verbose_name_plural = _('Topics')
 
-    @permalink
     def get_absolute_url(self):
-        return "topic_detail", (), {'pk': self.pk}
+        return reverse('topic_detail', (), {'pk': self.pk})
 
-    @permalink
     def get_edit_url(self):
-        return 'topic_edit', (), {'pk': self.pk}
+        return reverse('topic_edit', (), {'pk': self.pk})

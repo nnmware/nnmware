@@ -1,6 +1,6 @@
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, AbstractTeaser
@@ -36,10 +36,8 @@ class News(AbstractDate, AbstractName, AbstractTeaser):
         verbose_name = _('News')
         verbose_name_plural = _('Many news')
 
-    @permalink
     def get_absolute_url(self):
-        return "news_detail", (), {'pk': self.pk}
+        return reverse('news_detail', (), {'pk': self.pk})
 
-    @permalink
     def get_edit_url(self):
-        return 'news_edit', (), {'pk': self.pk}
+        return reverse('news_edit', (), {'pk': self.pk})

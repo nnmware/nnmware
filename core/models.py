@@ -14,7 +14,7 @@ from django.contrib.sites.models import Site
 from django.utils.timezone import now
 from django.core.mail import send_mail
 from django.db import models
-from django.db.models import permalink, Manager, Sum, Count
+from django.db.models import Manager, Sum, Count
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.core.files.base import ContentFile
@@ -76,9 +76,8 @@ class Tag(models.Model):
         users = Follow.objects.filter(content_type=ctype, object_id=self.pk).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
-    @permalink
     def get_absolute_url(self):
-        return "tag_detail", (), {'slug': self.slug}
+        return reverse('tag_detail', (), {'slug': self.slug})
 
 
 class Doc(AbstractContent, AbstractFile):
@@ -109,9 +108,8 @@ class Doc(AbstractContent, AbstractFile):
         self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)
 
-    @permalink
     def get_absolute_url(self):
-        return os.path.join(settings.MEDIA_URL, self.doc.url)
+        return reverse(os.path.join(settings.MEDIA_URL, self.doc.url))
 
     def get_file_link(self):
         return os.path.join(settings.MEDIA_URL, self.doc.url)
@@ -314,9 +312,7 @@ class Message(AbstractIP):
         return None
 
     def get_absolute_url(self):
-        return 'messages_detail', [self.id]
-
-    get_absolute_url = models.permalink(get_absolute_url)
+        return reverse('messages_detail', args=[self.id])
 
     def save(self, **kwargs):
         if not self.id:
@@ -359,9 +355,8 @@ class Action(AbstractContent, AbstractIP):
         """
         return timesince(self.timestamp, dt_now)
 
-    @models.permalink
     def get_absolute_url(self):
-        return 'nnmware.core.views.detail', [self.pk]
+        return reverse('nnmware.core.views.detail', args=[self.pk])
 
 
 def update_comment_count(sender, instance, **kwargs):
@@ -554,9 +549,8 @@ class Video(AbstractDate, AbstractImg):
         users = Follow.objects.filter(content_type=ctype, object_id=self.id).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
 
-    @permalink
     def get_absolute_url(self):
-        return "video_detail", (), {'slug': self.slug}
+        return reverse('video_detail', (), {'slug': self.slug})
 
     def tags2(self):
         return self.tags.all()[:2]

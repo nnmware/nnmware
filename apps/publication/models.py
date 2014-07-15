@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import permalink
 from django.utils.translation import ugettext_lazy as _
 from nnmware.core.models import LikeMixin, ContentBlock
 from nnmware.apps.address.models import Region
@@ -38,13 +38,11 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
         verbose_name = _('Publication')
         verbose_name_plural = _('Publications')
 
-    @permalink
     def get_absolute_url(self):
-        return "publication_detail", (), {'pk': self.pk}
+        return reverse('publication_detail', (), {'pk': self.pk})
 
-    @permalink
     def get_edit_url(self):
-        return 'publication_edit', (), {'pk': self.pk}
+        return reverse('publication_edit', (), {'pk': self.pk})
 
     def blocks(self):
         return ContentBlock.objects.for_object(self).order_by('position')
