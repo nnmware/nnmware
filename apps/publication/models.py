@@ -39,7 +39,7 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
         verbose_name_plural = _('Publications')
 
     def get_absolute_url(self):
-        return reverse('publication_detail', (), {'pk': self.pk})
+        return reverse('publication_detail', args=[self.pk])
 
     def get_edit_url(self):
         return reverse('publication_edit', (), {'pk': self.pk})
