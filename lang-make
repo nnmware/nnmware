@@ -1,2 +1,2 @@
 #!/bin/sh
-python django-admin.py makemessages -a
+python manage.py makemessages -a

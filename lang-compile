@@ -1,2 +1,2 @@
 #!/bin/sh
-python django-admin.py compilemessages
+python manage.py compilemessages
