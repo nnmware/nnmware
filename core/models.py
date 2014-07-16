@@ -599,18 +599,6 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return "%s" % self.username
 
     @property
-    def avatar(self):
-        if self.img:
-            return self.img
-        return None
-
-    @property
-    def get_avatar(self):
-        if self.img:
-            return self.avatar.url
-        return setting('DEFAULT_AVATAR', 'noavatar.png')
-
-    @property
     def get_name(self):
         if self.fullname:
             return self.fullname

@@ -190,11 +190,16 @@ class AbstractImg(models.Model):
         abstract = True
 
     @property
-    def ava(self):
-        try:
-            return self.img.url
-        except:
-            return DEFAULT_IMG
+    def avatar(self):
+        if self.img:
+            return self.img
+        return None
+
+    @property
+    def get_avatar(self):
+        if self.img:
+            return self.avatar.url
+        return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     def delete(self, *args, **kwargs):
         try:
@@ -646,18 +651,6 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
             return self.allpics[0].pic.url
         except:
             return DEFAULT_IMG
-
-    @property
-    def avatar(self):
-        if self.img:
-            return self.img
-        return None
-
-    @property
-    def get_avatar(self):
-        if self.img:
-            return self.avatar.url
-        return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     @property
     def allpics(self):
