@@ -648,6 +648,18 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
             return DEFAULT_IMG
 
     @property
+    def avatar(self):
+        if self.img:
+            return self.img
+        return None
+
+    @property
+    def get_avatar(self):
+        if self.img:
+            return self.avatar.url
+        return setting('DEFAULT_AVATAR', 'noavatar.png')
+
+    @property
     def allpics(self):
         from nnmware.core.models import Pic
         return Pic.objects.for_object(self).order_by('-primary')

@@ -453,9 +453,12 @@ class SettlementVariant(models.Model):
         verbose_name_plural = _("Settlements Variants")
 
     def __str__(self):
-        return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
-            'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
-            'hotel': self.room.hotel.get_name}
+        try:
+            return _("Settlement -> %(settlement)s in %(room)s :: %(places)s :: %(hotel)s") % {
+                'settlement': self.settlement, 'room': self.room.get_name, 'places': self.room.places,
+                'hotel': self.room.hotel.get_name}
+        except:
+            return "Settlement for hotel %s" % self.room.hotel.get_name
 
     def current_amount(self):
         result = PlacePrice.objects.filter(settlement=self, date__lte=now()).order_by('-date')
@@ -764,17 +767,20 @@ class RequestAddHotel(AbstractIP):
 
 
 def update_hotel_point(sender, instance, **kwargs):
-    hotel = instance.hotel
-    all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
-                                                              Avg('purity'), Avg('transport'), Avg('prices'))
-    hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
-    hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
-    hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
-    hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
-    hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
-    h_point = (hotel.food + hotel.service + hotel.purity + hotel.transport + hotel.prices) / 5
-    hotel.point = h_point
-    hotel.save()
+    try:
+        hotel = instance.hotel
+        all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
+                                                                  Avg('purity'), Avg('transport'), Avg('prices'))
+        hotel.food = Decimal(str(all_points['food__avg'])).quantize(Decimal('1.0'))
+        hotel.service = Decimal(str(all_points['service__avg'])).quantize(Decimal('1.0'))
+        hotel.purity = Decimal(str(all_points['purity__avg'])).quantize(Decimal('1.0'))
+        hotel.transport = Decimal(str(all_points['transport__avg'])).quantize(Decimal('1.0'))
+        hotel.prices = Decimal(str(all_points['prices__avg'])).quantize(Decimal('1.0'))
+        h_point = (hotel.food + hotel.service + hotel.purity + hotel.transport + hotel.prices) / 5
+        hotel.point = h_point
+        hotel.save()
+    except:
+        pass
 
 
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
