@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from datetime import timedelta, datetime
+from datetime import timedelta
 from decimal import Decimal
 from hashlib import sha1
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -13,6 +12,8 @@ from django.db.models import Count, Sum, Max, F, Min, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
+from django.utils.timezone import now
+from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
@@ -20,9 +21,10 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 
+from nnmware.apps.booking.forms import CabinetInfoForm, CabinetTermsForm, CabinetRoomForm, AddDiscountForm, \
+    CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
-    STATUS_ACCEPTED, HotelOption, Discount
-from nnmware.apps.booking.forms import *
+    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
@@ -34,7 +36,6 @@ from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
 from nnmware.apps.address.models import City
 from nnmware.core.decorators import ssl_required
-from django.views.decorators.cache import never_cache
 from nnmware.core.views import AjaxViewMixin, UserToFormMixin
 
 

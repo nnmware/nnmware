@@ -4,7 +4,7 @@
 Yandex.Maps  and OSM API wrapper
 """
 from __future__ import with_statement
-from math import *
+from math import radians, sin, cos, sqrt, atan2
 import xml.dom.minidom
 import urllib
 import urllib2

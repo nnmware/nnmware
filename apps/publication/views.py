@@ -1,13 +1,19 @@
 # -*- coding: utf-8 -*-
-from django.contrib import messages
-from django.db.models import Q
-from django.views.generic import ListView, DateDetailView, YearArchiveView,\
-    MonthArchiveView, DayArchiveView, CreateView
-from django.utils.translation import ugettext_lazy as _
-from nnmware.core.data import get_queryset_category
 
-from nnmware.apps.publication.forms import *
-from nnmware.core.views import *
+from django.contrib import messages
+from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.views.generic import ListView, DateDetailView, YearArchiveView,\
+    MonthArchiveView, DayArchiveView, CreateView, UpdateView
+from django.utils.translation import ugettext_lazy as _
+
+from nnmware.core.views import AttachedFilesMixin, CurrentUserAuthenticated, CurrentUserEditor, CurrentUserSuperuser, \
+    CurrentUserAuthor, AjaxFormMixin
+from nnmware.apps.publication.forms import PublicationEditForm, PublicationStatusForm, PublicationStatusEditorForm, \
+    PublicationStatusAdminForm, PublicationAddForm
+from nnmware.core.data import get_queryset_category
 from nnmware.core.constants import STATUS_MODERATION, STATUS_LOCKED, STATUS_DELETE
 from nnmware.apps.publication.models import Publication
 

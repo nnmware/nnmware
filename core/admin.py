@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from django.contrib import admin
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
+
 from nnmware.core.abstract import Pic, Doc
 from nnmware.core.models import Nnmcomment, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
     EmailValidation, FlatNnmcomment, Like, ContentBlock
-from django.utils.translation import ugettext_lazy as _
 
 
 class TypeBaseAdmin(admin.ModelAdmin):

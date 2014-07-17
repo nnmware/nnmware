@@ -1,6 +1,15 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
-from nnmware.apps.dossier.models import *
 from django.utils.translation import ugettext_lazy as _
+
+from nnmware.apps.dossier.models import TypeAppearanceHuman, TypeNationalHuman, TypeBodyHuman, TypeFeatureAppearance, \
+    HairColor, EyeColor, SkinColor, HairLength, HairTexture, TypeNational, TypeProfession, TypeLifestyle, \
+    TypeBrightAppearance, TypeHistorical, TypeBodyModification, TypeSurvey, ReadinessScene, CreativeActivity, \
+    LanguageSkill, LanguageSpeak, SpokenDialect, TypeDance, TypeVocal, TypeMusicInstrument, TypeDrive, TypeSport, \
+    TypeSpecialSkill, TypeOtherSkill, DanceSkill, VocalSkill, MusicSkill, DriveSkill, SportSkill, SpecialSkill, \
+    OtherSkill, TransportType, TransportMark, AnimalType, AnimalKind, SurveyObjectType, SurveySuitType, RequisiteType, \
+    Vehicle, SurveyObject, SurveySuit, Requisite, Animal, Child, ClothingSize, ShoesSize, HeadSize, ChestSize
 from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 
 

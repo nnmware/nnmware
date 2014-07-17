@@ -2,7 +2,7 @@
 
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, \
     YearArchiveView
-from django.views.generic.detail import DetailView, SingleObjectMixin
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse

@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
-from nnmware.apps.address.models import *
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.address.models import City, Region, Country, TourismCategory, Tourism, StationMetro, Institution
+
 from nnmware.core.admin import TypeBaseAdmin
 
 
@@ -84,5 +87,4 @@ class StationMetroAdmin(admin.ModelAdmin):
 @admin.register(Institution)
 class InstitutionAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Institution"), {"fields": [('name', 'order_in_list'),
-                                       ('city', 'country')]}),)
+        (_("Institution"), {"fields": [('name', 'order_in_list'), ('city', 'country')]}),)

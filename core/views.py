@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+
 from datetime import timedelta
 import json
 from PIL import Image
+
 from django.contrib.auth import authenticate, login, get_user_model, logout
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db.models import Q
@@ -13,12 +15,15 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
-from django.views.generic.base import TemplateResponseMixin, TemplateView, View
+from django.views.generic.base import TemplateView, View
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView, SingleObjectMixin
-from django.views.generic.edit import UpdateView, BaseFormView, FormMixin, DeleteView, FormView
+from django.views.generic.edit import UpdateView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
+
+from nnmware.core.forms import PassChangeForm, LoginForm, EmailQuickRegisterForm, UserSettingsForm, RegistrationForm, \
+    SignupForm, ProfileForm, AvatarForm, VideoAddForm, AvatarCropForm
 from nnmware.core.abstract import Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
@@ -26,12 +31,11 @@ from nnmware.core.decorators import ssl_required, ssl_not_required
 from nnmware.core.ajax import as_json, ajax_answer_lazy
 from nnmware.core.http import LazyEncoder
 from nnmware.core.imgutil import remove_thumbnails, remove_file, resize_image, fit
-from nnmware.core.models import Nnmcomment, Follow, Notice, Message, Action, EmailValidation
-from nnmware.core.forms import *
+from nnmware.core.models import Nnmcomment, Follow, Notice, Message, Action, EmailValidation, Tag, Video
 from nnmware.core.signals import action
 from nnmware.core.constants import ACTION_ADDED
 from nnmware.core.utils import send_template_mail, make_key, get_video_provider_from_link, gen_shortcut, \
-    update_video_size
+    update_video_size, setting
 
 
 class UserPathMixin(object):

@@ -3,7 +3,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django import forms
-from django.forms import Textarea, FileInput
+from django.forms import FileInput
 
 from nnmware.core.imgutil import make_admin_thumbnail
 from nnmware.core.captcha import displayhtml
@@ -18,11 +18,6 @@ class ReCaptchaWidget(forms.widgets.Widget):
 
     def value_from_datadict(self, data, files, name):
         return [data.get(self.recaptcha_challenge_name, None), data.get(self.recaptcha_response_name, None)]
-
-
-class CommentSmileWidget(Textarea):
-    class Media:
-        js = ('js/smile.js',)
 
 
 class AdminImageWithThumbnailWidget(FileInput):

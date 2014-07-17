@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+
 import json
-from django.conf import settings
+
 from django.contrib import messages
 from django.utils.timezone import now
+
 from nnmware.core.utils import setting
 from nnmware.core.http import get_session_from_request
+from nnmware.core.models import VisitorHit
 
 
 class AjaxMessagingMiddleware(object):
@@ -45,8 +49,6 @@ class VisitorHitMiddleware(object):
             # if the keyword is found in the user agent, stop tracking
             if user_agent.find(ua) != -1:
                 return
-        from nnmware.core.models import VisitorHit
-
         v = VisitorHit()
         if request.user.is_authenticated():
             v.user = request.user

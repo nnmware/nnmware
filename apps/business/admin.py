@@ -1,6 +1,10 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
-from nnmware.apps.business.models import *
 from django.utils.translation import ugettext_lazy as _
+
+from nnmware.apps.business.models import TypeEmployerProfile, TypeEmployerOther, TypeEmployer, Agency, CompanyCategory, \
+    CompanyDetail, Company, VacancyCategory, Vacancy
 from nnmware.core.admin import TypeBaseAdmin, TreeAdmin
 
 

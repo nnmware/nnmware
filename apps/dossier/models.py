@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.conf import settings
+
 from django.db import models
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
@@ -727,14 +727,16 @@ VOICE_CHOICES = (
 
 
 class HumanSkill(models.Model):
-    language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'), blank=True, related_name='lng_skill')
+    language = models.ManyToManyField(LanguageSkill, verbose_name=_('Language skill'), blank=True,
+                                      related_name='lng_skill')
     dance = models.ManyToManyField(DanceSkill, verbose_name=_('Dance skill'), blank=True, related_name='dnc_skill')
     drive = models.ManyToManyField(DriveSkill, verbose_name=_('Drive skill'), blank=True, related_name='drv_skill')
     other = models.ManyToManyField(OtherSkill, verbose_name=_('Other skill'), blank=True, related_name='oth_skill')
     music = models.ManyToManyField(MusicSkill, verbose_name=_('Music skill'), blank=True, related_name='msc_skill')
     vocal = models.ManyToManyField(VocalSkill, verbose_name=_('Vocal skill'), blank=True, related_name='vlc_skill')
     sport = models.ManyToManyField(SportSkill, verbose_name=_('Sport skill'), blank=True, related_name='spr_skill')
-    special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'), blank=True, related_name='spc_skill')
+    special = models.ManyToManyField(SpecialSkill, verbose_name=_('Special skill'), blank=True,
+                                     related_name='spc_skill')
     language_desc = std_text_field(_('Language addon text'))
     dance_desc = std_text_field(_('Dance addon text'))
     drive_desc = std_text_field(_('Drive skill addon text'))

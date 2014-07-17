@@ -2,12 +2,15 @@
 # -*- coding: utf-8 -*-
 # Example of daemons
 #
-# Normal Exit - "cdrdaemon stop"
+# Normal Exit - "daemon_example stop"
 #
+import os
+from socket import socket, AF_INET, SOCK_STREAM
 import time
-from socket import *
+import sys
 
 ###########################################################################
+
 workdir = "/sites/daemon"
 logfile = "nnmware.log"
 pidfile = "nnmware.pid"

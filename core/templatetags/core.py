@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+
 from datetime import timedelta
 import re
-from xml.etree.ElementTree import Element, SubElement, tostring
+from xml.etree.ElementTree import Element, tostring
+
 from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -10,11 +12,13 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
+
+from nnmware.core.data import recurse_for_children, recurse_for_children_with_span, create_userdate_list, \
+    recurse_for_date, create_archive_list
 from nnmware.core.utils import setting
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
 from nnmware.core.abstract import Tree
-from nnmware.core.data import *
 
 
 register = Library()
@@ -559,43 +563,6 @@ def watermark(url, arg=''):
 
 ######################################################
 ###  MENU RELATED BLOCK
-
-#from nnmware.apps.forum.models import Category
-
-
-# def recurse_for_children(current_node, parent_node, show_empty=True):
-#     child_count = current_node.children.count()
-#
-#     if show_empty or child_count > 0:
-#         temp_parent = SubElement(parent_node, 'li')
-#         attrs = {'href': current_node.get_absolute_url()}
-#         link = SubElement(temp_parent, 'a', attrs)
-#         link.text = current_node.name
-#         myval = SubElement(temp_parent, 'b')
-#         myval.text = " %s/%s" % (current_node.get_updated_count, current_node.get_valid_count)
-#         if child_count > 0:
-#             new_parent = SubElement(temp_parent, 'ul')
-#             children = current_node.children.all()
-#             for child in children:
-#                 recurse_for_children(child, new_parent)
-
-
-#@register.simple_tag
-#def tree(app=None):
-#    exec("""from nnmware.apps.%s.models import Category""" % app)
-#    html = Element('root')
-#    for node in Category.objects.all():
-#        if not node.parent:
-#            recurse_for_children(node, html)
-#    return tostring(html, 'utf-8')
-
-#@register.simple_tag
-#def category_tree_series():
-#    root = Element("root")
-#    for cats in Category.objects.all().filter(slug='series'):
-#        if not cats.parent:
-#            recurse_for_children(cats, root)
-#    return tostring(root, 'utf-8')
 
 
 @register.simple_tag

@@ -5,10 +5,6 @@
 # It also store nnmware unique information
 #
 
-import os
-from PIL import Image
-import settings
-
 GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2014 framework for python/django coders'
 GRAPPELLI_INDEX_DASHBOARD = 'dashboard.NnmwareDashboard'
 LANGUAGE_COOKIE_NAME = 'nnmware_language'

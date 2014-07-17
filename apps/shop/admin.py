@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+
 from django.contrib import admin
 from django.contrib.contenttypes.admin import GenericStackedInline
-from nnmware.core.admin import TreeAdmin, UnitAdmin
 from django.utils.translation import ugettext as _
-from nnmware.apps.shop.models import *
-from nnmware.core.admin import ColorAdmin, MaterialAdmin
+
+from nnmware.core.admin import TreeAdmin
+from nnmware.apps.shop.models import ProductParameterValue, Product, ProductCategory, ProductParameter, \
+    ProductParameterCategory, Vendor, Basket, OrderItem, Order, DeliveryAddress, Feedback, ShopCallback, Review, \
+    ShopSlider, SpecialOffer, ShopNews, ShopArticle, DeliveryMethod, ServiceCategory, Service
 
 
 class ProductParameterValueInline(GenericStackedInline):
@@ -37,8 +40,8 @@ class ProductCategoryAdmin(TreeAdmin):
     pass
 
     class Media:
-        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
+        js = ('/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
+              '/static/grappelli/tinymce_setup/tinymce_setup.js')
         #list_display = ("name", "_parents_repr")
 
 

@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
+
 from datetime import timedelta
-import re
 from xml.etree.ElementTree import Element, SubElement, tostring
+
 from django.template import Library
 from django.template.defaultfilters import floatformat
+
 from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review, \
     ShopSlider
 from nnmware.core.http import get_session_from_request

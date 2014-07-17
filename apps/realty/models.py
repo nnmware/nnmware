@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
-from nnmware.apps.business.models import Company, AbstractSeller
+from nnmware.apps.business.models import AbstractSeller
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractDate, AbstractName
 

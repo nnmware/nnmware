@@ -3,11 +3,11 @@
 from django import forms
 from django.forms.models import ModelForm
 
-from nnmware.apps.board.models import Board, Category
+from nnmware.apps.board.models import Board, BoardCategory
 
 
 class BoardForm(ModelForm):
-    category = forms.ModelChoiceField(queryset=Category.objects.filter(rootnode=False))
+    category = forms.ModelChoiceField(queryset=BoardCategory.objects.filter(rootnode=False))
 
     class Meta:
         model = Board

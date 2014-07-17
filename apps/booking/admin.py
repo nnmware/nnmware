@@ -2,8 +2,10 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
-from nnmware.apps.booking.models import *
 from django.utils.translation import ugettext_lazy as _
+from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
+    RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Discount, Review, SettlementVariant, \
+    Availability, PlacePrice, RoomDiscount
 
 try:
     from pytils.translit import slugify
