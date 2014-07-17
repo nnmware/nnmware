@@ -19,7 +19,7 @@ from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
-from core.file import get_path_from_url
+from nnmware.core.file import get_path_from_url
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
 from core.models import IMG_MAX_PER_OBJECT, IMG_THUMB_QUALITY, IMG_RESIZE_METHOD, IMG_THUMB_FORMAT
