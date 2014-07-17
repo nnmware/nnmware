@@ -10,7 +10,6 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
-from core.abstract import Doc as Alldata
 from nnmware.core.utils import setting
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
@@ -672,7 +671,6 @@ def menu_date(app=None):
         from nnmware.apps.article.models import Article as Alldata
     elif app == 'topic':
         from nnmware.apps.topic.models import Topic as Alldata
-    elif app == 'doc':
     query = Alldata.objects.all().order_by('-created_date')
     objects_years_dict = create_archive_list(query)
     html = Element("ul")

@@ -6,8 +6,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils.translation import ugettext_lazy as _
-from core.abstract import Doc
-
+from nnmware.core.abstract import Doc
 from nnmware.core.fields import ReCaptchaField
 from nnmware.core.models import Tag, EmailValidation, Video
 from nnmware.core.utils import tags_normalize, setting

@@ -19,8 +19,7 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, BaseFormView, FormMixin, DeleteView, FormView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from core.abstract import Doc
-from nnmware.core.abstract import Pic
+from nnmware.core.abstract import Pic, Doc
 from nnmware.core import oembed
 from nnmware.core.backends import image_from_url
 from nnmware.core.decorators import ssl_required, ssl_not_required
