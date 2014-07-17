@@ -6,10 +6,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.utils.timezone import now
+from core.abstract import Doc
 from nnmware.apps.address.models import Country
 from nnmware.core.fields import std_text_field
 from nnmware.core.managers import FinancialManager
-from nnmware.core.models import Doc
 from django.utils.encoding import python_2_unicode_compatible
 
 

@@ -16,14 +16,10 @@ from django.db import models
 from django.db.models.manager import Manager
 from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _, ugettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.file import get_path_from_url
-from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
-from nnmware.core.managers import AbstractContentManager
-# from nnmware.core.models import IMG_MAX_PER_OBJECT, IMG_THUMB_QUALITY, IMG_RESIZE_METHOD, IMG_THUMB_FORMAT
-
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
@@ -36,7 +32,6 @@ IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
 IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
 IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
 IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
-
 
 
 class AbstractDate(models.Model):
@@ -619,6 +614,47 @@ class Pic(AbstractContent, AbstractFile):
     slide_thumbnail.allow_tags = True
 
 
+class Doc(AbstractContent, AbstractFile):
+    filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
+    doc = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
+
+    class Meta:
+        ordering = ['ordering', ]
+        verbose_name = _("Doc")
+        verbose_name_plural = _("Docs")
+
+    objects = AbstractContentManager()
+
+    def save(self, *args, **kwargs):
+        try:
+            docs = Doc.objects.for_object(self.content_object)
+            if self.pk:
+                docs = docs.exclude(pk=self.pk)
+            if DOC_MAX_PER_OBJECT > 1:
+                if self.primary:
+                    docs = docs.filter(primary=True)
+                    docs.update(primary=False)
+            else:
+                docs.delete()
+        except:
+            pass
+        fullpath = os.path.join(settings.MEDIA_ROOT, self.doc.field.upload_to, self.doc.path)
+        self.size = os.path.getsize(fullpath)
+        super(Doc, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse(os.path.join(settings.MEDIA_URL, self.doc.url))
+
+    def get_file_link(self):
+        return os.path.join(settings.MEDIA_URL, self.doc.url)
+
+    def get_del_url(self):
+        return reverse("doc_del", args=[self.id])
+
+    def get_edit_url(self):
+        return reverse("doc_edit", args=[self.id])
+
+
 class AbstractIP(models.Model):
     ip = models.GenericIPAddressField(verbose_name=_('IP'), null=True, blank=True)
     user_agent = models.CharField(verbose_name=_('User Agent'), blank=True, max_length=255, default='')
@@ -907,5 +943,4 @@ class AbstractLike(AbstractContent):
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
-
 

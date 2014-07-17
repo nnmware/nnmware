@@ -19,6 +19,7 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404
+from core.abstract import Doc
 from nnmware.core.abstract import Pic
 from nnmware.core.constants import STATUS_LOCKED, ACTION_LIKED, ACTION_COMMENTED, ACTION_FOLLOWED, STATUS_DELETE
 from nnmware.core import oembed
@@ -26,7 +27,7 @@ from nnmware.core.actions import unfollow, follow
 from nnmware.core.exceptions import AccessError
 from nnmware.core.file import get_path_from_url
 from nnmware.core.http import LazyEncoder
-from nnmware.core.models import Doc, Video, Follow, Tag, Notice, Message, \
+from nnmware.core.models import Video, Follow, Tag, Notice, Message, \
     Nnmcomment, FlatNnmcomment, Like
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.signals import notice, action

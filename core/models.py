@@ -3,9 +3,7 @@
 """
 Base model library.
 """
-import os
 
-from PIL import Image
 from django.utils.timesince import timesince
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
@@ -23,14 +21,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
 
-from nnmware.core.abstract import Pic
+from nnmware.core.abstract import Pic, Doc
 from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
     STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
 from nnmware.core.utils import setting
 from nnmware.core.abstract import AbstractDate, AbstractNnmcomment, AbstractLike
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, FollowManager, MessageManager
-from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
-from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP
+from nnmware.core.abstract import AbstractContent, AbstractImg
+from nnmware.core.abstract import AbstractIP
 
 
 @python_2_unicode_compatible
@@ -70,47 +68,6 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse('tag_detail', args=[self.slug])
-
-
-class Doc(AbstractContent, AbstractFile):
-    filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
-    doc = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
-
-    class Meta:
-        ordering = ['ordering', ]
-        verbose_name = _("Doc")
-        verbose_name_plural = _("Docs")
-
-    objects = AbstractContentManager()
-
-    def save(self, *args, **kwargs):
-        try:
-            docs = Doc.objects.for_object(self.content_object)
-            if self.pk:
-                docs = docs.exclude(pk=self.pk)
-            if DOC_MAX_PER_OBJECT > 1:
-                if self.primary:
-                    docs = docs.filter(primary=True)
-                    docs.update(primary=False)
-            else:
-                docs.delete()
-        except:
-            pass
-        fullpath = os.path.join(settings.MEDIA_ROOT, self.doc.field.upload_to, self.doc.path)
-        self.size = os.path.getsize(fullpath)
-        super(Doc, self).save(*args, **kwargs)
-
-    def get_absolute_url(self):
-        return reverse(os.path.join(settings.MEDIA_URL, self.doc.url))
-
-    def get_file_link(self):
-        return os.path.join(settings.MEDIA_URL, self.doc.url)
-
-    def get_del_url(self):
-        return reverse("doc_del", args=[self.id])
-
-    def get_edit_url(self):
-        return reverse("doc_edit", args=[self.id])
 
 
 class FlatNnmcomment(AbstractNnmcomment):

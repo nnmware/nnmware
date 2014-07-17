@@ -2,8 +2,9 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from core.abstract import Doc
 from nnmware.core.abstract import Pic
-from nnmware.core.models import Nnmcomment, Doc, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
+from nnmware.core.models import Nnmcomment, Tag, Action, Follow, Notice, Message, VisitorHit, Video, \
     EmailValidation, FlatNnmcomment, Like, ContentBlock
 from django.utils.translation import ugettext_lazy as _
 
