@@ -22,7 +22,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.file import get_path_from_url
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager
-from nnmware.core.models import IMG_MAX_PER_OBJECT, IMG_THUMB_QUALITY, IMG_RESIZE_METHOD, IMG_THUMB_FORMAT
+# from nnmware.core.models import IMG_MAX_PER_OBJECT, IMG_THUMB_QUALITY, IMG_RESIZE_METHOD, IMG_THUMB_FORMAT
 
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -31,6 +31,12 @@ from nnmware.core.fields import std_text_field, std_url_field, std_email_field
 from nnmware.core.utils import setting
 
 DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG', 'generic.png'))
+DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
+IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
+IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
+IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
+IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
+
 
 
 class AbstractDate(models.Model):

@@ -33,13 +33,6 @@ from nnmware.core.abstract import AbstractContent, AbstractFile, AbstractImg
 from nnmware.core.abstract import DOC_TYPE, DOC_FILE, AbstractIP
 
 
-DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
-IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
-IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
-IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
-IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
-
-
 @python_2_unicode_compatible
 class Tag(models.Model):
     """
