@@ -46,6 +46,170 @@ class AbstractDate(models.Model):
         super(AbstractDate, self).save(**kwargs)
 
 
+@python_2_unicode_compatible
+class AbstractContent(models.Model):
+    # Generic Foreign Key Fields
+    content_type = models.ForeignKey(ContentType, null=True, blank=True,
+                                     related_name="%(app_label)s_%(class)s_cntype")
+    object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
+    content_object = GenericForeignKey('content_type', 'object_id')
+    primary = models.BooleanField(_('Is primary'), default=False)
+
+    class Meta:
+        abstract = True
+
+    objects = AbstractContentManager()
+
+    def __str__(self):
+        try:
+            return "%s - %s " % (self.content_object.get_name, self.pk)
+        except:
+            return None
+
+    def get_content_object(self):
+        return self.content_object
+
+
+DOC_FILE = 0
+DOC_IMAGE = 1
+
+DOC_TYPE = (
+    (DOC_FILE, _("File")),
+    (DOC_IMAGE, _("Image")),
+)
+
+
+class AbstractFile(AbstractDate):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
+                             related_name="%(class)s_f_user")
+    description = std_text_field(_("Description"))
+    size = models.IntegerField(editable=False, null=True, blank=True)
+    ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))
+    locked = models.BooleanField(_('Is locked'), default=False)
+
+    class Meta:
+        abstract = True
+
+
+@python_2_unicode_compatible
+class Pic(AbstractContent, AbstractFile):
+    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
+
+    objects = AbstractContentManager()
+
+    class Meta:
+        ordering = ['created_date', ]
+        verbose_name = _("Pic")
+        verbose_name_plural = _("Pics")
+
+    def __str__(self):
+        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type),
+                                                 'obj': unicode(self.content_object)}
+
+    def get_file_link(self):
+        return os.path.join(settings.MEDIA_URL, self.pic.url)
+
+    def save(self, *args, **kwargs):
+        pics = Pic.objects.for_object(self.content_object)
+        if self.pk:
+            pics = pics.exclude(pk=self.pk)
+        if IMG_MAX_PER_OBJECT > 1:
+            if self.primary:
+                pics = pics.filter(primary=True)
+                pics.update(primary=False)
+        else:
+            pics.delete()
+        try:
+            remove_thumbnails(self.pic.path)
+        except:
+            pass
+        fullpath = get_path_from_url(self.pic.url)
+        self.size = os.path.getsize(fullpath)
+        super(Pic, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            remove_thumbnails(self.pic.path)
+            remove_file(self.pic.path)
+        except:
+            pass
+        super(Pic, self).delete(*args, **kwargs)
+
+    def create_thumbnail(self, size, quality=None):
+        try:
+            orig = self.pic.storage.open(self.pic.name, 'rb').read()
+            image = Image.open(StringIO(orig))
+        except IOError:
+            return  # What should we do here?  Render a "sorry, didn't work" img?
+        quality = quality or IMG_THUMB_QUALITY
+        (w, h) = image.size
+        if w != size or h != size:
+            if w > h:
+                diff = (w - h) / 2
+                image = image.crop((diff, 0, w - diff, h))
+            else:
+                diff = (h - w) / 2
+                image = image.crop((0, diff, w, h - diff))
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            image = image.resize((size, size), IMG_RESIZE_METHOD)
+            thumb = StringIO()
+            image.save(thumb, IMG_THUMB_FORMAT, quality=quality)
+            thumb_file = ContentFile(thumb.getvalue())
+        else:
+            thumb_file = ContentFile(orig)
+        thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
+
+    def get_del_url(self):
+        return "pic_del", (), {'object_id': self.pk}
+
+    def get_edit_url(self):
+        return reverse("pic_edit", args=[self.pk])
+
+    def get_view_url(self):
+        return reverse("pic_view", args=[self.pk])
+
+    def get_editor_url(self):
+        return reverse("pic_editor", args=[self.pk])
+
+    def slide_thumbnail(self):
+        if self.pic:
+            path = self.pic.url
+            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
+        else:
+            tmb = '/static/img/icon-no.gif"'
+            path = '/static/img/icon-no.gif"'
+        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
+
+    slide_thumbnail.allow_tags = True
+
+
+class PicsMixin(object):
+
+    @property
+    def main_image(self):
+        try:
+            return self.allpics[0].pic.url
+        except:
+            return DEFAULT_IMG
+
+    @property
+    def allpics(self):
+        return Pic.objects.for_object(self).order_by('-primary')
+
+    @property
+    def obj_pic(self):
+        try:
+            return self.allpics[0]
+        except:
+            return None
+
+    @property
+    def pics_count(self):
+        return self.allpics.count()
+
+
 class AbstractTeaser(models.Model):
     teaser = models.CharField(verbose_name=_('Teaser'), max_length=255, db_index=True, blank=True)
     teaser_en = models.CharField(verbose_name=_('Teaser(English)'), max_length=255, blank=True,
@@ -254,7 +418,7 @@ class Material(AbstractImg):
 
 
 @python_2_unicode_compatible
-class AbstractName(AbstractImg):
+class AbstractName(AbstractImg, PicsMixin):
     name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True)
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True, db_index=True)
@@ -294,28 +458,6 @@ class AbstractName(AbstractImg):
         except:
             pass
         return self.description
-
-    @property
-    def main_image(self):
-        try:
-            return self.allpics[0].pic.url
-        except:
-            return DEFAULT_IMG
-
-    @property
-    def allpics(self):
-        return Pic.objects.for_object(self).order_by('-primary')
-
-    @property
-    def obj_pic(self):
-        try:
-            return self.allpics[0]
-        except:
-            return None
-
-    @property
-    def pics_count(self):
-        return Pic.objects.for_object(self).count()
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -475,143 +617,6 @@ class Tree(AbstractName):
         return flat_list
 
 
-@python_2_unicode_compatible
-class AbstractContent(models.Model):
-    # Generic Foreign Key Fields
-    content_type = models.ForeignKey(ContentType, null=True, blank=True,
-                                     related_name="%(app_label)s_%(class)s_cntype")
-    object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
-    content_object = GenericForeignKey('content_type', 'object_id')
-    primary = models.BooleanField(_('Is primary'), default=False)
-
-    class Meta:
-        abstract = True
-
-    objects = AbstractContentManager()
-
-    def __str__(self):
-        try:
-            return "%s - %s " % (self.content_object.get_name, self.pk)
-        except:
-            return None
-
-    def get_content_object(self):
-        return self.content_object
-
-
-DOC_FILE = 0
-DOC_IMAGE = 1
-
-DOC_TYPE = (
-    (DOC_FILE, _("File")),
-    (DOC_IMAGE, _("Image")),
-)
-
-
-class AbstractFile(AbstractDate):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
-                             related_name="%(class)s_f_user")
-    description = std_text_field(_("Description"))
-    size = models.IntegerField(editable=False, null=True, blank=True)
-    ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))
-    locked = models.BooleanField(_('Is locked'), default=False)
-
-    class Meta:
-        abstract = True
-
-
-@python_2_unicode_compatible
-class Pic(AbstractContent, AbstractFile):
-    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
-    source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
-
-    objects = AbstractContentManager()
-
-    class Meta:
-        ordering = ['created_date', ]
-        verbose_name = _("Pic")
-        verbose_name_plural = _("Pics")
-
-    def __str__(self):
-        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type),
-                                                 'obj': unicode(self.content_object)}
-
-    def get_file_link(self):
-        return os.path.join(settings.MEDIA_URL, self.pic.url)
-
-    def save(self, *args, **kwargs):
-        pics = Pic.objects.for_object(self.content_object)
-        if self.pk:
-            pics = pics.exclude(pk=self.pk)
-        if IMG_MAX_PER_OBJECT > 1:
-            if self.primary:
-                pics = pics.filter(primary=True)
-                pics.update(primary=False)
-        else:
-            pics.delete()
-        try:
-            remove_thumbnails(self.pic.path)
-        except:
-            pass
-        fullpath = get_path_from_url(self.pic.url)
-        self.size = os.path.getsize(fullpath)
-        super(Pic, self).save(*args, **kwargs)
-
-    def delete(self, *args, **kwargs):
-        try:
-            remove_thumbnails(self.pic.path)
-            remove_file(self.pic.path)
-        except:
-            pass
-        super(Pic, self).delete(*args, **kwargs)
-
-    def create_thumbnail(self, size, quality=None):
-        try:
-            orig = self.pic.storage.open(self.pic.name, 'rb').read()
-            image = Image.open(StringIO(orig))
-        except IOError:
-            return  # What should we do here?  Render a "sorry, didn't work" img?
-        quality = quality or IMG_THUMB_QUALITY
-        (w, h) = image.size
-        if w != size or h != size:
-            if w > h:
-                diff = (w - h) / 2
-                image = image.crop((diff, 0, w - diff, h))
-            else:
-                diff = (h - w) / 2
-                image = image.crop((0, diff, w, h - diff))
-            if image.mode != "RGB":
-                image = image.convert("RGB")
-            image = image.resize((size, size), IMG_RESIZE_METHOD)
-            thumb = StringIO()
-            image.save(thumb, IMG_THUMB_FORMAT, quality=quality)
-            thumb_file = ContentFile(thumb.getvalue())
-        else:
-            thumb_file = ContentFile(orig)
-        thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
-
-    def get_del_url(self):
-        return "pic_del", (), {'object_id': self.pk}
-
-    def get_edit_url(self):
-        return reverse("pic_edit", args=[self.pk])
-
-    def get_view_url(self):
-        return reverse("pic_view", args=[self.pk])
-
-    def get_editor_url(self):
-        return reverse("pic_editor", args=[self.pk])
-
-    def slide_thumbnail(self):
-        if self.pic:
-            path = self.pic.url
-            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
-        else:
-            tmb = '/static/img/icon-no.gif"'
-            path = '/static/img/icon-no.gif"'
-        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
-
-    slide_thumbnail.allow_tags = True
 
 
 class Doc(AbstractContent, AbstractFile):
@@ -752,7 +757,7 @@ class AbstractSkill(AbstractOrder):
 
 
 @python_2_unicode_compatible
-class AbstractNnmwareProfile(AbstractDate, AbstractImg):
+class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     main = models.BooleanField(_('Main profile'), default=False)
     first_name = std_text_field(_('First Name'), max_length=50)
     middle_name = std_text_field(_('Middle Name'), max_length=50)
@@ -785,31 +790,6 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
 
     def get_absolute_url(self):
         return reverse('employer_view', args=[self.pk])
-
-    @property
-    def main_image(self):
-        try:
-            return self.allpics[0].pic.url
-        except:
-            return DEFAULT_IMG
-
-    @property
-    def allpics(self):
-        return Pic.objects.for_object(self).order_by('-primary')
-
-
-class PicsMixin(object):
-
-    @property
-    def main_image(self):
-        try:
-            return self.allpics[0].pic.url
-        except:
-            return DEFAULT_IMG
-
-    @property
-    def allpics(self):
-        return Pic.objects.for_object(self).order_by('-primary')
 
 
 class AbstractOffer(AbstractImg):
@@ -943,4 +923,3 @@ class AbstractLike(AbstractContent):
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
-
