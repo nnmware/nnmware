@@ -761,7 +761,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     middle_name = std_text_field(_('Middle Name'), max_length=50)
     last_name = std_text_field(_('Last Name'), max_length=50)
     viewcount = models.PositiveIntegerField(default=0, editable=False)
-    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True)
+    enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=False)
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
