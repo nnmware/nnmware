@@ -381,17 +381,6 @@ class AbstractImg(models.Model):
             pass
         super(AbstractImg, self).delete(*args, **kwargs)
 
-    def slide_thumbnail(self):
-        if self.img:
-            path = self.img.url
-            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
-        else:
-            tmb = '/static/img/icon-no.gif"'
-            path = '/static/img/icon-no.gif"'
-        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
-
-    slide_thumbnail.allow_tags = True
-
     def thumbnail(self):
         if self.img:
             path = self.img.url
