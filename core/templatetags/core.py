@@ -10,6 +10,7 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
+from core.abstract import Pic as Alldata
 from nnmware.core.utils import setting
 from nnmware.core.models import Tag, Video, Nnmcomment, Message
 from nnmware.core.imgutil import make_thumbnail, get_image_size, make_watermark
@@ -671,8 +672,7 @@ def menu_date(app=None):
         from nnmware.apps.article.models import Article as Alldata
     elif app == 'topic':
         from nnmware.apps.topic.models import Topic as Alldata
-    elif app == 'pic':
-        from nnmware.core.models import Pic as Alldata
+    elif app == 'pic': \
     elif app == 'doc':
         from nnmware.core.models import Doc as Alldata
     query = Alldata.objects.all().order_by('-created_date')

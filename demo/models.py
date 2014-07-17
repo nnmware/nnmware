@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from nnmware.core.models import Pic, NnmwareUser
+from core.abstract import Pic
+from nnmware.core.models import NnmwareUser
 
 
 class User(NnmwareUser):

@@ -1,21 +1,28 @@
 # -*- coding: utf-8 -*-
 # Base abstract classed nnmware(c)2013-2014
+from StringIO import StringIO
 
 import os
+from PIL import Image
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
+from django.core.files.base import ContentFile
 from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.db import models
 from django.db.models.manager import Manager
 from django.template.defaultfilters import truncatewords_html
 from django.utils.html import strip_tags
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, ugettext_lazy
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
+from core.file import get_path_from_url
+from core.imgutil import remove_thumbnails, remove_file, make_thumbnail
+from core.managers import AbstractContentManager
+from core.models import IMG_MAX_PER_OBJECT, IMG_THUMB_QUALITY, IMG_RESIZE_METHOD, IMG_THUMB_FORMAT
 
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
@@ -296,7 +303,6 @@ class AbstractName(AbstractImg):
 
     @property
     def allpics(self):
-        from nnmware.core.models import Pic
         return Pic.objects.for_object(self).order_by('-primary')
 
     @property
@@ -308,7 +314,6 @@ class AbstractName(AbstractImg):
 
     @property
     def pics_count(self):
-        from nnmware.core.models import Pic
         return Pic.objects.for_object(self).count()
 
     def save(self, *args, **kwargs):
@@ -514,6 +519,100 @@ class AbstractFile(AbstractDate):
         abstract = True
 
 
+@python_2_unicode_compatible
+class Pic(AbstractContent, AbstractFile):
+    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
+
+    objects = AbstractContentManager()
+
+    class Meta:
+        ordering = ['created_date', ]
+        verbose_name = _("Pic")
+        verbose_name_plural = _("Pics")
+
+    def __str__(self):
+        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type),
+                                                 'obj': unicode(self.content_object)}
+
+    def get_file_link(self):
+        return os.path.join(settings.MEDIA_URL, self.pic.url)
+
+    def save(self, *args, **kwargs):
+        pics = Pic.objects.for_object(self.content_object)
+        if self.pk:
+            pics = pics.exclude(pk=self.pk)
+        if IMG_MAX_PER_OBJECT > 1:
+            if self.primary:
+                pics = pics.filter(primary=True)
+                pics.update(primary=False)
+        else:
+            pics.delete()
+        try:
+            remove_thumbnails(self.pic.path)
+        except:
+            pass
+        fullpath = get_path_from_url(self.pic.url)
+        self.size = os.path.getsize(fullpath)
+        super(Pic, self).save(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        try:
+            remove_thumbnails(self.pic.path)
+            remove_file(self.pic.path)
+        except:
+            pass
+        super(Pic, self).delete(*args, **kwargs)
+
+    def create_thumbnail(self, size, quality=None):
+        try:
+            orig = self.pic.storage.open(self.pic.name, 'rb').read()
+            image = Image.open(StringIO(orig))
+        except IOError:
+            return  # What should we do here?  Render a "sorry, didn't work" img?
+        quality = quality or IMG_THUMB_QUALITY
+        (w, h) = image.size
+        if w != size or h != size:
+            if w > h:
+                diff = (w - h) / 2
+                image = image.crop((diff, 0, w - diff, h))
+            else:
+                diff = (h - w) / 2
+                image = image.crop((0, diff, w, h - diff))
+            if image.mode != "RGB":
+                image = image.convert("RGB")
+            image = image.resize((size, size), IMG_RESIZE_METHOD)
+            thumb = StringIO()
+            image.save(thumb, IMG_THUMB_FORMAT, quality=quality)
+            thumb_file = ContentFile(thumb.getvalue())
+        else:
+            thumb_file = ContentFile(orig)
+        thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
+
+    def get_del_url(self):
+        return "pic_del", (), {'object_id': self.pk}
+
+    def get_edit_url(self):
+        return reverse("pic_edit", args=[self.pk])
+
+    def get_view_url(self):
+        return reverse("pic_view", args=[self.pk])
+
+    def get_editor_url(self):
+        return reverse("pic_editor", args=[self.pk])
+
+    def slide_thumbnail(self):
+        if self.pic:
+            path = self.pic.url
+            tmb = make_thumbnail(path, width=60, height=60, aspect=1)
+        else:
+            tmb = '/static/img/icon-no.gif"'
+            path = '/static/img/icon-no.gif"'
+        return '<a target="_blank" href="%s"><img src="%s" /></a>' % (path, tmb)
+
+    slide_thumbnail.allow_tags = True
+
+
 class AbstractIP(models.Model):
     ip = models.GenericIPAddressField(verbose_name=_('IP'), null=True, blank=True)
     user_agent = models.CharField(verbose_name=_('User Agent'), blank=True, max_length=255, default='')
@@ -654,7 +753,6 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg):
 
     @property
     def allpics(self):
-        from nnmware.core.models import Pic
         return Pic.objects.for_object(self).order_by('-primary')
 
 
@@ -669,7 +767,6 @@ class PicsMixin(object):
 
     @property
     def allpics(self):
-        from nnmware.core.models import Pic
         return Pic.objects.for_object(self).order_by('-primary')
 
 
@@ -804,3 +901,5 @@ class AbstractLike(AbstractContent):
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
+
+
