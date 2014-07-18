@@ -744,7 +744,7 @@ class AbstractSkill(AbstractOrder):
 
 
 @python_2_unicode_compatible
-class AbstractNnmwareProfile(AbstractDate, AbstractImg):
+class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     main = models.BooleanField(_('Main profile'), default=False)
     first_name = std_text_field(_('First Name'), max_length=50)
     middle_name = std_text_field(_('Middle Name'), max_length=50)
