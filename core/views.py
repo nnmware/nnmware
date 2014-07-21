@@ -175,8 +175,8 @@ class DocDayList(DayArchiveView):
 class CurrentUserAuthor(object):
     """ Generic update view that check request.user is author of object """
 
-    def dispatch(self, *args, **kwargs):
-        response = super(CurrentUserAuthor, self).dispatch(*args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        response = super(CurrentUserAuthor, self).dispatch(request, *args, **kwargs)
         obj = self.get_object()
         if obj.user != self.request.user:
             raise Http404
@@ -204,19 +204,19 @@ class CurrentUserSuperuser(object):
 class CurrentUserEditor(object):
     """ Generic update view that checks permissions for change object """
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not self.request.user.has_perm('%s.change_%s' % (self.model._meta.app_label, self.model._meta.model_name)):
             raise Http404
-        return super(CurrentUserEditor, self).dispatch(*args, **kwargs)
+        return super(CurrentUserEditor, self).dispatch(request, *args, **kwargs)
 
 
 class CurrentUserCreator(object):
     """ Generic create view that checks permissions """
 
-    def dispatch(self, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not self.request.user.has_perm('%s.create_%s' % (self.model._meta.app_label, self.model._meta.model_name)):
             raise Http404
-        return super(CurrentUserCreator, self).dispatch(*args, **kwargs)
+        return super(CurrentUserCreator, self).dispatch(request, *args, **kwargs)
 
 
 class AttachedImagesMixin(object):
