@@ -113,14 +113,14 @@ class TabMixinView(object):
 
 
 class SortPanelMixin(object):
-    user_order = None
-    user_sort = None
+    order = None
+    sort = None
     current_page = None
 
     def get_context_data(self, **kwargs):
         context = super(SortPanelMixin, self).get_context_data(**kwargs)
-        context['order'] = self.user_order
-        context['sort'] = self.user_sort
+        context['order'] = self.order
+        context['sort'] = self.sort
         context['current_page'] = self.current_page
         return context
 
