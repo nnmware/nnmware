@@ -4,6 +4,7 @@ from datetime import timedelta
 import re
 from xml.etree.ElementTree import Element, tostring
 
+from django.core.cache import cache
 from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -601,13 +602,19 @@ def menu_span(app=None):
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
         pass
-
-    if 1 > 0:  # try:
+    try:
+        menuspan = cache.get('menu_span_' + app)
+        if menuspan is not None:
+            return menuspan
         html = Element("ul")
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children_with_span(node, html)
-        return tostring(html, 'utf-8')
+        result = tostring(html, 'utf-8')
+        cache.set('menu_span_' + app, result, 300)
+        return result
+    except:
+        return ''
 
 
 @register.simple_tag
