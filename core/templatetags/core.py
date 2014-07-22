@@ -482,24 +482,24 @@ class UserCommentCountNode(Node):
 @register.filter
 def thumbnail(url, args=''):
     """ Returns thumbnail URL and create it if not already exists.
-Usage::
+    Usage::
 
-    {{ url|thumbnail:"width=10,height=20" }}
-    {{ url|thumbnail:"width=10" }}
-    {{ url|thumbnail:"height=20,aspect=1" }}
+        {{ url|thumbnail:"width=10,height=20" }}
+        {{ url|thumbnail:"width=10" }}
+        {{ url|thumbnail:"height=20,aspect=1" }}
 
-Image is **proportionally** resized to dimension which is no greater than ``width x height``.
+    Image is **proportionally** resized to dimension which is no greater than ``width x height``.
 
-Thumbnail file is saved in the same location as the original image
-and his name is constructed like this::
+    Thumbnail file is saved in the same location as the original image
+    and his name is constructed like this::
 
-    %(dirname)s/%(basename)s_t[_w%(width)d][_h%(height)d].%(extension)s
+        %(dirname)s/%(basename)s_t[_w%(width)d][_h%(height)d].%(extension)s
 
-or if only a width is requested (to be compatibile with admin interface)::
+    or if only a width is requested (to be compatibile with admin interface)::
 
-    %(dirname)s/%(basename)s_t%(width)d.%(extension)s
+        %(dirname)s/%(basename)s_t%(width)d.%(extension)s
 
-"""
+    """
     if url is None:
         return None
     kwargs = {}
@@ -656,27 +656,6 @@ def nofollow(value):
     return r_nofollow.sub(s_nofollow, value)
 
 
-if settings.DEBUG:
-    @register.inclusion_tag('core/debug.html')
-    def site_debug():
-        import re
-        from django.db import connection
-
-        queries = connection.queries
-        query_time = 0
-        query_count = 0
-        for query in queries:
-            query_time += float(query['time'])
-            query_count += int(1)
-        return {
-            'query_time': query_time,
-            'query_count': query_count}
-else:
-    @register.simple_tag
-    def site_debug():
-        return ''
-
-
 @register.filter
 def datelinks(value):
     """
@@ -762,28 +741,6 @@ def trash_count(context):
     except (KeyError, AttributeError):
         count = ''
     return "%s" % count
-
-#####################################################
-### SMILES OLD
-
-EMOTICONS = {
-    'O:-)': 'angel_mini',
-    '@}-&gt;--': 'rose_mini',
-    '*HEART*': 'heart_mini',
-    '*OK*': 'music_mini2'}
-
-
-@register.filter
-def smiles(value):
-    """
-    Smiles library
-    """
-    for key, val in EMOTICONS.items():
-        value = value.replace(key, """<img src="/s/emo/%s.gif" />""" % val)
-    return value
-
-
-smiles.is_safe = True
 
 
 @register.simple_tag
