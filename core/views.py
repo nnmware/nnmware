@@ -112,6 +112,19 @@ class TabMixinView(object):
         return context
 
 
+class SortPanelMixin(object):
+    user_order = None
+    user_sort = None
+    current_page = None
+
+    def get_context_data(self, **kwargs):
+        context = super(SortPanelMixin, self).get_context_data(**kwargs)
+        context['order'] = self.user_order
+        context['sort'] = self.user_sort
+        context['current_page'] = self.current_page
+        return context
+
+
 class PicList(ListView):
     template_name = 'upload/pic_list.html'
     model = Pic
