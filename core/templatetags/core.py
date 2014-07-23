@@ -301,6 +301,15 @@ def get_addon_image_attach_url(content_object):
 
 
 @register.simple_tag
+def get_content_attach_url(content_object):
+    kwargs = {
+        'content_type': ContentType.objects.get_for_model(content_object).id,
+        'object_id': getattr(content_object, 'pk'),
+    }
+    return reverse('content_attach', kwargs=kwargs)
+
+
+@register.simple_tag
 def get_comment_url(content_object, parent=None):
     """
     Given an object and an optional parent, this tag gets the URL to POST to for the
