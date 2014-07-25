@@ -360,19 +360,6 @@ def delete_message(request, object_id):
     return ajax_answer_lazy(payload)
 
 
-def avatar_delete(request):
-    try:
-        u = request.user
-        remove_thumbnails(u.img.url)
-        remove_file(u.img.url)
-        u.img = ''
-        u.save()
-        payload = {'success': True}
-    except:
-        payload = {'success': False}
-    return ajax_answer_lazy(payload)
-
-
 def message_add(request):
     """
     Message add ajax
@@ -896,3 +883,20 @@ def avatar_set(request):
             addons = {}
         result.update(addons)
     return ajax_answer_lazy(result)
+
+
+def avatar_delete(request):
+    try:
+        remove_thumbnails(request.user.img.url)
+        remove_file(request.user.img.url)
+        request.user.img = ''
+        request.user.save()
+        payload = {'success': True}
+        try:
+            addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
+        except:
+            addons = {}
+        payload.update(addons)
+    except:
+        payload = {'success': False}
+    return ajax_answer_lazy(payload)
