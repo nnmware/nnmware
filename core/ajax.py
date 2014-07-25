@@ -567,7 +567,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
         comment.comment = request.POST.get('comment') or None
-        depth = int(request.POST('depth'))
+        depth = int(request.POST.get('depth'))
         if len(comment.comment) < 1:
             raise AccessError
         if parent_id is not None:
