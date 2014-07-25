@@ -256,12 +256,12 @@ def push_user(request, object_id):
     return ajax_answer_lazy(payload)
 
 
-def follow_object(request, content_type_id, object_id):
+def follow_object(request, content_type, object_id):
     """
     Creates the follow relationship between ``request.user`` and the
     actor defined by ``content_type_id``, ``object_id``.
     """
-    ctype = get_object_or_404(ContentType, id=content_type_id)
+    ctype = ContentType.objects.get_for_id(content_type)
     if not Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
         actor = ctype.get_object_for_this_type(id=object_id)
         follow(request.user, actor)
@@ -273,12 +273,12 @@ def follow_object(request, content_type_id, object_id):
     return ajax_answer_lazy(payload)
 
 
-def unfollow_object(request, content_type_id, object_id):
+def unfollow_object(request, content_type, object_id):
     """
     Creates the follow relationship between ``request.user`` and the
     actor defined by ``content_type_id``, ``object_id``.
     """
-    ctype = get_object_or_404(ContentType, id=content_type_id)
+    ctype = ContentType.objects.get_for_id(content_type)
     if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
         actor = ctype.get_object_for_this_type(id=object_id)
         unfollow(request.user, actor, send_action=True)
@@ -293,7 +293,7 @@ def unfollow_object(request, content_type_id, object_id):
 def follow_unfollow(request, content_type, object_id):
     count = None
     try:
-        ctype = get_object_or_404(ContentType, id=content_type)
+        ctype = ContentType.objects.get_for_id(content_type)
         follow_count = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
         actor = ctype.get_object_for_this_type(id=object_id)
         if not follow_count:
@@ -522,7 +522,7 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
             raise AccessError
         comment = Nnmcomment()
         comment.user = request.user
-        comment.content_type = get_object_or_404(ContentType, id=int(content_type))
+        comment.content_type = ContentType.objects.get_for_id(int(content_type))
         comment.object_id = int(object_id)
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
@@ -562,7 +562,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
             raise AccessError
         comment = Nnmcomment()
         comment.user = request.user
-        comment.content_type = get_object_or_404(ContentType, id=int(content_type))
+        comment.content_type = ContentType.objects.get_for_id(int(content_type))
         comment.object_id = int(object_id)
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
@@ -595,7 +595,7 @@ def flat_comment_add(request, content_type, object_id):
             raise AccessError
         comment = FlatNnmcomment()
         comment.user = request.user
-        comment.content_type = get_object_or_404(ContentType, id=int(content_type))
+        comment.content_type = ContentType.objects.get_for_id(int(content_type))
         comment.object_id = int(object_id)
         comment.ip = request.META['REMOTE_ADDR']
         comment.user_agent = request.META['HTTP_USER_AGENT']
@@ -760,7 +760,7 @@ def file_uploader(request, **kwargs):
                             size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
     result = uploader.handle_upload(request)
     if result['success']:
-        ctype = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+        ctype = ContentType.objects.get_for_id(int(kwargs['content_type']))
         object_id = int(kwargs['object_id'])
         obj = ctype.get_object_for_this_type(pk=object_id)
         try:
@@ -786,7 +786,7 @@ def addon_image_uploader(request, **kwargs):
     result = uploader.handle_upload(request)
     if result['success']:
         new = Pic()
-        new.content_type = get_object_or_404(ContentType, id=int(kwargs['content_type']))
+        new.content_type = ContentType.objects.get_for_id(int(kwargs['content_type']))
         new.object_id = int(kwargs['object_id'])
         new.description = result['old_filename']
         new.user = request.user
@@ -814,7 +814,7 @@ def like(request, content_type, object_id):
         if not request.user.is_authenticated():
             raise AccessError
         mode = request.POST['mode']
-        content_type = get_object_or_404(ContentType, id=int(content_type))
+        content_type = ContentType.objects.get_for_id(int(content_type))
         object_id = int(object_id)
         if content_type == ContentType.objects.get_for_model(get_user_model()):
             if object_id == request.user.pk:

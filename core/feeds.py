@@ -23,9 +23,8 @@ class ObjectActivityFeed(Feed):
     Target).
     """
 
-    def get_object(self, request, content_type_id, object_id):
-        return get_object_or_404(ContentType, pk=content_type_id)\
-            .get_object_for_this_type(pk=object_id)
+    def get_object(self, request, content_type, object_id):
+        return ContentType.objects.get_for_id(int(content_type)).get_object_for_this_type(pk=object_id)
 
     def title(self, obj):
         return 'Activity for %s' % obj
@@ -159,8 +158,8 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
 
 class ModelActivityFeed(Feed):
 
-    def get_object(self, request, content_type_id):
-        return get_object_or_404(ContentType, pk=content_type_id).model_class()
+    def get_object(self, request, content_type):
+        return ContentType.objects.get_for_id(int(content_type)).model_class()
 
     def title(self, model):
         return 'Activity feed from %s' % model
