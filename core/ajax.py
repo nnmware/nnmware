@@ -883,8 +883,11 @@ def avatar_set(request):
                             size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
     result = uploader.handle_upload(request)
     if result['success']:
-        remove_thumbnails(request.user.img.url)
-        remove_file(request.user.img.url)
+        try:
+            remove_thumbnails(request.user.img.url)
+            remove_file(request.user.img.url)
+        except:
+            pass
         request.user.img = result['path']
         request.user.save()
         try:
