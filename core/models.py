@@ -568,3 +568,18 @@ class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
         if len(self.description) > 50:
             return self.description[:50] + "..."
         return str(self.pk)
+
+
+class ContentBlockMixin(object):
+
+    @property
+    def blocks(self):
+        return ContentBlock.objects.for_object(self).order_by('position')
+
+    @property
+    def teasers(self):
+        return self.blocks.filter(teaser=True)
+
+    def delete(self, *args, **kwargs):
+        self.blocks.delete()
+        super(ContentBlockMixin, self).delete(*args, **kwargs)

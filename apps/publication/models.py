@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import LikeMixin, ContentBlock
+from nnmware.core.models import LikeMixin, ContentBlock, ContentBlockMixin
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName
 from nnmware.core.constants import STATUS_CHOICES, STATUS_UNKNOWN
@@ -23,7 +23,7 @@ class PublicationCategory(Tree):
         return Publication.objects.active().filter(category=self)
 
 
-class Publication(AbstractDate, AbstractName, LikeMixin):
+class Publication(AbstractDate, AbstractName, LikeMixin, ContentBlockMixin):
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
     category = models.ForeignKey(PublicationCategory, verbose_name=_('Category'), null=True, blank=True,
@@ -43,13 +43,3 @@ class Publication(AbstractDate, AbstractName, LikeMixin):
 
     def get_edit_url(self):
         return reverse('publication_edit', args=[self.pk])
-
-    def blocks(self):
-        return ContentBlock.objects.for_object(self).order_by('position')
-
-    def teasers(self):
-        return self.blocks().filter(teaser=True)
-
-    def delete(self, *args, **kwargs):
-        self.blocks().delete()
-        super(Publication, self).delete(*args, **kwargs)
