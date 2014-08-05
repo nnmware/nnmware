@@ -656,66 +656,13 @@ class AbstractIP(models.Model):
         abstract = True
 
 
-class AbstractContactType(AbstractImg):
-    name = std_text_field(_("Name"))
-    name_en = std_text_field(_("Name(English)"))
-    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
-
-    pass
-
-
-class AbstractContact(AbstractImg):
-    mobile_personal = std_text_field(_('Personal mobile phone'), max_length=12)
-    mobile_work = std_text_field(_('Work mobile phone '), max_length=12)
-    landline_personal = std_text_field(_('Personal landline phone'), max_length=12)
-    landline_work = std_text_field(_('Work landline phone'), max_length=12)
-    icq = std_text_field(_('ICQ'), max_length=30)
-    skype = std_text_field(_('Skype'), max_length=30)
-    jabber = std_text_field(_('Jabber'), max_length=50)
-    publicmail = std_email_field(_('Public email'))
-    privatemail = std_email_field(_('Private email'))
-    website = std_url_field(_('Website'))
-    personal_website = std_url_field(_('Personal Website'))
-    facebook = std_url_field(_('Facebook'))
-    googleplus = std_url_field(_('Google+'))
-    twitter = std_url_field(_('Twitter'))
-    vkontakte = std_url_field(_('VKontakte'))
-    odnoklassniki = std_url_field(_('Odnoklassniki'))
-    moikrug = std_url_field(_('Moi krug'))
-    other_social = std_url_field(_('Other social networks'))
-    hide_mobile_personal = models.BooleanField(_('Hide personal mobile phone'), default=False)
-    hide_mobile_work = models.BooleanField(_('Hide work mobile phone'), default=False)
-    hide_landline_personal = models.BooleanField(_('Hide personal landline phone'), default=False)
-    hide_landline_work = models.BooleanField(_('Hide work landline phone'), default=False)
-    hide_icq = models.BooleanField(_('Hide icq'), default=False)
-    hide_skype = models.BooleanField(_('Hide skype'), default=False)
-    hide_jabber = models.BooleanField(_('Hide jabber'), default=False)
-    hide_publicmail = models.BooleanField(_('Hide publicmail'), default=False)
-    hide_privatemail = models.BooleanField(_('Hide privatemail'), default=False)
-    hide_website = models.BooleanField(_('Hide website'), default=False)
-    hide_personal_website = models.BooleanField(_('Hide personal website'), default=False)
-    hide_facebook = models.BooleanField(_('Hide facebook'), default=False)
-    hide_googleplus = models.BooleanField(_('Hide googleplus'), default=False)
-    hide_twitter = models.BooleanField(_('Hide twitter'), default=False)
-    hide_vkontakte = models.BooleanField(_('Hide vkontakte'), default=False)
-    hide_moikrug = models.BooleanField(_('Hide moikrug'), default=False)
-    hide_odnoklassniki = models.BooleanField(_('Hide odnoklassniki'), default=False)
-    hide_other_social = models.BooleanField(_('Hide other social networks'), default=False)
-    hide_address = models.BooleanField(_('Hide address'), default=False)
-
-    class Meta:
-        verbose_name = _("Contacts data")
-        verbose_name_plural = _("Contact data")
-        abstract = True
-
-
 @python_2_unicode_compatible
 class AbstractOrder(AbstractImg):
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     name_en = std_text_field(_('English name'))
 
     class Meta:
-        ordering = ['-order_in_list', ]
+        ordering = ['-position', ]
         abstract = True
 
     def __str__(self):
