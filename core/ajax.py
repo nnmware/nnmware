@@ -68,9 +68,14 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
 def img_delete(request, object_id):
     # Link used for User press Delete for Image
     pic = get_object_or_404(Pic, id=int(object_id))
+    c_object = pic.content_object
     if img_check_rights(request, pic):
         pic.delete()
-        payload = {'success': True}
+        try:
+            img_count = c_object.pics_count
+        except:
+            img_count = 0
+        payload = {'success': True, 'img_count': img_count}
     else:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
