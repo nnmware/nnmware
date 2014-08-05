@@ -109,7 +109,7 @@ class DocAdmin(admin.ModelAdmin):
     #    readonly_fields = ('file',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Doc'), {'fields': [('doc', 'created_date', 'ordering')]}),
+        (_('Doc'), {'fields': [('doc', 'created_date', 'position')]}),
         (_('Meta'), {'fields': [('description', 'filetype')]}),
     )
     list_display = ('description', 'doc', 'created_date', 'user', 'locked', 'size')
