@@ -617,7 +617,7 @@ class Doc(AbstractContent, AbstractFile):
     doc = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
 
     class Meta:
-        ordering = ['ordering', ]
+        ordering = ['position', ]
         verbose_name = _("Doc")
         verbose_name_plural = _("Docs")
 
