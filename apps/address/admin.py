@@ -16,7 +16,7 @@ class CityAdmin(admin.ModelAdmin):
             ('description',),
             ('country', 'region'),
             ('longitude', 'latitude'),
-            ('name_add', 'order_in_list', 'enabled'),
+            ('name_add', 'position', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
@@ -29,7 +29,7 @@ class RegionAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Region"), {"fields": [("name", "slug", 'country'),
             ('description',),
-            ('name_add', 'order_in_list', 'enabled'),
+            ('name_add', 'position', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
@@ -42,7 +42,7 @@ class CountryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Country"), {"fields": [("name", "slug"),
             ('description', ),
-            ('name_add', 'order_in_list', 'enabled'),
+            ('name_add', 'position', 'enabled'),
         ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
@@ -87,4 +87,4 @@ class StationMetroAdmin(admin.ModelAdmin):
 @admin.register(Institution)
 class InstitutionAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Institution"), {"fields": [('name', 'order_in_list'), ('city', 'country')]}),)
+        (_("Institution"), {"fields": [('name', 'position'), ('city', 'country')]}),)

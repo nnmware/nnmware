@@ -10,12 +10,12 @@ from nnmware.core.admin import TypeBaseAdmin, TreeAdmin
 
 @admin.register(TypeEmployerProfile)
 class TypeEmployerProfileAdmin(TypeBaseAdmin):
-    list_display = ('name', 'employer_type', 'is_radio', 'order_in_list', 'slug')
+    list_display = ('name', 'employer_type', 'is_radio', 'position', 'slug')
     list_filter = ('name',)
     search_fields = ('name',)
-    ordering = ('employer_type', '-is_radio', '-order_in_list', 'name')
+    ordering = ('employer_type', '-is_radio', 'position', 'name')
     fieldsets = ((_("Type of employer profile"), {"fields": [('name', 'employer_type'),
-                                                             ('order_in_list', 'is_radio'), ]}),)
+                                                             ('position', 'is_radio'), ]}),)
 
 
 @admin.register(TypeEmployerOther)
@@ -29,10 +29,10 @@ class TypeEmployerOtherAdmin(TypeBaseAdmin):
 
 @admin.register(TypeEmployer)
 class TypeEmployerAdmin(TypeBaseAdmin):
-    list_display = ('name', 'order_in_list', 'slug')
+    list_display = ('name', 'position', 'slug')
     fieldsets = (
-        (_("Type of employer"), {"fields": [('name', 'order_in_list'), ]}),)
-    ordering = ('-order_in_list', 'name',)
+        (_("Type of employer"), {"fields": [('name', 'position'), ]}),)
+    ordering = ('position', 'name',)
 
 
 @admin.register(Agency)

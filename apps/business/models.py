@@ -17,17 +17,17 @@ class TypeEmployer(AbstractName):
     pass
 
     class Meta:
-        ordering = ('-order_in_list', 'name')
+        ordering = ('position', 'name')
         verbose_name = _("Type of employer")
         verbose_name_plural = _("Types of employers")
 
     @property
     def radio(self):
-        return self.typeemployerprofile_set.filter(is_radio=True).order_by('-order_in_list', 'name')
+        return self.typeemployerprofile_set.filter(is_radio=True).order_by('position', 'name')
 
     @property
     def multi(self):
-        return self.typeemployerprofile_set.filter(is_radio=False).order_by('-order_in_list', 'name')
+        return self.typeemployerprofile_set.filter(is_radio=False).order_by('position', 'name')
 
     def get_absolute_url(self):
         return reverse('employers_profile', kwargs={'slug': self.slug})
@@ -79,7 +79,7 @@ class AbstractWTime(models.Model):
         return self.employer_profile.order_by('name').values_list('employer_type__pk', flat=True).distinct()
 
     def profile_lst(self):
-        return self.employer_profile.order_by('-order_in_list', 'name').values_list('pk', flat=True)
+        return self.employer_profile.order_by('position', 'name').values_list('pk', flat=True)
 
     def other_radio(self):
         return self.employer_other.filter(is_radio=True).values_list('employer_type__pk', flat=True).distinct()

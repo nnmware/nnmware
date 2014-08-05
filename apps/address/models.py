@@ -149,7 +149,7 @@ class TourismCategory(AbstractName):
     class Meta:
         verbose_name = _("Tourism Place Category")
         verbose_name_plural = _("Tourism Places Categories")
-        ordering = ['order_in_list', ]
+        ordering = ['position', ]
 
 
 @python_2_unicode_compatible

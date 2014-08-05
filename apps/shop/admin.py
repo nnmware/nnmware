@@ -30,7 +30,7 @@ class ProductAdmin(admin.ModelAdmin):
                                    ('description',),
                                    ("created_date", 'updated_date'),
                                    ('shop_pn', 'vendor_pn'),
-                                   ('order_in_list', 'enabled', 'on_main'),
+                                   ('position', 'enabled', 'on_main'),
                                    ('teaser',), ('discount', 'discount_percent', 'special_offer'),
                                    ('colors',), ('materials',), ('related_products',)]}),)
 
@@ -166,7 +166,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     list_display = ("title", 'start_date', 'end_date', 'slide_thumbnail', 'enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date', 'end_date'),
-                                        ('enabled', 'slug', 'order_in_list'), ('img',), ('text',)]}),
+                                        ('enabled', 'slug', 'position'), ('img',), ('text',)]}),
     )
     ordering = ('-start_date', '-end_date')
 
@@ -189,12 +189,12 @@ class ShopArticleAdmin(admin.ModelAdmin):
 
 @admin.register(DeliveryMethod)
 class DeliveryMethodAdmin(admin.ModelAdmin):
-    list_display = ("name", "amount", 'enabled_for_registered', 'enabled_for_unregistered', 'order_in_list')
+    list_display = ("name", "amount", 'enabled_for_registered', 'enabled_for_unregistered', 'position')
     fieldsets = (
         (_("Delivery Method"), {"fields": [('name', 'amount'), ('enabled_for_registered', 'enabled_for_unregistered'),
-                                           ('order_in_list',), ]}),
+                                           ('position',), ]}),
     )
-    ordering = ('-order_in_list', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(ServiceCategory)
@@ -218,6 +218,6 @@ class ServiceAdmin(admin.ModelAdmin):
                                    ('description',),
                                    ("created_date", 'updated_date'),
                                    ('shop_pn', 'vendor_pn'),
-                                   ('order_in_list', 'enabled', 'on_main'),
+                                   ('position', 'enabled', 'on_main'),
                                    ('discount', 'discount_percent', 'special_offer'),
                                    ('related_services',)]}),)

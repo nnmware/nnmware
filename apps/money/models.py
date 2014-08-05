@@ -157,7 +157,7 @@ class AbstractDeliveryMethod(MoneyBase):
     description_en = models.TextField(_("Description of delivery method(English)"), default='', blank=True)
     enabled_for_registered = models.BooleanField(verbose_name=_("Enabled for registered users"), default=False)
     enabled_for_unregistered = models.BooleanField(verbose_name=_("Enabled for unregistered users"), default=False)
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
 
     class Meta:
         verbose_name = _("Delivery method")

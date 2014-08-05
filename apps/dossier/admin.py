@@ -17,126 +17,126 @@ from nnmware.core.admin import TypeBaseAdmin, BaseSkillInline
 class TypeAppearanceHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of appearance"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeNationalHuman)
 class TypeNationalHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("National type"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeBodyHuman)
 class TypeBodyHumanAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Body Type"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeFeatureAppearance)
 class TypeFeatureAppearanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Feature appearance"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(HairColor)
 class HairColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Hair color"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(EyeColor)
 class EyeColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Eye color"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(SkinColor)
 class SkinColorAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Skin color"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(HairLength)
 class HairLengthAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Hair length"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(HairTexture)
 class HairTextureAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Hair texture"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeNational)
 class TypeNationalAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type on national sign"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeProfession)
 class TypeProfessionAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type on profession"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeLifestyle)
 class TypeLifestyleAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type on lifestyle"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeBrightAppearance)
 class TypeBrightAppearanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type on bright appearance"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeHistorical)
 class TypeHistoricalAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type in historical projects"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeBodyModification)
 class TypeBodyModificationAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type body modification"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeSurvey)
 class TypeSurveyAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of survey"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(ReadinessScene)
 class ReadinessSceneAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Readiness in scene"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(CreativeActivity)
 class CreativeActivityAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("CreativeActivity"), {"fields": [('name', 'position'), ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 class LanguageSkillInline(BaseSkillInline):
@@ -148,63 +148,63 @@ class LanguageSkillInline(BaseSkillInline):
 class LanguageSpeakAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Language speak"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(SpokenDialect)
 class SpokenDialectAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Spoken dialect"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeDance)
 class TypeDanceAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of dance"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeVocal)
 class TypeVocalAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of vocal"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeMusicInstrument)
 class TypeMusicInstrumentAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of music instrument"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeDrive)
 class TypeDriveAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of driving"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeSport)
 class TypeSportAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of sport"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeSpecialSkill)
 class TypeSpecialSkillAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of special skill"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(TypeOtherSkill)
 class TypeOtherSkillAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of other skill"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 class DanceSkillInline(BaseSkillInline):
@@ -249,7 +249,7 @@ class TMarkAdmin(TypeBaseAdmin):
 class AnimalTypeAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of animal"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(AnimalKind)
@@ -262,20 +262,20 @@ class AnimalKindAdmin(TypeBaseAdmin):
 class SurveyObjectTypeAdmin(TypeBaseAdmin):
     list_display = ('name', 'position')
     fieldsets = ((_("Type of survey object"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(SurveySuitType)
 class SurveySuitTypeAdmin(TypeBaseAdmin):
     list_display = ('name', 'overall')
     fieldsets = ((_("Type of survey suit"), {"fields": ['name', 'overall']}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(RequisiteType)
 class RequisiteTypeAdmin(TypeBaseAdmin):
     fieldsets = ((_("Type of requisite"), {"fields": ['name', ]}),)
-    ordering = ('-position', 'name')
+    ordering = ('position', 'name')
 
 
 @admin.register(Vehicle)

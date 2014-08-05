@@ -38,7 +38,7 @@ class HotelOptionCategory(AbstractName):
     class Meta:
         verbose_name = _("Hotel Option Category")
         verbose_name_plural = _("Hotel Option Categories")
-        ordering = ['order_in_list', ]
+        ordering = ['position', ]
 
 
 @python_2_unicode_compatible
@@ -50,7 +50,7 @@ class HotelOption(AbstractName):
     class Meta:
         verbose_name = _("Hotel Option")
         verbose_name_plural = _("Hotel Options")
-        ordering = ['category', 'order_in_list', 'name']
+        ordering = ['category', 'position', 'name']
 
     def __str__(self):
         if self.category:
@@ -251,7 +251,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
 
     def all_room_options(self):
         return RoomOption.objects.filter(enabled=True, room__hotel=self).select_related().order_by('category',
-                                                                                                   'order_in_list',
+                                                                                                   'position',
                                                                                                    'name').distinct()
 
     def get_absolute_url(self):
@@ -333,7 +333,7 @@ class RoomOption(AbstractName):
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
 
     class Meta:
-        ordering = ['order_in_list', 'name']
+        ordering = ['position', 'name']
         verbose_name = _("Room Option")
         verbose_name_plural = _("Room Options")
 

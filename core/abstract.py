@@ -417,6 +417,7 @@ class AbstractName(AbstractImg, PicsMixin):
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, db_index=True)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
                                                 blank=True)
+    # TODO Order_in_list deprecated, after refactoring booking module- need remove
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
@@ -424,7 +425,7 @@ class AbstractName(AbstractImg, PicsMixin):
     comments = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        ordering = ['-order_in_list', 'name']
+        ordering = ['position', 'name']
         abstract = True
 
     def __str__(self):
@@ -662,7 +663,7 @@ class AbstractOrder(AbstractImg):
     name_en = std_text_field(_('English name'))
 
     class Meta:
-        ordering = ['-position', ]
+        ordering = ['position', ]
         abstract = True
 
     def __str__(self):
@@ -735,7 +736,7 @@ class AbstractOffer(AbstractImg):
     text = models.TextField(verbose_name=_("Offer text"), blank=True)
     enabled = models.BooleanField(verbose_name=_("Enabled"), default=False)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True)
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
 
     objects = Manager()
 

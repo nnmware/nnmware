@@ -69,17 +69,17 @@ class HotelAdmin(admin.ModelAdmin):
 
 @admin.register(HotelOption)
 class HotelOptionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'order_in_list')
+    list_display = ('name', 'category', 'in_search', 'sticky_in_search', 'position')
     list_filter = ('name', 'category', 'in_search', 'sticky_in_search')
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel Option"), {"fields": [("name",),
                                         ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'order_in_list'), ('enabled', 'in_search', 'sticky_in_search'), ]}),
+        (_("Addons"), {"fields": [('category', 'position'), ('enabled', 'in_search', 'sticky_in_search'), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
-#    ordering = ('category','order_in_list','name')
+#    ordering = ('category','position','name')
 
 
 @admin.register(Room)
@@ -95,15 +95,15 @@ class RoomAdmin(admin.ModelAdmin):
 
 @admin.register(RoomOption)
 class RoomOptionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'order_in_list')
+    list_display = ('name', 'category', 'position')
     search_fields = ('name',)
     fieldsets = (
         (_("Room Option"), {"fields": [("name",),
                                        ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'slug'), ('enabled', 'order_in_list'), ]}),
+        (_("Addons"), {"fields": [('category', 'slug'), ('enabled', 'position'), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
-    ordering = ('category', 'order_in_list', 'name')
+    ordering = ('category', 'position', 'name')
 
 
 @admin.register(PaymentMethod)
@@ -134,7 +134,7 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Room Option Category"), {"fields": [("name", 'slug'),
                                                 ('description',)]}),
-        (_("Addons"), {"fields": [('order_in_list',), ('enabled',), ]}),
+        (_("Addons"), {"fields": [('position',), ('enabled',), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",), "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -145,7 +145,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Hotel Option Category"), {"fields": [("name", 'slug'),
                                                  ('description',)]}),
-        (_("Addons"), {"fields": [('order_in_list',), ('enabled',), ('icon',), ]}),
+        (_("Addons"), {"fields": [('position',), ('enabled',), ('icon',), ]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 

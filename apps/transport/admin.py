@@ -8,13 +8,13 @@ from nnmware.core.admin import ColorAdmin
 
 
 class VehicleBaseParamAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order_in_list', 'slug')
+    list_display = ('name', 'position', 'slug')
     fieldsets = (
-        (_('Type of vehicle'), {"fields": [('name', 'order_in_list'),
+        (_('Type of vehicle'), {"fields": [('name', 'position'),
                                 ('description',)]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
-    ordering = ('-order_in_list', 'name',)
+    ordering = ('position', 'name',)
 
 
 @admin.register(VehicleKind)
@@ -24,10 +24,8 @@ class VehicleKindAdmin(VehicleBaseParamAdmin):
 
 class VehicleBaseParamForAdmin(VehicleBaseParamAdmin):
     fieldsets = (
-        (_('Type of vehicle'), {"fields": [('name', 'order_in_list'), ('type_vehicles', ),
-                                ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_('Type of vehicle'), {"fields": [('name', 'position'), ('type_vehicles', ), ('description',)]}),
+        (_("English"), {"classes": ("grp-collapse grp-closed",), "fields": [("name_en",), ("description_en",), ]}),)
 
 
 @admin.register(VehicleTransmission)
@@ -66,9 +64,9 @@ class VehicleVendorAdmin(admin.ModelAdmin):
 
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'order_in_list', 'slug')
+    list_display = ('name', 'position', 'slug')
     fieldsets = (
-        (_('Vehicle'), {"fields": [('name', 'order_in_list'),
+        (_('Vehicle'), {"fields": [('name', 'position'),
                                 ('description',),
             ('kind', 'color'), ('transmission', 'carcass'),
             ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
@@ -79,7 +77,7 @@ class VehicleAdmin(admin.ModelAdmin):
                        ('contact_phone', ), ('expiration_date', 'sold')]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
             "fields": [("name_en",), ("description_en",), ]}),)
-    ordering = ('-order_in_list', 'name',)
+    ordering = ('position', 'name',)
 
 
 @admin.register(VehicleColor)

@@ -88,7 +88,7 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     objects = ProductManager()
 
     class Meta:
-    #        ordering = ['category__name','order_in_list','name']
+    #        ordering = ['category__name','position','name']
         ordering = ['-created_date']
         verbose_name = _("Product")
         verbose_name_plural = _("Products")
@@ -171,7 +171,7 @@ class ProductParameter(Parameter):
 class ProductParameterValue(AbstractContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = std_text_field(_('Value of parameter'))
-    order_in_list = models.IntegerField(_('Order in list'), default=0)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     keyparam = models.BooleanField(verbose_name=_("In key params"), default=False)
 
     class Meta:
