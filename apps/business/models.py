@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
+
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.apps.dossier.models import Education
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime, AbstractTeaser
