@@ -483,7 +483,6 @@ class Tree(AbstractName):
     Main nodes tree
     """
     parent = models.ForeignKey('self', verbose_name=_("Parent"), blank=True, null=True, related_name="children")
-    ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in tree display"))
     rootnode = models.BooleanField(_('Root node'), default=False)
     login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
         "Enable this if users must login before access with this objects."))
@@ -491,7 +490,7 @@ class Tree(AbstractName):
                                     related_name='%(app_label)s_%(class)s_adm', blank=True)
 
     class Meta:
-        ordering = ['ordering', ]
+        ordering = ['position', ]
         verbose_name = _("Tree")
         verbose_name_plural = _("Trees")
         abstract = True
@@ -555,8 +554,8 @@ class Tree(AbstractName):
     def get_root_catid(self):
         if self.parent_id:
             catidlist = self._recurse_for_parents(self)
-            return [catidlist[0].name, catidlist[0].ordering]
-        return [self.name, self.ordering]
+            return [catidlist[0].name, catidlist[0].position]
+        return [self.name, self.position]
 
     @property
     def get_all_ids(self):

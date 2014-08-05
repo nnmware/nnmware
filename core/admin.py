@@ -49,7 +49,7 @@ class NnmcommentAdmin(admin.ModelAdmin):
 
 
 class TreeAdmin(admin.ModelAdmin):
-    list_display = ('name', '_parents_repr', 'enabled', 'rootnode', 'ordering')
+    list_display = ('name', '_parents_repr', 'enabled', 'rootnode', 'position')
     list_display_links = ("name",)
     list_filter = ("name",)
     ordering = ['parent__id', 'name']
@@ -60,7 +60,7 @@ class TreeAdmin(admin.ModelAdmin):
         (_("Main"), {"fields": [("name", "slug"), ("parent",
                                                    "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("ordering", "rootnode"), ]}),
+                            "fields": [("description",), ("position", "rootnode"), ]}),
     )
 
 

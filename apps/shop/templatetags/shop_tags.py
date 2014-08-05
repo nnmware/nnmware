@@ -110,14 +110,14 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
         #            count_txt.text = ' ' + str(counter)
         if child_count > 0:
             new_parent = SubElement(temp_parent, 'ul', {'class': 'subcat'})
-            children = current_node.children.order_by('ordering', 'name')
+            children = current_node.children.order_by('position', 'name')
             for child in children:
                 menu_recurse_shop(child, new_parent)
 
 
 @register.assignment_tag
 def shop_parent():
-    return ProductCategory.objects.filter(parent=None).order_by('-ordering')
+    return ProductCategory.objects.filter(parent=None).order_by('position')
 
 
 @register.assignment_tag

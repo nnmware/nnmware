@@ -47,7 +47,7 @@ class CompanyCategoryAdmin(TreeAdmin):
         (_("Main"), {"fields": [("name", "slug"), ("parent",
                                                    "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+                            "fields": [("description",), ("position", "rootnode"), ('admins', )]}),
     )
 
 
@@ -95,7 +95,7 @@ class VacancyCategoryAdmin(TreeAdmin):
         (_("Main"), {"fields": [("name", "slug"), ("parent",
                                                    "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+                            "fields": [("description",), ("position", "rootnode"), ('admins', )]}),
     )
 
 

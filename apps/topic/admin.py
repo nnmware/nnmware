@@ -9,7 +9,7 @@ class TopicCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
         (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("ordering", "rootnode"), ('admins', )]}),
+                            "fields": [("description",), ("position", "rootnode"), ('admins', )]}),
     )
 
 
