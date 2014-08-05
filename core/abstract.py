@@ -85,7 +85,7 @@ class AbstractFile(AbstractDate):
                              related_name="%(class)s_f_user")
     description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
-    ordering = models.IntegerField(_("Ordering"), default=0, help_text=_("Override alphabetical order in list display"))
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     locked = models.BooleanField(_('Is locked'), default=False)
 
     class Meta:
