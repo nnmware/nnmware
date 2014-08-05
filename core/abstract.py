@@ -200,6 +200,10 @@ class PicsMixin(object):
         return Pic.objects.for_object(self).order_by('-primary')
 
     @property
+    def images(self):
+        return Pic.objects.for_object(self).order_by('position')
+
+    @property
     def obj_pic(self):
         try:
             return self.allpics[0]
