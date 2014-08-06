@@ -865,9 +865,9 @@ class AbstractLike(AbstractContent):
 
 
 EDU_UNKNOWN = 0
-EDU_TRAINING = 2
-EDU_MIDDLE = 3
-EDU_HIGH = 4
+EDU_TRAINING = 1
+EDU_MIDDLE = 2
+EDU_HIGH = 3
 
 EDU_CHOICES = (
     (EDU_UNKNOWN, _("Unknown education")),
