@@ -33,7 +33,7 @@ IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
 IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
 IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
 IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
-EDUCATION_END = map(tuplify, range(current_year + 1, current_year - 55))
+EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1)[::-1])
 
 
 class AbstractDate(models.Model):
