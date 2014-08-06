@@ -420,8 +420,7 @@ class AbstractName(AbstractImg, PicsMixin):
     description = models.TextField(verbose_name=_("Description"), blank=True)
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True)
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, db_index=True)
-    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
-                                                blank=True)
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     # TODO Order_in_list deprecated, after refactoring booking module- need remove
     order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
@@ -887,6 +886,7 @@ class AbstractEducation(models.Model):
     specialty = std_text_field(_('Specialty'))
     prof_edu = models.BooleanField(_('Profile education'), default=False)
     addon = std_text_field(_('Additional info'))
+    position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
 
     class Meta:
         verbose_name = _("Education")
