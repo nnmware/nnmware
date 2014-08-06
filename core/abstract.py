@@ -878,7 +878,7 @@ EDU_CHOICES = (
 
 
 class AbstractEducation(models.Model):
-    institution = std_text_field(_('Master of course'))
+    institution = std_text_field(_('Institution'))
     education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END, default=current_year)
     education_type = models.IntegerField(verbose_name=_('Type of education'), choices=EDU_CHOICES, default=EDU_UNKNOWN)
     instructor = std_text_field(_('Instructor'))
