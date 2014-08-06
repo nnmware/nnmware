@@ -135,7 +135,6 @@ class AbstractEmployee(AbstractImg):
     payment_to = models.IntegerField(verbose_name=_('Amount payment to'), null=True, blank=True)
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
-    education = models.ManyToManyField(Education, verbose_name=_('Education'), blank=True)
     agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True)
 
     class Meta:

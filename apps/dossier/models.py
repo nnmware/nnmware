@@ -9,9 +9,8 @@ from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.constants import GENDER_CHOICES
 from nnmware.core.fields import std_text_field
-from nnmware.core.utils import tuplify, current_year, setting
+from nnmware.core.utils import tuplify, setting
 
-EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
 DEFAULT_AVATAR = setting('DEFAULT_AVATAR', 'avatar.png')
 AGE_SIZE = map(tuplify, range(1, 101))
 
@@ -91,23 +90,6 @@ class ChestSize(models.Model):
 
     def __str__(self):
         return "%s / %s" % (self.international, self.russian)
-
-
-class Education(AbstractImg):
-    institution = models.ForeignKey(Institution, verbose_name=_('Institution'),
-                                    related_name='edu', blank=True, null=True)
-    education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END,
-                                        default=current_year)
-    master_course = std_text_field(_('Master of course'))
-    diploma_work = std_text_field(_('Diploma work'))
-    diploma_role = std_text_field(_('Role'))
-    specialty = std_text_field(_('Specialty'))
-    prof_edu = models.BooleanField(_('Profile education'), default=False)
-    nonprof_name = std_text_field(_('Non-profile course name'))
-
-    class Meta:
-        verbose_name = _("Education")
-        verbose_name_plural = _("Educations")
 
 
 class TypeAppearanceHuman(AbstractOrder):

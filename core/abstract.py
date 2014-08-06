@@ -25,7 +25,7 @@ from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLIS
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
 from nnmware.core.fields import std_text_field, std_url_field, std_email_field
-from nnmware.core.utils import setting
+from nnmware.core.utils import setting, current_year, tuplify
 
 DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG', 'generic.png'))
 DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
@@ -33,6 +33,7 @@ IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
 IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
 IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
 IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
+EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1))
 
 
 class AbstractDate(models.Model):
@@ -862,3 +863,34 @@ class AbstractLike(AbstractContent):
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
+
+
+EDU_UNKNOWN = 0
+EDU_TRAINING = 2
+EDU_MIDDLE = 3
+EDU_HIGH = 4
+
+EDU_CHOICES = (
+    (EDU_UNKNOWN, _("Unknown education")),
+    (EDU_TRAINING, _("Training course")),
+    (EDU_MIDDLE, _("Secondary education")),
+    (EDU_HIGH, _("Higher education")),
+)
+
+
+class AbstractEducation(models.Model):
+    institution = std_text_field(_('Master of course'))
+    education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END, default=current_year)
+    education_type = models.IntegerField(verbose_name=_('Type of education'), choices=EDU_CHOICES, default=EDU_UNKNOWN)
+    instructor = std_text_field(_('Instructor'))
+    diploma = std_text_field(_('Diploma'))
+    specialty = std_text_field(_('Specialty'))
+    prof_edu = models.BooleanField(_('Profile education'), default=False)
+    addon = std_text_field(_('Additional info'))
+
+    class Meta:
+        verbose_name = _("Education")
+        verbose_name_plural = _("Educations")
+        abstract = True
+
+
