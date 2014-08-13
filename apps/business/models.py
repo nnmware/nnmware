@@ -149,8 +149,8 @@ class AbstractEmployee(AbstractImg):
 
     @property
     def get_agent_avatar(self):
-        if self.agent_img not in [None, '']:
-            return self.agent_img.url
+        if self.agent_img:
+            return self.agent_img
         return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     def delete(self, *args, **kwargs):
