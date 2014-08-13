@@ -6,6 +6,8 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
+from nnmware.core.imgutil import remove_thumbnails, remove_file
+from nnmware.core.utils import setting
 
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime, AbstractTeaser
@@ -135,11 +137,29 @@ class AbstractEmployee(AbstractImg):
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
     agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True)
+    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to="img/%Y/%m/%d/",
+                                  blank=True, height_field='agent_img_height', width_field='agent_img_width')
+    agent_img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
+    agent_img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
 
     class Meta:
         verbose_name = _("Employee")
         verbose_name_plural = _("Employees")
         abstract = True
+
+    @property
+    def get_agent_avatar(self):
+        if self.img:
+            return self.agent_img.url
+        return setting('DEFAULT_AVATAR', 'noavatar.png')
+
+    def delete(self, *args, **kwargs):
+        try:
+            remove_thumbnails(self.agent_img.path)
+            remove_file(self.agent_img.path)
+        except:
+            pass
+        super(AbstractEmployee, self).delete(*args, **kwargs)
 
 
 class CompanyCategory(Tree):
