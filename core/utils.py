@@ -329,7 +329,7 @@ def query_user_pk_distinct(query):
     return users
 
 
-def percent_complete(block):
+def percent_complete_block(block):
     compete = 0
     for item in block:
         if item:
