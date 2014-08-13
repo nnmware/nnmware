@@ -149,7 +149,7 @@ class AbstractEmployee(AbstractImg):
 
     @property
     def get_agent_avatar(self):
-        if self.img:
+        if self.agent_img:
             return self.agent_img.url
         return setting('DEFAULT_AVATAR', 'noavatar.png')
 
