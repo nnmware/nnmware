@@ -223,8 +223,6 @@ class AbstractLocation(models.Model):
             result += self.city.get_name + ', '
         if self.street:
             result += self.street + ' '
-        if self.street:
-            result += self.street + ' '
         if self.house_number:
             result += self.house_number + ' '
         if self.building:
