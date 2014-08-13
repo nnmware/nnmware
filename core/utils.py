@@ -327,3 +327,12 @@ def query_user_pk_distinct(query):
     result = query.values_list('pk', flat=True).distinct()
     users = get_user_model().objects.filter(pk__in=result)
     return users
+
+
+def percent_complete(block):
+    compete = 0
+    for item in block:
+        if item:
+            compete += 1
+    result = (compete * 100) / len(block)
+    return result
