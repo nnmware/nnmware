@@ -704,7 +704,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     viewcount = models.PositiveIntegerField(default=0, editable=False)
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=False)
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
-    gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
+    gender = models.CharField(verbose_name=_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
     agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to="img/%Y/%m/%d/",
