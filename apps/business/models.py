@@ -137,21 +137,11 @@ class AbstractEmployee(AbstractImg):
     additionally = models.TextField(verbose_name=_("Additionally"), blank=True, default='')
     source_about_resource = std_text_field(_('Source about our resource'))
     agency = models.ManyToManyField(Agency, verbose_name=_('In agency base'), blank=True)
-    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to="img/%Y/%m/%d/",
-                                  blank=True, height_field='agent_img_height', width_field='agent_img_width')
-    agent_img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
-    agent_img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
 
     class Meta:
         verbose_name = _("Employee")
         verbose_name_plural = _("Employees")
         abstract = True
-
-    @property
-    def get_agent_avatar(self):
-        if None != self.agent_img and self.agent_img != '':
-            return self.agent_img.url
-        return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     def delete(self, *args, **kwargs):
         try:

@@ -707,6 +707,10 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
+    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to="img/%Y/%m/%d/",
+                                  blank=True, height_field='agent_img_height', width_field='agent_img_width')
+    agent_img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
+    agent_img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
 
     @property
     def events_count(self):
@@ -729,6 +733,12 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
 
     def get_absolute_url(self):
         return reverse('employer_view', args=[self.pk])
+
+    @property
+    def get_agent_avatar(self):
+        if self.agent_img:
+            return self.agent_img.url
+        return setting('DEFAULT_AVATAR', 'noavatar.png')
 
 
 class AbstractOffer(AbstractImg):
