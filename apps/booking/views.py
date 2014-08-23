@@ -216,7 +216,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             hotels_pk_list = search_hotel.values_list('pk', flat=True).distinct()
             cache.set(key, hotels_pk_list, 300)
         else:
-            search_hotel = Hotel.objects.filter(pk__in=data_key)
+            search_hotel = Hotel.objects.select_related('city').filter(pk__in=data_key)
         if with_amount and amount_max and amount_min:
             self.search_data['amount'] = [amount_min, amount_max]
             if searched_date:
