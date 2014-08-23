@@ -188,10 +188,10 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         data_key = cache.get(key)
         if not data_key:
             if self.city:
-                search_hotel = Hotel.objects.select_related().filter(Q(city=self.city) | Q(addon_city=self.city)).\
+                search_hotel = Hotel.objects.select_related('city').filter(Q(city=self.city) | Q(addon_city=self.city)).\
                     exclude(payment_method=None)
             else:
-                search_hotel = Hotel.objects.select_related().all().exclude(payment_method=None)
+                search_hotel = Hotel.objects.select_related('city').all().exclude(payment_method=None)
             if searched_date:
                 # Find all rooms pk for this guest count
                 need_days = (to_date - from_date).days
