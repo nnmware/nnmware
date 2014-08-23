@@ -790,6 +790,8 @@ class BookingsList(CurrentUserSuperuser, ListView):
         return context
 
     def get_queryset(self):
+        result = Booking.objects.select_related('hotel', 'settlement', 'payment_method', 'hotel__city',
+                                                'settlement__room', 'user').all()
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)
@@ -800,9 +802,9 @@ class BookingsList(CurrentUserSuperuser, ListView):
                 self.search_dates = {'from_date': t_date, 'to_date': f_date}
             else:
                 self.search_dates = {'from_date': f_date, 'to_date': t_date}
-            return Booking.objects.select_related().filter(date__range=(from_date, to_date))
+            return result.filter(date__range=(from_date, to_date))
         except:
-            return Booking.objects.select_related().all()
+            return result
 
 
 class RequestsList(CurrentUserSuperuser, ListView):
