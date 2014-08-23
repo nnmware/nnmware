@@ -884,7 +884,8 @@ class ReportView(CurrentUserSuperuser, ListView):
                                                            agentpercent__date__max=F('agentpercent__date'))
             self.report_name = _('Hotels, with current null percent')
         elif report_type == 'city':
-            result = City.objects.order_by('name')
+            result = City.objects.extra(select={'h_count': """SELECT COUNT(*) FROM booking_hotel WHERE
+                (booking_hotel.enabled = 1 AND booking_hotel.city_id = address_city.id)"""}).order_by('name')
             self.report_name = _('Total cities')
             self.template_name = "sysadm/report_city.html"
         elif report_type == 'login':
