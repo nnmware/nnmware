@@ -377,15 +377,13 @@ def min_3_days(d):
 
 @register.simple_tag
 def hotels_spb_count():
-    city = City.objects.get(slug='spb')
-    result = Hotel.objects.filter(city=city).count()
+    result = Hotel.objects.filter(city__slug='spb').count()
     return result
 
 
 @register.simple_tag
 def hotels_moscow_count():
-    city = City.objects.get(slug='moscow')
-    result = Hotel.objects.filter(city=city).count()
+    result = Hotel.objects.filter(city__slug='moscow').count()
     return result
 
 
@@ -444,9 +442,6 @@ def today_visitor_count():
 @register.simple_tag
 def today_hit_count():
     return VisitorHit.objects.count()
-
-#    return VisitorHit.objects.filter(date__lte=now().date()-timedelta(days=1),
-#        date__gte=now().date()-timedelta(days=30)).count()
 
 
 @register.simple_tag
