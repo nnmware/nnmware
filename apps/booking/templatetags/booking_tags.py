@@ -392,8 +392,7 @@ def hotels_moscow_count():
 @register.assignment_tag
 def hotels_city_count(slug):
     try:
-        city = City.objects.get(slug=slug)
-        result = Hotel.objects.filter(city=city).count()
+        result = Hotel.objects.filter(city__slug=slug).count()
         return result
     except:
         return 0
