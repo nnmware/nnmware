@@ -451,20 +451,6 @@ def room_avg_amount(amount, days):
 
 
 @register.assignment_tag(takes_context=True)
-def min_hotel_price(context):
-    request = context['request']
-    result = PlacePrice.objects.filter(amount__gt=0).aggregate(Min('amount'))
-    return amount_request_currency(request, int(result['amount__min']))
-
-
-@register.assignment_tag(takes_context=True)
-def max_hotel_price(context):
-    request = context['request']
-    result = PlacePrice.objects.aggregate(Max('amount'))
-    return amount_request_currency(request, int(result['amount__max']))
-
-
-@register.assignment_tag(takes_context=True)
 def hotel_range_price(context, rate):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
