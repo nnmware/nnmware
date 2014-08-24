@@ -12,7 +12,6 @@ from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, 
     HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.maps import distance_to_object
-from nnmware.core.models import VisitorHit
 from nnmware.core.utils import convert_to_date, setting
 
 
@@ -66,10 +65,11 @@ def search_sticky_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
+    result = HotelOption.objects.filter(sticky_in_search=True)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        return HotelOption.objects.filter(sticky_in_search=True, hotel__in=hotels).distinct().order_by('position')
-    return HotelOption.objects.filter(sticky_in_search=True).order_by('position')
+        result = result.filter(hotel__in=hotels)
+    return result.order_by('position')
 
 
 @register.assignment_tag(takes_context=True)
@@ -77,11 +77,11 @@ def search_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
+    result = HotelOption.objects.filter(sticky_in_search=True)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        return HotelOption.objects.filter(sticky_in_search=False, in_search=True, hotel__in=hotels).distinct().\
-            order_by('position')
-    return HotelOption.objects.filter(sticky_in_search=False, in_search=True).order_by('position')
+        result = result.filter(hotel__in=hotels)
+    return result.order_by('position')
 
 
 @register.assignment_tag
