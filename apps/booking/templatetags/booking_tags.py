@@ -432,19 +432,6 @@ def room_min_days_on_dates(room, dates):
 
 
 @register.simple_tag
-def today_visitor_count():
-    result = set(VisitorHit.objects.values_list('session_key', flat=True))
-    #    result = VisitorHit.objects.filter(date__lte=now().date()-timedelta(days=1),
-    #        date__gte=now().date()-timedelta(days=30)).values_list('session_key', flat=True).distinct()
-    return len(result)
-
-
-@register.simple_tag
-def today_hit_count():
-    return VisitorHit.objects.count()
-
-
-@register.simple_tag
 def room_avg_amount(amount, days):
     result = amount / days
     return format(result, '.2f')
