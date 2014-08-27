@@ -2,7 +2,7 @@
 from hashlib import sha1
 from datetime import timedelta
 from django.core.cache import cache
-from django.db.models import Min, Max, Count, Sum
+from django.db.models import Min, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.timezone import now
@@ -16,48 +16,6 @@ from nnmware.core.utils import convert_to_date, setting
 
 
 register = Library()
-
-
-@register.assignment_tag
-def apartaments_count(city=None):
-    result = Hotel.objects.filter(starcount=APARTAMENTS).count()
-    return result
-
-
-@register.assignment_tag
-def minihotel_count(city=None):
-    result = Hotel.objects.filter(starcount=MINI_HOTEL).count()
-    return result
-
-
-@register.assignment_tag
-def hostel_count(city=None):
-    result = Hotel.objects.filter(starcount=HOSTEL).count()
-    return result
-
-
-@register.assignment_tag
-def two_star_count(city=None):
-    result = Hotel.objects.filter(starcount=TWO_STAR).count()
-    return result
-
-
-@register.assignment_tag
-def three_star_count(city=None):
-    result = Hotel.objects.filter(starcount=THREE_STAR).count()
-    return result
-
-
-@register.assignment_tag
-def four_star_count(city=None):
-    result = Hotel.objects.filter(starcount=FOUR_STAR).count()
-    return result
-
-
-@register.assignment_tag
-def five_star_count(city=None):
-    result = Hotel.objects.filter(starcount=FIVE_STAR).count()
-    return result
 
 
 @register.assignment_tag(takes_context=True)
@@ -435,25 +393,6 @@ def room_min_days_on_dates(room, dates):
 def room_avg_amount(amount, days):
     result = amount / days
     return format(result, '.2f')
-
-
-@register.assignment_tag(takes_context=True)
-def hotel_range_price(context, rate):
-    request = context['request']
-    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
-    data_key = cache.get(key)
-    if data_key:
-        result = PlacePrice.objects.filter(date__gte=now(), amount__gt=0,
-            settlement__room__hotel__pk__in=data_key).aggregate(Min('amount'), Max('amount'))
-        if not result['amount__min']:
-            result['amount__min'] = 0
-        if not result['amount__max']:
-            result['amount__max'] = 0
-    else:
-        result = PlacePrice.objects.filter(date__gte=now(), amount__gt=0).\
-            aggregate(Min('amount'), Max('amount'))
-    return convert_to_client_currency(int(result['amount__min']), rate), \
-        convert_to_client_currency(int(result['amount__max']), rate)
 
 
 @register.assignment_tag(takes_context=True)
