@@ -317,7 +317,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
         options = self.request.POST.getlist('options') or None
         # Call the base implementation first to get a context
         context = super(HotelDetail, self).get_context_data(**kwargs)
-        context['tab'] = 'description'
+        context['tab'] = 'rooms'
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
         context['title_line'] = self.object.get_name
