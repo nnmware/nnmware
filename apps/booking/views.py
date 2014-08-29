@@ -240,7 +240,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.search_data = default_search()
         result = search_hotel.annotate(Count('review'))
         self.result_count = result.count()
-        if result and self.request.is_ajax():
+        if result: # and self.request.is_ajax():
             amounts = PlacePrice.objects.filter(date__gte=now(), amount__gt=0,
                 settlement__room__hotel__in=result).aggregate(Min('amount'), Max('amount'))
             if not amounts['amount__min']:
