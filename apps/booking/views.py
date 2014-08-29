@@ -540,7 +540,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CabinetEditRoom, self).get_context_data(**kwargs)
-        context['options_list'] = RoomOption.objects.select_related().order_by('category', 'position', 'name')
+        context['options_list'] = RoomOption.objects.select_related('category').order_by('category', 'position', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
         context['title_line'] = _('private cabinet')
