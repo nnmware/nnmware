@@ -265,6 +265,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         context['search_data'] = self.search_data
         context['hotels_in_city'] = self.result_count
         context['panel_for'] = 'hotels'
+        context['amount_min'] = self.payload['amount_min']
+        context['amount_max'] = self.payload['amount_max']
         return context
 
 
