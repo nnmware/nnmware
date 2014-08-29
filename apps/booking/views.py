@@ -240,7 +240,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
             self.search_data = default_search()
         result = search_hotel.annotate(Count('review'))
         self.result_count = result.count()
-        if result: # and self.request.is_ajax():
+        if result:  # and self.request.is_ajax():
             amounts = PlacePrice.objects.filter(date__gte=now(), amount__gt=0,
                 settlement__room__hotel__in=result).aggregate(Min('amount'), Max('amount'))
             if not amounts['amount__min']:
@@ -478,7 +478,6 @@ class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, Attach
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['options_list'] = HotelOption.objects.select_related().order_by('category', 'position', 'name')
         context['tab'] = 'common'
         context['title_line'] = _('private cabinet')
@@ -496,7 +495,6 @@ class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CabinetTerms, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['all_payment_methods'] = PaymentMethod.objects.order_by('name')
         context['tab'] = 'terms'
         context['title_line'] = _('private cabinet')
@@ -523,7 +521,6 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
                                   slug=self.kwargs['slug'])
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=hotel.city).count()
         context['options_list'] = RoomOption.objects.select_related().order_by('category', 'position', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = hotel
@@ -543,7 +540,6 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CabinetEditRoom, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['options_list'] = RoomOption.objects.select_related().order_by('category', 'position', 'name')
         context['tab'] = 'rooms'
         context['hotel'] = self.object.hotel
@@ -578,7 +574,6 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         days_of_week = self.request.GET.getlist('days_of_week') or None
         # Call the base implementation first to get a context
         context = super(CabinetRates, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'rates'
         context['hotel'] = self.object
         context['title_line'] = _('private cabinet')
@@ -665,7 +660,6 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(CabinetBillEdit, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.target.city).count()
         context['tab'] = 'reports'
         context['hotel'] = self.object.target
         context['title_line'] = _('private cabinet')
@@ -684,7 +678,6 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
         # Call the base implementation first to get a context
         kwargs['object'] = self.object
         context = super(CabinetBookings, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reports'
         context['hotel'] = self.object
         context['title_line'] = _('bookings')
@@ -718,7 +711,6 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
         # Call the base implementation first to get a context
         kwargs['object'] = self.object
         context = super(CabinetBills, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
         context['tab'] = 'reports'
         context['hotel'] = self.object
         context['title_line'] = _('bills')
