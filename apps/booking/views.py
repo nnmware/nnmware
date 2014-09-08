@@ -568,22 +568,26 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
     model = Hotel
     template_name = "cabinet/rates.html"
 
+    def post(self, request, *args, **kwargs):
+        return super(CabinetRates, self).get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
-        f_date = self.request.GET.get('from') or None
-        t_date = self.request.GET.get('to') or None
-        days_of_week = self.request.GET.getlist('days_of_week') or None
-        # Call the base implementation first to get a context
+        rooms = self.request.POST.getlist('room_id') or None
+        f_date = self.request.POST.get('from') or None
+        t_date = self.request.POST.get('to') or None
+        days_of_week = self.request.POST.getlist('days_of_week') or None
         context = super(CabinetRates, self).get_context_data(**kwargs)
         context['tab'] = 'rates'
         context['hotel'] = self.object
         context['title_line'] = _('private cabinet')
-        if 'room' in self.kwargs.keys():
-            context['room_id'] = int(self.kwargs['room'])
+        if rooms:
+            context['rooms'] = Room.objects.filter(hotel=self.object, pk__in=rooms)
+            context['rooms_lst'] = rooms
         else:
             try:
-                context['room_id'] = Room.objects.filter(hotel=self.object)[0].id
+                context['rooms'] = [Room.objects.filter(hotel=self.object)[0]]
             except IndexError:
-                pass
+                context['rooms'] = None
         if f_date and t_date:
             context['from'] = f_date
             context['to'] = t_date
@@ -613,6 +617,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
                 date_period.append(i)
         context['dates'] = date_period
         context['days_of_week'] = days_of_week
+        context['sheet_lst'] = self.request.POST.getlist('sheet') or True
         return context
 
 
