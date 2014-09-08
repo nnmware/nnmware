@@ -893,3 +893,8 @@ def last_message_with_count_new(context, another):
                                         % (user.pk, another.pk)}).\
         order_by('sent_at').last()
     return msg
+
+
+@register.filter
+def str_is_in(var, obj):
+    return str(var) in obj
