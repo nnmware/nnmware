@@ -604,26 +604,16 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetDiscount(AjaxFormMixin, CurrentUserHotelAdmin, CreateView):
-    model = Discount
-    form_class = AddDiscountForm
+class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
+    model = Hotel
     template_name = "cabinet/discounts.html"
     success_url = '/'
 
     def get_context_data(self, **kwargs):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
-        context['discount'] = True
+        context['rooms'] = Room.objects.filter(hotel=self.object)
         context['tab'] = 'discounts'
-        context['hotel'] = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
-            slug=self.kwargs['slug'])
         return context
-
-    def form_valid(self, form):
-        hotel = get_object_or_404(Hotel, city__slug=self.kwargs['city'], slug=self.kwargs['slug'])
-        self.object = form.save(commit=False)
-        self.object.hotel = hotel
-        self.object.save()
-        return super(CabinetDiscount, self).form_valid(form)
 
 
 class CabinetEditDiscount(AjaxFormMixin, CurrentUserHotelAdmin, UpdateView):
