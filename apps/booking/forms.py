@@ -84,45 +84,6 @@ class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
         return super(CabinetInfoForm, self).save(commit=commit)
 
 
-class CabinetTermsForm(forms.ModelForm):
-    time_on = forms.CharField(widget=AdminTimeWidget(), required=False)
-    time_off = forms.CharField(widget=AdminTimeWidget(), required=False)
-
-    class Meta:
-        model = Hotel
-        fields = ('payment_method', 'time_on', 'time_off')
-
-    def __init__(self, *args, **kwargs):
-        super(CabinetTermsForm, self).__init__(*args, **kwargs)
-        if get_language() == 'ru':
-            booking_terms = self.instance.booking_terms
-            condition_cancellation = self.instance.condition_cancellation
-            paid_services = self.instance.paid_services
-        else:
-            booking_terms = self.instance.booking_terms_en
-            condition_cancellation = self.instance.condition_cancellation_en
-            paid_services = self.instance.paid_services_en
-        self.fields['booking_terms'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                    'rows': '5'}),
-                                                       initial=booking_terms)
-        self.fields['condition_cancellation'] = forms.CharField(required=False, widget=forms.Textarea(attrs={
-            'class': 'wide', 'rows': '5'}), initial=condition_cancellation)
-        self.fields['paid_services'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
-                                                                                                    'rows': '5'}),
-                                                       initial=paid_services)
-
-    def save(self, commit=True):
-        if get_language() == 'ru':
-            self.instance.booking_terms = self.cleaned_data['booking_terms']
-            self.instance.condition_cancellation = self.cleaned_data['condition_cancellation']
-            self.instance.paid_services = self.cleaned_data['paid_services']
-        else:
-            self.instance.booking_terms_en = self.cleaned_data['booking_terms']
-            self.instance.condition_cancellation_en = self.cleaned_data['condition_cancellation']
-            self.instance.paid_services_en = self.cleaned_data['paid_services']
-        return super(CabinetTermsForm, self).save(commit=commit)
-
-
 class CabinetRoomForm(LocaleNamedForm):
 
     class Meta:

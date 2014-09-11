@@ -21,7 +21,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.booking.forms import CabinetInfoForm, CabinetTermsForm, CabinetRoomForm, AddDiscountForm, \
+from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, AddDiscountForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
     STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel
@@ -485,23 +485,6 @@ class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, Attach
 
     def get_success_url(self):
         return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
-
-
-class CabinetTerms(HotelPathMixin, CurrentUserHotelAdmin, UpdateView):
-    model = Hotel
-    form_class = CabinetTermsForm
-    template_name = "cabinet/terms.html"
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(CabinetTerms, self).get_context_data(**kwargs)
-        context['all_payment_methods'] = PaymentMethod.objects.order_by('name')
-        context['tab'] = 'terms'
-        context['title_line'] = _('private cabinet')
-        return context
-
-    def get_success_url(self):
-        return reverse('cabinet_terms', args=[self.object.city.slug, self.object.slug])
 
 
 class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
