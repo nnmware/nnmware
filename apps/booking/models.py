@@ -727,6 +727,31 @@ class RoomDiscount(models.Model):
 
 
 @python_2_unicode_compatible
+class SimpleDiscount(models.Model):
+    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"))
+    ub = models.BooleanField(verbose_name=_('Unguaranteed booking enabled'), default=False, db_index=True)
+    ub_days = models.PositiveSmallIntegerField(verbose_name=_('Free cancel ub days'), default=0, db_index=True)
+    ub_penalty = models.PositiveSmallIntegerField(verbose_name=_('Penalty for ub cancel'), default=0, db_index=True)
+    ub_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount ub'), default=0, db_index=True)
+    gb = models.BooleanField(verbose_name=_('Guaranteed booking enabled'), default=False, db_index=True)
+    gb_days = models.PositiveSmallIntegerField(verbose_name=_('Free cancel ub days'), default=0, db_index=True)
+    gb_penalty = models.PositiveSmallIntegerField(verbose_name=_('Penalty for gb cancel'), default=0, db_index=True)
+    gb_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount gb'), default=0, db_index=True)
+    nr = models.BooleanField(verbose_name=_('Non-return rate enabled'), default=False, db_index=True)
+    nr_days = models.PositiveSmallIntegerField(verbose_name=_('Free cancel nr days'), default=0, db_index=True)
+    nr_penalty = models.PositiveSmallIntegerField(verbose_name=_('Penalty for nr cancel'), default=0, db_index=True)
+    nr_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount nr'), default=0, db_index=True)
+
+    class Meta:
+        ordering = ['-pk', ]
+        verbose_name = _("Simple room discount")
+        verbose_name_plural = _("Simple room discounts")
+
+    def __str__(self):
+        return _('Discount for room %(room)s in %(hotel)s') % dict(date=self.room.name, val=self.room.hotel.name)
+
+
+@python_2_unicode_compatible
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
