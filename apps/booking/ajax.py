@@ -39,45 +39,21 @@ def room_rates(request):
     try:
         json_data = json.loads(request.body)
         currency = Currency.objects.get(code=setting('DEFAULT_CURRENCY', 'RUB'))
-        room = Room.objects.get(id=int(json_data['room_id']))
-        if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
+        hotel = Hotel.objects.get(id=int(json_data['hotel']))
+        if request.user not in hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
             # find settlements keys in data
-        all_settlements, all_discounts = [], []
+        all_rooms, all_avail, all_limits = [], [], []
         for k in json_data.keys():
-            if k[0] == 's':
-                all_settlements.append(k)
-            elif k[0] == 'd':
-                all_discounts.append(k)
+            if k[0] == 'r':
+                all_rooms.append(k)
+            elif k[0] == 'a':
+                all_avail.append(k)
+            elif k[0] == 'l':
+                all_limits.append(k)
         for i, v in enumerate(json_data['dates']):
             on_date = datetime.fromtimestamp(time.mktime(time.strptime(v, "%d%m%Y")))
-            if 'placecount' in json_data.keys():
-                try:
-                    placecount = int(json_data['placecount'][i])
-                    try:
-                        min_days = int(json_data['min_days'][i])
-                    except:
-                        min_days = None
-                        # store availability
-                    availability, created = Availability.objects.get_or_create(date=on_date, room=room)
-                    availability.placecount = placecount
-                    if min_days is not None:
-                        availability.min_days = min_days
-                    availability.save()
-                except ValueError:
-                    pass
-            for k in all_discounts:
-                try:
-                    discount_id = int(k[1:])
-                    discount = Discount.objects.get(id=discount_id)
-                    value = int(json_data[k][i])
-                    room_discount, created = RoomDiscount.objects.get_or_create(date=on_date, discount=discount,
-                                                                                room=room)
-                    room_discount.value = value
-                    room_discount.save()
-                except ValueError:
-                    pass
-            for k in all_settlements:
+            for k in all_rooms:
                 try:
                     settlement_id = int(k[1:])
                     settlement = SettlementVariant.objects.get(id=settlement_id)
@@ -86,6 +62,22 @@ def room_rates(request):
                     placeprice.amount = price
                     placeprice.currency = currency
                     placeprice.save()
+                except ValueError:
+                    pass
+            for k in all_avail:
+                try:
+                    room_id = int(k[1:])
+                    room = Room.objects.get(pk=room_id)
+                    placecount = int(json_data[k][i])
+                    availability, created = Availability.objects.get_or_create(date=on_date, room=room)
+                    availability.placecount = placecount
+                    try:
+                        min_days = int(json_data['l' + k[1:]][i])
+                    except:
+                        min_days = None
+                    if min_days is not None:
+                        availability.min_days = min_days
+                    availability.save()
                 except ValueError:
                     pass
         payload = {'success': True}

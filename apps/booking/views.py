@@ -600,7 +600,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
             date_gen = daterange(from_date, to_date + timedelta(days=1))
         else:
             from_date = now()
-            to_date = from_date + timedelta(days=14)
+            to_date = from_date + timedelta(days=15)
             date_gen = daterange(from_date, to_date)
             f_date = from_date.strftime('%d.%m.%Y')
             t_date = to_date.strftime('%d.%m.%Y')
