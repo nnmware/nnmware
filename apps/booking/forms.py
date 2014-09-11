@@ -194,7 +194,7 @@ class BookingStatusForm(forms.ModelForm):
 
 
 class AddDiscountForm(LocaleNamedForm):
-
+    # TODO - Not used now(future)
     class Meta:
         model = Discount
         fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percentage', 'apply_norefund',
