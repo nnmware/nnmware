@@ -613,7 +613,7 @@ class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         context = super(CabinetDiscount, self).get_context_data(**kwargs)
         context['rooms'] = Room.objects.filter(hotel=self.object)
         context['tab'] = 'discounts'
-        context['title_line'] = _('discounts for %s' % self.object.get_name)
+        context['title_line'] = _('discounts for hotel %s' % self.object.get_name)
         return context
 
 
