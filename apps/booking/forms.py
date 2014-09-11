@@ -42,20 +42,27 @@ class LocaleNamedForm(forms.ModelForm):
 
 
 class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
+    time_on = forms.CharField(widget=AdminTimeWidget(), required=False)
+    time_off = forms.CharField(widget=AdminTimeWidget(), required=False)
 
     class Meta:
         model = Hotel
-        fields = ('option',)
+        fields = ('option', 'time_on', 'time_off')
 
     def __init__(self, *args, **kwargs):
         super(CabinetInfoForm, self).__init__(*args, **kwargs)
         if get_language() == 'ru':
             schema_transit = self.instance.schema_transit
+            paid_services = self.instance.paid_services
         else:
             schema_transit = self.instance.schema_transit_en
+            paid_services = self.instance.paid_services_en
         self.fields['schema_transit'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
                                                                                                      'rows': '5'}),
                                                         initial=schema_transit)
+        self.fields['paid_services'] = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'wide',
+                                                                                                    'rows': '5'}),
+                                                       initial=paid_services)
         if not self._user.is_superuser:
             self.fields['name'].widget.attrs['readonly'] = True
 
@@ -70,8 +77,10 @@ class CabinetInfoForm(UserFromRequestForm, LocaleNamedForm):
     def save(self, commit=True):
         if get_language() == 'ru':
             self.instance.schema_transit = self.cleaned_data['schema_transit']
+            self.instance.paid_services = self.cleaned_data['paid_services']
         else:
             self.instance.schema_transit_en = self.cleaned_data['schema_transit']
+            self.instance.paid_services_en = self.cleaned_data['paid_services']
         return super(CabinetInfoForm, self).save(commit=commit)
 
 
