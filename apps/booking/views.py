@@ -496,16 +496,14 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
     template_name = "cabinet/rooms.html"
 
     def form_valid(self, form):
-        hotel = get_object_or_404(Hotel, city__slug=self.kwargs['city'], slug=self.kwargs['slug'])
         self.object = form.save(commit=False)
-        self.object.hotel = hotel
+        self.object.hotel = self.hotel
         self.object.save()
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         self.hotel = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
                                   slug=self.kwargs['slug'])
-        # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['options_list'] = RoomOption.objects.select_related('category').order_by('category', 'position', 'name')
         context['tab'] = 'rooms'
