@@ -295,8 +295,10 @@ class HotelAdminList(ListView):
 class HotelPathMixin(object):
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
-            slug=self.kwargs['slug'])
+        if not hasattr(self, 'object'):
+            self.object = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
+                                            slug=self.kwargs['slug'])
+        return self.object
 
     def get_context_data(self, **kwargs):
         context = super(HotelPathMixin, self).get_context_data(**kwargs)
