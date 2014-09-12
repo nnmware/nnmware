@@ -503,13 +503,13 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         return super(CabinetRooms, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
-        hotel = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
-                                  slug=self.kwargs['slug'])
+        #hotel = get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
+        #                          slug=self.kwargs['slug'])
         # Call the base implementation first to get a context
         context = super(CabinetRooms, self).get_context_data(**kwargs)
         context['options_list'] = RoomOption.objects.select_related('category').order_by('category', 'position', 'name')
         context['tab'] = 'rooms'
-        context['hotel'] = hotel
+        context['hotel'] = self.object.hotel
         context['title_line'] = _('private cabinet')
         return context
 
