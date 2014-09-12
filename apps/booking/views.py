@@ -46,8 +46,8 @@ class CurrentUserHotelAdmin(object):
     @method_decorator(ensure_csrf_cookie)
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
-        obj = get_object_or_404(Hotel.objects.select_related(), city__slug=kwargs['city'], slug=kwargs['slug'])
-        if not request.user in obj.admins.all() and not request.user.is_superuser:
+        self.object = self.get_object()
+        if not request.user in self.object.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
 
@@ -293,6 +293,7 @@ class HotelAdminList(ListView):
 
 
 class HotelPathMixin(object):
+
     def get_object(self, queryset=None):
         return get_object_or_404(Hotel.objects.select_related(), city__slug=self.kwargs['city'],
             slug=self.kwargs['slug'])
