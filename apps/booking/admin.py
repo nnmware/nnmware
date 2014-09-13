@@ -5,7 +5,7 @@ from django.contrib.admin.widgets import AdminTimeWidget
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
     RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Discount, Review, SettlementVariant, \
-    Availability, PlacePrice, RoomDiscount
+    Availability, PlacePrice, RoomDiscount, SimpleDiscount
 
 try:
     from pytils.translit import slugify
@@ -218,7 +218,8 @@ class AgentPercentAdmin(admin.ModelAdmin):
     ordering = ('-date',)
 
 
-@admin.register(Discount)
+#@admin.register(Discount)
+# TODO Disabled
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice', 'percentage', 'enabled')
 #    search_fields = ('date',)
@@ -260,7 +261,8 @@ class PlacePriceAdmin(admin.ModelAdmin):
     ordering = ('amount',)
 
 
-@admin.register(RoomDiscount)
+#@admin.register(RoomDiscount)
+# TODO Disabled
 class RoomDiscountAdmin(admin.ModelAdmin):
     list_display = ('room', 'discount', 'date', 'value')
     search_fields = ('date',)
@@ -269,3 +271,16 @@ class RoomDiscountAdmin(admin.ModelAdmin):
     ordering = ('value',)
     # raw_id_fields = ('room', 'discount')
     # autocomplete_lookup_fields = {'fk': ['room', 'discount']}
+
+
+@admin.register(SimpleDiscount)
+class SimpleDiscountAdmin(admin.ModelAdmin):
+    list_display = ('room', 'ub', 'ub_days', 'ub_penalty', 'ub_discount', 'gb', 'gb_days', 'gb_penalty', 'gb_discount',
+        'nr', 'nr_days', 'nr_penalty', 'nr_discount')
+    search_fields = ('room__name',)
+    fieldsets = (
+        (_("Room simple discount"), {"fields": [('room', )]}),
+        (_("Unguaranteed booking"), {"fields": [('ub', 'ub_days', 'ub_penalty', 'ub_discount')]}),
+        (_("Guaranteed booking"), {"fields": [('gb', 'gb_days', 'gb_penalty', 'gb_discount')]}),
+        (_("Non-return rate"), {"fields": [('nr', 'nr_days', 'nr_penalty', 'nr_discount')]}),)
+    ordering = ('room',)
