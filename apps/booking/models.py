@@ -441,6 +441,11 @@ class Room(AbstractName):
             values_list('discount__pk', flat=True).distinct()
         return Discount.objects.filter(hotel=self.hotel).exclude(pk__in=discounts).order_by('pk')
 
+    @property
+    def simple_discount(self):
+        result, created = SimpleDiscount.objects.get_or_create(room=self)
+        return result
+
 
 @python_2_unicode_compatible
 class SettlementVariant(models.Model):

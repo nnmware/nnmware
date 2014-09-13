@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.exceptions import AccessError
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
-    Review, Booking, PaymentMethod, Discount, RoomDiscount
+    Review, Booking, PaymentMethod, Discount, RoomDiscount, SimpleDiscount
 from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
 from nnmware.apps.money.models import Currency
 import time
@@ -80,6 +80,54 @@ def room_rates(request):
                     availability.save()
                 except ValueError:
                     pass
+        payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False}
+    except:
+        payload = {'success': False}
+    return ajax_answer_lazy(payload)
+
+
+@never_cache
+def room_discounts(request):
+    try:
+        json_data = json.loads(request.body)
+        hotel = Hotel.objects.get(id=int(json_data['hotel']))
+        if request.user not in hotel.admins.all() and not request.user.is_superuser:
+            raise UserNotAllowed
+        all_rooms = []
+        for k in json_data.keys():
+            if k[0:2] == 'ub':
+                all_rooms.append(k[2:])
+        for r in all_rooms:
+            room = Room.objects.get(pk=int(r))
+            # TODO Check user rights for room
+            simple_discount, created = SimpleDiscount.objects.get_or_create(room=room)
+            try:
+                if json_data['ub' + r][0] == '1':
+                    simple_discount.ub = True
+                else:
+                    simple_discount.ub = False
+                simple_discount.ub_days = int(json_data['ub' + r][1])
+                simple_discount.ub_penalty = int(json_data['ub' + r][2])
+                simple_discount.ub_discount = int(json_data['ub' + r][3])
+                if json_data['gb' + r][0] == '1':
+                    simple_discount.gb = True
+                else:
+                    simple_discount.gb = False
+                simple_discount.gb_days = int(json_data['gb' + r][1])
+                simple_discount.gb_penalty = int(json_data['gb' + r][2])
+                simple_discount.gb_discount = int(json_data['gb' + r][3])
+                if json_data['nr' + r][0] == '1':
+                    simple_discount.gb = True
+                else:
+                    simple_discount.gb = False
+                simple_discount.nr_days = int(json_data['nr' + r][1])
+                simple_discount.nr_penalty = int(json_data['nr' + r][2])
+                simple_discount.nr_discount = int(json_data['nr' + r][3])
+                simple_discount.save()
+            except:
+                pass
         payload = {'success': True}
     except UserNotAllowed:
         payload = {'success': False}
