@@ -106,25 +106,58 @@ def room_discounts(request):
             try:
                 if json_data['ub' + r][0] == '1':
                     simple_discount.ub = True
+                    simple_discount.ub_days = int(json_data['ub' + r][1])
+                    penalty = int(json_data['ub' + r][2])
+                    if 0 <= penalty <= 100:
+                        simple_discount.ub_penalty = penalty
+                    else:
+                        simple_discount.ub_penalty = 0
+                    discount = int(json_data['ub' + r][3])
+                    if 0 <= discount <= 100:
+                        simple_discount.ub_discount = discount
+                    else:
+                        simple_discount.ub_discount = 0
                 else:
                     simple_discount.ub = False
-                simple_discount.ub_days = int(json_data['ub' + r][1])
-                simple_discount.ub_penalty = int(json_data['ub' + r][2])
-                simple_discount.ub_discount = int(json_data['ub' + r][3])
+                    simple_discount.ub_days = 0
+                    simple_discount.ub_penalty = 0
+                    simple_discount.ub_discount = 0
                 if json_data['gb' + r][0] == '1':
                     simple_discount.gb = True
+                    simple_discount.gb_days = int(json_data['gb' + r][1])
+                    penalty = int(json_data['gb' + r][2])
+                    if 0 <= penalty <= 100:
+                        simple_discount.gb_penalty = penalty
+                    else:
+                        simple_discount.gb_penalty = 0
+                    discount = int(json_data['gb' + r][3])
+                    if 0 <= discount <= 100:
+                        simple_discount.gb_discount = discount
+                    else:
+                        simple_discount.gb_discount = 0
                 else:
                     simple_discount.gb = False
-                simple_discount.gb_days = int(json_data['gb' + r][1])
-                simple_discount.gb_penalty = int(json_data['gb' + r][2])
-                simple_discount.gb_discount = int(json_data['gb' + r][3])
+                    simple_discount.gb_days = 0
+                    simple_discount.gb_penalty = 0
+                    simple_discount.gb_discount = 0
                 if json_data['nr' + r][0] == '1':
-                    simple_discount.gb = True
+                    simple_discount.nr = True
+                    simple_discount.nr_days = int(json_data['nr' + r][1])
+                    penalty = int(json_data['nr' + r][2])
+                    if 0 <= penalty <= 100:
+                        simple_discount.nr_penalty = penalty
+                    else:
+                        simple_discount.nr_penalty = 0
+                    discount = int(json_data['nr' + r][3])
+                    if 0 <= discount <= 100:
+                        simple_discount.nr_discount = discount
+                    else:
+                        simple_discount.nr_discount = 0
                 else:
-                    simple_discount.gb = False
-                simple_discount.nr_days = int(json_data['nr' + r][1])
-                simple_discount.nr_penalty = int(json_data['nr' + r][2])
-                simple_discount.nr_discount = int(json_data['nr' + r][3])
+                    simple_discount.nr = False
+                    simple_discount.nr_days = 0
+                    simple_discount.nr_penalty = 0
+                    simple_discount.nr_discount = 0
                 simple_discount.save()
             except:
                 pass
