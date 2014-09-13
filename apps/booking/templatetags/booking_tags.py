@@ -195,6 +195,52 @@ def room_full_amount(context, room, rate):
 
 
 @register.assignment_tag(takes_context=True)
+def price_variants(context, room, rate):
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
+    settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+        placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(valid_s=Count('pk')).\
+        filter(valid_s__gte=delta).order_by('settlement').values_list('pk', flat=True).distinct()[0]
+    result = PlacePrice.objects.filter(settlement__room=room, settlement__pk=settlement,
+                                       date__range=date_period).aggregate(Sum('amount'))['amount__sum']
+    answer = convert_to_client_currency(result, rate)
+    discount = room.simple_discount
+    prices = [None, None, None]
+    if discount.ub:
+        ub = dict()
+        ub['days'] = from_date - timedelta(days=discount.ub_days)
+        ub['penalty'] = from_date - timedelta(days=discount.ub_penalty)
+        if 0 < discount.ub_discount < 100:
+            ub['price'] = (answer * (100 - discount.ub_discount)) / 100
+        else:
+            ub['price'] = answer
+        prices[0] = ub
+    if discount.gb:
+        gb = dict()
+        gb['days'] = from_date - timedelta(days=discount.gb_days)
+        if 0 < discount.gb_penalty <= 100:
+            room_answer = PlacePrice.objects.get(settlement__room=room, settlement__pk=settlement, date=from_date)
+            room_answer = convert_to_client_currency(room_answer.amount, rate)
+            gb['penalty'] = (room_answer * discount.gb_penalty) / 100
+        else:
+            gb['penalty'] = None
+        if 0 < discount.gb_discount < 100:
+            gb['price'] = (answer * (100 - discount.gb_discount)) / 100
+        else:
+            gb['price'] = answer
+        prices[1] = gb
+    if discount.nr:
+        nr = dict()
+        nr['days'] = discount.gb_days
+        nr['penalty'] = from_date - timedelta(days=discount.nr_penalty)
+        if 0 < discount.nr_discount < 100:
+            nr['price'] = (answer * (100 - discount.nr_discount)) / 100
+        else:
+            nr['price'] = answer
+        prices[2] = nr
+    return prices
+
+
+@register.assignment_tag(takes_context=True)
 def room_full_amount_discount(context, room, rate):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     # TODO Discount
