@@ -284,3 +284,4 @@ class SimpleDiscountAdmin(admin.ModelAdmin):
         (_("Guaranteed booking"), {"fields": [('gb', 'gb_days', 'gb_penalty', 'gb_discount')]}),
         (_("Non-return rate"), {"fields": [('nr', 'nr_days', 'nr_penalty', 'nr_discount')]}),)
     ordering = ('room',)
+    readonly_fields = ('room', )
