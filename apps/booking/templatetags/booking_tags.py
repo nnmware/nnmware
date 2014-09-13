@@ -23,7 +23,7 @@ def search_sticky_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
-    result = HotelOption.objects.filter(sticky_in_search=True)
+    result = HotelOption.objects.filter(in_search=True, sticky_in_search=True)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
         result = result.filter(hotel__in=hotels)
@@ -35,7 +35,7 @@ def search_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
     data_key = cache.get(key)
-    result = HotelOption.objects.filter(sticky_in_search=True)
+    result = HotelOption.objects.filter(in_search=True, sticky_in_search=False)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
         result = result.filter(hotel__in=hotels)
