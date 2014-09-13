@@ -26,7 +26,7 @@ def search_sticky_options(context):
     result = HotelOption.objects.filter(in_search=True, sticky_in_search=True)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        result = result.filter(hotel__in=hotels)
+        result = result.filter(hotel__in=hotels).distinct()
     return result.order_by('position')
 
 
@@ -38,7 +38,7 @@ def search_options(context):
     result = HotelOption.objects.filter(in_search=True, sticky_in_search=False)
     if data_key:
         hotels = Hotel.objects.filter(pk__in=data_key)
-        result = result.filter(hotel__in=hotels)
+        result = result.filter(hotel__in=hotels).distinct()
     return result.order_by('position')
 
 
