@@ -1122,6 +1122,8 @@ class HotelMainPage(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HotelMainPage, self).get_context_data(**kwargs)
         context['title_line'] = _('booking of russian hotels')
+        context['from'] = now() + timedelta(days=1)
+        context['to'] = now() + timedelta(days=2)
         return context
 
 
