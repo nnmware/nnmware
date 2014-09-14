@@ -88,7 +88,7 @@ class CabinetRoomForm(LocaleNamedForm):
 
     class Meta:
         model = Room
-        fields = ('option', 'typefood')
+        fields = ('option', 'typefood', 'surface_area')
         widgets = {
             'typefood': forms.RadioSelect(),
         }

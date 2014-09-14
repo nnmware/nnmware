@@ -373,6 +373,7 @@ class Room(AbstractName):
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN, db_index=True)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO, db_index=True)
+    surface_area = models.PositiveSmallIntegerField(verbose_name=_('Surface area (m2)'), default=0, db_index=True)
 
     class Meta:
         verbose_name = _("Room")
