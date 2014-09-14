@@ -207,8 +207,6 @@ def price_variants(context, room, rate):
     prices = [None, None, None]
     if discount.ub:
         ub = dict()
-        ub['days'] = from_date - timedelta(days=discount.ub_days)
-        ub['penalty'] = from_date - timedelta(days=discount.ub_penalty)
         if 0 < discount.ub_discount < 100:
             ub['price'] = (answer * (100 - discount.ub_discount)) / 100
         else:
@@ -230,8 +228,6 @@ def price_variants(context, room, rate):
         prices[1] = gb
     if discount.nr:
         nr = dict()
-        nr['days'] = discount.gb_days
-        nr['penalty'] = from_date - timedelta(days=discount.nr_penalty)
         if 0 < discount.nr_discount < 100:
             nr['price'] = (answer * (100 - discount.nr_discount)) / 100
         else:

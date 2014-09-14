@@ -275,13 +275,12 @@ class RoomDiscountAdmin(admin.ModelAdmin):
 
 @admin.register(SimpleDiscount)
 class SimpleDiscountAdmin(admin.ModelAdmin):
-    list_display = ('room', 'ub', 'ub_days', 'ub_penalty', 'ub_discount', 'gb', 'gb_days', 'gb_penalty', 'gb_discount',
-        'nr', 'nr_days', 'nr_penalty', 'nr_discount')
+    list_display = ('room', 'ub', 'ub_discount', 'gb', 'gb_days', 'gb_penalty', 'gb_discount', 'nr', 'nr_discount')
     search_fields = ('room__name',)
     fieldsets = (
         (_("Room simple discount"), {"fields": [('room', )]}),
-        (_("Unguaranteed booking"), {"fields": [('ub', 'ub_days', 'ub_penalty', 'ub_discount')]}),
+        (_("Unguaranteed booking"), {"fields": [('ub', 'ub_discount')]}),
         (_("Guaranteed booking"), {"fields": [('gb', 'gb_days', 'gb_penalty', 'gb_discount')]}),
-        (_("Non-return rate"), {"fields": [('nr', 'nr_days', 'nr_penalty', 'nr_discount')]}),)
+        (_("Non-return rate"), {"fields": [('nr', 'nr_discount')]}),)
     ordering = ('room',)
     readonly_fields = ('room', )
