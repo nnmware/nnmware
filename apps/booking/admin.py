@@ -87,7 +87,7 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'places', 'hotel')
     search_fields = ('name',)
     fieldsets = (
-        (_("Room"), {"fields": [("name", 'hotel'), ("typefood", 'places'),
+        (_("Room"), {"fields": [("name", 'hotel', 'surface_area'), ("typefood", 'places'),
                                 ('description',)]}),
         (_("English"), {"classes": ("grp-collapse grp-closed",),
                         "fields": [("name_en",), ("description_en",), ]}),)
