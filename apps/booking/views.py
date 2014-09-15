@@ -983,7 +983,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             elif btype == 'nr' and not room.simple_discount.nr:
                 raise Http404
             else:
-                raise Http404
+                pass
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
             if from_date > to_date:
