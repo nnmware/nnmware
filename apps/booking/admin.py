@@ -153,9 +153,9 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('user', 'from_date', 'to_date', 'settlement', 'guests', 'amount', 'status', 'date',
-                    'uuid', 'enabled')
+                    'uuid', 'btype', 'enabled')
     search_fields = ('from_date',)
-    readonly_fields = ('uuid', 'ip', 'user_agent', 'currency', 'settlement', 'hotel')
+    readonly_fields = ('uuid', 'ip', 'user_agent', 'currency', 'settlement', 'hotel', 'btype')
     fieldsets = (
         (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
                                          ('from_date', 'to_date'),

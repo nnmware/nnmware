@@ -503,6 +503,17 @@ STATUS_CHOICES = (
     (STATUS_COMPLETED, _("Completed")),
 )
 
+BOOKING_UNKNOWN = 0
+BOOKING_UB = 1
+BOOKING_GB = 2
+BOOKING_NR = 3
+
+BOOKING_CHOICES = (
+    (BOOKING_UNKNOWN, _("Unknown")),
+    (BOOKING_UB, _("Unguaranteed booking")),
+    (BOOKING_GB, _("Guaranteed booking")),
+    (BOOKING_NR, _("Non-return rate")),
+)
 
 @python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
@@ -532,6 +543,7 @@ class Booking(MoneyBase, AbstractIP):
     payment_method = models.ForeignKey(PaymentMethod, verbose_name=_('Payment method'))
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=False, db_index=True)
     guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
+    btype = models.IntegerField(_("Booking type"), choices=BOOKING_CHOICES, default=BOOKING_UNKNOWN)
 
     objects = Manager()
 
