@@ -965,6 +965,8 @@ class ClientBooking(RedirectHttpsView, DetailView):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
         btype = self.request.GET.get('btype') or None
+        if btype not in ['ub', 'gb', 'nr']:
+            raise Http404
         guests = guests_from_request(self.request)
         if f_date == t_date:
             raise Http404
@@ -974,7 +976,13 @@ class ClientBooking(RedirectHttpsView, DetailView):
             except ValueError:
                 raise Http404
             room = get_object_or_404(Room, id=room_id)
-            if room.hotel.payment_method.count() < 1:
+            if btype == 'ub' and not room.simple_discount.ub:
+                raise Http404
+            elif btype == 'gb' and not room.simple_discount.gb:
+                raise Http404
+            elif btype == 'nr' and not room.simple_discount.nr:
+                raise Http404
+            else:
                 raise Http404
             from_date = convert_to_date(f_date)
             to_date = convert_to_date(t_date)
