@@ -964,6 +964,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
         t_date = self.request.GET.get('to') or None
+        btype = self.request.GET.get('btype') or None
         guests = guests_from_request(self.request)
         if f_date == t_date:
             raise Http404
@@ -1002,6 +1003,7 @@ class ClientBooking(RedirectHttpsView, DetailView):
             context['room'] = room
             context['settlement'] = settlement
             context['search_data'] = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
+            context['btype'] = btype
             return context
         else:
             raise Http404
