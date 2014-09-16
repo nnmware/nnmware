@@ -164,7 +164,7 @@ def room_variants(request):
             results.append(s.settlement)
         payload = {'success': True, 'settlements': results}
     except UserNotAllowed:
-        payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
+        payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
@@ -178,7 +178,7 @@ def room_delete(request, pk):
         room.delete()
         payload = {'success': True}
     except UserNotAllowed:
-        payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
+        payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
@@ -192,7 +192,7 @@ def request_hotel_delete(request, pk):
         req_hotel.delete()
         payload = {'success': True}
     except UserNotAllowed:
-        payload = {'success': False, 'error_msg': _('You are not allowed change room variants.')}
+        payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
@@ -234,7 +234,7 @@ def hotel_add(request):
         RequestAddHotel.objects.get(id=request_id).delete()
         payload = {'success': True, 'location': location}
     except UserNotAllowed:
-        payload = {'success': False, 'error_msg': _('You are not allowed add hotel.')}
+        payload = {'success': False, 'error': _('You are not allowed add hotel.')}
     return ajax_answer_lazy(payload)
 
 
@@ -419,7 +419,7 @@ def booking_sysadm(request, pk, action):
             raise UserNotAllowed
         payload = {'success': True, 'location': url}
     except UserNotAllowed:
-        payload = {'success': False, 'error_msg': _('You are not allowed for this action.')}
+        payload = {'success': False, 'error': _('You are not allowed for this action.')}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)

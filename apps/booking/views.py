@@ -1034,7 +1034,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             if payment_method.use_card:
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
-                        payload = {'success': False, 'engine_error': _('Card number is wrong.')}
+                        payload = {'success': False, 'error': _('Card number is wrong.')}
                     else:
                         use_card = True
                         try:
@@ -1044,11 +1044,11 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
                                 raise ValueError
                             card_cvv2 = int(card_cvv2)
                         except ValueError:
-                            payload = {'success': False, 'engine_error': _('Card CVV2 is wrong.')}
+                            payload = {'success': False, 'error': _('Card CVV2 is wrong.')}
                 else:
-                    payload = {'success': False, 'engine_error': _('You enter not all data of card.')}
+                    payload = {'success': False, 'error': _('You enter not all data of card.')}
         else:
-            payload = {'success': False, 'engine_error': _('You are not select payment method.')}
+            payload = {'success': False, 'error': _('You are not select payment method.')}
         if payload:
             return ajax_answer_lazy(payload)
         self.object = form.save(commit=False)
