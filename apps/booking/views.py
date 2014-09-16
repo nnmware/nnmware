@@ -21,6 +21,7 @@ from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 
+from nnmware.apps.booking.ajax import CardError
 from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, AddDiscountForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
@@ -1023,34 +1024,35 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
 
     def form_valid(self, form):
         use_card = False
-        p_m = self.request.POST.get('payment_method') or None
         payload = None
-        if p_m:
-            payment_method = PaymentMethod.objects.get(pk=int(p_m))
-            card_number = self.request.POST.get('card_number') or None
-            card_holder = self.request.POST.get('card_holder') or None
-            card_valid = self.request.POST.get('card_valid') or None
-            card_cvv2 = self.request.POST.get('card_cvv2') or None
-            if payment_method.use_card:
+        btype = self.request.POST.get('btype') or None
+        if btype in ['gb', 'nr']:
+            use_card = True
+        if use_card:
+            try:
+                card_number = self.request.POST.get('card_number') or None
+                card_holder = self.request.POST.get('card_holder') or None
+                card_valid = self.request.POST.get('card_valid') or None
+                card_cvv2 = self.request.POST.get('card_cvv2') or None
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
                         payload = {'success': False, 'error': _('Card number is wrong.')}
+                        raise CardError
                     else:
-                        use_card = True
                         try:
                             if len(card_cvv2) != 3:
                                 raise ValueError
                             if len(card_valid) != 5:
                                 raise ValueError
                             card_cvv2 = int(card_cvv2)
-                        except ValueError:
+                        except:
                             payload = {'success': False, 'error': _('Card CVV2 is wrong.')}
+                            raise CardError
                 else:
                     payload = {'success': False, 'error': _('You enter not all data of card.')}
-        else:
-            payload = {'success': False, 'error': _('You are not select payment method.')}
-        if payload:
-            return ajax_answer_lazy(payload)
+                    raise CardError
+            except CardError:
+                return ajax_answer_lazy(payload)
         self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user

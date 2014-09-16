@@ -30,6 +30,10 @@ class UserNotAllowed(Exception):
     pass
 
 
+class CardError(Exception):
+    pass
+
+
 class RatesError(Exception):
     pass
 
