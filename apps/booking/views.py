@@ -25,7 +25,7 @@ from nnmware.apps.booking.ajax import CardError
 from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, AddDiscountForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
-    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel
+    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
@@ -1026,6 +1026,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         use_card = False
         payload = None
         btype = self.request.POST.get('btype') or None
+        if btype not in ['ub', 'gb', 'nr']:
+            raise Http404
         if btype in ['gb', 'nr']:
             use_card = True
         if use_card:
@@ -1080,6 +1082,12 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.hotel_txt = str(settlement.room.hotel)
         self.object.status = STATUS_ACCEPTED
         self.object.date = now()
+        if btype == 'ub':
+            booking_type = BOOKING_UB
+        elif btype == 'gb':
+            booking_type = BOOKING_GB
+        elif btype == 'nr':
+            booking_type = BOOKING_NR
         from_date = self.object.from_date
         to_date = self.object.to_date
         all_amount = Decimal(0)
@@ -1101,6 +1109,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.currency = currency
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
+        self.object.btype = booking_type
         if use_card:
             self.object.card_number = card_number
             self.object.card_holder = card_holder
