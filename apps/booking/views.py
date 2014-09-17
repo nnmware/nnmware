@@ -1083,6 +1083,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.hotel_txt = str(settlement.room.hotel)
         self.object.status = STATUS_ACCEPTED
         self.object.date = now()
+        if room.typefood:
+            self.object.typefood = room.typefood
         if btype == 'ub':
             booking_type = BOOKING_UB
         elif btype == 'gb':

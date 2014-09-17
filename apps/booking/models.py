@@ -544,6 +544,7 @@ class Booking(MoneyBase, AbstractIP):
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=False, db_index=True)
     guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
     btype = models.IntegerField(_("Booking type"), choices=BOOKING_CHOICES, default=BOOKING_UNKNOWN)
+    typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, db_index=True, null=True)
 
     objects = Manager()
 
