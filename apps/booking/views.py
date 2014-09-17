@@ -3,6 +3,7 @@
 from datetime import timedelta
 from decimal import Decimal
 from hashlib import sha1
+from django.conf import settings
 
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
@@ -1117,10 +1118,11 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_client_url()
-        if self.request.user.is_authenticated:
-            booking_new_client_mail(self.object, self.request.user.username)
-        else:
-            booking_new_client_mail(self.object)
+        if not settings.DEBUG:
+            if self.request.user.is_authenticated:
+                booking_new_client_mail(self.object, self.request.user.username)
+            else:
+                booking_new_client_mail(self.object)
         booking_new_sysadm_mail(self.object)
         return super(ClientAddBooking, self).form_valid(form)
 
