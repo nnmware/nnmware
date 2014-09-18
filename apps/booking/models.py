@@ -545,6 +545,9 @@ class Booking(MoneyBase, AbstractIP):
     guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
     btype = models.IntegerField(_("Booking type"), choices=BOOKING_CHOICES, default=BOOKING_UNKNOWN)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, db_index=True, null=True)
+    freecancel = models.PositiveSmallIntegerField(verbose_name=_('Free cancel days'), default=0, db_index=True)
+    penaltycancel = models.DecimalField(verbose_name=_('Penalty for cancellation'), default=0, max_digits=20,
+                                        decimal_places=3)
 
     objects = Manager()
 
@@ -751,7 +754,7 @@ class SimpleDiscount(models.Model):
     ub = models.BooleanField(verbose_name=_('Unguaranteed booking enabled'), default=False, db_index=True)
     ub_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount ub'), default=0, db_index=True)
     gb = models.BooleanField(verbose_name=_('Guaranteed booking enabled'), default=False, db_index=True)
-    gb_days = models.PositiveSmallIntegerField(verbose_name=_('Free cancel ub days'), default=0, db_index=True)
+    gb_days = models.PositiveSmallIntegerField(verbose_name=_('Free cancel gb days'), default=0, db_index=True)
     gb_penalty = models.PositiveSmallIntegerField(verbose_name=_('Penalty for gb cancel'), default=0, db_index=True)
     gb_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount gb'), default=0, db_index=True)
     nr = models.BooleanField(verbose_name=_('Non-return rate enabled'), default=False, db_index=True)
