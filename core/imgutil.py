@@ -21,7 +21,7 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
     # one of width/height is required
     assert (width is not None) or (height is not None) or (watermark is not None)
 
-    basedir = os.path.dirname(path)
+    basedir = os.path.dirname(path) + '/'
     base, ext = os.path.splitext(os.path.basename(path))
 
     # make thumbnail filename

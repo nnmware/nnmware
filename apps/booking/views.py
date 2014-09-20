@@ -1105,6 +1105,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             avail.placecount -= 1
             avail.save()
             on_date = on_date + timedelta(days=1)
+        # TODO calculate discount
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
