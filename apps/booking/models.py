@@ -830,3 +830,20 @@ signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmwa
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 
 
+@python_2_unicode_compatible
+class HotelSearch(AbstractIP):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
+    city = models.CharField(verbose_name=_("City"), max_length=100, blank=True)
+    hotel = models.CharField(verbose_name=_("Hotel"), max_length=100, blank=True)
+    from_date = models.DateField(_("From"))
+    to_date = models.DateField(_("To"))
+    guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
+
+    class Meta:
+        verbose_name = _("Search parameters")
+        verbose_name_plural = _("Searched parameters")
+        ordering = ("-pk",)
+
+    def __str__(self):
+        return _('IP %(ip)s - %(date)s') % dict(ip=self.ip, date=self.date)

@@ -5,7 +5,7 @@ from django.contrib.admin.widgets import AdminTimeWidget
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
     RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Discount, Review, SettlementVariant, \
-    Availability, PlacePrice, RoomDiscount, SimpleDiscount
+    Availability, PlacePrice, RoomDiscount, SimpleDiscount, HotelSearch
 
 try:
     from pytils.translit import slugify
@@ -284,3 +284,12 @@ class SimpleDiscountAdmin(admin.ModelAdmin):
         (_("Non-return rate"), {"fields": [('nr', 'nr_discount')]}),)
     ordering = ('room',)
     readonly_fields = ('room', )
+
+
+@admin.register(HotelSearch)
+class HotelSearchAdmin(admin.ModelAdmin):
+    list_display = ('ip', 'date', 'city', 'hotel', 'from', 'to', 'guests')
+    search_fields = ('ip', 'city', 'hotel')
+    fieldsets = (
+        (_("Hotel search"), {"fields": [('ip', 'date'), ('city', 'hotel'), ('from', 'to'), ('guests', 'user_agent')]}),)
+    ordering = ('date', 'city', 'hotel')
