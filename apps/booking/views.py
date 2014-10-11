@@ -905,7 +905,12 @@ class ReportView(CurrentUserSuperuser, ListView):
                 filter(last_login=F('date_joined')).order_by('-last_login')
             self.report_name = _('Admins hotel, who not entering')
             self.template_name = "sysadm/report_user.html"
-        if report_type not in ['city', 'login', 'nologin'] and result:
+        elif report_type == 'searched':
+            self.model = HotelSearch
+            result = HotelSearch.objects.order_by('-date')
+            self.report_name = _('Searched parameters')
+            self.template_name = "sysadm/report_searched.html"
+        if report_type not in ['city', 'login', 'nologin', 'searched'] and result:
             result = result.order_by('city__name', 'name')
         self.report_arg = report_type
         if result:
