@@ -288,9 +288,10 @@ class SimpleDiscountAdmin(admin.ModelAdmin):
 
 @admin.register(HotelSearch)
 class HotelSearchAdmin(admin.ModelAdmin):
-    list_display = ('ip', 'date', 'city', 'hotel', 'from_date', 'to_date', 'guests')
+    list_display = ('ip', 'date', 'city', 'hotel', 'from_date', 'to_date', 'guests', 'user_agent')
     search_fields = ('ip', 'city', 'hotel')
     fieldsets = (
         (_("Hotel search"), {"fields": [('ip', 'date'), ('city', 'hotel'), ('from_date', 'to_date'),
                                         ('guests', 'user_agent')]}),)
     ordering = ('date', 'city', 'hotel')
+    readonly_fields = ('ip', 'date', 'city', 'hotel', 'from_date', 'to_date', 'guests', 'user_agent')

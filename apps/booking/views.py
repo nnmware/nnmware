@@ -352,6 +352,22 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
+            try:
+                h_s = HotelSearch()
+                h_s.date = now()
+                h_s.from_date = from_date
+                h_s.to_date = to_date
+                if guests:
+                    h_s.guests = guests
+                if self.request.user.is_authenticated():
+                    h_s.user = self.request.user
+                h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
+                h_s.ip = self.request.META.get('REMOTE_ADDR', '')
+                h_s.city = self.kwargs['city']
+                h_s.hotel = self.kwargs['slug']
+                h_s.save()
+            except:
+                pass
             need_days = (to_date - from_date).days
             if (from_date - now()).days < -1:
                 rooms = []
@@ -454,6 +470,22 @@ class RoomDetail(AttachedImagesMixin, DetailView):
             if from_date > to_date:
                 from_date, to_date = to_date, from_date
                 f_date, t_date = t_date, f_date
+            try:
+                h_s = HotelSearch()
+                h_s.date = now()
+                h_s.from_date = from_date
+                h_s.to_date = to_date
+                if guests:
+                    h_s.guests = guests
+                if self.request.user.is_authenticated():
+                    h_s.user = self.request.user
+                h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
+                h_s.ip = self.request.META.get('REMOTE_ADDR', '')
+                h_s.city = self.kwargs['city']
+                h_s.hotel = self.kwargs['slug']
+                h_s.save()
+            except:
+                pass
             need_days = (to_date - from_date).days
             if (from_date - now()).days < -1:
                 search_data = default_search()
