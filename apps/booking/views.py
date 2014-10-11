@@ -26,7 +26,8 @@ from nnmware.apps.booking.ajax import CardError
 from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, AddDiscountForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
-    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB
+    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB, \
+    HotelSearch
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
@@ -169,6 +170,21 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         from_date, to_date = to_date, from_date
                     else:
                         self.search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
+                    try:
+                        h_s = HotelSearch()
+                        h_s.date = now()
+                        h_s.from_date = from_date
+                        h_s.to_date = to_date
+                        if guests:
+                            h_s.guests = guests
+                        if self.request.user.is_authenticated():
+                            h_s.user = self.request.user
+                        h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
+                        h_s.ip = self.request.META.get('REMOTE_ADDR', '')
+                        h_s.city = self.kwargs['slug']
+                        h_s.save()
+                    except:
+                        pass
                     self.search_data['city'] = self.city
                     if stars:
                         self.search_data['stars'] = stars
