@@ -1011,10 +1011,11 @@ class UserBookingDetail(CurrentUserBookingAccess, DetailView):
 class ClientBooking(RedirectHttpsView, DetailView):
     model = Hotel
     template_name = "booking/add.html"
+    room = None
 
     def get_object(self, queryset=None):
-        room = get_object_or_404(Room.objects.select_related(), pk=self.kwargs['room'])
-        return room.hotel
+        self.room = get_object_or_404(Room.objects.select_related(), pk=self.kwargs['room'])
+        return self.room.hotel
 
     def get_context_data(self, **kwargs):
         f_date = self.request.GET.get('from') or None
@@ -1025,17 +1026,12 @@ class ClientBooking(RedirectHttpsView, DetailView):
         guests = guests_from_request(self.request)
         if f_date == t_date:
             raise Http404
-        if f_date and t_date and guests and ('room' in self.kwargs.keys()):
-            try:
-                room_id = int(self.kwargs['room'])
-            except ValueError:
+        if f_date and t_date and guests:
+            if btype == 'ub' and not self.room.simple_discount.ub:
                 raise Http404
-            room = get_object_or_404(Room, id=room_id)
-            if btype == 'ub' and not room.simple_discount.ub:
+            elif btype == 'gb' and not self.room.simple_discount.gb:
                 raise Http404
-            elif btype == 'gb' and not room.simple_discount.gb:
-                raise Http404
-            elif btype == 'nr' and not room.simple_discount.nr:
+            elif btype == 'nr' and not self.room.simple_discount.nr:
                 raise Http404
             else:
                 pass
@@ -1048,11 +1044,11 @@ class ClientBooking(RedirectHttpsView, DetailView):
                 raise Http404
             delta = (to_date - from_date).days
             date_period = (from_date, to_date - timedelta(days=1))
-            avail_count = Availability.objects.filter(room=room, date__range=date_period, placecount__gt=0).count()
+            avail_count = Availability.objects.filter(room=self.room, date__range=date_period, placecount__gt=0).count()
             if avail_count != (to_date - from_date).days:
                 raise Http404
             try:
-                settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
+                settlement = SettlementVariant.objects.filter(room=self.room, settlement__gte=guests,
                     placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(valid_s=Count('pk')).\
                     filter(valid_s__gte=delta).order_by('settlement').values_list('pk',
                     flat=True).distinct()[0]
@@ -1062,8 +1058,8 @@ class ClientBooking(RedirectHttpsView, DetailView):
             context['hotel_count'] = Hotel.objects.filter(city=self.object.city).count()
             context['tab'] = 'rates'
             context['title_line'] = _('booking')
-            context['room_id'] = room_id
-            context['room'] = room
+            context['room_id'] = int(self.kwargs['room'])
+            context['room'] = self.room
             context['settlement'] = settlement
             context['search_data'] = {'from_date': f_date, 'to_date': t_date, 'guests': guests}
             context['btype'] = btype
