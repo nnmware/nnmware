@@ -548,7 +548,7 @@ class Booking(MoneyBase, AbstractIP):
     freecancel = models.PositiveSmallIntegerField(verbose_name=_('Free cancel days'), default=0, db_index=True)
     penaltycancel = models.DecimalField(verbose_name=_('Penalty for cancellation'), default=0, max_digits=20,
                                         decimal_places=3)
-    comment = models.TextField(verbose_name=_("Client comment"), blank=True)
+    comment = models.TextField(verbose_name=_("Client comment"), blank=True, default= '')
 
     objects = Manager()
 
