@@ -907,7 +907,7 @@ class ReportView(CurrentUserSuperuser, ListView):
             self.template_name = "sysadm/report_user.html"
         elif report_type == 'searched':
             self.model = HotelSearch
-            result = HotelSearch.objects.order_by('-date')
+            result = HotelSearch.objects.select_related().order_by('-date')
             self.report_name = _('Searched parameters')
             self.template_name = "sysadm/report_searched.html"
         if report_type not in ['city', 'login', 'nologin', 'searched'] and result:
