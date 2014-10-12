@@ -142,7 +142,7 @@ class BookingAddForm(UserFromRequestForm):
     class Meta:
         model = Booking
         fields = (
-            'from_date', 'to_date', 'first_name', 'middle_name', 'last_name', 'phone', 'email', 'guests')
+            'from_date', 'to_date', 'first_name', 'middle_name', 'last_name', 'phone', 'email', 'guests', 'comment')
 
     def clean_hid_method(self):
         m = self.cleaned_data.get('hid_method')

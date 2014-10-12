@@ -169,7 +169,7 @@ class BookingAdmin(admin.ModelAdmin):
         (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
                                                                                 ('card_holder', 'card_cvv2')]}),
         (_("Addons"), {"classes": ("grp-collapse grp-closed",),
-                       "fields": [('settlement_txt', ), ('hotel_txt', ), ]}),
+                       "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
     )
     no_root_fieldsets = (
         (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
@@ -182,7 +182,7 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
         (_("Addons"), {"classes": ("grp-collapse grp-closed",),
-                       "fields": [('settlement_txt', ), ('hotel_txt', ), ]}),
+                       "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
     )
 
     def get_fieldsets(self, request, obj=None):
