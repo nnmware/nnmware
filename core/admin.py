@@ -64,43 +64,6 @@ class TreeAdmin(admin.ModelAdmin):
     )
 
 
-class AbstractDataAdmin(admin.ModelAdmin):
-    """
-     Admin class for subclasses of the abstract ``Displayable`` model.
-     """
-    prepopulated_fields = {'slug': ('title',)}
-    list_display = ("title", "status", "admin_link")
-    list_display_links = ("title",)
-    list_editable = ("status",)
-    list_filter = ("status",)
-    search_fields = ("title", "content",)
-    date_hierarchy = "created_date"
-    fieldsets = (
-        (_("Main"), {"fields": [("title", "slug", "status", "user"), ]}),
-        (_("Description"), {"fields": [("description", "created_date",
-                                        "allow_comments"), ]}),
-    )
-
-    def save_form(self, request, form, change):
-        """
-          Set the object's owner as the logged in user.
-          """
-        obj = form.save(commit=False)
-        if obj.user is None:
-            obj.user = request.user
-        return super(AbstractDataAdmin, self).save_form(request, form, change)
-
-    def get_queryset(self, request):
-        """
-          Filter the change list by currently logged in user if not a
-          superuser.
-          """
-        qs = super(AbstractDataAdmin, self).queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(user__id=request.user.id)
-
-
 @admin.register(Doc)
 class DocAdmin(admin.ModelAdmin):
     """
