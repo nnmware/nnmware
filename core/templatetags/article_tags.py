@@ -142,7 +142,7 @@ class GetPublicationArchivesNode(template.Node):
                 pub = article.created_date
 
                 # see if we already have an article in this year
-                if not pub.year in archives:
+                if pub.year not in archives:
                     # if not, initialize a dict for the year
                     archives[pub.year] = {}
 

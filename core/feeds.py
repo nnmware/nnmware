@@ -1,11 +1,7 @@
-from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils.feedgenerator import Atom1Feed, rfc3339_date, get_tag_uri
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.syndication.views import Feed
-
-#from nnmware.core.models import model_stream, user_stream, action_object_stream
-#from nnmware.core.models import action_object_stream
 
 
 class AtomWithContentFeed(Atom1Feed):
@@ -189,7 +185,7 @@ class UserActivityFeed(Feed):
         if request.user.is_authenticated():
             return request.user
 
-    def title(self, user):
+    def title(self):
         return 'Activity feed for your followed actors'
 
     def link(self, user):

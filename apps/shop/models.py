@@ -88,7 +88,6 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     objects = ProductManager()
 
     class Meta:
-    #        ordering = ['category__name','position','name']
         ordering = ['-created_date']
         verbose_name = _("Product")
         verbose_name_plural = _("Products")

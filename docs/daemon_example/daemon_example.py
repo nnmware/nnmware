@@ -60,14 +60,14 @@ def store(record):
 
 
 def main():
-    #change to data directory if needed
+    # change to data directory if needed
     os.chdir(workdir)
     # Redirect outputs to a logfile
     sys.stdout = sys.stderr = Log(open('%s/%s' % (workdir, logfile), 'a+'))
     # ensure the that the daemon runs a normal user
     os.setegid(0)     # set group
     os.seteuid(0)     # set user
-    #start the user program here:
+    # start the user program here:
     print 'Daemon running at ' + time.strftime("%Y/%m/%d %H.%M.%S")
 
     s = socket(AF_INET, SOCK_STREAM)    # Create the TCP Socket
@@ -84,13 +84,10 @@ def main():
                 for item in r:
                     result += item + ' '
                 print result
-                #smsfile = open(filename, 'w+')
-                #smsfile.write(msg)
-                #smsfile.	close()
     except KeyboardInterrupt:
         stopd()
-        #	print 'Daemon normal exit at '+time.strftime("%Y/%m/%d %H.%M.%S")
-    #	os.remove('%s/%s' % (workdir,pidfile))
+        # print 'Daemon normal exit at '+time.strftime("%Y/%m/%d %H.%M.%S")
+    # os.remove('%s/%s' % (workdir,pidfile))
     connection.close()              # close socket
 
 if __name__ == "__main__":

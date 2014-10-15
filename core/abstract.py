@@ -14,17 +14,15 @@ from django.core.urlresolvers import reverse
 from django.utils.timezone import now
 from django.db import models
 from django.db.models.manager import Manager
-from django.template.defaultfilters import truncatewords_html
-from django.utils.html import strip_tags
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.core.file import get_path_from_url
-from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, STATUS_DELETE
+from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
-from nnmware.core.fields import std_text_field, std_url_field, std_email_field
+from nnmware.core.fields import std_text_field, std_url_field
 from nnmware.core.utils import setting, current_year, tuplify
 
 DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG', 'generic.png'))

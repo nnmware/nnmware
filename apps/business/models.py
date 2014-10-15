@@ -6,13 +6,12 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _, get_language
-from nnmware.core.imgutil import remove_thumbnails, remove_file
-from nnmware.core.utils import setting
+from django.utils.encoding import python_2_unicode_compatible
 
+from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime, AbstractTeaser
 from nnmware.core.fields import std_text_field
-from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.managers import CompanyManager, VacancyManager
 
 

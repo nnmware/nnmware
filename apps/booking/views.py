@@ -23,10 +23,10 @@ from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
 
 from nnmware.apps.booking.ajax import CardError
-from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, AddDiscountForm, \
+from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
-    STATUS_ACCEPTED, HotelOption, Discount, Booking, PaymentMethod, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB, \
+    STATUS_ACCEPTED, HotelOption, Booking, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB, \
     HotelSearch
 from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
 from nnmware.core.ajax import ajax_answer_lazy
@@ -50,7 +50,7 @@ class CurrentUserHotelAdmin(object):
     @method_decorator(never_cache)
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not request.user in self.object.admins.all() and not request.user.is_superuser:
+        if request.user not in self.object.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
 
@@ -62,7 +62,7 @@ class CurrentUserRoomAdmin(object):
     @method_decorator(ensure_csrf_cookie)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Room.objects.select_related(), pk=kwargs['pk'])
-        if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserRoomAdmin, self).dispatch(request, *args, **kwargs)
 
@@ -73,7 +73,7 @@ class CurrentUserHotelBillAccess(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Bill.objects.select_related(), pk=kwargs['pk'])
-        if not request.user in obj.target.admins.all() and not request.user.is_superuser:
+        if request.user not in obj.target.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
 
@@ -84,7 +84,7 @@ class CurrentUserHotelBookingAccess(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Booking.objects.select_related(), uuid=kwargs['slug'])
-        if not request.user in obj.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in obj.hotel.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
 
@@ -272,7 +272,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
         return result
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(HotelList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = self.tab
@@ -303,7 +303,7 @@ class HotelAdminList(ListView):
         raise Http404
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(HotelAdminList, self).get_context_data(**kwargs)
         context['title_line'] = _('list of hotels')
         context['tab'] = _('admin of hotels')
@@ -410,7 +410,7 @@ class HotelLocation(RedirectHttpView, HotelPathMixin, DetailView):
     template_name = "hotels/location.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(HotelLocation, self).get_context_data(**kwargs)
         context['city'] = self.object.city
         context['hotels_in_city'] = Hotel.objects.filter(city=self.object.city).count()
@@ -429,7 +429,7 @@ class HotelReviews(HotelPathMixin, SingleObjectMixin, ListView):
     template_name = "hotels/reviews.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         kwargs['object'] = self.object
         context = super(HotelReviews, self).get_context_data(**kwargs)
         context['city'] = self.object.city
@@ -1001,7 +1001,7 @@ class UserBookingDetail(CurrentUserBookingAccess, DetailView):
     template_name = "usercabinet/booking.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(UserBookingDetail, self).get_context_data(**kwargs)
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
@@ -1183,7 +1183,7 @@ class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
     template_name = 'sysadm/request.html'
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(RequestAdminAdd, self).get_context_data(**kwargs)
         context['tab'] = 'requests'
         context['title_line'] = _('request for add')
@@ -1208,7 +1208,6 @@ class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
     template_name = "cabinet/booking.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         context = super(BookingHotelDetail, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['hotel'] = self.object.hotel
@@ -1223,7 +1222,6 @@ class BookingAdminDetail(CurrentUserSuperuser, DetailView):
     template_name = "sysadm/booking.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         context = super(BookingAdminDetail, self).get_context_data(**kwargs)
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
@@ -1237,7 +1235,6 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
     template_name = "cabinet/booking_status.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         context = super(BookingStatusChange, self).get_context_data(**kwargs)
         context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
         context['hotel'] = self.object.hotel

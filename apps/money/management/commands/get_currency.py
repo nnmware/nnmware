@@ -7,6 +7,6 @@ class Command(BaseCommand):
     help = 'Parsed Currency Rate from CBR site'
 
     def handle(self, *args, **options):
-        #print 'Trying parce currency on date %s' % now()
+        # print 'Trying parce currency on date %s' % now()
         parse_currency()
-        #print 'Succesfully parce currency on date %s' % now()
+        # print 'Succesfully parce currency on date %s' % now()

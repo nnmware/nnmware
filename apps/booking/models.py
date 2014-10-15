@@ -515,6 +515,7 @@ BOOKING_CHOICES = (
     (BOOKING_NR, _("Non-return rate")),
 )
 
+
 @python_2_unicode_compatible
 class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
@@ -548,7 +549,7 @@ class Booking(MoneyBase, AbstractIP):
     freecancel = models.PositiveSmallIntegerField(verbose_name=_('Free cancel days'), default=0, db_index=True)
     penaltycancel = models.DecimalField(verbose_name=_('Penalty for cancellation'), default=0, max_digits=20,
                                         decimal_places=3)
-    comment = models.TextField(verbose_name=_("Client comment"), blank=True, default= '')
+    comment = models.TextField(verbose_name=_("Client comment"), blank=True, default='')
 
     objects = Manager()
 

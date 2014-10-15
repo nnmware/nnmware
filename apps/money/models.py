@@ -13,7 +13,6 @@ from nnmware.core.managers import FinancialManager
 from django.utils.encoding import python_2_unicode_compatible
 
 
-#---------------------------------------------------------------------------
 @python_2_unicode_compatible
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'), db_index=True)
@@ -30,7 +29,6 @@ class Currency(models.Model):
         return "%s :: %s" % (self.code, self.name)
 
 
-#---------------------------------------------------------------------------
 @python_2_unicode_compatible
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
@@ -50,7 +48,6 @@ class ExchangeRate(models.Model):
         return "%s :: %s :: %s :: %s" % (self.currency, self.date, self.official_rate, self.rate)
 
 
-#---------------------------------------------------------------------------
 class MoneyBase(models.Model):
     amount = models.DecimalField(verbose_name=_('Amount'), default=0, max_digits=22, decimal_places=5, db_index=True)
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, blank=True, null=True)
@@ -71,7 +68,6 @@ TRANSACTION_STATUS = (
 )
 
 
-#---------------------------------------------------------------------------
 @python_2_unicode_compatible
 class Transaction(MoneyBase):
     """
@@ -105,7 +101,7 @@ class Transaction(MoneyBase):
             {'user': self.user.username, 'date': self.date, 'actor': self.actor, 'amount': self.amount,
              'currency': self.currency}
 
-#---------------------------------------------------------------------------
+
 BILL_UNKNOWN = 0
 BILL_BILLED = 1
 BILL_PAID = 2

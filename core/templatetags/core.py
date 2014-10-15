@@ -178,7 +178,7 @@ def sort_counter_effect(val):
     return sorted(val, key=lambda x: x.effect)
 
 #######################################
-### PAGINATOR TAG
+# PAGINATOR TAG
 
 LEADING_PAGE_RANGE_DISPLAYED = TRAILING_PAGE_RANGE_DISPLAYED = getattr(settings, 'PAGINATOR_RANGE_DISPLAYED', 10)
 LEADING_PAGE_RANGE = TRAILING_PAGE_RANGE = 8
@@ -486,7 +486,7 @@ class UserCommentCountNode(Node):
         return ''
 
 ##################################################
-## IMAGE RELATED FILTERS ##
+# IMAGE RELATED FILTERS ##
 
 
 @register.filter
@@ -572,7 +572,7 @@ def watermark(url, arg=''):
     return ret
 
 ######################################################
-###  MENU RELATED BLOCK
+#  MENU RELATED BLOCK
 
 
 @register.simple_tag
@@ -650,9 +650,7 @@ def menu_user(app=None):
 
 @register.simple_tag
 def menu_date(app=None):
-    if app == 'article':
-        from nnmware.apps.article.models import Article as Alldata
-    elif app == 'topic':
+    if app == 'topic':
         from nnmware.apps.topic.models import Topic as Alldata
     query = Alldata.objects.all().order_by('-created_date')
     objects_years_dict = create_archive_list(query)

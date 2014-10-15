@@ -186,7 +186,7 @@ def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
 
 
 ##################################################
-## FILE HELPERS ##
+# FILE HELPERS ##
 
 def _rename(old_name, new_name):
     """ rename image old_name -> name """

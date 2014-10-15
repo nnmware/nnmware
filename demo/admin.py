@@ -10,12 +10,13 @@ from django.contrib.flatpages.admin import FlatPageAdmin
 from django import forms
 
 
-#Flatpages
+# Flatpages
 class FlatPageWysiwygAdmin(FlatPageAdmin):
 
     class Media:
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
               '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
+
 
 # Re-register admin FlatPage
 admin.site.unregister(FlatPage)

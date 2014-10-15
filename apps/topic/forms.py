@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+
 from django import forms
 from nnmware.core.forms import CategoryMixinForm, DescriptionMixinForm, NameMixinForm
 from nnmware.apps.topic.models import TopicCategory, Topic
-from django.utils.translation import ugettext_lazy as _
 
 
 class TopicForm(forms.ModelForm):

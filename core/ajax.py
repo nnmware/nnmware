@@ -162,7 +162,7 @@ def push_video(request, object_id):
         status = False
         if Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count():
             if unfollow(request.user, video):
-            #                action.send(request.user, verb=_('disliked the video'), target=video)
+                # action.send(request.user, verb=_('disliked the video'), target=video)
                 if request.user.followers_count:
                     for u in get_user_model().objects.filter(pk__in=request.user.followers):
                         notice.send(request.user, user=u, verb=_('now disliked'), target=video)
@@ -477,10 +477,10 @@ def ajax_image_crop(request):
         if not request.user.is_superuser:
             parent_object = pic.content_object.__class__.__name__
             if parent_object == 'Room':
-                if not request.user in pic.content_object.hotel.admins.all():
+                if request.user not in pic.content_object.hotel.admins.all():
                     raise AccessError
             elif parent_object == 'Hotel':
-                if not request.user in pic.content_object.admins.all():
+                if request.user not in pic.content_object.admins.all():
                     raise AccessError
         left = int(request.POST['crop_x1'])
         right = int(request.POST['crop_x2'])
@@ -689,7 +689,7 @@ class AjaxUploader(object):
         else:
             # the file is stored raw in the request
             upload = request
-            #get file size
+            # get file size
             try:
                 filename = request.GET['qqfile']
             except KeyError:

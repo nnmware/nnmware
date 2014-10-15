@@ -80,7 +80,7 @@ class DocAdmin(admin.ModelAdmin):
 
 @admin.register(Pic)
 class PicAdmin(admin.ModelAdmin):
-#   readonly_fields = ('pic',)
+    # readonly_fields = ('pic',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
         (_('Pic'), {'fields': [('pic', 'created_date')]}),
@@ -212,7 +212,7 @@ class ContentBlockAdmin(admin.ModelAdmin):
     readonly_fields = ('user', 'content_type', 'object_id')
 
 
-#class ReadOnlyAdmin(admin.UserAdmin):
+# class ReadOnlyAdmin(admin.UserAdmin):
 #    _readonly_fields = [] # Default fields that are readonly for everyone.
 #
 #    def get_readonly_fields(self, request, obj):

@@ -432,7 +432,7 @@ def booking_sysadm(request, pk, action):
 def edit_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.POST['discount']))
-        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         html = render_to_string('cabinet/edit_discount.html', {'discount': d})
         payload = {'success': True, 'html': html}
@@ -444,7 +444,7 @@ def edit_discount(request):
 def delete_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.POST['discount']))
-        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         d.delete()
         payload = {'success': True}
@@ -456,7 +456,7 @@ def delete_discount(request):
 def add_room_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.POST['discount']))
-        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         r = Room.objects.get(pk=int(request.POST['room']))
         if not RoomDiscount.objects.filter(room=r, discount=d).exists():
@@ -470,7 +470,7 @@ def add_room_discount(request):
 def delete_room_discount(request):
     try:
         d = Discount.objects.get(pk=int(request.POST['discount']))
-        if not request.user in d.hotel.admins.all() and not request.user.is_superuser:
+        if request.user not in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         r = Room.objects.get(pk=int(request.POST['room']))
         RoomDiscount.objects.filter(room=r, discount=d).delete()

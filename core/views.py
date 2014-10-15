@@ -832,9 +832,9 @@ class UserActivity(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/activity.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(UserActivity, self).get_context_data(**kwargs)
-        #        ctype = ContentType.objects.get_for_model(User)
+        # ctype = ContentType.objects.get_for_model(User)
         context['actions_list'] = Action.objects.filter(user=self.object)
         context['tab'] = 'activity'
         context['tab_message'] = 'THIS USER ACTIVITY:'
@@ -850,7 +850,7 @@ class UserVideoAdded(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/added_video.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(UserVideoAdded, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())
@@ -868,7 +868,7 @@ class UserVideoLoved(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/loved_video.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(UserVideoLoved, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())
@@ -888,7 +888,7 @@ class UserFollowTags(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/follow_tags.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
+        # Call the base implementation first to get a context
         context = super(UserFollowTags, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())
@@ -908,7 +908,6 @@ class UserFollowUsers(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/user_follow_list.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         context = super(UserFollowUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())
@@ -928,7 +927,6 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
     template_name = "user/user_follow_list.html"
 
     def get_context_data(self, **kwargs):
-    # Call the base implementation first to get a context
         context = super(UserFollowerUsers, self).get_context_data(**kwargs)
         context['added'] = Video.objects.filter(user=self.object).count()
         context['ctype'] = ContentType.objects.get_for_model(get_user_model())

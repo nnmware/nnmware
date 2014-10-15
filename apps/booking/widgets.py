@@ -67,14 +67,9 @@ def columnize(items, columns):
     """
     Return a list containing numbers of elements per column if `items` items
     are to be divided into `columns` columns.
-
-    >>> columnize(10, 1)
-    [10]
-    >>> columnize(10, 2)
-    [5, 5]
-    >>> columnize(10, 3)
+    columnize(10, 3)
     [4, 3, 3]
-    >>> columnize(3, 4)
+    columnize(3, 4)
     [1, 1, 1, 0]
     """
     elts_per_column = []

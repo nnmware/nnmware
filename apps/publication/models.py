@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from nnmware.core.models import LikeMixin, ContentBlock, ContentBlockMixin
+from nnmware.core.models import LikeMixin, ContentBlockMixin
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName
 from nnmware.core.constants import STATUS_CHOICES, STATUS_UNKNOWN

@@ -24,15 +24,13 @@ CAPTCHA_ENABLED = True
 REQUIRE_EMAIL_CONFIRMATION = False
 DATETIME_FORMAT = 'd M Y  H:i:s'
 
-##### For Email ########
-
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'test@localhost'
 EMAIL_HOST_PASSWORD = 'pass'
 
-#These are used when loading the test data
+# These are used when loading the test data
 SITE_DOMAIN = "NNMWARE TEST"
 SITE_NAME = "NNMWARE TEST"
 
@@ -60,7 +58,7 @@ CACHE_MIDDLEWARE_SECONDS = 600
 CACHE_MIDDLEWARE_KEY_PREFIX = ''
 
 
-#Configure logging
+# Configure logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

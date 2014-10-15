@@ -205,7 +205,7 @@ class EditProductFurniture(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMi
 
 
 def add_product(request):
-# Link used when admin add product
+    # Link used when admin add product
     if not request.user.is_superuser:
         raise Http404
     p = Product()

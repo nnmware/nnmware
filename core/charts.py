@@ -13,9 +13,9 @@ class MyLineChartDrawing(Drawing):
         super(MyLineChartDrawing, self).__init__(width, height, *args, **kwargs)
         self.add(LinePlot(), name='chart')
         self.add(String(200, 180, 'Hello World'), name='title')
-        #set any shapes, fonts, colors you want here.  We'll just
-        #set a title font and place the chart within the drawing.
-        #pick colors for all the lines, do as many as you need
+        # set any shapes, fonts, colors you want here.  We'll just
+        # set a title font and place the chart within the drawing.
+        # pick colors for all the lines, do as many as you need
         self.chart.x = 20
         self.chart.y = 30
         self.chart.width = self.width - 100
@@ -62,7 +62,7 @@ class MyLineChartDrawing(Drawing):
         self.XLabel.x = 85
         self.XLabel.y = 5
         self.XLabel.textAnchor = 'middle'
-        #self.XLabel.height = 20
+        # self.XLabel.height = 20
         self.XLabel._text = ""
         self.add(Label(), name='YLabel')
         self.YLabel.fontName = 'Times-Roman'
@@ -80,11 +80,9 @@ class MyBarChartDrawing(Drawing):
     def __init__(self, width=400, height=200, *args, **kw):
         Drawing.__init__(self, width, height, *args, **kw)
         self.add(HorizontalBarChart(), name='chart')
-
         self.add(String(200, 180, 'Hello World'), name='title')
-
-        #set any shapes, fonts, colors you want here.  We'll just
-        #set a title font and place the chart within the drawing
+        # set any shapes, fonts, colors you want here.  We'll just
+        # set a title font and place the chart within the drawing
         self.chart.x = 20
         self.chart.y = 20
         self.chart.width = self.width - 20
@@ -97,7 +95,7 @@ class MyBarChartDrawing(Drawing):
 
 
 if __name__ == '__main__':
-    #use the standard 'save' method to save barchart.gif, barchart.pdf etc
-    #for quick feedback while working.
+    # use the standard 'save' method to save barchart.gif, barchart.pdf etc
+    # for quick feedback while working.
     MyBarChartDrawing().save(formats=['gif', 'png', 'jpg', 'pdf'], outDir='.',
         fnRoot='barchart')

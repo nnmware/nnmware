@@ -4,8 +4,8 @@ from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
-    RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Discount, Review, SettlementVariant, \
-    Availability, PlacePrice, RoomDiscount, SimpleDiscount, HotelSearch
+    RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Review, SettlementVariant, \
+    Availability, PlacePrice, SimpleDiscount, HotelSearch
 
 try:
     from pytils.translit import slugify
@@ -218,12 +218,12 @@ class AgentPercentAdmin(admin.ModelAdmin):
     ordering = ('-date',)
 
 
-#@admin.register(Discount)
+# @admin.register(Discount)
 # TODO Disabled
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice', 'percentage', 'enabled')
-#    search_fields = ('date',)
-#    readonly_fields = ('hotel', )
+    # search_fields = ('date',)
+    # readonly_fields = ('hotel', )
     ordering = ('choice', )
     fieldsets = (
         (_("Discount"), {"fields": [('name', "hotel"), ('choice', 'percentage'), ('time_on', 'time_off'),
@@ -261,7 +261,7 @@ class PlacePriceAdmin(admin.ModelAdmin):
     ordering = ('amount',)
 
 
-#@admin.register(RoomDiscount)
+# @admin.register(RoomDiscount)
 # TODO Disabled
 class RoomDiscountAdmin(admin.ModelAdmin):
     list_display = ('room', 'discount', 'date', 'value')

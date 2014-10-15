@@ -251,11 +251,6 @@ def update_doc_count(sender, instance, **kwargs):
     what.docs = Doc.objects.for_object(what).count()
     what.save()
 
-#signals.post_save.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
-#signals.post_delete.connect(update_pic_count, sender=Pic, dispatch_uid="nnmware_id")
-#signals.post_save.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
-#signals.post_delete.connect(update_doc_count, sender=Doc, dispatch_uid="nnmware_id")
-
 
 class VisitorHit(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)

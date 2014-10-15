@@ -35,7 +35,7 @@ class BillAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     list_filter = ('user', 'date_billed')
     ordering = ('user', )
-    #readonly_fields = ('target_ctype','target_oid')
+    # readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
         (_("Bill"), {"fields": [("user", "date_billed"),
             ('amount', 'currency'),

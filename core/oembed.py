@@ -159,7 +159,7 @@ class OEmbedEndpoint(object):
         """
         if not isinstance(url, str):
             raise TypeError('url must be a string value')
-        if not url in self._urlSchemes:
+        if url not in self._urlSchemes:
             self._urlSchemes[url] = OEmbedUrlScheme(url)
     
     def del_url_scheme(self, url):
@@ -264,7 +264,7 @@ class OEmbedEndpoint(object):
         headers = response.info()
         raw = response.read()
 
-        if not 'Content-Type' in headers:
+        if 'Content-Type' not in headers:
             raise OEmbedError('Missing mime-type in response')
         
         if headers['Content-Type'].find('application/xml') != -1 or headers['Content-Type'].find('text/xml') != -1:
