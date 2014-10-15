@@ -3,8 +3,8 @@
 from datetime import timedelta
 from decimal import Decimal
 from hashlib import sha1
-from django.conf import settings
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.urlresolvers import reverse
@@ -205,11 +205,9 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                 key = sha1('%s' % (path,)).hexdigest()
         data_key = cache.get(key)
         if not data_key:
+            search_hotel = Hotel.objects.select_related('city').exclude(payment_method=None)
             if self.city:
-                search_hotel = Hotel.objects.select_related('city').filter(Q(city=self.city) | Q(addon_city=self.city)).\
-                    exclude(payment_method=None)
-            else:
-                search_hotel = Hotel.objects.select_related('city').all().exclude(payment_method=None)
+                search_hotel = search_hotel.filter(Q(city=self.city) | Q(addon_city=self.city))
             if searched_date:
                 # Find all rooms pk for this guest count
                 need_days = (to_date - from_date).days
@@ -526,7 +524,6 @@ class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, Attach
     template_name = "cabinet/info.html"
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(CabinetInfo, self).get_context_data(**kwargs)
         context['options_list'] = HotelOption.objects.select_related().order_by('category', 'position', 'name')
         context['tab'] = 'common'
