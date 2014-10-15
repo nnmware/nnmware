@@ -37,11 +37,6 @@ from django.conf.urls import *
 URLS = patterns('',)
 APPEND_SLASH = True
 
-NAME_LENGTH = 256
-DATE_FORMAT = "j.m.Y"
-TIME_FORMAT = "G:i"
-ACTION_RECORD_DAYS = 3
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
