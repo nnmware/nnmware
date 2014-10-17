@@ -460,3 +460,17 @@ def min_search_hotel_price(context, hotel):
     result = PlacePrice.objects.filter(settlement__room__in=rooms, settlement__settlement__gte=guests,
          date=from_date, amount__gt=0).aggregate(Min('amount'))
     return convert_to_client_currency(int(result['amount__min']), user_rate)
+
+
+@register.simple_tag(takes_context=True)
+def search_minimal_hotel_cost(context, hotel, rate):
+    from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
+    rooms = hotel.available_rooms_for_guests_in_period(guests, from_date, to_date)
+    result = []
+    for room in rooms:
+        room_res = []
+        for i in price_variants(context, room, rate):
+            if i is not None:
+                room_res.append(i['price'])
+        result.append(min(room_res))
+    return min(result)
