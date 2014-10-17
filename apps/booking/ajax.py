@@ -411,13 +411,15 @@ def booking_sysadm(request, pk, action):
                 avail.placecount += 1
                 avail.save()
                 from_date += timedelta(days=1)
-            booking_delete_client_mail(booking)
+            # TODO RETURN MAIL
+            #booking_delete_client_mail(booking)
             booking.delete()
             url = reverse_lazy('bookings_list')
         elif action == 'enable':
             booking.enabled = True
             booking.save()
-            booking_new_hotel_mail(booking)
+            # TODO RETURN MAIL
+            #booking_new_hotel_mail(booking)
             url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
         else:
             raise UserNotAllowed
