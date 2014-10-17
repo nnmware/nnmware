@@ -371,18 +371,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 rooms = []
             else:
                 # Find all rooms pk for this guest count
-                date_period = (from_date, to_date - timedelta(days=1))
-                rooms_with_amount = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
-                    room__hotel=self.object, placeprice__date__range=date_period, placeprice__amount__gt=0).\
-                    annotate(num_days=Count('pk')).\
-                    filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
-                room_not_avail = Room.objects.filter(pk__in=rooms_with_amount,
-                    availability__date__range=date_period, availability__min_days__gt=need_days).\
-                    annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('pk').\
-                    values_list('pk', flat=True).distinct()
-                rooms = Room.objects.exclude(pk__in=room_not_avail).filter(pk__in=rooms_with_amount,
-                    availability__date__range=date_period, availability__placecount__gt=0).\
-                    annotate(num_days=Count('pk')).filter(num_days__gte=need_days)
+                rooms = self.object.available_rooms_for_guests_in_period(guests, from_date, to_date)
             search_data = {'from_date': f_date, 'to_date': t_date, 'guests': guests, 'city': self.object.city}
             context['need_days'] = need_days
         else:
