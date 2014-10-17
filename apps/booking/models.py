@@ -326,7 +326,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         need_days = (to_date - from_date).days
         date_period = (from_date, to_date - timedelta(days=1))
         rooms_with_amount = SettlementVariant.objects.filter(enabled=True, settlement__gte=guests,
-            room__hotel=self.object, placeprice__date__range=date_period, placeprice__amount__gt=0).\
+            room__hotel=self, placeprice__date__range=date_period, placeprice__amount__gt=0).\
             annotate(num_days=Count('pk')).\
             filter(num_days__gte=need_days).order_by('room__pk').values_list('room__pk', flat=True).distinct()
         room_not_avail = Room.objects.filter(pk__in=rooms_with_amount,
