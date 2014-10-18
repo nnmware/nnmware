@@ -747,28 +747,22 @@ class AjaxUploader(object):
                     old_filename=filename, filename=self._filename)
 
 
-def file_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'images'),
-                            size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
+def addon_file_uploader(request, **kwargs):
+    uploader = AjaxUploader(filetype='file', upload_dir=setting('FILE_UPLOAD_DIR', 'files'),
+                            size_limit=setting('FILE_UPLOAD_SIZE', 10485760))
     result = uploader.handle_upload(request)
     if result['success']:
-        ctype = ContentType.objects.get_for_id(int(kwargs['content_type']))
-        object_id = int(kwargs['object_id'])
-        obj = ctype.get_object_for_this_type(pk=object_id)
-        try:
-            remove_thumbnails(obj.img.path)
-            remove_file(obj.img.path)
-            obj.img.delete()
-        except:
-            pass
-        obj.img = result['path']
-        obj.save()
-        try:
-            addons = dict(tmb=make_thumbnail(obj.img.url, width=int(kwargs['width']), height=int(kwargs['height']),
-                                             aspect=int(kwargs['aspect'])))
-        except:
-            addons = {}
-        result.update(addons)
+        new = Doc()
+        new.content_type = ContentType.objects.get_for_id(int(kwargs['content_type']))
+        new.object_id = int(kwargs['object_id'])
+        new.description = result['old_filename']
+        new.user = request.user
+        new.created_date = now()
+        new.doc = result['path']
+        fullpath = os.path.join(settings.MEDIA_ROOT,
+                                new.doc.field.upload_to, new.doc.path)
+        new.size = os.path.getsize(fullpath)
+        new.save()
     return ajax_answer(result)
 
 
