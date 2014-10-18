@@ -9,7 +9,6 @@ from django.utils.timezone import now
 from nnmware.core.abstract import Doc, AbstractContent
 from nnmware.apps.address.models import Country
 from nnmware.core.fields import std_text_field
-from nnmware.core.managers import FinancialManager
 from django.utils.encoding import python_2_unicode_compatible
 
 
@@ -82,8 +81,6 @@ class Transaction(MoneyBase, AbstractContent):
     date = models.DateTimeField(verbose_name=_("Date"), default=now)
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
 
-    objects = FinancialManager()
-
     class Meta:
         unique_together = ('user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency')
         verbose_name = _("Transaction")
@@ -123,8 +120,6 @@ class Bill(MoneyBase, AbstractContent):
     invoice_number = models.CharField(verbose_name=_("Invoice number"), max_length=255, blank=True, default='')
     description_small = models.CharField(verbose_name=_("Small description"), max_length=255, blank=True, default='')
     description = models.TextField(verbose_name=_("Description"), blank=True, default='')
-
-    objects = FinancialManager()
 
     class Meta:
         verbose_name = _("Bill")
