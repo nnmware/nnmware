@@ -72,7 +72,11 @@ def room_rates(request):
                 try:
                     room_id = int(k[1:])
                     room = Room.objects.get(pk=room_id)
-                    placecount = int(json_data[k][i])
+                    p = json_data[k][i]
+                    if len(p.strip()) == 0:
+                        placecount = 0
+                    else:
+                        placecount = int(p)
                     availability, created = Availability.objects.get_or_create(date=on_date, room=room)
                     availability.placecount = placecount
                     try:
