@@ -120,6 +120,7 @@ class Bill(MoneyBase, AbstractContent):
     date = models.DateField(verbose_name=_("Date"), default=now)
     date_billed = models.DateField(verbose_name=_("Billed date"), default=now)
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
+    invoice_number = models.CharField(verbose_name=_("Invoice number"), max_length=255, blank=True, default='')
     description_small = models.CharField(verbose_name=_("Small description"), max_length=255, blank=True, default='')
     description = models.TextField(verbose_name=_("Description"), blank=True, default='')
 

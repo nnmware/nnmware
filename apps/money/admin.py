@@ -31,7 +31,7 @@ class TransactionAdmin(admin.ModelAdmin):
 
 @admin.register(Bill)
 class BillAdmin(admin.ModelAdmin):
-    list_display = ('user', 'date_billed', 'content_object', 'status', 'amount', 'currency')
+    list_display = ('user', 'invoice_number', 'date_billed', 'content_object', 'status', 'amount', 'currency')
     search_fields = ('name',)
     list_filter = ('user', 'date_billed')
     ordering = ('user', )
@@ -40,7 +40,7 @@ class BillAdmin(admin.ModelAdmin):
         (_("Bill"), {"fields": [("user", "date_billed"),
             ('amount', 'currency'),
             ('content_type', 'object_id'),
-            ('description_small',),
+            ('invoice_number', 'description_small'),
             ('description',),
             ('status', 'date')]}),)
 
