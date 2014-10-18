@@ -278,7 +278,7 @@ def get_contenttype_kwargs(content_object):
 
 @register.simple_tag
 def get_file_attach_url(content_object):
-    kwargs = get_content_attach_url(content_object)
+    kwargs = get_contenttype_kwargs(content_object)
     return reverse('file_ajax', kwargs=kwargs)
 
 
