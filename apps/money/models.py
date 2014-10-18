@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.utils.timezone import now
-from nnmware.core.abstract import Doc
+from nnmware.core.abstract import Doc, AbstractContent
 from nnmware.apps.address.models import Country
 from nnmware.core.fields import std_text_field
 from nnmware.core.managers import FinancialManager
@@ -69,7 +69,7 @@ TRANSACTION_STATUS = (
 
 
 @python_2_unicode_compatible
-class Transaction(MoneyBase):
+class Transaction(MoneyBase, AbstractContent):
     """
     Transaction(no more words)
     """
@@ -81,10 +81,6 @@ class Transaction(MoneyBase):
     actor = GenericForeignKey('actor_ctype', 'actor_oid')
     date = models.DateTimeField(verbose_name=_("Date"), default=now)
     status = models.IntegerField(_("Transaction status"), choices=TRANSACTION_STATUS, default=TRANSACTION_UNKNOWN)
-    target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
-        related_name='transaction_target', on_delete=models.SET_NULL)
-    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), blank=True)
-    target = GenericForeignKey('target_ctype', 'target_oid')
 
     objects = FinancialManager()
 
@@ -116,7 +112,7 @@ BILL_STATUS = (
 
 
 @python_2_unicode_compatible
-class Bill(MoneyBase):
+class Bill(MoneyBase, AbstractContent):
     """
     Financial account
     """
@@ -124,11 +120,8 @@ class Bill(MoneyBase):
     date = models.DateField(verbose_name=_("Date"), default=now)
     date_billed = models.DateField(verbose_name=_("Billed date"), default=now)
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)
-    target_ctype = models.ForeignKey(ContentType, verbose_name=_("Target Content Type"), null=True, blank=True,
-        related_name='target_account_ctype', on_delete=models.SET_NULL)
-    target_oid = models.CharField(max_length=255, verbose_name=_("ID of target"), blank=True)
-    target = GenericForeignKey('target_ctype', 'target_oid')
-    description = models.TextField(_("Description"), blank=True)
+    description_small = models.CharField(verbose_name=_("Small description"), max_length=255, blank=True, default='')
+    description = models.TextField(verbose_name=_("Description"), blank=True, default='')
 
     objects = FinancialManager()
 
@@ -138,7 +131,7 @@ class Bill(MoneyBase):
 
     def __str__(self):
         return _("User: %(user)s :: Date: %(date)s :: Target: %(target)s :: Amount: %(amount)s %(currency)s") %\
-            {'user': self.user, 'date': self.date, 'target': self.target, 'amount': self.amount,
+            {'user': self.user, 'date': self.date, 'target': self.content_object, 'amount': self.amount,
              'currency': self.currency}
 
     def docs(self):
