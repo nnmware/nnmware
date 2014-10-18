@@ -678,6 +678,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
         kwargs['object'] = self.object
         context = super(CabinetBookings, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
+        context['tab_small'] = 'bookings'
         context['hotel'] = self.object
         context['title_line'] = _('bookings')
         context['search_dates'] = self.search_dates
@@ -711,6 +712,7 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
         kwargs['object'] = self.object
         context = super(CabinetBills, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
+        context['tab_small'] = 'bills'
         context['hotel'] = self.object
         context['title_line'] = _('bills')
         context['search_dates'] = self.search_dates
