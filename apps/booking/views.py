@@ -660,12 +660,12 @@ class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView
         # Call the base implementation first to get a context
         context = super(CabinetBillEdit, self).get_context_data(**kwargs)
         context['tab'] = 'reports'
-        context['hotel'] = self.object.target
+        context['hotel'] = self.object.content_object
         context['title_line'] = _('private cabinet')
         return context
 
     def get_success_url(self):
-        return reverse('cabinet_bills', args=[self.object.target.city.slug, self.object.target.slug])
+        return reverse('cabinet_bills', args=[self.object.content_object.city.slug, self.object.content_object.slug])
 
 
 class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
