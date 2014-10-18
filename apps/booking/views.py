@@ -73,7 +73,7 @@ class CurrentUserHotelBillAccess(object):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Bill.objects.select_related(), pk=kwargs['pk'])
-        if request.user not in obj.target.admins.all() and not request.user.is_superuser:
+        if request.user not in obj.content_object.admins.all() and not request.user.is_superuser:
             raise Http404
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
 
