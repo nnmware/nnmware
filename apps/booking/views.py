@@ -734,7 +734,7 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
                 t_date = to_date.strftime('%d.%m.%Y')
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
             bills = bills.filter(date__range=(from_date, to_date))
-        return bills
+        return bills.order_by('-date')
 
 
 class RequestAddHotelView(CreateView):
