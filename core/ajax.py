@@ -749,7 +749,7 @@ class AjaxUploader(object):
 
 def addon_file_uploader(request, **kwargs):
     uploader = AjaxUploader(filetype='file', upload_dir=setting('FILE_UPLOAD_DIR', 'files'),
-                            size_limit=setting('FILE_UPLOAD_SIZE', 10485760))
+                            size_limit=setting('FILE_UPLOAD_SIZE', 104857600))
     result = uploader.handle_upload(request)
     if result['success']:
         new = Doc()
