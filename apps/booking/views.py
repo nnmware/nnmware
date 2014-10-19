@@ -651,7 +651,7 @@ class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetBillEdit(CurrentUserHotelBillAccess, AttachedFilesMixin, UpdateView):
+class CabinetBillEdit(CurrentUserSuperuser, AttachedFilesMixin, UpdateView):
     model = Bill
     form_class = CabinetEditBillForm
     template_name = "cabinet/bill_edit.html"

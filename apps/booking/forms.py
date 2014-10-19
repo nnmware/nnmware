@@ -96,11 +96,10 @@ class CabinetRoomForm(LocaleNamedForm):
 
 
 class CabinetEditBillForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}))
 
     class Meta:
         model = Bill
-        fields = ('date_billed', 'status', 'description', 'amount', 'currency')
+        fields = ('date_billed', 'status', 'description_small', 'invoice_number', 'amount')
 
 
 class RequestAddHotelForm(forms.ModelForm):
