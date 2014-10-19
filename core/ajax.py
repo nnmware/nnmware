@@ -763,6 +763,11 @@ def addon_file_uploader(request, **kwargs):
                                 new.doc.field.upload_to, new.doc.path)
         new.size = os.path.getsize(fullpath)
         new.save()
+        try:
+            addons = dict(html=render_to_string('upload/file_item.html', {'doc': new}))
+        except:
+            addons = {}
+        result.update(addons)
     return ajax_answer(result)
 
 
