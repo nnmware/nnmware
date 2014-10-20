@@ -540,6 +540,13 @@ class Doc(AbstractContent, AbstractFile):
         self.size = os.path.getsize(fullpath)
         super(Doc, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        try:
+            remove_file(self.doc.path)
+        except:
+            pass
+        super(Doc, self).delete(*args, **kwargs)
+
     def get_absolute_url(self):
         return reverse(os.path.join(settings.MEDIA_URL, self.doc.url))
 
