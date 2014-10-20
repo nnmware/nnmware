@@ -33,7 +33,7 @@ from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
-from nnmware.apps.money.models import Bill, Currency
+from nnmware.apps.money.models import Bill, Currency, BILL_UNKNOWN
 from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail, setting
 from nnmware.core.financial import is_luhn_valid
 from nnmware.apps.booking.utils import booking_new_client_mail
@@ -734,6 +734,8 @@ class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, Lis
                 t_date = to_date.strftime('%d.%m.%Y')
             self.search_dates = {'from_date': f_date, 'to_date': t_date}
             bills = bills.filter(date__range=(from_date, to_date))
+        if not self.request.user.is_superuser:
+            bills = bills.exclude(status=BILL_UNKNOWN)
         return bills.order_by('-date')
 
 

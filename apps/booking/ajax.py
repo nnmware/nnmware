@@ -15,7 +15,7 @@ from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount, RoomDiscount, SimpleDiscount
 from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
-from nnmware.apps.money.models import Currency, Bill, BILL_BILLED
+from nnmware.apps.money.models import Currency, Bill, BILL_UNKNOWN
 import time
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
@@ -495,7 +495,7 @@ def invoice_create(request, city, slug):
         bill.user = request.user
         bill.amount = request.POST['amount']
         bill.date_billed = convert_to_date(request.POST['date_billed'])
-        bill.status = BILL_BILLED
+        bill.status = BILL_UNKNOWN
         bill.description_small = request.POST['description_small']
         bill.invoice_number = request.POST['invoice_number']
         bill.content_object = hotel
