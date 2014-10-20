@@ -21,14 +21,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
 
-from nnmware.core.abstract import Pic, Doc
+from nnmware.core.abstract import Pic, Doc, AbstractContent, AbstractImg, AbstractDate, AbstractNnmcomment, \
+    AbstractLike, AbstractIP
 from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
     STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
 from nnmware.core.utils import setting
-from nnmware.core.abstract import AbstractDate, AbstractNnmcomment, AbstractLike
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, FollowManager, MessageManager
-from nnmware.core.abstract import AbstractContent, AbstractImg
-from nnmware.core.abstract import AbstractIP
 
 
 @python_2_unicode_compatible
