@@ -204,7 +204,7 @@ def price_variants(context, room, rate):
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     answer = convert_to_client_currency(result, rate)
     discount = room.simple_discount
-    prices = [None, None, None]
+    prices = [None, None, None, None]
     if discount.ub:
         ub = dict()
         if 0 < discount.ub_discount < 100:
@@ -239,6 +239,7 @@ def price_variants(context, room, rate):
             nr['price'] = answer
             nr['discount'] = None
         prices[2] = nr
+    prices[3] = answer / guests
     return prices
 
 
