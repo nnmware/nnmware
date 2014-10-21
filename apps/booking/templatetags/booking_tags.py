@@ -209,8 +209,10 @@ def price_variants(context, room, rate):
         ub = dict()
         if 0 < discount.ub_discount < 100:
             ub['price'] = (answer * (100 - discount.ub_discount)) / 100
+            ub['discount'] = discount.ub_discount
         else:
             ub['price'] = answer
+            ub['discount'] = None
         prices[0] = ub
     if discount.gb:
         gb = dict()
@@ -223,15 +225,19 @@ def price_variants(context, room, rate):
             gb['penalty'] = None
         if 0 < discount.gb_discount < 100:
             gb['price'] = (answer * (100 - discount.gb_discount)) / 100
+            gb['discount'] = discount.gb_discount
         else:
             gb['price'] = answer
+            gb['discount'] = None
         prices[1] = gb
     if discount.nr:
         nr = dict()
         if 0 < discount.nr_discount < 100:
             nr['price'] = (answer * (100 - discount.nr_discount)) / 100
+            nr['discount'] = discount.nr_discount
         else:
             nr['price'] = answer
+            nr['discount'] = None
         prices[2] = nr
     return prices
 
