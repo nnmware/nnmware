@@ -239,7 +239,7 @@ def price_variants(context, room, rate):
             nr['price'] = answer
             nr['discount'] = None
         prices[2] = nr
-    prices[3] = answer / guests
+    prices[3] = answer / delta
     return prices
 
 
