@@ -477,7 +477,7 @@ def search_minimal_hotel_cost(context, hotel, rate):
     for room in rooms:
         room_res = []
         for i in price_variants(context, room, rate):
-            if i is not None:
+            if i is not None and isinstance(i, dict):
                 room_res.append(i['price'])
         result.append(min(room_res))
     return min(result)
