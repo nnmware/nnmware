@@ -34,7 +34,6 @@ SITE_NAME = "NNMWARE TEST"
 # These can override or add to the default URLs
 from django.conf.urls import *
 
-URLS = patterns('',)
 APPEND_SLASH = True
 
 CACHES = {

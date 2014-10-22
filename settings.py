@@ -122,7 +122,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
     'django.contrib.humanize',
-    'django.contrib.webdesign',
     'django.contrib.messages',
     'django.contrib.syndication',
     'nnmware.core',
