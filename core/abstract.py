@@ -4,6 +4,7 @@
 from StringIO import StringIO
 import os
 from PIL import Image
+from uuid import uuid4
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -605,6 +606,7 @@ class AbstractSkill(AbstractOrder):
 
 @python_2_unicode_compatible
 class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
+    uid = models.UUIDField(default=uuid4, editable=False, db_index=True)
     main = models.BooleanField(_('Main profile'), default=False)
     first_name = std_text_field(_('First Name'), max_length=50)
     middle_name = std_text_field(_('Middle Name'), max_length=50)
