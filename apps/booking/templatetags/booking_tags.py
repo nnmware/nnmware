@@ -196,6 +196,7 @@ def room_full_amount(context, room, rate):
 
 @register.assignment_tag(takes_context=True)
 def price_variants(context, room, rate):
+    btype = context.get('btype')
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     settlement = SettlementVariant.objects.filter(room=room, settlement__gte=guests,
         placeprice__date__range=date_period, placeprice__amount__gt=0).annotate(valid_s=Count('pk')).\
@@ -203,19 +204,23 @@ def price_variants(context, room, rate):
     result = PlacePrice.objects.filter(settlement__room=room, settlement__pk=settlement,
                                        date__range=date_period).aggregate(Sum('amount'))['amount__sum']
     answer = convert_to_client_currency(result, rate)
+    total_cost = answer
     discount = room.simple_discount
-    prices = [None, None, None, None]
+    prices = []
+    ub, gb, nr = dict(), dict(), dict()
+    variants = []
     if discount.ub:
-        ub = dict()
         if 0 < discount.ub_discount < 100:
             ub['price'] = (answer * (100 - discount.ub_discount)) / 100
             ub['discount'] = discount.ub_discount
         else:
             ub['price'] = answer
             ub['discount'] = None
-        prices[0] = ub
+        ub['average'] = ub['price'] / delta
+        ub['variant'] = 'ub'
+        if btype == 'ub':
+            total_cost = ub['price']
     if discount.gb:
-        gb = dict()
         gb['days'] = from_date - timedelta(days=discount.gb_days)
         if 0 < discount.gb_penalty <= 100:
             room_answer = PlacePrice.objects.get(settlement__room=room, settlement__pk=settlement, date=from_date)
@@ -229,17 +234,51 @@ def price_variants(context, room, rate):
         else:
             gb['price'] = answer
             gb['discount'] = None
-        prices[1] = gb
+        gb['average'] = gb['price'] / delta
+        gb['variant'] = 'gb'
+        if btype == 'gb':
+            total_cost = gb['price']
     if discount.nr:
-        nr = dict()
         if 0 < discount.nr_discount < 100:
             nr['price'] = (answer * (100 - discount.nr_discount)) / 100
             nr['discount'] = discount.nr_discount
         else:
             nr['price'] = answer
             nr['discount'] = None
-        prices[2] = nr
-    prices[3] = answer / delta
+        if btype == 'nr':
+            total_cost = nr['price']
+        nr['average'] = nr['price'] / delta
+        nr['variant'] = 'nr'
+    if btype == 'ub' and bool(ub):
+        variants.append(ub)
+        if bool(gb):
+            variants.append(gb)
+        if bool(nr):
+            variants.append(nr)
+    elif btype == 'gb' and bool(gb):
+        variants.append(gb)
+        if bool(ub):
+            variants.append(ub)
+        if bool(nr):
+            variants.append(nr)
+    elif btype == 'nr' and bool(nr):
+        variants.append(nr)
+        if bool(ub):
+            variants.append(ub)
+        if bool(gb):
+            variants.append(gb)
+    else:
+        if bool(ub):
+            variants.append(ub)
+        if bool(gb):
+            variants.append(gb)
+        if bool(nr):
+            variants.append(nr)
+    prices.append(variants)
+    prices.append(answer / delta)
+    prices.append(total_cost)
+    prices.append(delta)
+    prices.append(len(variants))
     return prices
 
 
