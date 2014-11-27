@@ -1222,7 +1222,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
     model = Booking
     slug_field = 'uuid'
     form_class = BookingStatusForm
-    template_name = "cabinet/booking_status.html"
+    template_name = "cabinet/booking.html"
 
     def get_context_data(self, **kwargs):
         context = super(BookingStatusChange, self).get_context_data(**kwargs)
@@ -1230,6 +1230,7 @@ class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
         context['hotel'] = self.object.hotel
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'reports'
+        context['status_change'] = True
         return context
 
     def form_valid(self, form):
