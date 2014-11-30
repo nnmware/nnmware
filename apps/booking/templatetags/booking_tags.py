@@ -516,9 +516,9 @@ def search_minimal_hotel_cost(context, hotel, rate):
     for room in rooms:
         room_res = []
         prices = price_variants(context, room, rate)[0]
-        if not bool(prices):
+        if bool(prices):
             for i in prices:
                 room_res.append(i['price'])
-        if not bool(room_res):
+        if bool(room_res):
             result.append(min(room_res))
     return min(result)
