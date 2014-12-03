@@ -232,7 +232,7 @@ def price_variants(context, room, rate):
             room_answer = PlacePrice.objects.get(settlement__room=room, settlement__pk=settlement, date=from_date)
             room_answer = convert_to_client_currency(room_answer.amount, rate)
             if gb['discount'] is not None:
-                gb['penalty'] = (room_answer * (100 - gb['discount']) * discount.gb_penalty) / 100
+                gb['penalty'] = (room_answer * (100 - gb['discount']) * discount.gb_penalty) / 10000
             else:
                 gb['penalty'] = (room_answer * discount.gb_penalty) / 100
         else:
