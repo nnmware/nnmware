@@ -222,18 +222,21 @@ def price_variants(context, room, rate):
             total_cost = ub['price']
     if discount.gb:
         gb['days'] = from_date - timedelta(days=discount.gb_days)
-        if 0 < discount.gb_penalty <= 100:
-            room_answer = PlacePrice.objects.get(settlement__room=room, settlement__pk=settlement, date=from_date)
-            room_answer = convert_to_client_currency(room_answer.amount, rate)
-            gb['penalty'] = (room_answer * discount.gb_penalty) / 100
-        else:
-            gb['penalty'] = None
         if 0 < discount.gb_discount < 100:
             gb['price'] = (answer * (100 - discount.gb_discount)) / 100
             gb['discount'] = discount.gb_discount
         else:
             gb['price'] = answer
             gb['discount'] = None
+        if 0 < discount.gb_penalty <= 100:
+            room_answer = PlacePrice.objects.get(settlement__room=room, settlement__pk=settlement, date=from_date)
+            room_answer = convert_to_client_currency(room_answer.amount, rate)
+            if gb['discount'] is not None:
+                gb['penalty'] = (room_answer * (100 - gb['discount']) * discount.gb_penalty) / 100
+            else:
+                gb['penalty'] = (room_answer * discount.gb_penalty) / 100
+        else:
+            gb['penalty'] = None
         gb['average'] = gb['price'] / delta
         gb['variant'] = 'gb'
         if btype == 'gb':
