@@ -985,16 +985,17 @@ class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
             return Booking.objects.select_related().filter(user=self.object)
 
 
-class UserBookingDetail(CurrentUserBookingAccess, DetailView):
+class BookingUserDetail(DetailView, CurrentUserBookingAccess):
     model = Booking
     slug_field = 'uuid'
     template_name = "usercabinet/booking.html"
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(UserBookingDetail, self).get_context_data(**kwargs)
+        context = super(BookingUserDetail, self).get_context_data(**kwargs)
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
+        context['view_by'] = 'client'
         return context
 
 
@@ -1169,11 +1170,10 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         return super(ClientAddBooking, self).form_valid(form)
 
 
-class RequestAdminAdd(CurrentUserSuperuser, TemplateView):
+class RequestAdminAdd(TemplateView, CurrentUserSuperuser):
     template_name = 'sysadm/request.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super(RequestAdminAdd, self).get_context_data(**kwargs)
         context['tab'] = 'requests'
         context['title_line'] = _('request for add')
@@ -1192,7 +1192,7 @@ class HotelMainPage(TemplateView):
         return context
 
 
-class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
+class BookingHotelDetail(DetailView, CurrentUserHotelBookingAccess):
     model = Booking
     slug_field = 'uuid'
     template_name = "cabinet/booking.html"
@@ -1203,10 +1203,11 @@ class BookingHotelDetail(CurrentUserHotelBookingAccess, DetailView):
         context['hotel'] = self.object.hotel
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'reports'
+        context['view_by'] = 'hotel'
         return context
 
 
-class BookingAdminDetail(CurrentUserSuperuser, DetailView):
+class BookingAdminDetail(DetailView, CurrentUserSuperuser):
     model = Booking
     slug_field = 'uuid'
     template_name = "sysadm/booking.html"
@@ -1215,10 +1216,11 @@ class BookingAdminDetail(CurrentUserSuperuser, DetailView):
         context = super(BookingAdminDetail, self).get_context_data(**kwargs)
         context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
         context['tab'] = 'bookings'
+        context['view_by'] = 'admin'
         return context
 
 
-class BookingStatusChange(CurrentUserHotelBookingAccess, UpdateView):
+class BookingStatusChange(UpdateView, CurrentUserHotelBookingAccess):
     model = Booking
     slug_field = 'uuid'
     form_class = BookingStatusForm
