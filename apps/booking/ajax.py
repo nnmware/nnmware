@@ -6,7 +6,7 @@ import json
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
@@ -400,8 +400,6 @@ def add_category(request):
 
 @transaction.atomic
 def booking_sysadm(request, pk, action):
-    if not request.is_ajax():
-        raise Http404
     try:
         if not request.user.is_superuser:
             raise UserNotAllowed
@@ -427,12 +425,9 @@ def booking_sysadm(request, pk, action):
             url = reverse_lazy('booking_admin_detail', args=[booking.uuid, ])
         else:
             raise UserNotAllowed
-        payload = {'success': True, 'location': url}
-    except UserNotAllowed:
-        payload = {'success': False, 'error': _('You are not allowed for this action.')}
+        return HttpResponseRedirect(url)
     except:
-        payload = {'success': False}
-    return ajax_answer_lazy(payload)
+        raise Http404
 
 
 def edit_discount(request):
