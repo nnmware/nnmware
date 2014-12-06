@@ -594,9 +594,8 @@ class Booking(MoneyBase, AbstractIP):
         return reverse('booking_user_detail', kwargs={'slug': self.uuid})
 
     @property
-    def days(self):
-        delta = self.to_date - self.from_date
-        return delta.days
+    def room_day_cost(self):
+        return self.amount / self.days
 
     def save(self, *args, **kwargs):
         if not self.uuid:
