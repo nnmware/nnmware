@@ -1075,7 +1075,16 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             try:
                 card_number = self.request.POST.get('card_number') or None
                 card_holder = self.request.POST.get('card_holder') or None
-                card_valid = self.request.POST.get('card_valid') or None
+                card_valid_month = self.request.POST.get('card_valid') or None
+                card_valid_year = self.request.POST.get('card_valid_year') or None
+                try:
+                    if len(card_valid_month) == 2 and len(card_valid_year) == 2:
+                        card_valid = '%s/%s' % (card_valid_month, card_valid_year)
+                    else:
+                        raise ValueError
+                except:
+                    payload = {'success': False, 'error': _('Card valid dates is wrong.')}
+                    raise CardError
                 card_cvv2 = self.request.POST.get('card_cvv2') or None
                 if card_number and card_holder and card_valid and card_cvv2:
                     if not is_luhn_valid(card_number):
