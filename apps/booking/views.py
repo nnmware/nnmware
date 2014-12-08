@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
@@ -42,7 +42,7 @@ from nnmware.core.decorators import ssl_required
 from nnmware.core.views import AjaxViewMixin, UserToFormMixin
 
 
-class CurrentUserHotelAdmin(object):
+class CurrentUserHotelAdmin(View):
     """ Generic update view that check request.user is author of object """
 
     @method_decorator(ssl_required)
@@ -55,7 +55,7 @@ class CurrentUserHotelAdmin(object):
         return super(CurrentUserHotelAdmin, self).dispatch(request, *args, **kwargs)
 
 
-class CurrentUserRoomAdmin(object):
+class CurrentUserRoomAdmin(View):
     """ Generic update view that check request.user is author of object """
 
     @method_decorator(ssl_required)
@@ -67,7 +67,7 @@ class CurrentUserRoomAdmin(object):
         return super(CurrentUserRoomAdmin, self).dispatch(request, *args, **kwargs)
 
 
-class CurrentUserHotelBillAccess(object):
+class CurrentUserHotelBillAccess(View):
     """ Generic update view that check request.user may view bills of hotel """
 
     @method_decorator(ssl_required)
@@ -78,7 +78,7 @@ class CurrentUserHotelBillAccess(object):
         return super(CurrentUserHotelBillAccess, self).dispatch(request, *args, **kwargs)
 
 
-class CurrentUserHotelBookingAccess(object):
+class CurrentUserHotelBookingAccess(View):
     """ Generic update view that check request.user may view bookings of hotel """
 
     @method_decorator(ssl_required)
@@ -89,7 +89,7 @@ class CurrentUserHotelBookingAccess(object):
         return super(CurrentUserHotelBookingAccess, self).dispatch(request, *args, **kwargs)
 
 
-class CurrentUserBookingAccess(object):
+class CurrentUserBookingAccess(View):
     """ Generic update view that check request.user may view bookings of hotel """
 
     @method_decorator(ssl_required)
@@ -101,7 +101,7 @@ class CurrentUserBookingAccess(object):
         return super(CurrentUserBookingAccess, self).dispatch(request, *args, **kwargs)
 
 
-class CurrentUserCabinetAccess(object):
+class CurrentUserCabinetAccess(View):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(get_user_model(), username=kwargs['username'])
@@ -507,7 +507,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         return context
 
 
-class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, AttachedImagesMixin, UpdateView):
+class CabinetInfo(UserToFormMixin, HotelPathMixin, AttachedImagesMixin, UpdateView, CurrentUserHotelAdmin):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
@@ -523,7 +523,7 @@ class CabinetInfo(UserToFormMixin, HotelPathMixin, CurrentUserHotelAdmin, Attach
         return reverse('cabinet_info', args=[self.object.city.slug, self.object.slug])
 
 
-class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
+class CabinetRooms(HotelPathMixin, CreateView, CurrentUserHotelAdmin):
     model = Room
     form_class = CabinetRoomForm
     template_name = "cabinet/rooms.html"
@@ -548,7 +548,7 @@ class CabinetRooms(HotelPathMixin, CurrentUserHotelAdmin, CreateView):
         return reverse('cabinet_room', args=[self.object.hotel.city.slug, self.object.hotel.slug, self.object.pk])
 
 
-class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
+class CabinetEditRoom(AttachedImagesMixin, UpdateView, CurrentUserRoomAdmin):
     model = Room
     pk_url_kwarg = 'pk'
     form_class = CabinetRoomForm
@@ -581,7 +581,7 @@ class CabinetEditRoom(CurrentUserRoomAdmin, AttachedImagesMixin, UpdateView):
         return super(CabinetEditRoom, self).form_valid(form)
 
 
-class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
+class CabinetRates(HotelPathMixin, DetailView, CurrentUserHotelAdmin):
     model = Hotel
     template_name = "cabinet/rates.html"
 
@@ -638,7 +638,7 @@ class CabinetRates(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
+class CabinetDiscount(HotelPathMixin, DetailView, CurrentUserHotelAdmin):
     model = Hotel
     template_name = "cabinet/discounts.html"
     success_url = '/'
@@ -651,7 +651,7 @@ class CabinetDiscount(HotelPathMixin, CurrentUserHotelAdmin, DetailView):
         return context
 
 
-class CabinetBillEdit(CurrentUserSuperuser, AttachedFilesMixin, UpdateView):
+class CabinetBillEdit(AttachedFilesMixin, UpdateView, CurrentUserSuperuser):
     model = Bill
     form_class = CabinetEditBillForm
     template_name = "cabinet/bill_edit.html"
@@ -668,7 +668,7 @@ class CabinetBillEdit(CurrentUserSuperuser, AttachedFilesMixin, UpdateView):
         return reverse('cabinet_bills', args=[self.object.content_object.city.slug, self.object.content_object.slug])
 
 
-class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
+class CabinetBookings(HotelPathMixin, SingleObjectMixin, ListView, CurrentUserHotelAdmin):
     paginate_by = 20
     template_name = "cabinet/bookings.html"
     search_dates = dict()
@@ -703,7 +703,7 @@ class CabinetBookings(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, 
         return bookings.filter(enabled=True)
 
 
-class CabinetBills(HotelPathMixin, CurrentUserHotelAdmin, SingleObjectMixin, ListView):
+class CabinetBills(HotelPathMixin, SingleObjectMixin, ListView, CurrentUserHotelAdmin):
     template_name = "cabinet/bills.html"
     search_dates = dict()
 
@@ -770,7 +770,7 @@ class RequestAddHotelView(CreateView):
         return super(RequestAddHotelView, self).form_valid(form)
 
 
-class BookingsList(CurrentUserSuperuser, ListView):
+class BookingsList(ListView, CurrentUserSuperuser):
     model = Booking
     paginate_by = 20
     template_name = "sysadm/bookings.html"
@@ -802,7 +802,7 @@ class BookingsList(CurrentUserSuperuser, ListView):
             return result
 
 
-class RequestsList(CurrentUserSuperuser, ListView):
+class RequestsList(ListView, CurrentUserSuperuser):
     paginate_by = 10
     model = RequestAddHotel
     template_name = "sysadm/requests.html"
@@ -815,7 +815,7 @@ class RequestsList(CurrentUserSuperuser, ListView):
         return context
 
 
-class ReportsList(CurrentUserSuperuser, TemplateView):
+class ReportsList(TemplateView, CurrentUserSuperuser):
     template_name = "sysadm/reports.html"
 
     def get_context_data(self, **kwargs):
@@ -826,7 +826,7 @@ class ReportsList(CurrentUserSuperuser, TemplateView):
         return context
 
 
-class ReportView(CurrentUserSuperuser, ListView):
+class ReportView(ListView, CurrentUserSuperuser):
     paginate_by = 50
     model = Hotel
     template_name = "sysadm/report.html"
@@ -921,7 +921,7 @@ class ReportView(CurrentUserSuperuser, ListView):
         return context
 
 
-class UserCabinet(AjaxFormMixin, CurrentUserCabinetAccess, UpdateView):
+class UserCabinet(AjaxFormMixin, UpdateView, CurrentUserCabinetAccess):
     form_class = UserCabinetInfoForm
     template_name = "usercabinet/info.html"
 
@@ -955,7 +955,7 @@ class UserCabinet(AjaxFormMixin, CurrentUserCabinetAccess, UpdateView):
         return super(UserCabinet, self).form_valid(form)
 
 
-class UserBookings(CurrentUserCabinetAccess, SingleObjectMixin, ListView):
+class UserBookings(SingleObjectMixin, ListView, CurrentUserCabinetAccess):
     paginate_by = 5
     template_name = "usercabinet/bookings.html"
 
