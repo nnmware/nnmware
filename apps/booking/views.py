@@ -1067,7 +1067,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         use_card = False
         payload = None
         btype = self.request.POST.get('btype') or None
-        if btype not in ['ub', 'gb', 'nr']:
+        guests = self.request.POST.get('guests') or None
+        if guests is None or btype not in ['ub', 'gb', 'nr']:
             raise Http404
         if btype in ['gb', 'nr']:
             use_card = True

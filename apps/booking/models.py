@@ -563,6 +563,7 @@ class Booking(MoneyBase, AbstractIP):
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=False, db_index=True)
     guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
     btype = models.IntegerField(_("Booking type"), choices=BOOKING_CHOICES, default=BOOKING_UNKNOWN)
+    bdiscount = models.PositiveSmallIntegerField(verbose_name=_('Discount percent'), default=0, db_index=True)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, db_index=True, null=True)
     freecancel = models.PositiveSmallIntegerField(verbose_name=_('Free cancel days'), default=0, db_index=True)
     penaltycancel = models.DecimalField(verbose_name=_('Penalty for cancellation'), default=0, max_digits=20,
@@ -606,6 +607,10 @@ class Booking(MoneyBase, AbstractIP):
                 new_id = random.randint(100000000, 999999999)
             self.system_id = new_id
         super(Booking, self).save(*args, **kwargs)
+
+    @property
+    def delta(self):
+        return (self.to_date - self.from_date).days
 
 
 @python_2_unicode_compatible
