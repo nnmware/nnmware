@@ -608,10 +608,6 @@ class Booking(MoneyBase, AbstractIP):
             self.system_id = new_id
         super(Booking, self).save(*args, **kwargs)
 
-    @property
-    def delta(self):
-        return (self.to_date - self.from_date).days
-
 
 @python_2_unicode_compatible
 class AgentPercent(models.Model):
