@@ -1135,12 +1135,25 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.date = now()
         if room.typefood:
             self.object.typefood = room.typefood
+        room_discount = room.simple_discount
+        discount = 0
+        freecancel_days = 0
         if btype == 'ub':
             booking_type = BOOKING_UB
+            if 0 < room_discount.ub_discount < 100:
+                discount = room_discount.ub_discount
         elif btype == 'gb':
             booking_type = BOOKING_GB
+            if 0 < room_discount.gb_discount < 100:
+                discount = room_discount.gb_discount
+                if 0 < room_discount.gb_penalty < 101:
+                    self.object.penaltycancel = room_discount.gb_penalty
+                if room_discount.gb_days > 0:
+                    self.object.freecancel = room_discount.gb_days
         elif btype == 'nr':
             booking_type = BOOKING_NR
+            if 0 < room_discount.nr_discount < 100:
+                discount = room_discount.nr_discount
         from_date = self.object.from_date
         to_date = self.object.to_date
         all_amount = Decimal(0)
@@ -1149,13 +1162,15 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         while on_date < to_date:
             price = PlacePrice.objects.get(settlement=settlement, date=on_date)
             percent = self.object.hotel.get_percent_on_date(on_date)
-            commission += (price.amount * percent) / 100
-            all_amount += price.amount
+            day_price = price.amount
+            if discount > 0:
+                day_price = (day_price * (100 - discount)) / 100
+            commission += (day_price * percent) / 100
+            all_amount += day_price
             avail = Availability.objects.get(room=room, date=on_date)
             avail.placecount -= 1
             avail.save()
             on_date = on_date + timedelta(days=1)
-        # TODO calculate discount
         self.object.amount = all_amount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
@@ -1164,6 +1179,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
         self.object.btype = booking_type
+        if discount > 0:
+            self.object.bdiscount = discount
         if use_card:
             self.object.card_number = card_number
             self.object.card_holder = card_holder
