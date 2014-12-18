@@ -600,6 +600,14 @@ class Booking(MoneyBase, AbstractIP):
     def room_day_cost(self):
         return self.amount / self.days
 
+    @property
+    def room_day_cost_no_amount(self):
+        if self.amount_no_discount > 0:
+            return self.amount_no_discount / self.days
+        if self.bdiscount > 0:
+            return (self.amount * 100) / (100 - self.bdiscount)
+        return self.room_day_cost
+
     def save(self, *args, **kwargs):
         if not self.uuid:
             self.uuid = uuid4()
