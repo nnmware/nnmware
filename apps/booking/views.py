@@ -1137,7 +1137,6 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             self.object.typefood = room.typefood
         room_discount = room.simple_discount
         discount = 0
-        freecancel_days = 0
         if btype == 'ub':
             booking_type = BOOKING_UB
             if 0 < room_discount.ub_discount < 100:
