@@ -569,6 +569,8 @@ class Booking(MoneyBase, AbstractIP):
     penaltycancel = models.DecimalField(verbose_name=_('Penalty for cancellation'), default=0, max_digits=20,
                                         decimal_places=3)
     comment = models.TextField(verbose_name=_("Client comment"), blank=True, default='')
+    amount_no_discount = models.DecimalField(verbose_name=_('Amount without discount'), default=0, max_digits=22,
+                                             decimal_places=5, db_index=True)
 
     objects = Manager()
 

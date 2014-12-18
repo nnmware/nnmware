@@ -1156,12 +1156,14 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         from_date = self.object.from_date
         to_date = self.object.to_date
         all_amount = Decimal(0)
+        amount_no_discount = Decimal(0)
         commission = Decimal(0)
         on_date = from_date
         while on_date < to_date:
             price = PlacePrice.objects.get(settlement=settlement, date=on_date)
             percent = self.object.hotel.get_percent_on_date(on_date)
             day_price = price.amount
+            amount_no_discount += day_price
             if discount > 0:
                 day_price = (day_price * (100 - discount)) / 100
             commission += (day_price * percent) / 100
@@ -1171,6 +1173,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             avail.save()
             on_date = on_date + timedelta(days=1)
         self.object.amount = all_amount
+        self.object.amount_no_discount = amount_no_discount
         self.object.hotel_sum = all_amount - commission
         self.object.commission = commission
         currency = Currency.objects.get(code=setting('CURRENCY', 'RUB'))
