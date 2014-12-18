@@ -1017,12 +1017,13 @@ class ClientBooking(DetailView, RedirectHttpsView):
         guests = guests_from_request(self.request)
         if f_date == t_date:
             raise Http404
+        discount = self.room.simple_discount
         if f_date and t_date and guests:
-            if btype == 'ub' and not self.room.simple_discount.ub:
+            if btype == 'ub' and not discount.ub:
                 raise Http404
-            elif btype == 'gb' and not self.room.simple_discount.gb:
+            elif btype == 'gb' and not discount.gb:
                 raise Http404
-            elif btype == 'nr' and not self.room.simple_discount.nr:
+            elif btype == 'nr' and not discount.nr:
                 raise Http404
             else:
                 pass
@@ -1064,15 +1065,13 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
     form_class = BookingAddForm
 
     def form_valid(self, form):
-        use_card = False
+        self.object = form.save(commit=False)
         payload = None
         btype = self.request.POST.get('btype') or None
         guests = self.request.POST.get('guests') or None
         if guests is None or btype not in ['ub', 'gb', 'nr']:
             raise Http404
         if btype in ['gb', 'nr']:
-            use_card = True
-        if use_card:
             try:
                 card_number = self.request.POST.get('card_number') or None
                 card_holder = self.request.POST.get('card_holder') or None
@@ -1093,9 +1092,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
                         raise CardError
                     else:
                         try:
-                            if len(card_cvv2) != 3:
-                                raise ValueError
-                            if len(card_valid) != 5:
+                            if len(card_cvv2) != 3 or len(card_valid) != 5:
                                 raise ValueError
                             card_cvv2 = int(card_cvv2)
                         except:
@@ -1104,9 +1101,13 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
                 else:
                     payload = {'success': False, 'error': _('You enter not all data of card.')}
                     raise CardError
+                self.object.card_number = card_number
+                self.object.card_holder = card_holder
+                self.object.card_valid = card_valid
+                self.object.card_cvv2 = card_cvv2
+
             except CardError:
                 return ajax_answer_lazy(payload)
-        self.object = form.save(commit=False)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user
         else:
@@ -1183,11 +1184,6 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
         self.object.btype = booking_type
         if discount > 0:
             self.object.bdiscount = discount
-        if use_card:
-            self.object.card_number = card_number
-            self.object.card_holder = card_holder
-            self.object.card_valid = card_valid
-            self.object.card_cvv2 = card_cvv2
         self.object.save()
         self.success_url = self.object.get_client_url()
         if not settings.DEBUG:
