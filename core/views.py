@@ -366,13 +366,13 @@ class MessageContactsView(ListView):
         return Message.objects.users(self.request.user)
 
 
-class RedirectHttpsView(object):
+class RedirectHttpsView(View):
     @method_decorator(ssl_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpsView, self).dispatch(request, *args, **kwargs)
 
 
-class RedirectHttpView(object):
+class RedirectHttpView(View):
     @method_decorator(ssl_not_required)
     def dispatch(self, request, *args, **kwargs):
         return super(RedirectHttpView, self).dispatch(request, *args, **kwargs)

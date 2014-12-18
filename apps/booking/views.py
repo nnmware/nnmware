@@ -999,7 +999,7 @@ class BookingUserDetail(DetailView, CurrentUserBookingAccess):
         return context
 
 
-class ClientBooking(RedirectHttpsView, DetailView):
+class ClientBooking(DetailView, RedirectHttpsView):
     model = Hotel
     template_name = "booking/add.html"
     room = None
