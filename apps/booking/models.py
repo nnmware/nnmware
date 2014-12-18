@@ -605,7 +605,7 @@ class Booking(MoneyBase, AbstractIP):
         if self.amount_no_discount > 0:
             return self.amount_no_discount / self.days
         if self.bdiscount > 0:
-            return (self.amount * 100) / (100 - self.bdiscount)
+            return ((self.amount * 100) / (100 - self.bdiscount)) / self.days
         return self.room_day_cost
 
     def save(self, *args, **kwargs):
