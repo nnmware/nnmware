@@ -505,7 +505,7 @@ def invoice_create(request, city, slug):
 
 def booking_status_change(request, uuid):
     try:
-        booking = Booking.object.get(uuid=uuid)
+        booking = Booking.objects.get(uuid=uuid)
         if request.user not in booking.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         status = request.POST['status']
