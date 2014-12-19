@@ -8,8 +8,8 @@ from django.template.defaultfilters import stringfilter
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from nnmware.apps.address.models import City
-from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, \
-    HotelOption, MINI_HOTEL, PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount
+from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL, \
+    PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount, STATUS_CHOICES
 from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.maps import distance_to_object
 from nnmware.core.utils import convert_to_date, setting
@@ -525,3 +525,8 @@ def search_minimal_hotel_cost(context, hotel, rate):
         if bool(room_res):
             result.append(min(room_res))
     return min(result)
+
+
+@register.assignment_tag
+def booking_statuses():
+    return STATUS_CHOICES
