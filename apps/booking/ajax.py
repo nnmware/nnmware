@@ -509,7 +509,7 @@ def booking_status_change(request, uuid):
         if request.user not in booking.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         status = request.POST['status']
-        if booking.status != status:
+        if booking.status != int(status):
             booking.status = status
             booking.save()
             subject = _("Changed status of booking")
@@ -519,7 +519,7 @@ def booking_status_change(request, uuid):
             message += _("New status: ") + booking.get_status_display() + "\n"
             message += '\n' + "IP: %s USER-AGENT: %s" % (request.META.get('REMOTE_ADDR', ''),
                                                          request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
-            mail_managers(subject, message, fail_silently=True)
+            mail_managers(subject, message)
             payload = {'success': True}
     except UserNotAllowed:
         payload = {'success': False, 'error': _('You are not allowed change booking status.')}
