@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 from exceptions import ValueError, Exception
 import json
+from django.core.mail import mail_managers
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
@@ -497,6 +498,31 @@ def invoice_create(request, city, slug):
         bill.currency = Currency.objects.get(code=setting('DEFAULT_CURRENCY', 'RUB'))
         bill.save()
         payload = {'success': True}
+    except:
+        payload = {'success': False}
+    return ajax_answer_lazy(payload)
+
+
+def booking_status_change(request, uuid):
+    try:
+        booking = Booking.object.get(uuid=uuid)
+        if request.user not in booking.hotel.admins.all() and not request.user.is_superuser:
+            raise UserNotAllowed
+        status = request.POST['status']
+        if booking.status != status:
+            booking.status = status
+            booking.save()
+            subject = _("Changed status of booking")
+            message = _("Hotel: ") + booking.hotel.get_name + "\n"
+            message += _("Booking: ") + str(booking.system_id) + "\n"
+            message += _("Booking link: ") + booking.get_absolute_url() + "\n"
+            message += _("New status: ") + booking.get_status_display() + "\n"
+            message += '\n' + "IP: %s USER-AGENT: %s" % (request.META.get('REMOTE_ADDR', ''),
+                                                         request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
+            mail_managers(subject, message)
+            payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error': _('You are not allowed change booking status.')}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)

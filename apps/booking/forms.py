@@ -175,15 +175,6 @@ class BookingAddForm(UserFromRequestForm):
         return cleaned_data
 
 
-class BookingStatusForm(forms.ModelForm):
-    description = forms.CharField(widget=forms.Textarea(attrs={'class': 'wide', 'rows': '5', 'cols': '40'}),
-                                  required=False)
-
-    class Meta:
-        model = Booking
-        fields = ('status', 'description')
-
-
 class AddDiscountForm(LocaleNamedForm):
     # TODO - Not used now(future)
     class Meta:

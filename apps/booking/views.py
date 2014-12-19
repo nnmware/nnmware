@@ -24,7 +24,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from nnmware.apps.booking.ajax import CardError
 from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, \
-    CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm, BookingStatusForm
+    CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
     STATUS_ACCEPTED, HotelOption, Booking, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB, \
     HotelSearch
@@ -1243,41 +1243,3 @@ class BookingAdminDetail(DetailView, CurrentUserSuperuser):
         context['tab'] = 'bookings'
         context['view_by'] = 'admin'
         return context
-
-
-class BookingStatusChange(UpdateView, CurrentUserHotelBookingAccess):
-    model = Booking
-    slug_field = 'uuid'
-    form_class = BookingStatusForm
-    template_name = "cabinet/booking.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(BookingStatusChange, self).get_context_data(**kwargs)
-        context['hotel_count'] = Hotel.objects.filter(city=self.object.hotel.city).count()
-        context['hotel'] = self.object.hotel
-        context['title_line'] = _('Booking ID') + ' ' + self.object.uuid
-        context['tab'] = 'reports'
-        context['status_change'] = True
-        return context
-
-    def form_valid(self, form):
-        booking = get_object_or_404(Booking, uuid=self.kwargs['slug'])
-        self.object = form.save(commit=False)
-        if self.object.status != booking.status:
-            desc = self.request.POST.get('description') or None
-            subject = _("Changed status of booking")
-            message = _("Hotel: ") + self.object.hotel.get_name + "\n"
-            message += _("Booking: ") + str(self.object.system_id) + "\n"
-            message += _("Booking link: ") + self.object.get_absolute_url() + "\n"
-            message += _("Old status: ") + booking.get_status_display() + "\n"
-            message += _("New status: ") + self.object.get_status_display() + "\n"
-            if desc is not None:
-                message += _("Description: ") + desc + "\n"
-            message += '\n' + "IP: %s USER-AGENT: %s" % (self.request.META.get('REMOTE_ADDR', ''),
-                                                         self.request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
-            mail_managers(subject, message)
-            self.object.save()
-        return super(BookingStatusChange, self).form_valid(form)
-
-    def get_success_url(self):
-        return reverse('cabinet_bookings', args=[self.object.hotel.city.slug, self.object.hotel.slug])
