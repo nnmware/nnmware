@@ -586,6 +586,12 @@ class Booking(MoneyBase, AbstractIP):
     def days(self):
         return (self.to_date - self.from_date).days
 
+    @property
+    def freecancel_before(self):
+        if self.freecancel > 0:
+            return self.from_date - timedelta(days=self.freecancel)
+        return False
+
     def get_absolute_url(self):
         if not self.uuid:
             self.save()
