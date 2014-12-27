@@ -90,9 +90,13 @@ class MetaGeo(models.Model):
         super(MetaGeo, self).save(*args, **kwargs)
 
 
+
+
 class City(Address, MetaGeo):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
+    time_offset = models.SmallIntegerField(verbose_name=_('Time offset from Greenwich'),
+                                           choices=[(i, i) for i in range(-11,13)], default=0)
 
     class Meta:
         unique_together = (('name', 'region'),)

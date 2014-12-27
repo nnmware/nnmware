@@ -14,7 +14,7 @@ class CityAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("City"), {"fields": [("name", "slug"),
             ('description',),
-            ('country', 'region'),
+            ('country', 'region', 'time_offset'),
             ('longitude', 'latitude'),
             ('name_add', 'position', 'enabled'),
         ]}),
