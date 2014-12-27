@@ -571,6 +571,7 @@ class Booking(MoneyBase, AbstractIP):
     comment = models.TextField(verbose_name=_("Client comment"), blank=True, default='')
     amount_no_discount = models.DecimalField(verbose_name=_('Amount without discount'), default=0, max_digits=22,
                                              decimal_places=5, db_index=True)
+    cancel_time = models.DateTimeField(verbose_name=_("Time/date of cancellation"), blank=True, null=True)
 
     objects = Manager()
 
