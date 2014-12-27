@@ -14,7 +14,8 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.core.exceptions import AccessError
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
-    Review, Booking, PaymentMethod, Discount, RoomDiscount, SimpleDiscount
+    Review, Booking, PaymentMethod, Discount, RoomDiscount, SimpleDiscount, STATUS_ACCEPTED, STATUS_CONFIRMED, \
+    STATUS_CANCELED_CLIENT
 from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
 from nnmware.apps.money.models import Currency, Bill, BILL_UNKNOWN
 import time
@@ -511,6 +512,33 @@ def booking_status_change(request, uuid):
         status = request.POST['status']
         if booking.status != int(status):
             booking.status = status
+            booking.save()
+            subject = _("Changed status of booking")
+            message = _("Hotel: ") + booking.hotel.get_name + "\n"
+            message += _("Booking: ") + str(booking.system_id) + "\n"
+            message += _("Booking link: ") + booking.get_absolute_url() + "\n"
+            message += _("New status: ") + booking.get_status_display() + "\n"
+            message += '\n' + "IP: %s USER-AGENT: %s" % (request.META.get('REMOTE_ADDR', ''),
+                                                         request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
+            mail_managers(subject, message)
+            payload = {'success': True}
+    except UserNotAllowed:
+        payload = {'success': False, 'error': _('You are not allowed change booking status.')}
+    except:
+        payload = {'success': False}
+    return ajax_answer_lazy(payload)
+
+
+def client_booking_cancel(request, uuid):
+    try:
+        booking = Booking.objects.get(uuid=uuid)
+        if not request.user.is_authenticated():
+            raise UserNotAllowed
+        if request.user != booking.user and not request.user.is_superuser:
+            raise UserNotAllowed
+        if booking.status == STATUS_ACCEPTED or booking.status == STATUS_CONFIRMED:
+            booking.status = STATUS_CANCELED_CLIENT
+            booking.cancel_time = now()
             booking.save()
             subject = _("Changed status of booking")
             message = _("Hotel: ") + booking.hotel.get_name + "\n"
