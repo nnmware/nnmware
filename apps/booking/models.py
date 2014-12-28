@@ -597,7 +597,9 @@ class Booking(MoneyBase, AbstractIP):
     def allow_penalty(self):
         if self.freecancel_before and self.hotel and self.btype == BOOKING_GB:
             offset = self.hotel.city.time_offset
-            if now() > datetime.combine(self.freecancel_before, time(0, 0)) + timedelta(hours=offset):
+            for_time = self.hotel.time_on
+            for_time1 = time(int(for_time[:2]), int(for_time[3:5]))
+            if now() > datetime.combine(self.freecancel_before, for_time1) - timedelta(hours=offset):
                 return True
         return False
 
