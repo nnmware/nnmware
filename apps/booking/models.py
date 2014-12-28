@@ -3,7 +3,7 @@
 from decimal import Decimal
 from uuid import uuid4
 import random
-from datetime import timedelta
+from datetime import timedelta, time, datetime
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
@@ -591,6 +591,14 @@ class Booking(MoneyBase, AbstractIP):
     def freecancel_before(self):
         if self.freecancel > 0:
             return self.from_date - timedelta(days=self.freecancel)
+        return False
+
+    @property
+    def allow_penalty(self):
+        if self.freecancel_before and self.hotel and self.btype == BOOKING_GB:
+            offset = self.hotel.city.time_offset
+            if now() > datetime.combine(self.freecancel_before, time(0, 0)) + timedelta(hours=offset):
+                return True
         return False
 
     def get_absolute_url(self):
