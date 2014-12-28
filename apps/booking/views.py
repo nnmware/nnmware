@@ -1138,6 +1138,8 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             self.object.typefood = room.typefood
         room_discount = room.simple_discount
         discount = 0
+        from_date = self.object.from_date
+        to_date = self.object.to_date
         if btype == 'ub':
             booking_type = BOOKING_UB
             if 0 < room_discount.ub_discount < 100:
@@ -1147,15 +1149,14 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
             if 0 < room_discount.gb_discount < 100:
                 discount = room_discount.gb_discount
                 if 0 < room_discount.gb_penalty < 101:
-                    self.object.penaltycancel = room_discount.gb_penalty
+                    price_1day = PlacePrice.objects.get(settlement=settlement, date=from_date)
+                    self.object.penaltycancel = (price_1day / 100) * room_discount.gb_penalty
                 if room_discount.gb_days > 0:
                     self.object.freecancel = room_discount.gb_days
         elif btype == 'nr':
             booking_type = BOOKING_NR
             if 0 < room_discount.nr_discount < 100:
                 discount = room_discount.nr_discount
-        from_date = self.object.from_date
-        to_date = self.object.to_date
         all_amount = Decimal(0)
         amount_no_discount = Decimal(0)
         commission = Decimal(0)
