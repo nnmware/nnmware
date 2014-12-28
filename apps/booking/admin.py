@@ -164,6 +164,7 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('phone', 'email'),
                                          ('amount', 'currency'),
                                          ('hotel_sum', 'commission'),
+                                         ('freecancel', 'penaltycancel'),
                                          ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
         (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
