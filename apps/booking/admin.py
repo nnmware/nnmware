@@ -158,7 +158,7 @@ class BookingAdmin(admin.ModelAdmin):
     readonly_fields = ('uuid', 'ip', 'user_agent', 'currency', 'settlement', 'hotel', 'btype')
     fieldsets = (
         (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
-                                         ('from_date', 'to_date', 'cancel_date'),
+                                         ('from_date', 'to_date', 'cancel_time'),
                                          ('settlement', 'hotel'),
                                          ('last_name', 'first_name'), ('middle_name', 'date'),
                                          ('phone', 'email'),
@@ -173,7 +173,7 @@ class BookingAdmin(admin.ModelAdmin):
     )
     no_root_fieldsets = (
         (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
-                                         ('from_date', 'to_date'),
+                                         ('from_date', 'to_date', 'cancel_time'),
                                          ('settlement', 'hotel'),
                                          ('last_name', 'first_name'), ('middle_name', 'date'),
                                          ('phone', 'email'),
