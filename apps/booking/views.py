@@ -3,6 +3,7 @@
 from datetime import timedelta
 from decimal import Decimal
 from hashlib import sha1
+from operator import and_
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -245,8 +246,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     flat=True).distinct()
             search_hotel = search_hotel.filter(pk__in=hotels_with_amount)
         if options:
-            for option in options:
-                search_hotel = search_hotel.filter(option=option)
+            search_hotel = search_hotel.filter(reduce(and_, [Q(option=option) for option in options]))
         if stars:
             search_hotel = search_hotel.filter(starcount__in=stars)
         if order:
