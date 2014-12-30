@@ -227,8 +227,8 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                     availability__date__range=date_period, availability__min_days__gt=need_days).\
                     annotate(num_days=Count('pk')).filter(num_days__gt=0).order_by('hotel').\
                     values_list('hotel__pk', flat=True).distinct()
-                search_hotel = search_hotel.filter(pk__in=searched_hotels_list, work_on_request=False).\
-                    exclude(pk__in=searched_hotels_not_avail)
+                search_hotel = search_hotel.filter(pk__in=list(searched_hotels_list), work_on_request=False).\
+                    exclude(pk__in=list(searched_hotels_not_avail))
             hotels_pk_list = search_hotel.values_list('pk', flat=True).distinct()
             cache.set(key, hotels_pk_list, 300)
         else:
