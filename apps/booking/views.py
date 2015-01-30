@@ -507,7 +507,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
         return context
 
 
-class CabinetInfo(UserToFormMixin, HotelPathMixin, AttachedImagesMixin, UpdateView, CurrentUserHotelAdmin):
+class CabinetInfo(UserToFormMixin, HotelPathMixin, UpdateView, CurrentUserHotelAdmin):
     model = Hotel
     form_class = CabinetInfoForm
     template_name = "cabinet/info.html"
@@ -548,7 +548,7 @@ class CabinetRooms(HotelPathMixin, CreateView, CurrentUserHotelAdmin):
         return reverse('cabinet_room', args=[self.object.hotel.city.slug, self.object.hotel.slug, self.object.pk])
 
 
-class CabinetEditRoom(AttachedImagesMixin, UpdateView, CurrentUserRoomAdmin):
+class CabinetEditRoom(UpdateView, CurrentUserRoomAdmin):
     model = Room
     pk_url_kwarg = 'pk'
     form_class = CabinetRoomForm
