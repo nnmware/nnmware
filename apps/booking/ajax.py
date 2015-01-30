@@ -554,3 +554,28 @@ def client_booking_cancel(request, uuid):
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
+
+
+def images_resort(request):
+    try:
+        o_type = request.POST.get('o_type')
+        if o_type not in ['hotel', 'room']:
+            raise AccessError
+        if o_type == 'hotel':
+            hotel = Hotel.objects.get(id=int(request.POST.get('pk')))
+            images = hotel.images
+        else:
+            room = Room.objects.get(id=int(request.POST.get('pk')))
+            images = room.images
+            hotel = room.hotel
+        if request.user not in hotel.admins.all() and not request.user.is_superuser:
+            raise AccessError
+        img_order = request.POST.getlist('items[]') or None
+        img_order = map(lambda x: int(x), img_order)
+        for item in images:
+            item.position = img_order.index(item.pk)
+            item.save()
+        payload = {'success': True}
+    except:
+        payload = {'success': False}
+    return ajax_answer_lazy(payload)
