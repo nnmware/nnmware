@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, date, time
 
-from django.db.models.query import QuerySet, ValuesQuerySet
 from django.http import HttpResponse
 from django.utils.timezone import now
 
@@ -48,10 +47,7 @@ class ExcelResponse(HttpResponse):
 
         # Make sure we've got the right type of data to work with
         valid_data = False
-        if isinstance(data, ValuesQuerySet):
-            data = list(data)
-        elif isinstance(data, QuerySet):
-            data = list(data.values())
+        data = list(data.values())
         if hasattr(data, '__getitem__'):
             if isinstance(data[0], dict):
                 if headers is None:
