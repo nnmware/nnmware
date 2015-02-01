@@ -316,11 +316,11 @@ class Material(AbstractImg):
 
 @python_2_unicode_compatible
 class AbstractName(AbstractImg, PicsMixin):
-    name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True)
-    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True)
+    name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True, default='')
+    name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True, default='')
     enabled = models.BooleanField(verbose_name=_("Enabled in system"), default=True, db_index=True)
-    description = models.TextField(verbose_name=_("Description"), blank=True)
-    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True)
+    description = models.TextField(verbose_name=_("Description"), blank=True, default='')
+    description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, default='')
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, db_index=True)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     # TODO Order_in_list deprecated, after refactoring booking module- need remove
