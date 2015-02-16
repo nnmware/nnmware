@@ -456,6 +456,7 @@ class ActivateView(View):
             u = get_user_model()(username=e.username, email=e.email)
             u.set_password(e.password)
             u.is_active = True
+            u.last_login = now()
             u.save()
             e.delete()
             user = authenticate(username=e.username, password=e.password)
