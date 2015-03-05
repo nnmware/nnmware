@@ -22,18 +22,18 @@ def _get_basket(request):
         return Basket.objects.filter(session_key=get_session_from_request(request))
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def basket(context):
     request = context['request']
     return _get_basket(request)
 
 
-@register.assignment_tag
+@register.simple_tag
 def latest_products():
     return Product.objects.latest()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def basket_sum(context):
     result = basket(context)
     all_sum = 0
@@ -42,7 +42,7 @@ def basket_sum(context):
     return all_sum
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def basket_count(context):
     items = basket(context)
     result = 0
@@ -115,17 +115,17 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
                 menu_recurse_shop(child, new_parent)
 
 
-@register.assignment_tag
+@register.simple_tag
 def shop_parent():
     return ProductCategory.objects.filter(parent=None).order_by('position')
 
 
-@register.assignment_tag
+@register.simple_tag
 def special_offer():
     return SpecialOffer.objects.all().order_by('?')
 
 
-@register.assignment_tag
+@register.simple_tag
 def shop_reviews():
     result = []
     try:
@@ -138,12 +138,12 @@ def shop_reviews():
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def main_page_products():
     return Product.objects.on_main()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def compare_products(context):
     request = context['request']
     try:
@@ -153,7 +153,7 @@ def compare_products(context):
         return None
 
 
-@register.assignment_tag
+@register.simple_tag
 def shop_slider():
     return ShopSlider.objects.filter(visible=True)
 

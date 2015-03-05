@@ -48,29 +48,29 @@ def video_links(context, mode='random'):
     return result[:2]
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def video_popular_links(context):
     return video_links(context, mode='popular')
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def video_other_links(context):
     return video_links(context)
 
 
-@register.assignment_tag
+@register.simple_tag
 def tag_links():
     # Return most popular 10 Tags
     return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:10]
 
 
-@register.assignment_tag
+@register.simple_tag
 def tags_step2():
     # Return most popular 10 Tags
     return Tag.objects.annotate(video_count=Count('video')).order_by('-video_count')[:9]
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def users_step2(context):
     request = context['request']
     # Return most popular 6 users
@@ -186,7 +186,7 @@ NUM_PAGES_OUTSIDE_RANGE = 2
 ADJACENT_PAGES = 4
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def paginator(context):
     """
     Paginator for CBV and paginate_by
@@ -717,7 +717,7 @@ def get_day(date):
     return date.strftime('%d')
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def inbox_count(context):
     try:
         user = context['user']
@@ -727,7 +727,7 @@ def inbox_count(context):
     return "%s" % count
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def inbox_unread(context):
     try:
         user = context['user']
@@ -737,7 +737,7 @@ def inbox_unread(context):
     return "%s" % count
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def outbox_count(context):
     try:
         user = context['user']
@@ -747,7 +747,7 @@ def outbox_count(context):
     return "%s" % count
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def trash_count(context):
     try:
         user = context['user']
@@ -769,7 +769,7 @@ def get_paginator_value(context):
     return result
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def shop_compare(context):
     request = context['request']
     try:
@@ -778,7 +778,7 @@ def shop_compare(context):
         return 0
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def shop_compare_list(context):
     request = context['request']
     try:
@@ -787,13 +787,13 @@ def shop_compare_list(context):
         return []
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def path_without_i18n(context):
     request = context['request']
     return request.get_full_path()[4:]
 
 
-@register.assignment_tag
+@register.simple_tag
 def is_holiday(date):
     if date.isoweekday() in [6, 7]:
         return True
@@ -850,7 +850,7 @@ def repeat(parser, token):
     return RepeatNode(nodelist, count_from, count_to)
 
 
-@register.assignment_tag
+@register.simple_tag
 def multiply_2args(arg1, arg2):
     result = arg1 * arg2
     return result
@@ -874,7 +874,7 @@ def margin_comment(value):
     return 25 * value
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def last_message_with_count_new(context, another):
     """
     Get last message with concrete user + count of unread messages

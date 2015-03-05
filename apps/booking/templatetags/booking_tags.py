@@ -18,7 +18,7 @@ from nnmware.core.utils import convert_to_date, setting
 register = Library()
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def search_sticky_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
@@ -30,7 +30,7 @@ def search_sticky_options(context):
     return result.order_by('position')
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def search_options(context):
     request = context['request']
     key = sha1('%s' % (request.get_full_path(),)).hexdigest()
@@ -42,7 +42,7 @@ def search_options(context):
     return result.order_by('position')
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_five_stars():
     result = Hotel.objects.filter(starcount=FIVE_STAR).select_related().order_by('name')
     return make_hotel_intro_list(result)
@@ -61,67 +61,67 @@ def make_hotel_intro_list(h_list):
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_four_stars():
     result = Hotel.objects.filter(starcount=FOUR_STAR).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_three_stars():
     result = Hotel.objects.filter(starcount=THREE_STAR).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_two_stars():
     result = Hotel.objects.filter(starcount=TWO_STAR).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_mini():
     result = Hotel.objects.filter(starcount=MINI_HOTEL).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_hostel():
     result = Hotel.objects.filter(starcount=HOSTEL).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_apartaments():
     result = Hotel.objects.filter(starcount=APARTAMENTS).select_related()
     return make_hotel_intro_list(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_city():
     result = City.objects.all()
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_count():
     result = Hotel.objects.count()
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def city_count():
     result = City.objects.count()
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_best_offer():
     result = Hotel.objects.filter(best_offer=True).select_related().order_by('-current_amount')
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_top10():
     city = City.objects.get(slug='moscow')
     result = Hotel.objects.filter(in_top10=True, city=city).select_related().order_by('-current_amount')
@@ -194,7 +194,7 @@ def room_full_amount(context, room, rate):
     return convert_to_client_currency(result, rate)
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def price_variants(context, room, rate):
     btype = context.get('btype')
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
@@ -285,7 +285,7 @@ def price_variants(context, room, rate):
     return prices
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def room_full_amount_discount(context, room):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     # TODO Discount
@@ -293,7 +293,7 @@ def room_full_amount_discount(context, room):
     return all_discount
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def room_variant_s(context, room):
     from_date, to_date, date_period, delta, guests = dates_guests_from_context(context)
     s_pk = PlacePrice.objects.filter(settlement__room=room, settlement__settlement__gte=guests,
@@ -310,7 +310,7 @@ def room_variant(context, room):
     return room.settlement_on_date_for_guests(from_date, guests)
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def client_currency(context):
     request = context['request']
     try:
@@ -382,7 +382,7 @@ def user_rate_from_request(request):
         return None
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def user_currency_rate(context):
     request = context['request']
     return user_rate_from_request(request)
@@ -427,7 +427,7 @@ def hotels_moscow_count():
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def hotels_city_count(slug):
     try:
         result = Hotel.objects.filter(city__slug=slug).count()
@@ -445,27 +445,27 @@ def make_values_by_dates(dates, array):
     return result
 
 
-@register.assignment_tag
+@register.simple_tag
 def settlement_prices_on_dates(settlement, dates):
     result = PlacePrice.objects.filter(settlement=settlement, date__in=dates).values_list('date', 'amount').\
         order_by('date')
     return make_values_by_dates(dates, result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def discount_on_dates(discount, room, dates):
     result = RoomDiscount.objects.filter(discount=discount, room=room, date__in=dates).values_list('date', 'value').\
         order_by('date')
     return make_values_by_dates(dates, result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def room_availability_on_dates(room, dates):
     result = Availability.objects.filter(room=room, date__in=dates).values_list('date', 'placecount').order_by('date')
     return make_values_by_dates(dates, result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def room_min_days_on_dates(room, dates):
     result = Availability.objects.filter(room=room, date__in=dates).values_list('date', 'min_days').order_by('date')
     return make_values_by_dates(dates, result)
@@ -477,7 +477,7 @@ def room_avg_amount(amount, days):
     return format(result, '.2f')
 
 
-@register.assignment_tag(takes_context=True)
+@register.simple_tag(takes_context=True)
 def stars_hotel_count(context):
     request = context['request']
     # search_data = context['search_data']
@@ -527,6 +527,6 @@ def search_minimal_hotel_cost(context, hotel, rate):
     return min(result)
 
 
-@register.assignment_tag
+@register.simple_tag
 def booking_statuses():
     return STATUS_CHOICES
