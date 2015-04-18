@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from decimal import Decimal
 import json
 from django import forms
 from django.conf import settings
@@ -47,6 +48,10 @@ def std_url_field(verbose, max_length=150):
 
 def std_email_field(verbose):
     return models.EmailField(verbose_name=verbose, blank=True, default='')
+
+
+def std_btc_field(verbose):
+    return models.DecimalField(verbose_name=verbose, max_digits=20, default=Decimal(0), decimal_places=8)
 
 
 class JSONField(models.TextField):
