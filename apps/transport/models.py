@@ -81,13 +81,12 @@ class Vehicle(AbstractName, AbstractDate, AbstractSeller):
     carcass = models.ForeignKey(VehicleCarcass, verbose_name=_('Carcass of vehicle'))
     engine = models.ForeignKey(VehicleEngine, verbose_name=_('Engine of vehicle'))
     vendor = models.ForeignKey(VehicleVendor, verbose_name=_('Vendor of vehicle'))
-    mileage = models.IntegerField(verbose_name=_('Mileage'), max_length=10, null=True, blank=True)
+    mileage = models.IntegerField(verbose_name=_('Mileage'), null=True, blank=True)
     vin = models.CharField(verbose_name=_('VIN-code'), max_length=100, blank=True)
-    horsepower = models.IntegerField(verbose_name=_('Horsepower'), max_length=10, null=True, blank=True)
-    displacement = models.IntegerField(verbose_name=_('Displacement'), max_length=10, null=True, blank=True)
+    horsepower = models.IntegerField(verbose_name=_('Horsepower'), null=True, blank=True)
+    displacement = models.IntegerField(verbose_name=_('Displacement'), null=True, blank=True)
     features = models.ManyToManyField(VehicleFeature, verbose_name=_('Vehicle features'))
-    year = models.IntegerField(verbose_name=_('Year'), choices=VEHICLE_YEAR, max_length=4, default=None, blank=True,
-                               null=True)
+    year = models.IntegerField(verbose_name=_('Year'), choices=VEHICLE_YEAR, default=None, blank=True, null=True)
     mark = models.ForeignKey(VehicleMark, verbose_name=_('Mark of vehicle'))
     left_control = models.BooleanField(verbose_name=_('Left hand drive'), default=False)
 

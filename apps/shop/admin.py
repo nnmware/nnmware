@@ -139,7 +139,7 @@ class ShopCallbackAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slide_thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
+    list_display = ('name', 'thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
     fieldsets = (
         (_("Review"), {"fields": [('name', 'w_position', 'visible'), ('vip', 'img'), ('message',),
                                   ('created_date', 'ip', 'user_agent'), ('user',)]}),
@@ -150,7 +150,7 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(ShopSlider)
 class ShopSliderAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'slide_thumbnail', 'slider_link', 'visible')
+    list_display = ('pk', 'thumbnail', 'slider_link', 'visible')
     fieldsets = (
         (_("ShopSlider"), {"fields": [('img',), ('visible', 'slider_link')]}),
     )
@@ -163,7 +163,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
         js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
               '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
-    list_display = ("title", 'start_date', 'end_date', 'slide_thumbnail', 'enabled')
+    list_display = ("title", 'start_date', 'end_date', 'thumbnail', 'enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date', 'end_date'),
                                         ('enabled', 'slug', 'position'), ('img',), ('text',)]}),

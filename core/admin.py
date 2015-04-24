@@ -124,7 +124,7 @@ class UnitAdmin(admin.ModelAdmin):
 
 
 class ColorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slide_thumbnail')
+    list_display = ('name', 'thumbnail')
     list_filter = ('name',)
 
 
