@@ -5,13 +5,13 @@ from django.utils.encoding import force_text
 import json
 
 
-def response_mimetype(request):
-    if "application/json" in request.META['HTTP_ACCEPT']:
-        return "application/json"
-    else:
-        return "text/plain"
-
-
+# def response_mimetype(request):
+#     if "application/json" in request.META['HTTP_ACCEPT']:
+#         return "application/json"
+#     else:
+#         return "text/plain"
+#
+#
 class LazyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Promise):
