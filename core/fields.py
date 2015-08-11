@@ -30,14 +30,6 @@ class ReCaptchaField(forms.CharField):
         return values[0]
 
 
-class StdImageFormField(ImageField):
-    def clean(self, data, initial=None):
-        if data != '__deleted__':
-            return super(StdImageFormField, self).clean(data, initial)
-        else:
-            return '__deleted__'
-
-
 def std_text_field(verbose, max_length=255):
     return models.CharField(verbose_name=verbose, max_length=max_length, blank=True, default='')
 
