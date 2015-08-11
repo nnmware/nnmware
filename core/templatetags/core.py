@@ -337,45 +337,45 @@ def get_like_url(content_object):
     return reverse('like', kwargs=kwargs)
 
 
-@register.tag
-def get_j_comment_tree(token):
-    """
-    Gets a tree (list of objects ordered by preorder tree traversal, and with an
-    additional ``depth`` integer attribute annotated onto each ``ThreadedComment``.
-    """
-    try:
-        split = token.split_contents()
-    except ValueError:
-        raise TemplateSyntaxError
-    if len(split) == 5:
-        return CommentTreeNode(split[2], split[4], split[3])
-    elif len(split) == 6:
-        return CommentTreeNode(split[2], split[5], split[3])
-    else:
-        raise TemplateSyntaxError
-
-
-class CommentTreeNode(Node):
-    def __init__(self, content_object, context_name, tree_root):
-        self.content_object = Variable(content_object)
-        self.tree_root = Variable(tree_root)
-        self.tree_root_str = tree_root
-        self.context_name = context_name
-
-    def render(self, context):
-        content_object = self.content_object.resolve(context)
-        try:
-            tree_root = self.tree_root.resolve(context)
-        except VariableDoesNotExist:
-            if self.tree_root_str == 'as':
-                tree_root = None
-            else:
-                try:
-                    tree_root = int(self.tree_root_str)
-                except ValueError:
-                    tree_root = self.tree_root_str
-        context[self.context_name] = Nnmcomment.public.get_tree(content_object, root=tree_root)
-        return ''
+# @register.tag
+# def get_j_comment_tree(token):
+#     """
+#     Gets a tree (list of objects ordered by preorder tree traversal, and with an
+#     additional ``depth`` integer attribute annotated onto each ``ThreadedComment``.
+#     """
+#     try:
+#         split = token.split_contents()
+#     except ValueError:
+#         raise TemplateSyntaxError
+#     if len(split) == 5:
+#         return CommentTreeNode(split[2], split[4], split[3])
+#     elif len(split) == 6:
+#         return CommentTreeNode(split[2], split[5], split[3])
+#     else:
+#         raise TemplateSyntaxError
+#
+#
+# class CommentTreeNode(Node):
+#     def __init__(self, content_object, context_name, tree_root):
+#         self.content_object = Variable(content_object)
+#         self.tree_root = Variable(tree_root)
+#         self.tree_root_str = tree_root
+#         self.context_name = context_name
+#
+#     def render(self, context):
+#         content_object = self.content_object.resolve(context)
+#         try:
+#             tree_root = self.tree_root.resolve(context)
+#         except VariableDoesNotExist:
+#             if self.tree_root_str == 'as':
+#                 tree_root = None
+#             else:
+#                 try:
+#                     tree_root = int(self.tree_root_str)
+#                 except ValueError:
+#                     tree_root = self.tree_root_str
+#         context[self.context_name] = Nnmcomment.public.get_tree(content_object, root=tree_root)
+#         return ''
 
 
 @register.tag
