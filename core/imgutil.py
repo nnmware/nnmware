@@ -143,21 +143,21 @@ def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_r
     im.save(file_name, "JPEG", quality=88)
 
 
-def make_admin_thumbnail(url):
-    """ make thumbnails for admin interface """
-    return make_thumbnail(url, width=120)
-
-
-def make_admin_thumbnails(model):
-    """ create thumbnails for admin interface for all ImageFields
-    (and subclasses) in the model """
-
-    for obj in model._meta.fields:
-        if isinstance(obj, ImageField):
-            url = getattr(model, obj.name).path
-            make_thumbnail(url, width=120)
-
-
+# def make_admin_thumbnail(url):
+#     """ make thumbnails for admin interface """
+#     return make_thumbnail(url, width=120)
+#
+#
+# def make_admin_thumbnails(model):
+#     """ create thumbnails for admin interface for all ImageFields
+#     (and subclasses) in the model """
+#
+#     for obj in model._meta.fields:
+#         if isinstance(obj, ImageField):
+#             url = getattr(model, obj.name).path
+#             make_thumbnail(url, width=120)
+#
+#
 def _get_thumbnail_url(photo_url, width=None, height=None, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ return thumbnail URL for requested photo_url and required
     width and/or height
