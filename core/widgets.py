@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django import forms
-from django.forms import FileInput
+#from django.forms import FileInput
 
-from nnmware.core.imgutil import make_admin_thumbnail
+#from nnmware.core.imgutil import make_admin_thumbnail
 from nnmware.core.captcha import displayhtml
 
 
