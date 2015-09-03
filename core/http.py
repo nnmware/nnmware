@@ -1,5 +1,3 @@
-from django.core.serializers import serialize
-from django.http import HttpResponse
 from django.utils.functional import Promise
 from django.utils.encoding import force_text
 import json
@@ -17,33 +15,6 @@ class LazyEncoder(json.JSONEncoder):
         if isinstance(obj, Promise):
             return force_text(obj)
         return obj
-
-
-class JSONResponse(HttpResponse):
-    """
-    A simple subclass of ``HttpResponse`` which makes serializing to JSON easy.
-    """
-
-    def __init__(self, obj, is_iterable=True):
-        if is_iterable:
-            content = serialize('json', obj)
-        else:
-            content = json.dumps(obj, cls=LazyEncoder)
-        super(JSONResponse, self).__init__(content,
-            content_type='application/json')
-
-
-# class XMLResponse(HttpResponse):
-#     """
-#     A simple subclass of ``HttpResponse`` which makes serializing to XML easy.
-#     """
-#
-#     def __init__(self, obj, is_iterable=True):
-#         if is_iterable:
-#             content = serialize('xml', obj)
-#         else:
-#             content = obj
-#         super(XMLResponse, self).__init__(content, content_type='application/xml')
 
 
 def redirect(request):

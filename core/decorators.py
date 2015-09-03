@@ -7,8 +7,6 @@ from django.conf import settings
 from django.http import HttpResponseRedirect
 from nnmware.core.utils import setting
 
-from nnmware.core.http import JSONResponse
-
 
 def stream(func):
     """
@@ -34,27 +32,6 @@ def stream(func):
         except AttributeError:
             return func(manager, *args, **kwargs).fetch_generic_relations()
     return wrapped
-
-
-def ajax_request(func):
-    """
-    Checks request.method is POST. Return error in JSON in other case.
-
-    If view returned dict, returns JSONResponse with this dict as content.
-    """
-
-    def wrapper(request, *args, **kwargs):
-        if request.method == 'POST':
-            response = func(request, *args, **kwargs)
-        else:
-            response = {'error': {'type': 403,
-                        'message': 'Accepts only POST request'}}
-        if isinstance(response, dict):
-            return JSONResponse(response)
-        else:
-            return response
-
-    return wrapper
 
 
 def ssl_required(view_func):
