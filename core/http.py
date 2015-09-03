@@ -19,20 +19,20 @@ class LazyEncoder(json.JSONEncoder):
         return obj
 
 
-# class JSONResponse(HttpResponse):
-#     """
-#     A simple subclass of ``HttpResponse`` which makes serializing to JSON easy.
-#     """
-#
-#     def __init__(self, obj, is_iterable=True):
-#         if is_iterable:
-#             content = serialize('json', obj)
-#         else:
-#             content = json.dumps(obj, cls=LazyEncoder)
-#         super(JSONResponse, self).__init__(content,
-#             content_type='application/json')
-#
-#
+class JSONResponse(HttpResponse):
+    """
+    A simple subclass of ``HttpResponse`` which makes serializing to JSON easy.
+    """
+
+    def __init__(self, obj, is_iterable=True):
+        if is_iterable:
+            content = serialize('json', obj)
+        else:
+            content = json.dumps(obj, cls=LazyEncoder)
+        super(JSONResponse, self).__init__(content,
+            content_type='application/json')
+
+
 # class XMLResponse(HttpResponse):
 #     """
 #     A simple subclass of ``HttpResponse`` which makes serializing to XML easy.
