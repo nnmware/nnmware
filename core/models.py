@@ -20,6 +20,7 @@ from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.utils.encoding import python_2_unicode_compatible
+from django.dispatch import receiver
 
 from nnmware.core.abstract import Pic, Doc, AbstractContent, AbstractImg, AbstractDate, AbstractNnmcomment, \
     AbstractLike, AbstractIP
@@ -212,6 +213,7 @@ class Action(AbstractContent, AbstractIP):
         return reverse('nnmware.core.views.detail', args=[self.pk])
 
 
+@receiver([post_save, post_delete], sender=Nnmcomment)
 def update_comment_count(sender, instance, **kwargs):
     try:
         what = instance.get_content_object()
@@ -221,10 +223,8 @@ def update_comment_count(sender, instance, **kwargs):
     except:
         pass
 
-post_save.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
-post_delete.connect(update_comment_count, sender=Nnmcomment, dispatch_uid="nnmware_id")
 
-
+@receiver([post_save, post_delete], sender=FlatNnmcomment)
 def update_post_date(sender, instance, **kwargs):
     try:
         what = instance.get_content_object()
@@ -233,9 +233,6 @@ def update_post_date(sender, instance, **kwargs):
         what.save()
     except:
         pass
-
-post_save.connect(update_post_date, sender=FlatNnmcomment, dispatch_uid="nnmware_id")
-post_delete.connect(update_post_date, sender=FlatNnmcomment, dispatch_uid="nnmware_id")
 
 
 def update_pic_count(sender, instance, **kwargs):
@@ -504,16 +501,13 @@ class Like(AbstractLike):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)
 
 
+@receiver([post_save, post_delete], sender=Like)
 def update_karma(sender, instance, **kwargs):
     what = instance.get_content_object()
     try:
         what.set_karma()
     except:
         pass
-
-
-post_save.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
-post_delete.connect(update_karma, sender=Like, dispatch_uid="nnmware_id")
 
 
 class LikeMixin(models.Model):
