@@ -805,6 +805,8 @@ def like(request, content_type, object_id):
         if not request.user.is_authenticated():
             raise AccessError
         mode = request.POST['mode']
+        if mode not in ['like', 'dislike']:
+            raise AccessError
         content_type = ContentType.objects.get_for_id(int(content_type))
         object_id = int(object_id)
         if content_type == ContentType.objects.get_for_model(get_user_model()):
@@ -820,22 +822,28 @@ def like(request, content_type, object_id):
             thelike = Like(user=request.user, content_type=content_type, object_id=object_id)
             thelike.save()
         if mode == 'like':
-            if not thelike.like:
-                thelike.like = True
-                thelike.dislike = False
-                like_en = True
+            if thelike.like_dislike is not None:
+                if thelike.like_dislike:
+                    thelike.like_dislike = None
+                    like_en = False
+                else:
+                    thelike.like_dislike = True
+                    like_en = True
             else:
-                thelike.like = False
-                like_en = False
+                thelike.like_dislike = True
+                like_en = True
             dislike_en = False
         else:
-            if not thelike.dislike:
-                thelike.dislike = True
-                thelike.like = False
-                dislike_en = True
+            if thelike.like_dislike is not None:
+                if not thelike.like_dislike:
+                    thelike.like_dislike = None
+                    dislike_en = False
+                else:
+                    thelike.like_dislike = False
+                    dislike_en = True
             else:
-                thelike.dislike = False
-                dislike_en = False
+                thelike.like_dislike = False
+                dislike_en = True
             like_en = False
         thelike.save()
         karma = thelike.content_object.karma

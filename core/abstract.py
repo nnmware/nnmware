@@ -771,8 +771,11 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
 
 @python_2_unicode_compatible
 class AbstractLike(AbstractContent):
-    like = models.BooleanField(verbose_name="Like", default=False, db_index=True)
-    dislike = models.BooleanField(verbose_name="Dislike", default=False, db_index=True)
+    '''
+    like = True
+    dislike = False
+    '''
+    like_dislike = models.NullBooleanField(verbose_name="Like-Dislike", default=None, db_index=True)
 
     class Meta:
         ordering = ('-pk',)

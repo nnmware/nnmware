@@ -517,18 +517,19 @@ class LikeMixin(models.Model):
         abstract = True
 
     def set_karma(self):
-        liked = Like.objects.for_object(self).filter(user__is_active=True, like=True).\
+        liked = Like.objects.for_object(self).filter(user__is_active=True, like_dislike=True).\
             aggregate(Count("id"))['id__count']
-        disliked = Like.objects.for_object(self).filter(user__is_active=True, dislike=True).\
+        disliked = Like.objects.for_object(self).filter(user__is_active=True, like_dislike=False).\
             aggregate(Count("id"))['id__count']
         self.karma = liked - disliked
         self.save()
 
     def users_liked(self):
-        return Like.objects.for_object(self).filter(user__is_active=True, like=True).values_list('user__pk', flat=True)
+        return Like.objects.for_object(self).filter(user__is_active=True, like_dislike=True).\
+            values_list('user__pk', flat=True)
 
     def users_disliked(self):
-        return Like.objects.for_object(self).filter(user__is_active=True, dislike=True).\
+        return Like.objects.for_object(self).filter(user__is_active=True, like_dislike=False).\
             values_list('user__pk', flat=True)
 
 
