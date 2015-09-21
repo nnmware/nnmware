@@ -302,19 +302,6 @@ class AbstractImg(models.Model):
 
 
 @python_2_unicode_compatible
-class Material(AbstractImg):
-    name = std_text_field(_('Material'))
-
-    class Meta:
-        verbose_name = _("Material")
-        verbose_name_plural = _("Materials")
-        abstract = True
-
-    def __str__(self):
-        return self.name
-
-
-@python_2_unicode_compatible
 class AbstractName(AbstractImg, PicsMixin):
     name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True, default='')
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True, default='')
@@ -364,6 +351,19 @@ class AbstractName(AbstractImg, PicsMixin):
         else:
             self.slug = str(self.slug).strip().replace(' ', '-')
         super(AbstractName, self).save(*args, **kwargs)
+
+
+@python_2_unicode_compatible
+class Material(AbstractImg, AbstractName):
+    pass
+
+    class Meta:
+        verbose_name = _("Material")
+        verbose_name_plural = _("Materials")
+        abstract = True
+
+    def __str__(self):
+        return self.name
 
 
 @python_2_unicode_compatible
