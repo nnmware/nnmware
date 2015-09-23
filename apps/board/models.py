@@ -4,7 +4,6 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.apps.business.models import AbstractSeller
 from nnmware.core.abstract import Tree, AbstractName, AbstractDate
-from nnmware.core.managers import BoardManager
 
 
 class BoardCategory(Tree):
@@ -30,7 +29,6 @@ class Board(AbstractName, AbstractDate, AbstractSeller):
         verbose_name_plural = _("Boards")
 
     slug_detail = "board_detail"
-    objects = BoardManager()
 
     secured = models.BooleanField(verbose_name=_('Site-only contact'),
         default=False)

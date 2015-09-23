@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, AbstractTeaser
 from nnmware.core.constants import STATUS_CHOICES, STATUS_DRAFT
-from nnmware.core.managers import NewsManager
+from nnmware.core.managers import StatusManager
 
 
 class NewsCategory(Tree):
@@ -29,12 +29,12 @@ class News(AbstractDate, AbstractName, AbstractTeaser):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
-    objects = NewsManager()
-
     class Meta:
         ordering = ['-created_date', ]
         verbose_name = _('News')
         verbose_name_plural = _('Many news')
+
+    objects = StatusManager()
 
     def get_absolute_url(self):
         return reverse('news_detail', kwargs={'pk': self.pk})

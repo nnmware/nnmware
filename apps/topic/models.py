@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from nnmware.apps.address.models import Region
 from nnmware.core.abstract import Tree, AbstractDate, AbstractName, AbstractIP
 from nnmware.core.constants import STATUS_CHOICES, STATUS_DRAFT
-from nnmware.core.managers import TopicManager
+from nnmware.core.managers import StatusManager
 from nnmware.core.models import LikeMixin
 
 
@@ -30,7 +30,7 @@ class Topic(AbstractDate, AbstractName, LikeMixin, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.PROTECT)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
 
-    objects = TopicManager()
+    objects = StatusManager()
 
     class Meta:
         ordering = ['-created_date', ]

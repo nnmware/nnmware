@@ -12,7 +12,6 @@ from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.apps.address.models import AbstractLocation, MetaGeo
 from nnmware.core.abstract import AbstractName, AbstractImg, Tree, AbstractDate, AbstractWorkTime, AbstractTeaser
 from nnmware.core.fields import std_text_field
-from nnmware.core.managers import CompanyManager, VacancyManager
 
 
 class TypeEmployer(AbstractName):
@@ -178,8 +177,6 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
     parent = models.ForeignKey('self', verbose_name=_('Parent company'), blank=True, null=True, related_name='children',
                                on_delete=models.SET_NULL)
 
-    objects = CompanyManager()
-
     class Meta:
         verbose_name = _("Company")
         verbose_name_plural = _("Companies")
@@ -268,8 +265,6 @@ class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
                              null=True, on_delete=models.SET_NULL)
     company = models.ForeignKey(Company, verbose_name=_('Vacancy owner company'), blank=True, null=True,
                                 on_delete=models.SET_NULL)
-
-    objects = VacancyManager()
 
     class Meta:
         ordering = ['-created_date', ]

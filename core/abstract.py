@@ -22,7 +22,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from nnmware.core.file import get_path_from_url
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
-from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager
+from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager, AbstractActiveManager
 from nnmware.core.fields import std_text_field, std_url_field
 from nnmware.core.utils import setting, current_year, tuplify
 
@@ -320,6 +320,8 @@ class AbstractName(AbstractImg, PicsMixin):
     class Meta:
         ordering = ['position', 'name']
         abstract = True
+
+    objects = AbstractActiveManager()
 
     def __str__(self):
         return self.name

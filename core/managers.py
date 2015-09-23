@@ -189,73 +189,43 @@ class MessageManager(Manager):
             sender_deleted_at__isnull=True,
         )
 
-    def trash_for(self, user):
-        """
-        Returns all messages that were either received or sent by the given
-        user and are marked as deleted.
-        """
-        return self.filter(
-            recipient=user,
-            recipient_deleted_at__isnull=False,
-        ) | self.filter(
-            sender=user,
-            sender_deleted_at__isnull=False,
-        )
 
-
-class ProductManager(Manager):
+class ShopManager(Manager):
     def active(self):
         return self.filter(avail=True, visible=True)
 
     def sale(self):
         return self.active().filter(discount=True)
 
-    #    def active_date_sort(self):
-    #        return self.filter(avail=True).order_by('-created_date')
-
     def latest(self):
         return self.active().filter(latest=True)
 
+
+class ProductManager(ShopManager):
     def on_main(self):
         return self.filter(enabled=True, on_main=True).order_by('-maincatid')
 
 
-class ServiceManager(Manager):
-    def active(self):
-        return self.filter(avail=True, visible=True)
-
-
-class TopicManager(Manager):
-    def active(self):
-        return self.filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY))
-
-
-class CompanyManager(Manager):
+class AbstractActiveManager(Manager):
     def active(self):
         return self.filter(enabled=True)
 
 
-class VacancyManager(Manager):
+class StatusManager(Manager):
     def active(self):
-        return self.filter(enabled=True)
+        return self.filter(Q(status=STATUS_PUBLISHED) | Q(status=STATUS_STICKY)).order_by('-status')
 
+    def delete(self):
+        return self.filter(status=STATUS_DELETE)
 
-class NewsManager(Manager):
-    def active(self):
-        return self.filter(enabled=True)
+    def draft(self):
+        return self.filter(status=STATUS_DRAFT)
 
+    def locked(self):
+        return self.filter(status=STATUS_LOCKED)
 
-class PublicationManager(Manager):
-    def active(self):
-        return self.filter(Q(enabled=True), Q(status__in=[STATUS_PUBLISHED, STATUS_STICKY]))
+    def moderation(self):
+        return self.filter(status=STATUS_MODERATION)
 
-    def drafts(self):
-        return self.filter(Q(enabled=True), Q(status__in=[STATUS_DRAFT]))
-
-    def moderated(self):
-        return self.filter(Q(enabled=True), Q(status__in=[STATUS_MODERATION]))
-
-
-class BoardManager(Manager):
-    def active(self):
-        return self.filter(enabled=True)
+    def sticky(self):
+        return self.filter(status=STATUS_STICKY)
