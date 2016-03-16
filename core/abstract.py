@@ -354,7 +354,7 @@ class AbstractName(AbstractImg, PicsMixin):
 
 
 @python_2_unicode_compatible
-class Material(AbstractImg, AbstractName):
+class Material(AbstractName):
     pass
 
     class Meta:
