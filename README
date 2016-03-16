@@ -1,5 +1,8 @@
 Django-based Content Management Framework
 
+WARNING! Now we start removing djano-grappelli, support to django 1.9  and refactoring engine for work with python 3.5.
+
+
 contains base for:
 
 [Core]
@@ -47,8 +50,7 @@ Licensed under GPL3
 
 nnmware@gmail.com
 
-required django(bleeding edge or 1.7), south, unidecode, xlwt
-recommended django-grappelli
+required django(bleeding edge or 1.7), unidecode, xlwt
 
 
 Working with OpenStreetMap and his geotargeting.
@@ -61,7 +63,7 @@ Great thanks Python, Django, Linux and all OpenSource community.
 QUICK START
 ============================================
 
-Install django-current, south, unidecode, xlwt, django-grappelli, Pillow and ReportLab(recommended)
+Install django-current, unidecode, xlwt, Pillow and ReportLab(recommended)
 
 
 cd /usr/src
@@ -72,6 +74,4 @@ cd /usr/src/nnmware
 
 locate you browser at http://localhost:8080/admin/ ,
 login and enjoy.
-
-you may disable django-grappelli in settings.py
 
