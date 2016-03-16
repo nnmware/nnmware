@@ -195,10 +195,10 @@ class VideoAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Like'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Variants'), {'fields': [('like', 'dislike')]}),
+        (_('Variants'), {'fields': [('like_dislike',)]}),
     )
-    list_display = ('user', 'like', 'dislike')
-    readonly_fields = ('user', 'content_type', 'object_id', 'like', 'dislike')
+    list_display = ('user', 'like_dislike')
+    readonly_fields = ('user', 'content_type', 'object_id', 'like_dislike')
 
 
 @admin.register(ContentBlock)
@@ -210,25 +210,3 @@ class ContentBlockAdmin(admin.ModelAdmin):
     )
     list_display = ('user', 'status', 'content_style', 'teaser')
     readonly_fields = ('user', 'content_type', 'object_id')
-
-
-# class ReadOnlyAdmin(admin.UserAdmin):
-#    _readonly_fields = [] # Default fields that are readonly for everyone.
-#
-#    def get_readonly_fields(self, request, obj):
-#        readonly = list(self._readonly_fields)
-#        if request.user.is_staff and not request.user.is_superuser:
-#            if obj.is_superuser:
-#                # Prevent a staff user from editing anything of a superuser.
-#                readonly.extend(flatten_fieldsets(self.declared_fieldsets))
-#            else:
-#                # Prevent a non-superuser from editing sensitive security-related fields.
-#                readonly.extend(['is_staff', 'is_superuser', 'user_permissions', 'groups'])
-#        return readonly
-#
-#    def user_change_password(self, request, id):
-#        # Disallow a non-superuser from changing the password of a superuser.
-#        user = get_object_or_404(self.model, pk=id)
-#        if not request.user.is_superuser and user.is_superuser:
-#            raise PermissionDenied
-#        return super(ReadOnlyAdmin, self).user_change_password(request, id)
