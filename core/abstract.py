@@ -310,8 +310,6 @@ class AbstractName(AbstractImg, PicsMixin):
     description_en = models.TextField(verbose_name=_("Description(English)"), blank=True, default='')
     slug = models.CharField(verbose_name=_('URL-identifier'), max_length=100, blank=True, db_index=True, default='')
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
-    # TODO Order_in_list deprecated, after refactoring booking module- need remove
-    order_in_list = models.IntegerField(_('Order in list'), default=0, db_index=True)
     docs = models.IntegerField(blank=True, null=True)
     pics = models.IntegerField(blank=True, null=True)
     views = models.IntegerField(blank=True, null=True)
