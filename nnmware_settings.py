@@ -5,8 +5,6 @@
 # It also store nnmware unique information
 #
 
-GRAPPELLI_ADMIN_TITLE = 'NNMWARE@2014 framework for python/django coders'
-GRAPPELLI_INDEX_DASHBOARD = 'dashboard.NnmwareDashboard'
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
 LOGIN_ERROR_URL = '/login/error/'
 
@@ -64,7 +62,7 @@ LOGGING = {
     'handlers': {
         'null': {
             'level': 'DEBUG',
-            'class': 'django.utils.log.NullHandler',
+            'class': 'logging.NullHandler',
         },
         'console': {
             'level': 'DEBUG',
@@ -78,7 +76,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': '/var/log/nnmware.log',
+            'filename': '/tmp/test_nnmware.log',
         }
 
     },
