@@ -12,7 +12,7 @@ class VehicleBaseParamAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Type of vehicle'), {"fields": [('name', 'position'),
                                 ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('position', 'name',)
 
@@ -25,7 +25,7 @@ class VehicleKindAdmin(VehicleBaseParamAdmin):
 class VehicleBaseParamForAdmin(VehicleBaseParamAdmin):
     fieldsets = (
         (_('Type of vehicle'), {"fields": [('name', 'position'), ('type_vehicles', ), ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",), "fields": [("name_en",), ("description_en",), ]}),)
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]}),)
 
 
 @admin.register(VehicleTransmission)
@@ -72,10 +72,10 @@ class VehicleAdmin(admin.ModelAdmin):
             ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
             ('horsepower', 'displacement'), ('year', 'left_control'),
             ('features', )]}),
-        (_("Seller"), {"classes": ("grp-collapse grp-closed",),
+        (_("Seller"), {"classes": ("collapse",),
             "fields": [('user', 'company', 'corporate'), ('contact_name', 'contact_email'),
                        ('contact_phone', ), ('expiration_date', 'sold')]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
             "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('position', 'name',)
 

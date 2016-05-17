@@ -52,15 +52,15 @@ class HotelAdmin(admin.ModelAdmin):
                                  ('longitude', 'latitude'), ('schema_transit',)]}),
         (_("Contacts"), {"fields": [('phone', 'fax'), ('website',), ('contact_email', 'contact_name'),
                                     ('register_date', )]}),
-        (_("Booking"), {"classes": ("grp-collapse grp-closed",), "fields": [('payment_method',), ('booking_terms',),
+        (_("Booking"), {"classes": ("collapse",), "fields": [('payment_method',), ('booking_terms',),
                                                                             ('condition_cancellation',),
                                                                             ('paid_services',), ('time_on', 'time_off')
                                                                             ]}),
-        (_("Hotel admins"), {"classes": ("grp-collapse grp-closed",), "fields": [
+        (_("Hotel admins"), {"classes": ("collapse",), "fields": [
             ('admins',)]}),
-        (_("Hotel options"), {"classes": ("grp-collapse grp-closed",), "fields": [
+        (_("Hotel options"), {"classes": ("collapse",), "fields": [
             ('option',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", "address_en"), ("description_en",),
                                    ('schema_transit_en',), ("booking_terms_en",),
                                    ('paid_services_en',), ('condition_cancellation_en',)]}),)
@@ -76,7 +76,7 @@ class HotelOptionAdmin(admin.ModelAdmin):
         (_("Hotel Option"), {"fields": [("name",),
                                         ('description',)]}),
         (_("Addons"), {"fields": [('category', 'position'), ('enabled', 'in_search', 'sticky_in_search'), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 #    ordering = ('category','position','name')
@@ -89,7 +89,7 @@ class RoomAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Room"), {"fields": [("name", 'hotel', 'surface_area'), ("typefood", 'places'),
                                 ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -101,7 +101,7 @@ class RoomOptionAdmin(admin.ModelAdmin):
         (_("Room Option"), {"fields": [("name",),
                                        ('description',)]}),
         (_("Addons"), {"fields": [('category', 'slug'), ('enabled', 'position'), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
     ordering = ('category', 'position', 'name')
 
@@ -113,7 +113,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     fieldsets = (
         (_("Payment method"), {"fields": [("name", 'use_card'),
                                           ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -123,7 +123,7 @@ class HotelTypeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel type"), {"fields": [("name", ), ('description',)]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -135,7 +135,7 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
         (_("Room Option Category"), {"fields": [("name", 'slug'),
                                                 ('description',)]}),
         (_("Addons"), {"fields": [('position',), ('enabled',), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",), "fields": [("name_en",), ("description_en",), ]}),)
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]}),)
 
 
 @admin.register(HotelOptionCategory)
@@ -146,7 +146,7 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
         (_("Hotel Option Category"), {"fields": [("name", 'slug'),
                                                  ('description',)]}),
         (_("Addons"), {"fields": [('position',), ('enabled',), ('icon',), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -167,9 +167,9 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('freecancel', 'penaltycancel'),
                                          ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
-        (_("Credit card"), {"classes": ("grp-collapse grp-closed",), "fields": [("card_number", 'card_valid'),
+        (_("Credit card"), {"classes": ("collapse",), "fields": [("card_number", 'card_valid'),
                                                                                 ('card_holder', 'card_cvv2')]}),
-        (_("Addons"), {"classes": ("grp-collapse grp-closed",),
+        (_("Addons"), {"classes": ("collapse",),
                        "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
     )
     no_root_fieldsets = (
@@ -182,7 +182,7 @@ class BookingAdmin(admin.ModelAdmin):
                                          ('hotel_sum', 'commission'),
                                          ('uuid', 'enabled'),
                                          ('ip', 'user_agent')]}),
-        (_("Addons"), {"classes": ("grp-collapse grp-closed",),
+        (_("Addons"), {"classes": ("collapse",),
                        "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
     )
 

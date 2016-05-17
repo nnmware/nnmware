@@ -18,7 +18,7 @@ class CityAdmin(admin.ModelAdmin):
             ('longitude', 'latitude'),
             ('name_add', 'position', 'enabled'),
         ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
@@ -31,7 +31,7 @@ class RegionAdmin(admin.ModelAdmin):
             ('description',),
             ('name_add', 'position', 'enabled'),
         ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
@@ -44,7 +44,7 @@ class CountryAdmin(admin.ModelAdmin):
             ('description', ),
             ('name_add', 'position', 'enabled'),
         ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", "name_add_en"), ("description_en",)]}),)
 
 
@@ -56,7 +56,7 @@ class TourismCategoryAdmin(admin.ModelAdmin):
         (_("Tourism place category"), {"fields": [("name",),
             ('description',)]}),
         (_("Addons"), {"fields": [('enabled', ), ('icon', ), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",), ]}),)
 
 
@@ -68,7 +68,7 @@ class TourismAdmin(admin.ModelAdmin):
         (_("Tourism place category"), {"fields": [("name", 'address'), ('category',),
             ('description',)]}),
         (_("Addons"), {"fields": [('enabled', 'country', 'city')]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", ), ("description_en", )]}),)
 
 
@@ -80,7 +80,7 @@ class StationMetroAdmin(admin.ModelAdmin):
         (_("Station of metro"), {"fields": [("name", 'address'),
             ('description',)]}),
         (_("Addons"), {"fields": [('enabled', 'country', 'city'), ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en",), ("description_en",)]}),)
 
 

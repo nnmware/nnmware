@@ -77,13 +77,13 @@ class CompanyAdmin(admin.ModelAdmin):
             ('work_on', 'work_off'),
             ('phone_on', 'phone_off')
         ]}),
-        (_("Sphere of activity"), {"classes": ("grp-collapse grp-closed",), "fields": [
+        (_("Sphere of activity"), {"classes": ("collapse",), "fields": [
             ('employer_profile',),
             ('employer_other',)]}),
-        (_("Address"), {"classes": ("grp-collapse grp-closed",),
+        (_("Address"), {"classes": ("collapse",),
                         "fields": [("country", 'region'), ('city', 'zipcode'), ('street', 'stationmetro'),
                                    ('house_number', 'building'), ('flat_number',), ('longitude', 'latitude')]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", 'fullname_en'), ('teaser_en', ), ("description_en",)]}))
     ordering = ('region', 'name')
     inlines = [CompanyDetailInline, ]
@@ -109,6 +109,6 @@ class VacancyAdmin(admin.ModelAdmin):
             ('teaser', ),
             ('created_date', 'updated_date')
         ]}),
-        (_("English"), {"classes": ("grp-collapse grp-closed",),
+        (_("English"), {"classes": ("collapse",),
                         "fields": [("name_en", ), ("description_en",)]}))
     ordering = ('-created_date', 'name')

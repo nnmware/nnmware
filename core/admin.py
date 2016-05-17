@@ -155,9 +155,9 @@ class MessageAdmin(admin.ModelAdmin):
                 ('recipient', ),
             ),
         }),
-        (_("Message"), {"classes": ("grp-collapse grp-closed",), "fields": [('subject',), ('body',),
+        (_("Message"), {"classes": ("collapse",), "fields": [('subject',), ('body',),
                                                                             ('parent_msg',)]}),
-        (_("Date/Time"), {"classes": ("grp-collapse grp-closed",), "fields": [('sent_at', 'read_at', 'replied_at'),
+        (_("Date/Time"), {"classes": ("collapse",), "fields": [('sent_at', 'read_at', 'replied_at'),
                                                                               ('sender_deleted_at',
                                                                                'recipient_deleted_at'),
                                                                               ('ip', 'user_agent')]}),
@@ -184,9 +184,9 @@ class VideoAdmin(admin.ModelAdmin):
                                 ('project_url', 'video_url')]}),
         (_("Addons"), {"fields": [('description',), ('login_required', 'slug'),
                                   ('img',)]}),
-        (_("Tags"), {"classes": ("grp-collapse grp-closed",), "fields": [
+        (_("Tags"), {"classes": ("collapse",), "fields": [
             ('tags',)]}),
-        (_("Users viewed"), {"classes": ("grp-collapse grp-closed",), "fields": [
+        (_("Users viewed"), {"classes": ("collapse",), "fields": [
             ('users_viewed',)]}),
     )
 
