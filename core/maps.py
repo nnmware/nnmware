@@ -7,9 +7,8 @@ from __future__ import with_statement
 from math import radians, sin, cos, sqrt, atan2
 import xml.dom.minidom
 import urllib
-import urllib2
 from contextlib import closing
-import httplib
+import http.client
 import json
 import socket
 
@@ -22,7 +21,7 @@ def osm_geocoder(q):
     url = OSM_URL % urllib.urlencode(params)
     socket.setdefaulttimeout(10)
     try:
-        response = urllib2.urlopen(url, timeout=10)
+        response = urllib.urlopen(url, timeout=10)
         data = response.read()
         if data is None:
             return None
@@ -40,10 +39,10 @@ def request(method, url, data=None, headers=None, timeout=None):
     host_port = url.split('/')[2]
     timeout_set = False
     try:
-        connection = httplib.HTTPConnection(host_port, timeout=timeout)
+        connection = http.client.HTTPConnection(host_port, timeout=timeout)
         timeout_set = True
     except TypeError:
-        connection = httplib.HTTPConnection(host_port)
+        connection = http.client.HTTPConnection(host_port)
 
     with closing(connection):
         if not timeout_set:

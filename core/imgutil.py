@@ -1,7 +1,7 @@
 import os
 import fnmatch
 import shutil
-import urlparse
+from urllib.parse import urlparse
 from PIL import Image, ImageOps
 from django.conf import settings
 from django.db.models.fields.files import ImageField

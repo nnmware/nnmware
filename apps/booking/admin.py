@@ -140,7 +140,7 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(HotelOptionCategory)
 class HotelOptionCategoryAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('__str__',)
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel Option Category"), {"fields": [("name", 'slug'),
@@ -233,7 +233,7 @@ class DiscountAdmin(admin.ModelAdmin):
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', )
+    list_display = ('__str__', )
     search_fields = ('date',)
 
 

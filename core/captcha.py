@@ -1,4 +1,3 @@
-import urllib2
 import urllib
 
 API_SSL_SERVER = "https://www.google.com/recaptcha/api"
@@ -66,9 +65,9 @@ def submit(recaptcha_challenge_field, recaptcha_response_field, private_key, rem
         'remoteip': encode_if_necessary(remoteip),
         'challenge': encode_if_necessary(recaptcha_challenge_field),
         'response': encode_if_necessary(recaptcha_response_field)})
-    request = urllib2.Request(url="http://%s/recaptcha/api/verify" % VERIFY_SERVER, data=params,
+    request = urllib.request.Request(url="http://%s/recaptcha/api/verify" % VERIFY_SERVER, data=params,
         headers={"Content-type": "application/x-www-form-urlencoded", "User-agent": "reCAPTCHA Python"})
-    httpresp = urllib2.urlopen(request)
+    httpresp = urllib.urlopen(request)
     return_values = httpresp.read().splitlines()
     httpresp.close()
     return_code = return_values[0]

@@ -1,7 +1,7 @@
 from hashlib import md5
 import os
 from time import time
-import urlparse
+from urllib.parse import urlparse
 from django.conf import settings
 
 

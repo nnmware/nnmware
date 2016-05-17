@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Base abstract classed nnmware(c)2013-2014
 
-from StringIO import StringIO
+from io import StringIO
 import os
 from PIL import Image
 from uuid import uuid4

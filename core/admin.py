@@ -42,7 +42,7 @@ class NnmcommentAdmin(admin.ModelAdmin):
                                  'ip')]}),
     )
     list_display = ('user', 'created_date', 'content_type',
-                    'parent', '__unicode__', 'status')
+                    'parent', '__str__', 'status')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('comment', 'user__username')
@@ -87,7 +87,7 @@ class PicAdmin(admin.ModelAdmin):
         (_('Meta'), {'fields': [('description', 'source')]}),
     )
     list_display = ('user', 'created_date', 'content_type',
-                    'slide_thumbnail', '__unicode__')
+                    'slide_thumbnail', '__str__')
     list_filter = ('created_date',)
     date_hierarchy = 'created_date'
     search_fields = ('description', 'user__username')
@@ -135,7 +135,7 @@ class MaterialAdmin(admin.ModelAdmin):
 
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'user')
+    list_display = ('__str__', 'user')
     list_editable = ('user',)
     list_filter = ('user',)
 
@@ -169,7 +169,7 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(EmailValidation)
 class EmailValidationAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('__str__',)
     search_fields = ('username', 'email')
 
 

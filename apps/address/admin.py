@@ -24,7 +24,7 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__',)
+    list_display = ('__str__',)
     search_fields = ('name',)
     fieldsets = (
         (_("Region"), {"fields": [("name", "slug", 'country'),
@@ -37,7 +37,7 @@ class RegionAdmin(admin.ModelAdmin):
 
 @admin.register(Country)
 class CountryAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'slug')
+    list_display = ('__str__', 'slug')
     search_fields = ('name',)
     fieldsets = (
         (_("Country"), {"fields": [("name", "slug"),

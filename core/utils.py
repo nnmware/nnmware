@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.timezone import now
 import unidecode
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 
 VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'
