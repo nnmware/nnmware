@@ -47,7 +47,7 @@ class AbstractDate(models.Model):
         super(AbstractDate, self).save(**kwargs)
 
 
-@python_2_unicode_compatible
+
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True,
@@ -92,7 +92,7 @@ class AbstractFile(AbstractDate):
         abstract = True
 
 
-@python_2_unicode_compatible
+
 class Pic(AbstractContent, AbstractFile):
     pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
@@ -231,7 +231,7 @@ class AbstractTeaser(models.Model):
         return self.teaser
 
 
-@python_2_unicode_compatible
+
 class Unit(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of unit'))
 
@@ -244,7 +244,7 @@ class Unit(models.Model):
         return "%s" % self.name
 
 
-@python_2_unicode_compatible
+
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
 
@@ -301,7 +301,7 @@ class AbstractImg(models.Model):
     thumbnail.short_description = 'Thumbnail'
 
 
-@python_2_unicode_compatible
+
 class AbstractName(AbstractImg, PicsMixin):
     name = models.CharField(verbose_name=_("Name"), max_length=255, blank=True, db_index=True, default='')
     name_en = models.CharField(verbose_name=_("Name(English"), max_length=255, blank=True, db_index=True, default='')
@@ -353,7 +353,7 @@ class AbstractName(AbstractImg, PicsMixin):
         super(AbstractName, self).save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
+
 class Material(AbstractName):
     pass
 
@@ -366,7 +366,7 @@ class Material(AbstractName):
         return self.name
 
 
-@python_2_unicode_compatible
+
 class AbstractColor(AbstractName):
     pass
 
@@ -379,7 +379,7 @@ class AbstractColor(AbstractName):
         return self.name
 
 
-@python_2_unicode_compatible
+
 class Tree(AbstractName):
     """
     Main nodes tree
@@ -569,7 +569,7 @@ class AbstractIP(models.Model):
         abstract = True
 
 
-@python_2_unicode_compatible
+
 class AbstractOrder(AbstractImg):
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     name_en = std_text_field(_('English name'))
@@ -593,7 +593,7 @@ SKILL_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class AbstractSkill(AbstractOrder):
     level = models.IntegerField(_('Level'), choices=SKILL_CHOICES, blank=True, null=True, default=SKILL_UNKNOWN)
 
@@ -604,7 +604,7 @@ class AbstractSkill(AbstractOrder):
         return "%s :: %s " % (self.skill.name, self.get_level_display())
 
 
-@python_2_unicode_compatible
+
 class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     uid = models.UUIDField(default=uuid4, editable=False, db_index=True)
     main = models.BooleanField(_('Main profile'), default=False)
@@ -726,7 +726,7 @@ class UserMixin(models.Model):
             return self.user.username
 
 
-@python_2_unicode_compatible
+
 class AbstractVendor(models.Model):
     name = models.CharField(_("Name of vendor"), max_length=200)
     name_en = models.CharField(_("Name of vendor(english)"), max_length=200, blank=True)
@@ -744,7 +744,7 @@ class AbstractVendor(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
+
 class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
                              related_name="%(app_label)s_%(class)s_user")
@@ -769,7 +769,6 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
     public = PublicNnmcommentManager()
 
 
-@python_2_unicode_compatible
 class AbstractLike(AbstractContent):
     '''
     like = True

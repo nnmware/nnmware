@@ -144,7 +144,7 @@ class ParameterUnit(Unit):
     pass
 
 
-@python_2_unicode_compatible
+
 class ProductParameterCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
 
@@ -166,7 +166,7 @@ class ProductParameter(Parameter):
         verbose_name_plural = _("Product parameters")
 
 
-@python_2_unicode_compatible
+
 class ProductParameterValue(AbstractContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = std_text_field(_('Value of parameter'))
@@ -184,7 +184,7 @@ class ProductParameterValue(AbstractContent):
             return "%s: %s" % (self.parameter.name, self.value)
 
 
-@python_2_unicode_compatible
+
 class Basket(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket', blank=True,
                              null=True, on_delete=models.SET_NULL)
@@ -240,7 +240,7 @@ class DeliveryMethod(AbstractDeliveryMethod):
     pass
 
 
-@python_2_unicode_compatible
+
 class Order(AbstractDate, AbstractIP):
     """
     Definition of orders.
@@ -312,7 +312,7 @@ class Order(AbstractDate, AbstractIP):
         return result
 
 
-@python_2_unicode_compatible
+
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
@@ -334,7 +334,7 @@ class OrderItem(MoneyBase):
         return self.quantity * self.amount
 
 
-@python_2_unicode_compatible
+
 class DeliveryAddress(AbstractLocation):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
     first_name = std_text_field(_('First Name'))
@@ -378,7 +378,7 @@ class DeliveryAddress(AbstractLocation):
         return result
 
 
-@python_2_unicode_compatible
+
 class Feedback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     name = std_text_field(_('Name'))
@@ -402,7 +402,7 @@ class Feedback(AbstractIP):
         return reverse('feedback_detail', args=[self.pk])
 
 
-@python_2_unicode_compatible
+
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True,
                              blank=True)
@@ -422,7 +422,7 @@ class Review(AbstractIP, AbstractImg):
         return "%s - %s" % (self.name, self.created_date)
 
 
-@python_2_unicode_compatible
+
 class ShopText(AbstractTeaser):
     created_date = models.DateTimeField(_("Created date"), default=now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
@@ -472,7 +472,7 @@ class SpecialOffer(AbstractOffer):
         return reverse('special_offer', kwargs={'pk': self.pk})
 
 
-@python_2_unicode_compatible
+
 class ShopCallback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     clientname = std_text_field(_('Client Name'))
@@ -490,7 +490,7 @@ class ShopCallback(AbstractIP):
         return "%s - %s" % (self.clientname, self.created_date)
 
 
-@python_2_unicode_compatible
+
 class ShopSlider(AbstractImg):
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
     slider_link = std_text_field(_('Slider_link'))

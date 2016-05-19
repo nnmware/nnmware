@@ -12,7 +12,7 @@ from nnmware.core.fields import std_text_field
 from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
+
 class Currency(models.Model):
     code = models.CharField(max_length=3, verbose_name=_('Currency code'), db_index=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), on_delete=models.SET_NULL, blank=True, null=True)
@@ -28,7 +28,7 @@ class Currency(models.Model):
         return "%s :: %s" % (self.code, self.name)
 
 
-@python_2_unicode_compatible
+
 class ExchangeRate(models.Model):
     currency = models.ForeignKey(Currency, verbose_name=_('Currency'), on_delete=models.SET_NULL, null=True, blank=True)
     date = models.DateField(verbose_name=_('On date'), db_index=True)
@@ -67,7 +67,7 @@ TRANSACTION_STATUS = (
 )
 
 
-@python_2_unicode_compatible
+
 class Transaction(MoneyBase, AbstractContent):
     """
     Transaction(no more words)
@@ -108,7 +108,7 @@ BILL_STATUS = (
 )
 
 
-@python_2_unicode_compatible
+
 class Bill(MoneyBase, AbstractContent):
     """
     Financial account
@@ -134,7 +134,7 @@ class Bill(MoneyBase, AbstractContent):
         return Doc.objects.for_object(self)
 
 
-@python_2_unicode_compatible
+
 class AbstractDeliveryMethod(MoneyBase):
     name = std_text_field(_("Name of delivery method"))
     name_en = std_text_field(_("Name of delivery method(English)"))

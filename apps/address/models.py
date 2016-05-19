@@ -9,7 +9,7 @@ from nnmware.core.abstract import AbstractName
 from django.utils.encoding import python_2_unicode_compatible
 
 
-@python_2_unicode_compatible
+
 class Address(AbstractName):
     name_add = models.CharField(max_length=100, blank=True)
     name_add_en = models.CharField(max_length=100, blank=True)
@@ -154,7 +154,7 @@ class TourismCategory(AbstractName):
         ordering = ['position', ]
 
 
-@python_2_unicode_compatible
+
 class Tourism(Address, AbstractGeo):
     category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'))
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
@@ -178,7 +178,7 @@ class Tourism(Address, AbstractGeo):
         super(Tourism, self).save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
+
 class StationMetro(Address, AbstractGeo):
     country = models.ForeignKey(Country, verbose_name=_('Country'))
 
@@ -234,7 +234,7 @@ class AbstractLocation(models.Model):
         return result
 
 
-@python_2_unicode_compatible
+
 class Institution(AbstractName):
     city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True, blank=True)
     country = models.ForeignKey(Country, verbose_name=_('Country'), related_name='edu_country', null=True, blank=True)

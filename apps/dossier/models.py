@@ -29,7 +29,7 @@ DST_FOR_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class ClothingSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -47,7 +47,7 @@ class ClothingSize(models.Model):
         return "%s / %s" % (self.international, self.russian)
 
 
-@python_2_unicode_compatible
+
 class ShoesSize(models.Model):
     cm = models.DecimalField(verbose_name=_('Centimeters'), default=0, max_digits=5, decimal_places=1)
     ru = models.DecimalField(verbose_name=_('Russian'), default=0, max_digits=5, decimal_places=1)
@@ -64,7 +64,7 @@ class ShoesSize(models.Model):
         return "%s / %s" % (floatformat(self.cm, -1), floatformat(self.ru, -1))
 
 
-@python_2_unicode_compatible
+
 class HeadSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -79,7 +79,7 @@ class HeadSize(models.Model):
         return "%s / %s" % (self.international, self.russian)
 
 
-@python_2_unicode_compatible
+
 class ChestSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -128,7 +128,7 @@ class TypeFeatureAppearance(AbstractOrder):
         verbose_name_plural = _("Feature appearances types")
 
 
-@python_2_unicode_compatible
+
 class FeatureAppearance(AbstractName):
     appearance = models.ForeignKey(TypeFeatureAppearance, verbose_name=_('Feature appearance'),
                                    related_name='feature_app')
@@ -256,7 +256,7 @@ class TypeBodyModification(AbstractOrder):
         verbose_name_plural = _("Types body modifications")
 
 
-@python_2_unicode_compatible
+
 class BodyModification(AbstractName):
     modification = models.ForeignKey(TypeBodyModification, verbose_name=_('Modification'), related_name='modifications')
 
@@ -372,7 +372,7 @@ LNG_SKILL_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class LanguageSkill(models.Model):
     speak = models.ForeignKey(LanguageSpeak, verbose_name=_('Language speak'),
                               related_name='language_skill', blank=True, null=True)
@@ -513,7 +513,7 @@ class AnimalType(AbstractName):
         verbose_name_plural = _("Animals types")
 
 
-@python_2_unicode_compatible
+
 class AnimalKind(AbstractImg):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind')
     name = std_text_field(_('Name'))
@@ -528,7 +528,7 @@ class AnimalKind(AbstractImg):
         return "%s :: %s" % (self.animal.name, self.name)
 
 
-@python_2_unicode_compatible
+
 class Animal(AbstractName):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
     animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind', blank=True, null=True)
@@ -549,7 +549,7 @@ class TransportType(AbstractName):
         verbose_name_plural = _("Transport types")
 
 
-@python_2_unicode_compatible
+
 class TransportMark(AbstractImg):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
     name = std_text_field(_('Name'))
@@ -564,7 +564,7 @@ class TransportMark(AbstractImg):
         return "%s :: %s" % (self.ttype.name, self.name)
 
 
-@python_2_unicode_compatible
+
 class Vehicle(AbstractName):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
     tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles', blank=True, null=True)
@@ -585,7 +585,7 @@ class SurveyObjectType(AbstractName):
         verbose_name_plural = _("Survey object types")
 
 
-@python_2_unicode_compatible
+
 class SurveyObject(AbstractName):
     stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
 
@@ -605,7 +605,7 @@ class SurveySuitType(AbstractName):
         verbose_name_plural = _("Survey suits types")
 
 
-@python_2_unicode_compatible
+
 class SurveySuit(AbstractName):
     stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
 
@@ -625,7 +625,7 @@ class RequisiteType(AbstractName):
         verbose_name_plural = _("Requisite types")
 
 
-@python_2_unicode_compatible
+
 class Requisite(AbstractName):
     rtype = models.ForeignKey(RequisiteType, verbose_name=_('Type'))
 
@@ -637,7 +637,7 @@ class Requisite(AbstractName):
         return "%s :: %s" % (self.name, self.rtype.name)
 
 
-@python_2_unicode_compatible
+
 class Child(AbstractName):
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
     gender = models.CharField(_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)

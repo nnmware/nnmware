@@ -34,7 +34,7 @@ class TypeEmployer(AbstractName):
         return reverse('employers_profile', kwargs={'slug': self.slug})
 
 
-@python_2_unicode_compatible
+
 class TypeEmployerProfile(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
@@ -50,7 +50,7 @@ class TypeEmployerProfile(AbstractName):
         return reverse('employers_group', kwargs={'slug': self.slug})
 
 
-@python_2_unicode_compatible
+
 class TypeEmployerOther(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)

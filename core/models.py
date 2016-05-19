@@ -30,7 +30,7 @@ from nnmware.core.utils import setting
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, FollowManager, MessageManager
 
 
-@python_2_unicode_compatible
+
 class Tag(models.Model):
     """
     Model for Tags
@@ -91,7 +91,7 @@ class Nnmcomment(AbstractNnmcomment):
         get_latest_by = "created_date"
 
 
-@python_2_unicode_compatible
+
 class Follow(AbstractContent):
     """
     Lets a user follow the activities of any specific actor
@@ -127,7 +127,7 @@ class Notice(AbstractContent, AbstractIP):
         verbose_name_plural = _("Notices")
 
 
-@python_2_unicode_compatible
+
 class Message(AbstractIP):
     """
     A private message from user to user
@@ -179,7 +179,7 @@ class Message(AbstractIP):
         verbose_name_plural = _("Messages")
 
 
-@python_2_unicode_compatible
+
 class Action(AbstractContent, AbstractIP):
     """
     Model Activity of User
@@ -314,7 +314,7 @@ class EmailValidationManager(Manager):
         return self.create(user=user, key=key, email=email)
 
 
-@python_2_unicode_compatible
+
 class EmailValidation(models.Model):
     """
     Email Validation model
@@ -357,7 +357,7 @@ class EmailValidation(models.Model):
         return True
 
 
-@python_2_unicode_compatible
+
 class Video(AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     project_name = models.CharField(max_length=50, verbose_name=_('Project Name'), blank=True)
@@ -406,7 +406,7 @@ class Video(AbstractDate, AbstractImg):
         return get_user_model().objects.filter(pk__in=users)
 
 
-@python_2_unicode_compatible
+
 class NnmwareUser(AbstractUser, AbstractImg):
     fullname = models.CharField(max_length=100, verbose_name=_('Full Name'), blank=True)
     birthdate = models.DateField(verbose_name=_('Date birth'), blank=True, null=True)
@@ -533,7 +533,7 @@ class LikeMixin(models.Model):
             values_list('user__pk', flat=True)
 
 
-@python_2_unicode_compatible
+
 class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
                              related_name="%(app_label)s_%(class)s_user")

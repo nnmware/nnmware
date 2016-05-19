@@ -42,7 +42,7 @@ class HotelOptionCategory(AbstractName):
         ordering = ['position', ]
 
 
-@python_2_unicode_compatible
+
 class HotelOption(AbstractName):
     category = models.ForeignKey(HotelOptionCategory, verbose_name=_('Category option'))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
@@ -139,7 +139,7 @@ TYPEFOOD = (
 )
 
 
-@python_2_unicode_compatible
+
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
     register_date = models.DateTimeField(_("Register from"), default=now)
     email = models.CharField(verbose_name=_("Email"), blank=True, max_length=75)
@@ -345,7 +345,7 @@ class RoomOptionCategory(AbstractName):
         verbose_name_plural = _("Room Option Categories")
 
 
-@python_2_unicode_compatible
+
 class RoomOption(AbstractName):
     category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
@@ -385,7 +385,7 @@ PLACES_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True)
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
@@ -466,7 +466,7 @@ class Room(AbstractName):
         return result
 
 
-@python_2_unicode_compatible
+
 class SettlementVariant(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'))
     settlement = models.PositiveSmallIntegerField(_("Settlement"), db_index=True)
@@ -534,7 +534,7 @@ BOOKING_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class Booking(MoneyBase, AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
@@ -636,7 +636,7 @@ class Booking(MoneyBase, AbstractIP):
         super(Booking, self).save(*args, **kwargs)
 
 
-@python_2_unicode_compatible
+
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel)
     date = models.DateField(verbose_name=_("From date"), db_index=True)
@@ -655,7 +655,7 @@ class AgentPercent(models.Model):
                                                                                  percent=self.percent)
 
 
-@python_2_unicode_compatible
+
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel)
@@ -674,7 +674,7 @@ class Review(AbstractIP, HotelPoints):
             client=self.user.get_full_name(), hotel=self.hotel.name, review=self.review)
 
 
-@python_2_unicode_compatible
+
 class Availability(models.Model):
     room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True)
     date = models.DateField(verbose_name=_("On date"), db_index=True)
@@ -718,7 +718,7 @@ DISCOUNT_CHOICES = (
 )
 
 
-@python_2_unicode_compatible
+
 class Discount(AbstractName, AbstractDate):
     hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
     choice = models.IntegerField(verbose_name=_("Type of discount"), choices=DISCOUNT_CHOICES, default=DISCOUNT_UNKNOWN,
@@ -778,7 +778,7 @@ class Discount(AbstractName, AbstractDate):
             return None
 
 
-@python_2_unicode_compatible
+
 class RoomDiscount(models.Model):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"))
@@ -795,7 +795,7 @@ class RoomDiscount(models.Model):
         return _('Discount on %(date)s - %(val)s') % dict(date=self.date, val=self.value)
 
 
-@python_2_unicode_compatible
+
 class SimpleDiscount(models.Model):
     room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"))
     ub = models.BooleanField(verbose_name=_('Unguaranteed booking enabled'), default=False, db_index=True)
@@ -816,7 +816,7 @@ class SimpleDiscount(models.Model):
         return _('Discount for room %(room)s in %(hotel)s') % dict(room=self.room.name, hotel=self.room.hotel.name)
 
 
-@python_2_unicode_compatible
+
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
@@ -877,7 +877,7 @@ signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmwa
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 
 
-@python_2_unicode_compatible
+
 class HotelSearch(AbstractIP):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
