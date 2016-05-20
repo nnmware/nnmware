@@ -3,3 +3,4 @@
 *.pyc
 nnmware.db
 secret.txt
+migrations/*
