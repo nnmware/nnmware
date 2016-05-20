@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.views.generic.dates import DayArchiveView, MonthArchiveView, \
     YearArchiveView
@@ -8,12 +9,13 @@ from django.views.generic.list import ListView
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
+from django.contrib import messages
+
 from nnmware.core.constants import STATUS_LOCKED, STATUS_MODERATION, STATUS_DELETE, STATUS_PUBLISHED
 from nnmware.apps.topic.forms import TopicAddForm
 from nnmware.apps.topic.models import TopicCategory, Topic
 from nnmware.apps.topic.forms import TopicForm
 from nnmware.core.data import get_queryset_category
-from django.contrib import messages
 from nnmware.core.views import CurrentUserAuthor, CurrentUserSuperuser, \
     CurrentUserEditor, CurrentUserAuthenticated, AttachedCommentMixin, TabMixinView
 

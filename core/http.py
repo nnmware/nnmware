@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import json
+
 from django.utils.functional import Promise
 from django.utils.encoding import force_text
-import json
 
 
 # def response_mimetype(request):

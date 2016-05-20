@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import urllib
 
 API_SSL_SERVER = "https://www.google.com/recaptcha/api"

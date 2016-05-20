@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from datetime import timedelta
 import re
 from xml.etree.ElementTree import Element, tostring
@@ -812,7 +812,7 @@ class SetVarNode(Node):
         except VariableDoesNotExist:
             value = ""
         context[self.var_name] = value
-        return u""
+        return ""
 
 
 @register.tag

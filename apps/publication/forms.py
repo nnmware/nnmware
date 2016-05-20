@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
+
 from nnmware.apps.publication.models import Publication
 from nnmware.core.forms import TagsMixinForm
 

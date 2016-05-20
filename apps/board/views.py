@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.db.models import Q
 from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArchiveView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
+
 from nnmware.core.data import get_queryset_category
 from nnmware.apps.board.models import Board, BoardCategory
 from nnmware.apps.board.forms import BoardForm

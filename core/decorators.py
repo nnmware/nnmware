@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from functools import wraps
 import urlparse
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
+
 from nnmware.core.utils import setting
 
 

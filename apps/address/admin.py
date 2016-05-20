@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
-from nnmware.apps.address.models import City, Region, Country, TourismCategory, Tourism, StationMetro, Institution
 
+from nnmware.apps.address.models import City, Region, Country, TourismCategory, Tourism, StationMetro, Institution
 from nnmware.core.admin import TypeBaseAdmin
 
 

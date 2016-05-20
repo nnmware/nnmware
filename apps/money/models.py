@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -6,11 +7,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext_lazy as _
 from django.db import models
 from django.utils.timezone import now
+
 from nnmware.core.abstract import Doc, AbstractContent
 from nnmware.apps.address.models import Country
 from nnmware.core.fields import std_text_field
-from django.utils.encoding import python_2_unicode_compatible
-
 
 
 class Currency(models.Model):

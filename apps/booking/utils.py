@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.conf import settings
+
 from nnmware.core.utils import send_template_mail, setting
+
 
 SITENAME = setting('SITENAME', 'www.nnmware.com')
 

@@ -1,5 +1,9 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
+
 from nnmware.apps.topic.models import Topic, TopicCategory
 from nnmware.core.admin import TreeAdmin
 

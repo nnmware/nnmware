@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django import forms
-from nnmware.apps.news.models import News
 from django.utils.translation import ugettext_lazy as _
+
+from nnmware.apps.news.models import News
 
 
 class AddNewsForm(forms.ModelForm):

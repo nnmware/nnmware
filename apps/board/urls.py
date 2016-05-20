@@ -1,10 +1,14 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.conf.urls import *
+
 from nnmware.apps.board.views import BoardYearList, BoardDayList, BoardMonthList
 from nnmware.apps.board.views import BoardList, BoardUserList, BoardCategory, \
     BoardDetail
 from nnmware.apps.board.views import BoardSearch
 from nnmware.apps.board.views import BoardEdit, BoardAdd
+
 
 urlpatterns = patterns('nnmware.apps.board.views',
     url(r'^search/$', BoardSearch.as_view(), name='board_search'),

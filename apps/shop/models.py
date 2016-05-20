@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -7,6 +8,7 @@ from django.db.models import Q
 from django.template.defaultfilters import floatformat
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+
 from nnmware.apps.address.models import Country, AbstractLocation, Region
 from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
@@ -14,7 +16,6 @@ from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractO
 from nnmware.core.abstract import AbstractDate, AbstractColor, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_text_field
 from nnmware.core.managers import ProductManager, ShopManager
-from django.utils.encoding import python_2_unicode_compatible
 from nnmware.apps.money.models import AbstractDeliveryMethod
 from nnmware.core.abstract import AbstractTeaser
 

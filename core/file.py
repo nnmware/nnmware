@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from hashlib import md5
 import os
 from time import time
 from urllib.parse import urlparse
+
 from django.conf import settings
 
 

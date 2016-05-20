@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+from __future__ import unicode_literalsimport datetime
 from decimal import Decimal
 from time import localtime, strftime
 import urllib2

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-# Base abstract classed nnmware(c)2013-2014
-
+# Base abstract classed nnmware(c)2013-2016
+from __future__ import unicode_literals
 from io import StringIO
 import os
 from PIL import Image
@@ -17,7 +17,6 @@ from django.db import models
 from django.db.models.manager import Manager
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
-from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.core.file import get_path_from_url
 from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED

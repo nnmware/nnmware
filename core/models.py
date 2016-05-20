@@ -3,6 +3,7 @@
 """
 Base model library.
 """
+from __future__ import unicode_literals
 
 from django.utils.timesince import timesince
 from django.contrib.auth import get_user_model
@@ -19,7 +20,6 @@ from django.db.models.signals import post_save, post_delete
 from django.template import Context, loader
 from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
-from django.utils.encoding import python_2_unicode_compatible
 from django.dispatch import receiver
 
 from nnmware.core.abstract import Pic, Doc, AbstractContent, AbstractImg, AbstractDate, AbstractNnmcomment, \

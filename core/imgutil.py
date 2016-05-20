@@ -1,10 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 import fnmatch
 import shutil
 from urllib.parse import urlparse
 from PIL import Image, ImageOps
+
 from django.conf import settings
 from django.db.models.fields.files import ImageField
+
 from nnmware.core.utils import setting
 from nnmware.core.file import get_path_from_url
 

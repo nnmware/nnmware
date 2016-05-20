@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from __builtin__ import int, super, object
 from datetime import timedelta
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponseRedirect
@@ -12,6 +15,7 @@ from django.views.generic import TemplateView
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
+
 from nnmware.apps.shop.utils import get_basket
 from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
 from nnmware.apps.shop.models import Product, ProductCategory, Order, ShopNews, Feedback, ShopArticle, \
@@ -21,7 +25,6 @@ from nnmware.core.http import get_session_from_request
 from nnmware.core.models import Nnmcomment
 from nnmware.core.utils import send_template_mail, convert_to_date, setting
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
-from django.contrib.contenttypes.models import ContentType
 from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT, DeliveryAddress
 from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousUserOrderAddForm, RegisterUserOrderAddForm
 from nnmware.apps.shop.utils import make_order_from_basket

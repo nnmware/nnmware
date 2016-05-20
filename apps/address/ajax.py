@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.db.models.query_utils import Q
+
 from nnmware.apps.address.models import City, Country, Region, StationMetro
 from nnmware.core.ajax import ajax_answer_lazy
 

@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from hashlib import sha1
 from datetime import timedelta
+
 from django.core.cache import cache
 from django.db.models import Min, Count, Sum
 from django.template import Library
 from django.template.defaultfilters import stringfilter
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
+
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import Hotel, TWO_STAR, THREE_STAR, FOUR_STAR, FIVE_STAR, HotelOption, MINI_HOTEL, \
     PlacePrice, Availability, HOSTEL, APARTAMENTS, SettlementVariant, Room, RoomDiscount, STATUS_CHOICES

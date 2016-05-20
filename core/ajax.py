@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from io import FileIO, BufferedWriter
 from hashlib import md5
 import os
@@ -7,6 +7,7 @@ import shutil
 from PIL import Image
 import json
 import copy
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
@@ -18,6 +19,7 @@ from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 from django.http import HttpResponse, Http404
+
 from nnmware.core.abstract import Pic, Doc
 from nnmware.core.constants import STATUS_LOCKED, ACTION_LIKED, ACTION_COMMENTED, ACTION_FOLLOWED
 from nnmware.core import oembed

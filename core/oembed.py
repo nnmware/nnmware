@@ -3,7 +3,7 @@
 """
 Library for OEmbed
 """
-
+from __future__ import unicode_literals
 import urllib
 import urllib2
 import re

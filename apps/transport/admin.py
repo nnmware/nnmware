@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
+
 from nnmware.apps.transport.models import VehicleColor, VehicleKind, VehicleTransmission, VehicleCarcass, \
     VehicleEngine, VehicleFeature, VehicleMark, VehicleVendor, Vehicle
 from nnmware.core.admin import ColorAdmin

@@ -1,4 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.conf.urls import *
+
 from nnmware.apps.publication.views import *
 
 urlpatterns = patterns('',

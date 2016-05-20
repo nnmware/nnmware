@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from decimal import Decimal
 from uuid import uuid4
 import random
 from datetime import timedelta, time, datetime
+
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.conf import settings
@@ -13,8 +14,8 @@ from django.template.defaultfilters import date
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _, string_concat
 from django.utils.translation.trans_real import get_language
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.cache import cache
+
 from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import AbstractIP, AbstractName, AbstractDate

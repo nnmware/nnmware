@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
 from nnmware.apps.shop.models import Basket, OrderItem
 from nnmware.core.http import get_session_from_request
 from nnmware.core.exceptions import ShopError

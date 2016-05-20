@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import reverse
 from django.utils.feedgenerator import Atom1Feed, rfc3339_date, get_tag_uri
 from django.contrib.contenttypes.models import ContentType

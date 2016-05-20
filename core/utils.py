@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 import hashlib
 import re
 import string
@@ -10,14 +10,15 @@ import random
 import sys
 import types
 from datetime import datetime, timedelta
+import unidecode
+from bs4 import BeautifulSoup
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_text
 from django.utils.timezone import now
-import unidecode
-from bs4 import BeautifulSoup
 
 
 VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'

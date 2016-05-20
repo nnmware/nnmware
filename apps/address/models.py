@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
+
 from nnmware.core.fields import std_text_field
 from nnmware.core.maps import osm_geocoder
 from nnmware.core.abstract import AbstractName
-from django.utils.encoding import python_2_unicode_compatible
-
 
 
 class Address(AbstractName):

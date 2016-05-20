@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import unicode_literals
 from cStringIO import StringIO
 import os
 from hashlib import md5

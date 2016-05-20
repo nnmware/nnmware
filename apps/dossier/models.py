@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
 from django.db import models
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 
 from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg

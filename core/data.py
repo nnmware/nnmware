@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
 from xml.etree.ElementTree import SubElement
 
 
