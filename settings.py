@@ -65,7 +65,6 @@ except IOError:
         SECRET_KEY = ''.join([choice(key) for i in range(50)])
         with open(SECRET_FILE, 'w') as secret:
             secret.write(SECRET_KEY)
-        secret.closed
     except IOError:
         raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
