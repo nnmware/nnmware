@@ -1,1 +1,1 @@
-default_app_config = "nnmware.apps.topic.CoreAppConfig"
+default_app_config = "nnmware.apps.topic.apps.TopicAppConfig"

@@ -6,6 +6,6 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-class CoreAppConfig(AppConfig):
+class PublicationAppConfig(AppConfig):
     name = "nnmware.apps.publication"
     verbose_name = _("Publication module")

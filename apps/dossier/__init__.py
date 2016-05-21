@@ -1,1 +1,1 @@
-default_app_config = "nnmware.apps.dossier.CoreAppConfig"
+default_app_config = "nnmware.apps.dossier.apps.DossierAppConfig"

@@ -1,1 +1,1 @@
-default_app_config = "nnmware.apps.publication.CoreAppConfig"
+default_app_config = "nnmware.apps.publication.apps.PublicationAppConfig"

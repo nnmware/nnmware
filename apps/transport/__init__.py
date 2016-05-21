@@ -1,1 +1,1 @@
-default_app_config = "nnmware.apps.board.transport"
+default_app_config = "nnmware.apps.transport.apps.TransportAppConfig"

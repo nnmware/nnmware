@@ -6,6 +6,6 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-class CoreAppConfig(AppConfig):
+class TransportAppConfig(AppConfig):
     name = "nnmware.apps.transport"
     verbose_name = _("Transport module")

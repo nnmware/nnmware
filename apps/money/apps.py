@@ -6,6 +6,6 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-class CoreAppConfig(AppConfig):
+class MoneyAppConfig(AppConfig):
     name = "nnmware.apps.money"
     verbose_name = _("Money module")

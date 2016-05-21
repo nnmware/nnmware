@@ -6,6 +6,6 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-class CoreAppConfig(AppConfig):
+class DossierAppConfig(AppConfig):
     name = "nnmware.apps.dossier"
     verbose_name = _("Dossier module")
