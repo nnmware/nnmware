@@ -1,1 +1,1 @@
-default_app_config = "nnmware.address.apps.CoreAppConfig"
+default_app_config = "nnmware.apps.address.CoreAppConfig"
