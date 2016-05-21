@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common template tags
+
 from __future__ import unicode_literals
 from datetime import timedelta
 import re
@@ -558,6 +561,7 @@ def image_height(url):
 def watermark(url, arg=''):
     if url is None:
         return None
+    # noinspection PyBroadException
     try:
         if arg == 'center':
             ret = make_watermark(url, align='center')
@@ -611,6 +615,7 @@ def menu_span(app=None):
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
         pass
+    # noinspection PyBroadException
     try:
         menuspan = cache.get('menu_span_' + app)
         if menuspan is not None:
@@ -772,6 +777,7 @@ def get_paginator_value(context):
 @register.simple_tag(takes_context=True)
 def shop_compare(context):
     request = context['request']
+    # noinspection PyBroadException
     try:
         return len(request.session['shop_compare'])
     except:
@@ -781,6 +787,7 @@ def shop_compare(context):
 @register.simple_tag(takes_context=True)
 def shop_compare_list(context):
     request = context['request']
+    # noinspection PyBroadException
     try:
         return request.session['shop_compare']
     except:

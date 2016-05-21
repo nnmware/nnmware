@@ -1,12 +1,12 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Yandex.Maps and OSM API wrapper
 
-"""
-Yandex.Maps  and OSM API wrapper
-"""
 from __future__ import with_statement, unicode_literals
 from math import radians, sin, cos, sqrt, atan2
 import xml.dom.minidom
-import urllib
+from urllib.parse import urlencode
+from urllib.request import urlopen
 from contextlib import closing
 import http.client
 import json
@@ -18,10 +18,11 @@ OSM_URL = "http://nominatim.openstreetmap.org/search?format=json&polygon=1&addre
 
 def osm_geocoder(q):
     params = {'q': q.encode('utf-8')}
-    url = OSM_URL % urllib.urlencode(params)
+    url = OSM_URL % urlencode(params)
     socket.setdefaulttimeout(10)
+    # noinspection PyBroadException
     try:
-        response = urllib.urlopen(url, timeout=10)
+        response = urlopen(url, timeout=10)
         data = response.read()
         if data is None:
             return None
@@ -48,8 +49,7 @@ def request(method, url, data=None, headers=None, timeout=None):
         if not timeout_set:
             connection.connect()
             connection.sock.settimeout(timeout)
-            timeout_set = True
-
+            timeout_set = True  # Strange Yandex Core
         connection.request(method, url, data, headers)
         response = connection.getresponse()
         return response.status, response.read()
@@ -84,9 +84,8 @@ def _get_geocode_xml(api_key, address, timeout=2):
 
 
 def _get_geocode_url(api_key, address):
-    if isinstance(address, unicode):
-        address = address.encode('utf8')
-    params = urllib.urlencode({'geocode': address, 'key': api_key})
+    address = address.encode('utf8')
+    params = urlencode({'geocode': address, 'key': api_key})
     return GEOCODE_URL + params
 
 

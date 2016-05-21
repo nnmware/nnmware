@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common Widgets
+
 from __future__ import unicode_literals
 
 from django.utils.safestring import mark_safe

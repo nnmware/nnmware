@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literalsimport datetime
+# nnmware(c)2012-2016
+# Common parsers
+
+from __future__ import unicode_literals
+import datetime
 from decimal import Decimal
 from time import localtime, strftime
-import urllib2
+from urllib.request import urlopen
 import xml.dom.minidom
 
 from nnmware.core.utils import setting
@@ -10,7 +14,7 @@ from nnmware.core.utils import setting
 
 def currency_xml_input(sdate):
     c_url = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=%s" % sdate
-    u = urllib2.urlopen(c_url)
+    u = urlopen(c_url)
     return u.read()
 
 
@@ -38,12 +42,12 @@ def parse_currency(on_date=None):
     rate_date = datetime.date(y, m, d)
     lst_currency = parse_xml_currency(currency_xml_input(sdate))
     from nnmware.apps.money.models import ExchangeRate, Currency
-
     currencies = Currency.objects.all().values_list('code', flat=True)
     for currency in lst_currency:
         charcode = currency['CharCode']
         if charcode in currencies and charcode != setting('DEFAULT_CURRENCY', 'RUB'):
             curr = Currency.objects.get(code=charcode)
+            # noinspection PyBroadException
             try:
                 rate = ExchangeRate.objects.get(date=rate_date, currency=curr)
             except:

@@ -1,16 +1,19 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Image processing functions
+
 from __future__ import unicode_literals
 import os
 import fnmatch
 import shutil
-from urllib.parse import urlparse
+from urllib.parse import urljoin
 from PIL import Image, ImageOps
 
 from django.conf import settings
-from django.db.models.fields.files import ImageField
 
 from nnmware.core.utils import setting
 from nnmware.core.file import get_path_from_url
+
 
 TMB_MASKS = ['%s_t*%s', '%s_aspect*%s', '%s_wm*%s']
 
@@ -42,7 +45,7 @@ def _get_thumbnail_path(path, width=None, height=None, aspect=None, watermark=No
     elif height is not None:
         th_name += '_h%d' % height
     th_name += ext
-    return urlparse.urljoin(basedir, th_name)
+    return urljoin(basedir, th_name)
 
 
 def _has_thumbnail(photo_url, width=None, height=None,
@@ -60,10 +63,9 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
 
     # one of width/height is required
     assert (width is not None) or (height is not None)
-
+    size = None
     if not photo_url:
         return None
-
     th_url = _get_thumbnail_path(photo_url, width, height, aspect)
     th_path = get_path_from_url(th_url, root, url_root)
     photo_path = get_path_from_url(photo_url, root, url_root)
@@ -73,9 +75,7 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
         if not (os.path.getmtime(photo_path) > os.path.getmtime(th_path)):
             # if photo mtime is newer than thumbnail recreate thumbnail
             return th_url
-
     # make thumbnail
-
     # get original image size
     orig_w, orig_h = get_image_size(photo_url, root, url_root)
     if (orig_w is None) and (orig_h is None):
@@ -99,6 +99,7 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
             return None
         size = (orig_w, height)
 
+    # noinspection PyBroadException
     try:
         img = Image.open(photo_path).copy()
         if aspect:
@@ -113,11 +114,11 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
 def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     if not pic_url:
         return  # empty url
-
     file_name = get_path_from_url(pic_url, root, url_root)
     base, ext = os.path.splitext(os.path.basename(file_name))
     basedir = os.path.dirname(file_name)
     for item in TMB_MASKS:
+        # noinspection PyBroadException
         try:
             for f in fnmatch.filter(os.listdir(str(basedir)), item % (base, ext)):
                 path = os.path.join(basedir, f)
@@ -133,6 +134,7 @@ def remove_file(f_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     if not f_url:
         return  # empty url
     file_name = get_path_from_url(f_url, root, url_root)
+    # noinspection PyBroadException
     try:
         os.remove(file_name)
     except:
@@ -147,21 +149,6 @@ def resize_image(img_url, width=400, height=400, root=settings.MEDIA_ROOT, url_r
     im.save(file_name, "JPEG", quality=88)
 
 
-# def make_admin_thumbnail(url):
-#     """ make thumbnails for admin interface """
-#     return make_thumbnail(url, width=120)
-#
-#
-# def make_admin_thumbnails(model):
-#     """ create thumbnails for admin interface for all ImageFields
-#     (and subclasses) in the model """
-#
-#     for obj in model._meta.fields:
-#         if isinstance(obj, ImageField):
-#             url = getattr(model, obj.name).path
-#             make_thumbnail(url, width=120)
-#
-#
 def _get_thumbnail_url(photo_url, width=None, height=None, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_URL):
     """ return thumbnail URL for requested photo_url and required
     width and/or height
@@ -181,6 +168,7 @@ def get_image_size(photo_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA_
     """ returns image size.
     """
     path = get_path_from_url(photo_url, root, url_root)
+    # noinspection PyBroadException
     try:
         size = Image.open(path).size
     except:

@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Engine signals
+
 from __future__ import unicode_literals
 
 from django.dispatch import Signal
 
 action = Signal(providing_args=['user', 'verb', 'action_object', 'target', 'description', 'timestamp'])
+
 
 # Signal for create new notice
 notice = Signal(providing_args=['user', 'sender', 'verb', 'target', 'description', 'notice_type'])

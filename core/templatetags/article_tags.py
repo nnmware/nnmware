@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Draft for articles modules
+
 from __future__ import unicode_literals
 from datetime import datetime
 import math
@@ -118,10 +121,10 @@ def get_articles(parser, token):
         t, start, t, end, a, varname, order = args
 
     return GetPublicationsNode(count=count,
-        start=start,
-        end=end,
-        order=order,
-        varname=varname)
+                               start=start,
+                               end=end,
+                               order=order,
+                               varname=varname)
 
 
 class GetPublicationArchivesNode(template.Node):

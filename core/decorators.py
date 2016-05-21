@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# views decorators
+
 from __future__ import unicode_literals
 from functools import wraps
-import urlparse
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.http import HttpResponseRedirect
@@ -39,7 +42,7 @@ def ssl_required(view_func):
     def _checkssl(request, *args, **kwargs):
         if not request.is_secure() and not settings.DEBUG and not setting('NOHTTPS', True):
             if hasattr(settings, 'SSL_DOMAIN'):
-                url_str = urlparse.urljoin(
+                url_str = urljoin(
                     settings.SSL_DOMAIN,
                     request.get_full_path()
                 )

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# For work with http proto
+
 from __future__ import unicode_literals
 import json
 
@@ -6,13 +9,6 @@ from django.utils.functional import Promise
 from django.utils.encoding import force_text
 
 
-# def response_mimetype(request):
-#     if "application/json" in request.META['HTTP_ACCEPT']:
-#         return "application/json"
-#     else:
-#         return "text/plain"
-#
-#
 class LazyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Promise):
@@ -40,4 +36,3 @@ def get_session_from_request(request):
         session_key = '%s:%s' % (request.META.get('REMOTE_ADDR', ''), request.META.get('HTTP_USER_AGENT', '')[:255])
         session_key = session_key[:40]
     return session_key
-

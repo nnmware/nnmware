@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common utils
+
 from __future__ import unicode_literals
 import hashlib
 import re
@@ -8,7 +11,7 @@ from decimal import Decimal, ROUND_HALF_UP, InvalidOperation
 import os
 import random
 import sys
-import types
+from functools import reduce
 from datetime import datetime, timedelta
 import unidecode
 from bs4 import BeautifulSoup
@@ -26,8 +29,7 @@ VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'
 
 def make_key(name):
     salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-    if isinstance(name, unicode):
-        name = name.encode('utf-8')
+    name = name.encode('utf-8')
     activation_key = hashlib.sha1(salt + name).hexdigest()
     return activation_key
 
@@ -50,7 +52,7 @@ def get_video_provider_from_link(link):
 
 
 def update_video_size(html, w, h):
-    # Change parameters in Iframe src of EOMBED
+    # Change parameters in Iframe src of OEMBED
     new_width = 'width="' + str(w) + '"'
     new_height = 'height="' + str(h) + '"'
     patern1 = r'width="\d+"'
@@ -65,7 +67,7 @@ def slug_tag(value):
     Normalizes string, converts to lowercase, removes non-alpha characters,
     and converts spaces to hyphens.
     """
-    value = unicode(unidecode.unidecode(BeautifulSoup(value).contents[0]))
+    value = unidecode.unidecode(BeautifulSoup(value).contents[0])
     #    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
     value = re.sub('[^\w\s-]', '', value).strip().title()
     return value
@@ -105,6 +107,7 @@ def slugify(s):
 
 def can_loop_over(maybe):
     """Test value to see if it is list like"""
+    # noinspection PyBroadException
     try:
         iter(maybe)
     except:
@@ -159,7 +162,7 @@ def get_flat_list(sequence):
 
 
 def is_list_or_tuple(maybe):
-    return isinstance(maybe, (types.TupleType, types.ListType))
+    return isinstance(maybe, (tuple, list))
 
 
 def is_string_like(maybe):
@@ -204,7 +207,6 @@ def request_is_secure(request):
         return True
     if 'HTTP_X_FORWARDED_SSL' in request.META:
         return request.META['HTTP_X_FORWARDED_SSL'] == 'on'
-
     return False
 
 
@@ -283,6 +285,7 @@ def daterange(start_date, end_date):
 
 
 def send_template_mail(subject, body, mail_dict, recipients):
+    # noinspection PyBroadException
     try:
         subject = render_to_string(subject, mail_dict)
         subject = ''.join(subject.splitlines())

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Base model library.
 
-"""
-Base model library.
-"""
 from __future__ import unicode_literals
 
 from django.utils.timesince import timesince
@@ -28,7 +27,6 @@ from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOI
     STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
 from nnmware.core.utils import setting
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, FollowManager, MessageManager
-
 
 
 class Tag(models.Model):
@@ -91,7 +89,6 @@ class Nnmcomment(AbstractNnmcomment):
         get_latest_by = "created_date"
 
 
-
 class Follow(AbstractContent):
     """
     Lets a user follow the activities of any specific actor
@@ -125,7 +122,6 @@ class Notice(AbstractContent, AbstractIP):
         ordering = ['-timestamp']
         verbose_name = _("Notice")
         verbose_name_plural = _("Notices")
-
 
 
 class Message(AbstractIP):
@@ -177,7 +173,6 @@ class Message(AbstractIP):
         ordering = ['-sent_at']
         verbose_name = _("Message")
         verbose_name_plural = _("Messages")
-
 
 
 class Action(AbstractContent, AbstractIP):
@@ -314,7 +309,6 @@ class EmailValidationManager(Manager):
         return self.create(user=user, key=key, email=email)
 
 
-
 class EmailValidation(models.Model):
     """
     Email Validation model
@@ -355,7 +349,6 @@ class EmailValidation(models.Model):
         self.created = now()
         self.save()
         return True
-
 
 
 class Video(AbstractDate, AbstractImg):
@@ -404,7 +397,6 @@ class Video(AbstractDate, AbstractImg):
         ctype = ContentType.objects.get_for_model(self)
         users = Nnmcomment.objects.filter(content_type=ctype, object_id=self.id).values_list('user', flat=True)
         return get_user_model().objects.filter(pk__in=users)
-
 
 
 class NnmwareUser(AbstractUser, AbstractImg):
@@ -531,7 +523,6 @@ class LikeMixin(models.Model):
     def users_disliked(self):
         return Like.objects.for_object(self).filter(user__is_active=True, like_dislike=False).\
             values_list('user__pk', flat=True)
-
 
 
 class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):

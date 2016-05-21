@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common engine constants
+
 from __future__ import unicode_literals
+
 from django.utils.translation import ugettext_lazy as _
+
 
 STATUS_UNKNOWN = 0
 STATUS_DELETE = 1

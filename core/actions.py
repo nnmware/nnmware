@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Classes for work with follow/unfollow (Future)
+
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
@@ -85,7 +88,7 @@ def action_handler(verb, **kwargs):
     if target:
         action_.content_type = ContentType.objects.get_for_model(target)
         action_.object_id = target.pk
-    action_.verb = unicode(verb)
+    action_.verb = verb
     action_.action_type = kwargs.pop('action_type', ACTION_UNKNOWN)
     action_.description = kwargs.pop('description', None)
     request = kwargs.pop('request', None)
@@ -109,7 +112,7 @@ def notice_handler(verb, **kwargs):
     if target:
         notice_.content_type = ContentType.objects.get_for_model(target)
         notice_.object_id = target.pk
-    notice_.verb = unicode(verb)
+    notice_.verb = verb
     notice_.notice_type = kwargs.pop('notice_type', NOTICE_UNKNOWN)
     notice_.description = kwargs.pop('description', None)
     request = kwargs.pop('request', None)

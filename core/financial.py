@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Some financial code lunn- check valid creditcard
+
 from __future__ import unicode_literals
 from datetime import datetime, date, time
+from io import StringIO
 
 from django.http import HttpResponse
 from django.utils.timezone import now
@@ -9,6 +13,7 @@ from nnmware.core.utils import setting
 from nnmware.apps.money.models import ExchangeRate, Currency
 
 
+# noinspection PyBroadException
 def convert_from_client_currency(request, amount):
     try:
         if request.COOKIES['currency'] == setting('CURRENCY', 'RUB'):
@@ -58,21 +63,13 @@ class ExcelResponse(HttpResponse):
             if hasattr(data[0], '__getitem__'):
                 valid_data = True
         assert valid_data is True, "ExcelResponse requires a sequence of sequences"
-
-        import StringIO
-
-        output = StringIO.StringIO()
+        output = StringIO()
         # Excel has a limit on number of rows; if we have more than that, make a csv
         use_xls = False
         if len(data) <= 65536 and force_csv is not True:
-            try:
-                import xlwt
-            except ImportError:
-                # xlwt doesn't exist; fall back to csv
-                pass
-            else:
-                use_xls = True
+            use_xls = True
         if use_xls:
+            import xlwt
             book = xlwt.Workbook(encoding=encoding)
             sheet = book.add_sheet('Sheet 1')
             styles = {'datetime': xlwt.easyxf(num_format_str='yyyy-mm-dd hh:mm:ss'),
@@ -98,8 +95,6 @@ class ExcelResponse(HttpResponse):
             for row in data:
                 out_row = []
                 for value in row:
-                    if not isinstance(value, basestring):
-                        value = unicode(value)
                     value = value.encode(encoding)
                     out_row.append(value.replace('"', '""'))
                 output.write('"%s"\n' %

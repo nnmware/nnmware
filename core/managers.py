@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Engine models managers
+
 from __future__ import unicode_literals
 
 from django.contrib.auth import get_user_model

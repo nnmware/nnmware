@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common forms work
+
 from __future__ import unicode_literals
 
 from django import forms
@@ -12,11 +15,12 @@ from nnmware.core.models import Tag, EmailValidation, Video
 from nnmware.core.utils import tags_normalize, setting
 from nnmware.core.exceptions import UserIsDisabled
 
+
 TAGS_MAX = setting('TAGS_MAX', 10)
 
 
 class TagsMixinForm(forms.ModelForm):
-    tags = forms.CharField(label=_('Tags'))  # widget=AutocompleteWidget(choices_url='autocomplete_tags'))
+    tags = forms.CharField(label=_('Tags'))
 
     def clean_tags(self):
         """
@@ -38,6 +42,7 @@ class EmailQuickRegisterForm(forms.ModelForm):
         model = get_user_model()
         fields = ('email', 'password')
 
+    # noinspection PyBroadException
     def clean_email(self):
         """
         Verify that the email exists
@@ -197,6 +202,7 @@ class SignupForm(UserCreationForm):
         username = self.cleaned_data.get('username')
         if not username:
             raise forms.ValidationError(_("USERNAME IS REQUIRED"), code='invalid')
+        # noinspection PyBroadException
         try:
             get_user_model().objects.get(username=username)
             raise forms.ValidationError(_("THAT USERNAME IS ALREADY USED"), code='invalid')

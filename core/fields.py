@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common model fields code + ReCaptcha form field
+
 from __future__ import unicode_literals
 from decimal import Decimal
-import json
 
-from django import forms
+from django.forms import CharField, ValidationError
 from django.conf import settings
 from django.db import models
-from django.db.models.fields.files import ImageField
-from django.core.exceptions import ValidationError
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _
 
@@ -15,7 +15,7 @@ from nnmware.core.widgets import ReCaptchaWidget
 from nnmware.core.captcha import submit
 
 
-class ReCaptchaField(forms.CharField):
+class ReCaptchaField(CharField):
     default_error_messages = {'captcha_invalid': _('Invalid captcha')}
 
     def __init__(self, *args, **kwargs):
@@ -29,7 +29,7 @@ class ReCaptchaField(forms.CharField):
         recaptcha_response_value = smart_text(values[1])
         check_captcha = submit(recaptcha_challenge_value, recaptcha_response_value, settings.RECAPTCHA_PRIVATE_KEY, {})
         if not check_captcha.is_valid:
-            raise forms.ValidationError(self.error_messages['captcha_invalid'])
+            raise ValidationError(self.error_messages['captcha_invalid'])
         return values[0]
 
 

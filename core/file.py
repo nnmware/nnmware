@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# File helpers
+
 from __future__ import unicode_literals
 from hashlib import md5
 import os
 from time import time
-from urllib.parse import urlparse
+from urllib.parse import urljoin
 
 from django.conf import settings
 
@@ -34,4 +37,5 @@ def get_url_from_path(path, root=settings.MEDIA_ROOT):
     """ make url from filesystem path """
     if path.startswith(root):
         path = path[len(root):]   # strip media root
-    return urlparse.urljoin(root, path.replace('\\', '/'))
+    return urljoin(root, path.replace('\\', '/'))
+

@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# library for OEmbed
 
-"""
-Library for OEmbed
-"""
 from __future__ import unicode_literals
-import urllib
-import urllib2
+from urllib.parse import urlencode
+from urllib.request import ProxyHandler, build_opener
 import re
 import json
 from xml.etree import ElementTree
@@ -131,13 +130,12 @@ class OEmbedEndpoint(object):
         
         Args:
             url: The url of a provider API (API endpoint).
-            urlSchemes: A list of URL schemes for this endpoint. 
+            url_schemes: A list of URL schemes for this endpoint.
         
         """
         self._urlApi = url
         self._urlSchemes = {}
         self._init_request_headers()
-        self._urllib = urllib2
 
         if url_schemes is not None:
             map(self.add_url_scheme, url_schemes)
@@ -200,7 +198,7 @@ class OEmbedEndpoint(object):
             True if a matching scheme was found for the url, False otherwise
 
         """
-        for urlScheme in self._urlSchemes.itervalues():
+        for urlScheme in iter(self._urlSchemes.values()):
             if urlScheme.match(url):
                 return True
         return False
@@ -220,14 +218,13 @@ class OEmbedEndpoint(object):
         """
         params = opt
         params['url'] = url       
-        
         url_api = self._urlApi
         
         if 'format' in params and self._implicitFormat:
             url_api = self._urlApi.replace('{format}', params['format'])
             del params['format']
                 
-        return "%s?%s" % (url_api, urllib.urlencode(params))
+        return "%s?%s" % (url_api, urlencode(params))
 
     def get(self, url, **opt):
         """
@@ -250,17 +247,14 @@ class OEmbedEndpoint(object):
         
         Args:
             url: The url to fetch data from
-            
         Returns:
             OEmbedResponse object according to data fetched 
             
         """        
-        proxy_support = urllib2.ProxyHandler({})
-        opener = self._urllib.build_opener(proxy_support)
+        proxy_support = ProxyHandler({})
+        opener = build_opener(proxy_support)
         opener.addheaders = self._requestHeaders.items()
-
         response = opener.open(url)
-
         headers = response.info()
         raw = response.read()
 
@@ -269,24 +263,11 @@ class OEmbedEndpoint(object):
         
         if headers['Content-Type'].find('application/xml') != -1 or headers['Content-Type'].find('text/xml') != -1:
             response = OEmbedResponse.new_from_xml(raw)
-            
         elif headers['Content-Type'].find('application/json') != -1 or headers['Content-Type'].find('text/json') != -1:
             response = OEmbedResponse.new_from_json(raw)
-        
         else:
             raise OEmbedError('Invalid mime-type in response - %s' % headers['Content-Type'])
-        
         return response
-
-    def set_urllib(self, url_library):
-        """
-        Override the default urllib implementation.
-
-        Args:
-            urllib: an instance that supports the same API as the urllib2 module
-          
-        """
-        self._urllib = url_library
 
     def set_user_agent(self, user_agent):
         """
@@ -426,8 +407,7 @@ class OEmbedConsumer(object):
         consumer according to the resource url.
         
         Args:
-            url: The url of the resource to get.
-            format: Desired response format.
+            fmt: Desired response format.
             **opt: Optional parameters to pass in the url to the provider.
         
         Returns:
@@ -442,6 +422,7 @@ class OEmbedConsumer(object):
     def result(self):
         if not self._endpoints:
             return None
+        # noinspection PyBroadException
         try:
             response = self.embed()
             return response.get_data()

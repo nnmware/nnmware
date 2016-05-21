@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Core views and mixins
+
 from __future__ import unicode_literals
 from datetime import timedelta
 import json
@@ -12,7 +15,7 @@ from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
-from django.template.loader import render_to_string
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.views.generic.base import TemplateView, View
@@ -93,7 +96,8 @@ class AjaxViewMixin(View):
 
     def render_to_response(self, context, **response_kwargs):
         if self.request.is_ajax():
-            html = render_to_string(self.template_name, context, context_instance=RequestContext(self.request))
+            html = render(self.request, self.template_name, context)
+            # Old code- need check parameters: context_instance=RequestContext(self.request))
             payload = {'success': True, 'html': html}
             payload.update(self.payload)
             response_kwargs['content_type'] = 'application/json'
@@ -944,13 +948,15 @@ class UserFollowerUsers(UserPathMixin, SingleObjectMixin, ListView):
 
 
 def page_not_found(request):
-    response = render_to_response('errors/404.html', {}, context_instance=RequestContext(request))
+    response = render(request, template_name='errors/404.html')
     response.status_code = 404
     return response
 
 
 def redirect_500_error(request):
-    return render_to_response('errors/500.html', {}, context_instance=RequestContext(request))
+    response = render(request, template_name='errors/500.html')
+    response.status_code = 500
+    return response
 
 
 class AttachedCommentMixin(object):

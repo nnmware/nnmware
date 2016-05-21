@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
-from django.core.management.base import BaseCommand
+# nnmware(c)2012-2016
+# Clean old visitors path
+
 from datetime import datetime, timedelta
+
+from django.core.management.base import BaseCommand
+
 from nnmware.core.models import VisitorHit
 
 

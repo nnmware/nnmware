@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Common ajax functions
+
 from __future__ import unicode_literals
 from io import FileIO, BufferedWriter
 from hashlib import md5
@@ -44,7 +47,7 @@ def ajax_answer_lazy(payload):
 
 
 def as_json(errors):
-    return dict((k, map(unicode, v)) for k, v in errors.items())
+    return dict((k, v) for k, v in errors.items())
 
 
 def img_check_rights(request, obj):
@@ -67,6 +70,7 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
     return ajax_answer_lazy(payload)
 
 
+# noinspection PyBroadException
 def img_delete(request, object_id):
     # Link used for User press Delete for Image
     pic = get_object_or_404(Pic, id=int(object_id))
@@ -156,6 +160,7 @@ def get_video(request):
     return ajax_answer_lazy(payload)
 
 
+# noinspection PyBroadException
 def push_video(request, object_id):
     # Link used for User press Like on Video Detail Page
     try:
@@ -188,6 +193,7 @@ def push_video(request, object_id):
 
 def push_tag(request, object_id):
     # Link used for User follow tag
+    # noinspection PyBroadException
     try:
         tag = Tag.objects.get(id=object_id)
         ctype = ContentType.objects.get_for_model(Tag)
@@ -346,6 +352,7 @@ def notice_delete(request, object_id):
 
 
 def delete_message(request, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError

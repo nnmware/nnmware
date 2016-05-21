@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Auth backends
+
 from __future__ import unicode_literals
-from cStringIO import StringIO
+from io import StringIO
 import os
 from hashlib import md5
-import urllib2
-from urlparse import urlparse
+from urllib.request import urlopen
+from urllib.parse import urlparse
 from PIL import Image
 
 from django.conf import settings
@@ -42,6 +45,7 @@ class EmailAuthBackend(object):
 
 
 class UsernameOrEmailAuthBackend(object):
+    # noinspection PyBroadException
     def authenticate(self, username=None, password=None):
         if '@' in username:
             kwargs = {'email': username}
@@ -64,7 +68,7 @@ class UsernameOrEmailAuthBackend(object):
 
 def image_from_url(url):
     upload_dir = setting('THUMBNAIL_DIR', 'thumbnails')
-    img_file = urllib2.urlopen(url)
+    img_file = urlopen(url)
     im = StringIO(img_file.read())
     image = Image.open(im)
     if image.mode not in ('L', 'RGB'):

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-# Base abstract classed nnmware(c)2013-2016
+# nnmware(c)2012-2016
+# Base abstract classes
+
 from __future__ import unicode_literals
 from io import StringIO
 import os

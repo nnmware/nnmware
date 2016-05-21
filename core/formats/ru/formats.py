@@ -1,5 +1,6 @@
-# -*- encoding: utf-8 -*-
-#
+# -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Core views and mixins
 
 # The *_FORMAT strings use the Django date format syntax,
 # see http://docs.djangoproject.com/en/dev/ref/templates/builtins/#date
