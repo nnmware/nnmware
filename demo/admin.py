@@ -1,26 +1,15 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Demo
+
+from __future__ import unicode_literals
 
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.flatpages.models import FlatPage
-from django.contrib.flatpages.admin import FlatPageAdmin
 from django import forms
-
-
-# Flatpages
-class FlatPageWysiwygAdmin(FlatPageAdmin):
-
-    class Media:
-        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
-
-
-# Re-register admin FlatPage
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, FlatPageWysiwygAdmin)
 
 
 class MyUserChangeForm(UserChangeForm):

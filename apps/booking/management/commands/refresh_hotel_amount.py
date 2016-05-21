@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from django.core.management.base import BaseCommand
+
 from nnmware.apps.booking.models import Hotel
 
 

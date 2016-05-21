@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Shop models
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -145,7 +148,6 @@ class ParameterUnit(Unit):
     pass
 
 
-
 class ProductParameterCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Category of parameter'))
 
@@ -167,7 +169,6 @@ class ProductParameter(Parameter):
         verbose_name_plural = _("Product parameters")
 
 
-
 class ProductParameterValue(AbstractContent):
     parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
     value = std_text_field(_('Value of parameter'))
@@ -179,11 +180,11 @@ class ProductParameterValue(AbstractContent):
         verbose_name_plural = _("Product parameters values")
 
     def __str__(self):
+        # noinspection PyBroadException
         try:
             return "%s: %s %s" % (self.parameter.name, self.value, self.parameter.unit.name)
         except:
             return "%s: %s" % (self.parameter.name, self.value)
-
 
 
 class Basket(AbstractDate):
@@ -203,6 +204,7 @@ class Basket(AbstractDate):
         return self.quantity * int(self.product.with_discount)
 
     def __str__(self):
+        # noinspection PyBroadException
         try:
             return "%s" % self.user.username
         except:
@@ -239,7 +241,6 @@ class OrdersManager(models.Manager):
 
 class DeliveryMethod(AbstractDeliveryMethod):
     pass
-
 
 
 class Order(AbstractDate, AbstractIP):
@@ -313,7 +314,6 @@ class Order(AbstractDate, AbstractIP):
         return result
 
 
-
 class OrderItem(MoneyBase):
     """
     Definition of order's details.
@@ -333,7 +333,6 @@ class OrderItem(MoneyBase):
     @property
     def fullamount(self):
         return self.quantity * self.amount
-
 
 
 class DeliveryAddress(AbstractLocation):
@@ -379,7 +378,6 @@ class DeliveryAddress(AbstractLocation):
         return result
 
 
-
 class Feedback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     name = std_text_field(_('Name'))
@@ -403,7 +401,6 @@ class Feedback(AbstractIP):
         return reverse('feedback_detail', args=[self.pk])
 
 
-
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True,
                              blank=True)
@@ -421,7 +418,6 @@ class Review(AbstractIP, AbstractImg):
 
     def __str__(self):
         return "%s - %s" % (self.name, self.created_date)
-
 
 
 class ShopText(AbstractTeaser):
@@ -473,7 +469,6 @@ class SpecialOffer(AbstractOffer):
         return reverse('special_offer', kwargs={'pk': self.pk})
 
 
-
 class ShopCallback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     clientname = std_text_field(_('Client Name'))
@@ -489,7 +484,6 @@ class ShopCallback(AbstractIP):
 
     def __str__(self):
         return "%s - %s" % (self.clientname, self.created_date)
-
 
 
 class ShopSlider(AbstractImg):

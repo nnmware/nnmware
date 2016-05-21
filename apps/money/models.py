@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Money models
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -26,7 +29,6 @@ class Currency(models.Model):
 
     def __str__(self):
         return "%s :: %s" % (self.code, self.name)
-
 
 
 class ExchangeRate(models.Model):
@@ -67,7 +69,6 @@ TRANSACTION_STATUS = (
 )
 
 
-
 class Transaction(MoneyBase, AbstractContent):
     """
     Transaction(no more words)
@@ -75,7 +76,7 @@ class Transaction(MoneyBase, AbstractContent):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"))
 
     actor_ctype = models.ForeignKey(ContentType, verbose_name=_("Object Content Type"), null=True, blank=True,
-        related_name='transaction_object', on_delete=models.SET_NULL)
+                                    related_name='transaction_object', on_delete=models.SET_NULL)
     actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), blank=True)
     actor = GenericForeignKey('actor_ctype', 'actor_oid')
     date = models.DateTimeField(verbose_name=_("Date"), default=now)
@@ -85,9 +86,6 @@ class Transaction(MoneyBase, AbstractContent):
         unique_together = ('user', 'actor_ctype', 'actor_oid', 'date', 'amount', 'currency')
         verbose_name = _("Transaction")
         verbose_name_plural = _("Transactions")
-
-#    def __unicode__(self):
-#        return '%s -> %s' % (self.user, self.date)
 
     def __str__(self):
         return _("User: %(user)s :: Date: %(date)s :: Object: %(actor)s :: Amount: %(amount)s %(currency)s") % \
@@ -106,7 +104,6 @@ BILL_STATUS = (
     (BILL_PAID, _("Paid")),
     (BILL_CANCELED, _("Cancelled")),
 )
-
 
 
 class Bill(MoneyBase, AbstractContent):
@@ -132,7 +129,6 @@ class Bill(MoneyBase, AbstractContent):
 
     def docs(self):
         return Doc.objects.for_object(self)
-
 
 
 class AbstractDeliveryMethod(MoneyBase):

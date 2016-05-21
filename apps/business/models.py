@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Business models
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -34,7 +37,6 @@ class TypeEmployer(AbstractName):
         return reverse('employers_profile', kwargs={'slug': self.slug})
 
 
-
 class TypeEmployerProfile(AbstractName):
     employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
@@ -48,7 +50,6 @@ class TypeEmployerProfile(AbstractName):
 
     def get_absolute_url(self):
         return reverse('employers_group', kwargs={'slug': self.slug})
-
 
 
 class TypeEmployerOther(AbstractName):
@@ -142,6 +143,7 @@ class AbstractEmployee(AbstractImg):
         abstract = True
 
     def delete(self, *args, **kwargs):
+        # noinspection PyBroadException
         try:
             remove_thumbnails(self.agent_img.path)
             remove_file(self.agent_img.path)

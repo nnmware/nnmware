@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Shop template tags
 
 from datetime import timedelta
 from xml.etree.ElementTree import Element, SubElement, tostring
@@ -128,6 +130,7 @@ def special_offer():
 @register.simple_tag
 def shop_reviews():
     result = []
+    # noinspection PyBroadException
     try:
         vip = Review.objects.filter(vip=True).order_by('?')[0]
         result.append(vip)
@@ -146,6 +149,7 @@ def main_page_products():
 @register.simple_tag(takes_context=True)
 def compare_products(context):
     request = context['request']
+    # noinspection PyBroadException
     try:
         compare = request.session['shop_compare']
         return Product.objects.filter(pk__in=compare)
@@ -156,5 +160,3 @@ def compare_products(context):
 @register.simple_tag
 def shop_slider():
     return ShopSlider.objects.filter(visible=True)
-
-

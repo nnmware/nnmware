@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Shop views
+
 from __future__ import unicode_literals
-from __builtin__ import int, super, object
 from datetime import timedelta
 
 from django.conf import settings
@@ -125,9 +127,8 @@ class ProductDetail(SingleObjectMixin, ListView):
         kwargs['object'] = self.object
         context = super(ProductDetail, self).get_context_data(**kwargs)
         object_type = ContentType.objects.get_for_model(self.object)
-        param = ProductParameterValue.objects.filter(content_type__pk=object_type.id,
-                                                     object_id=self.object.id).order_by('parameter__category',
-                                                                                        'parameter__name')
+        param = ProductParameterValue.objects.filter(content_type__pk=object_type.id, object_id=self.object.id)\
+            .order_by('parameter__category', 'parameter__name')
         context['parameters'] = param
         return context
 
@@ -312,6 +313,7 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.save()
+        # noinspection PyBroadException
         try:
             recipients = [self.request.user.email]
             mail_dict = {'order': self.object}

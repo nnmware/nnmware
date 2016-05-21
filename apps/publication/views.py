@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Publication views
+
 from __future__ import unicode_literals
 
 from django.contrib import messages
@@ -61,8 +64,7 @@ class PublicationMyList(CurrentUserAuthenticated, ListView):
     def get_queryset(self):
         result = Publication.objects.exclude(status=STATUS_LOCKED)
         result = result.filter(user=self.request.user)
-        messages.add_message(self.request, messages.INFO,
-            _('You have %(len)s active articles') % {'len': len(result)})
+        messages.add_message(self.request, messages.INFO, _('You have %(len)s active articles') % {'len': len(result)})
         return result
 
 
@@ -169,8 +171,7 @@ class PublicationEditEditor(CurrentUserEditor, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PublicationEditEditor, self).get_context_data(**kwargs)
-        context['action'] = reverse("article_edit_editor",
-            args=[self.object.id])
+        context['action'] = reverse("article_edit_editor", args=[self.object.id])
         return context
 
 
@@ -182,8 +183,7 @@ class PublicationEditAdmin(CurrentUserSuperuser, UpdateView):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
         context = super(PublicationEditAdmin, self).get_context_data(**kwargs)
-        context['action'] = reverse("article_edit_admin",
-            args=[self.object.id])
+        context['action'] = reverse("article_edit_admin", args=[self.object.id])
         return context
 
 

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Money admin
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -16,9 +19,10 @@ class TransactionAdmin(admin.ModelAdmin):
 #    readonly_fields = ('actor_ctype','actor_oid','target_ctype','target_oid')
     fieldsets = (
         (_("Transaction"), {"fields": [("user", "date"),
-            ('amount', 'currency', 'status'),
-            ('actor_ctype', 'actor_oid'),
-            ('content_type', 'object_id')]}),)
+                                       ('amount', 'currency', 'status'),
+                                       ('actor_ctype', 'actor_oid'),
+                                       ('content_type', 'object_id')]})
+    )
 
     _readonly_fields = []  # Default fields that are readonly for everyone.
 
@@ -39,11 +43,12 @@ class BillAdmin(admin.ModelAdmin):
     # readonly_fields = ('target_ctype','target_oid')
     fieldsets = (
         (_("Bill"), {"fields": [("user", "date_billed"),
-            ('amount', 'currency'),
-            ('content_type', 'object_id'),
-            ('invoice_number', 'description_small'),
-            ('description',),
-            ('status', 'date')]}),)
+                                ('amount', 'currency'),
+                                ('content_type', 'object_id'),
+                                ('invoice_number', 'description_small'),
+                                ('description',),
+                                ('status', 'date')]})
+    )
 
 
 @admin.register(Currency)
@@ -57,5 +62,5 @@ class ExchangeRateAdmin(admin.ModelAdmin):
     list_display = ('currency', 'date', 'nominal', 'official_rate', 'rate')
     search_fields = ('currency',)
     fieldsets = (
-        (_("Exchange Rate"), {"fields": [("currency", "date"),
-            ('nominal', 'official_rate', 'rate'), ]}),)
+        (_("Exchange Rate"), {"fields": [("currency", "date"), ('nominal', 'official_rate', 'rate')]})
+    )

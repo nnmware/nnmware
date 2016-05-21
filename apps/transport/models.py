@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Transport models
+
 from __future__ import unicode_literals
 
 from django.db import models

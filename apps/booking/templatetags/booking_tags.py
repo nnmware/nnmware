@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from __future__ import unicode_literals
 from hashlib import sha1
 from datetime import timedelta
@@ -432,6 +435,7 @@ def hotels_moscow_count():
 
 @register.simple_tag
 def hotels_city_count(slug):
+    # noinspection PyBroadException
     try:
         result = Hotel.objects.filter(city__slug=slug).count()
         return result

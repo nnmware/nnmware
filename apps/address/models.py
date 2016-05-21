@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Address models
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -24,6 +27,7 @@ class Address(AbstractName):
 
     @property
     def get_name_add(self):
+        # noinspection PyBroadException
         try:
             if get_language() == 'en':
                 if self.name_add_en:
@@ -94,7 +98,7 @@ class City(Address, MetaGeo):
     region = models.ForeignKey(Region, blank=True, null=True)
     country = models.ForeignKey(Country, blank=True, null=True)
     time_offset = models.SmallIntegerField(verbose_name=_('Time offset from Greenwich'),
-                                           choices=[(i, i) for i in range(-11,13)], default=0)
+                                           choices=[(i, i) for i in range(-11, 13)], default=0)
 
     class Meta:
         unique_together = (('name', 'region'),)
@@ -134,8 +138,8 @@ class AbstractGeo(MetaGeo):
     def geoaddress(self):
         result = self.address
         addr = result.split(',')
+        # noinspection PyBroadException
         try:
-            r = int(addr[1])
             result = "%s %s" % (addr[1], addr[0])
         except:
             pass
@@ -152,7 +156,6 @@ class TourismCategory(AbstractName):
         verbose_name = _("Tourism Place Category")
         verbose_name_plural = _("Tourism Places Categories")
         ordering = ['position', ]
-
 
 
 class Tourism(Address, AbstractGeo):
@@ -176,7 +179,6 @@ class Tourism(Address, AbstractGeo):
             if Tourism.objects.filter(slug=self.slug).exclude(pk=self.pk).count():
                 self.slug = self.pk
         super(Tourism, self).save(*args, **kwargs)
-
 
 
 class StationMetro(Address, AbstractGeo):
@@ -209,6 +211,7 @@ class AbstractLocation(models.Model):
         abstract = True
 
     def geoaddress(self):
+        # noinspection PyBroadException
         try:
             return "%s %s, %s" % (self.house_number, self.street, self.city)
         except:
@@ -232,7 +235,6 @@ class AbstractLocation(models.Model):
         if self.flat_number:
             result += self.flat_number
         return result
-
 
 
 class Institution(AbstractName):

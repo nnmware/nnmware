@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Board models
+
 from __future__ import unicode_literals
 
 from django.core.urlresolvers import reverse
@@ -27,15 +30,13 @@ class Board(AbstractName, AbstractDate, AbstractSeller):
     category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
+    secured = models.BooleanField(verbose_name=_('Site-only contact'), default=False)
 
     class Meta:
         verbose_name = _("Board")
         verbose_name_plural = _("Boards")
 
     slug_detail = "board_detail"
-
-    secured = models.BooleanField(verbose_name=_('Site-only contact'),
-        default=False)
 
     def get_absolute_url(self):
         return reverse("board_detail", args=[self.id])

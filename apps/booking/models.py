@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking models
+
 from __future__ import unicode_literals
 from decimal import Decimal
 from uuid import uuid4
@@ -41,7 +44,6 @@ class HotelOptionCategory(AbstractName):
         verbose_name = _("Hotel Option Category")
         verbose_name_plural = _("Hotel Option Categories")
         ordering = ['position', ]
-
 
 
 class HotelOption(AbstractName):
@@ -138,7 +140,6 @@ TYPEFOOD = (
     (TYPEFOOD_HBPLUS, _("HB+ - Half board + local drinks")),
     (TYPEFOOD_FBPLUS, _("FB+ - Full board + local drinks")),
 )
-
 
 
 class Hotel(AbstractName, AbstractGeo, HotelPoints):
@@ -304,8 +305,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         self.save()
 
     def tourism_places(self):
-        places = Tourism.objects.raw(places_near_object(self, settings.TOURISM_PLACES_RADIUS,
-                                                        'address_tourism'))
+        places = Tourism.objects.raw(places_near_object(self, settings.TOURISM_PLACES_RADIUS, 'address_tourism'))
         all_places = []
         for p in places:
             all_places.append(p.id)
@@ -317,6 +317,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
         return users_id
 
     def __str__(self):
+        # noinspection PyBroadException
         try:
             return _("%(hotel)s :: %(city)s") % {'hotel': self.get_name, 'city': self.city.get_name, }
         except:
@@ -344,7 +345,6 @@ class RoomOptionCategory(AbstractName):
     class Meta:
         verbose_name = _("Room Option Category")
         verbose_name_plural = _("Room Option Categories")
-
 
 
 class RoomOption(AbstractName):
@@ -384,7 +384,6 @@ PLACES_CHOICES = (
     (PLACES_SEVEN, _("Seven")),
     (PLACES_EIGHT, _("Eight")),
 )
-
 
 
 class Room(AbstractName):
@@ -427,6 +426,7 @@ class Room(AbstractName):
         return 0
 
     def amount_date_guests(self, on_date, guests):
+        # noinspection PyBroadException
         try:
             s = SettlementVariant.objects.select_related().filter(room=self, enabled=True, settlement__gte=guests).\
                 order_by('settlement')[0]
@@ -435,6 +435,7 @@ class Room(AbstractName):
             return None
 
     def discount_on_date(self, on_date):
+        # noinspection PyBroadException
         try:
             return Discount.objects.get(room=self, date=on_date).discount
         except:
@@ -465,7 +466,6 @@ class Room(AbstractName):
     def simple_discount(self):
         result, created = SimpleDiscount.objects.get_or_create(room=self)
         return result
-
 
 
 class SettlementVariant(models.Model):
@@ -533,7 +533,6 @@ BOOKING_CHOICES = (
     (BOOKING_GB, _("Guaranteed booking")),
     (BOOKING_NR, _("Non-return rate")),
 )
-
 
 
 class Booking(MoneyBase, AbstractIP):
@@ -637,7 +636,6 @@ class Booking(MoneyBase, AbstractIP):
         super(Booking, self).save(*args, **kwargs)
 
 
-
 class AgentPercent(models.Model):
     hotel = models.ForeignKey(Hotel)
     date = models.DateField(verbose_name=_("From date"), db_index=True)
@@ -656,7 +654,6 @@ class AgentPercent(models.Model):
                                                                                  percent=self.percent)
 
 
-
 class Review(AbstractIP, HotelPoints):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     hotel = models.ForeignKey(Hotel)
@@ -673,7 +670,6 @@ class Review(AbstractIP, HotelPoints):
     def __str__(self):
         return _("Review client %(client)s for hotel %(hotel)s is -> %(review)s") % dict(
             client=self.user.get_full_name(), hotel=self.hotel.name, review=self.review)
-
 
 
 class Availability(models.Model):
@@ -717,7 +713,6 @@ DISCOUNT_CHOICES = (
     (DISCOUNT_CREDITCARD, _("Creditcard booking discount")),
     (DISCOUNT_NORMAL, _("Normal discount")),
 )
-
 
 
 class Discount(AbstractName, AbstractDate):
@@ -779,7 +774,6 @@ class Discount(AbstractName, AbstractDate):
             return None
 
 
-
 class RoomDiscount(models.Model):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"))
@@ -794,7 +788,6 @@ class RoomDiscount(models.Model):
 
     def __str__(self):
         return _('Discount on %(date)s - %(val)s') % dict(date=self.date, val=self.value)
-
 
 
 class SimpleDiscount(models.Model):
@@ -815,7 +808,6 @@ class SimpleDiscount(models.Model):
 
     def __str__(self):
         return _('Discount for room %(room)s in %(hotel)s') % dict(room=self.room.name, hotel=self.room.hotel.name)
-
 
 
 class PlacePrice(MoneyBase):
@@ -858,6 +850,7 @@ class RequestAddHotel(AbstractIP):
 
 
 def update_hotel_point(sender, instance, **kwargs):
+    # noinspection PyBroadException
     try:
         hotel = instance.hotel
         all_points = Review.objects.filter(hotel=hotel).aggregate(Avg('food'), Avg('service'),
@@ -876,7 +869,6 @@ def update_hotel_point(sender, instance, **kwargs):
 
 signals.post_save.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
 signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnmware_id")
-
 
 
 class HotelSearch(AbstractIP):

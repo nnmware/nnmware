@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Shop admin
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -33,17 +36,13 @@ class ProductAdmin(admin.ModelAdmin):
                                    ('shop_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('teaser',), ('discount', 'discount_percent', 'special_offer'),
-                                   ('colors',), ('materials',), ('related_products',)]}),)
+                                   ('colors',), ('materials',), ('related_products',)]})
+    )
 
 
 @admin.register(ProductCategory)
 class ProductCategoryAdmin(TreeAdmin):
     pass
-
-    class Media:
-        js = ('/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js')
-        # list_display = ("name", "_parents_repr")
 
 
 @admin.register(ProductParameter)
@@ -72,7 +71,8 @@ class OrderItemInline(admin.StackedInline):
     extra = 0
     fields = (
         ('product_pn', 'product_name'), ('quantity', 'amount'), ('product_url', 'product_origin'),
-        ('is_delivery', 'addon'))
+        ('is_delivery', 'addon')
+    )
 
 
 @admin.register(Order)
@@ -89,7 +89,7 @@ class OrderAdmin(admin.ModelAdmin):
                                  ("created_date", 'updated_date'),
                                  ('address', 'delivery'),
                                  ('buyer_comment', 'seller_comment'),
-                                 ('comment', )]}),
+                                 ('comment', )]})
     )
     ordering = ('-created_date', 'user')
 
@@ -113,7 +113,8 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
                                             ('country', 'region'),
                                             ("zipcode", 'city', 'street'),
                                             ('house_number', 'building', 'flat_number'),
-                                            ('phone', 'skype')]}),)
+                                            ('phone', 'skype')]})
+    )
 
 
 @admin.register(Feedback)
@@ -121,7 +122,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date', "ip", 'user_agent')
     fieldsets = (
         (_("Feedback"), {"fields": [('name', 'email'), ('message',), ('answer',),
-                                    ('created_date', 'ip', 'user_agent'), ]}),
+                                    ('created_date', 'ip', 'user_agent'), ]})
     )
     ordering = ('-created_date', 'name', 'email')
     readonly_fields = ('ip', 'user_agent', 'created_date')
@@ -132,7 +133,7 @@ class ShopCallbackAdmin(admin.ModelAdmin):
     list_display = ("clientname", "clientphone", 'created_date', 'closed', 'quickorder', "ip", 'user_agent')
     fieldsets = (
         (_("Shop Callback"), {"fields": [('clientname', 'clientphone'), ('created_date', 'closed', 'quickorder'),
-                                         ('description',), ('ip', 'user_agent'), ]}),
+                                         ('description',), ('ip', 'user_agent')]}),
     )
     ordering = ('-created_date', 'clientname', 'clientphone')
     readonly_fields = ('ip', 'user_agent', 'created_date')
@@ -143,7 +144,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
     fieldsets = (
         (_("Review"), {"fields": [('name', 'w_position', 'visible'), ('vip', 'img'), ('message',),
-                                  ('created_date', 'ip', 'user_agent'), ('user',)]}),
+                                  ('created_date', 'ip', 'user_agent'), ('user',)]})
     )
     ordering = ('-created_date', 'user', 'visible')
     readonly_fields = ('ip', 'user_agent', 'created_date')
@@ -153,21 +154,18 @@ class ReviewAdmin(admin.ModelAdmin):
 class ShopSliderAdmin(admin.ModelAdmin):
     list_display = ('pk', 'thumbnail', 'slider_link', 'visible')
     fieldsets = (
-        (_("ShopSlider"), {"fields": [('img',), ('visible', 'slider_link')]}),
+        (_("ShopSlider"), {"fields": [('img',), ('visible', 'slider_link')]})
     )
     ordering = ('visible',)
 
 
 @admin.register(SpecialOffer)
 class SpecialOfferAdmin(admin.ModelAdmin):
-    class Media:
-        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
     list_display = ("title", 'start_date', 'end_date', 'thumbnail', 'enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date', 'end_date'),
-                                        ('enabled', 'slug', 'position'), ('img',), ('text',)]}),
+                                        ('enabled', 'slug', 'position'), ('img',), ('text',)]})
     )
     ordering = ('-start_date', '-end_date')
 
@@ -176,7 +174,8 @@ class SpecialOfferAdmin(admin.ModelAdmin):
 class ShopNewsAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Shop News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]}),)
+        (_("Shop News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+    )
     ordering = ('-created_date', 'title')
 
 
@@ -184,7 +183,8 @@ class ShopNewsAdmin(admin.ModelAdmin):
 class ShopArticleAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Shop Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]}), )
+        (_("Shop Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+    )
     ordering = ('-created_date', 'title')
 
 
@@ -193,7 +193,7 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
     list_display = ("name", "amount", 'enabled_for_registered', 'enabled_for_unregistered', 'position')
     fieldsets = (
         (_("Delivery Method"), {"fields": [('name', 'amount'), ('enabled_for_registered', 'enabled_for_unregistered'),
-                                           ('position',), ]}),
+                                           ('position',), ]})
     )
     ordering = ('position', 'name')
 
@@ -201,10 +201,6 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
 @admin.register(ServiceCategory)
 class ServiceCategoryAdmin(TreeAdmin):
     pass
-
-    class Media:
-        js = ['/static/grappelli/tinymce/jscripts/tiny_mce/tiny_mce.js',
-              '/static/grappelli/tinymce_setup/tinymce_setup.js', ]
 
 
 @admin.register(Service)
@@ -221,4 +217,5 @@ class ServiceAdmin(admin.ModelAdmin):
                                    ('shop_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('discount', 'discount_percent', 'special_offer'),
-                                   ('related_services',)]}),)
+                                   ('related_services',)]})
+    )

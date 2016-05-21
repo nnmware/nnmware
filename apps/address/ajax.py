@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Address ajax code(at current time- for autocomplete)
+
 from __future__ import unicode_literals
 
 from django.db.models.query_utils import Q

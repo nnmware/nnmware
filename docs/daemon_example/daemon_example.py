@@ -43,13 +43,13 @@ def get_daemon_pid():
 
 
 def stopd():
-    print 'Stopping Test Daemon...\n\r',
+    print('Stopping Test Daemon...\n\r')
     if not os.path.exists('%s/%s' % (workdir, pidfile)):
-        print 'Daemon does not appear to be running'
+        print ('Daemon does not appear to be running')
         return
     pid_ = get_daemon_pid()
     sys.stdout = sys.stderr = Log(open('%s/%s' % (workdir, logfile), 'a+'))
-    print 'Daemon stopped at ' + time.strftime("%Y/%m/%d %H.%M.%S")
+    print ('Daemon stopped at ' + time.strftime("%Y/%m/%d %H.%M.%S"))
     os.popen('kill -9 %d' % pid_)
     os.remove('%s/%s' % (workdir, pidfile))
 
@@ -68,7 +68,7 @@ def main():
     os.setegid(0)     # set group
     os.seteuid(0)     # set user
     # start the user program here:
-    print 'Daemon running at ' + time.strftime("%Y/%m/%d %H.%M.%S")
+    print('Daemon running at ' + time.strftime("%Y/%m/%d %H.%M.%S"))
 
     s = socket(AF_INET, SOCK_STREAM)    # Create the TCP Socket
     s.bind((statHost, statPort))        # bind it to the server port
@@ -83,7 +83,7 @@ def main():
                 result = address[0] + ' '
                 for item in r:
                     result += item + ' '
-                print result
+                print (result)
     except KeyboardInterrupt:
         stopd()
         # print 'Daemon normal exit at '+time.strftime("%Y/%m/%d %H.%M.%S")
@@ -93,7 +93,7 @@ def main():
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         if sys.argv[1] == 'start' and os.path.exists('%s/%s' % (workdir, pidfile)):
-            print 'Process appears to be running'
+            print('Process appears to be running')
             sys.exit()
         if sys.argv[1] == 'stop':
             stopd()
@@ -104,8 +104,8 @@ if __name__ == "__main__":
         if pid > 0:
             # exit first parent
             sys.exit(0)
-    except OSError, e:
-        print >> sys.stderr, "fork #1 failed: %d (%s)" % (e.errno, e.strerror)
+    except OSError as e:
+        print("fork #1 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
     # decouple from parent environment
@@ -120,8 +120,8 @@ if __name__ == "__main__":
             # exit from second parent
             open('%s/%s' % (workdir, pidfile), 'w').write("%d" % pid)
             sys.exit(0)
-    except OSError, e:
-        print >> sys.stderr, "fork #2 failed: %d (%s)" % (e.errno, e.strerror)
+    except OSError as e:
+        print("fork #2 failed: %d (%s)" % (e.errno, e.strerror), file=sys.stderr)
         sys.exit(1)
 
     # start the daemon main loop

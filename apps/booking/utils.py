@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -11,6 +14,7 @@ SITENAME = setting('SITENAME', 'www.nnmware.com')
 
 def guests_from_request(request):
     guests_get = request.GET.get('guests') or None
+    # noinspection PyBroadException
     try:
         guests = int(guests_get)
     except:

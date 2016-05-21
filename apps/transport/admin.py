@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Transport admin
+
 from __future__ import unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
@@ -12,10 +15,9 @@ from nnmware.core.admin import ColorAdmin
 class VehicleBaseParamAdmin(admin.ModelAdmin):
     list_display = ('name', 'position', 'slug')
     fieldsets = (
-        (_('Type of vehicle'), {"fields": [('name', 'position'),
-                                ('description',)]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_('Type of vehicle'), {"fields": [('name', 'position'), ('description',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]})
+    )
     ordering = ('position', 'name',)
 
 
@@ -27,7 +29,8 @@ class VehicleKindAdmin(VehicleBaseParamAdmin):
 class VehicleBaseParamForAdmin(VehicleBaseParamAdmin):
     fieldsets = (
         (_('Type of vehicle'), {"fields": [('name', 'position'), ('type_vehicles', ), ('description',)]}),
-        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]}),)
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]})
+    )
 
 
 @admin.register(VehicleTransmission)
@@ -59,7 +62,7 @@ class VehicleMarkAdmin(VehicleBaseParamForAdmin):
 class VehicleVendorAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Vendor'), {'fields': [('name', 'country', 'website'), ('description',)]}),
-        (_('English'), {'fields': [('name_en', )]}),
+        (_('English'), {'fields': [('name_en', )]})
     )
     list_display = ('name', 'country', 'website')
 
@@ -68,17 +71,14 @@ class VehicleVendorAdmin(admin.ModelAdmin):
 class VehicleAdmin(admin.ModelAdmin):
     list_display = ('name', 'position', 'slug')
     fieldsets = (
-        (_('Vehicle'), {"fields": [('name', 'position'),
-                                ('description',),
-            ('kind', 'color'), ('transmission', 'carcass'),
-            ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
-            ('horsepower', 'displacement'), ('year', 'left_control'),
-            ('features', )]}),
-        (_("Seller"), {"classes": ("collapse",),
-            "fields": [('user', 'company', 'corporate'), ('contact_name', 'contact_email'),
-                       ('contact_phone', ), ('expiration_date', 'sold')]}),
-        (_("English"), {"classes": ("collapse",),
-            "fields": [("name_en",), ("description_en",), ]}),)
+        (_('Vehicle'), {"fields": [('name', 'position'), ('description',), ('kind', 'color'),
+                                   ('transmission', 'carcass'), ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
+                                   ('horsepower', 'displacement'), ('year', 'left_control'), ('features', )]}),
+        (_("Seller"), {"classes": ("collapse",), "fields": [('user', 'company', 'corporate'),
+                                                            ('contact_name', 'contact_email'), ('contact_phone',),
+                                                            ('expiration_date', 'sold')]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
     ordering = ('position', 'name',)
 
 

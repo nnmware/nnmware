@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Publication ajax functions
+
 from __future__ import unicode_literals
 
 from django.contrib.contenttypes.models import ContentType
@@ -39,6 +42,7 @@ def autocomplete_search(request, size=16):
 
 
 def add_param(request, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -52,6 +56,7 @@ def add_param(request, object_id):
         if request.POST['keyparam'] == 'on':
             param.keyparam = True
         param.save()
+        # noinspection PyBroadException
         try:
             unit = param.parameter.unit.name
         except:
@@ -67,6 +72,7 @@ def add_param(request, object_id):
 
 def param_value_delete(request, object_id):
     # Link used when User delete the param value
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -81,10 +87,12 @@ def param_value_delete(request, object_id):
 
 def add_basket(request, object_id):
     # Link used when User add to basket
+    # noinspection PyBroadException
     try:
         p = Product.objects.get(pk=int(object_id))
         if not p.avail or p.quantity < 1 or p.amount <= 0:
             raise AccessError
+        # noinspection PyBroadException
         try:
             color_id = request.POST['color']
             color = ProductColor.objects.get(pk=int(color_id))
@@ -125,6 +133,7 @@ def add_basket(request, object_id):
 
 def delete_basket(request, object_id):
     # Link used when User delete the item from basket
+    # noinspection PyBroadException
     try:
         Basket.objects.get(pk=int(object_id)).delete()
         if request.user.is_authenticated():
@@ -148,6 +157,7 @@ def add_address(request):
     """
     Its Ajax add address in basket
     """
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -206,6 +216,7 @@ def add_address(request):
 
 def delete_address(request, object_id):
     # Link used when User delete the address delivery
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -222,6 +233,7 @@ def push_feedback(request):
     """
     Its Ajax posted feedback
     """
+    # noinspection PyBroadException
     try:
         msg = Feedback()
         msg.ip = request.META['REMOTE_ADDR']
@@ -237,6 +249,7 @@ def push_feedback(request):
 
 
 def push_answer(request, object_id):
+    # noinspection PyBroadException
     try:
         f = Feedback.objects.get(pk=int(object_id))
         f.answer = request.POST.get('answer')
@@ -254,6 +267,7 @@ def push_answer(request, object_id):
 
 def delete_product(request, object_id):
     # Link used when User delete the product
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -270,6 +284,7 @@ def delete_product(request, object_id):
 
 def delete_feedback(request, object_id):
     # Link used when User delete the feedback
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -284,6 +299,7 @@ def delete_feedback(request, object_id):
 
 def delete_comment(request, object_id):
     # Link used when Admin delete the comment
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -297,6 +313,7 @@ def delete_comment(request, object_id):
 
 
 def add_color(request, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -316,6 +333,7 @@ def add_color(request, object_id):
 
 
 def delete_color(request, object_id, color_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -332,6 +350,7 @@ def delete_color(request, object_id, color_id):
 
 
 def add_material(request, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -348,6 +367,7 @@ def add_material(request, object_id):
 
 
 def delete_material(request, object_id, material_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -364,6 +384,7 @@ def delete_material(request, object_id, material_id):
 
 
 def add_related_product(request, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -382,6 +403,7 @@ def add_related_product(request, object_id):
 
 
 def delete_related_product(request, object_id, product_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -408,6 +430,7 @@ def basket_avail(user):
 
 
 def add_compare_product(request, object_id):
+    # noinspection PyBroadException
     try:
         compare = request.session['shop_compare']
     except:
@@ -415,6 +438,7 @@ def add_compare_product(request, object_id):
     product_id = int(object_id)
     if product_id not in compare:
         compare.append(product_id)
+    # noinspection PyBroadException
     try:
         request.session['shop_compare'] = compare
         payload = {'success': True}
@@ -424,6 +448,7 @@ def add_compare_product(request, object_id):
 
 
 def del_compare_product(request, object_id):
+    # noinspection PyBroadException
     try:
         compare = request.session['shop_compare']
     except:
@@ -431,6 +456,7 @@ def del_compare_product(request, object_id):
     product_id = int(object_id)
     if product_id in compare:
         compare.remove(product_id)
+    # noinspection PyBroadException
     try:
         request.session['shop_compare'] = compare
         payload = {'success': True}
@@ -443,6 +469,7 @@ def push_shopcallback(request):
     """
     Its Ajax posted shop callback
     """
+    # noinspection PyBroadException
     try:
         cb = ShopCallback()
         cb.ip = request.META['REMOTE_ADDR']
@@ -465,6 +492,7 @@ def push_quickorder(request):
     """
     Its Ajax posted shop quick order
     """
+    # noinspection PyBroadException
     try:
         cb = ShopCallback()
         cb.ip = request.META['REMOTE_ADDR']

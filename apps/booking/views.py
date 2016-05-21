@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from __future__ import unicode_literals
 from datetime import timedelta
 from decimal import Decimal
 from hashlib import sha1
 from operator import and_
+from functools import reduce
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -973,6 +977,7 @@ class UserBookings(SingleObjectMixin, ListView, CurrentUserCabinetAccess):
 
     def get_queryset(self):
         self.object = self.get_object()
+        # noinspection PyBroadException
         try:
             f_date = self.request.GET.get('from')
             from_date = convert_to_date(f_date)

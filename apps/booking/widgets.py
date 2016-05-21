@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from __future__ import unicode_literals
 import math
 from itertools import chain
@@ -57,8 +60,7 @@ class HotelOptionSelectMultiple(forms.CheckboxSelectMultiple):
                 option_value = force_text(option_value)
                 rendered_cb = cb.render(name, option_value)
                 option_label = conditional_escape(force_text(option_label))
-                output.append('<li>%s <label%s> %s</label></li>' % (
-                    rendered_cb, label_for, option_label))
+                output.append('<li>%s <label%s> %s</label></li>' % (rendered_cb, label_for, option_label))
             output.append('</ul>')
         return mark_safe('\n'.join(output))
 

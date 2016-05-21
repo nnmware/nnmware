@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Realty admin
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -15,8 +18,8 @@ class CompassAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Point of compass"), {"fields": [('name', 'abbreviation'),
-            ('name_en', )]}),)
+        (_("Point of compass"), {"fields": [('name', 'abbreviation'), ('name_en',)]})
+    )
 
 
 @admin.register(MaterialKind)
@@ -26,8 +29,8 @@ class MaterialKindAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Material kind"), {"fields": [('name', 'enabled'),
-            ('name_en', )]}),)
+        (_("Material kind"), {"fields": [('name', 'enabled'), ('name_en',)]})
+    )
 
 
 @admin.register(EstateType)
@@ -37,8 +40,8 @@ class EstateTypeAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Estate type"), {"fields": [('name', 'enabled'),
-            ('name_en', )]}),)
+        (_("Estate type"), {"fields": [('name', 'enabled'), ('name_en',)]})
+    )
 
 
 @admin.register(EstateFeature)
@@ -48,8 +51,8 @@ class EstateFeatureAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Estate feature"), {"fields": [('name', 'enabled'), ('internal', 'external'),
-            ('name_en', )]}),)
+        (_("Estate feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+    )
 
 
 @admin.register(TrimKind)
@@ -59,8 +62,8 @@ class TrimKindAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Trim kind"), {"fields": [('name', 'enabled'), ('internal', 'external'),
-            ('name_en', )]}),)
+        (_("Trim kind"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+    )
 
 
 @admin.register(RmFeature)
@@ -70,8 +73,8 @@ class RmFeatureAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Rm feature"), {"fields": [('name', 'enabled'), ('internal', 'external'),
-            ('name_en', )]}),)
+        (_("Rm feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+    )
 
 
 @admin.register(RmType)
@@ -81,8 +84,8 @@ class RmTypeAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Rm type"), {"fields": [('name', 'enabled'), ('internal', 'external'),
-            ('name_en', )]}),)
+        (_("Rm type"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+    )
 
 
 class RmInline(admin.StackedInline):
@@ -114,10 +117,10 @@ class EstateAdmin(admin.ModelAdmin):
             ('created_date', 'updated_date'),
             ('compass', 'contact_name',), ('contact_email', 'contact_phone')
         ]}),
-        (_("Address"), {"classes": ("collapse",),
-                        "fields": [('country', 'region'), ('city', 'stationmetro'), ('zipcode', 'street'),
-                            ('house_number', 'building'), ('flat_number', )]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en", ), ("description_en",)]}))
+        (_("Address"), {"classes": ("collapse",), "fields": [('country', 'region'), ('city', 'stationmetro'),
+                                                             ('zipcode', 'street'), ('house_number', 'building'),
+                                                             ('flat_number', )]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en", ), ("description_en",)]})
+    )
     ordering = ('-created_date', 'name')
     inlines = [RmInline, ]

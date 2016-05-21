@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Publication admin
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -29,4 +32,3 @@ class PublicationAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'
     search_fields = ('name', 'user__username')
     readonly_fields = ('created_date', 'updated_date')
-

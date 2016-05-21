@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Booking
+
 from __future__ import unicode_literals
 
 from django import forms
@@ -131,8 +134,7 @@ class UserCabinetInfoForm(UserFromRequestForm):
 
     class Meta:
         model = get_user_model()
-        fields = (
-            'first_name', 'last_name', 'subscribe')
+        fields = ('first_name', 'last_name', 'subscribe')
 
 
 class BookingAddForm(UserFromRequestForm):
@@ -181,7 +183,7 @@ class AddDiscountForm(LocaleNamedForm):
     class Meta:
         model = Discount
         fields = ('name', 'choice', 'time_on', 'time_off', 'days', 'at_price_days', 'percentage', 'apply_norefund',
-        'apply_creditcard', 'apply_package', 'apply_period')
+                  'apply_creditcard', 'apply_package', 'apply_period')
 
     def __init__(self, *args, **kwargs):
         super(AddDiscountForm, self).__init__(*args, **kwargs)

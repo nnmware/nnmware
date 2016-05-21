@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Publication views
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -21,7 +24,6 @@ class SiteMixin(object):
     def site(self):
         if not hasattr(self, '_site'):
             self._site = Site.objects.get_current()
-
         return self._site
 
 
@@ -37,8 +39,7 @@ class LatestEntries(Feed, SiteMixin):
         articles = cache.get(key)
 
         if articles is None:
-            articles = \
-                list(Publication.objects.live().order_by('-created_date')[:15])
+            articles = list(Publication.objects.live().order_by('-created_date')[:15])
             cache.set(key, articles, FEED_TIMEOUT)
 
         return articles

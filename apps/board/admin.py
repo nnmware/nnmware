@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Board admin classes
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -12,8 +15,8 @@ from nnmware.core.admin import TreeAdmin
 class BoardCategoryAdmin(TreeAdmin):
     fieldsets = (
         (_("Main"), {"fields": [("name", "slug"), ("parent", "login_required",)]}),
-        (_("Description"), {"classes": ("collapse",),
-                            "fields": [("description",), ("position", "rootnode"), ('admins', )]}),
+        (_("Description"), {"classes": ("collapse",), "fields": [("description",), ("position", "rootnode"),
+                                                                 ('admins',)]})
     )
 
 

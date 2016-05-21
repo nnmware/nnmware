@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+# Shop utils
+
 from __future__ import unicode_literals
 
 from django.conf import settings
@@ -33,6 +36,7 @@ def send_new_order_buyer(order, recipients):
 
 
 def make_order_from_basket(order, basket):
+    # noinspection PyBroadException
     try:
         for item in basket:
             if settings.SHOP_CHECK_QUANTITY:
