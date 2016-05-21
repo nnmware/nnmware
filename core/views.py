@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Core views and mixins
 
 from __future__ import unicode_literals
 from datetime import timedelta

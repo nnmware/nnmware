@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Some financial code lunn- check valid creditcard
 
 from __future__ import unicode_literals
 from datetime import datetime, date, time

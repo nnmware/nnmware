@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
+# nnmware(c)2012-2016
+
 from __future__ import unicode_literals
 
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
 
 from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
     RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Review, SettlementVariant, \
     Availability, PlacePrice, SimpleDiscount, HotelSearch
-
-try:
-    from pytils.translit import slugify
-except:
-    from django.template.defaultfilters import slugify
 
 
 class HotelAdminForm(forms.ModelForm):
@@ -50,23 +47,20 @@ class HotelAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (_("Hotel"), {"fields": [("name", "slug"), ('city', 'address'), ('translit_name', 'addon_city'),
-                                 ('description',),
-                                 ('room_count', 'starcount', 'email'), ('best_offer', 'in_top10', 'work_on_request'),
-                                 ('longitude', 'latitude'), ('schema_transit',)]}),
+                                 ('description',), ('room_count', 'starcount', 'email'),
+                                 ('best_offer', 'in_top10', 'work_on_request'), ('longitude', 'latitude'),
+                                 ('schema_transit',)]}),
         (_("Contacts"), {"fields": [('phone', 'fax'), ('website',), ('contact_email', 'contact_name'),
-                                    ('register_date', )]}),
+                                    ('register_date',)]}),
         (_("Booking"), {"classes": ("collapse",), "fields": [('payment_method',), ('booking_terms',),
-                                                                            ('condition_cancellation',),
-                                                                            ('paid_services',), ('time_on', 'time_off')
-                                                                            ]}),
-        (_("Hotel admins"), {"classes": ("collapse",), "fields": [
-            ('admins',)]}),
-        (_("Hotel options"), {"classes": ("collapse",), "fields": [
-            ('option',)]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en", "address_en"), ("description_en",),
-                                   ('schema_transit_en',), ("booking_terms_en",),
-                                   ('paid_services_en',), ('condition_cancellation_en',)]}),)
+                                                             ('condition_cancellation',), ('paid_services',),
+                                                             ('time_on', 'time_off')]}),
+        (_("Hotel admins"), {"classes": ("collapse",), "fields": [('admins',)]}),
+        (_("Hotel options"), {"classes": ("collapse",), "fields": [('option',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en", "address_en"), ("description_en",),
+                                                             ('schema_transit_en',), ("booking_terms_en",),
+                                                             ('paid_services_en',), ('condition_cancellation_en',)]})
+    )
     ordering = ('-register_date', 'name')
 
 
@@ -76,11 +70,10 @@ class HotelOptionAdmin(admin.ModelAdmin):
     list_filter = ('name', 'category', 'in_search', 'sticky_in_search')
     search_fields = ('name',)
     fieldsets = (
-        (_("Hotel Option"), {"fields": [("name",),
-                                        ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'position'), ('enabled', 'in_search', 'sticky_in_search'), ]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("Hotel Option"), {"fields": [("name",), ('description',)]}),
+        (_("Addons"), {"fields": [('category', 'position'), ('enabled', 'in_search', 'sticky_in_search')]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
 
 #    ordering = ('category','position','name')
 
@@ -90,10 +83,9 @@ class RoomAdmin(admin.ModelAdmin):
     list_display = ('name', 'places', 'hotel')
     search_fields = ('name',)
     fieldsets = (
-        (_("Room"), {"fields": [("name", 'hotel', 'surface_area'), ("typefood", 'places'),
-                                ('description',)]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("Room"), {"fields": [("name", 'hotel', 'surface_area'), ("typefood", 'places'), ('description',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]})
+    )
 
 
 @admin.register(RoomOption)
@@ -101,11 +93,10 @@ class RoomOptionAdmin(admin.ModelAdmin):
     list_display = ('name', 'category', 'position')
     search_fields = ('name',)
     fieldsets = (
-        (_("Room Option"), {"fields": [("name",),
-                                       ('description',)]}),
-        (_("Addons"), {"fields": [('category', 'slug'), ('enabled', 'position'), ]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("Room Option"), {"fields": [("name",), ('description',)]}),
+        (_("Addons"), {"fields": [('category', 'slug'), ('enabled', 'position')]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
     ordering = ('category', 'position', 'name')
 
 
@@ -114,10 +105,9 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     fieldsets = (
-        (_("Payment method"), {"fields": [("name", 'use_card'),
-                                          ('description',)]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("Payment method"), {"fields": [("name", 'use_card'), ('description',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
 
 
 @admin.register(HotelType)
@@ -126,8 +116,8 @@ class HotelTypeAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     fieldsets = (
         (_("Hotel type"), {"fields": [("name", ), ('description',)]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
 
 
 @admin.register(RoomOptionCategory)
@@ -135,10 +125,10 @@ class RoomOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'name_en', 'enabled', 'slug')
     search_fields = ('name',)
     fieldsets = (
-        (_("Room Option Category"), {"fields": [("name", 'slug'),
-                                                ('description',)]}),
+        (_("Room Option Category"), {"fields": [("name", 'slug'), ('description',)]}),
         (_("Addons"), {"fields": [('position',), ('enabled',), ]}),
-        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]}),)
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
 
 
 @admin.register(HotelOptionCategory)
@@ -146,47 +136,33 @@ class HotelOptionCategoryAdmin(admin.ModelAdmin):
     list_display = ('__str__',)
     search_fields = ('name',)
     fieldsets = (
-        (_("Hotel Option Category"), {"fields": [("name", 'slug'),
-                                                 ('description',)]}),
-        (_("Addons"), {"fields": [('position',), ('enabled',), ('icon',), ]}),
-        (_("English"), {"classes": ("collapse",),
-                        "fields": [("name_en",), ("description_en",), ]}),)
+        (_("Hotel Option Category"), {"fields": [("name", 'slug'), ('description',)]}),
+        (_("Addons"), {"fields": [('position',), ('enabled',), ('icon',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
+    )
 
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'from_date', 'to_date', 'settlement', 'guests', 'amount', 'status', 'date',
-                    'uuid', 'btype', 'enabled')
+    list_display = ('user', 'from_date', 'to_date', 'settlement', 'guests', 'amount', 'status', 'date', 'uuid',
+                    'btype', 'enabled')
     search_fields = ('from_date',)
     readonly_fields = ('uuid', 'ip', 'user_agent', 'currency', 'settlement', 'hotel', 'btype')
     fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
-                                         ('from_date', 'to_date', 'cancel_time'),
-                                         ('settlement', 'hotel'),
-                                         ('last_name', 'first_name'), ('middle_name', 'date'),
-                                         ('phone', 'email'),
-                                         ('amount', 'currency'),
-                                         ('hotel_sum', 'commission'),
-                                         ('freecancel', 'penaltycancel'),
-                                         ('uuid', 'enabled'),
-                                         ('ip', 'user_agent')]}),
+        (_("Booking Event"), {"fields": [("user", 'status', 'guests'), ('from_date', 'to_date', 'cancel_time'),
+                                         ('settlement', 'hotel'), ('last_name', 'first_name'), ('middle_name', 'date'),
+                                         ('phone', 'email'), ('amount', 'currency'), ('hotel_sum', 'commission'),
+                                         ('freecancel', 'penaltycancel'), ('uuid', 'enabled'), ('ip', 'user_agent')]}),
         (_("Credit card"), {"classes": ("collapse",), "fields": [("card_number", 'card_valid'),
-                                                                                ('card_holder', 'card_cvv2')]}),
-        (_("Addons"), {"classes": ("collapse",),
-                       "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
+                                                                 ('card_holder', 'card_cvv2')]}),
+        (_("Addons"), {"classes": ("collapse",), "fields": [('settlement_txt',), ('hotel_txt',), ('comment',)]})
     )
     no_root_fieldsets = (
-        (_("Booking Event"), {"fields": [("user", 'status', 'guests'),
-                                         ('from_date', 'to_date', 'cancel_time'),
-                                         ('settlement', 'hotel'),
-                                         ('last_name', 'first_name'), ('middle_name', 'date'),
-                                         ('phone', 'email'),
-                                         ('amount', 'currency'),
-                                         ('hotel_sum', 'commission'),
-                                         ('uuid', 'enabled'),
-                                         ('ip', 'user_agent')]}),
-        (_("Addons"), {"classes": ("collapse",),
-                       "fields": [('settlement_txt', ), ('hotel_txt', ), ('comment', )]}),
+        (_("Booking Event"), {"fields": [("user", 'status', 'guests'), ('from_date', 'to_date', 'cancel_time'),
+                                         ('settlement', 'hotel'), ('last_name', 'first_name'), ('middle_name', 'date'),
+                                         ('phone', 'email'), ('amount', 'currency'), ('hotel_sum', 'commission'),
+                                         ('uuid', 'enabled'), ('ip', 'user_agent')]}),
+        (_("Addons"), {"classes": ("collapse",), "fields": [('settlement_txt', ), ('hotel_txt',), ('comment',)]})
     )
 
     def get_fieldsets(self, request, obj=None):
@@ -200,11 +176,9 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
     list_display = ('name', 'register_date', 'city', 'address', 'phone', 'fax', 'contact_email', 'website')
     search_fields = ('date', 'name')
     fieldsets = (
-        (_("Request for add Hotel"), {"fields": [("name", 'register_date'),
-                                                 ('city', 'address'),
-                                                 ('phone', 'fax'),
-                                                 ('email', 'contact_email'),
-                                                 ('website', 'rooms_count')]}),)
+        (_("Request for add Hotel"), {"fields": [("name", 'register_date'), ('city', 'address'), ('phone', 'fax'),
+                                                 ('email', 'contact_email'), ('website', 'rooms_count')]})
+    )
 
 
 @admin.register(AgentPercent)
@@ -213,7 +187,8 @@ class AgentPercentAdmin(admin.ModelAdmin):
     search_fields = ('date', 'percent', 'hotel__name')
     list_filter = ('date', 'hotel', 'percent')
     fieldsets = (
-        (_("Agent Percent"), {"fields": [("hotel", 'date', 'percent'), ]}),)
+        (_("Agent Percent"), {"fields": [("hotel", 'date', 'percent')]})
+    )
 
     def city_of_hotel(self, obj):
         return '%s' % obj.hotel.city
@@ -223,7 +198,6 @@ class AgentPercentAdmin(admin.ModelAdmin):
 
 
 # @admin.register(Discount)
-# TODO Disabled
 class DiscountAdmin(admin.ModelAdmin):
     list_display = ('hotel', 'name', 'choice', 'percentage', 'enabled')
     # search_fields = ('date',)
@@ -231,12 +205,13 @@ class DiscountAdmin(admin.ModelAdmin):
     ordering = ('choice', )
     fieldsets = (
         (_("Discount"), {"fields": [('name', "hotel"), ('choice', 'percentage'), ('time_on', 'time_off'),
-            ('days', 'at_price_days')]}),)
+                                    ('days', 'at_price_days')]})
+    )
 
 
 @admin.register(Review)
 class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('__str__', )
+    list_display = ('__str__',)
     search_fields = ('date',)
 
 
@@ -245,7 +220,8 @@ class SettlementVariantAdmin(admin.ModelAdmin):
     list_display = ('room', 'settlement', 'enabled')
     search_fields = ('date',)
     fieldsets = (
-        (_("Settlement Variant"), {"fields": [("room", 'settlement'), ]}),)
+        (_("Settlement Variant"), {"fields": [("room", 'settlement')]})
+    )
 
 
 @admin.register(Availability)
@@ -253,7 +229,8 @@ class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ('room', 'date', 'placecount')
     search_fields = ('date',)
     fieldsets = (
-        (_("Availability"), {"fields": [("room", 'date', 'placecount')]}),)
+        (_("Availability"), {"fields": [("room", 'date', 'placecount')]})
+    )
 
 
 @admin.register(PlacePrice)
@@ -261,20 +238,20 @@ class PlacePriceAdmin(admin.ModelAdmin):
     list_display = ('settlement', 'date', 'amount', 'currency')
     search_fields = ('date',)
     fieldsets = (
-        (_("Place Price"), {"fields": [("settlement", 'date'), ('amount', 'currency')]}),)
+        (_("Place Price"), {"fields": [("settlement", 'date'), ('amount', 'currency')]})
+    )
     ordering = ('amount',)
 
 
 # @admin.register(RoomDiscount)
-# TODO Disabled
 class RoomDiscountAdmin(admin.ModelAdmin):
     list_display = ('room', 'discount', 'date', 'value')
     search_fields = ('date',)
     fieldsets = (
-        (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]}),)
+        (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]})
+    )
     ordering = ('value',)
     # raw_id_fields = ('room', 'discount')
-    # autocomplete_lookup_fields = {'fk': ['room', 'discount']}
 
 
 @admin.register(SimpleDiscount)
@@ -285,7 +262,8 @@ class SimpleDiscountAdmin(admin.ModelAdmin):
         (_("Room simple discount"), {"fields": [('room', )]}),
         (_("Unguaranteed booking"), {"fields": [('ub', 'ub_discount')]}),
         (_("Guaranteed booking"), {"fields": [('gb', 'gb_days', 'gb_penalty', 'gb_discount')]}),
-        (_("Non-return rate"), {"fields": [('nr', 'nr_discount')]}),)
+        (_("Non-return rate"), {"fields": [('nr', 'nr_discount')]})
+    )
     ordering = ('room',)
     readonly_fields = ('room', )
 
@@ -296,6 +274,7 @@ class HotelSearchAdmin(admin.ModelAdmin):
     search_fields = ('ip', 'city', 'hotel')
     fieldsets = (
         (_("Hotel search"), {"fields": [('ip', 'date'), ('city', 'hotel'), ('from_date', 'to_date'),
-                                        ('guests', 'user_agent')]}),)
+                                        ('guests', 'user_agent')]})
+    )
     ordering = ('date', 'city', 'hotel')
     readonly_fields = ('ip', 'date', 'city', 'hotel', 'from_date', 'to_date', 'guests', 'user_agent')

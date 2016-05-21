@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Template for create charts in PDF files
 
 from __future__ import unicode_literals
 from reportlab.graphics.shapes import Drawing, String

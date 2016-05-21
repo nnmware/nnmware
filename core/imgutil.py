@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Image processing functions
 
 from __future__ import unicode_literals
 import os

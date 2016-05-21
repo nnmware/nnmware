@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Working algorithms for tree-based menus
 
 from __future__ import unicode_literals
 from xml.etree.ElementTree import SubElement

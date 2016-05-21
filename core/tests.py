@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Tests. Unused
 
 import unittest
 from .models import Tag

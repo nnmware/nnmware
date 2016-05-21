@@ -1,7 +1,6 @@
-# -*- encoding: utf-8 -*-
+# nnmware(c)2012-2016
 
 import os
-# Django settings for nnmware project.
 
 DIRNAME = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
@@ -64,9 +63,9 @@ except IOError:
         from random import choice
         key = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         SECRET_KEY = ''.join([choice(key) for i in range(50)])
-        secret = file(SECRET_FILE, 'w')
-        secret.write(SECRET_KEY)
-        secret.close()
+        with open(SECRET_FILE, 'w') as secret:
+            secret.write(SECRET_KEY)
+        secret.closed
     except IOError:
         raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
@@ -145,4 +144,3 @@ except ImportError:
     import sys
     sys.stderr.write('No addition site config found (nnmware_settings.py\n')
     sys.exit(1)
-

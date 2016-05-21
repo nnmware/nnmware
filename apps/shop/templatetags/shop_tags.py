@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Shop template tags
 
 from datetime import timedelta
 from xml.etree.ElementTree import Element, SubElement, tostring

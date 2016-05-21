@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Google captcha (need update to last version)
 
 from __future__ import unicode_literals
 from urllib.request import urlopen, Request

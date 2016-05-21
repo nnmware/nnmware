@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Booking
 
 from __future__ import unicode_literals
 from datetime import timedelta
@@ -576,6 +574,7 @@ class CabinetEditRoom(UpdateView, CurrentUserRoomAdmin):
         self.object.save()
         SettlementVariant.objects.filter(room=self.object).update(enabled=False)
         for variant in variants:
+            # noinspection PyBroadException
             try:
                 settlement = SettlementVariant.objects.get(room=self.object, settlement=variant)
                 settlement.enabled = True

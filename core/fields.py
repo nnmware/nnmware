@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Common model fields code + ReCaptcha form field
 
 from __future__ import unicode_literals
 from decimal import Decimal

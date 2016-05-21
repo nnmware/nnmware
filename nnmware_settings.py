@@ -1,9 +1,4 @@
-# -*- encoding: utf-8 -*-
-
-# This file is used to store your site specific settings
-# for database access.
-# It also store nnmware unique information
-#
+# nnmware(c)2012-2016
 
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
 LOGIN_ERROR_URL = '/login/error/'
@@ -28,9 +23,6 @@ EMAIL_HOST_PASSWORD = 'pass'
 # These are used when loading the test data
 SITE_DOMAIN = "NNMWARE TEST"
 SITE_NAME = "NNMWARE TEST"
-
-# These can override or add to the default URLs
-from django.conf.urls import *
 
 APPEND_SLASH = True
 
@@ -93,4 +85,3 @@ LOGGING = {
         },
     }
 }
-

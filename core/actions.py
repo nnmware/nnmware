@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # nnmware(c)2012-2016
-# Classes for work with follow/unfollow (Future)
 
 from __future__ import unicode_literals
 
