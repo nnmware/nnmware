@@ -177,7 +177,7 @@ class RequestAddHotelAdmin(admin.ModelAdmin):
     search_fields = ('date', 'name')
     fieldsets = (
         (_("Request for add Hotel"), {"fields": [("name", 'register_date'), ('city', 'address'), ('phone', 'fax'),
-                                                 ('email', 'contact_email'), ('website', 'rooms_count')]})
+                                                 ('email', 'contact_email'), ('website', 'rooms_count')]}),
     )
 
 
@@ -187,7 +187,7 @@ class AgentPercentAdmin(admin.ModelAdmin):
     search_fields = ('date', 'percent', 'hotel__name')
     list_filter = ('date', 'hotel', 'percent')
     fieldsets = (
-        (_("Agent Percent"), {"fields": [("hotel", 'date', 'percent')]})
+        (_("Agent Percent"), {"fields": [("hotel", 'date', 'percent')]}),
     )
 
     def city_of_hotel(self, obj):
@@ -205,7 +205,7 @@ class DiscountAdmin(admin.ModelAdmin):
     ordering = ('choice', )
     fieldsets = (
         (_("Discount"), {"fields": [('name', "hotel"), ('choice', 'percentage'), ('time_on', 'time_off'),
-                                    ('days', 'at_price_days')]})
+                                    ('days', 'at_price_days')]}),
     )
 
 
@@ -220,7 +220,7 @@ class SettlementVariantAdmin(admin.ModelAdmin):
     list_display = ('room', 'settlement', 'enabled')
     search_fields = ('date',)
     fieldsets = (
-        (_("Settlement Variant"), {"fields": [("room", 'settlement')]})
+        (_("Settlement Variant"), {"fields": [("room", 'settlement')]}),
     )
 
 
@@ -229,7 +229,7 @@ class AvailabilityAdmin(admin.ModelAdmin):
     list_display = ('room', 'date', 'placecount')
     search_fields = ('date',)
     fieldsets = (
-        (_("Availability"), {"fields": [("room", 'date', 'placecount')]})
+        (_("Availability"), {"fields": [("room", 'date', 'placecount')]}),
     )
 
 
@@ -238,7 +238,7 @@ class PlacePriceAdmin(admin.ModelAdmin):
     list_display = ('settlement', 'date', 'amount', 'currency')
     search_fields = ('date',)
     fieldsets = (
-        (_("Place Price"), {"fields": [("settlement", 'date'), ('amount', 'currency')]})
+        (_("Place Price"), {"fields": [("settlement", 'date'), ('amount', 'currency')]}),
     )
     ordering = ('amount',)
 
@@ -248,7 +248,7 @@ class RoomDiscountAdmin(admin.ModelAdmin):
     list_display = ('room', 'discount', 'date', 'value')
     search_fields = ('date',)
     fieldsets = (
-        (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]})
+        (_("Room discount"), {"fields": [("room", 'discount'), ('date', 'value')]}),
     )
     ordering = ('value',)
     # raw_id_fields = ('room', 'discount')
@@ -274,7 +274,7 @@ class HotelSearchAdmin(admin.ModelAdmin):
     search_fields = ('ip', 'city', 'hotel')
     fieldsets = (
         (_("Hotel search"), {"fields": [('ip', 'date'), ('city', 'hotel'), ('from_date', 'to_date'),
-                                        ('guests', 'user_agent')]})
+                                        ('guests', 'user_agent')]}),
     )
     ordering = ('date', 'city', 'hotel')
     readonly_fields = ('ip', 'date', 'city', 'hotel', 'from_date', 'to_date', 'guests', 'user_agent')

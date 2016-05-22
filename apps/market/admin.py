@@ -34,7 +34,7 @@ class ProductAdmin(admin.ModelAdmin):
                                    ('market_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('teaser',), ('discount', 'discount_percent', 'special_offer'),
-                                   ('colors',), ('materials',), ('related_products',)]})
+                                   ('colors',), ('materials',), ('related_products',)]}),
     )
 
 
@@ -87,7 +87,7 @@ class OrderAdmin(admin.ModelAdmin):
                                  ("created_date", 'updated_date'),
                                  ('address', 'delivery'),
                                  ('buyer_comment', 'seller_comment'),
-                                 ('comment', )]})
+                                 ('comment', )]}),
     )
     ordering = ('-created_date', 'user')
 
@@ -111,7 +111,7 @@ class DeliveryAddressAdmin(admin.ModelAdmin):
                                             ('country', 'region'),
                                             ("zipcode", 'city', 'street'),
                                             ('house_number', 'building', 'flat_number'),
-                                            ('phone', 'skype')]})
+                                            ('phone', 'skype')]}),
     )
 
 
@@ -120,7 +120,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ("name", "email", 'created_date', "ip", 'user_agent')
     fieldsets = (
         (_("Feedback"), {"fields": [('name', 'email'), ('message',), ('answer',),
-                                    ('created_date', 'ip', 'user_agent'), ]})
+                                    ('created_date', 'ip', 'user_agent'), ]}),
     )
     ordering = ('-created_date', 'name', 'email')
     readonly_fields = ('ip', 'user_agent', 'created_date')
@@ -142,7 +142,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = ('name', 'thumbnail', 'created_date', 'visible', 'vip', "ip", 'user_agent', "user")
     fieldsets = (
         (_("Review"), {"fields": [('name', 'w_position', 'visible'), ('vip', 'img'), ('message',),
-                                  ('created_date', 'ip', 'user_agent'), ('user',)]})
+                                  ('created_date', 'ip', 'user_agent'), ('user',)]}),
     )
     ordering = ('-created_date', 'user', 'visible')
     readonly_fields = ('ip', 'user_agent', 'created_date')
@@ -152,7 +152,7 @@ class ReviewAdmin(admin.ModelAdmin):
 class MarketSliderAdmin(admin.ModelAdmin):
     list_display = ('pk', 'thumbnail', 'slider_link', 'visible')
     fieldsets = (
-        (_("MarketSlider"), {"fields": [('img',), ('visible', 'slider_link')]})
+        (_("MarketSlider"), {"fields": [('img',), ('visible', 'slider_link')]}),
     )
     ordering = ('visible',)
 
@@ -163,7 +163,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     list_display = ("title", 'start_date', 'end_date', 'thumbnail', 'enabled')
     fieldsets = (
         (_("SpecialOffer"), {"fields": [('title',), ('start_date', 'end_date'),
-                                        ('enabled', 'slug', 'position'), ('img',), ('text',)]})
+                                        ('enabled', 'slug', 'position'), ('img',), ('text',)]}),
     )
     ordering = ('-start_date', '-end_date')
 
@@ -172,7 +172,7 @@ class SpecialOfferAdmin(admin.ModelAdmin):
 class MarketNewsAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Market News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+        (_("Market News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]}),
     )
     ordering = ('-created_date', 'title')
 
@@ -181,7 +181,7 @@ class MarketNewsAdmin(admin.ModelAdmin):
 class MarketArticleAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Market Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+        (_("Market Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]}),
     )
     ordering = ('-created_date', 'title')
 
@@ -191,7 +191,7 @@ class DeliveryMethodAdmin(admin.ModelAdmin):
     list_display = ("name", "amount", 'enabled_for_registered', 'enabled_for_unregistered', 'position')
     fieldsets = (
         (_("Delivery Method"), {"fields": [('name', 'amount'), ('enabled_for_registered', 'enabled_for_unregistered'),
-                                           ('position',), ]})
+                                           ('position',), ]}),
     )
     ordering = ('position', 'name')
 
@@ -215,5 +215,5 @@ class ServiceAdmin(admin.ModelAdmin):
                                    ('market_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('discount', 'discount_percent', 'special_offer'),
-                                   ('related_services',)]})
+                                   ('related_services',)]}),
     )

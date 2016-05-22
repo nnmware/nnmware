@@ -16,7 +16,7 @@ class CompassAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Point of compass"), {"fields": [('name', 'abbreviation'), ('name_en',)]})
+        (_("Point of compass"), {"fields": [('name', 'abbreviation'), ('name_en',)]}),
     )
 
 
@@ -27,7 +27,7 @@ class MaterialKindAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Material kind"), {"fields": [('name', 'enabled'), ('name_en',)]})
+        (_("Material kind"), {"fields": [('name', 'enabled'), ('name_en',)]}),
     )
 
 
@@ -38,7 +38,7 @@ class EstateTypeAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Estate type"), {"fields": [('name', 'enabled'), ('name_en',)]})
+        (_("Estate type"), {"fields": [('name', 'enabled'), ('name_en',)]}),
     )
 
 
@@ -49,7 +49,7 @@ class EstateFeatureAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Estate feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+        (_("Estate feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]}),
     )
 
 
@@ -60,7 +60,7 @@ class TrimKindAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Trim kind"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+        (_("Trim kind"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]}),
     )
 
 
@@ -71,7 +71,7 @@ class RmFeatureAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Rm feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+        (_("Rm feature"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]}),
     )
 
 
@@ -82,7 +82,7 @@ class RmTypeAdmin(admin.ModelAdmin):
     list_filter = ('name', )
     ordering = ('name', 'name_en')
     fieldsets = (
-        (_("Rm type"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]})
+        (_("Rm type"), {"fields": [('name', 'enabled'), ('internal', 'external'), ('name_en',)]}),
     )
 
 

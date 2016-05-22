@@ -19,7 +19,7 @@ class TransactionAdmin(admin.ModelAdmin):
         (_("Transaction"), {"fields": [("user", "date"),
                                        ('amount', 'currency', 'status'),
                                        ('actor_ctype', 'actor_oid'),
-                                       ('content_type', 'object_id')]})
+                                       ('content_type', 'object_id')]}),
     )
 
     _readonly_fields = []  # Default fields that are readonly for everyone.
@@ -45,7 +45,7 @@ class BillAdmin(admin.ModelAdmin):
                                 ('content_type', 'object_id'),
                                 ('invoice_number', 'description_small'),
                                 ('description',),
-                                ('status', 'date')]})
+                                ('status', 'date')]}),
     )
 
 
@@ -60,5 +60,5 @@ class ExchangeRateAdmin(admin.ModelAdmin):
     list_display = ('currency', 'date', 'nominal', 'official_rate', 'rate')
     search_fields = ('currency',)
     fieldsets = (
-        (_("Exchange Rate"), {"fields": [("currency", "date"), ('nominal', 'official_rate', 'rate')]})
+        (_("Exchange Rate"), {"fields": [("currency", "date"), ('nominal', 'official_rate', 'rate')]}),
     )

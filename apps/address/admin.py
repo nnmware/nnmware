@@ -76,5 +76,5 @@ class StationMetroAdmin(admin.ModelAdmin):
 @admin.register(Institution)
 class InstitutionAdmin(TypeBaseAdmin):
     fieldsets = (
-        (_("Institution"), {"fields": [('name', 'position'), ('city', 'country')]})
+        (_("Institution"), {"fields": [('name', 'position'), ('city', 'country')]}),
     )
