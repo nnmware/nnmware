@@ -205,7 +205,7 @@ class MarketManager(Manager):
         return self.active().filter(latest=True)
 
 
-class ProductManager(ManagerManager):
+class ProductManager(MarketManager):
     def on_main(self):
         return self.filter(enabled=True, on_main=True).order_by('-maincatid')
 
