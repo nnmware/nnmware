@@ -5,9 +5,9 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.shop.models import Basket, OrderItem
+from nnmware.apps.market.models import Basket, OrderItem
 from nnmware.core.http import get_session_from_request
-from nnmware.core.exceptions import ShopError
+from nnmware.core.exceptions import MarketError
 from nnmware.core.utils import send_template_mail
 
 
@@ -19,7 +19,7 @@ def get_basket(request):
 
 
 def send_new_order_seller(order):
-    recipients = [settings.SHOP_MANAGER]
+    recipients = [settings.MARKET_MANAGER]
     mail_dict = {'order': order}
     subject = 'emails/neworder_admin_subject.txt'
     body = 'emails/neworder_admin_body.txt'
@@ -37,20 +37,20 @@ def make_order_from_basket(order, basket):
     # noinspection PyBroadException
     try:
         for item in basket:
-            if settings.SHOP_CHECK_QUANTITY:
+            if settings.MARKET_CHECK_QUANTITY:
                 if item.quantity > item.product.quantity:
-                    raise ShopError
+                    raise MarketError
             order_item = OrderItem()
             order_item.order = order
             order_item.product_name = item.product.name
             order_item.product_origin = item.product
             order_item.product_url = item.product.get_absolute_url()
             order_item.amount = item.product.with_discount
-            order_item.product_pn = item.product.shop_pn
+            order_item.product_pn = item.product.market_pn
             order_item.quantity = item.quantity
             order_item.addon = item.addon
             order_item.save()
-            if settings.SHOP_CHECK_QUANTITY:
+            if settings.MARKET_CHECK_QUANTITY:
                 item.product.quantity -= item.quantity
                 item.product.save()
         basket.delete()
@@ -62,7 +62,7 @@ def make_order_from_basket(order, basket):
         order_item.addon = _('Delivery')
         order_item.save()
         return True
-    except ShopError:
+    except MarketError:
         return False
     except:
         return False

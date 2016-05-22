@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 
 from nnmware.apps.address.models import Country, Region, City
-from nnmware.apps.shop.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, \
+from nnmware.apps.market.models import Product, ProductParameterValue, ProductParameter, Basket, DeliveryAddress, \
     Feedback, ProductColor, ProductMaterial
 from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.core.http import get_session_from_request
@@ -16,7 +16,7 @@ from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.exceptions import AccessError
 from nnmware.core.models import Nnmcomment
 from nnmware.core.utils import send_template_mail
-from nnmware.apps.shop.models import ShopCallback
+from nnmware.apps.market.models import MarketCallback
 import settings
 
 
@@ -430,7 +430,7 @@ def basket_avail(user):
 def add_compare_product(request, object_id):
     # noinspection PyBroadException
     try:
-        compare = request.session['shop_compare']
+        compare = request.session['market_compare']
     except:
         compare = []
     product_id = int(object_id)
@@ -438,7 +438,7 @@ def add_compare_product(request, object_id):
         compare.append(product_id)
     # noinspection PyBroadException
     try:
-        request.session['shop_compare'] = compare
+        request.session['market_compare'] = compare
         payload = {'success': True}
     except:
         payload = {'success': False}
@@ -448,7 +448,7 @@ def add_compare_product(request, object_id):
 def del_compare_product(request, object_id):
     # noinspection PyBroadException
     try:
-        compare = request.session['shop_compare']
+        compare = request.session['market_compare']
     except:
         compare = []
     product_id = int(object_id)
@@ -456,27 +456,27 @@ def del_compare_product(request, object_id):
         compare.remove(product_id)
     # noinspection PyBroadException
     try:
-        request.session['shop_compare'] = compare
+        request.session['market_compare'] = compare
         payload = {'success': True}
     except:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
 
-def push_shopcallback(request):
+def push_marketcallback(request):
     """
-    Its Ajax posted shop callback
+    Its Ajax posted market callback
     """
     # noinspection PyBroadException
     try:
-        cb = ShopCallback()
+        cb = MarketCallback()
         cb.ip = request.META['REMOTE_ADDR']
         cb.user_agent = request.META['HTTP_USER_AGENT']
         cb.clientname = request.POST.get('clientname')
         cb.clientphone = request.POST.get('clientphone')
         cb.save()
         mail_dict = {'callback': cb}
-        recipients = [settings.SHOP_MANAGER]
+        recipients = [settings.MARKET_MANAGER]
         subject = 'emails/callback_admin_subject.txt'
         body = 'emails/callback_admin_body.txt'
         send_template_mail(subject, body, mail_dict, recipients)
@@ -488,11 +488,11 @@ def push_shopcallback(request):
 
 def push_quickorder(request):
     """
-    Its Ajax posted shop quick order
+    Its Ajax posted market quick order
     """
     # noinspection PyBroadException
     try:
-        cb = ShopCallback()
+        cb = MarketCallback()
         cb.ip = request.META['REMOTE_ADDR']
         cb.user_agent = request.META['HTTP_USER_AGENT']
         cb.clientname = request.POST.get('clientname')
@@ -501,7 +501,7 @@ def push_quickorder(request):
         cb.quickorder = True
         cb.save()
         mail_dict = {'callback': cb}
-        recipients = [settings.SHOP_MANAGER]
+        recipients = [settings.MARKET_MANAGER]
         subject = 'emails/quickorder_admin_subject.txt'
         body = 'emails/quickorder_admin_body.txt'
         send_template_mail(subject, body, mail_dict, recipients)

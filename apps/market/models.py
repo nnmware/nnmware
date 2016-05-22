@@ -16,7 +16,7 @@ from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material, AbstractVendor
 from nnmware.core.abstract import AbstractDate, AbstractColor, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_text_field
-from nnmware.core.managers import ProductManager, ShopManager
+from nnmware.core.managers import ProductManager, MarketManager
 from nnmware.apps.money.models import AbstractDeliveryMethod
 from nnmware.core.abstract import AbstractTeaser
 
@@ -57,12 +57,12 @@ class CargoService(Vendor):
 
 class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ProductCategory, verbose_name=_('Category'), null=True, blank=True,
-                                 on_delete=models.SET_NULL, related_name='shopcat')
+                                 on_delete=models.SET_NULL, related_name='marketcat')
     quantity = models.IntegerField(_('Quantity'), default=0, blank=True)
     colors = models.ManyToManyField(ProductColor, verbose_name=_('Colors'), blank=True)
     materials = models.ManyToManyField(ProductMaterial, verbose_name=_('Materials'), blank=True)
     related_products = models.ManyToManyField('self', verbose_name=_('Related products'), blank=True)
-    shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
+    market_pn = models.CharField(max_length=100, verbose_name=_('Market part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     vendor = models.ForeignKey(Vendor, verbose_name=_('Vendor'), null=True, blank=True,
                                on_delete=models.SET_NULL)
@@ -258,7 +258,7 @@ class Order(AbstractDate, AbstractIP):
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
-    lite = models.BooleanField(verbose_name=_("Not register shop user"), default=True)
+    lite = models.BooleanField(verbose_name=_("Not register market user"), default=True)
     phone = std_text_field(_('Phone'))
     email = models.EmailField(_('Email'), blank=True)
     buyer_comment = std_text_field(_('Buyer comment'))
@@ -317,7 +317,7 @@ class OrderItem(MoneyBase):
     Definition of order's details.
     """
     order = models.ForeignKey(Order)
-    product_pn = std_text_field(_('Shop part number'))
+    product_pn = std_text_field(_('Market part number'))
     product_name = std_text_field(_('Product Name'))
     product_url = std_text_field(_('Product URL'))
     product_origin = models.ForeignKey(Product, null=True, blank=True)
@@ -418,7 +418,7 @@ class Review(AbstractIP, AbstractImg):
         return "%s - %s" % (self.name, self.created_date)
 
 
-class ShopText(AbstractTeaser):
+class MarketText(AbstractTeaser):
     created_date = models.DateTimeField(_("Created date"), default=now)
     title = models.CharField(max_length=255, verbose_name=_('Title'))
     content = models.TextField(verbose_name=_("Content"), blank=True)
@@ -426,28 +426,28 @@ class ShopText(AbstractTeaser):
 
     class Meta:
         ordering = ['-created_date']
-        verbose_name = _('Shop text')
-        verbose_name_plural = _('Shop texts')
+        verbose_name = _('Market text')
+        verbose_name_plural = _('Market texts')
         abstract = True
 
     def __str__(self):
         return self.title
 
 
-class ShopNews(ShopText):
+class MarketNews(MarketText):
     pass
 
     class Meta:
-        verbose_name = _('Shop news')
-        verbose_name_plural = _('Shop news')
+        verbose_name = _('Market news')
+        verbose_name_plural = _('Market news')
 
 
-class ShopArticle(ShopText):
+class MarketArticle(MarketText):
     pass
 
     class Meta:
-        verbose_name = _('Shop article')
-        verbose_name_plural = _('Shop articles')
+        verbose_name = _('Market article')
+        verbose_name_plural = _('Market articles')
 
 
 class SpecialOffer(AbstractOffer):
@@ -467,7 +467,7 @@ class SpecialOffer(AbstractOffer):
         return reverse('special_offer', kwargs={'pk': self.pk})
 
 
-class ShopCallback(AbstractIP):
+class MarketCallback(AbstractIP):
     created_date = models.DateTimeField(_("Created date"), default=now)
     clientname = std_text_field(_('Client Name'))
     clientphone = std_text_field(_('Client Phone'))
@@ -477,21 +477,21 @@ class ShopCallback(AbstractIP):
 
     class Meta:
         ordering = ['-created_date']
-        verbose_name = _('Shop Callback')
-        verbose_name_plural = _('Shop Callbacks')
+        verbose_name = _('Market Callback')
+        verbose_name_plural = _('Market Callbacks')
 
     def __str__(self):
         return "%s - %s" % (self.clientname, self.created_date)
 
 
-class ShopSlider(AbstractImg):
+class MarketSlider(AbstractImg):
     visible = models.BooleanField(verbose_name=_("Visible"), default=False)
     slider_link = std_text_field(_('Slider_link'))
 
     class Meta:
         ordering = ['visible']
-        verbose_name = _('ShopSlider')
-        verbose_name_plural = _('ShopSliders')
+        verbose_name = _('MarketSlider')
+        verbose_name_plural = _('MarketSliders')
 
     def __str__(self):
         return "Slider Image - %s" % self.pk
@@ -514,7 +514,7 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     category = models.ForeignKey(ServiceCategory, verbose_name=_('Category'), null=True, blank=True,
                                  on_delete=models.SET_NULL, related_name='servicecat')
     related_services = models.ManyToManyField('self', verbose_name=_('Related services'), blank=True)
-    shop_pn = models.CharField(max_length=100, verbose_name=_('Shop part number'), blank=True)
+    market_pn = models.CharField(max_length=100, verbose_name=_('Market part number'), blank=True)
     vendor_pn = models.CharField(max_length=100, verbose_name=_('Vendor part number'), blank=True)
     avail = models.BooleanField(verbose_name=_("Available for order"), default=False)
     latest = models.BooleanField(verbose_name=_("Latest product"), default=False)
@@ -531,7 +531,7 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
-    objects = ShopManager()
+    objects = MarketManager()
 
     class Meta:
         ordering = ['-created_date']

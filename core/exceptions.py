@@ -11,7 +11,7 @@ class UserIsDisabled(Exception):
     pass
 
 
-class ShopError(Exception):
+class MarketError(Exception):
     pass
 
 

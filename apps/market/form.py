@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.shop.models import Product, ProductParameter, Order, ProductColor, ProductMaterial, ProductCategory
-from nnmware.apps.shop.models import DeliveryMethod
+from nnmware.apps.market.models import Product, ProductParameter, Order, ProductColor, ProductMaterial, ProductCategory
+from nnmware.apps.market.models import DeliveryMethod
 
 
 class EditProductForm(forms.ModelForm):
@@ -18,7 +18,7 @@ class EditProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ('name', 'category', 'slug', 'amount', 'quantity', 'avail', 'description',
-                  'shop_pn', 'vendor_pn', 'vendor', 'latest', 'teaser', 'discount', 'bestseller')
+                  'market_pn', 'vendor_pn', 'vendor', 'latest', 'teaser', 'discount', 'bestseller')
 
     def clean(self):
         return self.cleaned_data

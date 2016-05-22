@@ -472,7 +472,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return self.user.follow_set.filter(content_type=self._ctype()).count()
 
     def basket_sum(self):
-        from nnmware.apps.shop.models import Basket
+        from nnmware.apps.market.models import Basket
         all_sum = Basket.objects.filter(user=self).aggregate(Sum('sum'))
         return "%0.2f" % (all_sum,)
 

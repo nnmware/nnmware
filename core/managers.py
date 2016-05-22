@@ -194,7 +194,7 @@ class MessageManager(Manager):
         )
 
 
-class ShopManager(Manager):
+class MarketManager(Manager):
     def active(self):
         return self.filter(avail=True, visible=True)
 
@@ -205,7 +205,7 @@ class ShopManager(Manager):
         return self.active().filter(latest=True)
 
 
-class ProductManager(ShopManager):
+class ProductManager(ManagerManager):
     def on_main(self):
         return self.filter(enabled=True, on_main=True).order_by('-maincatid')
 

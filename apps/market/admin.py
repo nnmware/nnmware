@@ -7,9 +7,9 @@ from django.contrib.contenttypes.admin import GenericStackedInline
 from django.utils.translation import ugettext as _
 
 from nnmware.core.admin import TreeAdmin
-from nnmware.apps.shop.models import ProductParameterValue, Product, ProductCategory, ProductParameter, \
-    ProductParameterCategory, Vendor, Basket, OrderItem, Order, DeliveryAddress, Feedback, ShopCallback, Review, \
-    ShopSlider, SpecialOffer, ShopNews, ShopArticle, DeliveryMethod, ServiceCategory, Service
+from nnmware.apps.market.models import ProductParameterValue, Product, ProductCategory, ProductParameter, \
+    ProductParameterCategory, Vendor, Basket, OrderItem, Order, DeliveryAddress, Feedback, MarketCallback, Review, \
+    MarketSlider, SpecialOffer, MarketNews, MarketArticle, DeliveryMethod, ServiceCategory, Service
 
 
 class ProductParameterValueInline(GenericStackedInline):
@@ -21,7 +21,7 @@ class ProductParameterValueInline(GenericStackedInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
-    list_display = ("name", "category", 'vendor', "created_date", 'quantity', 'amount', 'shop_pn', 'vendor_pn',
+    list_display = ("name", "category", 'vendor', "created_date", 'quantity', 'amount', 'market_pn', 'vendor_pn',
                     'visible')
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductParameterValueInline, ]
@@ -31,7 +31,7 @@ class ProductAdmin(admin.ModelAdmin):
                                    ('amount', 'quantity'),
                                    ('description',),
                                    ("created_date", 'updated_date'),
-                                   ('shop_pn', 'vendor_pn'),
+                                   ('market_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('teaser',), ('discount', 'discount_percent', 'special_offer'),
                                    ('colors',), ('materials',), ('related_products',)]})
@@ -126,11 +126,11 @@ class FeedbackAdmin(admin.ModelAdmin):
     readonly_fields = ('ip', 'user_agent', 'created_date')
 
 
-@admin.register(ShopCallback)
-class ShopCallbackAdmin(admin.ModelAdmin):
+@admin.register(MarketCallback)
+class MarketCallbackAdmin(admin.ModelAdmin):
     list_display = ("clientname", "clientphone", 'created_date', 'closed', 'quickorder', "ip", 'user_agent')
     fieldsets = (
-        (_("Shop Callback"), {"fields": [('clientname', 'clientphone'), ('created_date', 'closed', 'quickorder'),
+        (_("Market Callback"), {"fields": [('clientname', 'clientphone'), ('created_date', 'closed', 'quickorder'),
                                          ('description',), ('ip', 'user_agent')]}),
     )
     ordering = ('-created_date', 'clientname', 'clientphone')
@@ -148,11 +148,11 @@ class ReviewAdmin(admin.ModelAdmin):
     readonly_fields = ('ip', 'user_agent', 'created_date')
 
 
-@admin.register(ShopSlider)
-class ShopSliderAdmin(admin.ModelAdmin):
+@admin.register(MarketSlider)
+class MarketSliderAdmin(admin.ModelAdmin):
     list_display = ('pk', 'thumbnail', 'slider_link', 'visible')
     fieldsets = (
-        (_("ShopSlider"), {"fields": [('img',), ('visible', 'slider_link')]})
+        (_("MarketSlider"), {"fields": [('img',), ('visible', 'slider_link')]})
     )
     ordering = ('visible',)
 
@@ -168,20 +168,20 @@ class SpecialOfferAdmin(admin.ModelAdmin):
     ordering = ('-start_date', '-end_date')
 
 
-@admin.register(ShopNews)
-class ShopNewsAdmin(admin.ModelAdmin):
+@admin.register(MarketNews)
+class MarketNewsAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Shop News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+        (_("Market News"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
     )
     ordering = ('-created_date', 'title')
 
 
-@admin.register(ShopArticle)
-class ShopArticleAdmin(admin.ModelAdmin):
+@admin.register(MarketArticle)
+class MarketArticleAdmin(admin.ModelAdmin):
     list_display = ("title", 'created_date')
     fieldsets = (
-        (_("Shop Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
+        (_("Market Articles"), {"fields": [('title',), ('created_date', 'enabled'), ('teaser',), ('content', )]})
     )
     ordering = ('-created_date', 'title')
 
@@ -204,7 +204,7 @@ class ServiceCategoryAdmin(TreeAdmin):
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     readonly_fields = ('created_date', 'updated_date')
-    list_display = ("name", "category", "created_date", 'amount', 'shop_pn', 'vendor_pn', 'visible')
+    list_display = ("name", "category", "created_date", 'amount', 'market_pn', 'vendor_pn', 'visible')
     prepopulated_fields = {'slug': ('name',)}
     fieldsets = (
         (_("Service"), {"fields": [('name', 'category'),
@@ -212,7 +212,7 @@ class ServiceAdmin(admin.ModelAdmin):
                                    ('amount', 'teaser'),
                                    ('description',),
                                    ("created_date", 'updated_date'),
-                                   ('shop_pn', 'vendor_pn'),
+                                   ('market_pn', 'vendor_pn'),
                                    ('position', 'enabled', 'on_main'),
                                    ('discount', 'discount_percent', 'special_offer'),
                                    ('related_services',)]})

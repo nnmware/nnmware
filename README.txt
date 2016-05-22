@@ -37,8 +37,8 @@ contains base for:
 [Booking]
     Booking application base 
 
-[Shop]
-    Shop application base 
+[Market]
+    Market application base 
 
 [Dossier]
     Dossier base 

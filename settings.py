@@ -123,7 +123,7 @@ INSTALLED_APPS = (
     'nnmware.core',
     'nnmware.apps.money',
     'nnmware.apps.booking',
-    'nnmware.apps.shop',
+    'nnmware.apps.market',
     'nnmware.apps.address',
     'nnmware.apps.dossier',
     'nnmware.apps.business',

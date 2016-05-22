@@ -16,19 +16,19 @@ from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 
-from nnmware.apps.shop.utils import get_basket
-from nnmware.apps.shop.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
-from nnmware.apps.shop.models import Product, ProductCategory, Order, ShopNews, Feedback, ShopArticle, \
+from nnmware.apps.market.utils import get_basket
+from nnmware.apps.market.form import EditProductForm, OrderStatusForm, OrderCommentForm, OrderTrackingForm
+from nnmware.apps.market.models import Product, ProductCategory, Order, MarketNews, Feedback, MarketArticle, \
     ProductParameterValue, STATUS_PROCESS, STATUS_SENT, OrderItem
 from nnmware.core.data import get_queryset_category
 from nnmware.core.http import get_session_from_request
 from nnmware.core.models import Nnmcomment
 from nnmware.core.utils import send_template_mail, convert_to_date, setting
 from nnmware.core.views import CurrentUserSuperuser, AttachedImagesMixin, AjaxFormMixin
-from nnmware.apps.shop.models import SpecialOffer, STATUS_WAIT, DeliveryAddress
-from nnmware.apps.shop.form import EditProductFurnitureForm, AnonymousUserOrderAddForm, RegisterUserOrderAddForm
-from nnmware.apps.shop.utils import make_order_from_basket
-from nnmware.apps.shop.utils import send_new_order_seller, send_new_order_buyer
+from nnmware.apps.market.models import SpecialOffer, STATUS_WAIT, DeliveryAddress
+from nnmware.apps.market.form import EditProductFurnitureForm, AnonymousUserOrderAddForm, RegisterUserOrderAddForm
+from nnmware.apps.market.utils import make_order_from_basket
+from nnmware.apps.market.utils import send_new_order_seller, send_new_order_buyer
 
 
 class CurrentUserOrderAccess(object):
@@ -45,8 +45,8 @@ class CurrentUserOrderAccess(object):
         return super(CurrentUserOrderAccess, self).dispatch(request, *args, **kwargs)
 
 
-class ShopBaseView(ListView):
-    template_name = 'shop/product_list.html'
+class MarketBaseView(ListView):
+    template_name = 'market/product_list.html'
     paginate_by = setting('PAGINATE_BY', 20)
     model = Product
 
@@ -54,7 +54,7 @@ class ShopBaseView(ListView):
         return self.request.session.get('paginator', self.paginate_by)
 
 
-class ShopCategory(ShopBaseView):
+class MarketCategory(MarketBaseView):
     category = None
     sort = None
 
@@ -74,19 +74,19 @@ class ShopCategory(ShopBaseView):
         return result
 
     def get_context_data(self, **kwargs):
-        context = super(ShopCategory, self).get_context_data(**kwargs)
+        context = super(MarketCategory, self).get_context_data(**kwargs)
         context['category'] = self.category
         context['sort'] = self.sort
         return context
 
 
-class ShopAllCategory(ShopBaseView):
+class MarketAllCategory(MarketBaseView):
     def get_queryset(self):
         return Product.objects.active()
 
 
-class ShopSearch(ShopBaseView):
-    template_name = 'shop/product_search.html'
+class MarketSearch(MarketBaseView):
+    template_name = 'market/product_search.html'
     q = None
 
     def get_queryset(self):
@@ -100,15 +100,15 @@ class ShopSearch(ShopBaseView):
         return Product.objects.active()
 
     def get_context_data(self, **kwargs):
-        context = super(ShopSearch, self).get_context_data(**kwargs)
+        context = super(MarketSearch, self).get_context_data(**kwargs)
         context['search'] = True
         if self.q is not None:
             context['search_string'] = self.q
         return context
 
 
-class SaleView(ShopBaseView):
-    template_name = 'shop/sale_list.html'
+class SaleView(MarketBaseView):
+    template_name = 'market/sale_list.html'
 
     def get_queryset(self):
         return Product.objects.sale()
@@ -116,7 +116,7 @@ class SaleView(ShopBaseView):
 
 class ProductDetail(SingleObjectMixin, ListView):
     # For case-sensitive need UTF8_BIN collation in Slug_Field
-    template_name = 'shop/product.html'
+    template_name = 'market/product.html'
 
     def get_object(self, queryset=None):
         return get_object_or_404(Product, pk=int(self.kwargs['pk']))
@@ -136,7 +136,7 @@ class ProductDetail(SingleObjectMixin, ListView):
 
 
 class BasketView(TemplateView):
-    template_name = 'shop/basket.html'
+    template_name = 'market/basket.html'
 
     def dispatch(self, request, *args, **kwargs):
         if self.request.user.basket_.count() < 1:
@@ -147,13 +147,13 @@ class BasketView(TemplateView):
 class AllProductsView(ListView, CurrentUserSuperuser):
     paginate_by = 20
     model = Product
-    template_name = 'shop/adm_product_list.html'
+    template_name = 'market/adm_product_list.html'
 
 
 class FeedbacksView(ListView, CurrentUserSuperuser):
     paginate_by = 20
     model = Feedback
-    template_name = 'shop/adm_feedback_list.html'
+    template_name = 'market/adm_feedback_list.html'
 
 
 class AvailProductsView(AllProductsView):
@@ -170,7 +170,7 @@ class EditProduct(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMixin, Upda
     model = Product
     pk_url_kwarg = 'pk'
     form_class = EditProductForm
-    template_name = "shop/edit_product.html"
+    template_name = "market/edit_product.html"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -190,7 +190,7 @@ class EditProductFurniture(AjaxFormMixin, CurrentUserSuperuser, AttachedImagesMi
     model = Product
     pk_url_kwarg = 'pk'
     form_class = EditProductFurnitureForm
-    template_name = "shop/edit_product.html"
+    template_name = "market/edit_product.html"
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -218,7 +218,7 @@ def add_product(request):
 
 
 class SearchView(ListView):
-    template_name = 'shop/product_list.html'
+    template_name = 'market/product_list.html'
     model = Product
     paginate_by = 20
 
@@ -232,7 +232,7 @@ class AddDeliveryAddressView(AjaxFormMixin, CreateView):
 
 
 class OrdersView(ListView):
-    template_name = 'shop/order_list.html'
+    template_name = 'market/order_list.html'
     model = Order
     paginate_by = 60
 
@@ -241,7 +241,7 @@ class OrdersView(ListView):
 
 
 class BaseOrdersView(ListView, CurrentUserSuperuser):
-    template_name = 'shop/order_list.html'
+    template_name = 'market/order_list.html'
     model = Order
     paginate_by = 60
 
@@ -252,7 +252,7 @@ class AllOrdersView(BaseOrdersView):
 
 
 class SumOrdersView(BaseOrdersView):
-    template_name = 'shop/order_list_sum.html'
+    template_name = 'market/order_list_sum.html'
 
     def get_queryset(self):
         return Order.objects.active().extra({'date_created': "date(created_date)"}).values('date_created').annotate(
@@ -260,7 +260,7 @@ class SumOrdersView(BaseOrdersView):
 
 
 class PieProductListView(ListView, CurrentUserSuperuser):
-    template_name = 'shop/pie.html'
+    template_name = 'market/pie.html'
 
     def get_queryset(self):
         active = Order.objects.active()
@@ -278,24 +278,24 @@ class DateOrdersView(AllOrdersView):
 class OrderView(CurrentUserOrderAccess, DetailView):
     model = Order
     pk_url_kwarg = 'pk'
-    template_name = 'shop/order.html'
+    template_name = 'market/order.html'
 
 
 class OrderCompleteView(CurrentUserOrderAccess, DetailView):
     model = Order
     pk_url_kwarg = 'pk'
-    template_name = 'shop/order_complete.html'
+    template_name = 'market/order_complete.html'
 
 
 class NewsListView(ListView):
-    template_name = 'shop/news_list.html'
-    model = ShopNews
+    template_name = 'market/news_list.html'
+    model = MarketNews
     paginate_by = 10
 
 
 class ArticleListView(ListView):
-    template_name = 'shop/article_list.html'
-    model = ShopArticle
+    template_name = 'market/article_list.html'
+    model = MarketArticle
     paginate_by = 10
 
 
@@ -303,7 +303,7 @@ class OrderStatusChange(CurrentUserSuperuser, UpdateView):
     model = Order
     slug_field = 'pk'
     form_class = OrderStatusForm
-    template_name = "shop/order_status.html"
+    template_name = "market/order_status.html"
 
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
@@ -332,7 +332,7 @@ class OrderTrackingChange(CurrentUserSuperuser, UpdateView):
     model = Order
     slug_field = 'pk'
     form_class = OrderTrackingForm
-    template_name = "shop/order_tracking.html"
+    template_name = "market/order_tracking.html"
 
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
@@ -342,34 +342,34 @@ class OrderCommentChange(CurrentUserOrderAccess, UpdateView):
     model = Order
     slug_field = 'pk'
     form_class = OrderCommentForm
-    template_name = "shop/order_comment.html"
+    template_name = "market/order_comment.html"
 
     def get_success_url(self):
         return reverse('order_view', args=[self.object.pk])
 
 
 class ProfileView(TemplateView):
-    template_name = 'shop/profile.html'
+    template_name = 'market/profile.html'
 
 
 class FeedbackView(CurrentUserSuperuser, DetailView):
     model = Feedback
     pk_url_kwarg = 'pk'
-    template_name = 'shop/feedback.html'
+    template_name = 'market/feedback.html'
 
 
 class SpecialOfferView(DetailView):
     model = SpecialOffer
-    template_name = 'shop/offer.html'
+    template_name = 'market/offer.html'
 
 
 class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
     form_class = AnonymousUserOrderAddForm
-    template_name = 'shop/quick_order.html'
+    template_name = 'market/quick_order.html'
 
     def form_valid(self, form):
-        if not self.request.user.is_authenticated() and not settings.SHOP_ANONYMOUS_ORDERS:
+        if not self.request.user.is_authenticated() and not settings.MARKET_ANONYMOUS_ORDERS:
             return super(AnonymousUserAddOrderView, self).form_invalid(form)
         basket = get_basket(self.request)
         if basket.count() < 1:
@@ -395,7 +395,7 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
 
 class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
     model = Order
-    template_name = 'shop/new_order.html'
+    template_name = 'market/new_order.html'
     form_class = RegisterUserOrderAddForm
 
     def form_valid(self, form):

@@ -583,8 +583,8 @@ def menu(app=None):
         from nnmware.apps.topic.models import TopicCategory as MenuCategory
     elif app == 'board':
         from nnmware.apps.board.models import BoardCategory as MenuCategory
-    elif app == 'shop':
-        from nnmware.apps.shop.models import ProductCategory as MenuCategory
+    elif app == 'market':
+        from nnmware.apps.market.models import ProductCategory as MenuCategory
     elif app == 'article':
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
@@ -607,8 +607,8 @@ def menu_span(app=None):
         from nnmware.apps.topic.models import TopicCategory as MenuCategory
     elif app == 'board':
         from nnmware.apps.board.models import BoardCategory as MenuCategory
-    elif app == 'shop':
-        from nnmware.apps.shop.models import ProductCategory as MenuCategory
+    elif app == 'market':
+        from nnmware.apps.market.models import ProductCategory as MenuCategory
     elif app == 'publication':
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
@@ -781,21 +781,21 @@ def get_paginator_value(context):
 
 
 @register.simple_tag(takes_context=True)
-def shop_compare(context):
+def market_compare(context):
     request = context['request']
     # noinspection PyBroadException
     try:
-        return len(request.session['shop_compare'])
+        return len(request.session['market_compare'])
     except:
         return 0
 
 
 @register.simple_tag(takes_context=True)
-def shop_compare_list(context):
+def market_compare_list(context):
     request = context['request']
     # noinspection PyBroadException
     try:
-        return request.session['shop_compare']
+        return request.session['market_compare']
     except:
         return []
 

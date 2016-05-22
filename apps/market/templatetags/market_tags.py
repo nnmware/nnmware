@@ -6,8 +6,8 @@ from xml.etree.ElementTree import Element, SubElement, tostring
 from django.template import Library
 from django.template.defaultfilters import floatformat
 
-from nnmware.apps.shop.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review, \
-    ShopSlider
+from nnmware.apps.market.models import Basket, Product, Order, OrderItem, ProductCategory, SpecialOffer, Review, \
+    MarketSlider
 from nnmware.core.http import get_session_from_request
 
 
@@ -81,19 +81,19 @@ def sales_sum(product_pk, on_date):
 
 
 @register.simple_tag
-def menu_shop():
+def menu_market():
     if 1 > 0:  # try:
         html = Element("ul")
         for node in ProductCategory.objects.all():
             if not node.parent:
-                menu_recurse_shop(node, html)
+                menu_recurse_market(node, html)
         return tostring(html, 'utf-8')
 
 #    except:
 #        return 'error'
 
 
-def menu_recurse_shop(current_node, parent_node, show_empty=True):
+def menu_recurse_market(current_node, parent_node, show_empty=True):
     child_count = current_node.children.count()
 
     if show_empty or child_count > 0:
@@ -112,11 +112,11 @@ def menu_recurse_shop(current_node, parent_node, show_empty=True):
             new_parent = SubElement(temp_parent, 'ul', {'class': 'subcat'})
             children = current_node.children.order_by('position', 'name')
             for child in children:
-                menu_recurse_shop(child, new_parent)
+                menu_recurse_market(child, new_parent)
 
 
 @register.simple_tag
-def shop_parent():
+def market_parent():
     return ProductCategory.objects.filter(parent=None).order_by('position')
 
 
@@ -126,7 +126,7 @@ def special_offer():
 
 
 @register.simple_tag
-def shop_reviews():
+def market_reviews():
     result = []
     # noinspection PyBroadException
     try:
@@ -149,12 +149,12 @@ def compare_products(context):
     request = context['request']
     # noinspection PyBroadException
     try:
-        compare = request.session['shop_compare']
+        compare = request.session['market_compare']
         return Product.objects.filter(pk__in=compare)
     except:
         return None
 
 
 @register.simple_tag
-def shop_slider():
-    return ShopSlider.objects.filter(visible=True)
+def market_slider():
+    return MarketSlider.objects.filter(visible=True)
