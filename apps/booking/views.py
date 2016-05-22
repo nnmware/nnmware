@@ -606,7 +606,7 @@ class CabinetRates(HotelPathMixin, DetailView, CurrentUserHotelAdmin):
         else:
             try:
                 context['rooms'] = [Room.objects.filter(hotel=self.object)[0]]
-            except IndexError:
+            except IndexError as ierr:
                 context['rooms'] = None
         if f_date and t_date:
             context['from'] = f_date
@@ -1110,7 +1110,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
                 self.object.card_valid = card_valid
                 self.object.card_cvv2 = card_cvv2
 
-            except CardError:
+            except CardError as carderr:
                 return ajax_answer_lazy(payload)
         if self.request.user.is_authenticated():
             self.object.user = self.request.user

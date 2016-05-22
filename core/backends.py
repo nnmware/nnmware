@@ -27,6 +27,7 @@ class EmailAuthBackend(object):
 
     def authenticate(self, username=None, password=None):
         """ Authenticate a user based on email address as the user name. """
+        # noinspection PyBroadException
         try:
             user = get_user_model().objects.get(email=username)
             if user.check_password(password):
@@ -36,6 +37,7 @@ class EmailAuthBackend(object):
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
+        # noinspection PyBroadException
         try:
             return get_user_model().objects.get(pk=user_id)
         except:
@@ -43,12 +45,13 @@ class EmailAuthBackend(object):
 
 
 class UsernameOrEmailAuthBackend(object):
-    # noinspection PyBroadException
+
     def authenticate(self, username=None, password=None):
         if '@' in username:
             kwargs = {'email': username}
         else:
             kwargs = {'username': username}
+        # noinspection PyBroadException
         try:
             user = get_user_model().objects.get(**kwargs)
             if user.check_password(password):
@@ -58,6 +61,7 @@ class UsernameOrEmailAuthBackend(object):
 
     def get_user(self, user_id):
         """ Get a User object from the user_id. """
+        # noinspection PyBroadException
         try:
             return get_user_model().objects.get(pk=user_id)
         except:
@@ -78,6 +82,7 @@ def image_from_url(url):
     ext = os.path.splitext(filename)[1]
     new_filename = md5(filename.encode('utf8')).hexdigest() + ext
     path = os.path.join(settings.MEDIA_ROOT, upload_dir, timedir, new_filename)
+    # noinspection PyBroadException
     try:
         os.makedirs(os.path.realpath(os.path.dirname(path)))
     except:

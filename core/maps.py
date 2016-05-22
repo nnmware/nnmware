@@ -40,7 +40,7 @@ def request(method, url, data=None, headers=None, timeout=None):
     try:
         connection = http.client.HTTPConnection(host_port, timeout=timeout)
         timeout_set = True
-    except TypeError:
+    except TypeError as tyerr:
         connection = http.client.HTTPConnection(host_port)
 
     with closing(connection):
@@ -93,7 +93,7 @@ def _get_coords(response):
         pos_elem = dom.getElementsByTagName('pos')[0]
         pos_data = pos_elem.childNodes[0].data
         return tuple(pos_data.split())
-    except IndexError:
+    except IndexError as inderr:
         return None, None
 
 

@@ -30,7 +30,7 @@ def video_links(context, mode='random'):
     user = context["user"]
     try:
         category = context['category_panel']
-    except KeyError:
+    except KeyError as kerr:
         category = None
     videos = Video.objects.filter(created_date__gte=now() - timedelta(days=1))
     result = videos
@@ -346,7 +346,7 @@ def get_like_url(content_object):
 #     """
 #     try:
 #         split = token.split_contents()
-#     except ValueError:
+#     except ValueError as verr:
 #         raise TemplateSyntaxError
 #     if len(split) == 5:
 #         return CommentTreeNode(split[2], split[4], split[3])
@@ -373,7 +373,7 @@ def get_like_url(content_object):
 #             else:
 #                 try:
 #                     tree_root = int(self.tree_root_str)
-#                 except ValueError:
+#                 except ValueError as verr:
 #                     tree_root = self.tree_root_str
 #         context[self.context_name] = Nnmcomment.public.get_tree(content_object, root=tree_root)
 #         return ''
@@ -387,7 +387,7 @@ def get_comment_count(token):
     """
     try:
         split = token.split_contents()
-    except ValueError:
+    except ValueError as verr:
         raise TemplateSyntaxError
     if split[1] != 'for' or split[3] != 'as':
         raise TemplateSyntaxError
@@ -417,7 +417,7 @@ def get_latest_comments(token):
     """
     try:
         split = token.split_contents()
-    except ValueError:
+    except ValueError as verr:
         raise TemplateSyntaxError
     if len(split) != 4:
         raise TemplateSyntaxError
@@ -444,7 +444,7 @@ def get_user_comments(token):
     """
     try:
         split = token.split_contents()
-    except ValueError:
+    except ValueError as verr:
         raise TemplateSyntaxError
     if len(split) != 5:
         raise TemplateSyntaxError
@@ -469,7 +469,7 @@ def get_user_comment_count(token):
     """
     try:
         split = token.split_contents()
-    except ValueError:
+    except ValueError as verr:
         raise TemplateSyntaxError
     if len(split) != 5:
         raise TemplateSyntaxError
@@ -526,7 +526,7 @@ def thumbnail(url, args=''):
             kw = kw.lower().encode('ascii')
             try:
                 val = int(val)  # convert all ints
-            except ValueError:
+            except ValueError as verr:
                 raise TemplateSyntaxError
             kwargs[kw] = val
 
@@ -701,7 +701,7 @@ def datelinks_by_string(value):
     r = r'^(?P<day>\d{2})\.(?P<month>\d{2})\.(?P<year>\d{4})$'
     try:
         day, month, year = re.match(r, value).groups()
-    except AttributeError:
+    except AttributeError as aerr:
         return value
     return get_links(day, month, year)
 
@@ -725,7 +725,9 @@ def inbox_count(context):
     try:
         user = context['user']
         count = Message.objects.inbox_for(user).count()
-    except (KeyError, AttributeError):
+    except KeyError as kerr:
+        count = ''
+    except AttributeError as aerr:
         count = ''
     return "%s" % count
 
@@ -735,7 +737,9 @@ def inbox_unread(context):
     try:
         user = context['user']
         count = user.received_messages.filter(read_at__isnull=True, recipient_deleted_at__isnull=True).count()
-    except (KeyError, AttributeError):
+    except KeyError as kerr:
+        count = ''
+    except AttributeError as aerr:
         count = ''
     return "%s" % count
 
@@ -745,7 +749,9 @@ def outbox_count(context):
     try:
         user = context['user']
         count = Message.objects.outbox_for(user).count()
-    except (KeyError, AttributeError):
+    except KeyError as kerr:
+        count = ''
+    except AttributeError as aerr:
         count = ''
     return "%s" % count
 
@@ -755,7 +761,9 @@ def trash_count(context):
     try:
         user = context['user']
         count = Message.objects.trash_for(user).count()
-    except (KeyError, AttributeError):
+    except KeyError as kerr:
+        count = ''
+    except AttributeError as aerr:
         count = ''
     return "%s" % count
 
@@ -814,7 +822,7 @@ class SetVarNode(Node):
     def render(self, context):
         try:
             value = Variable(self.var_value).resolve(context)
-        except VariableDoesNotExist:
+        except VariableDoesNotExist as notexisterr:
             value = ""
         context[self.var_name] = value
         return ""

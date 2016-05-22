@@ -163,7 +163,7 @@ class BookingAddForm(UserFromRequestForm):
             raise forms.ValidationError(_("Email is required"))
         try:
             validate_email(email)
-        except ValidationError:
+        except ValidationError as verr:
             raise forms.ValidationError(_("Email is wrong"))
         return email
 

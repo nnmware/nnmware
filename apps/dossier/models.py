@@ -30,7 +30,6 @@ DST_FOR_CHOICES = (
 )
 
 
-
 class ClothingSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -46,7 +45,6 @@ class ClothingSize(models.Model):
 
     def __str__(self):
         return "%s / %s" % (self.international, self.russian)
-
 
 
 class ShoesSize(models.Model):
@@ -65,7 +63,6 @@ class ShoesSize(models.Model):
         return "%s / %s" % (floatformat(self.cm, -1), floatformat(self.ru, -1))
 
 
-
 class HeadSize(models.Model):
     international = std_text_field(_('International'))
     russian = models.PositiveSmallIntegerField(verbose_name=_('Russian size'), blank=True, null=True, default=None)
@@ -78,7 +75,6 @@ class HeadSize(models.Model):
 
     def __str__(self):
         return "%s / %s" % (self.international, self.russian)
-
 
 
 class ChestSize(models.Model):
@@ -127,7 +123,6 @@ class TypeFeatureAppearance(AbstractOrder):
         ordering = ['name', ]
         verbose_name = _("Feature appearance type")
         verbose_name_plural = _("Feature appearances types")
-
 
 
 class FeatureAppearance(AbstractName):
@@ -257,7 +252,6 @@ class TypeBodyModification(AbstractOrder):
         verbose_name_plural = _("Types body modifications")
 
 
-
 class BodyModification(AbstractName):
     modification = models.ForeignKey(TypeBodyModification, verbose_name=_('Modification'), related_name='modifications')
 
@@ -371,7 +365,6 @@ LNG_SKILL_CHOICES = (
     (LNG_SKILL_BASE, _("Base")),
     (LNG_SKILL_CONVERSATIONAL, _("Conversational")),
 )
-
 
 
 class LanguageSkill(models.Model):
@@ -514,7 +507,6 @@ class AnimalType(AbstractName):
         verbose_name_plural = _("Animals types")
 
 
-
 class AnimalKind(AbstractImg):
     animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind')
     name = std_text_field(_('Name'))
@@ -527,7 +519,6 @@ class AnimalKind(AbstractImg):
 
     def __str__(self):
         return "%s :: %s" % (self.animal.name, self.name)
-
 
 
 class Animal(AbstractName):
@@ -550,7 +541,6 @@ class TransportType(AbstractName):
         verbose_name_plural = _("Transport types")
 
 
-
 class TransportMark(AbstractImg):
     ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
     name = std_text_field(_('Name'))
@@ -563,7 +553,6 @@ class TransportMark(AbstractImg):
 
     def __str__(self):
         return "%s :: %s" % (self.ttype.name, self.name)
-
 
 
 class Vehicle(AbstractName):
@@ -586,7 +575,6 @@ class SurveyObjectType(AbstractName):
         verbose_name_plural = _("Survey object types")
 
 
-
 class SurveyObject(AbstractName):
     stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
 
@@ -604,7 +592,6 @@ class SurveySuitType(AbstractName):
     class Meta:
         verbose_name = _("Survey suit type")
         verbose_name_plural = _("Survey suits types")
-
 
 
 class SurveySuit(AbstractName):
@@ -626,7 +613,6 @@ class RequisiteType(AbstractName):
         verbose_name_plural = _("Requisite types")
 
 
-
 class Requisite(AbstractName):
     rtype = models.ForeignKey(RequisiteType, verbose_name=_('Type'))
 
@@ -636,7 +622,6 @@ class Requisite(AbstractName):
 
     def __str__(self):
         return "%s :: %s" % (self.name, self.rtype.name)
-
 
 
 class Child(AbstractName):

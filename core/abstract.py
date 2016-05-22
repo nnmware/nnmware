@@ -19,7 +19,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 
 from nnmware.core.file import get_path_from_url
-from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED
+from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLISHED, SKILL_UNKNOWN, SKILL_CHOICES, \
+    EDU_UNKNOWN, EDU_CHOICES
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager, AbstractActiveManager
 from nnmware.core.fields import std_text_field, std_url_field
@@ -46,7 +47,6 @@ class AbstractDate(models.Model):
         super(AbstractDate, self).save(**kwargs)
 
 
-
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True,
@@ -61,6 +61,7 @@ class AbstractContent(models.Model):
     objects = AbstractContentManager()
 
     def __str__(self):
+        # noinspection PyBroadException
         try:
             return "%s - %s " % (self.content_object.get_name, self.pk)
         except:
@@ -91,7 +92,6 @@ class AbstractFile(AbstractDate):
         abstract = True
 
 
-
 class Pic(AbstractContent, AbstractFile):
     pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
@@ -104,8 +104,7 @@ class Pic(AbstractContent, AbstractFile):
         verbose_name_plural = _("Pics")
 
     def __str__(self):
-        return _('Pic for %(type)s: %(obj)s') % {'type': unicode(self.content_type),
-                                                 'obj': unicode(self.content_object)}
+        return _('Pic for %(type)s: %(obj)s') % {'type': self.content_type, 'obj': self.content_object}
 
     def get_file_link(self):
         return os.path.join(settings.MEDIA_URL, self.pic.url)
@@ -120,6 +119,7 @@ class Pic(AbstractContent, AbstractFile):
                 pics.update(primary=False)
         else:
             pics.delete()
+        # noinspection PyBroadException
         try:
             remove_thumbnails(self.pic.path)
         except:
@@ -129,6 +129,7 @@ class Pic(AbstractContent, AbstractFile):
         super(Pic, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        # noinspection PyBroadException
         try:
             remove_thumbnails(self.pic.path)
             remove_file(self.pic.path)
@@ -140,7 +141,7 @@ class Pic(AbstractContent, AbstractFile):
         try:
             orig = self.pic.storage.open(self.pic.name, 'rb').read()
             image = Image.open(StringIO(orig))
-        except IOError:
+        except IOError as ioerr:
             return  # What should we do here?  Render a "sorry, didn't work" img?
         quality = quality or IMG_THUMB_QUALITY
         (w, h) = image.size
@@ -189,6 +190,7 @@ class PicsMixin(object):
 
     @property
     def main_image(self):
+        # noinspection PyBroadException
         try:
             return self.allpics[0].pic.url
         except:
@@ -204,6 +206,7 @@ class PicsMixin(object):
 
     @property
     def obj_pic(self):
+        # noinspection PyBroadException
         try:
             return self.allpics[0]
         except:
@@ -230,7 +233,6 @@ class AbstractTeaser(models.Model):
         return self.teaser
 
 
-
 class Unit(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of unit'))
 
@@ -243,7 +245,6 @@ class Unit(models.Model):
         return "%s" % self.name
 
 
-
 class Parameter(models.Model):
     name = models.CharField(max_length=100, verbose_name=_('Name of parameter'))
 
@@ -253,6 +254,7 @@ class Parameter(models.Model):
         abstract = True
 
     def __str__(self):
+        # noinspection PyBroadException
         try:
             return "%s (%s)" % (self.name, self.unit.name)
         except:
@@ -281,6 +283,7 @@ class AbstractImg(models.Model):
         return setting('DEFAULT_AVATAR', 'noavatar.png')
 
     def delete(self, *args, **kwargs):
+        # noinspection PyBroadException
         try:
             remove_thumbnails(self.img.path)
             remove_file(self.img.path)
@@ -298,7 +301,6 @@ class AbstractImg(models.Model):
         return "No image"
     thumbnail.allow_tags = True
     thumbnail.short_description = 'Thumbnail'
-
 
 
 class AbstractName(AbstractImg, PicsMixin):
@@ -325,6 +327,7 @@ class AbstractName(AbstractImg, PicsMixin):
 
     @property
     def get_name(self):
+        # noinspection PyBroadException
         try:
             if get_language() == 'en':
                 if self.name_en:
@@ -334,6 +337,7 @@ class AbstractName(AbstractImg, PicsMixin):
             return self.name
 
     def get_description(self):
+        # noinspection PyBroadException
         try:
             if get_language() == 'en':
                 if self.description_en:
@@ -352,7 +356,6 @@ class AbstractName(AbstractImg, PicsMixin):
         super(AbstractName, self).save(*args, **kwargs)
 
 
-
 class Material(AbstractName):
     pass
 
@@ -365,7 +368,6 @@ class Material(AbstractName):
         return self.name
 
 
-
 class AbstractColor(AbstractName):
     pass
 
@@ -376,7 +378,6 @@ class AbstractColor(AbstractName):
 
     def __str__(self):
         return self.name
-
 
 
 class Tree(AbstractName):
@@ -432,12 +433,13 @@ class Tree(AbstractName):
             slug_list = ""
         return reverse(self.slug_detail, kwargs={'parent_slugs': slug_list, 'slug': self.slug})
 
+    @property
     def get_separator(self):
         return ' > '
 
     def _parents_repr(self):
         name_list = [node.name for node in self._recurse_for_parents(self)]
-        return self.get_separator().join(name_list)
+        return self.get_separator.join(name_list)
 
     _parents_repr.short_description = _("Tree parents")
 
@@ -469,7 +471,7 @@ class Tree(AbstractName):
     def __str__(self):
         name_list = [node.name for node in self._recurse_for_parents(self)]
         name_list.append(self.name)
-        return self.get_separator().join(name_list)
+        return self.get_separator.join(name_list)
 
     def save(self, *args, **kwargs):
         if self.id:
@@ -524,6 +526,7 @@ class Doc(AbstractContent, AbstractFile):
     objects = AbstractContentManager()
 
     def save(self, *args, **kwargs):
+        # noinspection PyBroadException
         try:
             docs = Doc.objects.for_object(self.content_object)
             if self.pk:
@@ -541,6 +544,7 @@ class Doc(AbstractContent, AbstractFile):
         super(Doc, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
+        # noinspection PyBroadException
         try:
             remove_file(self.doc.path)
         except:
@@ -568,7 +572,6 @@ class AbstractIP(models.Model):
         abstract = True
 
 
-
 class AbstractOrder(AbstractImg):
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     name_en = std_text_field(_('English name'))
@@ -581,18 +584,6 @@ class AbstractOrder(AbstractImg):
         return "%s" % self.name
 
 
-SKILL_UNKNOWN = 0
-SKILL_FAN = 1
-SKILL_PRO = 2
-
-SKILL_CHOICES = (
-    (SKILL_UNKNOWN, _("Unknown")),
-    (SKILL_FAN, _("Fan")),
-    (SKILL_PRO, _("Pro")),
-)
-
-
-
 class AbstractSkill(AbstractOrder):
     level = models.IntegerField(_('Level'), choices=SKILL_CHOICES, blank=True, null=True, default=SKILL_UNKNOWN)
 
@@ -601,7 +592,6 @@ class AbstractSkill(AbstractOrder):
 
     def __str__(self):
         return "%s :: %s " % (self.skill.name, self.get_level_display())
-
 
 
 class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
@@ -719,11 +709,11 @@ class UserMixin(models.Model):
 
     @property
     def get_user_name(self):
+        # noinspection PyBroadException
         try:
             return self.user.get_name
         except:
             return self.user.username
-
 
 
 class AbstractVendor(models.Model):
@@ -741,7 +731,6 @@ class AbstractVendor(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
@@ -769,10 +758,10 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
 
 
 class AbstractLike(AbstractContent):
-    '''
+    """
     like = True
     dislike = False
-    '''
+    """
     like_dislike = models.NullBooleanField(verbose_name="Like-Dislike", default=None, db_index=True)
 
     class Meta:
@@ -783,19 +772,6 @@ class AbstractLike(AbstractContent):
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
-
-
-EDU_UNKNOWN = 0
-EDU_TRAINING = 1
-EDU_MIDDLE = 2
-EDU_HIGH = 3
-
-EDU_CHOICES = (
-    (EDU_UNKNOWN, _("Unknown education")),
-    (EDU_TRAINING, _("Training course")),
-    (EDU_MIDDLE, _("Secondary education")),
-    (EDU_HIGH, _("Higher education")),
-)
 
 
 class AbstractEducation(models.Model):
@@ -813,5 +789,3 @@ class AbstractEducation(models.Model):
         verbose_name = _("Education")
         verbose_name_plural = _("Educations")
         abstract = True
-
-

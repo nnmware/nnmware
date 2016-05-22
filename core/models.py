@@ -208,6 +208,7 @@ class Action(AbstractContent, AbstractIP):
 
 @receiver([post_save, post_delete], sender=Nnmcomment)
 def update_comment_count(sender, instance, **kwargs):
+    # noinspection PyBroadException
     try:
         what = instance.get_content_object()
         what.comments = Nnmcomment.public.all_for_object(what).count()
@@ -219,6 +220,7 @@ def update_comment_count(sender, instance, **kwargs):
 
 @receiver([post_save, post_delete], sender=FlatNnmcomment)
 def update_post_date(sender, instance, **kwargs):
+    # noinspection PyBroadException
     try:
         what = instance.get_content_object()
         what.comments = FlatNnmcomment.public.all_for_object(what).count()
@@ -261,6 +263,7 @@ class EmailValidationManager(Manager):
     """
 
     def verify(self, key):
+        # noinspection PyBroadException
         try:
             verify = self.get(key=key)
             if not verify.is_expired():
@@ -276,6 +279,7 @@ class EmailValidationManager(Manager):
             return False
 
     def getuser(self, key):
+        # noinspection PyBroadException
         try:
             return self.get(key=key).user
         except:
@@ -289,7 +293,7 @@ class EmailValidationManager(Manager):
             key = get_user_model().objects.make_random_password(70)
             try:
                 EmailValidation.objects.get(key=key)
-            except EmailValidation.DoesNotExist:
+            except EmailValidation.DoesNotExist as emerr:
                 self.key = key
                 break
 
@@ -340,6 +344,7 @@ class EmailValidation(models.Model):
         body = loader.get_template(template_body).render(Context(locals()))
         subject = loader.get_template(template_subject)
         subject = subject.render(Context(locals())).strip()
+        # noinspection PyBroadException
         try:
             send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
         except:
@@ -494,6 +499,7 @@ class Like(AbstractLike):
 @receiver([post_save, post_delete], sender=Like)
 def update_karma(sender, instance, **kwargs):
     what = instance.get_content_object()
+    # noinspection PyBroadException
     try:
         what.set_karma()
     except:

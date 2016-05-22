@@ -66,6 +66,7 @@ class AjaxFormMixin(object):
         if self.request.is_ajax():
             self.success = True
             payload = dict(success=self.success, location=self.success_url or self.get_success_url())
+            # noinspection PyBroadException
             try:
                 payload['status_msg'] = self.status_msg
             except:
@@ -77,9 +78,7 @@ class AjaxFormMixin(object):
     def form_invalid(self, form, *args, **kwargs):
         self.data = as_json(form.errors)
         self.success = False
-
         payload = {'success': self.success, 'data': self.data}
-
         if self.request.is_ajax():
             return ajax_answer_lazy(payload)
         else:
@@ -394,6 +393,7 @@ class ChangePasswordView(UserToFormMixin, AjaxFormMixin, FormView):
         new_pw = form.cleaned_data.get('new_password2')
         self.request.user.set_password(new_pw)
         self.request.user.save()
+        # noinspection PyBroadException
         try:
             recipients = [self.request.user.email]
             mail_dict = {'new_pw': new_pw}
@@ -434,6 +434,7 @@ class EmailQuickRegisterView(AjaxFormMixin, FormView):
         user = authenticate(username=username, password=password)
         self.user = user
         login(self.request, user)
+        # noinspection PyBroadException
         try:
             recipients = [email]
             mail_dict = {'name': email, 'pw': password}
@@ -499,6 +500,7 @@ class AjaxLogoutView(TemplateView):
     def post(self, request, *args, **kwargs):
         success = True
         location = None
+        # noinspection PyBroadException
         try:
             logout(self.request)
             location = '/'
@@ -555,6 +557,7 @@ class SignupView(AjaxFormMixin, FormView):
         email = form.cleaned_data.get('email')
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password2')
+        # noinspection PyBroadException
         try:
             e = EmailValidation.objects.get(email=email)
         except:
@@ -565,8 +568,7 @@ class SignupView(AjaxFormMixin, FormView):
             e.created = now()
             e.key = make_key(username)
             e.save()
-        mail_dict = {'key': e.key,
-                     'expiration_days': setting('ACCOUNT_ACTIVATION_DAYS', 7),
+        mail_dict = {'key': e.key, 'expiration_days': setting('ACCOUNT_ACTIVATION_DAYS', 7),
                      'site_name': setting('SITENAME', 'NNMWARE'), 'email': email}
         subject = 'registration/activation_subject.txt'
         body = 'registration/activation.txt'
@@ -763,6 +765,7 @@ class VideoTimelineFeed(ListView):
         ctype = ContentType.objects.get_for_model(Tag)
         tags_id = Follow.objects.filter(user=self.request.user, content_type=ctype).values_list('object_id', flat=True)
         tags = Tag.objects.filter(pk__in=tags_id)
+        # noinspection PyUnresolvedReferences
         return Video.objects.filter(tags__in=tags).order_by('-created_date').distinct()
 
     def get_context_data(self, **kwargs):

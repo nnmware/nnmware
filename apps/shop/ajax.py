@@ -61,7 +61,7 @@ def add_param(request, object_id):
             unit = ''
         payload = {'success': True, 'name': param.parameter.name, 'unit': unit, 'id': param.pk,
                    'value': param.value}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -76,7 +76,7 @@ def param_value_delete(request, object_id):
             raise AccessError
         ProductParameterValue.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -122,7 +122,7 @@ def add_basket(request, object_id):
             all_sum += item.sum
         payload = {'success': True, 'basket_count': basket_count,
                    'basket_sum': "%0.2f" % (all_sum,)}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -144,7 +144,7 @@ def delete_basket(request, object_id):
             all_sum += item.sum
         payload = {'success': True, 'basket_count': basket_count,
                    'basket_sum': "%0.2f" % (all_sum,), 'id': int(object_id)}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -205,7 +205,7 @@ def add_address(request):
             address.skype = skype
         address.save()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed for add address')}
     except:
         payload = {'success': False}
@@ -220,7 +220,7 @@ def delete_address(request, object_id):
             raise AccessError
         DeliveryAddress.objects.get(pk=int(object_id)).delete()
         payload = {'success': True, 'id': int(object_id)}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -273,7 +273,7 @@ def delete_product(request, object_id):
         p.visible = False
         p.save()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -288,7 +288,7 @@ def delete_feedback(request, object_id):
             raise AccessError
         Feedback.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -303,7 +303,7 @@ def delete_comment(request, object_id):
             raise AccessError
         Nnmcomment.objects.get(pk=int(object_id)).delete()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -323,7 +323,7 @@ def add_color(request, object_id):
         p.save()
         payload = {'success': True, 'name': color.name, 'id': color.pk,
                    'src': make_thumbnail(color.img.url, width=w, height=h)}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -340,7 +340,7 @@ def delete_color(request, object_id, color_id):
         p.colors.remove(color)
         p.save()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -357,7 +357,7 @@ def add_material(request, object_id):
         p.materials.add(material)
         p.save()
         payload = {'success': True, 'name': material.name, 'id': material.pk}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -374,7 +374,7 @@ def delete_material(request, object_id, material_id):
         p.materials.remove(material)
         p.save()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -393,7 +393,7 @@ def add_related_product(request, object_id):
         payload = {'success': True, 'name': product.name, 'id': product.pk, 'url': product.get_absolute_url(),
                    'src': make_thumbnail(product.main_image, width=settings.RELATED_PRODUCT_WIDTH,
                                          height=settings.RELATED_PRODUCT_HEIGHT, aspect=1)}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -410,7 +410,7 @@ def delete_related_product(request, object_id, product_id):
         p.related_products.remove(product)
         p.save()
         payload = {'success': True}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}

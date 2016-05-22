@@ -70,7 +70,7 @@ def room_rates(request):
                     placeprice.amount = price
                     placeprice.currency = currency
                     placeprice.save()
-                except ValueError:
+                except ValueError as valerr:
                     pass
             for k in all_avail:
                 try:
@@ -90,10 +90,10 @@ def room_rates(request):
                     if min_days is not None:
                         availability.min_days = min_days
                     availability.save()
-                except ValueError:
+                except ValueError as valerr:
                     pass
         payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -158,7 +158,7 @@ def room_discounts(request):
             except:
                 pass
         payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -175,7 +175,7 @@ def room_variants(request):
         for s in settlements:
             results.append(s.settlement)
         payload = {'success': True, 'settlements': results}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
@@ -189,7 +189,7 @@ def room_delete(request, pk):
             raise UserNotAllowed
         room.delete()
         payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
@@ -203,7 +203,7 @@ def request_hotel_delete(request, pk):
             raise UserNotAllowed
         req_hotel.delete()
         payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
         payload = {'success': False}
@@ -245,7 +245,7 @@ def hotel_add(request):
         location = reverse('cabinet_info', args=[hotel.city.slug, hotel.slug])
         RequestAddHotel.objects.get(id=request_id).delete()
         payload = {'success': True, 'location': location}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed add hotel.')}
     return ajax_answer_lazy(payload)
 
@@ -280,7 +280,7 @@ def client_review(request, pk):
         r.review = review
         r.save()
         payload = {'success': True, 'message': message}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
@@ -397,7 +397,7 @@ def add_category(request):
         file_path = get_image_attach_url(room)
         form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
         payload = {'success': True, 'file_path': file_path, 'form_path': form_path}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
@@ -524,7 +524,7 @@ def booking_status_change(request, uuid):
                                                          request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
             mail_managers(subject, message)
             payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change booking status.')}
     except:
         payload = {'success': False}
@@ -551,7 +551,7 @@ def client_booking_cancel(request, uuid):
                                                          request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
             mail_managers(subject, message)
             payload = {'success': True}
-    except UserNotAllowed:
+    except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change booking status.')}
     except:
         payload = {'success': False}

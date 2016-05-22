@@ -132,3 +132,26 @@ CONTACTS_CHOICES = (
     (CONTACT_TELEGRAM, _('Telegram')),
     (CONTACT_OTHER_SOCIAL, _('Other social network')),
 )
+
+SKILL_UNKNOWN = 0
+SKILL_FAN = 1
+SKILL_PRO = 2
+
+SKILL_CHOICES = (
+    (SKILL_UNKNOWN, _("Unknown")),
+    (SKILL_FAN, _("Fan")),
+    (SKILL_PRO, _("Pro")),
+)
+
+EDU_UNKNOWN = 0
+EDU_TRAINING = 1
+EDU_MIDDLE = 2
+EDU_HIGH = 3
+
+EDU_CHOICES = (
+    (EDU_UNKNOWN, _("Unknown education")),
+    (EDU_TRAINING, _("Training course")),
+    (EDU_MIDDLE, _("Secondary education")),
+    (EDU_HIGH, _("Higher education")),
+)
+

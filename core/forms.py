@@ -40,7 +40,6 @@ class EmailQuickRegisterForm(forms.ModelForm):
         model = get_user_model()
         fields = ('email', 'password')
 
-    # noinspection PyBroadException
     def clean_email(self):
         """
         Verify that the email exists
@@ -48,6 +47,7 @@ class EmailQuickRegisterForm(forms.ModelForm):
         email = self.cleaned_data.get("email")
         if not email:
             raise forms.ValidationError(_("E-MAIL IS REQUIRED"), code='invalid')
+        # noinspection PyBroadException
         try:
             get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"), code='invalid')
@@ -109,17 +109,17 @@ class LoginForm(forms.Form):
             if not user.is_active:
                 raise UserIsDisabled
             return username
-        except get_user_model().DoesNotExist:
+        except get_user_model().DoesNotExist as notexterr:
             try:
                 user = get_user_model().objects.get(email=username)
                 if not user.is_active:
                     raise UserIsDisabled
                 return username
-            except UserIsDisabled:
+            except UserIsDisabled as udiserr:
                 raise UserIsDisabled
             except:
                 raise forms.ValidationError(_("THIS EMAIL IS NOT REGISTERED"), code='invalid')
-        except UserIsDisabled:
+        except UserIsDisabled as udiserr:
             raise forms.ValidationError(_("THE USER IS DISABLED"), code='invalid')
 
     def clean_password(self):
@@ -170,11 +170,11 @@ class RegistrationForm(UserCreationForm):
         try:
             get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
-        except get_user_model().DoesNotExist:
+        except get_user_model().DoesNotExist as notexterr:
             try:
                 EmailValidation.objects.get(email=email)
                 raise forms.ValidationError(_("That e-mail is already being confirmed."), code='invalid')
-            except EmailValidation.DoesNotExist:
+            except EmailValidation.DoesNotExist as emerr:
                 return email
 
     def clean(self):
@@ -219,11 +219,12 @@ class SignupForm(UserCreationForm):
         try:
             get_user_model().objects.get(email=email)
             raise forms.ValidationError(_("THAT E-MAIL IS ALREADY USED"), code='invalid')
-        except get_user_model().DoesNotExist:
+        except get_user_model().DoesNotExist as notexterr:
+            # noinspection PyUnresolvedReferences
             try:
                 EmailValidation.objects.get(email=email)
                 raise forms.ValidationError(_("THAT E-MAIL IS ALREADY CONFIRMED"), code='invalid')
-            except EmailValidation.DoesNotExist:
+            except EmailValidation.DoesNotExist as emerr:
                 return email
 
     def clean_password1(self):
@@ -374,7 +375,7 @@ class CoreUserCreationForm(UserCreationForm):
         username = self.cleaned_data["username"]
         try:
             get_user_model().objects.get(username=username)
-        except get_user_model().DoesNotExist:
+        except get_user_model().DoesNotExist as notexterr:
             return username
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 

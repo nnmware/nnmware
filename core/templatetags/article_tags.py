@@ -38,9 +38,8 @@ def get_article_tags(parser, token):
 
     try:
         assert argc == 3 and args[1] == 'as'
-    except AssertionError:
+    except AssertionError as aserr:
         raise template.TemplateSyntaxError('get_article_tags syntax: {% get_article_tags as varname %}')
-
     return GetCategoriesNode(args[2])
 
 
@@ -103,7 +102,7 @@ def get_articles(parser, token):
 
     try:
         assert argc in (4, 6) or (argc in (5, 7) and args[-1].lower() in ('desc', 'asc'))
-    except AssertionError:
+    except AssertionError as aserr:
         raise template.TemplateSyntaxError('Invalid get_articles syntax.')
 
     # determine what parameters to use
@@ -189,7 +188,7 @@ def get_article_archives(parser, token):
 
     try:
         assert argc == 3 and args[1] == 'as'
-    except AssertionError:
+    except AssertionError as aserr:
         raise template.TemplateSyntaxError('get_article_archives syntax: {% get_article_archives as varname %}')
 
     return GetPublicationArchivesNode(args[2])
@@ -230,7 +229,7 @@ def divide_object_list(parser, token):
 
     try:
         assert argc == 6 and args[2] == 'by' and args[4] == 'as'
-    except AssertionError:
+    except AssertionError as aserr:
         raise template.TemplateSyntaxError(
             'divide_object_list syntax: {% divide_object_list object_list by divisor as varname %}')
 
@@ -256,12 +255,13 @@ class GetPageURLNode(template.Node):
         try:
             # determine what view we are using based upon the path of this page
             view, args, kwargs = resolve(context['request'].path)
-        except (Resolver404, KeyError):
+        except Resolver404 as rerr:
+            raise ValueError('Invalid pagination page.')
+        except KeyError as kerr:
             raise ValueError('Invalid pagination page.')
         else:
             # set the page parameter for this view
             kwargs['page'] = page_num
-
             # get the new URL from Django
             url = reverse(view, args=args, kwargs=kwargs)
 
@@ -285,7 +285,7 @@ def get_page_url(parser, token):
 
     try:
         assert argc in (2, 4)
-    except AssertionError:
+    except AssertionError as aerr:
         raise template.TemplateSyntaxError('get_page_url syntax: {% get_page_url page_num as varname %}')
 
     if argc == 4:

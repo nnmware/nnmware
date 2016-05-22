@@ -13,8 +13,7 @@ class AtomWithContentFeed(Atom1Feed):
     def add_item_elements(self, handler, item):
         super(AtomWithContentFeed, self).add_item_elements(handler, item)
         if 'content' in item:
-            handler.addQuickElement("content", item['content'],
-                {'type': 'html'})
+            handler.addQuickElement("content", item['content'], {'type': 'html'})
 
 
 class ObjectActivityFeed(Feed):
@@ -32,8 +31,7 @@ class ObjectActivityFeed(Feed):
     def link(self, obj):
         if hasattr(obj, 'get_absolute_url'):
             return obj.get_absolute_url()
-        return reverse('actstream_actor', None,
-                    (ContentType.objects.get_for_model(obj).pk, obj.pk))
+        return reverse('actstream_actor', None, (ContentType.objects.get_for_model(obj).pk, obj.pk))
 
     def description(self, obj):
         return 'Activity for %s' % obj
@@ -73,32 +71,26 @@ class ActivityStreamsFeed(AtomWithContentFeed):
         if 'actor' in item:
             handler.startElement('author', {})
             handler.addQuickElement('name', item['actor'].display_name)
-            handler.addQuickElement('uri', get_tag_uri(
-                item['actor'].get_absolute_url(), None))
+            handler.addQuickElement('uri', get_tag_uri(item['actor'].get_absolute_url(), None))
             handler.addQuickElement('id', item['actor'].get_absolute_url())
             handler.addQuickElement('activity: object-type', 'person')
-            handler.addQuickElement('link', get_tag_uri(
-                item['actor'].get_absolute_url(), None), {'type': 'text/html'})
+            handler.addQuickElement('link', get_tag_uri(item['actor'].get_absolute_url(), None), {'type': 'text/html'})
             handler.endElement('author')
 
         if 'object' in item:
             handler.startElement('activity: object', {})
             handler.addQuickElement('id', item['object_id'])
             handler.addQuickElement('title', item['object_title'])
-            handler.addQuickElement('published',
-                rfc3339_date(item['object_timestamp']).decode('utf-8'))
-            handler.addQuickElement('link', item['object'].get_absolute_url(),
-                {'type': 'text/html'})
-            handler.addQuickElement('activity: object-type',
-                item['object_object_type'])
+            handler.addQuickElement('published', rfc3339_date(item['object_timestamp']).decode('utf-8'))
+            handler.addQuickElement('link', item['object'].get_absolute_url(), {'type': 'text/html'})
+            handler.addQuickElement('activity: object-type', item['object_object_type'])
             handler.endElement('activity: object')
 
         if 'target' in item:
             handler.startElement('activity: target', {})
             handler.addQuickElement('id', item['target_id'])
             handler.addQuickElement('title', item['target_title'])
-            handler.addQuickElement('activity: object-type',
-                str(item['target_object_type']))
+            handler.addQuickElement('activity: object-type', str(item['target_object_type']))
             handler.endElement('activity: target')
 
 
@@ -119,11 +111,11 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
         Add the 'content' field of the 'Entry' item, to be used by the custom
         feed generator.
         """
+        # noinspection PyBroadException
         try:
             object_id = obj.action_object.get_absolute_url()
         except:
-            object_id = '%s/%s' % (obj.action_object_content_type.model,
-                obj.action_object.id)
+            object_id = '%s/%s' % (obj.action_object_content_type.model, obj.action_object.id)
 
         object_id = get_tag_uri(object_id, None)
 
@@ -140,19 +132,16 @@ class ActivityStreamsObjectActivityFeed(AtomObjectActivityFeed):
         }
 
         if obj.target:
+            # noinspection PyBroadException
             try:
                 target_id = obj.target.get_absolute_url()
-            except Exception:
-                target_id = '%s/%s' % (obj.target_content_type.model,
-                    obj.action_object.id)
-
+            except:
+                target_id = '%s/%s' % (obj.target_content_type.model, obj.action_object.id)
             target_id = get_tag_uri(target_id, obj.timestamp)
-
             item['target'] = obj.target
             item['target_id'] = target_id
             item['target_title'] = obj.target
             item['target_object_type'] = obj.target_content_type.name
-
         return item
 
 
@@ -165,8 +154,7 @@ class ModelActivityFeed(Feed):
         return 'Activity feed from %s' % model
 
     def link(self, model):
-        return reverse('actstream_model', None,
-                (ContentType.objects.get_for_model(model).pk,))
+        return reverse('actstream_model', None, (ContentType.objects.get_for_model(model).pk,))
 
     def description(self, model):
         return 'Public activities of %s' % model
@@ -197,8 +185,7 @@ class UserActivityFeed(Feed):
             return reverse('actstream')
         if hasattr(user, 'get_absolute_url'):
             return user.get_absolute_url()
-        return reverse('actstream_actor', None,
-            (ContentType.objects.get_for_model(user).pk, user.pk))
+        return reverse('actstream_actor', None, (ContentType.objects.get_for_model(user).pk, user.pk))
 
     def description(self, user):
         return 'Public activities of actors you follow'

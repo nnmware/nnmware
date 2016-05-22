@@ -167,7 +167,7 @@ def is_string_like(maybe):
     """Test value to see if it acts like a string"""
     try:
         maybe + ""
-    except TypeError:
+    except TypeError as tyerr:
         return 0
     else:
         return 1
@@ -177,7 +177,7 @@ def load_module(module):
     """Load a named python module."""
     try:
         module = sys.modules[module]
-    except KeyError:
+    except KeyError as keerr:
         __import__(module)
         module = sys.modules[module]
     return module
@@ -218,7 +218,7 @@ def trunc_decimal(val, places):
     if type(val) != Decimal:
         try:
             val = Decimal(val)
-        except InvalidOperation:
+        except InvalidOperation as ioperr:
             return val
     return val.quantize(Decimal(roundfmt), ROUND_HALF_UP)
 

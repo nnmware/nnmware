@@ -68,13 +68,13 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
     return ajax_answer_lazy(payload)
 
 
-# noinspection PyBroadException
 def img_delete(request, object_id):
     # Link used for User press Delete for Image
     pic = get_object_or_404(Pic, id=int(object_id))
     c_object = pic.content_object
     if img_check_rights(request, pic):
         pic.delete()
+        # noinspection PyBroadException
         try:
             img_count = c_object.pics_count
         except:
@@ -88,6 +88,7 @@ def img_delete(request, object_id):
 def img_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
+    # noinspection PyBroadException
     try:
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
@@ -97,6 +98,7 @@ def img_getcrop(request, object_id):
 
 def img_rotate(request):
     # Rotate image
+    # noinspection PyBroadException
     try:
         if not request.user.is_superuser:
             raise AccessError
@@ -110,7 +112,7 @@ def img_rotate(request):
         im.save(img)
         pic.save()
         payload = {'success': True, 'id': pic.pk}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed rotate this image')}
     except:
         payload = {'success': False}
@@ -120,6 +122,7 @@ def img_rotate(request):
 @login_required
 def avatardelete(request):
     if request.is_ajax():
+        # noinspection PyBroadException
         try:
             u = request.user
             remove_thumbnails(u.img.path)
@@ -141,6 +144,7 @@ def get_video(request):
         link = 'http://%s' % link
     if link.find('youtu.be') != -1:
         link = link.replace('youtu.be/', 'www.youtube.com/watch?v=')
+    # noinspection PyBroadException
     try:
         search_qs = Video.objects.filter(video_url=link)[0]
     except:
@@ -153,14 +157,12 @@ def get_video(request):
         if result is not None:
             result['html'] = update_video_size(result['html'], 500, 280)
         payload = {'success': True, 'data': result}
-        #    except:
-    #        payload = {'success': False}
     return ajax_answer_lazy(payload)
 
 
-# noinspection PyBroadException
 def push_video(request, object_id):
     # Link used for User press Like on Video Detail Page
+    # noinspection PyBroadException
     try:
         video = get_object_or_404(Video, id=int(object_id))
         ctype = ContentType.objects.get_for_model(Video)
@@ -221,6 +223,7 @@ def push_tag(request, object_id):
 
 
 def push_notify(request):
+    # noinspection PyBroadException
     try:
         u = request.user
         if u.subscribe:
@@ -236,6 +239,7 @@ def push_notify(request):
 
 def push_user(request, object_id):
     # Link used for User press button in user panel
+    # noinspection PyBroadException
     try:
         user = get_user_model().objects.get(id=object_id)
         if request.user == user:
@@ -260,7 +264,7 @@ def push_user(request, object_id):
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
         payload = {'success': True, 'count': result, 'id': user.pk, 'status': status}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False}
     except:
         payload = {'success': False}
@@ -303,6 +307,7 @@ def unfollow_object(request, content_type, object_id):
 
 def follow_unfollow(request, content_type, object_id):
     count = None
+    # noinspection PyBroadException
     try:
         ctype = ContentType.objects.get_for_id(content_type)
         follow_count = Follow.objects.filter(user=request.user, content_type=ctype, object_id=object_id).count()
@@ -378,6 +383,7 @@ def message_add(request):
     """
     recipients = request.POST['recipients'].strip().split(',')
     recipients = filter(None, recipients)  # Remove empty values
+    # noinspection PyBroadException
     try:
         for u in recipients:
             user = get_user_model().objects.get(username=u)
@@ -408,14 +414,13 @@ def message_user_add(request):
     else:
         result['avatar_url'] = '/m/generic_t30.jpg'
     payload = {'success': True, 'data': result}
-    #    except:
-    #        payload = {'success': False}
     return ajax_answer_lazy(payload)
 
 
 def pic_delete(request, object_id):
     # Link used for User press Delete for Image
     pic = get_object_or_404(Pic, id=int(object_id))
+    # noinspection PyBroadException
     try:
         pic.delete()
         payload = {'success': True}
@@ -427,6 +432,7 @@ def pic_delete(request, object_id):
 def pic_setmain(request, object_id):
     # TODO check user rights!!
     # Link used for User press SetMain for Image
+    # noinspection PyBroadException
     try:
         pic = Pic.objects.get(id=int(object_id))
         all_pics = Pic.objects.for_object(pic.content_object)
@@ -442,6 +448,7 @@ def pic_setmain(request, object_id):
 def doc_delete(request, object_id):
     # Link used for User press Delete for Image
     doc = get_object_or_404(Doc, id=int(object_id))
+    # noinspection PyBroadException
     try:
         doc.delete()
         payload = {'success': True}
@@ -453,6 +460,7 @@ def doc_delete(request, object_id):
 def pic_getcrop(request, object_id):
     # Link used for User want crop image
     pic = get_object_or_404(Pic, id=int(object_id))
+    # noinspection PyBroadException
     try:
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
@@ -469,6 +477,7 @@ def ajax_get_thumbnail(request):
         width = int(width)
     if height:
         height = int(height)
+    # noinspection PyBroadException
     try:
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=width, height=height), id=pic.pk)
     except:
@@ -478,6 +487,7 @@ def ajax_get_thumbnail(request):
 
 def ajax_image_crop(request):
     # Crop image
+    # noinspection PyBroadException
     try:
         img_pk = request.POST['crop_id']
         pic = get_object_or_404(Pic, id=int(img_pk))
@@ -505,7 +515,7 @@ def ajax_image_crop(request):
         im.save(img)
         pic.save()
         payload = {'success': True, 'id': pic.pk}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed change this image')}
     except:
         payload = {'success': False}
@@ -516,6 +526,7 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
     """
     Its Ajax posted comments
     """
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -539,16 +550,18 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
         reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
         comment_text = linebreaksbr(comment.comment)
         comment_date = comment.created_date.strftime(setting('COMMENT_DATE_FORMAT', '%d %b %Y %H:%M %p'))
+        # noinspection PyBroadException
         try:
             avatar_id = comment.user.avatar.pk
         except:
             pass
+        # noinspection PyUnresolvedReferences
         payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
                    'username_url': comment.get_absolute_url(),
                    'comment': comment_text, 'avatar_id': avatar_id,
                    'comment_date': comment_date, 'reply_link': reply_link,
                    'object_comments': comment.content_object.comments}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed for add comment')}
     except:
         payload = {'success': False}
@@ -556,6 +569,7 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
 
 
 def comment_add(request, content_type, object_id, parent_id=None):
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -578,7 +592,7 @@ def comment_add(request, content_type, object_id, parent_id=None):
         newcomment.depth = depth
         html = render_to_string('comments/comment_one.html', {'comment': newcomment, 'user': request.user})
         payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': 'You are not allowed for add comment'}
     except:
         payload = {'success': False}
@@ -589,6 +603,7 @@ def flat_comment_add(request, content_type, object_id):
     """
     Its Ajax flat posted comments
     """
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -607,7 +622,7 @@ def flat_comment_add(request, content_type, object_id):
                     description=comment.comment, target=comment.content_object, request=request)
         html = render_to_string('comments/item_comment.html', {'comment': comment})
         payload = {'success': True, 'html': html}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed for add comment')}
     except:
         payload = {'success': False}
@@ -615,6 +630,7 @@ def flat_comment_add(request, content_type, object_id):
 
 
 def push_message(request, pk):
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -637,7 +653,7 @@ def push_message(request, pk):
         html = render_to_string('user/message_one.html', {'message': msg, 'user': request.user})
         payload = {'success': True, 'html': html, 'count': result, 'id': recipient.pk,
                    'total': request.user.messages_count}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': 'You are not allowed for send message'}
     except:
         payload = {'success': False}
@@ -645,6 +661,7 @@ def push_message(request, pk):
 
 
 def set_paginator(request, num):
+    # noinspection PyBroadException
     try:
         request.session['paginator'] = num
         payload = {'success': True}
@@ -678,6 +695,7 @@ class AjaxUploader(object):
         ext = os.path.splitext(filename)[1]
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
         self._path = os.path.join(self._upload_dir, self._filename)
+        # noinspection PyBroadException
         try:
             os.makedirs(os.path.realpath(os.path.dirname(self._path)))
         except:
@@ -699,9 +717,10 @@ class AjaxUploader(object):
             # get file size
             try:
                 filename = request.GET['qqfile']
-            except KeyError:
+            except KeyError as aerr:
                 return dict(success=False, error=_("Can't read file name"))
         self.setup(filename)
+        # noinspection PyBroadException
         try:
             if is_raw:
                 # File was uploaded via ajax, and is streaming in.
@@ -709,19 +728,20 @@ class AjaxUploader(object):
                 while len(chunk) > 0:
                     self._destination.write(chunk)
                     if self.max_size():
-                        raise
+                        raise IOError
                     chunk = upload.read(self.BUFFER_SIZE)
             else:
                 # File was uploaded via a POST, and is here.
                 for chunk in upload.chunks():
                     self._destination.write(chunk)
                     if self.max_size():
-                        raise
+                        raise IOError
         except:
             # things went badly.
             return dict(success=False, error=_("Upload error"))
         self._destination.close()
         if self._filetype == 'image':
+            # noinspection PyBroadException
             try:
                 i = Image.open(self._path)
             except:
@@ -735,6 +755,7 @@ class AjaxUploader(object):
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
                 shutil.copy2(self._path, orig_path)
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
+            # noinspection PyBroadException
             try:
                 if self._path == new_path:
                     i.save(self._path, self._save_format)
@@ -743,6 +764,7 @@ class AjaxUploader(object):
                     os.remove(self._path)
                     self._path = new_path
             except:
+                # noinspection PyBroadException
                 try:
                     os.remove(self._path)
                     os.remove(new_path)
@@ -770,6 +792,7 @@ def addon_file_uploader(request, **kwargs):
                                 new.doc.field.upload_to, new.doc.path)
         new.size = os.path.getsize(fullpath)
         new.save()
+        # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('upload/file_item.html', {'doc': new}))
         except:
@@ -794,11 +817,13 @@ def addon_image_uploader(request, **kwargs):
                                 new.pic.field.upload_to, new.pic.path)
         new.size = os.path.getsize(fullpath)
         new.save()
+        # noinspection PyBroadException
         try:
             pics_count = dict(pics_count=new.content_object.pics_count)
             result.update(pics_count)
         except:
             pass
+        # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('upload/image_item.html', {'pic': new}))
         except:
@@ -808,6 +833,7 @@ def addon_image_uploader(request, **kwargs):
 
 
 def like(request, content_type, object_id):
+    # noinspection PyBroadException
     try:
         if not request.user.is_authenticated():
             raise AccessError
@@ -823,6 +849,7 @@ def like(request, content_type, object_id):
             obj = content_type.get_object_for_this_type(pk=object_id)
             if obj.user == request.user:
                 raise AccessError
+        # noinspection PyBroadException
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)
         except:
@@ -855,7 +882,7 @@ def like(request, content_type, object_id):
         thelike.save()
         karma = thelike.content_object.karma
         payload = {'success': True, 'karma': karma, 'liked': like_en, 'disliked': dislike_en}
-    except AccessError:
+    except AccessError as aerr:
         payload = {'success': False, 'error': 'Not allowed'}
     except:
         payload = {'success': False}
@@ -877,7 +904,7 @@ def delete_comment(request, object_id, depth):
             payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
         else:
             raise AccessError
-    except AccessError:
+    except AccessError as aerr:
         pass
     except:
         pass
@@ -889,6 +916,7 @@ def avatar_set(request):
                             size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
     result = uploader.handle_upload(request)
     if result['success']:
+        # noinspection PyBroadException
         try:
             remove_thumbnails(request.user.img.url)
             remove_file(request.user.img.url)
@@ -896,6 +924,7 @@ def avatar_set(request):
             pass
         request.user.img = result['path']
         request.user.save()
+        # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
         except:
@@ -905,12 +934,14 @@ def avatar_set(request):
 
 
 def avatar_delete(request):
+    # noinspection PyBroadException
     try:
         remove_thumbnails(request.user.img.url)
         remove_file(request.user.img.url)
         request.user.img = ''
         request.user.save()
         payload = {'success': True}
+        # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
         except:

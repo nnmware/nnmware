@@ -264,7 +264,7 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     def get_current_percent(self):
         try:
             return AgentPercent.objects.filter(hotel=self).filter(date__lte=now()).order_by('-date')[0].percent
-        except IndexError:
+        except IndexError as ierr:
             return None
 
     def get_percent_on_date(self, on_date):

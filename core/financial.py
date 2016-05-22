@@ -11,8 +11,8 @@ from nnmware.core.utils import setting
 from nnmware.apps.money.models import ExchangeRate, Currency
 
 
-# noinspection PyBroadException
 def convert_from_client_currency(request, amount):
+    # noinspection PyBroadException
     try:
         if request.COOKIES['currency'] == setting('CURRENCY', 'RUB'):
             return amount
@@ -46,9 +46,7 @@ def is_luhn_valid(card_number):
 
 
 class ExcelResponse(HttpResponse):
-    def __init__(self, data, output_name='excel_data', headers=None,
-                 force_csv=False, encoding='utf8'):
-
+    def __init__(self, data, output_name='excel_data', headers=None, force_csv=False, encoding='utf8'):
         # Make sure we've got the right type of data to work with
         valid_data = False
         data = list(data.values())
@@ -95,8 +93,7 @@ class ExcelResponse(HttpResponse):
                 for value in row:
                     value = value.encode(encoding)
                     out_row.append(value.replace('"', '""'))
-                output.write('"%s"\n' %
-                             '","'.join(out_row))
+                output.write('"%s"\n' % '","'.join(out_row))
             content_type = 'text/csv'
             file_ext = 'csv'
         output.seek(0)

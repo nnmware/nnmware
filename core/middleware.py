@@ -17,7 +17,7 @@ class AjaxMessagingMiddleware(object):
             if response['Content-Type'] in ["application/javascript", "application/json"]:
                 try:
                     content = json.loads(response.content)
-                except ValueError:
+                except ValueError as valerr:
                     return response
                 django_messages = []
                 for message in messages.get_messages(request):

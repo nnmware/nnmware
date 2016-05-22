@@ -122,7 +122,7 @@ def remove_thumbnails(pic_url, root=settings.MEDIA_ROOT, url_root=settings.MEDIA
                 path = os.path.join(basedir, f)
                 try:
                     os.remove(path)
-                except OSError:
+                except OSError as oserr:
                     pass
         except:
             pass
@@ -183,7 +183,7 @@ def _rename(old_name, new_name):
     try:
         shutil.move(os.path.join(settings.MEDIA_ROOT, old_name), os.path.join(settings.MEDIA_ROOT, new_name))
         return new_name
-    except IOError:
+    except IOError as ioerr:
         return old_name
 
 
@@ -227,7 +227,7 @@ def make_watermark(photo_url, align='lt', root=settings.MEDIA_ROOT, url_root=set
     try:
         base_im = Image.open(photo_path)
         logo_im = Image.open(watermark_path)  # transparent image
-    except IOError:
+    except IOError as ioerr:
         return None
     if align == 'center':
         base_im.paste(logo_im, ((base_im.size[0] - logo_im.size[0]) / 2, (base_im.size[1] - logo_im.size[1]) / 2),

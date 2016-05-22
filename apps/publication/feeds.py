@@ -54,7 +54,7 @@ class TagFeed(Feed, SiteMixin):
     def get_object(self, request, slug):
         try:
             return Tag.objects.get(slug__iexact=slug)
-        except Tag.DoesNotExist:
+        except Tag.DoesNotExist as terr:
             raise FeedDoesNotExist
 
     def title(self, obj):

@@ -31,7 +31,7 @@ def stream(func):
         try:
             return func(manager, *args, **kwargs)[offset:limit]\
                 .fetch_generic_relations()
-        except AttributeError:
+        except AttributeError as aerr:
             return func(manager, *args, **kwargs).fetch_generic_relations()
     return wrapped
 
