@@ -4,7 +4,7 @@ import sys
 
 
 if __name__ == "__main__":
-    path = '/usr/src/nnmware'
+    path = '/usr/src'
     if path not in sys.path:
         sys.path.append(path)
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings")

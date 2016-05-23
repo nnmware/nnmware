@@ -6,7 +6,7 @@ admin.autodiscover()
 admin.site.site_header = 'Nnmware engine@2013-2016'
 
 # NNMWARE SITE URL MAPPING 
-urlpatterns = ['',
+urlpatterns = [
     url(r'^admin/', admin.site.urls),
 #    url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 ]
