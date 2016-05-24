@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
+from nnmware.demo.models import User
+
 
 class MyUserChangeForm(UserChangeForm):
 
@@ -32,6 +34,7 @@ class MyUserCreationForm(UserCreationForm):
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
 
+@admin.register(User)
 class NnmwareUserAdmin(UserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
@@ -41,4 +44,3 @@ class NnmwareUserAdmin(UserAdmin):
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
         (_('Important dates'), {'fields': ('last_login', 'date_joined')})
     )
-admin.site.register(get_user_model(), NnmwareUserAdmin)
