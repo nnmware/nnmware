@@ -10,7 +10,6 @@ DJANGO_SETTINGS_MODULE = 'settings'
 FORCE_SCRIPT_NAME = ''
 DEBUG = True
 LOCAL_DEV = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = [
     ('YOU NAME', 'user@mail.com'),
@@ -68,7 +67,6 @@ except IOError:
     except IOError:
         raise Exception('Please create a %s file with random characters to generate your secret key!' % SECRET_FILE)
 
-
 MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -86,18 +84,13 @@ AUTHENTICATION_BACKENDS = [
 
 ROOT_URLCONF = 'urls'
 
-TEMPLATE_LOADERS = [
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-]
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(DIRNAME, "templates"),
         ],
-        'APP_DIRS': True,
+        # 'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -107,6 +100,11 @@ TEMPLATES = [
                 'django.template.context_processors.csrf',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': True,
+            'loaders': [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -142,7 +140,6 @@ INSTALLED_APPS = [
 ABSOLUTE_URL_OVERRIDES = {
     'auth.user': lambda u: "/user/%s/" % u.username,
 }
-
 
 try:
     from nnmware_settings import *
