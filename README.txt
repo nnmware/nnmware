@@ -68,7 +68,9 @@ cd /usr/src
 git clone https://github.com/nnmware/nnmware.git
 cd /usr/src/nnmware
 ./manage.py makemigrations
+./manage.py makemigrations demo
 ./manage.py migrate
+./manage.py createsuperuser
 ./runserver:8080
 
 locate you browser at http://localhost:8080/admin/ ,

@@ -134,6 +134,7 @@ INSTALLED_APPS = [
     'nnmware.apps.realty',
     'nnmware.apps.transport',
     'nnmware.apps.publication',
+    'nnmware.apps.topic',
     'nnmware.demo',
 ]
 
