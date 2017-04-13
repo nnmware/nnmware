@@ -1,7 +1,7 @@
-@NNMWARE CMF @ 2012-2016
+@NNMWARE CMF @ 2012-2017
 Django-based Content Management Framework
 
-WARNING! Now we start support to django 1.9  and refactoring engine for work with python 3.5.
+WARNING! Now we start support to django 2.0  and refactoring engine for work with python 3.6.
 
 contains base for:
 
@@ -46,7 +46,7 @@ contains base for:
 [Realty]
     Realty application base
 
-Required django(1.8+), Pillow, unidecode.
+Required django(current), Pillow, unidecode.
 Working with OpenStreetMap and his geotargeting.
 Licensed under GPL3 
 Great thanks Python, Django, Linux and all OpenSource community.
