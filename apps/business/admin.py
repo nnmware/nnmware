@@ -1,12 +1,12 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.business.models import TypeEmployerProfile, TypeEmployerOther, TypeEmployer, Agency, CompanyCategory, \
-    CompanyDetail, Company, VacancyCategory, Vacancy
+from nnmware.apps.business.models import TypeEmployerProfile, TypeEmployerOther, TypeEmployer, Agency, \
+    CompanyCategory, CompanyDetail, Company, VacancyCategory, Vacancy
 from nnmware.core.admin import TypeBaseAdmin, TreeAdmin
 
 

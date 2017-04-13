@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 
@@ -8,7 +8,7 @@ from nnmware.core.constants import NOTICE_UNKNOWN, ACTION_UNKNOWN
 from nnmware.core.signals import action, notice
 
 
-def follow(user, actor, send_action=True):
+def follow(user, actor):
     """
     Creates a ``User`` -> ``Actor`` follow relationship such that the actor's
     activities appear in the user's stream.
@@ -32,7 +32,7 @@ def follow(user, actor, send_action=True):
     return created
 
 
-def unfollow(user, actor, send_action=False):
+def unfollow(user, actor):
     """
     Removes ``User`` -> ``Actor`` follow relationship.
     Optionally sends the ``<user> stopped following <actor>`` action signal.
@@ -49,7 +49,7 @@ def unfollow(user, actor, send_action=False):
     from nnmware.core.models import Follow
 
     Follow.objects.filter(user=user, object_id=actor.pk,
-        content_type=ContentType.objects.get_for_model(actor)).delete()
+                          content_type=ContentType.objects.get_for_model(actor)).delete()
     return True
 
 
@@ -70,7 +70,7 @@ def is_following(user, actor):
     from nnmware.core.models import Follow
 
     return bool(Follow.objects.filter(user=user, object_id=actor.pk,
-        content_type=ContentType.objects.get_for_model(actor)).count())
+                                      content_type=ContentType.objects.get_for_model(actor)).count())
 
 
 def action_handler(verb, **kwargs):

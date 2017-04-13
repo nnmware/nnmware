@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 
@@ -9,4 +9,3 @@ action = Signal(providing_args=['user', 'verb', 'action_object', 'target', 'desc
 
 # Signal for create new notice
 notice = Signal(providing_args=['user', 'sender', 'verb', 'target', 'description', 'notice_type'])
-

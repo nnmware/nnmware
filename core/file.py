@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 from hashlib import md5
@@ -36,4 +36,3 @@ def get_url_from_path(path, root=settings.MEDIA_ROOT):
     if path.startswith(root):
         path = path[len(root):]   # strip media root
     return urljoin(root, path.replace('\\', '/'))
-

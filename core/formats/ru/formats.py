@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 # The *_FORMAT strings use the Django date format syntax,
 # see http://docs.djangoproject.com/en/dev/ref/templates/builtins/#date

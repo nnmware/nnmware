@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 
@@ -131,7 +131,7 @@ class MarketCallbackAdmin(admin.ModelAdmin):
     list_display = ("clientname", "clientphone", 'created_date', 'closed', 'quickorder', "ip", 'user_agent')
     fieldsets = (
         (_("Market Callback"), {"fields": [('clientname', 'clientphone'), ('created_date', 'closed', 'quickorder'),
-                                         ('description',), ('ip', 'user_agent')]}),
+                                           ('description',), ('ip', 'user_agent')]}),
     )
     ordering = ('-created_date', 'clientname', 'clientphone')
     readonly_fields = ('ip', 'user_agent', 'created_date')

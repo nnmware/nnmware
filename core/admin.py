@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 
@@ -157,12 +157,10 @@ class MessageAdmin(admin.ModelAdmin):
                 ('recipient', ),
             ),
         }),
-        (_("Message"), {"classes": ("collapse",), "fields": [('subject',), ('body',),
-                                                                            ('parent_msg',)]}),
+        (_("Message"), {"classes": ("collapse",), "fields": [('subject',), ('body',), ('parent_msg',)]}),
         (_("Date/Time"), {"classes": ("collapse",), "fields": [('sent_at', 'read_at', 'replied_at'),
-                                                                              ('sender_deleted_at',
-                                                                               'recipient_deleted_at'),
-                                                                              ('ip', 'user_agent')]}),
+                                                               ('sender_deleted_at', 'recipient_deleted_at'),
+                                                               ('ip', 'user_agent')]}),
     )
     list_display = ('pk', 'sender', 'ip', 'recipient', 'sent_at', 'read_at')
     list_filter = ('sent_at', 'sender', 'recipient')
@@ -207,7 +205,7 @@ class LikeAdmin(admin.ModelAdmin):
 class ContentBlockAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Content block'), {'fields': [('user', 'content_type', 'object_id'), ('status', 'content_style', 'position'),
-            ('description',)]}),
+                                         ('description',)]}),
         (_('Origin'), {'fields': [('url', 'author', 'teaser')]}),
     )
     list_display = ('user', 'status', 'content_style', 'teaser')
