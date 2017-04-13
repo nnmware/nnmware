@@ -6,7 +6,7 @@ from uuid import uuid4
 import random
 from datetime import timedelta, time, datetime
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import models
 from django.conf import settings
 from django.db.models import signals, Avg, Min, Count

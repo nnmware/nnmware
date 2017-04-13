@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 from datetime import timedelta
@@ -12,7 +12,7 @@ from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
 from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.timezone import now
 
 from nnmware.core.data import recurse_for_children, recurse_for_children_with_span, create_userdate_list, \

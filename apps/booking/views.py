@@ -10,7 +10,7 @@ from functools import reduce
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.mail import mail_managers
 from django.db.models import Count, Sum, Max, F, Min, Q
 from django.http import Http404

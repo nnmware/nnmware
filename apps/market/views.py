@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from datetime import timedelta
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.db.models.query_utils import Q

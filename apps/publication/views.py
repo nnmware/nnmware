@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DateDetailView, YearArchiveView,\

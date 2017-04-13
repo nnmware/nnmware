@@ -1,4 +1,4 @@
-# nnmware(c)2012-2016
+# nnmware(c)2012-2017
 
 from __future__ import unicode_literals
 from datetime import datetime
@@ -6,7 +6,7 @@ import math
 
 from django import template
 from django.core.cache import cache
-from django.core.urlresolvers import resolve, reverse, Resolver404
+from django.urls import resolve, reverse, Resolver404
 from django.db.models import Count
 
 from nnmware.apps.publication.models import Publication

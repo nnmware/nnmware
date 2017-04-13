@@ -7,7 +7,7 @@ from hashlib import sha1
 import time
 
 from django.core.mail import mail_managers
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
