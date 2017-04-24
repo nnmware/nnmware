@@ -4,3 +4,4 @@
 nnmware.db
 secret.txt
 migrations/*
+__pycache__
