@@ -45,7 +45,7 @@ class HotelOptionCategory(AbstractName):
 
 
 class HotelOption(AbstractName):
-    category = models.ForeignKey(HotelOptionCategory, verbose_name=_('Category option'))
+    category = models.ForeignKey(HotelOptionCategory, verbose_name=_('Category option'), on_delete=models.CASCADE)
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
     sticky_in_search = models.BooleanField(verbose_name=_("Sticky in search form?"), default=False, db_index=True)
 
@@ -173,9 +173,10 @@ class Hotel(AbstractName, AbstractGeo, HotelPoints):
     time_on = models.CharField(max_length=5, verbose_name=_('Time on'), blank=True)
     time_off = models.CharField(max_length=5, verbose_name=_('Time off'), blank=True)
     work_on_request = models.BooleanField(verbose_name=_("Work on request"), default=False, db_index=True)
-    hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True, db_index=True)
+    hoteltype = models.ForeignKey(HotelType, verbose_name=_('Hotel type'), null=True, blank=True, db_index=True,
+                                  on_delete=models.CASCADE)
     addon_city = models.ForeignKey(City, verbose_name=_('Main city'), related_name='main_city', null=True, blank=True,
-                                   db_index=True)
+                                   db_index=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Hotel")
@@ -346,7 +347,7 @@ class RoomOptionCategory(AbstractName):
 
 
 class RoomOption(AbstractName):
-    category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"))
+    category = models.ForeignKey(RoomOptionCategory, verbose_name=_("Category"), on_delete=models.CASCADE)
     in_search = models.BooleanField(verbose_name=_("In search form?"), default=False, db_index=True)
 
     class Meta:
@@ -386,7 +387,7 @@ PLACES_CHOICES = (
 
 class Room(AbstractName):
     option = models.ManyToManyField(RoomOption, verbose_name=_('Availability options'), blank=True)
-    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True)
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), null=True, blank=True, on_delete=models.CASCADE)
     places = models.IntegerField(_("Place Count"), choices=PLACES_CHOICES, default=PLACES_UNKNOWN, db_index=True)
     typefood = models.IntegerField(_("Type of food"), choices=TYPEFOOD, default=TYPEFOOD_RO, db_index=True)
     surface_area = models.PositiveSmallIntegerField(verbose_name=_('Surface area (m2)'), default=0, db_index=True)
@@ -467,7 +468,7 @@ class Room(AbstractName):
 
 
 class SettlementVariant(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_('Room'))
+    room = models.ForeignKey(Room, verbose_name=_('Room'), on_delete=models.CASCADE)
     settlement = models.PositiveSmallIntegerField(_("Settlement"), db_index=True)
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=True, db_index=True)
 
@@ -534,7 +535,7 @@ BOOKING_CHOICES = (
 
 
 class Booking(MoneyBase, AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now)
     system_id = models.IntegerField(_("ID in system"), default=0)
     from_date = models.DateField(_("From"))
@@ -557,7 +558,7 @@ class Booking(MoneyBase, AbstractIP):
     card_valid = models.CharField(verbose_name=_("Card valid to"), max_length=5, blank=True)
     card_holder = models.CharField(verbose_name=_("Card holder"), max_length=50, blank=True)
     card_cvv2 = models.CharField(verbose_name=_("Card verification value(CVV2)"), max_length=4, blank=True)
-    payment_method = models.ForeignKey(PaymentMethod, verbose_name=_('Payment method'), null=True)
+    payment_method = models.ForeignKey(PaymentMethod, verbose_name=_('Payment method'), null=True, on_delete=models.CASCADE)
     enabled = models.BooleanField(verbose_name=_('Enabled'), default=False, db_index=True)
     guests = models.PositiveSmallIntegerField(_("Guests"), db_index=True, default=0)
     btype = models.IntegerField(_("Booking type"), choices=BOOKING_CHOICES, default=BOOKING_UNKNOWN)
@@ -635,7 +636,7 @@ class Booking(MoneyBase, AbstractIP):
 
 
 class AgentPercent(models.Model):
-    hotel = models.ForeignKey(Hotel)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     date = models.DateField(verbose_name=_("From date"), db_index=True)
     percent = models.DecimalField(verbose_name=_('Percent'), blank=True, decimal_places=1, max_digits=4, default=0,
                                   db_index=True)
@@ -653,8 +654,8 @@ class AgentPercent(models.Model):
 
 
 class Review(AbstractIP, HotelPoints):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    hotel = models.ForeignKey(Hotel)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name=_("Published by"), default=now, db_index=True)
     review = models.TextField(verbose_name=_("Review"), blank=True)
     username = models.CharField(verbose_name=_("Guest username"), max_length=100)
@@ -671,7 +672,7 @@ class Review(AbstractIP, HotelPoints):
 
 
 class Availability(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True)
+    room = models.ForeignKey(Room, verbose_name=_('Room'), null=True, blank=True, on_delete=models.CASCADE)
     date = models.DateField(verbose_name=_("On date"), db_index=True)
     placecount = models.IntegerField(verbose_name=_('Count of places'), default=0, db_index=True)
     min_days = models.IntegerField(verbose_name=_('Minimum days'), blank=True, null=True, db_index=True)
@@ -714,7 +715,7 @@ DISCOUNT_CHOICES = (
 
 
 class Discount(AbstractName, AbstractDate):
-    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'))
+    hotel = models.ForeignKey(Hotel, verbose_name=_('Hotel'), on_delete=models.CASCADE)
     choice = models.IntegerField(verbose_name=_("Type of discount"), choices=DISCOUNT_CHOICES, default=DISCOUNT_UNKNOWN,
                                  db_index=True)
     days = models.SmallIntegerField(verbose_name=_("Count of days"), blank=True, null=True)
@@ -774,8 +775,8 @@ class Discount(AbstractName, AbstractDate):
 
 class RoomDiscount(models.Model):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
-    discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"))
-    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"))
+    discount = models.ForeignKey(Discount, verbose_name=_("Discount of hotel's"), on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"), on_delete=models.CASCADE)
     value = models.DecimalField(verbose_name=_('Value of discount'), default=0, max_digits=20, decimal_places=3,
                                 db_index=True)
 
@@ -789,7 +790,7 @@ class RoomDiscount(models.Model):
 
 
 class SimpleDiscount(models.Model):
-    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"))
+    room = models.ForeignKey(Room, verbose_name=_("Room of hotel's"), on_delete=models.CASCADE)
     ub = models.BooleanField(verbose_name=_('Unguaranteed booking enabled'), default=False, db_index=True)
     ub_discount = models.PositiveSmallIntegerField(verbose_name=_('Discount ub'), default=0, db_index=True)
     gb = models.BooleanField(verbose_name=_('Guaranteed booking enabled'), default=False, db_index=True)
@@ -810,7 +811,7 @@ class SimpleDiscount(models.Model):
 
 class PlacePrice(MoneyBase):
     date = models.DateField(verbose_name=_("On date"), db_index=True)
-    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'))
+    settlement = models.ForeignKey(SettlementVariant, verbose_name=_('Settlement Variant'), on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Place Price")
@@ -828,7 +829,8 @@ class PlacePrice(MoneyBase):
 
 
 class RequestAddHotel(AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True,
+                             null=True, on_delete=models.CASCADE)
     register_date = models.DateTimeField(_("Register date"), default=now)
     city = models.CharField(verbose_name=_("City"), max_length=100, blank=True)
     address = models.CharField(verbose_name=_("Address"), max_length=100, blank=True)
@@ -870,7 +872,8 @@ signals.post_delete.connect(update_hotel_point, sender=Review, dispatch_uid="nnm
 
 
 class HotelSearch(AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True,
+                             null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
     city = models.CharField(verbose_name=_("City"), max_length=100, blank=True)
     hotel = models.CharField(verbose_name=_("Hotel"), max_length=100, blank=True)

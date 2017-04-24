@@ -104,8 +104,8 @@ class RmType(AbstractName, ExtInt):
 
 
 class Rm(AbstractName):
-    kind = models.ForeignKey(RmType, verbose_name=_('Rm type'))
-    estate = models.ForeignKey(Estate, verbose_name=_('Estate'))
+    kind = models.ForeignKey(RmType, verbose_name=_('Rm type'), on_delete=models.CASCADE)
+    estate = models.ForeignKey(Estate, verbose_name=_('Estate'), on_delete=models.CASCADE)
     size = models.DecimalField(verbose_name=_('Space size (square meters)'), default=0, max_digits=10,
                                decimal_places=1, db_index=True)
     features = models.ManyToManyField(RmFeature, verbose_name=_('Rm features'))

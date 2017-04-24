@@ -36,7 +36,7 @@ class TypeEmployer(AbstractName):
 
 
 class TypeEmployerProfile(AbstractName):
-    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
+    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'), on_delete=models.CASCADE)
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
 
     class Meta:
@@ -51,7 +51,7 @@ class TypeEmployerProfile(AbstractName):
 
 
 class TypeEmployerOther(AbstractName):
-    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'))
+    employer_type = models.ForeignKey(TypeEmployer, verbose_name=_('Type of employer'), on_delete=models.CASCADE)
     is_radio = models.BooleanField(verbose_name=_('Radio button?'), default=False)
 
     class Meta:
@@ -195,7 +195,7 @@ class Company(AbstractName, AbstractLocation, MetaGeo, AbstractWTime, AbstractDa
 
 
 class CompanyDetail(models.Model):
-    company = models.OneToOneField(Company, verbose_name=_('Company'))
+    company = models.OneToOneField(Company, verbose_name=_('Company'), on_delete=models.CASCADE)
     inn = models.CharField(max_length=12, verbose_name=_('INN'), blank=True)
     kpp = models.CharField(max_length=9, verbose_name=_('KPP'), blank=True)
     kpp_add = models.CharField(max_length=9, verbose_name=_('KPP (addon)'), blank=True)
@@ -217,7 +217,7 @@ class CompanyDetail(models.Model):
 
 
 class CompanyWorkTime(AbstractWorkTime):
-    company = models.OneToOneField(Company, verbose_name=_('Company'))
+    company = models.OneToOneField(Company, verbose_name=_('Company'), on_delete=models.CASCADE)
 
 
 @receiver(post_save, sender=Company, dispatch_uid='nnmware_uid')
@@ -276,8 +276,10 @@ class Vacancy(AbstractName, AbstractDate, AbstractTeaser):
 
 
 class AbstractSeller(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
-    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True,
+                             on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True,
+                                on_delete=models.CASCADE)
     contact_email = models.CharField(verbose_name=_("Contact Email"), blank=True, max_length=75)
     contact_name = models.CharField(max_length=100, verbose_name=_('Contact Name'), blank=True)
     contact_phone = models.CharField(max_length=100, verbose_name=_('Contact Phone'), blank=True)

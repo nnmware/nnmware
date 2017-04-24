@@ -55,7 +55,7 @@ class Country(Address):
 
 
 class Region(Address):
-    country = models.ForeignKey(Country, null=True, blank=True)
+    country = models.ForeignKey(Country, null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('name', 'country'),)
@@ -93,8 +93,8 @@ class MetaGeo(models.Model):
 
 
 class City(Address, MetaGeo):
-    region = models.ForeignKey(Region, blank=True, null=True)
-    country = models.ForeignKey(Country, blank=True, null=True)
+    region = models.ForeignKey(Region, blank=True, null=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, blank=True, null=True, on_delete=models.CASCADE)
     time_offset = models.SmallIntegerField(verbose_name=_('Time offset from Greenwich'),
                                            choices=[(i, i) for i in range(-11, 13)], default=0)
 
@@ -126,7 +126,7 @@ class City(Address, MetaGeo):
 
 
 class AbstractGeo(MetaGeo):
-    city = models.ForeignKey(City, verbose_name=_('City'))
+    city = models.ForeignKey(City, verbose_name=_('City'), on_delete=models.CASCADE)
     address = std_text_field(_("Address"), max_length=100)
     address_en = std_text_field(_("Address(English)"), max_length=100)
 
@@ -157,7 +157,7 @@ class TourismCategory(AbstractName):
 
 
 class Tourism(Address, AbstractGeo):
-    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'))
+    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), on_delete=models.CASCADE)
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
 
     class Meta:
@@ -180,7 +180,7 @@ class Tourism(Address, AbstractGeo):
 
 
 class StationMetro(Address, AbstractGeo):
-    country = models.ForeignKey(Country, verbose_name=_('Country'))
+    country = models.ForeignKey(Country, verbose_name=_('Country'),on_delete=models.CASCADE)
 
     class Meta:
         unique_together = (('name', 'city'),)
@@ -192,11 +192,14 @@ class StationMetro(Address, AbstractGeo):
 
 
 class AbstractLocation(models.Model):
-    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True, related_name="%(class)s_cou")
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
-    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True, related_name="%(class)s_cit")
-    stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),
-                                     null=True, blank=True, related_name='%(class)s_metro')
+    country = models.ForeignKey(Country, verbose_name=_('Country'), blank=True, null=True,
+                                related_name="%(class)s_cou", on_delete=models.CASCADE)
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True,
+                               related_name="%(class)s_reg", on_delete=models.CASCADE)
+    city = models.ForeignKey(City, verbose_name=_('City'), blank=True, null=True,
+                             related_name="%(class)s_cit", on_delete=models.CASCADE)
+    stationmetro = models.ForeignKey(StationMetro, verbose_name=_('Station of metro'),  null=True,
+                                    blank=True, related_name='%(class)s_metro', on_delete=models.CASCADE)
     zipcode = models.CharField(max_length=20, verbose_name=_('Zipcode'), blank=True)
     street = std_text_field(_('Street'))
     house_number = std_text_field(_('Number of house'), max_length=5)
@@ -236,8 +239,10 @@ class AbstractLocation(models.Model):
 
 
 class Institution(AbstractName):
-    city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True, blank=True)
-    country = models.ForeignKey(Country, verbose_name=_('Country'), related_name='edu_country', null=True, blank=True)
+    city = models.ForeignKey(City, verbose_name=_('City'), related_name='edu_city', null=True,
+                             blank=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, verbose_name=_('Country'), related_name='edu_country',
+                                null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Institution")

@@ -71,8 +71,7 @@ class Transaction(MoneyBase, AbstractContent):
     """
     Transaction(no more words)
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"))
-
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), on_delete=models.CASCADE)
     actor_ctype = models.ForeignKey(ContentType, verbose_name=_("Object Content Type"), null=True, blank=True,
                                     related_name='transaction_object', on_delete=models.SET_NULL)
     actor_oid = models.CharField(max_length=255, verbose_name=_("ID of object"), blank=True)
@@ -108,7 +107,8 @@ class Bill(MoneyBase, AbstractContent):
     """
     Financial account
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_("User"), blank=True, null=True,
+                             on_delete=models.CASCADE)
     date = models.DateField(verbose_name=_("Date"), default=now)
     date_billed = models.DateField(verbose_name=_("Billed date"), default=now)
     status = models.IntegerField(_("Bill status"), choices=BILL_STATUS, default=BILL_UNKNOWN)

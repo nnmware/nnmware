@@ -25,7 +25,7 @@ class BoardCategory(Tree):
 
 
 class Board(AbstractName, AbstractDate, AbstractSeller):
-    category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True)
+    category = models.ForeignKey(BoardCategory, verbose_name=_("Category"), null=True, blank=True, on_delete=models.CASCADE)
     region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
                                on_delete=models.PROTECT)
     secured = models.BooleanField(verbose_name=_('Site-only contact'), default=False)

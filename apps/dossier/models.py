@@ -6,7 +6,6 @@ from django.db import models
 from django.template.defaultfilters import floatformat
 from django.utils.translation import ugettext_lazy as _
 
-from nnmware.apps.address.models import Institution
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.constants import GENDER_CHOICES
 from nnmware.core.fields import std_text_field
@@ -253,7 +252,8 @@ class TypeBodyModification(AbstractOrder):
 
 
 class BodyModification(AbstractName):
-    modification = models.ForeignKey(TypeBodyModification, verbose_name=_('Modification'), related_name='modifications')
+    modification = models.ForeignKey(TypeBodyModification, verbose_name=_('Modification'),
+                                     related_name='modifications', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Modification")
@@ -292,10 +292,10 @@ class AbstractHumanAppearance(models.Model):
                                         related_name='appearance_human', blank=True)
     appearance_desc = std_text_field(_('Explain type of appearance'))
     national = models.ForeignKey(TypeNationalHuman, verbose_name=_('National Type'),
-                                 related_name='national_human', blank=True, null=True)
+                                 related_name='national_human', blank=True, null=True, on_delete=models.CASCADE)
     national_desc = std_text_field(_('Explain national'))
     body = models.ForeignKey(TypeBodyHuman, verbose_name=_('Body Type'),
-                             related_name='body_human', blank=True, null=True)
+                             related_name='body_human', blank=True, null=True, on_delete=models.CASCADE)
     body_desc = std_text_field(_('Explain body'))
     body_modification = models.ManyToManyField(BodyModification, verbose_name=_('Body modification'),
                                            blank=True)
@@ -303,7 +303,6 @@ class AbstractHumanAppearance(models.Model):
     feat_appearance = models.ManyToManyField(FeatureAppearance, verbose_name=_('Feature appearance'),
                                              blank=True, related_name='appearance_future')
     feat_appearance_desc = std_text_field(_('Description of another feature of appearance'))
-
     growth = models.PositiveSmallIntegerField(verbose_name=_('Growth'), blank=True, null=True, default=None)
     weight = models.PositiveSmallIntegerField(verbose_name=_('Weight'), blank=True, null=True, default=None)
     girth_chest = models.PositiveSmallIntegerField(verbose_name=_('Girth chest'), blank=True, null=True, default=None)
@@ -311,27 +310,25 @@ class AbstractHumanAppearance(models.Model):
     girth_thigh = models.PositiveSmallIntegerField(verbose_name=_('Girth thigh'), blank=True, null=True, default=None)
     girth_head = models.PositiveSmallIntegerField(verbose_name=_('Girth head'), blank=True, null=True, default=None)
     size_clothing = models.ForeignKey(ClothingSize, blank=True, null=True, default=None)
-    size_shoes = models.ForeignKey(ShoesSize, blank=True, null=True, default=None)
-    size_head = models.ForeignKey(HeadSize, blank=True, null=True, default=None)
-    size_chest = models.ForeignKey(ChestSize, blank=True, null=True, default=None)
-    hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'),
-                                   related_name='hair_color', blank=True, null=True)
+    size_shoes = models.ForeignKey(ShoesSize, blank=True, null=True, default=None,on_delete=models.CASCADE)
+    size_head = models.ForeignKey(HeadSize, blank=True, null=True, default=None, on_delete=models.CASCADE)
+    size_chest = models.ForeignKey(ChestSize, blank=True, null=True, default=None, on_delete=models.CASCADE)
+    hair_color = models.ForeignKey(HairColor, verbose_name=_('Hair color'), related_name='hair_color',
+                                    blank=True, null=True, on_delete=models.CASCADE)
     natural_hair_color = models.ForeignKey(HairColor, verbose_name=_('Natural hair color'),
-                                   related_name='naturalhair_color', blank=True, null=True)
+                                   related_name='naturalhair_color', blank=True, null=True, on_delete=models.CASCADE)
     have_wig = models.BooleanField(verbose_name=_('Have wig'), default=False)
-    hair_length = models.ForeignKey(HairLength, verbose_name=_('Length of hair'),
-                                    related_name='hair_length', blank=True, null=True)
-    hair_texture = models.ForeignKey(HairTexture, verbose_name=_('Texture of hair'),
-                                     related_name='hair_texture', blank=True, null=True)
-    eye_color = models.ForeignKey(EyeColor, verbose_name=_('Eye color'),
-                                  related_name='eye_color', blank=True, null=True)
+    hair_length = models.ForeignKey(HairLength, verbose_name=_('Length of hair'), related_name='hair_length',
+                                    blank=True, null=True, on_delete=models.CASCADE)
+    hair_texture = models.ForeignKey(HairTexture, verbose_name=_('Texture of hair'), related_name='hair_texture',
+                                      blank=True, null=True, on_delete=models.CASCADE)
+    eye_color = models.ForeignKey(EyeColor, verbose_name=_('Eye color'), related_name='eye_color',
+                                  blank=True, null=True, on_delete=models.CASCADE)
     wear_glasses = models.BooleanField(_('Wear glasses'), default=False)
     wear_colour_lens = models.BooleanField(_('Wear colour lens'), default=False)
     have_glasses_collection = models.BooleanField(_('Have collection of glasses'), default=False)
-
-    skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'),
-                                   related_name='color_skin', blank=True, null=True)
-
+    skin_color = models.ForeignKey(SkinColor, verbose_name=_('Color of skin'), related_name='color_skin',
+                                   blank=True, null=True, on_delete=models.CASCADE)
     twins = std_text_field(_('Have brother(sister) twins'))
 
     class Meta:
@@ -369,7 +366,7 @@ LNG_SKILL_CHOICES = (
 
 class LanguageSkill(models.Model):
     speak = models.ForeignKey(LanguageSpeak, verbose_name=_('Language speak'),
-                              related_name='language_skill', blank=True, null=True)
+                              related_name='language_skill', blank=True, null=True, on_delete=models.CASCADE)
     level = models.IntegerField(_('Level'), choices=LNG_SKILL_CHOICES, blank=True, null=True, default=LNG_SKILL_UNKNOWN)
 
     class Meta:
@@ -390,7 +387,7 @@ class TypeDance(AbstractName):
 
 class DanceSkill(AbstractSkill):
     skill = models.ForeignKey(TypeDance, verbose_name=_('Dance type'),
-                              related_name='dance_skill')
+                              related_name='dance_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Dance skill")
@@ -407,7 +404,7 @@ class TypeVocal(AbstractName):
 
 class VocalSkill(AbstractSkill):
     skill = models.ForeignKey(TypeVocal, verbose_name=_('Vocal type'),
-                              related_name='vocal_skill')
+                              related_name='vocal_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Vocal skill")
@@ -424,7 +421,7 @@ class TypeMusicInstrument(AbstractName):
 
 class MusicSkill(AbstractSkill):
     skill = models.ForeignKey(TypeMusicInstrument, verbose_name=_('Music instrument type'),
-                              related_name='music_skill')
+                              related_name='music_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Music skill")
@@ -441,7 +438,7 @@ class TypeDrive(AbstractName):
 
 class DriveSkill(AbstractSkill):
     skill = models.ForeignKey(TypeDrive, verbose_name=_('Type of driving'),
-                              related_name='drive_skill')
+                              related_name='drive_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Driving skill")
@@ -458,7 +455,7 @@ class TypeSport(AbstractName):
 
 class SportSkill(AbstractSkill):
     skill = models.ForeignKey(TypeSport, verbose_name=_('Type of sport'),
-                              related_name='sport_skill')
+                              related_name='sport_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Sport skill")
@@ -475,7 +472,7 @@ class TypeSpecialSkill(AbstractName):
 
 class SpecialSkill(AbstractSkill):
     skill = models.ForeignKey(TypeSpecialSkill, verbose_name=_('Type of special skill'),
-                              related_name='special_skill')
+                              related_name='special_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Special skill")
@@ -492,7 +489,7 @@ class TypeOtherSkill(AbstractName):
 
 class OtherSkill(AbstractSkill):
     skill = models.ForeignKey(TypeOtherSkill, verbose_name=_('Type of other skill'),
-                              related_name='other_skill')
+                              related_name='other_skill', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Other skill")
@@ -508,7 +505,8 @@ class AnimalType(AbstractName):
 
 
 class AnimalKind(AbstractImg):
-    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind')
+    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='kind',
+                               on_delete=models.CASCADE)
     name = std_text_field(_('Name'))
     description = models.TextField(_("Description"), blank=True)
     name_en = std_text_field(_('English name'))
@@ -522,8 +520,10 @@ class AnimalKind(AbstractImg):
 
 
 class Animal(AbstractName):
-    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals')
-    animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind', blank=True, null=True)
+    animal = models.ForeignKey(AnimalType, verbose_name=_('Animal'), related_name='animals',
+                               on_delete=models.CASCADE)
+    animalkind = models.ForeignKey(AnimalKind, verbose_name=_('Kind'), related_name='kind',
+                                   blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Animal")
@@ -542,7 +542,8 @@ class TransportType(AbstractName):
 
 
 class TransportMark(AbstractImg):
-    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks')
+    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='tmarks',
+                              on_delete=models.CASCADE)
     name = std_text_field(_('Name'))
     description = models.TextField(_("Description"), blank=True)
     name_en = std_text_field(_('English name'))
@@ -556,8 +557,10 @@ class TransportMark(AbstractImg):
 
 
 class Vehicle(AbstractName):
-    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles')
-    tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles', blank=True, null=True)
+    ttype = models.ForeignKey(TransportType, verbose_name=_('Transport'), related_name='t_vehicles',
+                              on_delete=models.CASCADE)
+    tmark = models.ForeignKey(TransportMark, verbose_name=_('Mark'), related_name='m_vehicles',
+                              blank=True, null=True, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Vehicle")
@@ -576,7 +579,8 @@ class SurveyObjectType(AbstractName):
 
 
 class SurveyObject(AbstractName):
-    stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o')
+    stype = models.ForeignKey(SurveyObjectType, verbose_name=_('Type'), related_name='t_s_o',
+                              on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Survey object")
@@ -595,7 +599,8 @@ class SurveySuitType(AbstractName):
 
 
 class SurveySuit(AbstractName):
-    stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o')
+    stype = models.ForeignKey(SurveySuitType, verbose_name=_('Type'), related_name='t_s_o',
+                              on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Survey suit")
@@ -614,7 +619,7 @@ class RequisiteType(AbstractName):
 
 
 class Requisite(AbstractName):
-    rtype = models.ForeignKey(RequisiteType, verbose_name=_('Type'))
+    rtype = models.ForeignKey(RequisiteType, verbose_name=_('Type'), on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Requisite")

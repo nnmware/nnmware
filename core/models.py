@@ -76,7 +76,8 @@ class Nnmcomment(AbstractNnmcomment):
     A threaded comment
     """
     # Hierarchy Field
-    parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children')
+    parent = models.ForeignKey('self', null=True, blank=True, default=None, related_name='children',
+                               on_delete=models.CASCADE)
 
     objects = NnmcommentManager()
 
@@ -92,7 +93,7 @@ class Follow(AbstractContent):
     Lets a user follow the activities of any specific actor
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Follow'), null=True, blank=True,
-                             related_name='follow')
+                             related_name='follow', on_delete=models.CASCADE)
 
     objects = FollowManager()
 
@@ -109,9 +110,9 @@ class Notice(AbstractContent, AbstractIP):
     """
     User notification model
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     notice_type = models.IntegerField(_("Notice Type"), choices=NOTICE_CHOICES, default=NOTICE_UNKNOWN)
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender')
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='notice_sender', on_delete=models.CASCADE)
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     timestamp = models.DateTimeField(default=now)
@@ -128,11 +129,12 @@ class Message(AbstractIP):
     """
     subject = models.CharField(_("Subject"), max_length=120, blank=True)
     body = models.TextField(_("Body"))
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender_messages', verbose_name=_("Sender"), )
-    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='receiver_messages', null=True, blank=True,
-                                  verbose_name=_("Recipient"))
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sender_messages',
+                               verbose_name=_("Sender"), on_delete=models.CASCADE)
+    recipient = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='receiver_messages', null=True,
+                                  blank=True, verbose_name=_("Recipient"), on_delete=models.CASCADE)
     parent_msg = models.ForeignKey('self', related_name='next_messages', null=True, blank=True,
-                                   verbose_name=_("Parent message"))
+                                   verbose_name=_("Parent message"), on_delete=models.CASCADE)
     sent_at = models.DateTimeField(_("sent at"), null=True, blank=True)
     read_at = models.DateTimeField(_("read at"), null=True, blank=True)
     replied_at = models.DateTimeField(_("replied at"), null=True, blank=True)
@@ -177,7 +179,7 @@ class Action(AbstractContent, AbstractIP):
     """
     Model Activity of User
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='actions')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='actions', on_delete=models.CASCADE)
     action_type = models.IntegerField(_("Action Type"), choices=ACTION_CHOICES, default=ACTION_UNKNOWN)
     verb = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -243,7 +245,8 @@ def update_doc_count(sender, instance, **kwargs):
 
 
 class VisitorHit(AbstractIP):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True,
+                             null=True, on_delete=models.CASCADE)
     date = models.DateTimeField(verbose_name=_("Creation date"), default=now, db_index=True)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), db_index=True)
     hostname = models.CharField(max_length=100, verbose_name=_('Hostname'), db_index=True)
@@ -355,7 +358,7 @@ class EmailValidation(models.Model):
 
 
 class Video(AbstractDate, AbstractImg):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     project_name = models.CharField(max_length=50, verbose_name=_('Project Name'), blank=True)
     project_url = models.URLField(max_length=255, verbose_name=_('Project URL'), blank=True)
     video_url = models.URLField(max_length=255, verbose_name=_('Video URL'))
@@ -493,7 +496,8 @@ class NnmwareUser(AbstractUser, AbstractImg):
 
 
 class Like(AbstractLike):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True,
+                             null=True, on_delete=models.CASCADE)
 
 
 @receiver([post_save, post_delete], sender=Like)
@@ -531,7 +535,7 @@ class LikeMixin(models.Model):
 
 class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
-                             related_name="%(app_label)s_%(class)s_user")
+                             related_name="%(app_label)s_%(class)s_user", on_delete=models.CASCADE)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
                                                 blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)

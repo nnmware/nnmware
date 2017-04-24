@@ -50,7 +50,7 @@ class AbstractDate(models.Model):
 class AbstractContent(models.Model):
     # Generic Foreign Key Fields
     content_type = models.ForeignKey(ContentType, null=True, blank=True,
-                                     related_name="%(app_label)s_%(class)s_cntype")
+                                     related_name="%(app_label)s_%(class)s_cntype", on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField(_('object ID'), null=True, blank=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     primary = models.BooleanField(_('Is primary'), default=False)
@@ -82,7 +82,7 @@ DOC_TYPE = (
 
 class AbstractFile(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
-                             related_name="%(class)s_f_user")
+                             related_name="%(class)s_f_user", on_delete=models.CASCADE)
     description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
@@ -384,10 +384,11 @@ class Tree(AbstractName):
     """
     Main nodes tree
     """
-    parent = models.ForeignKey('self', verbose_name=_("Parent"), blank=True, null=True, related_name="children")
+    parent = models.ForeignKey('self', verbose_name=_("Parent"), blank=True, null=True, related_name="children",
+                               on_delete=models.CASCADE)
     rootnode = models.BooleanField(_('Root node'), default=False)
-    login_required = models.BooleanField(verbose_name=_("Login required"), default=False, help_text=_(
-        "Enable this if users must login before access with this objects."))
+    login_required = models.BooleanField(verbose_name=_("Login required"), default=False,
+                                         help_text=_("Enable this if users must login before access with this objects."))
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Category Admins'),
                                     related_name='%(app_label)s_%(class)s_adm', blank=True)
 
@@ -702,7 +703,7 @@ class AbstractWorkTime(models.Model):
 
 
 class UserMixin(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -735,7 +736,7 @@ class AbstractVendor(models.Model):
 
 class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
-                             related_name="%(app_label)s_%(class)s_user")
+                             related_name="%(app_label)s_%(class)s_user", on_delete=models.CASCADE)
     viewed = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Viewed'), blank=True,
                                     related_name="%(app_label)s_%(class)s_view_comments")
     comment = models.TextField(verbose_name=_('comment'), blank=True)

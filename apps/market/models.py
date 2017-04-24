@@ -81,10 +81,12 @@ class Product(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     weight = models.DecimalField(verbose_name=_('Weight, kg'), default=0, blank=True, decimal_places=3, max_digits=20)
     maincat = std_text_field(_('Main category'))
     maincatid = models.IntegerField(_('Main category id'), default=0, blank=True)
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg",
+                               on_delete=models.CASCADE)
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Product Admins'),
                                     blank=True, related_name='%(class)s_adm')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True,
+                             on_delete=models.CASCADE)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
     objects = ProductManager()
@@ -159,8 +161,9 @@ class ProductParameterCategory(models.Model):
 
 class ProductParameter(Parameter):
     category = models.ForeignKey(ProductParameterCategory, verbose_name=_('Category'), related_name='category',
-                                 null=True, blank=True)
-    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True)
+                                 null=True, blank=True, on_delete=models.CASCADE)
+    unit = models.ForeignKey(ParameterUnit, verbose_name=_('Unit'), related_name='unit', null=True, blank=True,
+                             on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Product parameter")
@@ -168,7 +171,8 @@ class ProductParameter(Parameter):
 
 
 class ProductParameterValue(AbstractContent):
-    parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter')
+    parameter = models.ForeignKey(ProductParameter, verbose_name=_('Parameter'), related_name='parameter',
+                                  on_delete=models.CASCADE)
     value = std_text_field(_('Value of parameter'))
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
     keyparam = models.BooleanField(verbose_name=_("In key params"), default=False)
@@ -189,7 +193,8 @@ class Basket(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='basket', blank=True,
                              null=True, on_delete=models.SET_NULL)
     quantity = models.IntegerField(verbose_name=_('Quantity'))
-    product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket')
+    product = models.ForeignKey(Product, verbose_name=_('Product'), related_name='basket',
+                                on_delete=models.CASCADE)
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
     addon = std_text_field(_('Add-on text'))
 
@@ -254,7 +259,7 @@ class Order(AbstractDate, AbstractIP):
     address = std_text_field(_('Shipping address'))
     tracknumber = std_text_field(_('Track number'))
     cargoservice = models.ForeignKey(CargoService, verbose_name=_('Cargo service'),
-                                     related_name='cargo', null=True, blank=True)
+                                     related_name='cargo', null=True, blank=True, on_delete=models.CASCADE)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
@@ -264,7 +269,8 @@ class Order(AbstractDate, AbstractIP):
     buyer_comment = std_text_field(_('Buyer comment'))
     seller_comment = std_text_field(_('Seller comment'))
     session_key = models.CharField(max_length=40, verbose_name=_('Session key'), blank=True)
-    seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True)
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True,
+                               on_delete=models.CASCADE)
 
     objects = OrdersManager()
 
@@ -316,7 +322,7 @@ class OrderItem(MoneyBase):
     """
     Definition of order's details.
     """
-    order = models.ForeignKey(Order)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product_pn = std_text_field(_('Market part number'))
     product_name = std_text_field(_('Product Name'))
     product_url = std_text_field(_('Product URL'))
@@ -334,7 +340,8 @@ class OrderItem(MoneyBase):
 
 
 class DeliveryAddress(AbstractLocation):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='deliveryaddr',
+                             on_delete=models.CASCADE)
     first_name = std_text_field(_('First Name'))
     middle_name = std_text_field(_('Middle Name'))
     last_name = std_text_field(_('Last Name'))
@@ -383,9 +390,9 @@ class Feedback(AbstractIP):
     message = models.TextField(verbose_name=_("Message"))
     answer = models.TextField(verbose_name=_("Answer"), blank=True)
     seller = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Seller'), blank=True, null=True,
-                               related_name='%(class)s_seller')
+                               related_name='%(class)s_seller', on_delete=models.CASCADE)
     buyer = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('Buyer'), blank=True, null=True,
-                              related_name='%(class)s_buyer')
+                              related_name='%(class)s_buyer', on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-created_date']
@@ -401,7 +408,7 @@ class Feedback(AbstractIP):
 
 class Review(AbstractIP, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), related_name='reviews', null=True,
-                             blank=True)
+                             blank=True, on_delete=models.CASCADE)
     created_date = models.DateTimeField(_("Created date"), default=now)
     name = std_text_field(_('Name'))
     w_position = std_text_field(_('Position'))
@@ -525,10 +532,12 @@ class Service(AbstractName, MoneyBase, AbstractDate, AbstractTeaser):
     special_offer = models.BooleanField(verbose_name=_("Special offer"), default=False)
     discount_percent = models.DecimalField(verbose_name=_('Percent of discount'), blank=True, null=True,
                                            decimal_places=1, max_digits=4, default=0)
-    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True, related_name="%(class)s_reg")
+    region = models.ForeignKey(Region, verbose_name=_('Region'), blank=True, null=True,
+                               related_name="%(class)s_reg", on_delete=models.CASCADE)
     admins = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name=_('Service Admins'),
                                     blank=True, related_name='%(class)s_adm')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), blank=True,
+                             null=True, on_delete=models.CASCADE)
     company = models.ForeignKey(Company, verbose_name=_('Company'), blank=True, null=True, on_delete=models.SET_NULL)
 
     objects = MarketManager()
