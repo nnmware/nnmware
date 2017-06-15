@@ -71,7 +71,7 @@ class Estate(AbstractName, AbstractLocation, MetaGeo, AbstractDate, MoneyBase, A
     interior = models.ManyToManyField(TrimKind, verbose_name=_('Interior trim kinds'), related_name='int_estate')
     exterior = models.ManyToManyField(TrimKind, verbose_name=_('Exterior trim kinds'), related_name='ext_estate')
     housing = models.BooleanField(verbose_name=_("Housing"), default=False)
-    kind = models.ForeignKey(EstateType, verbose_name=_('Estate type'))
+    kind = models.ForeignKey(EstateType, verbose_name=_('Estate type'), on_delete=models.CASCADE)
     location_public = models.BooleanField(verbose_name=_("Is location public?"), default=False)
     features = models.ManyToManyField(EstateFeature, verbose_name=_('Estate features'))
     total_room = models.PositiveSmallIntegerField(verbose_name=_('Total rooms count'), blank=True, null=True)

@@ -326,7 +326,7 @@ class OrderItem(MoneyBase):
     product_pn = std_text_field(_('Market part number'))
     product_name = std_text_field(_('Product Name'))
     product_url = std_text_field(_('Product URL'))
-    product_origin = models.ForeignKey(Product, null=True, blank=True)
+    product_origin = models.ForeignKey(Product, null=True, blank=True, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name=_('Quantity'))
     addon = std_text_field(_('Add-on text'))
     is_delivery = models.BooleanField(verbose_name=_("Delivery flag"), default=False)

@@ -126,7 +126,7 @@ class TypeFeatureAppearance(AbstractOrder):
 
 class FeatureAppearance(AbstractName):
     appearance = models.ForeignKey(TypeFeatureAppearance, verbose_name=_('Feature appearance'),
-                                   related_name='feature_app')
+                                   related_name='feature_app', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Feature Appearance")
@@ -309,7 +309,7 @@ class AbstractHumanAppearance(models.Model):
     girth_waist = models.PositiveSmallIntegerField(verbose_name=_('Girth waist'), blank=True, null=True, default=None)
     girth_thigh = models.PositiveSmallIntegerField(verbose_name=_('Girth thigh'), blank=True, null=True, default=None)
     girth_head = models.PositiveSmallIntegerField(verbose_name=_('Girth head'), blank=True, null=True, default=None)
-    size_clothing = models.ForeignKey(ClothingSize, blank=True, null=True, default=None)
+    size_clothing = models.ForeignKey(ClothingSize, blank=True, null=True, default=None, on_delete=models.CASCADE)
     size_shoes = models.ForeignKey(ShoesSize, blank=True, null=True, default=None,on_delete=models.CASCADE)
     size_head = models.ForeignKey(HeadSize, blank=True, null=True, default=None, on_delete=models.CASCADE)
     size_chest = models.ForeignKey(ChestSize, blank=True, null=True, default=None, on_delete=models.CASCADE)
