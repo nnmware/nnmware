@@ -763,7 +763,7 @@ class AbstractLike(AbstractContent):
     like = True
     dislike = False
     """
-    like_dislike = models.NullBooleanField(verbose_name="Like-Dislike", default=None, db_index=True)
+    like_dislike = models.BooleanField(verbose_name="Like-Dislike", null=True, default=None, db_index=True)
 
     class Meta:
         ordering = ('-pk',)
