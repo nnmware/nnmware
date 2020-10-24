@@ -802,7 +802,7 @@ def addon_file_uploader(request, **kwargs):
 
 
 def addon_image_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'images'),
+    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'media'),
                             size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
     result = uploader.handle_upload(request)
     if result['success']:
