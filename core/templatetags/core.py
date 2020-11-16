@@ -14,6 +14,7 @@ from django.db.models import Count, Sum
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 
 from nnmware.core.data import recurse_for_children, recurse_for_children_with_span, create_userdate_list, \
     recurse_for_date, create_archive_list
@@ -523,15 +524,16 @@ def thumbnail(url, args=''):
             if arg == '':
                 continue
             kw, val = arg.split('=', 1)
-            kw = kw.lower().encode('ascii')
+            # kw = kw.lower().encode('ascii')
+            kw = kw.lower()
             try:
                 val = int(val)  # convert all ints
             except ValueError as verr:
-                raise TemplateSyntaxError
+                raise TemplateSyntaxError(verr)
             kwargs[kw] = val
 
     if ('width' not in kwargs) and ('height' not in kwargs):
-        raise TemplateSyntaxError
+        raise TemplateSyntaxError(_(f'No height or width'))
 
     ret = make_thumbnail(url, **kwargs)
     if ret is None:

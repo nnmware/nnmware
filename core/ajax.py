@@ -674,7 +674,7 @@ class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
     def __init__(self, filetype='file', upload_dir='files', size_limit=10485760):
-        self._upload_dir = os.path.join(settings.MEDIA_ROOT, upload_dir, get_date_directory())
+        self._upload_dir = os.path.join(settings.MEDIA_ROOT, upload_dir)#, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
             self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPEG')
@@ -744,7 +744,7 @@ class AjaxUploader(object):
             # noinspection PyBroadException
             try:
                 i = Image.open(self._path)
-            except:
+            except Exception as err:
                 os.remove(self._path)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
