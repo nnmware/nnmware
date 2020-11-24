@@ -11,6 +11,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.core.files.base import ContentFile
+from django.core.cache import cache
 from django.urls import reverse
 from django.utils.timezone import now
 from django.db import models
@@ -33,6 +34,19 @@ IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
 IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
 IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
 EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1)[::-1])
+
+class AbstractCacheMixin(object):
+    default_cached_name = self.__class__.__name__ """ то бишь по имени модели знаем какое дефолтное значение """
+    default_cached_value = self.default_cached_value_name +'_'+str(self.id)
+
+    def get_default_cached_param_name(self):
+        self.get_cached = cache.get(self.default_cached_name)
+
+    def set_default_cached_param_name(self):
+        self.set_cached = cache.set(self.default_cached_name, self.default_cached_value, DEFAULT_TIMEOUT=3000)
+
+    def save(self, **kwargs):
+        super(AbstractCacheMixin, self).save(**kwargs)
 
 
 class AbstractDate(models.Model):
