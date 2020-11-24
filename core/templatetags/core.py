@@ -6,7 +6,9 @@ import re
 from xml.etree.ElementTree import Element, tostring
 
 from django.core.cache import cache
-from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
+from django.template.library import Library
+from django.template.base import Node, TemplateSyntaxError, Variable, VariableDoesNotExist
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
@@ -707,7 +709,7 @@ def datelinks_by_string(value):
 
 
 def get_links(day, month, year):
-    return mark_safe(loader.render_to_string('core/datelinks.html', {'year': year, 'month': month, 'day': day}))
+    return mark_safe(render_to_string('core/datelinks.html', {'year': year, 'month': month, 'day': day}))
 
 
 @register.filter
