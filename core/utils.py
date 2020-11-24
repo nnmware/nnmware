@@ -26,9 +26,8 @@ VALID = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789'
 
 
 def make_key(name):
-    salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-    name = name.encode('utf-8')
-    activation_key = hashlib.sha1(salt + name).hexdigest()
+    salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+    activation_key = hashlib.sha1((salt + name).encode('utf-8')).hexdigest()
     return activation_key
 
 
