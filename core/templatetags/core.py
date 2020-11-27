@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from datetime import timedelta
@@ -525,7 +525,7 @@ def thumbnail(url, args=''):
             if arg == '':
                 continue
             kw, val = arg.split('=', 1)
-            kw = kw.lower().encode('ascii')
+            kw = kw.lower()
             try:
                 val = int(val)  # convert all ints
             except ValueError as verr:
