@@ -311,7 +311,7 @@ class ProfileForm(forms.ModelForm):
     first_name = forms.CharField(label=_('First name'), max_length=30)
     last_name = forms.CharField(label=_('Last Name'), max_length=30)
     email = forms.EmailField(label=_("Site-only email"))
-    birthdate = forms.DateField(('%d/%m/%Y',), label='Birth Date', required=False,
+    birthdate = forms.DateField(input_formats=['%d/%m/%Y'], label='Birth Date', required=False,
                                 widget=forms.DateTimeInput(format='%d/%m/%Y', attrs={
                                     'class': 'datePicker',
                                     'readonly': 'readonly',

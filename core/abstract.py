@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from io import StringIO
@@ -35,18 +35,23 @@ IMG_THUMB_FORMAT = setting('IMG_THUMB_FORMAT', 'JPEG')
 IMG_RESIZE_METHOD = setting('IMG_RESIZE_METHOD', Image.ANTIALIAS)
 EDUCATION_END = map(tuplify, range(current_year - 55, current_year + 1)[::-1])
 
-class AbstractCacheMixin(object):
-    default_cached_name = self.__class__.__name__ """ то бишь по имени модели знаем какое дефолтное значение """
-    default_cached_value = self.default_cached_value_name +'_'+str(self.id)
-
-    def get_default_cached_param_name(self):
-        self.get_cached = cache.get(self.default_cached_name)
-
-    def set_default_cached_param_name(self):
-        self.set_cached = cache.set(self.default_cached_name, self.default_cached_value, DEFAULT_TIMEOUT=3000)
-
-    def save(self, **kwargs):
-        super(AbstractCacheMixin, self).save(**kwargs)
+# class AbstractCacheMixin:
+#     default_cached_name = self.__class__.__name__
+#     default_cached_value = self.default_cached_value_name +'_'+str(self.id)
+#
+#     def __init__(self):
+#         self.get_cached = cache.get(self.default_cached_name)
+#         self.set_cached = None
+#         super(AbstractCacheMixin, self).__init__(self)
+#
+#     def get_default_cached_param_name(self):
+#         return self.get_cached
+#
+#     def set_default_cached_param_name(self):
+#         self.set_cached = cache.set(self.default_cached_name, self.default_cached_value, DEFAULT_TIMEOUT=3000)
+#
+#     def save(self, **kwargs):
+#         super(AbstractCacheMixin, self).save(**kwargs)
 
 
 class AbstractDate(models.Model):
@@ -777,7 +782,7 @@ class AbstractLike(AbstractContent):
     like = True
     dislike = False
     """
-    like_dislike = models.NullBooleanField(verbose_name="Like-Dislike", default=None, db_index=True)
+    like_dislike = models.BooleanField(verbose_name="Like-Dislike", null=True, default=None, db_index=True)
 
     class Meta:
         ordering = ('-pk',)
