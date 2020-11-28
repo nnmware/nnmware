@@ -201,7 +201,7 @@ class CurrentUserAuthenticated(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise Http404
         return super(CurrentUserAuthenticated, self).dispatch(request, *args, **kwargs)
 

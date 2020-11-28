@@ -597,7 +597,8 @@ def menu(app=None):
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children(node, html)
-        return tostring(html, 'utf-8')
+        return tostring(html, 'unicode')
+
 
 #    except:
 #        return 'error'
@@ -624,7 +625,7 @@ def menu_span(app=None):
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children_with_span(node, html)
-        result = tostring(html, 'utf-8')
+        result = tostring(html, 'unicode')
         cache.set('menu_span_' + app, result, 300)
         return result
     except:
@@ -637,7 +638,7 @@ def category_tree_series():
     for cats in Tree.objects.all().filter(slug='series'):
         if not cats.parent:
             recurse_for_children(cats, root)
-    return tostring(root, 'utf-8')
+    return tostring(root, 'unicode')
 
 
 @register.simple_tag
@@ -650,7 +651,7 @@ def menu_user(app=None):
     key_lst = objects_years_dict.keys()
     for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
-    return tostring(html, 'utf-8')
+    return tostring(html, 'unicode')
 
 
 @register.simple_tag
@@ -663,7 +664,7 @@ def menu_date(app=None):
     key_lst = objects_years_dict.keys()
     for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
-    return tostring(html, 'utf-8')
+    return tostring(html, 'unicode')
 
 
 r_nofollow = re.compile('<a (?![^>]*nofollow)')

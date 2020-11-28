@@ -87,7 +87,7 @@ def menu_market():
         for node in ProductCategory.objects.all():
             if not node.parent:
                 menu_recurse_market(node, html)
-        return tostring(html, 'utf-8')
+        return tostring(html, 'unicode')
 
 #    except:
 #        return 'error'
