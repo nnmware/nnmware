@@ -835,7 +835,7 @@ def addon_image_uploader(request, **kwargs):
 def like(request, content_type, object_id):
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         mode = request.POST['mode']
         if mode not in ['like', 'dislike']:
@@ -848,7 +848,8 @@ def like(request, content_type, object_id):
         else:
             obj = content_type.get_object_for_this_type(pk=object_id)
             if obj.user == request.user:
-                raise AccessError
+                pass
+                #raise AccessError
         # noinspection PyBroadException
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)

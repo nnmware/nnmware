@@ -214,6 +214,9 @@ class AbstractActiveManager(Manager):
     def active(self):
         return self.filter(enabled=True)
 
+    def moderation(self):
+        return self.filter(status=STATUS_MODERATION)
+
 
 class StatusManager(Manager):
     def active(self):
