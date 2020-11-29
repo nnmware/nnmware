@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 
@@ -195,10 +195,10 @@ class VideoAdmin(admin.ModelAdmin):
 class LikeAdmin(admin.ModelAdmin):
     fieldsets = (
         (_('Like'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Variants'), {'fields': [('like_dislike',)]}),
+        (_('Variants'), {'fields': [('status',)]}),
     )
-    list_display = ('user', 'like_dislike')
-    readonly_fields = ('user', 'content_type', 'object_id', 'like_dislike')
+    list_display = ('user', 'status')
+    readonly_fields = ('user', 'content_type', 'object_id', 'status')
 
 
 @admin.register(ContentBlock)

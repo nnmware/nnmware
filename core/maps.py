@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import with_statement, unicode_literals
 from math import radians, sin, cos, sqrt, atan2

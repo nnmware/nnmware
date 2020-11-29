@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 LANGUAGE_COOKIE_NAME = 'nnmware_language'
 LOGIN_ERROR_URL = '/login/error/'

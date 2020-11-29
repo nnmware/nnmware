@@ -498,10 +498,9 @@ class NnmwareUser(AbstractUser, AbstractImg):
 
 class Like(AbstractContent):
     """
-    like = True
-    dislike = False
+    status = True or False or null
     """
-    like_dislike = models.BooleanField(verbose_name="Like-Dislike", null=True, default=None, db_index=True)
+    status = models.BooleanField(verbose_name="Status", null=True, default=None, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True,
                              null=True, on_delete=models.DO_NOTHING)
 
@@ -509,7 +508,6 @@ class Like(AbstractContent):
         ordering = ('-pk',)
         verbose_name = "Like"
         verbose_name_plural = "Likes"
-        abstract = True
 
     def __str__(self):
         return 'Likes for %s' % self.content_object
@@ -532,19 +530,19 @@ class LikeMixin(models.Model):
         abstract = True
 
     def set_karma(self):
-        liked = Like.objects.for_object(self).filter(user__is_active=True, like_dislike=True).\
+        liked = Like.objects.for_object(self).filter(user__is_active=True, status=True).\
             aggregate(Count("id"))['id__count']
-        disliked = Like.objects.for_object(self).filter(user__is_active=True, like_dislike=False).\
+        disliked = Like.objects.for_object(self).filter(user__is_active=True, status=False).\
             aggregate(Count("id"))['id__count']
         self.karma = liked - disliked
         self.save()
 
     def users_liked(self):
-        return Like.objects.for_object(self).filter(user__is_active=True, like_dislike=True).\
+        return Like.objects.for_object(self).filter(user__is_active=True, status=True).\
             values_list('user__pk', flat=True)
 
     def users_disliked(self):
-        return Like.objects.for_object(self).filter(user__is_active=True, like_dislike=False).\
+        return Like.objects.for_object(self).filter(user__is_active=True, status=False).\
             values_list('user__pk', flat=True)
 
 

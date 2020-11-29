@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from datetime import timedelta
 from xml.etree.ElementTree import Element, SubElement, tostring

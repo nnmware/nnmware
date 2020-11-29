@@ -818,27 +818,27 @@ def like(request, content_type, object_id):
             thelike = Like(user=request.user, content_type=content_type, object_id=object_id)
             thelike.save()
         if mode == 'like':
-            if thelike.like_dislike is not None:
-                if thelike.like_dislike:
-                    thelike.like_dislike = None
+            if thelike.status is not None:
+                if thelike.status:
+                    thelike.status = None
                     like_en = False
                 else:
-                    thelike.like_dislike = True
+                    thelike.status = True
                     like_en = True
             else:
-                thelike.like_dislike = True
+                thelike.status = True
                 like_en = True
             dislike_en = False
         else:
-            if thelike.like_dislike is not None:
-                if not thelike.like_dislike:
-                    thelike.like_dislike = None
+            if thelike.status is not None:
+                if not thelike.status:
+                    thelike.status = None
                     dislike_en = False
                 else:
-                    thelike.like_dislike = False
+                    thelike.status = False
                     dislike_en = True
             else:
-                thelike.like_dislike = False
+                thelike.status = False
                 dislike_en = True
             like_en = False
         thelike.save()
