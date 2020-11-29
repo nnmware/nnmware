@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import json
 
 from django.contrib import messages
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.timezone import now
 
 from nnmware.core.utils import setting
@@ -38,7 +39,7 @@ UNTRACKED_USER_AGENT = [
 ]
 
 
-class VisitorHitMiddleware(object):
+class VisitorHitMiddleware(MiddlewareMixin):
     def process_request(self, request):
         if request.is_ajax():
             return
@@ -51,7 +52,7 @@ class VisitorHitMiddleware(object):
             if user_agent.find(ua) != -1:
                 return
         v = VisitorHit()
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             v.user = request.user
         v.user_agent = user_agent
         v.ip = request.META.get('REMOTE_ADDR', '')

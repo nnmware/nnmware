@@ -419,6 +419,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
     icq = models.CharField(max_length=30, verbose_name=_('ICQ'), blank=True)
     skype = models.CharField(max_length=100, verbose_name=_('skype'), blank=True)
     jabber = models.CharField(max_length=100, verbose_name=_('jabber'), blank=True)
+    telegram = models.CharField(max_length=100, verbose_name=_('telegram'), blank=True)
     mobile = models.CharField(max_length=100, verbose_name=_('mobile phone'), blank=True)
     workphone = models.CharField(max_length=100, verbose_name=_('work phone'), blank=True)
     publicmail = models.EmailField(verbose_name=_('Public email'), blank=True)

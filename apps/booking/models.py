@@ -13,7 +13,8 @@ from django.db.models import signals, Avg, Min, Count
 from django.db.models.manager import Manager
 from django.template.defaultfilters import date
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _, string_concat
+from django.utils.text import format_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils.translation.trans_real import get_language
 from django.core.cache import cache
 
@@ -747,28 +748,28 @@ class Discount(AbstractName, AbstractDate):
     @property
     def algorithm(self):
         if self.choice == DISCOUNT_NOREFUND:
-            return string_concat(_('No refund tariff'), self.quantities)
+            return format_lazy('{} {}', _('No refund tariff'), self.quantities)
         elif self.choice == DISCOUNT_EARLY:
-            return string_concat(_('Booking, earlier than %s day(days) before arrival') % self.days, self.quantities)
+            return format_lazy('{} {}', _('Booking, earlier than %s day(days) before arrival') % self.days, self.quantities)
         elif self.choice == DISCOUNT_LATER:
-            return string_concat(_('Booking, later than %s day(days) before arrival') % self.days, self.quantities)
+            return format_lazy('{} {}', _('Booking, later than %s day(days) before arrival') % self.days, self.quantities)
         elif self.choice == DISCOUNT_PERIOD:
-            return string_concat(_('Booking at least %s day(days)') % self.days, self.quantities)
+            return format_lazy('{} {}', _('Booking at least %s day(days)') % self.days, self.quantities)
         elif self.choice == DISCOUNT_PACKAGE:
             return _('Package: booking %(days)s day(days) at price of %(price_days)s day(days)') % \
                 dict(days=self.days, price_days=self.at_price_days)
         elif self.choice == DISCOUNT_HOLIDAY:
-            return string_concat(_('Booking in holidays/weekend'), self.quantities)
+            return format_lazy('{} {}', _('Booking in holidays/weekend'), self.quantities)
         elif self.choice == DISCOUNT_SPECIAL:
-            return string_concat(_('Special discount'), self.quantities)
+            return format_lazy('{} {}', _('Special discount'), self.quantities)
         elif self.choice == DISCOUNT_LAST_MINUTE:
-            return string_concat(_('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s')
+            return format_lazy('{} {}', _('Booking after standard arrival time, over the time %(time_from)s - %(time_to)s')
                                  % dict(time_from=date(self.time_on, 'H:i'), time_to=date(self.time_off, 'H:i')),
                                  self.quantities)
         elif self.choice == DISCOUNT_CREDITCARD:
-            return string_concat(_('Booking with creditcard'), self.quantities)
+            return format_lazy('{} {}', _('Booking with creditcard'), self.quantities)
         elif self.choice == DISCOUNT_NORMAL:
-            return string_concat(_('Simple discount'), self.quantities)
+            return format_lazy('{} {}', _('Simple discount'), self.quantities)
         else:
             return None
 
