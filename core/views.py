@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from datetime import timedelta
@@ -92,7 +92,6 @@ class AjaxViewMixin(View):
     def render_to_response(self, context, **response_kwargs):
         if self.request.is_ajax():
             html = render(self.request, self.template_name, context)
-            # Old code- need check parameters: context_instance=RequestContext(self.request))
             payload = {'success': True, 'html': html}
             payload.update(self.payload)
             response_kwargs['content_type'] = 'application/json'

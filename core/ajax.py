@@ -522,56 +522,10 @@ def ajax_image_crop(request):
     return ajax_answer_lazy(payload)
 
 
-def comment_add_oldver(request, content_type, object_id, parent_id=None):
-    """
-    Its Ajax posted comments
-    """
-    # noinspection PyBroadException
-    try:
-        if not request.user.is_authenticated():
-            raise AccessError
-        comment = Nnmcomment()
-        comment.user = request.user
-        comment.content_type = ContentType.objects.get_for_id(int(content_type))
-        comment.object_id = int(object_id)
-        comment.ip = request.META['REMOTE_ADDR']
-        comment.user_agent = request.META['HTTP_USER_AGENT']
-        comment.comment = request.POST['comment']
-        if not len(comment.comment):
-            raise AccessError
-        kwargs = {'content_type': content_type, 'object_id': object_id}
-        if parent_id is not None:
-            comment.parent_id = int(parent_id)
-        comment.save()
-        action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
-                    description=comment.comment, target=comment.content_object, request=request)
-        avatar_id = False
-        kwargs['parent_id'] = comment.pk
-        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
-        comment_text = linebreaksbr(comment.comment)
-        comment_date = comment.created_date.strftime(setting('COMMENT_DATE_FORMAT', '%d %b %Y %H:%M %p'))
-        # noinspection PyBroadException
-        try:
-            avatar_id = comment.user.avatar.pk
-        except:
-            pass
-        # noinspection PyUnresolvedReferences
-        payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
-                   'username_url': comment.get_absolute_url(),
-                   'comment': comment_text, 'avatar_id': avatar_id,
-                   'comment_date': comment_date, 'reply_link': reply_link,
-                   'object_comments': comment.content_object.comments}
-    except AccessError as aerr:
-        payload = {'success': False, 'error': _('You are not allowed for add comment')}
-    except:
-        payload = {'success': False}
-    return ajax_answer_lazy(payload)
-
-
 def comment_add(request, content_type, object_id, parent_id=None):
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         comment = Nnmcomment()
         comment.user = request.user
@@ -670,11 +624,15 @@ def set_paginator(request, num):
     return ajax_answer_lazy(payload)
 
 
+class MyError(Exception):
+    pass
+
+
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
     def __init__(self, filetype='file', upload_dir='files', size_limit=10485760):
-        self._upload_dir = os.path.join(settings.MEDIA_ROOT, upload_dir)#, get_date_directory())
+        self._upload_dir = os.path.join(upload_dir, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
             self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPEG')
@@ -688,28 +646,32 @@ class AjaxUploader(object):
         """
         if int(self._destination.tell()) > self._size_limit:
             self._destination.close()
-            os.remove(self._path)
+            os.remove(self._fullpath)
             return True
 
     def setup(self, filename):
         ext = os.path.splitext(filename)[1]
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
         self._path = os.path.join(self._upload_dir, self._filename)
+        self._realpath = os.path.realpath(os.path.dirname(self._path))
+        self._path_orig = self._path
         # noinspection PyBroadException
         try:
-            os.makedirs(os.path.realpath(os.path.dirname(self._path)))
+            os.makedirs(self._realpath)
         except:
             pass
-        self._destination = BufferedWriter(FileIO(self._path, "w"))
+        self._fullpath = self._realpath+'/'+self._filename
+        self._destination = BufferedWriter(FileIO(self._fullpath, "w"))
 
     def handle_upload(self, request):
         is_raw = True
         if request.FILES:
             is_raw = False
             if len(request.FILES) == 1:
-                upload = request.FILES.values()[0]
+                _var, upload = request.FILES.popitem()
             else:
                 return dict(success=False, error=_("Bad upload."))
+            upload = upload[0]
             filename = upload.name
         else:
             # the file is stored raw in the request
@@ -750,29 +712,30 @@ class AjaxUploader(object):
             f_name, f_ext = os.path.splitext(self._filename)
             f_without_ext = os.path.splitext(self._path)[0]
             new_path = ".".join([f_without_ext, self._save_format.lower()])
+            new_url = ".".join([f_name, self._save_format.lower()])
             if setting('IMAGE_STORE_ORIGINAL', False):
                 # TODO need change the extension
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
-                shutil.copy2(self._path, orig_path)
+                shutil.copy2(self._fullpath, orig_path)
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
             # noinspection PyBroadException
             try:
-                if self._path == new_path:
-                    i.save(self._path, self._save_format)
+                if self._fullpath == new_path:
+                    i.save(self._fullpath, self._save_format)
                 else:
-                    i.save(new_path, self._save_format)
-                    os.remove(self._path)
-                    self._path = new_path
+                    os.remove(self._fullpath)
+                    self._fullpath = new_path
+                    i.save(self._fullpath, self._save_format)
             except:
                 # noinspection PyBroadException
                 try:
-                    os.remove(self._path)
+                    os.remove(self._fullpath)
                     os.remove(new_path)
                 except:
                     pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
-        return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
+        return dict(success=True, fullpath=self._fullpath, path = self._upload_dir , #os.path.relpath(self._fullpath, '/' + settings.MEDIA_ROOT),
                     old_filename=filename, filename=self._filename)
 
 
