@@ -97,7 +97,7 @@ def add_basket(request, object_id):
             addon_text = color.name
         except:
             addon_text = ''
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             session_key = get_session_from_request(request)
             if Basket.objects.filter(session_key=session_key, product=p, addon=addon_text).count() > 0:
                 b = Basket.objects.get(session_key=session_key, product=p, addon=addon_text)
@@ -134,7 +134,7 @@ def delete_basket(request, object_id):
     # noinspection PyBroadException
     try:
         Basket.objects.get(pk=int(object_id)).delete()
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             basket_user = Basket.objects.filter(user=request.user)
         else:
             basket_user = Basket.objects.filter(session_key=get_session_from_request(request))
@@ -157,7 +157,7 @@ def add_address(request):
     """
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         address = DeliveryAddress()
         address.user = request.user
@@ -216,7 +216,7 @@ def delete_address(request, object_id):
     # Link used when User delete the address delivery
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         DeliveryAddress.objects.get(pk=int(object_id)).delete()
         payload = {'success': True, 'id': int(object_id)}

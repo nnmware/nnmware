@@ -12,7 +12,7 @@ from nnmware.core.utils import send_template_mail
 
 
 def get_basket(request):
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         session_key = get_session_from_request(request)
         return Basket.objects.filter(session_key=session_key)
     return Basket.objects.filter(user=request.user)

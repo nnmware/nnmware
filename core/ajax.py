@@ -356,7 +356,7 @@ def notice_delete(request, object_id):
 def delete_message(request, object_id):
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         msg = Message.objects.get(id=object_id)
         if msg.sender == request.user or msg.recipient == request.user:
@@ -558,7 +558,7 @@ def flat_comment_add(request, content_type, object_id):
     """
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         comment = FlatNnmcomment()
         comment.user = request.user
@@ -585,7 +585,7 @@ def flat_comment_add(request, content_type, object_id):
 def push_message(request, pk):
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         recipient = get_user_model().objects.get(pk=pk)
         if recipient == request.user:

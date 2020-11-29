@@ -15,7 +15,7 @@ register = Library()
 
 
 def _get_basket(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         Basket.objects.filter(session_key=get_session_from_request(request)).update(user=request.user)
         return Basket.objects.filter(user=request.user)
     else:

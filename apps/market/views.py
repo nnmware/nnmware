@@ -36,7 +36,7 @@ class CurrentUserOrderAccess(object):
 
     def dispatch(self, request, *args, **kwargs):
         obj = get_object_or_404(Order, pk=kwargs['pk'])
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             if obj.session_key != get_session_from_request(request):
                 raise Http404
         else:
@@ -369,7 +369,7 @@ class AnonymousUserAddOrderView(AjaxFormMixin, CreateView):
     template_name = 'market/quick_order.html'
 
     def form_valid(self, form):
-        if not self.request.user.is_authenticated() and not settings.MARKET_ANONYMOUS_ORDERS:
+        if not self.request.user.is_authenticated and not settings.MARKET_ANONYMOUS_ORDERS:
             return super(AnonymousUserAddOrderView, self).form_invalid(form)
         basket = get_basket(self.request)
         if basket.count() < 1:
@@ -399,7 +399,7 @@ class RegisterUserAddOrderView(AjaxFormMixin, CreateView):
     form_class = RegisterUserOrderAddForm
 
     def form_valid(self, form):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return super(RegisterUserAddOrderView, self).form_invalid(form)
         basket = get_basket(self.request)
         if basket.count() < 1:

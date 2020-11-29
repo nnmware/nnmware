@@ -174,7 +174,7 @@ class AtomModelActivityFeed(ModelActivityFeed):
 class UserActivityFeed(Feed):
 
     def get_object(self, request):
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             return request.user
 
     def title(self):

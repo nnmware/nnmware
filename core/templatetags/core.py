@@ -37,7 +37,7 @@ def video_links(context, mode='random'):
         category = None
     videos = Video.objects.filter(created_date__gte=now() - timedelta(days=1))
     result = videos
-    if user.is_authenticated():
+    if user.is_authenticated:
         result = result.exclude(users_viewed=user)
     if category is not None:
         result = result.filter(tags=category)

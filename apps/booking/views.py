@@ -180,7 +180,7 @@ class HotelList(AjaxViewMixin, RedirectHttpView, ListView):
                         h_s.to_date = to_date
                         if guests:
                             h_s.guests = guests
-                        if self.request.user.is_authenticated():
+                        if self.request.user.is_authenticated:
                             h_s.user = self.request.user
                         h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
                         h_s.ip = self.request.META.get('REMOTE_ADDR', '')
@@ -294,7 +294,7 @@ class HotelAdminList(ListView):
     template_name = "usercabinet/list.html"
 
     def get_queryset(self):
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             if self.request.user.is_superuser:
                 result = Hotel.objects.all()
             else:
@@ -359,7 +359,7 @@ class HotelDetail(AjaxViewMixin, HotelPathMixin, AttachedImagesMixin, DetailView
                 h_s.to_date = to_date
                 if guests:
                     h_s.guests = guests
-                if self.request.user.is_authenticated():
+                if self.request.user.is_authenticated:
                     h_s.user = self.request.user
                 h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
                 h_s.ip = self.request.META.get('REMOTE_ADDR', '')
@@ -466,7 +466,7 @@ class RoomDetail(AttachedImagesMixin, DetailView):
                 h_s.to_date = to_date
                 if guests:
                     h_s.guests = guests
-                if self.request.user.is_authenticated():
+                if self.request.user.is_authenticated:
                     h_s.user = self.request.user
                 h_s.user_agent = self.request.META.get('HTTP_USER_AGENT', '')[:255]
                 h_s.ip = self.request.META.get('REMOTE_ADDR', '')
@@ -764,7 +764,7 @@ class RequestAddHotelView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             self.object.user = self.request.user
         self.object.ip = self.request.META['REMOTE_ADDR']
         self.object.user_agent = self.request.META['HTTP_USER_AGENT']
@@ -1112,7 +1112,7 @@ class ClientAddBooking(UserToFormMixin, AjaxFormMixin, CreateView):
 
             except CardError as carderr:
                 return ajax_answer_lazy(payload)
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             self.object.user = self.request.user
         else:
             email = form.cleaned_data.get('email')

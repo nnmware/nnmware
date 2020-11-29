@@ -123,7 +123,7 @@ class RequestAddHotelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user')
         super(RequestAddHotelForm, self).__init__(*args, **kwargs)
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             self.fields['recaptcha'] = ReCaptchaField(error_messages={'required': _('This field is required'),
                                                                       'invalid': _('Answer is wrong')})
 
@@ -169,7 +169,7 @@ class BookingAddForm(UserFromRequestForm):
 
     def clean(self):
         cleaned_data = super(BookingAddForm, self).clean()
-        if not self._user.is_authenticated():
+        if not self._user.is_authenticated:
             email = cleaned_data.get('email')
             if get_user_model().objects.filter(email=email).exists():
                 raise forms.ValidationError(_("Email already registered, please sign-in."))

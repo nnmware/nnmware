@@ -534,7 +534,7 @@ def booking_status_change(request, uuid):
 def client_booking_cancel(request, uuid):
     try:
         booking = Booking.objects.get(uuid=uuid)
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise UserNotAllowed
         if request.user != booking.user and not request.user.is_superuser:
             raise UserNotAllowed
