@@ -733,7 +733,7 @@ class AjaxUploader(object):
                     pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
-        return dict(success=True, fullpath=self._fullpath, path = self._upload_dir,
+        return dict(success=True, fullpath=self._fullpath, path=self._upload_dir,
                     old_filename=filename, filename=self._filename)
 
 
