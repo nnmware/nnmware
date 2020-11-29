@@ -14,7 +14,7 @@ from nnmware.apps.address.models import Country, AbstractLocation, Region
 from nnmware.apps.business.models import Company
 from nnmware.apps.money.models import MoneyBase
 from nnmware.core.abstract import Tree, AbstractName, AbstractContent, AbstractOffer, Material, AbstractVendor
-from nnmware.core.abstract import AbstractDate, AbstractColor, Unit, Parameter, AbstractIP, AbstractImg
+from nnmware.core.abstract import AbstractDate, Unit, Parameter, AbstractIP, AbstractImg
 from nnmware.core.fields import std_text_field
 from nnmware.core.managers import ProductManager, MarketManager
 from nnmware.apps.money.models import AbstractDeliveryMethod
@@ -34,7 +34,7 @@ class ProductCategory(Tree):
         return Product.objects.active().filter(category=self)
 
 
-class ProductColor(AbstractColor):
+class ProductColor(AbstractName):
     pass
 
 

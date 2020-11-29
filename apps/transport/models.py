@@ -6,12 +6,12 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from nnmware.apps.address.models import Country
-from nnmware.core.abstract import AbstractColor, AbstractName, AbstractVendor, AbstractDate
+from nnmware.core.abstract import AbstractName, AbstractVendor, AbstractDate
 from nnmware.apps.business.models import AbstractSeller
 from nnmware.core.utils import current_year, tuplify
 
 
-class VehicleColor(AbstractColor):
+class VehicleColor(AbstractName):
     pass
 
 
