@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 from django import forms
 
-from nnmware.demo.models import User
+from nnmware.docs.demo import User
 
 
 class MyUserChangeForm(UserChangeForm):

@@ -2,6 +2,7 @@
 .idea/*
 *.pyc
 nnmware.db
-secret.txt
+docs/secret.txt
 migrations/*
 __pycache__
+/docs/__init__.py

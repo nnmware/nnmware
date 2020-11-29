@@ -1,7 +1,6 @@
 @NNMWARE CMF @ 2012-2020
-Django-based Content Management Framework
 
-WARNING! Now we start support to django 2.0  and refactoring engine for work with python 3.6.
+Django-based Content Management Framework
 
 contains base for:
 
@@ -46,7 +45,7 @@ contains base for:
 [Realty]
     Realty application base
 
-Required django(current), Pillow, unidecode.
+Required django(current), Pillow, unidecode, Beautiful Soup.
 Working with OpenStreetMap and his geotargeting.
 Licensed under GPL3 
 Great thanks Python, Django, Linux and all OpenSource community.
@@ -64,14 +63,9 @@ QUICK START
 Install django-current, unidecode, Pillow and ReportLab(recommended)
 For few apps need xlwt and ReportLab
 
-cd /usr/src
 git clone https://github.com/nnmware/nnmware.git
-cd /usr/src/nnmware
-./manage.py makemigrations
-./manage.py makemigrations demo
-./manage.py migrate
-./manage.py createsuperuser
-./runserver:8080
 
-locate you browser at http://localhost:8080/admin/ ,
-login and enjoy
+add some apps from nnmware to you project
+some info-  in doc directory
+
+
