@@ -11,9 +11,7 @@ from django.db.models import Q
 from django.db.models.aggregates import Sum
 from django.http import Http404, HttpResponseRedirect, HttpResponse
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import get_object_or_404
-from django.template import RequestContext
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
 from django.views.generic.base import TemplateView, View
@@ -201,7 +199,7 @@ class CurrentUserAuthenticated(object):
     """ Generic update view that check request.user is author of object """
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise Http404
         return super(CurrentUserAuthenticated, self).dispatch(request, *args, **kwargs)
 
@@ -294,7 +292,8 @@ class TagsPopularView(ListView):
     # Popular Tags limit 20
     template_name = 'tag/popular.html'
     model = Tag
-    queryset = sorted(Tag.objects.order_by('-follow')[:20], key=lambda o: o.name)
+    queryset = None
+        #sorted(Tag.objects.order_by('-follow')[:20], key=lambda o: o.name)
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

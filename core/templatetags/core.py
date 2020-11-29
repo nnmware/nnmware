@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from datetime import timedelta
@@ -6,7 +6,9 @@ import re
 from xml.etree.ElementTree import Element, tostring
 
 from django.core.cache import cache
-from django.template import Library, Node, TemplateSyntaxError, Variable, VariableDoesNotExist, loader
+from django.template.library import Library
+from django.template.base import Node, TemplateSyntaxError, Variable, VariableDoesNotExist
+from django.template.loader import render_to_string
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
@@ -524,7 +526,6 @@ def thumbnail(url, args=''):
             if arg == '':
                 continue
             kw, val = arg.split('=', 1)
-            # kw = kw.lower().encode('ascii')
             kw = kw.lower()
             try:
                 val = int(val)  # convert all ints
@@ -597,7 +598,8 @@ def menu(app=None):
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children(node, html)
-        return tostring(html, 'utf-8')
+        return tostring(html, 'unicode')
+
 
 #    except:
 #        return 'error'
@@ -624,7 +626,7 @@ def menu_span(app=None):
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children_with_span(node, html)
-        result = tostring(html, 'utf-8')
+        result = tostring(html, 'unicode')
         cache.set('menu_span_' + app, result, 300)
         return result
     except:
@@ -637,7 +639,7 @@ def category_tree_series():
     for cats in Tree.objects.all().filter(slug='series'):
         if not cats.parent:
             recurse_for_children(cats, root)
-    return tostring(root, 'utf-8')
+    return tostring(root, 'unicode')
 
 
 @register.simple_tag
@@ -650,7 +652,7 @@ def menu_user(app=None):
     key_lst = objects_years_dict.keys()
     for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
-    return tostring(html, 'utf-8')
+    return tostring(html, 'unicode')
 
 
 @register.simple_tag
@@ -663,7 +665,7 @@ def menu_date(app=None):
     key_lst = objects_years_dict.keys()
     for key in key_lst:
         recurse_for_date(app, key, objects_years_dict[key], html)
-    return tostring(html, 'utf-8')
+    return tostring(html, 'unicode')
 
 
 r_nofollow = re.compile('<a (?![^>]*nofollow)')
@@ -709,7 +711,7 @@ def datelinks_by_string(value):
 
 
 def get_links(day, month, year):
-    return mark_safe(loader.render_to_string('core/datelinks.html', {'year': year, 'month': month, 'day': day}))
+    return mark_safe(render_to_string('core/datelinks.html', {'year': year, 'month': month, 'day': day}))
 
 
 @register.filter

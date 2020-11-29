@@ -25,7 +25,7 @@ class HotelOptionSelectMultiple(forms.CheckboxSelectMultiple):
         if value is None:
             value = []
         has_id = attrs and 'id' in attrs
-        final_attrs = self.build_attrs(attrs, name=name)
+        final_attrs = self.build_attrs(attrs, {name:name})
         choices_enum = list(enumerate(chain(self.choices, choices)))
 
         # This is the part that splits the choices into columns.

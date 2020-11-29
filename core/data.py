@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from xml.etree.ElementTree import SubElement
@@ -6,7 +6,7 @@ from xml.etree.ElementTree import SubElement
 
 def get_queryset_category(obj, main_obj, cat_obj, active=False):
     slug = obj.kwargs['slug']
-    if obj.kwargs['parent_slugs']:
+    if 'parent_slugs' in obj.kwargs:
         parent_slugs = obj.kwargs['parent_slugs']
         parent = cat_obj.objects.all().filter(slug=parent_slugs[:-1])[0].id
         q = cat_obj.objects.get(parent=parent, slug=slug)
