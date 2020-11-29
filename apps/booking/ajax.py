@@ -92,11 +92,11 @@ def room_rates(request):
                     availability.save()
                 except ValueError as valerr:
                     pass
-        payload = {'success': True}
+        payload = dict(success=True)
     except UserNotAllowed as naerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -157,11 +157,11 @@ def room_discounts(request):
                 simple_discount.save()
             except:
                 pass
-        payload = {'success': True}
+        payload = dict(success=True)
     except UserNotAllowed as naerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -178,7 +178,7 @@ def room_variants(request):
     except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -188,11 +188,11 @@ def room_delete(request, pk):
         if request.user not in room.hotel.admins.all() and not request.user.is_superuser:
             raise UserNotAllowed
         room.delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -202,11 +202,11 @@ def request_hotel_delete(request, pk):
         if not request.user.is_superuser:
             raise UserNotAllowed
         req_hotel.delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change room variants.')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -281,7 +281,7 @@ def client_review(request, pk):
         r.save()
         payload = {'success': True, 'message': message}
     except UserNotAllowed as naerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -301,7 +301,7 @@ def tourism_places(request):
             results.append(answer)
         payload = {'success': True, 'tourism': results}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -341,7 +341,7 @@ def filter_hotels_on_map(request, hotels):
             results.append(answer)
         payload = {'success': True, 'hotels': results}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -358,7 +358,7 @@ def hotels_in_city(request):
             searched = Hotel.objects.filter(Q(city=city) | Q(addon_city=city))
         return filter_hotels_on_map(request, searched)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -367,7 +367,7 @@ def hotels_in_country(request):
         searched = Hotel.objects.all()
         return filter_hotels_on_map(request, searched)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -378,7 +378,7 @@ def payment_method(request):
         payload = {'success': True, 'id': paymnt_method.pk, 'description': paymnt_method.description,
                    'card': paymnt_method.use_card}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -398,7 +398,7 @@ def add_category(request):
         form_path = reverse('cabinet_room', args=[hotel.city.slug, hotel.slug, room.pk])
         payload = {'success': True, 'file_path': file_path, 'form_path': form_path}
     except UserNotAllowed as naerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -442,7 +442,7 @@ def edit_discount(request):
         html = render_to_string('cabinet/edit_discount.html', {'discount': d})
         payload = {'success': True, 'html': html}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -452,9 +452,9 @@ def delete_discount(request):
         if request.user not in d.hotel.admins.all() and not request.user.is_superuser:
             raise AccessError
         d.delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -466,9 +466,9 @@ def add_room_discount(request):
         r = Room.objects.get(pk=int(request.POST['room']))
         if not RoomDiscount.objects.filter(room=r, discount=d).exists():
             RoomDiscount(room=r, discount=d, date=now()).save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -479,9 +479,9 @@ def delete_room_discount(request):
             raise AccessError
         r = Room.objects.get(pk=int(request.POST['room']))
         RoomDiscount.objects.filter(room=r, discount=d).delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -500,9 +500,9 @@ def invoice_create(request, city, slug):
         bill.content_object = hotel
         bill.currency = Currency.objects.get(code=setting('DEFAULT_CURRENCY', 'RUB'))
         bill.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -523,11 +523,11 @@ def booking_status_change(request, uuid):
             message += '\n' + "IP: %s USER-AGENT: %s" % (request.META.get('REMOTE_ADDR', ''),
                                                          request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
             mail_managers(subject, message)
-            payload = {'success': True}
+            payload = dict(success=True)
     except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change booking status.')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -550,11 +550,11 @@ def client_booking_cancel(request, uuid):
             message += '\n' + "IP: %s USER-AGENT: %s" % (request.META.get('REMOTE_ADDR', ''),
                                                          request.META.get('HTTP_USER_AGENT', '')[:255]) + '\n'
             mail_managers(subject, message)
-            payload = {'success': True}
+            payload = dict(success=True)
     except UserNotAllowed as naerr:
         payload = {'success': False, 'error': _('You are not allowed change booking status.')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -577,7 +577,7 @@ def images_resort(request):
         for item in images:
             item.position = img_order.index(item.pk)
             item.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)

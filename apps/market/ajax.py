@@ -62,9 +62,9 @@ def add_param(request, object_id):
         payload = {'success': True, 'name': param.parameter.name, 'unit': unit, 'id': param.pk,
                    'value': param.value}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -75,11 +75,11 @@ def param_value_delete(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         ProductParameterValue.objects.get(pk=int(object_id)).delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -123,9 +123,9 @@ def add_basket(request, object_id):
         payload = {'success': True, 'basket_count': basket_count,
                    'basket_sum': "%0.2f" % (all_sum,)}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -145,9 +145,9 @@ def delete_basket(request, object_id):
         payload = {'success': True, 'basket_count': basket_count,
                    'basket_sum': "%0.2f" % (all_sum,), 'id': int(object_id)}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -204,11 +204,11 @@ def add_address(request):
         if skype is not None:
             address.skype = skype
         address.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
         payload = {'success': False, 'error': _('You are not allowed for add address')}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -221,9 +221,9 @@ def delete_address(request, object_id):
         DeliveryAddress.objects.get(pk=int(object_id)).delete()
         payload = {'success': True, 'id': int(object_id)}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -240,9 +240,9 @@ def push_feedback(request):
         msg.email = request.POST.get('email')
         msg.message = request.POST.get('message')
         msg.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -259,7 +259,7 @@ def push_answer(request, object_id):
         f.save()
         payload = {'success': True, 'location': f.get_absolute_url()}
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -272,11 +272,11 @@ def delete_product(request, object_id):
         p = Product.objects.get(pk=int(object_id))
         p.visible = False
         p.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -287,11 +287,11 @@ def delete_feedback(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         Feedback.objects.get(pk=int(object_id)).delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -302,11 +302,11 @@ def delete_comment(request, object_id):
         if not request.user.is_superuser:
             raise AccessError
         Nnmcomment.objects.get(pk=int(object_id)).delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -324,9 +324,9 @@ def add_color(request, object_id):
         payload = {'success': True, 'name': color.name, 'id': color.pk,
                    'src': make_thumbnail(color.img.url, width=w, height=h)}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -339,11 +339,11 @@ def delete_color(request, object_id, color_id):
         color = get_object_or_404(ProductColor, pk=int(color_id))
         p.colors.remove(color)
         p.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -358,9 +358,9 @@ def add_material(request, object_id):
         p.save()
         payload = {'success': True, 'name': material.name, 'id': material.pk}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -373,11 +373,11 @@ def delete_material(request, object_id, material_id):
         material = get_object_or_404(ProductMaterial, pk=int(material_id))
         p.materials.remove(material)
         p.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -394,9 +394,9 @@ def add_related_product(request, object_id):
                    'src': make_thumbnail(product.main_image, width=settings.RELATED_PRODUCT_WIDTH,
                                          height=settings.RELATED_PRODUCT_HEIGHT, aspect=1)}
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -409,11 +409,11 @@ def delete_related_product(request, object_id, product_id):
         product = get_object_or_404(Product, pk=int(product_id))
         p.related_products.remove(product)
         p.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -439,9 +439,9 @@ def add_compare_product(request, object_id):
     # noinspection PyBroadException
     try:
         request.session['market_compare'] = compare
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -457,9 +457,9 @@ def del_compare_product(request, object_id):
     # noinspection PyBroadException
     try:
         request.session['market_compare'] = compare
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -480,9 +480,9 @@ def push_marketcallback(request):
         subject = 'emails/callback_admin_subject.txt'
         body = 'emails/callback_admin_body.txt'
         send_template_mail(subject, body, mail_dict, recipients)
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -505,7 +505,7 @@ def push_quickorder(request):
         subject = 'emails/quickorder_admin_subject.txt'
         body = 'emails/quickorder_admin_body.txt'
         send_template_mail(subject, body, mail_dict, recipients)
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)

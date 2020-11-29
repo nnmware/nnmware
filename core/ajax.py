@@ -61,9 +61,9 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = {'success': True, 'src': make_thumbnail(pic.pic.url, width=int(img_w), height=int(img_h), aspect=1)}
+        payload = dict(success=True, src = make_thumbnail(pic.pic.url, width=int(img_w), height=int(img_h), aspect=1))
     else:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -78,9 +78,9 @@ def img_delete(request, object_id):
             img_count = c_object.pics_count
         except:
             img_count = 0
-        payload = {'success': True, 'img_count': img_count}
+        payload = dict(success=True, img_count=img_count)
     else:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -112,9 +112,9 @@ def img_rotate(request):
         pic.save()
         payload = {'success': True, 'id': pic.pk}
     except AccessError as aerr:
-        payload = {'success': False, 'error': _('You are not allowed rotate this image')}
+        payload = dict(success=False, error=_('You are not allowed rotate this image'))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -129,9 +129,9 @@ def avatardelete(request):
             u.avatar_complete = False
             u.img = None
             u.save()
-            payload = {'success': True}
+            payload = dict(success=True)
         except:
-            payload = {'success': False}
+            payload = dict(success=False)
         return ajax_answer_lazy(payload)
     else:
         raise Http404()
@@ -155,7 +155,7 @@ def get_video(request):
         result = consumer.result()
         if result is not None:
             result['html'] = update_video_size(result['html'], 500, 280)
-        payload = {'success': True, 'data': result}
+        payload = dict(success=True, data=result)
     return ajax_answer_lazy(payload)
 
 
@@ -184,9 +184,9 @@ def push_video(request, object_id):
                         else:
                             notice.send(request.user, user=u, verb=_('now liked'), target=video)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': video.pk, 'status': status}
+        payload = dict(success=True, count=result, id=video.pk, status=status)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -215,9 +215,9 @@ def push_tag(request, object_id):
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=tag)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': tag.pk, 'status': status}
+        payload = dict(success=True, count=result, id=tag.pk, status=status)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -230,9 +230,9 @@ def push_notify(request):
         else:
             u.subscribe = True
         u.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -262,11 +262,11 @@ def push_user(request, object_id):
                     else:
                         notice.send(request.user, user=u, verb=_('now follow'), target=user)
         result = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-        payload = {'success': True, 'count': result, 'id': user.pk, 'status': status}
+        payload = dict(success=True, count=result, id=user.pk, status=status)
     except AccessError as aerr:
-        payload = {'success': False}
+        payload = dict(success=False)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -283,7 +283,7 @@ def follow_object(request, content_type, object_id):
     else:
         success = False
     count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-    payload = {'success': success, 'count': count}
+    payload = dict(success=success, count=count)
     return ajax_answer_lazy(payload)
 
 
@@ -300,7 +300,7 @@ def unfollow_object(request, content_type, object_id):
     else:
         success = False
     count = Follow.objects.filter(content_type=ctype, object_id=object_id).count()
-    payload = {'success': success, 'count': count}
+    payload = dict(success=success, count=count)
     return ajax_answer_lazy(payload)
 
 
@@ -319,7 +319,7 @@ def follow_unfollow(request, content_type, object_id):
         success = True
     except:
         success = False
-    payload = {'success': success, 'count': count}
+    payload = dict(success=success, count=count)
     return ajax_answer_lazy(payload)
 
 
@@ -327,9 +327,9 @@ def autocomplete_users(request):
     search_qs = get_user_model().objects.filter(username__icontains=request.POST['q'])
     results = []
     for r in search_qs:
-        userstring = {'name': r.username, 'fullname': r.fullname}
+        userstring = dict(name=r.username, fullname=r.fullname)
         results.append(userstring)
-    payload = {'userlist': results}
+    payload = dict(userlist=results)
     return ajax_answer_lazy(payload)
 
 
@@ -338,7 +338,7 @@ def autocomplete_tags(request):
     results = []
     for r in search_qs:
         results.append(r.name)
-    payload = {'q': results}
+    payload = dict(q=results)
     return ajax_answer_lazy(payload)
 
 
@@ -347,9 +347,9 @@ def notice_delete(request, object_id):
     if Notice.objects.get(user=request.user, id=object_id):
         Notice.objects.get(user=request.user, id=object_id).delete()
         result = Notice.objects.filter(user=request.user).count()
-        payload = {'success': True, 'count': result}
+        payload = dict(success=True, count=result)
     else:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -368,11 +368,11 @@ def delete_message(request, object_id):
                 another_user = msg.sender
             msg.save()
             result = Message.objects.concrete_user(request.user, another_user).count()
-            payload = {'success': True, 'count': result, 'id': another_user.pk, 'sys': request.user.messages_count}
+            payload = dict(success=True, count=result, id=another_user.pk, sys=request.user.messages_count)
         else:
             raise AccessError
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -397,7 +397,7 @@ def message_add(request):
     except:
         success = False
     location = reverse('user_messages')
-    payload = {'success': success, 'location': location}
+    payload = dict(success=success, location=location)
     return ajax_answer_lazy(payload)
 
 
@@ -412,7 +412,7 @@ def message_user_add(request):
         result['avatar_url'] = user.img.url
     else:
         result['avatar_url'] = '/m/generic_t30.jpg'
-    payload = {'success': True, 'data': result}
+    payload = dict(success=True, data=result)
     return ajax_answer_lazy(payload)
 
 
@@ -422,9 +422,9 @@ def pic_delete(request, object_id):
     # noinspection PyBroadException
     try:
         pic.delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -438,9 +438,9 @@ def pic_setmain(request, object_id):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -450,9 +450,9 @@ def doc_delete(request, object_id):
     # noinspection PyBroadException
     try:
         doc.delete()
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -463,7 +463,7 @@ def pic_getcrop(request, object_id):
     try:
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -480,7 +480,7 @@ def ajax_get_thumbnail(request):
     try:
         payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=width, height=height), id=pic.pk)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -513,11 +513,11 @@ def ajax_image_crop(request):
             im = im.convert('RGB')
         im.save(img)
         pic.save()
-        payload = {'success': True, 'id': pic.pk}
+        payload = dict(success=True, id=pic.pk)
     except AccessError as aerr:
-        payload = {'success': False, 'error': _('You are not allowed change this image')}
+        payload = dict(success=False, error=_('You are not allowed change this image'))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -544,11 +544,11 @@ def comment_add(request, content_type, object_id, parent_id=None):
         newcomment = copy.deepcopy(comment)
         newcomment.depth = depth
         html = render_to_string('comments/comment_one.html', {'comment': newcomment, 'user': request.user})
-        payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
+        payload = dict(success=True, html=html, object_comments=comment.content_object.comments)
     except AccessError as aerr:
-        payload = {'success': False, 'error': 'You are not allowed for add comment'}
+        payload = dict(success=False, error=_('You are not allowed for add comment'))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -574,11 +574,11 @@ def flat_comment_add(request, content_type, object_id):
         action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
                     description=comment.comment, target=comment.content_object, request=request)
         html = render_to_string('comments/item_comment.html', {'comment': comment})
-        payload = {'success': True, 'html': html}
+        payload = dict(success=True, html=html)
     except AccessError as aerr:
-        payload = {'success': False, 'error': _('You are not allowed for add comment')}
+        payload = dict(success=False, error=_('You are not allowed for add comment'))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -604,12 +604,11 @@ def push_message(request, pk):
         msg.save()
         result = Message.objects.concrete_user(request.user, recipient).count()
         html = render_to_string('user/message_one.html', {'message': msg, 'user': request.user})
-        payload = {'success': True, 'html': html, 'count': result, 'id': recipient.pk,
-                   'total': request.user.messages_count}
+        payload = dict(success=True, html=html, count=result, id=recipient.pk, total=request.user.messages_count)
     except AccessError as aerr:
-        payload = {'success': False, 'error': 'You are not allowed for send message'}
+        payload = dict(success=False, error=_('You are not allowed for send message'))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -617,9 +616,9 @@ def set_paginator(request, num):
     # noinspection PyBroadException
     try:
         request.session['paginator'] = num
-        payload = {'success': True}
+        payload = dict(success=True)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
@@ -734,7 +733,7 @@ class AjaxUploader(object):
                     pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
-        return dict(success=True, fullpath=self._fullpath, path = self._upload_dir , #os.path.relpath(self._fullpath, '/' + settings.MEDIA_ROOT),
+        return dict(success=True, fullpath=self._fullpath, path = self._upload_dir,
                     old_filename=filename, filename=self._filename)
 
 
@@ -843,16 +842,16 @@ def like(request, content_type, object_id):
             like_en = False
         thelike.save()
         karma = thelike.content_object.karma
-        payload = {'success': True, 'karma': karma, 'liked': like_en, 'disliked': dislike_en}
+        payload = dict(success=True, karma=karma, liked=like_en, disliked=dislike_en)
     except AccessError as aerr:
-        payload = {'success': False, 'error': 'Not allowed'}
+        payload = dict(success=False, error=_("Not allowed"))
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
 
 
 def delete_comment(request, object_id, depth):
-    payload = {'success': False}
+    payload = dict(success=False)
     try:
         if not request.user.is_authenticated:
             raise AccessError
@@ -863,7 +862,7 @@ def delete_comment(request, object_id, depth):
             newcomment = copy.deepcopy(comment)
             newcomment.depth = depth
             html = render_to_string('comments/comment_one.html', {'comment': newcomment, 'user': request.user})
-            payload = {'success': True, 'html': html, 'object_comments': comment.content_object.comments}
+            payload = dict(success=True, html=html, object_comments=comment.content_object.comments)
         else:
             raise AccessError
     except AccessError as aerr:
@@ -902,7 +901,7 @@ def avatar_delete(request):
         remove_file(request.user.img.url)
         request.user.img = ''
         request.user.save()
-        payload = {'success': True}
+        payload = dict(success=True)
         # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
@@ -910,5 +909,5 @@ def avatar_delete(request):
             addons = {}
         payload.update(addons)
     except:
-        payload = {'success': False}
+        payload = dict(success=False)
     return ajax_answer_lazy(payload)
