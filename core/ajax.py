@@ -571,7 +571,7 @@ def comment_add_oldver(request, content_type, object_id, parent_id=None):
 def comment_add(request, content_type, object_id, parent_id=None):
     # noinspection PyBroadException
     try:
-        if not request.user.is_authenticated():
+        if not request.user.is_authenticated:
             raise AccessError
         comment = Nnmcomment()
         comment.user = request.user
@@ -669,12 +669,14 @@ def set_paginator(request, num):
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
+class MyError(Exception):
+    pass
 
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
     def __init__(self, filetype='file', upload_dir='files', size_limit=10485760):
-        self._upload_dir = os.path.join(settings.MEDIA_ROOT, upload_dir, get_date_directory())
+        self._upload_dir = os.path.join(upload_dir, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
             self._save_format = setting('IMAGE_UPLOAD_FORMAT', 'JPEG')
@@ -687,29 +689,35 @@ class AjaxUploader(object):
         Checking file max size
         """
         if int(self._destination.tell()) > self._size_limit:
+            raise MyError(str(int(self._destination.tell())),self._size_limit )
             self._destination.close()
-            os.remove(self._path)
+            os.remove(self._fullpath)
             return True
 
     def setup(self, filename):
         ext = os.path.splitext(filename)[1]
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
         self._path = os.path.join(self._upload_dir, self._filename)
+        self._realpath = os.path.realpath(os.path.dirname(self._path))
+        self._path_orig = self._path
         # noinspection PyBroadException
         try:
-            os.makedirs(os.path.realpath(os.path.dirname(self._path)))
+            os.makedirs(self._realpath)
         except:
             pass
-        self._destination = BufferedWriter(FileIO(self._path, "w"))
+        self._fullpath = self._realpath+'/'+self._filename
+        self._destination = BufferedWriter(FileIO(self._fullpath, "w"))
 
     def handle_upload(self, request):
         is_raw = True
         if request.FILES:
             is_raw = False
             if len(request.FILES) == 1:
-                upload = request.FILES.values()[0]
+                _, upload = request.FILES.popitem()
             else:
                 return dict(success=False, error=_("Bad upload."))
+            #raise upload
+            upload = upload[0]
             filename = upload.name
         else:
             # the file is stored raw in the request
@@ -721,7 +729,7 @@ class AjaxUploader(object):
                 return dict(success=False, error=_("Can't read file name"))
         self.setup(filename)
         # noinspection PyBroadException
-        try:
+        if 1>0: #try:
             if is_raw:
                 # File was uploaded via ajax, and is streaming in.
                 chunk = upload.read(self.BUFFER_SIZE)
@@ -734,9 +742,11 @@ class AjaxUploader(object):
                 # File was uploaded via a POST, and is here.
                 for chunk in upload.chunks():
                     self._destination.write(chunk)
+#                    raise MyError(str(self._destination))
                     if self.max_size():
-                        raise IOError
-        except:
+                        raise IOError # from self._destination
+
+        if 1<0: #except:
             # things went badly.
             return dict(success=False, error=_("Upload error"))
         self._destination.close()
@@ -750,29 +760,30 @@ class AjaxUploader(object):
             f_name, f_ext = os.path.splitext(self._filename)
             f_without_ext = os.path.splitext(self._path)[0]
             new_path = ".".join([f_without_ext, self._save_format.lower()])
+            new_url = ".".join([f_name, self._save_format.lower()])
             if setting('IMAGE_STORE_ORIGINAL', False):
                 # TODO need change the extension
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
-                shutil.copy2(self._path, orig_path)
+                shutil.copy2(self._fullpath, orig_path)
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
             # noinspection PyBroadException
             try:
-                if self._path == new_path:
-                    i.save(self._path, self._save_format)
+                if self._fullpath == new_path:
+                    i.save(self._fullpath, self._save_format)
                 else:
-                    i.save(new_path, self._save_format)
-                    os.remove(self._path)
-                    self._path = new_path
+                    os.remove(self._fullpath)
+                    self._fullpath = new_path
+                    i.save(self._fullpath, self._save_format)
             except:
                 # noinspection PyBroadException
                 try:
-                    os.remove(self._path)
+                    os.remove(self._fullpath)
                     os.remove(new_path)
                 except:
                     pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
-        return dict(success=True, fullpath=self._path, path=os.path.relpath(self._path, '/' + settings.MEDIA_ROOT),
+        return dict(success=True, fullpath=self._fullpath, path = self._upload_dir , #os.path.relpath(self._fullpath, '/' + settings.MEDIA_ROOT),
                     old_filename=filename, filename=self._filename)
 
 
