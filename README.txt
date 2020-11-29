@@ -1,4 +1,4 @@
-@NNMWARE CMF @ 2012-2017
+@NNMWARE CMF @ 2012-2020
 Django-based Content Management Framework
 
 WARNING! Now we start support to django 2.0  and refactoring engine for work with python 3.6.
