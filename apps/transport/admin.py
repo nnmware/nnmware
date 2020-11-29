@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 
-from nnmware.apps.transport.models import VehicleColor, VehicleKind, VehicleTransmission, VehicleCarcass, \
-    VehicleEngine, VehicleFeature, VehicleMark, VehicleVendor, Vehicle
+from nnmware.apps.transport.models import VehicleColor, VehicleKind, VehicleTransmission, \
+    VehicleEngine, VehicleFeature, VehicleMark, VehicleVendor
 from nnmware.core.admin import ColorAdmin
 
 
@@ -36,11 +36,6 @@ class VehicleTransmissionAdmin(VehicleBaseParamForAdmin):
     pass
 
 
-@admin.register(VehicleCarcass)
-class VehicleCarcassAdmin(VehicleBaseParamForAdmin):
-    pass
-
-
 @admin.register(VehicleEngine)
 class VehicleEngineAdmin(VehicleBaseParamForAdmin):
     pass
@@ -63,21 +58,6 @@ class VehicleVendorAdmin(admin.ModelAdmin):
         (_('English'), {'fields': [('name_en', )]})
     )
     list_display = ('name', 'country', 'website')
-
-
-@admin.register(Vehicle)
-class VehicleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'position', 'slug')
-    fieldsets = (
-        (_('Vehicle'), {"fields": [('name', 'position'), ('description',), ('kind', 'color'),
-                                   ('transmission', 'carcass'), ('engine', 'vendor'), ('mileage', 'vin', 'mark'),
-                                   ('horsepower', 'displacement'), ('year', 'left_control'), ('features', )]}),
-        (_("Seller"), {"classes": ("collapse",), "fields": [('user', 'company', 'corporate'),
-                                                            ('contact_name', 'contact_email'), ('contact_phone',),
-                                                            ('expiration_date', 'sold')]}),
-        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",)]})
-    )
-    ordering = ('position', 'name',)
 
 
 @admin.register(VehicleColor)
