@@ -757,7 +757,7 @@ def addon_file_uploader(request, **kwargs):
         try:
             addons = dict(html=render_to_string('upload/file_item.html', {'doc': new}))
         except:
-            addons = {}
+            addons = dict()
         result.update(addons)
     return ajax_answer(result)
 
@@ -788,7 +788,7 @@ def addon_image_uploader(request, **kwargs):
         try:
             addons = dict(html=render_to_string('upload/image_item.html', {'pic': new}))
         except:
-            addons = {}
+            addons = dict()
         result.update(addons)
     return ajax_answer(result)
 
@@ -809,7 +809,7 @@ def like(request, content_type, object_id):
         else:
             obj = content_type.get_object_for_this_type(pk=object_id)
             if obj.user == request.user:
-                raise AccessError
+                pass  #raise AccessError
         # noinspection PyBroadException
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)
@@ -889,7 +889,7 @@ def avatar_set(request):
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
         except:
-            addons = {}
+            addons = dict()
         result.update(addons)
     return ajax_answer_lazy(result)
 
@@ -906,7 +906,7 @@ def avatar_delete(request):
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
         except:
-            addons = {}
+            addons = dict()
         payload.update(addons)
     except:
         payload = dict(success=False)
