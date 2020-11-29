@@ -623,8 +623,10 @@ def set_paginator(request, num):
         payload = {'success': False}
     return ajax_answer_lazy(payload)
 
+
 class MyError(Exception):
     pass
+
 
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
@@ -643,7 +645,6 @@ class AjaxUploader(object):
         Checking file max size
         """
         if int(self._destination.tell()) > self._size_limit:
-            raise MyError(str(int(self._destination.tell())),self._size_limit )
             self._destination.close()
             os.remove(self._fullpath)
             return True
@@ -667,10 +668,9 @@ class AjaxUploader(object):
         if request.FILES:
             is_raw = False
             if len(request.FILES) == 1:
-                _, upload = request.FILES.popitem()
+                _var, upload = request.FILES.popitem()
             else:
                 return dict(success=False, error=_("Bad upload."))
-            #raise upload
             upload = upload[0]
             filename = upload.name
         else:
@@ -683,7 +683,7 @@ class AjaxUploader(object):
                 return dict(success=False, error=_("Can't read file name"))
         self.setup(filename)
         # noinspection PyBroadException
-        if 1>0: #try:
+        try:
             if is_raw:
                 # File was uploaded via ajax, and is streaming in.
                 chunk = upload.read(self.BUFFER_SIZE)
@@ -696,11 +696,9 @@ class AjaxUploader(object):
                 # File was uploaded via a POST, and is here.
                 for chunk in upload.chunks():
                     self._destination.write(chunk)
-#                    raise MyError(str(self._destination))
                     if self.max_size():
-                        raise IOError # from self._destination
-
-        if 1<0: #except:
+                        raise IOError
+        except:
             # things went badly.
             return dict(success=False, error=_("Upload error"))
         self._destination.close()
