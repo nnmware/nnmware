@@ -14,9 +14,9 @@ def base_autocomplete(obj, request):
         Q(name_en__icontains=request.POST['q'])).order_by('name')
     results = []
     for r in search_qs:
-        userstring = {'name': r.get_name, 'slug': r.slug}
+        userstring = dict(name=r.get_name, slug=r.slug)
         results.append(userstring)
-    payload = {'answer': results}
+    payload = dict(answer=results)
     return ajax_answer_lazy(payload)
 
 

@@ -592,17 +592,14 @@ def menu(app=None):
         from nnmware.apps.publication.models import PublicationCategory as MenuCategory
     else:
         pass
-
-    if 1 > 0:  # try:
+    try:
         html = Element("ul")
         for node in MenuCategory.objects.all():
             if not node.parent:
                 recurse_for_children(node, html)
         return tostring(html, 'unicode')
-
-
-#    except:
-#        return 'error'
+    except:
+        return 'error'
 
 
 @register.simple_tag
