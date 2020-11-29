@@ -522,52 +522,6 @@ def ajax_image_crop(request):
     return ajax_answer_lazy(payload)
 
 
-def comment_add_oldver(request, content_type, object_id, parent_id=None):
-    """
-    Its Ajax posted comments
-    """
-    # noinspection PyBroadException
-    try:
-        if not request.user.is_authenticated():
-            raise AccessError
-        comment = Nnmcomment()
-        comment.user = request.user
-        comment.content_type = ContentType.objects.get_for_id(int(content_type))
-        comment.object_id = int(object_id)
-        comment.ip = request.META['REMOTE_ADDR']
-        comment.user_agent = request.META['HTTP_USER_AGENT']
-        comment.comment = request.POST['comment']
-        if not len(comment.comment):
-            raise AccessError
-        kwargs = {'content_type': content_type, 'object_id': object_id}
-        if parent_id is not None:
-            comment.parent_id = int(parent_id)
-        comment.save()
-        action.send(request.user, verb=_('commented'), action_type=ACTION_COMMENTED,
-                    description=comment.comment, target=comment.content_object, request=request)
-        avatar_id = False
-        kwargs['parent_id'] = comment.pk
-        reply_link = reverse("jcomment_parent_add", kwargs=kwargs)
-        comment_text = linebreaksbr(comment.comment)
-        comment_date = comment.created_date.strftime(setting('COMMENT_DATE_FORMAT', '%d %b %Y %H:%M %p'))
-        # noinspection PyBroadException
-        try:
-            avatar_id = comment.user.avatar.pk
-        except:
-            pass
-        # noinspection PyUnresolvedReferences
-        payload = {'success': True, 'id': comment.pk, 'username': comment.user.get_name,
-                   'username_url': comment.get_absolute_url(),
-                   'comment': comment_text, 'avatar_id': avatar_id,
-                   'comment_date': comment_date, 'reply_link': reply_link,
-                   'object_comments': comment.content_object.comments}
-    except AccessError as aerr:
-        payload = {'success': False, 'error': _('You are not allowed for add comment')}
-    except:
-        payload = {'success': False}
-    return ajax_answer_lazy(payload)
-
-
 def comment_add(request, content_type, object_id, parent_id=None):
     # noinspection PyBroadException
     try:
