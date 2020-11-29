@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 
@@ -20,7 +20,7 @@ from django.template.defaultfilters import slugify
 from django.dispatch import receiver
 
 from nnmware.core.abstract import Pic, Doc, AbstractContent, AbstractImg, AbstractDate, AbstractNnmcomment, \
-    AbstractLike, AbstractIP
+    AbstractIP
 from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
     STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
 from nnmware.core.utils import setting
@@ -496,9 +496,23 @@ class NnmwareUser(AbstractUser, AbstractImg):
         return Message.objects.messages(self).count()
 
 
-class Like(AbstractLike):
+class Like(AbstractContent):
+    """
+    like = True
+    dislike = False
+    """
+    like_dislike = models.BooleanField(verbose_name="Like-Dislike", null=True, default=None, db_index=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Author', blank=True,
-                             null=True, on_delete=models.CASCADE)
+                             null=True, on_delete=models.DO_NOTHING)
+
+    class Meta:
+        ordering = ('-pk',)
+        verbose_name = "Like"
+        verbose_name_plural = "Likes"
+        abstract = True
+
+    def __str__(self):
+        return 'Likes for %s' % self.content_object
 
 
 @receiver([post_save, post_delete], sender=Like)

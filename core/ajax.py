@@ -1,4 +1,4 @@
-# nnmware(c)2012-2017
+# nnmware(c)2012-2020
 
 from __future__ import unicode_literals
 from io import FileIO, BufferedWriter
@@ -15,7 +15,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
-from django.template.defaultfilters import linebreaksbr
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
@@ -811,8 +810,7 @@ def like(request, content_type, object_id):
         else:
             obj = content_type.get_object_for_this_type(pk=object_id)
             if obj.user == request.user:
-                pass
-                #raise AccessError
+                raise AccessError
         # noinspection PyBroadException
         try:
             thelike = Like.objects.get(user=request.user, content_type=content_type, object_id=object_id)

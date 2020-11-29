@@ -777,23 +777,6 @@ class AbstractNnmcomment(AbstractContent, AbstractIP, AbstractDate):
     public = PublicNnmcommentManager()
 
 
-class AbstractLike(AbstractContent):
-    """
-    like = True
-    dislike = False
-    """
-    like_dislike = models.BooleanField(verbose_name="Like-Dislike", null=True, default=None, db_index=True)
-
-    class Meta:
-        ordering = ('-pk',)
-        verbose_name = "Like"
-        verbose_name_plural = "Likes"
-        abstract = True
-
-    def __str__(self):
-        return 'Likes for %s' % self.content_object
-
-
 class AbstractEducation(models.Model):
     institution = std_text_field(_('Institution'))
     education_end = models.IntegerField(verbose_name=_('End of education'), choices=EDUCATION_END, default=current_year)
