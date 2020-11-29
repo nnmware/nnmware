@@ -387,18 +387,6 @@ class Material(AbstractName):
         return self.name
 
 
-class AbstractColor(AbstractName):
-    pass
-
-    class Meta:
-        verbose_name = _("Color")
-        verbose_name_plural = _("Colors")
-        abstract = True
-
-    def __str__(self):
-        return self.name
-
-
 class Tree(AbstractName):
     """
     Main nodes tree
