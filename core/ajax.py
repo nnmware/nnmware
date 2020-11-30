@@ -14,6 +14,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
+from django.core.files import File
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
@@ -873,17 +874,16 @@ def delete_comment(request, object_id, depth):
 
 
 def avatar_set(request):
-    uploader = AjaxUploader(filetype='image', upload_dir=setting('AVATAR_UPLOAD_DIR', 'avatars'),
-                            size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
+    uploader = AjaxUploader(filetype='image', upload_dir='media/avatars', size_limit=setting('AVATAR_UPLOAD_SIZE', 1024000))
     result = uploader.handle_upload(request)
     if result['success']:
         # noinspection PyBroadException
         try:
-            remove_thumbnails(request.user.img.url)
-            remove_file(request.user.img.url)
+            remove_thumbnails(request.user.img.path)
+            remove_file(request.user.img.path)
         except:
             pass
-        request.user.img = result['path']
+        request.user.img.save(result['filename'], File(open(result['path'] + '/' + result['filename'], 'rb')))
         request.user.save()
         # noinspection PyBroadException
         try:
