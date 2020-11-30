@@ -1,48 +1,48 @@
 # nnmware(c)2012-2020
 
 from __future__ import unicode_literals
+
 from datetime import timedelta
 from decimal import Decimal
+from functools import reduce
 from hashlib import sha1
 from operator import and_
-from functools import reduce
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
-from django.urls import reverse
-from django.core.mail import mail_managers
 from django.db.models import Count, Sum, Max, F, Min, Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.cache import never_cache
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
-from django.utils.translation import ugettext_lazy as _
 
+from nnmware.apps.address.models import City
 from nnmware.apps.booking.ajax import CardError
 from nnmware.apps.booking.forms import CabinetInfoForm, CabinetRoomForm, \
     CabinetEditBillForm, RequestAddHotelForm, UserCabinetInfoForm, BookingAddForm
 from nnmware.apps.booking.models import Hotel, Room, RoomOption, SettlementVariant, Availability, PlacePrice, \
     STATUS_ACCEPTED, HotelOption, Booking, RequestAddHotel, BOOKING_GB, BOOKING_NR, BOOKING_UB, \
     HotelSearch
-from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
-from nnmware.core.ajax import ajax_answer_lazy
 from nnmware.apps.booking.templatetags.booking_tags import convert_to_client_currency, user_rate_from_request
+from nnmware.apps.booking.utils import booking_new_client_mail
+from nnmware.apps.booking.utils import guests_from_request, booking_new_sysadm_mail, request_add_hotel_mail
+from nnmware.apps.money.models import Bill, Currency, BILL_UNKNOWN
+from nnmware.core.ajax import ajax_answer_lazy
+from nnmware.core.decorators import ssl_required
+from nnmware.core.financial import is_luhn_valid
+from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail, setting
+from nnmware.core.views import AjaxViewMixin, UserToFormMixin
 from nnmware.core.views import AttachedImagesMixin, AttachedFilesMixin, AjaxFormMixin, \
     CurrentUserSuperuser, RedirectHttpView, RedirectHttpsView
-from nnmware.apps.money.models import Bill, Currency, BILL_UNKNOWN
-from nnmware.core.utils import convert_to_date, daterange, random_pw, send_template_mail, setting
-from nnmware.core.financial import is_luhn_valid
-from nnmware.apps.booking.utils import booking_new_client_mail
-from nnmware.apps.address.models import City
-from nnmware.core.decorators import ssl_required
-from nnmware.core.views import AjaxViewMixin, UserToFormMixin
 
 
 class CurrentUserHotelAdmin(View):

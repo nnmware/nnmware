@@ -1,6 +1,7 @@
 # nnmware(c)2012-2020
 
 from __future__ import unicode_literals
+
 import math
 from itertools import chain
 
@@ -25,7 +26,7 @@ class HotelOptionSelectMultiple(forms.CheckboxSelectMultiple):
         if value is None:
             value = []
         has_id = attrs and 'id' in attrs
-        final_attrs = self.build_attrs(attrs, {name:name})
+        final_attrs = self.build_attrs(attrs, {name: name})
         choices_enum = list(enumerate(chain(self.choices, choices)))
 
         # This is the part that splits the choices into columns.

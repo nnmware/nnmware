@@ -5,8 +5,8 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib import admin
 from django.contrib.admin.widgets import AdminTimeWidget
-from django.utils.translation import ugettext_lazy as _
 from django.template.defaultfilters import slugify
+from django.utils.translation import ugettext_lazy as _
 
 from nnmware.apps.booking.models import Hotel, AgentPercent, HotelOption, Room, RoomOption, PaymentMethod, HotelType, \
     RoomOptionCategory, HotelOptionCategory, Booking, RequestAddHotel, Review, SettlementVariant, \

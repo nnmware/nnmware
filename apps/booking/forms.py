@@ -5,10 +5,10 @@ from __future__ import unicode_literals
 from django import forms
 from django.contrib.admin.widgets import AdminTimeWidget
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _, get_language
-from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
 
 from nnmware.apps.booking.models import Hotel, Room, Booking, Discount, DISCOUNT_SPECIAL
 from nnmware.apps.booking.models import RequestAddHotel, DISCOUNT_NOREFUND, DISCOUNT_CREDITCARD, \

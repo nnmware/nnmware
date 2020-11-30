@@ -1,8 +1,8 @@
 # nnmware(c)2012-2020
 
 from __future__ import unicode_literals
-from hashlib import sha1
 from datetime import timedelta
+from hashlib import sha1
 
 from django.core.cache import cache
 from django.db.models import Min, Count, Sum
@@ -18,14 +18,13 @@ from nnmware.apps.money.models import ExchangeRate, Currency
 from nnmware.core.maps import distance_to_object
 from nnmware.core.utils import convert_to_date, setting
 
-
 register = Library()
 
 
 @register.simple_tag(takes_context=True)
 def search_sticky_options(context):
     request = context['request']
-    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    key = sha1(request.get_full_path(),).hexdigest()
     data_key = cache.get(key)
     result = HotelOption.objects.filter(in_search=True, sticky_in_search=True)
     if data_key:
@@ -37,7 +36,7 @@ def search_sticky_options(context):
 @register.simple_tag(takes_context=True)
 def search_options(context):
     request = context['request']
-    key = sha1('%s' % (request.get_full_path(),)).hexdigest()
+    key = sha1(request.get_full_path(),).hexdigest()
     data_key = cache.get(key)
     result = HotelOption.objects.filter(in_search=True, sticky_in_search=False)
     if data_key:

@@ -3,10 +3,10 @@
 from datetime import timedelta
 
 from django.conf import settings
-from django.utils.timezone import now
-from django.utils.translation import ugettext as _
-from django.utils.translation import activate
 from django.core.management.base import BaseCommand
+from django.utils.timezone import now
+from django.utils.translation import activate
+from django.utils.translation import ugettext as _
 
 from nnmware.apps.booking.models import Hotel, Availability, SettlementVariant
 from nnmware.core.utils import send_template_mail

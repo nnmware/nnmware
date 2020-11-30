@@ -1,33 +1,33 @@
 # nnmware(c)2012-2020
 
 from __future__ import unicode_literals
-from datetime import datetime, timedelta
-import json
-from hashlib import sha1
-import time
 
+import json
+import time
+from datetime import datetime, timedelta
+from hashlib import sha1
+
+from django.core.cache import cache
 from django.core.mail import mail_managers
-from django.urls import reverse, reverse_lazy
 from django.db import transaction
 from django.db.models import Q
 from django.http import Http404, HttpResponseRedirect
 from django.template.loader import render_to_string
+from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.cache import never_cache
-from django.core.cache import cache
 
-from nnmware.core.exceptions import AccessError
 from nnmware.apps.address.models import City
 from nnmware.apps.booking.models import SettlementVariant, PlacePrice, Room, Availability, Hotel, RequestAddHotel, \
     Review, Booking, PaymentMethod, Discount, RoomDiscount, SimpleDiscount, STATUS_ACCEPTED, STATUS_CONFIRMED, \
     STATUS_CANCELED_CLIENT
-from nnmware.apps.booking.utils import booking_delete_client_mail, booking_new_hotel_mail
 from nnmware.apps.money.models import Currency, Bill, BILL_UNKNOWN
+from nnmware.core.ajax import ajax_answer_lazy
+from nnmware.core.exceptions import AccessError
 from nnmware.core.imgutil import make_thumbnail
 from nnmware.core.templatetags.core import get_image_attach_url
 from nnmware.core.utils import convert_to_date, setting
-from nnmware.core.ajax import ajax_answer_lazy
 
 
 class UserNotAllowed(Exception):

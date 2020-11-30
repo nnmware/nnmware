@@ -6,7 +6,6 @@ from django.conf import settings
 
 from nnmware.core.utils import send_template_mail, setting
 
-
 SITENAME = setting('SITENAME', 'www.nnmware.com')
 
 
