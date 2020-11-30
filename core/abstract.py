@@ -27,7 +27,6 @@ from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManage
 from nnmware.core.fields import std_text_field, std_url_field
 from nnmware.core.utils import setting, current_year, tuplify
 
-DEFAULT_IMG = os.path.join(settings.MEDIA_URL, setting('DEFAULT_IMG', 'generic.png'))
 DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
 IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
 IMG_THUMB_QUALITY = setting('IMG_THUMB_QUALITY', 85)
@@ -195,7 +194,7 @@ class PicsMixin(object):
         try:
             return self.allpics[0].pic.url
         except:
-            return DEFAULT_IMG
+            return settings.DEFAULT_IMG
 
     @property
     def allpics(self):
@@ -281,7 +280,7 @@ class AbstractImg(models.Model):
     def get_avatar(self):
         if self.img:
             return self.avatar.url
-        return setting('DEFAULT_AVATAR', 'noavatar.png')
+        return settings.DEFAULT_AVATAR
 
     def delete(self, *args, **kwargs):
         # noinspection PyBroadException
@@ -627,7 +626,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     def get_agent_avatar(self):
         if self.agent_img:
             return self.agent_img.url
-        return setting('DEFAULT_AVATAR', 'noavatar.png')
+        return settings.DEFAULT_AVATAR
 
 
 class AbstractOffer(AbstractImg):

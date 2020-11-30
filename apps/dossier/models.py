@@ -4,14 +4,14 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.template.defaultfilters import floatformat
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.constants import GENDER_CHOICES
 from nnmware.core.fields import std_text_field
-from nnmware.core.utils import tuplify, setting
+from nnmware.core.utils import tuplify
 
-DEFAULT_AVATAR = setting('DEFAULT_AVATAR', 'avatar.png')
 AGE_SIZE = map(tuplify, range(1, 101))
 
 
@@ -192,9 +192,9 @@ class ActorCategory(AbstractOrder):
     def get_random_img(self):
         all_actors = self.actor_set.order_by('?')
         for actor in all_actors:
-            if actor.ava != DEFAULT_AVATAR:
+            if actor.ava != settings.DEFAULT_AVATAR:
                 return actor.ava
-        return DEFAULT_AVATAR
+        return settings.DEFAULT_AVATAR
 
 
 class TypeNational(AbstractOrder):
