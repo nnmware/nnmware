@@ -537,6 +537,8 @@ def thumbnail(url, args=''):
         raise TemplateSyntaxError(_(f'No height or width'))
 
     ret = make_thumbnail(url, **kwargs)
+    if ret == settings.DEFAULT_AVATAR or ret == settings.DEFAULT_IMG:
+        return settings.STATIC_URL + ret
     if ret is None:
         if url == settings.DEFAULT_AVATAR or url == settings.DEFAULT_IMG:
             return settings.STATIC_URL + url
