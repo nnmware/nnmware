@@ -25,7 +25,7 @@ from nnmware.core.constants import GENDER_CHOICES, STATUS_CHOICES, STATUS_PUBLIS
 from nnmware.core.imgutil import remove_thumbnails, remove_file, make_thumbnail
 from nnmware.core.managers import AbstractContentManager, PublicNnmcommentManager, AbstractActiveManager
 from nnmware.core.fields import std_text_field, std_url_field
-from nnmware.core.utils import setting, current_year, tuplify
+from nnmware.core.utils import setting, current_year, tuplify, get_date_directory
 
 DOC_MAX_PER_OBJECT = setting('DOC_MAX_PER_OBJECT', 42)
 IMG_MAX_PER_OBJECT = setting('IMG_MAX_PER_OBJECT', 42)
@@ -93,7 +93,7 @@ class AbstractFile(AbstractDate):
 
 
 class Pic(AbstractContent, AbstractFile):
-    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="pic/%Y/%m/%d/", blank=True)
+    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='pic/'+get_date_directory(), blank=True)
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
 
     objects = AbstractContentManager()
@@ -262,7 +262,7 @@ class Parameter(models.Model):
 
 
 class AbstractImg(models.Model):
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to="img/%Y/%m/%d/", blank=True,
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='img/'+get_date_directory(), blank=True,
                             height_field='img_height', width_field='img_width')
     img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
     img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
@@ -505,7 +505,7 @@ class Tree(AbstractName):
 
 class Doc(AbstractContent, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
-    doc = models.FileField(_("File"), upload_to="doc/%Y/%m/%d/", max_length=1024, blank=True)
+    doc = models.FileField(_("File"), upload_to='doc/'+get_date_directory(), max_length=1024, blank=True)
 
     class Meta:
         ordering = ['position', ]
@@ -595,7 +595,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     gender = models.CharField(verbose_name=_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
-    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to="img/%Y/%m/%d/",
+    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to='img/'+get_date_directory(),
                                   blank=True, height_field='agent_img_height', width_field='agent_img_width')
     agent_img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
     agent_img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
