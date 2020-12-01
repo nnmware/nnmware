@@ -874,7 +874,7 @@ def delete_comment(request, object_id, depth):
 
 
 def avatar_set(request):
-    uploader = AjaxUploader(filetype='image', upload_dir='media/avatars', size_limit=setting('AVATAR_UPLOAD_SIZE', 4096000))
+    uploader = AjaxUploader(filetype='image', size_limit=4096000)
     result = uploader.handle_upload(request)
     if result['success']:
         # noinspection PyBroadException
