@@ -768,7 +768,7 @@ def addon_uploader(request, filetype='file', **kwargs):
             if filetype is 'image':
                 html = render_to_string('upload/image_item.html', {'pic': new})
             else:
-                html=render_to_string('upload/file_item.html', {'doc': new})
+                html = render_to_string('upload/file_item.html', {'doc': new})
             addons = dict(html=html)
         except:
             addons = dict()
