@@ -651,13 +651,13 @@ class AjaxUploader(object):
     def setup(self, filename):
         ext = os.path.splitext(filename)[1]
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
-        self._realpath = os.path.realpath(os.path.dirname(self._upload_dir))
+        self._path = os.path.join(self._upload_dir, self._filename)
+        self._realpath = os.path.realpath(os.path.dirname(self._path))
         # noinspection PyBroadException
         try:
             os.makedirs(self._realpath)
         except:
             pass
-        self._path = os.path.join(self._upload_dir, self._filename)
         self._filepath = os.path.join(self._realpath, self._filename)
         self._destination = BufferedWriter(FileIO(self._filepath, "w"))
 
@@ -742,7 +742,7 @@ def addon_uploader(request, filetype='file', **kwargs):
     uploader = AjaxUploader(filetype=filetype)
     result = uploader.handle_upload(request)
     if result['success']:
-        if filetype is 'image':
+        if filetype == 'image':
             new = Pic()
             new.img = result['path']
             filepath = os.path.join(settings.MEDIA_ROOT, new.img.field.upload_to, new.img.path)
@@ -758,14 +758,14 @@ def addon_uploader(request, filetype='file', **kwargs):
         new.size = os.path.getsize(filepath)
         new.save()
         # noinspection PyBroadException
-        if filetype is 'image':
+        if filetype == 'image':
             try:
                 pics_count = dict(pics_count=new.content_object.pics_count)
                 result.update(pics_count)
             except:
                 pass
         try:
-            if filetype is 'image':
+            if filetype == 'image':
                 html = render_to_string('upload/image_item.html', {'pic': new})
             else:
                 html = render_to_string('upload/file_item.html', {'doc': new})
