@@ -630,7 +630,7 @@ class MyError(Exception):
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
-    def __init__(self, filetype='file', upload_dir='media/files', size_limit=10485760):
+    def __init__(self, filetype='file', upload_dir='buffer_files', size_limit=10485760):
         self._upload_dir = os.path.join(upload_dir, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
@@ -704,12 +704,12 @@ class AjaxUploader(object):
         if self._filetype == 'image':
             # noinspection PyBroadException
             try:
-                i = Image.open(self._path)
+                i = Image.open(self._fullpath)
             except Exception as err:
-                os.remove(self._path)
+                os.remove(self._fullpath)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
-            f_without_ext = os.path.splitext(self._path)[0]
+            f_without_ext = os.path.splitext(self._fullpath)[0]
             new_path = ".".join([f_without_ext, self._save_format.lower()])
             new_url = ".".join([f_name, self._save_format.lower()])
             if setting('IMAGE_STORE_ORIGINAL', False):
@@ -739,8 +739,7 @@ class AjaxUploader(object):
 
 
 def addon_file_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='file', upload_dir=setting('FILE_UPLOAD_DIR', 'files'),
-                            size_limit=setting('FILE_UPLOAD_SIZE', 104857600))
+    uploader = AjaxUploader()
     result = uploader.handle_upload(request)
     if result['success']:
         new = Doc()
@@ -764,8 +763,7 @@ def addon_file_uploader(request, **kwargs):
 
 
 def addon_image_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image', upload_dir=setting('IMAGE_UPLOAD_DIR', 'media'),
-                            size_limit=setting('IMAGE_UPLOAD_SIZE', 10485760))
+    uploader = AjaxUploader(filetype='image')
     result = uploader.handle_upload(request)
     if result['success']:
         new = Pic()

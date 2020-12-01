@@ -8,7 +8,7 @@ from django.utils.translation.trans_real import get_language
 
 from nnmware.core.fields import std_text_field
 from nnmware.core.maps import osm_geocoder
-from nnmware.core.abstract import AbstractName
+from nnmware.core.abstract import AbstractName, upload_images_path
 
 
 class Address(AbstractName):
@@ -148,7 +148,7 @@ class AbstractGeo(MetaGeo):
 
 
 class TourismCategory(AbstractName):
-    icon = models.ImageField(upload_to="ico/", blank=True)
+    icon = models.ImageField(upload_to=upload_images_path, blank=True)
 
     class Meta:
         verbose_name = _("Tourism Place Category")

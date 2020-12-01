@@ -21,7 +21,7 @@ from django.utils.translation.trans_real import get_language
 
 from nnmware.apps.address.models import AbstractGeo, Tourism, City
 from nnmware.apps.money.models import MoneyBase
-from nnmware.core.abstract import AbstractIP, AbstractName, AbstractDate
+from nnmware.core.abstract import AbstractIP, AbstractName, AbstractDate, upload_images_path
 from nnmware.core.maps import places_near_object
 
 
@@ -38,7 +38,7 @@ class HotelPoints(models.Model):
 
 
 class HotelOptionCategory(AbstractName):
-    icon = models.ImageField(upload_to="ico/", blank=True)
+    icon = models.ImageField(upload_to=upload_images_path, blank=True)
 
     class Meta:
         verbose_name = _("Hotel Option Category")

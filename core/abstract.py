@@ -92,8 +92,13 @@ class AbstractFile(AbstractDate):
         abstract = True
 
 
+def upload_images_path(instance, filename):
+    # image will be uploaded to MEDIA_ROOT/<get_date_directory()>/<filename>
+    return '{0}/{1}/{2}'.format('img', get_date_directory(), filename)
+
+
 class AbstractImg(models.Model):
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='img/'+get_date_directory(), blank=True,
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to=upload_images_path, blank=True,
                             height_field='img_height', width_field='img_width')
     img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
     img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image width'))
@@ -594,7 +599,7 @@ class AbstractNnmwareProfile(AbstractDate, AbstractImg, PicsMixin):
     gender = models.CharField(verbose_name=_("Gender"), max_length=1, choices=GENDER_CHOICES, blank=True)
     is_employer = models.BooleanField(verbose_name=_("Account is employer"), default=False)
     is_public = models.BooleanField(verbose_name=_("Account is public"), default=False)
-    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to='img/'+get_date_directory(),
+    agent_img = models.ImageField(verbose_name=_("Agent avatar"), max_length=1024, upload_to=upload_images_path,
                                   blank=True, height_field='agent_img_height', width_field='agent_img_width')
     agent_img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
     agent_img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Agent avatar height'))
