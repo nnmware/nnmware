@@ -653,13 +653,12 @@ class AjaxUploader(object):
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
         self._path = os.path.join(self._upload_dir, self._filename)
         self._realpath = os.path.realpath(os.path.dirname(self._path))
-        self._path_orig = self._path
         # noinspection PyBroadException
         try:
             os.makedirs(self._realpath)
         except:
             pass
-        self._fullpath = self._realpath+'/'+self._filename
+        self._fullpath = os.path.join(self._realpath, self._filename)
         self._destination = BufferedWriter(FileIO(self._fullpath, "w"))
 
     def handle_upload(self, request):
@@ -719,12 +718,12 @@ class AjaxUploader(object):
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
             # noinspection PyBroadException
             try:
-                if self._fullpath == new_path:
-                    i.save(self._fullpath, self._save_format)
-                else:
+                if self._fullpath != new_path:
                     os.remove(self._fullpath)
                     self._fullpath = new_path
-                    i.save(self._fullpath, self._save_format)
+                else:
+                    pass
+                i.save(self._fullpath, self._save_format)
             except:
                 # noinspection PyBroadException
                 try:
@@ -738,24 +737,39 @@ class AjaxUploader(object):
                     old_filename=filename, filename=self._filename)
 
 
-def addon_file_uploader(request, **kwargs):
-    uploader = AjaxUploader()
+def addon_uploader(request, filetype='file', **kwargs):
+    uploader = AjaxUploader(filetype=filetype)
     result = uploader.handle_upload(request)
     if result['success']:
-        new = Doc()
+        if filetype is 'image':
+            new = Pic()
+            target = new.img
+        else:
+            new = Doc()
+            target = new.doc
         new.content_type = ContentType.objects.get_for_id(int(kwargs['content_type']))
         new.object_id = int(kwargs['object_id'])
         new.description = result['old_filename']
         new.user = request.user
         new.created_date = now()
-        new.doc = result['path']
+        target = result['path']
         fullpath = os.path.join(settings.MEDIA_ROOT,
-                                new.doc.field.upload_to, new.doc.path)
+                                target.field.upload_to, target.path)
         new.size = os.path.getsize(fullpath)
         new.save()
         # noinspection PyBroadException
+        if filetype is 'image':
+            try:
+                pics_count = dict(pics_count=new.content_object.pics_count)
+                result.update(pics_count)
+            except:
+                pass
         try:
-            addons = dict(html=render_to_string('upload/file_item.html', {'doc': new}))
+            if filetype is 'image':
+                html = render_to_string('upload/image_item.html', {'pic': new})
+            else:
+                html=render_to_string('upload/file_item.html', {'doc': new})
+            addons = dict(html=html)
         except:
             addons = dict()
         result.update(addons)
@@ -763,33 +777,7 @@ def addon_file_uploader(request, **kwargs):
 
 
 def addon_image_uploader(request, **kwargs):
-    uploader = AjaxUploader(filetype='image')
-    result = uploader.handle_upload(request)
-    if result['success']:
-        new = Pic()
-        new.content_type = ContentType.objects.get_for_id(int(kwargs['content_type']))
-        new.object_id = int(kwargs['object_id'])
-        new.description = result['old_filename']
-        new.user = request.user
-        new.created_date = now()
-        new.img = result['path']
-        fullpath = os.path.join(settings.MEDIA_ROOT,
-                                new.img.field.upload_to, new.img.path)
-        new.size = os.path.getsize(fullpath)
-        new.save()
-        # noinspection PyBroadException
-        try:
-            pics_count = dict(pics_count=new.content_object.pics_count)
-            result.update(pics_count)
-        except:
-            pass
-        # noinspection PyBroadException
-        try:
-            addons = dict(html=render_to_string('upload/image_item.html', {'pic': new}))
-        except:
-            addons = dict()
-        result.update(addons)
-    return ajax_answer(result)
+    return addon_uploader(request, filetype='image', **kwargs)
 
 
 def like(request, content_type, object_id):
@@ -872,20 +860,21 @@ def delete_comment(request, object_id, depth):
 
 
 def avatar_set(request):
+    u = request.user
     uploader = AjaxUploader(filetype='image', size_limit=4096000)
     result = uploader.handle_upload(request)
     if result['success']:
         # noinspection PyBroadException
         try:
-            remove_thumbnails(request.user.img.path)
-            remove_file(request.user.img.path)
+            remove_thumbnails(u.img.path)
+            remove_file(u.img.path)
         except:
             pass
-        request.user.img.save(result['filename'], File(open(result['path'] + '/' + result['filename'], 'rb')))
-        request.user.save()
+        u.img.save(result['filename'], File(open(result['path'] + '/' + result['filename'], 'rb')))
+        u.save()
         # noinspection PyBroadException
         try:
-            addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
+            addons = dict(html=render_to_string('user/avatar.html', {'object': u}))
         except:
             addons = dict()
         result.update(addons)

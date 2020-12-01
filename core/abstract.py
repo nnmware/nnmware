@@ -93,8 +93,13 @@ class AbstractFile(AbstractDate):
 
 
 def upload_images_path(instance, filename):
-    # image will be uploaded to MEDIA_ROOT/<get_date_directory()>/<filename>
+    # image will be uploaded to MEDIA_ROOT/img/<get_date_directory()>/<filename>
     return '{0}/{1}/{2}'.format('img', get_date_directory(), filename)
+
+
+def upload_files_path(instance, filename):
+    # Files will be uploaded to MEDIA_ROOT/files/<get_date_directory()>/<filename>
+    return '{0}/{1}/{2}'.format('files', get_date_directory(), filename)
 
 
 class AbstractImg(models.Model):
@@ -509,7 +514,7 @@ class Tree(AbstractName):
 
 class Doc(AbstractContent, AbstractFile):
     filetype = models.IntegerField(_("Doc type"), choices=DOC_TYPE, default=DOC_FILE)
-    doc = models.FileField(_("File"), upload_to='doc/'+get_date_directory(), max_length=1024, blank=True)
+    doc = models.FileField(_("File"), upload_to=upload_files_path, max_length=1024, blank=True)
 
     class Meta:
         ordering = ['position', ]
