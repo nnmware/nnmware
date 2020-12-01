@@ -157,7 +157,7 @@ class TourismCategory(AbstractName):
 
 
 class Tourism(Address, AbstractGeo):
-    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), on_delete=models.CASCADE)
+    category = models.ForeignKey(TourismCategory, verbose_name=_('Tourism category'), null=True, on_delete=models.SET_NULL)
     country = models.ForeignKey(Country, blank=True, null=True, verbose_name=_('Country'), on_delete=models.SET_NULL)
 
     class Meta:
