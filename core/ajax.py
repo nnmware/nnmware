@@ -62,7 +62,7 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = dict(success=True, src = make_thumbnail(pic.pic.url, width=int(img_w), height=int(img_h), aspect=1))
+        payload = dict(success=True, src = make_thumbnail(pic.img.url, width=int(img_w), height=int(img_h), aspect=1))
     else:
         payload = dict(success=False)
     return ajax_answer_lazy(payload)
@@ -90,7 +90,7 @@ def img_getcrop(request, object_id):
     pic = get_object_or_404(Pic, id=int(object_id))
     # noinspection PyBroadException
     try:
-        payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
+        payload = dict(success=True, src=make_thumbnail(pic.img.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = dict(success=False)
     return ajax_answer_lazy(payload)
@@ -104,7 +104,7 @@ def img_rotate(request):
             raise AccessError
         img_pk = request.POST['crop_id']
         pic = get_object_or_404(Pic, id=int(img_pk))
-        img = get_path_from_url(pic.pic.url)
+        img = get_path_from_url(pic.img.url)
         im = Image.open(img)
         im = im.rotate(90)
         if im.mode not in ('L', 'RGB'):
@@ -462,7 +462,7 @@ def pic_getcrop(request, object_id):
     pic = get_object_or_404(Pic, id=int(object_id))
     # noinspection PyBroadException
     try:
-        payload = dict(success=True, src=make_thumbnail(pic.pic.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
+        payload = dict(success=True, src=make_thumbnail(pic.img.url, width=MAX_IMAGE_CROP_WIDTH), id=pic.pk)
     except:
         payload = dict(success=False)
     return ajax_answer_lazy(payload)
@@ -630,7 +630,7 @@ class MyError(Exception):
 class AjaxUploader(object):
     BUFFER_SIZE = 10485760  # 10MB
 
-    def __init__(self, filetype='file', upload_dir='files', size_limit=10485760):
+    def __init__(self, filetype='file', upload_dir='media/files', size_limit=10485760):
         self._upload_dir = os.path.join(upload_dir, get_date_directory())
         self._filetype = filetype
         if filetype == 'image':
@@ -774,9 +774,9 @@ def addon_image_uploader(request, **kwargs):
         new.description = result['old_filename']
         new.user = request.user
         new.created_date = now()
-        new.pic = result['path']
+        new.img = result['path']
         fullpath = os.path.join(settings.MEDIA_ROOT,
-                                new.pic.field.upload_to, new.pic.path)
+                                new.img.field.upload_to, new.img.path)
         new.size = os.path.getsize(fullpath)
         new.save()
         # noinspection PyBroadException
