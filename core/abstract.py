@@ -82,7 +82,7 @@ DOC_TYPE = (
 
 class AbstractFile(AbstractDate):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True, verbose_name=_("Author"),
-                             related_name="%(class)s_f_user", on_delete=models.CASCADE)
+                             related_name="%(class)s_f_user", on_delete=models.SET_NULL)
     description = std_text_field(_("Description"))
     size = models.IntegerField(editable=False, null=True, blank=True)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0, blank=True)
@@ -265,7 +265,7 @@ class AbstractImg(models.Model):
     img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='img/'+get_date_directory(), blank=True,
                             height_field='img_height', width_field='img_width')
     img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
-    img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
+    img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image width'))
 
     class Meta:
         abstract = True
