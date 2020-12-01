@@ -7,6 +7,7 @@ from PIL import Image
 from uuid import uuid4
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
@@ -116,7 +117,11 @@ class AbstractImg(models.Model):
     def get_avatar(self):
         if self.img:
             return self.avatar.url
-        return settings.DEFAULT_AVATAR
+        usr = get_user_model()
+        if self.__class__ == usr:
+            return settings.DEFAULT_AVATAR
+        else:
+            return settings.DEFAULT_IMG
 
     def delete(self, *args, **kwargs):
         # noinspection PyBroadException
