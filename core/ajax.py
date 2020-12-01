@@ -870,8 +870,10 @@ def avatar_set(request):
             remove_file(u.img.path)
         except:
             pass
-        u.img.save(result['filename'], File(open(result['path'] + '/' + result['filename'], 'rb')))
+        imgfile = result['path'] + '/' + result['filename']
+        u.img.save(result['filename'], File(open(imgfile, 'rb')))
         u.save()
+        os.remove(imgfile)
         # noinspection PyBroadException
         try:
             addons = dict(html=render_to_string('user/avatar.html', {'object': u}))
