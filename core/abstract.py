@@ -92,8 +92,49 @@ class AbstractFile(AbstractDate):
         abstract = True
 
 
-class Pic(AbstractContent, AbstractFile):
-    pic = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='pic/'+get_date_directory(), blank=True)
+class AbstractImg(models.Model):
+    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='img/'+get_date_directory(), blank=True,
+                            height_field='img_height', width_field='img_width')
+    img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
+    img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image width'))
+
+    class Meta:
+        abstract = True
+
+    @property
+    def avatar(self):
+        if self.img:
+            return self.img
+        return None
+
+    @property
+    def get_avatar(self):
+        if self.img:
+            return self.avatar.url
+        return settings.DEFAULT_AVATAR
+
+    def delete(self, *args, **kwargs):
+        # noinspection PyBroadException
+        try:
+            remove_thumbnails(self.img.path)
+            remove_file(self.img.path)
+        except:
+            pass
+        super(AbstractImg, self).delete(*args, **kwargs)
+
+    def thumbnail(self):
+        if self.img:
+            path = self.img.url
+            tmb = make_thumbnail(path, height=60, width=60)
+            return '<a style="display:block;text-align:center;" target="_blank" href="%s"><img src="%s" /></a>' \
+                   '<p style="text-align:center;margin-top:5px;">%sx%s px</p>' % (path, tmb, self.img_width,
+                                                                                  self.img_height)
+        return "No image"
+    thumbnail.allow_tags = True
+    thumbnail.short_description = 'Thumbnail'
+
+
+class Pic(AbstractContent, AbstractFile, AbstractImg):
     source = models.URLField(verbose_name=_("Source"), max_length=256, blank=True)
 
     objects = AbstractContentManager()
@@ -107,7 +148,7 @@ class Pic(AbstractContent, AbstractFile):
         return _('Pic for %(type)s: %(obj)s') % {'type': self.content_type, 'obj': self.content_object}
 
     def get_file_link(self):
-        return os.path.join(settings.MEDIA_URL, self.pic.url)
+        return os.path.join(settings.MEDIA_URL, self.img.url)
 
     def save(self, *args, **kwargs):
         pics = Pic.objects.for_object(self.content_object)
@@ -121,25 +162,25 @@ class Pic(AbstractContent, AbstractFile):
             pics.delete()
         # noinspection PyBroadException
         try:
-            remove_thumbnails(self.pic.path)
+            remove_thumbnails(self.img.path)
         except:
             pass
-        fullpath = get_path_from_url(self.pic.url)
+        fullpath = get_path_from_url(self.img.url)
         self.size = os.path.getsize(fullpath)
         super(Pic, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
         # noinspection PyBroadException
         try:
-            remove_thumbnails(self.pic.path)
-            remove_file(self.pic.path)
+            remove_thumbnails(self.img.path)
+            remove_file(self.img.path)
         except:
             pass
         super(Pic, self).delete(*args, **kwargs)
 
     def create_thumbnail(self, size, quality=None):
         try:
-            orig = self.pic.storage.open(self.pic.name, 'rb').read()
+            orig = self.img.storage.open(self.img.name, 'rb').read()
             image = Image.open(StringIO(orig))
         except IOError as ioerr:
             return  # What should we do here?  Render a "sorry, didn't work" img?
@@ -160,7 +201,7 @@ class Pic(AbstractContent, AbstractFile):
             thumb_file = ContentFile(thumb.getvalue())
         else:
             thumb_file = ContentFile(orig)
-        thumb = self.pic.storage.save(self.pic_name(size), thumb_file)
+        thumb = self.img.storage.save(self.img.name(size), thumb_file)
 
     def get_del_url(self):
         return "pic_del", (), {'object_id': self.pk}
@@ -175,8 +216,8 @@ class Pic(AbstractContent, AbstractFile):
         return reverse("pic_editor", args=[self.pk])
 
     def slide_thumbnail(self):
-        if self.pic:
-            path = self.pic.url
+        if self.img:
+            path = self.img.url
             tmb = make_thumbnail(path, width=60, height=60, aspect=1)
         else:
             tmb = '/static/img/icon-no.gif"'
@@ -192,7 +233,7 @@ class PicsMixin(object):
     def main_image(self):
         # noinspection PyBroadException
         try:
-            return self.allpics[0].pic.url
+            return self.allpics[0].img.url
         except:
             return settings.DEFAULT_IMG
 
@@ -259,48 +300,6 @@ class Parameter(models.Model):
             return "%s (%s)" % (self.name, self.unit.name)
         except:
             return "%s" % self.name
-
-
-class AbstractImg(models.Model):
-    img = models.ImageField(verbose_name=_("Image"), max_length=1024, upload_to='img/'+get_date_directory(), blank=True,
-                            height_field='img_height', width_field='img_width')
-    img_height = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image height'))
-    img_width = models.PositiveIntegerField(null=True, blank=True, verbose_name=_('Image width'))
-
-    class Meta:
-        abstract = True
-
-    @property
-    def avatar(self):
-        if self.img:
-            return self.img
-        return None
-
-    @property
-    def get_avatar(self):
-        if self.img:
-            return self.avatar.url
-        return settings.DEFAULT_AVATAR
-
-    def delete(self, *args, **kwargs):
-        # noinspection PyBroadException
-        try:
-            remove_thumbnails(self.img.path)
-            remove_file(self.img.path)
-        except:
-            pass
-        super(AbstractImg, self).delete(*args, **kwargs)
-
-    def thumbnail(self):
-        if self.img:
-            path = self.img.url
-            tmb = make_thumbnail(path, height=60, width=60)
-            return '<a style="display:block;text-align:center;" target="_blank" href="%s"><img src="%s" /></a>' \
-                   '<p style="text-align:center;margin-top:5px;">%sx%s px</p>' % (path, tmb, self.img_width,
-                                                                                  self.img_height)
-        return "No image"
-    thumbnail.allow_tags = True
-    thumbnail.short_description = 'Thumbnail'
 
 
 class AbstractName(AbstractImg, PicsMixin):

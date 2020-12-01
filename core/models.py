@@ -548,7 +548,7 @@ class LikeMixin(models.Model):
 
 class ContentBlock(AbstractContent, AbstractIP, AbstractDate, AbstractImg):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, blank=True,
-                             related_name="%(app_label)s_%(class)s_user", on_delete=models.CASCADE)
+                             related_name="%(app_label)s_%(class)s_user", on_delete=models.SET_NULL)
     position = models.PositiveSmallIntegerField(verbose_name=_('Priority'), db_index=True, default=0,
                                                 blank=True)
     status = models.IntegerField(_("Status"), choices=STATUS_CHOICES, default=STATUS_DRAFT)
