@@ -62,7 +62,7 @@ def img_setmain(request, object_id, img_w='64', img_h='64'):
         all_pics.update(primary=False)
         pic.primary = True
         pic.save()
-        payload = dict(success=True, src = make_thumbnail(pic.img.url, width=int(img_w), height=int(img_h), aspect=1))
+        payload = dict(success=True, src=make_thumbnail(pic.img.url, width=int(img_w), height=int(img_h), aspect=1))
     else:
         payload = dict(success=False)
     return ajax_answer_lazy(payload)
@@ -645,21 +645,21 @@ class AjaxUploader(object):
         """
         if int(self._destination.tell()) > self._size_limit:
             self._destination.close()
-            os.remove(self._fullpath)
+            os.remove(self._filepath)
             return True
 
     def setup(self, filename):
         ext = os.path.splitext(filename)[1]
         self._filename = md5(filename.encode('utf8')).hexdigest() + ext
-        self._path = os.path.join(self._upload_dir, self._filename)
-        self._realpath = os.path.realpath(os.path.dirname(self._path))
+        self._realpath = os.path.realpath(os.path.dirname(self._upload_dir))
         # noinspection PyBroadException
         try:
             os.makedirs(self._realpath)
         except:
             pass
-        self._fullpath = os.path.join(self._realpath, self._filename)
-        self._destination = BufferedWriter(FileIO(self._fullpath, "w"))
+        self._path = os.path.join(self._upload_dir, self._filename)
+        self._filepath = os.path.join(self._realpath, self._filename)
+        self._destination = BufferedWriter(FileIO(self._filepath, "w"))
 
     def handle_upload(self, request):
         is_raw = True
@@ -703,37 +703,38 @@ class AjaxUploader(object):
         if self._filetype == 'image':
             # noinspection PyBroadException
             try:
-                i = Image.open(self._fullpath)
+                i = Image.open(self._filepath)
             except Exception as err:
-                os.remove(self._fullpath)
+                os.remove(self._filepath)
                 return dict(success=False, error=_("File is not image format"))
             f_name, f_ext = os.path.splitext(self._filename)
-            f_without_ext = os.path.splitext(self._fullpath)[0]
+            f_without_ext = os.path.splitext(self._filepath)[0]
             new_path = ".".join([f_without_ext, self._save_format.lower()])
             new_url = ".".join([f_name, self._save_format.lower()])
             if setting('IMAGE_STORE_ORIGINAL', False):
                 # TODO need change the extension
                 orig_path = ".".join([f_without_ext + '_orig', self._save_format.lower()])
-                shutil.copy2(self._fullpath, orig_path)
+                shutil.copy2(self._filepath, orig_path)
             i.thumbnail((1200, 1200), Image.ANTIALIAS)
             # noinspection PyBroadException
             try:
-                if self._fullpath != new_path:
-                    os.remove(self._fullpath)
-                    self._fullpath = new_path
+                if self._filepath != new_path:
+                    os.remove(self._filepath)
+                    self._filepath = new_path
                 else:
                     pass
-                i.save(self._fullpath, self._save_format)
+                i.save(self._filepath, self._save_format)
             except:
                 # noinspection PyBroadException
                 try:
-                    os.remove(self._fullpath)
+                    os.remove(self._filepath)
                     os.remove(new_path)
                 except:
                     pass
                 return dict(success=False, error=_("Error saving image"))
             self._filename = ".".join([f_name, self._save_format.lower()])
-        return dict(success=True, fullpath=self._fullpath, path=self._upload_dir,
+            filepath = '{0}/{1}'.format(self._upload_dir, self._filename)
+        return dict(success=True, filepath=filepath, path=self._upload_dir,
                     old_filename=filename, filename=self._filename)
 
 
@@ -743,19 +744,18 @@ def addon_uploader(request, filetype='file', **kwargs):
     if result['success']:
         if filetype is 'image':
             new = Pic()
-            target = new.img
+            new.img = result['path']
+            filepath = os.path.join(settings.MEDIA_ROOT, new.img.field.upload_to, new.img.path)
         else:
             new = Doc()
-            target = new.doc
+            new.doc = result['path']
+            filepath = os.path.join(settings.MEDIA_ROOT, new.doc.field.upload_to, new.doc.path)
         new.content_type = ContentType.objects.get_for_id(int(kwargs['content_type']))
         new.object_id = int(kwargs['object_id'])
         new.description = result['old_filename']
         new.user = request.user
         new.created_date = now()
-        target = result['path']
-        fullpath = os.path.join(settings.MEDIA_ROOT,
-                                target.field.upload_to, target.path)
-        new.size = os.path.getsize(fullpath)
+        new.size = os.path.getsize(filepath)
         new.save()
         # noinspection PyBroadException
         if filetype is 'image':
@@ -870,7 +870,7 @@ def avatar_set(request):
             remove_file(u.img.path)
         except:
             pass
-        imgfile = result['path'] + '/' + result['filename']
+        imgfile = result['filepath']
         u.img.save(result['filename'], File(open(imgfile, 'rb')))
         u.save()
         os.remove(imgfile)
@@ -886,14 +886,15 @@ def avatar_set(request):
 def avatar_delete(request):
     # noinspection PyBroadException
     try:
-        remove_thumbnails(request.user.img.path)
-        remove_file(request.user.img.path)
-        request.user.img = ''
-        request.user.save()
+        u = request.user
+        remove_thumbnails(u.img.path)
+        remove_file(u.img.path)
+        u.img = ''
+        u.save()
         payload = dict(success=True)
         # noinspection PyBroadException
         try:
-            addons = dict(html=render_to_string('user/avatar.html', {'object': request.user}))
+            addons = dict(html=render_to_string('user/avatar.html', {'object': u}))
         except:
             addons = dict()
         payload.update(addons)
