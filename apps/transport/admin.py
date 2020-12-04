@@ -26,7 +26,7 @@ class VehicleKindAdmin(VehicleBaseParamAdmin):
 
 class VehicleBaseParamForAdmin(VehicleBaseParamAdmin):
     fieldsets = (
-        (_('Type of vehicle'), {"fields": [('name', 'position'), ('type_vehicles', ), ('description',)]}),
+        (_('Type of vehicle'), {"fields": [('name', 'position'), ('description',)]}),
         (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]})
     )
 
@@ -48,7 +48,11 @@ class VehicleFeatureAdmin(VehicleBaseParamForAdmin):
 
 @admin.register(VehicleMark)
 class VehicleMarkAdmin(VehicleBaseParamForAdmin):
-    pass
+    fieldsets = (
+        (_('Type of vehicle'), {"fields": [('name', 'position'), ('vendor', ), ('description',)]}),
+        (_("English"), {"classes": ("collapse",), "fields": [("name_en",), ("description_en",), ]})
+    )
+    list_display = ('name', 'position', 'slug', 'vendor')
 
 
 @admin.register(VehicleVendor)

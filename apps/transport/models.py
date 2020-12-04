@@ -51,7 +51,7 @@ class VehicleVendor(AbstractVendor, AbstractImg):
 
 
 class VehicleMark(AbstractName):
-    vendor = models.ForeignKey(VehicleVendor, verbose_name=_('Vendor of vehicle'), on_delete=models.PROTECT)
+    vendor = models.ForeignKey(VehicleVendor, verbose_name=_('Vendor of vehicle'), null=True, blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _('Vehicle mark')

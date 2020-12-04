@@ -705,7 +705,7 @@ class AbstractWorkTime(models.Model):
 
 
 class UserMixin(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('User'), null=True, on_delete=models.SET_NULL)
 
     class Meta:
         abstract = True
