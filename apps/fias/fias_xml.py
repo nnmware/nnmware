@@ -1,14 +1,14 @@
 import xml.dom.minidom as xm
 import requests
-import shutil
+import zipfile
 from glob import glob
 
 # Full
-# URL_UPDATE = 'http://fias.nalog.ru/Public/Downloads/Actual/fias_xml.zip'
-# FILE_UPDATE = 'fias_xml.zip'
+URL_UPDATE = 'http://fias.nalog.ru/Public/Downloads/Actual/fias_xml.zip'
+FILE_UPDATE = 'fias_xml.zip'
 # Update
-URL_UPDATE = 'http://fias.nalog.ru/Public/Downloads/Actual/fias_delta_xml.zip'
-FILE_UPDATE = 'fias_delta_xml.zip'
+#URL_UPDATE = 'http://fias.nalog.ru/Public/Downloads/Actual/fias_delta_xml.zip'
+#FILE_UPDATE = 'fias_delta_xml.zip'
 
 
 
@@ -22,8 +22,14 @@ def get_fias_delta_xml(url, file):
 
 
 def unpack_file(file):
-    shutil.unpack_archive(file)
-    print(f'OK unpack archive: {file})')
+    with open(file, 'rb') as zf:
+        z = zipfile.ZipFile(zf, allowZip64=True)
+        for fl in z.infolist():
+            try:
+                z.extract(fl)
+                print(f'Decompressing ZIP file {fl} - OK')
+            except zipfile.error as err:
+                print(f'ERROR decompressing ZIP file: {err}')
 
 
 def address_object_type():
@@ -193,13 +199,13 @@ def objects():
 
 
 if __name__ == '__main__':
-    get_fias_delta_xml(URL_UPDATE, FILE_UPDATE)
+    #get_fias_delta_xml(URL_UPDATE, FILE_UPDATE)
     unpack_file(FILE_UPDATE)
-    address_object_type()
-    room_type()
-    estate_status()
-    flat_type()
-    structure_status()
+    #address_object_type()
+    #room_type()
+    #estate_status()
+    #flat_type()
+    #structure_status()
     # rm = room()
     # hs = house()
     # print(f'house: {len(hs)}')
