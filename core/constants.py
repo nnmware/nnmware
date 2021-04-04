@@ -69,6 +69,9 @@ ACTION_ADDED = 2
 ACTION_COMMENTED = 3
 ACTION_FOLLOWED = 4
 ACTION_LIKED = 5
+ACTION_EDITED = 6
+ACTION_DELETED = 7
+ACTION_UPDATED = 8
 
 ACTION_CHOICES = (
     (ACTION_UNKNOWN, _('Unknown')),
@@ -77,6 +80,9 @@ ACTION_CHOICES = (
     (ACTION_COMMENTED, _('Commented')),
     (ACTION_FOLLOWED, _('Followed')),
     (ACTION_LIKED, _('Liked')),
+    (ACTION_EDITED, _('Edited')),
+    (ACTION_DELETED, _('Deleted')),
+    (ACTION_UPDATED, _('Updated ')),
 )
 
 
