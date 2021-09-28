@@ -101,7 +101,7 @@ def make_thumbnail(photo_url, width=None, height=None, aspect=None,
     try:
         img = Image.open(photo_path).copy()
         if aspect:
-            img = ImageOps.fit(img, size, Image.ANTIALIAS, (0.5, 0.5))
+            img = ImageOps.fit(img, size, Image.ANTIALIAS, 0.5)
         img.thumbnail(size, Image.ANTIALIAS)
         img.save(th_path, quality=setting('THUMBNAIL_QUALITY', 85))
     except:
