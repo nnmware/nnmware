@@ -538,10 +538,10 @@ def thumbnail(url, args=''):
 
     ret = make_thumbnail(url, **kwargs)
     if ret == settings.DEFAULT_AVATAR or ret == settings.DEFAULT_IMG:
-        return settings.STATIC_URL + ret
+        return ret
     if ret is None:
         if url == settings.DEFAULT_AVATAR or url == settings.DEFAULT_IMG:
-            return settings.STATIC_URL + url
+            return url
         ret = url
     else:
         pass

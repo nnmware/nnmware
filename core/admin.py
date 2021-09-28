@@ -85,7 +85,7 @@ class PicAdmin(admin.ModelAdmin):
     # readonly_fields = ('pic',)
     fieldsets = (
         (_('nnmware'), {'fields': [('user', 'content_type', 'object_id')]}),
-        (_('Pic'), {'fields': [('pic', 'created_date')]}),
+        (_('Pic'), {'fields': [('img', 'created_date')]}),
         (_('Meta'), {'fields': [('description', 'source')]}),
     )
     list_display = ('user', 'created_date', 'content_type',
@@ -116,7 +116,7 @@ class TagAdmin(admin.ModelAdmin):
 @admin.register(Action)
 class ActionAdmin(admin.ModelAdmin):
     date_hierarchy = 'timestamp'
-    list_display = ('user', 'verb', 'timestamp', 'ip', 'user_agent')
+    list_display = ('user', 'action_type', 'verb', 'timestamp', 'ip', 'user_agent')
     list_filter = ('timestamp',)
 
 
