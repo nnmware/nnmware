@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext as _, get_language
 
 from nnmware.apps.booking.models import Hotel, Room, Booking, Discount, DISCOUNT_SPECIAL
 from nnmware.apps.booking.models import RequestAddHotel, DISCOUNT_NOREFUND, DISCOUNT_CREDITCARD, \

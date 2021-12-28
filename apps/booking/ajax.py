@@ -15,7 +15,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
 from nnmware.apps.address.models import City

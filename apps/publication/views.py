@@ -9,7 +9,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DateDetailView, YearArchiveView,\
     MonthArchiveView, DayArchiveView, CreateView, UpdateView
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.core.views import AttachedFilesMixin, CurrentUserAuthenticated, CurrentUserEditor, CurrentUserSuperuser, \
     CurrentUserAuthor, AjaxFormMixin

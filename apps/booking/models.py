@@ -16,7 +16,7 @@ from django.template.defaultfilters import date
 from django.urls import reverse
 from django.utils.text import format_lazy
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 from django.utils.translation.trans_real import get_language
 
 from nnmware.apps.address.models import AbstractGeo, Tourism, City

@@ -1,16 +1,16 @@
-# nnmware(c)2012-2020
+# nnmware(c)2012-2021
 
 from __future__ import unicode_literals
 import json
 
 from django.utils.functional import Promise
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 
 class LazyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Promise):
-            return force_text(obj)
+            return force_str(obj)
         return obj
 
 

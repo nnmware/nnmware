@@ -3,7 +3,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.apps.realty.models import Compass, MaterialKind, EstateType, EstateFeature, TrimKind, RmFeature, RmType, \
     Rm, Estate

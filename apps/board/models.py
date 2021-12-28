@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.urls import reverse
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.apps.address.models import Region
 from nnmware.apps.business.models import AbstractSeller

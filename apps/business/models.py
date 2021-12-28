@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.utils.translation import ugettext_lazy as _, get_language
+from django.utils.translation import gettext as _, get_language
 
 from nnmware.core.imgutil import remove_thumbnails, remove_file
 from nnmware.apps.address.models import AbstractLocation, MetaGeo

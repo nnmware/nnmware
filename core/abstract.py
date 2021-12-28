@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.db import models
 from django.db.models.manager import Manager
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 from django.utils.translation.trans_real import get_language
 
 from nnmware.core.file import get_path_from_url

@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.template.defaultfilters import floatformat
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.core.abstract import AbstractOrder, AbstractName, AbstractSkill, AbstractImg
 from nnmware.core.constants import GENDER_CHOICES

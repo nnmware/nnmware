@@ -18,7 +18,7 @@ from django.core.files import File
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.timezone import now
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.http import HttpResponse, Http404
 
 from nnmware.core.abstract import Pic, Doc

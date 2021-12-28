@@ -19,7 +19,7 @@ from django.views.generic.dates import YearArchiveView, MonthArchiveView, DayArc
 from django.views.generic.detail import DetailView, SingleObjectMixin
 from django.views.generic.edit import UpdateView, FormView
 from django.views.generic.list import ListView
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.core.forms import PassChangeForm, LoginForm, EmailQuickRegisterForm, UserSettingsForm, RegistrationForm, \
     SignupForm, ProfileForm, AvatarForm, VideoAddForm, AvatarCropForm

@@ -6,8 +6,8 @@ from decimal import Decimal
 from django.forms import CharField, ValidationError
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext as _
 
 from nnmware.core.widgets import ReCaptchaWidget
 from nnmware.core.captcha import submit
@@ -23,8 +23,8 @@ class ReCaptchaField(CharField):
 
     def clean(self, values):
         super(ReCaptchaField, self).clean(values[1])
-        recaptcha_challenge_value = smart_text(values[0])
-        recaptcha_response_value = smart_text(values[1])
+        recaptcha_challenge_value = smart_str(values[0])
+        recaptcha_response_value = smart_str(values[1])
         check_captcha = submit(recaptcha_challenge_value, recaptcha_response_value, settings.RECAPTCHA_PRIVATE_KEY, {})
         if not check_captcha.is_valid:
             raise ValidationError(self.error_messages['captcha_invalid'])

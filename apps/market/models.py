@@ -8,7 +8,7 @@ from django.db import models
 from django.db.models import Q
 from django.template.defaultfilters import floatformat
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from nnmware.apps.address.models import Country, AbstractLocation, Region
 from nnmware.apps.business.models import Company

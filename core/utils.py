@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.timezone import now
 
 
@@ -93,7 +93,7 @@ def slugify(s):
     Adopted from https://github.com/mozilla/unicode-slugify/
     """
     chars = []
-    for char in smart_text(s):
+    for char in smart_str(s):
         cat = unicodedata.category(char)[0]
         if cat in "LN" or char in "-_~":
             chars.append(char)
