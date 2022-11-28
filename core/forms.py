@@ -168,14 +168,17 @@ class RegistrationForm(UserCreationForm):
             raise forms.ValidationError(_("E-mail is required."), code='invalid')
 
         try:
-            get_user_model().objects.get(email=email)
-            raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
+            user = get_user_model().objects.get(email=email)
+            if not user.is_confirmed:
+                ev = getattr(user, 'emailvalidation', False)
+                if ev and ev.is_expired():
+                    user.delete()
+                    ev.delete()
+                    raise get_user_model().DoesNotExist
         except get_user_model().DoesNotExist as notexterr:
-            try:
-                EmailValidation.objects.get(email=email)
-                raise forms.ValidationError(_("That e-mail is already being confirmed."), code='invalid')
-            except EmailValidation.DoesNotExist as emerr:
-                return email
+            return email
+        raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
+
 
     def clean(self):
         """
@@ -210,7 +213,7 @@ class SignupForm(UserCreationForm):
     def clean_email(self):
         """
         Verify that the email exists
-/        """
+        """
         email = self.cleaned_data.get("email")
 
         if not email:
@@ -286,7 +289,7 @@ class EmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if not (get_user_model().objects.filter(email=email) or EmailValidation.objects.filter(email=email)):
+        if not (get_user_model().objects.filter(email=email)):
             return email
 
         raise forms.ValidationError(_("That e-mail is already used."), code='invalid')
@@ -300,8 +303,7 @@ class ResendEmailValidationForm(forms.Form):
         Verify that the email exists
         """
         email = self.cleaned_data.get("email")
-        if get_user_model().objects.filter(email=email) or \
-                EmailValidation.objects.filter(email=email):
+        if get_user_model().objects.filter(email=email):
             return email
 
         raise forms.ValidationError(_("That e-mail isn't registered."), code='invalid')
