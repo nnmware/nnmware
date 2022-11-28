@@ -8,13 +8,11 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.utils.timezone import now
-from django.core.mail import send_mail
 from django.db import models
 from django.db.models import Manager, Sum, Count
 from django.conf import settings
 from django.urls import reverse
 from django.db.models.signals import post_save, post_delete
-from django.template import Context, loader
 from django.utils.translation import gettext_lazy as _
 from django.template.defaultfilters import slugify
 from django.dispatch import receiver
@@ -23,7 +21,7 @@ from nnmware.core.abstract import Pic, Doc, AbstractContent, AbstractImg, Abstra
     AbstractIP
 from nnmware.core.constants import CONTENT_CHOICES, CONTENT_UNKNOWN, STATUS_CHOICES, NOTICE_CHOICES, NOTICE_UNKNOWN, \
     STATUS_DRAFT, GENDER_CHOICES, ACTION_CHOICES, ACTION_UNKNOWN
-from nnmware.core.utils import setting
+from nnmware.core.utils import setting, send_template_mail
 from nnmware.core.managers import AbstractContentManager, NnmcommentManager, FollowManager, MessageManager
 
 
@@ -264,31 +262,58 @@ class EmailValidationManager(Manager):
     """
     Email validation manager
     """
-
-    def verify(self, key):
-        # noinspection PyBroadException
+    def verify_for_confirm_email(self, key):
+        """
+        User and key verification on email confirmation
+        return: user or None
+        """
         try:
             verify = self.get(key=key)
-            if not verify.is_expired():
-                verify.user.email = verify.email
-                verify.user.is_active = True
-                verify.user.save()
-                verify.delete()
-                return True
-            else:
-                verify.delete()
-                return False
-        except:
-            return False
+        except self.model.DoesNotExist:
+            return None
+        user = verify.user
+        if not user.is_active or user.is_confirmed:
+            verify.delete()
+            return None
+        if not verify.is_expired():
+            user.is_confirmed = True
+            user.save()
+            verify.delete()
+            return user
+        else:
+            verify.delete()
+            return None
 
-    def getuser(self, key):
-        # noinspection PyBroadException
+    def verify_for_recovery_password(self, key):
+        """
+        User and key verification for password recovery
+        return: EmailValidation or None
+        """
         try:
-            return self.get(key=key).user
-        except:
-            return False
+            verify = self.get(key=key)
+        except self.model.DoesNotExist:
+            return None
+        user = verify.user
+        if not user.is_active or not user.is_confirmed:
+            verify.delete()
+            return None
+        if not verify.is_expired():
+            return verify
+        else:
+            verify.delete()
+            return None
 
-    def add(self, user, email):
+    @staticmethod
+    def _send_validation_mail(key, user):
+        template_body = "email/validation.txt"
+        template_subject = "email/validation_subject.txt"
+        mail_dict = {'key': key,
+                     'site_name': Site.objects.get_current().name,
+                     'domain': Site.objects.get_current().domain,
+                     'username': user.username}
+        send_template_mail(template_subject, template_body, mail_dict, [user.email])
+
+    def add(self, user, send=True):
         """
         Add a new validation process entry
         """
@@ -296,65 +321,60 @@ class EmailValidationManager(Manager):
             key = get_user_model().objects.make_random_password(70)
             try:
                 EmailValidation.objects.get(key=key)
-            except EmailValidation.DoesNotExist as emerr:
+            except self.model.DoesNotExist:
                 self.key = key
                 break
 
-        if setting('REQUIRE_EMAIL_CONFIRMATION', True):
-            template_body = "email/validation.txt"
-            template_subject = "email/validation_subject.txt"
-            site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
-            body = loader.get_template(template_body).render(Context(locals()))
-            subject = loader.get_template(template_subject)
-            subject = subject.render(Context(locals())).strip()
-            send_mail(subject=subject, message=body, from_email=None,
-                      recipient_list=[email])
-            user = get_user_model().objects.get(username=str(user))
-            self.filter(user=user).delete()
-        return self.create(user=user, key=key, email=email)
+        if setting('REQUIRE_EMAIL_CONFIRMATION', True) and send:
+            self._send_validation_mail(key, user)
+        self.filter(user=user).delete()
+        return self.create(user=user, key=key)
+
+    def resend(self, user):
+        """
+        Resend validation email
+        """
+        e = getattr(user, 'emailvalidation', False)
+        if e and not e.is_expired():
+            self._send_validation_mail(e.key, e.user)
+        else:
+            self.add(user)
+
+    def recover_password(self, user):
+        e = self.add(user, send=False)
+        e.password = get_user_model().objects.make_random_password(30)
+        e.save()
+        template_body = "email/changepass.txt"
+        template_subject = "email/changepass_subject.txt"
+        mail_dict = {'key': e.key,
+                     'site_name': Site.objects.get_current().name,
+                     'domain': Site.objects.get_current().domain,
+                     'email': user.email,
+                     'username': user.username}
+        send_template_mail(template_subject, template_body, mail_dict, [user.email])
 
 
 class EmailValidation(models.Model):
     """
     Email Validation model
     """
-    username = models.CharField(max_length=30, unique=True)
-    email = models.EmailField(verbose_name=_('E-mail'))
-    password = models.CharField(max_length=30)
-    key = models.CharField(max_length=70, unique=True, db_index=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, verbose_name=_('User'), on_delete=models.CASCADE)
+    password = models.CharField(max_length=30, default='')
+    key = models.CharField(verbose_name=_('Validation key'), max_length=70, unique=True, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
+
     objects = EmailValidationManager()
 
     class Meta:
-        ordering = ['username', 'created']
+        ordering = ['user', '-created']
         verbose_name = _("Email Validation")
         verbose_name_plural = _("Email Validations")
 
     def __str__(self):
-        return _("Email validation process for %(user)s") % {'user': self.username}
+        return f'{_("Email validation process for")} {self.user}'
 
     def is_expired(self):
-        return (now() - self.created).days > 7
-
-    def resend(self):
-        """
-        Resend validation email
-        """
-        template_body = "email/validation.txt"
-        template_subject = "email/validation_subject.txt"
-        site_name, domain = Site.objects.get_current().name, Site.objects.get_current().domain
-        key = self.key
-        body = loader.get_template(template_body).render(Context(locals()))
-        subject = loader.get_template(template_subject)
-        subject = subject.render(Context(locals())).strip()
-        # noinspection PyBroadException
-        try:
-            send_mail(subject=subject, message=body, from_email=None, recipient_list=[self.email])
-        except:
-            pass
-        self.created = now()
-        self.save()
-        return True
+        return (now() - self.created).days > setting('EMAIL_VALIDATION_DAYS', 1)
 
 
 class Video(AbstractDate, AbstractImg):
@@ -429,6 +449,7 @@ class NnmwareUser(AbstractUser, AbstractImg):
     subscribe = models.BooleanField(verbose_name=_('Subscribe for news and updates'), default=False)
     balance = models.DecimalField(verbose_name=_('Balance'), default=0, max_digits=20, decimal_places=3)
     timezone = models.CharField(max_length=50, default='Europe/Moscow')
+    is_confirmed = models.BooleanField(verbose_name=_("User is confirmed"), default=False)
 
     class Meta:
         ordering = ['username', ]

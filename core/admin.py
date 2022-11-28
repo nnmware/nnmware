@@ -169,8 +169,12 @@ class MessageAdmin(admin.ModelAdmin):
 
 @admin.register(EmailValidation)
 class EmailValidationAdmin(admin.ModelAdmin):
-    list_display = ('__str__',)
-    search_fields = ('username', 'email')
+    list_display = ('__str__', 'created')
+    search_fields = ('user__username',)
+    readonly_fields = ('created',)
+    fieldsets = (
+        (_("Main"), {"fields": [("user", "key"),
+                                ('created', 'password')]}),)
 
 
 @admin.register(Video)
